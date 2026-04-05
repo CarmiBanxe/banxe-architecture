@@ -31,7 +31,7 @@
 
 | ID | Пробел | Принцип | Статус |
 |----|--------|---------|--------|
-| G-06 | Нет Bounded Context Map в коде | DDD | OPEN |
+| G-06 | Нет Bounded Context Map в коде | DDD | DONE |
 | G-07 | Compliance thresholds захардкожены в Python | 12-Factor Factor III | OPEN |
 | G-08 | Нет drift detection для policy-файлов | GitOps | DONE |
 | G-09 | Pre-tx gate без Redis hot-path (<80ms p99) | Latency / DIP | DEFERRED |
@@ -42,6 +42,8 @@
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | OPEN |
 | G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | PARTIAL |
 | G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | DONE |
+
+**G-06 примечание:** DONE (2026-04-05). domain/context-map.yaml: 5 bounded contexts (CTX-01 Compliance/Decision Engine AMBER, CTX-02 Policy RED, CTX-03 Audit RED, CTX-04 Operations GREEN, CTX-05 Agent Trust AMBER). Для каждого: owner, trust_zone, modules[], ports[], adapters[], allowed/forbidden dependencies, invariants. 4 relationship types (conformist, ACL, published_language, partnership). 2 shared kernels (DecisionEvent, BanxeAMLResult). GREEN/AMBER/RED trust boundary summary.
 
 **G-08 примечание:** DONE (2026-04-05). validators/policy_drift_check.py: SHA-256 для 5 файлов (SOUL.md, AGENTS.md, compliance_config.yaml, banxe_compliance.rego, INVARIANTS.md). Baseline: policy_checksums.json. --verify: exit 0 OK / exit 1 drift / exit 2 no baseline. --update: обновляет baseline. Интегрирован в check-compliance.sh (шаг 6/7). 15 тестов T-01..T-15.
 

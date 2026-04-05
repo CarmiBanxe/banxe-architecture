@@ -1,0 +1,320 @@
+# context-map.yaml — Bounded Context Map BANXE
+# Closes: G-06 (Bounded Context Map)
+# Version: 1.0 (2026-04-05)
+# Standard: DDD Context Mapping + FINOS AIGF v2.0 (AIGF-C-01)
+#
+# Relationship types:
+#   upstream_downstream: producer → consumer
+#   conformist:          consumer accepts upstream model as-is
+#   acl:                 Anti-Corruption Layer — consumer translates upstream model
+#   shared_kernel:       shared code/model owned jointly (minimise)
+#   partnership:         tight collaboration, evolve together
+#   published_language:  open protocol / schema (e.g. OpenAPI, JSON Schema)
+
+---
+version: "1.0"
+updated_at: "2026-04-05"
+diagram: |
+  ┌──────────────────────────────────────────────────────────────────────────────────┐
+  │                        BANXE Bounded Context Map                                 │
+  │                                                                                  │
+  │  ┌───────────────┐  [UPSTREAM]    ┌───────────────────────────────────────────┐ │
+  │  │  Policy       │──────────────► │  Compliance / Decision Engine             │ │
+  │  │  Context      │  published_    │  (Core Domain)                            │ │
+  │  │  (CLASS_B/C)  │  language      │  banxe_aml_orchestrator                   │ │
+  │  └───────────────┘                │  tx_monitor / sanctions_check             │ │
+  │                                   │  crypto_aml / pep_check                   │ │
+  │  ┌───────────────┐  [UPSTREAM]    └───────────────────┬───────────────────────┘ │
+  │  │  Audit        │◄──────────────────────────────────── (AuditPort ACL)         │
+  │  │  Context      │  append-only                        │                        │
+  │  │  (CQRS/ES)    │                     ┌───────────────▼───────────────────────┐│
+  │  └───────────────┘                     │  Operations Context                   ││
+  │                                        │  (Supporting Domain)                  ││
+  │                                        │  emergency_stop / api.py              ││
+  │                                        │  dashboard / structured_logger         ││
+  │                                        └───────────────────────────────────────┘│
+  └──────────────────────────────────────────────────────────────────────────────────┘
+
+contexts:
+
+  # ─── CTX-01: Compliance / Decision Engine ──────────────────────────────────
+  - id: CTX-01
+    name: "Compliance / Decision Engine"
+    type: core_domain
+    description: >
+      The beating heart of BANXE AML/KYC. Orchestrates all risk-scoring
+      sub-agents and produces a final BanxeAMLResult with ExplanationBundle.
+      All P1 invariants (I-21..I-25) live here.
+    owner: "Compliance Engineering"
+    trust_zone: AMBER
+    modules:
+      - src/compliance/banxe_aml_orchestrator.py
+      - src/compliance/aml_orchestrator.py
+      - src/compliance/tx_monitor.py
+      - src/compliance/sanctions_check.py
+      - src/compliance/crypto_aml.py
+      - src/compliance/pep_check.py
+      - src/compliance/adverse_media.py
+      - src/compliance/kyb_check.py
+      - src/compliance/agents/orchestration_tree.py
+    ports:
+      - name: PolicyPort
+        direction: inbound
+        interface: src/compliance/ports/policy_port.py
+        description: Read-only access to thresholds and rules (I-22 enforced)
+      - name: DecisionPort
+        direction: outbound
+        interface: src/compliance/ports/decision_port.py
+        description: Emit BanxeAMLResult decisions to downstream consumers
+      - name: AuditPort
+        direction: outbound
+        interface: src/compliance/ports/audit_port.py
+        description: Append-only DecisionEvent log (I-24 enforced)
+      - name: EmergencyPort
+        direction: inbound
+        interface: src/compliance/ports/emergency_port.py
+        description: Circuit-breaker check before every assessment (I-23)
+    adapters:
+      - name: ComplianceConfigPolicyAdapter
+        implements: PolicyPort
+        path: src/compliance/adapters/compliance_config_adapter.py
+        backing: src/compliance/compliance_config.yaml
+      - name: BanxeAMLDecisionAdapter
+        implements: DecisionPort
+        path: src/compliance/adapters/banxe_aml_decision_adapter.py
+      - name: InMemoryAuditAdapter
+        implements: AuditPort
+        path: src/compliance/adapters/in_memory_emergency_adapter.py
+        note: test only; production uses PostgresEventLogAdapter
+    allowed_dependencies:
+      - CTX-02  # reads policy
+      - CTX-03  # writes audit events
+    forbidden_dependencies:
+      - CTX-04  # must not import Operations modules directly
+    invariants:
+      - I-21  # threshold values must come from PolicyPort, not hardcoded
+      - I-22  # PolicyPort has no write methods
+      - I-23  # EmergencyPort checked before assessment
+      - I-24  # AuditPort is append-only (no update/delete)
+      - I-25  # ExplanationBundle always populated
+
+  # ─── CTX-02: Policy Context ────────────────────────────────────────────────
+  - id: CTX-02
+    name: "Policy Context"
+    type: supporting_domain
+    description: >
+      Manages governance rules, classification, change control and OPA/Rego
+      enforcement. Source of truth for all thresholds and change classes.
+      Downstream contexts consume via PolicyPort (conformist) or ACL.
+    owner: "Compliance Engineering + MLRO"
+    trust_zone: RED
+    modules:
+      - src/compliance/compliance_config.yaml
+      - src/compliance/policies/banxe_compliance.rego
+      - src/compliance/governance/soul_governance.py
+      - src/compliance/governance/change_classes.yaml
+      - src/compliance/utils/config_loader.py
+      - src/compliance/utils/rego_evaluator.py
+    ports:
+      - name: PolicyPort
+        direction: outbound
+        interface: src/compliance/ports/policy_port.py
+        description: Exposes policy objects (thresholds, rules) to Decision Engine
+    adapters:
+      - name: ComplianceConfigPolicyAdapter
+        implements: PolicyPort
+        path: src/compliance/adapters/compliance_config_adapter.py
+      - name: InMemoryPolicyAdapter
+        implements: PolicyPort
+        path: src/compliance/adapters/in_memory_policy_adapter.py
+        note: test only
+    allowed_dependencies: []
+    forbidden_dependencies:
+      - CTX-01  # policy must never import Decision Engine (no circular deps)
+      - CTX-03
+      - CTX-04
+    governance:
+      change_class: CLASS_C
+      approvers:
+        - MLRO
+        - CEO
+      protected_files:
+        - src/compliance/compliance_config.yaml
+        - src/compliance/policies/banxe_compliance.rego
+
+  # ─── CTX-03: Audit Context ─────────────────────────────────────────────────
+  - id: CTX-03
+    name: "Audit Context"
+    type: supporting_domain
+    description: >
+      Immutable event store for all compliance decisions. Implements CQRS
+      read models (projections) for MLRO review, FCA audit trail, and drift
+      detection. Only DecisionEngine may append; all others read-only.
+    owner: "Compliance Engineering"
+    trust_zone: RED
+    modules:
+      - src/compliance/event_sourcing/event_store.py
+      - src/compliance/event_sourcing/projections.py
+      - src/compliance/event_sourcing/projector.py
+      - src/compliance/utils/decision_event_log.py
+      - src/compliance/ports/audit_port.py
+    ports:
+      - name: AuditPort
+        direction: inbound
+        interface: src/compliance/ports/audit_port.py
+        description: Append-only write interface (I-24 enforced)
+      - name: ProjectionReadPort
+        direction: outbound
+        description: >
+          CQRS read side — RiskSummaryView, DailyStatsView, CustomerRiskView.
+          Accessed directly by Operations dashboard and MLRO tools.
+    allowed_dependencies: []
+    forbidden_dependencies:
+      - CTX-01
+      - CTX-02
+      - CTX-04
+    invariants:
+      - I-24  # no update/delete events; sequence numbers are monotone
+
+  # ─── CTX-04: Operations Context ────────────────────────────────────────────
+  - id: CTX-04
+    name: "Operations Context"
+    type: supporting_domain
+    description: >
+      Circuit-breakers, admin dashboard, REST API surface, structured logging,
+      and deployment tooling. Depends on CTX-01 via published DecisionPort and
+      on CTX-03 projections for read dashboards. Never writes to Audit.
+    owner: "Platform Engineering"
+    trust_zone: GREEN
+    modules:
+      - src/compliance/emergency_stop.py
+      - src/compliance/api.py
+      - src/compliance/dashboard.py
+      - src/compliance/utils/structured_logger.py
+      - src/compliance/ports/emergency_port.py
+      - src/compliance/adapters/in_memory_emergency_adapter.py
+    ports:
+      - name: EmergencyPort
+        direction: outbound
+        interface: src/compliance/ports/emergency_port.py
+        description: Circuit-breaker state exposed to CTX-01 EmergencyPort consumers
+    adapters:
+      - name: InMemoryEmergencyAdapter
+        implements: EmergencyPort
+        path: src/compliance/adapters/in_memory_emergency_adapter.py
+      - name: RedisEmergencyAdapter
+        implements: EmergencyPort
+        path: src/compliance/emergency_stop.py
+        note: dual-store Redis+file for production
+    allowed_dependencies:
+      - CTX-03  # read projections for dashboard
+    forbidden_dependencies:
+      - CTX-02  # must not import Policy modules (ACL required)
+    acl_note: >
+      If Operations needs policy data (e.g. threshold display), it must go
+      through CTX-01 DecisionPort response or a dedicated read API endpoint —
+      never import src/compliance/compliance_config.yaml directly.
+
+  # ─── CTX-05: Agent Trust Context ───────────────────────────────────────────
+  - id: CTX-05
+    name: "Agent Trust Context"
+    type: generic_subdomain
+    description: >
+      Orchestration tree, trust boundary rules, agent descriptors, and passport
+      validation. Enforces B-01..B-06 rules at call-time. Sits between CTX-01
+      and all external agent adapters (Watchman, Jube, Yente, ClickHouse).
+    owner: "Compliance Engineering"
+    trust_zone: AMBER
+    modules:
+      - src/compliance/agents/orchestration_tree.py
+      - src/compliance/agents/
+    ports:
+      - name: TrustBoundaryPort
+        direction: inbound
+        description: >
+          check_call() / assert_call_allowed() — called by CTX-01 before any
+          Level-2→Level-3 delegation (B-03 rule)
+    allowed_dependencies:
+      - CTX-01  # CTX-01 calls check_call() into this context
+    forbidden_dependencies:
+      - CTX-02
+      - CTX-03
+      - CTX-04
+    invariants:
+      - I-22  # policy_write capability forbidden for Level-2/3 agents (B-06)
+
+relationships:
+
+  - from: CTX-02
+    to: CTX-01
+    type: upstream_downstream
+    integration: conformist
+    via: PolicyPort
+    notes: >
+      CTX-01 is downstream conformist to CTX-02 policy. Thresholds flow
+      from compliance_config.yaml → ComplianceConfigPolicyAdapter → PolicyPort.
+
+  - from: CTX-01
+    to: CTX-03
+    type: upstream_downstream
+    integration: acl
+    via: AuditPort
+    notes: >
+      CTX-01 appends DecisionEvents through AuditPort ACL. CTX-03 is
+      downstream read-only (projections). Monotone sequence enforced by I-24.
+
+  - from: CTX-04
+    to: CTX-01
+    type: upstream_downstream
+    integration: published_language
+    via: EmergencyPort
+    notes: >
+      CTX-04 publishes circuit-breaker state (EmergencyPort). CTX-01
+      checks it before every assessment (I-23).
+
+  - from: CTX-04
+    to: CTX-03
+    type: upstream_downstream
+    integration: conformist
+    via: ProjectionReadPort
+    notes: >
+      Dashboard reads CQRS projections directly from CTX-03 Projector.
+      Read-only — no writes back to Audit context.
+
+  - from: CTX-05
+    to: CTX-01
+    type: partnership
+    via: TrustBoundaryPort
+    notes: >
+      Agent trust rules (B-01..B-06) are enforced inline by CTX-01
+      before delegating to Level-2/3 adapters. Tight coupling intentional
+      at the security boundary; both contexts evolve together.
+
+shared_kernels:
+  - name: DecisionEvent
+    description: >
+      Core event model shared between CTX-01 (producer) and CTX-03 (consumer).
+      Lives in src/compliance/utils/decision_event_log.py.
+      Treat as frozen — changes require both contexts to agree.
+    contexts: [CTX-01, CTX-03]
+    files:
+      - src/compliance/utils/decision_event_log.py
+
+  - name: BanxeAMLResult
+    description: >
+      Result contract shared between CTX-01 and CTX-04 (API serialisation).
+      Must include ExplanationBundle (I-25). Schema changes are breaking.
+    contexts: [CTX-01, CTX-04]
+    files:
+      - src/compliance/models.py
+
+trust_boundary_summary:
+  GREEN:
+    contexts: [CTX-04]
+    policy: "Full access to operational tooling; no direct policy writes"
+  AMBER:
+    contexts: [CTX-01, CTX-05]
+    policy: "Core business logic; strict port/adapter discipline enforced"
+  RED:
+    contexts: [CTX-02, CTX-03]
+    policy: "Immutable data or governance config; changes require approver sign-off"
