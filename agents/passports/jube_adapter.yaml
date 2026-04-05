@@ -1,0 +1,35 @@
+agent_id: jube_adapter
+name: "Jube ML Rules Adapter"
+version: "1.0.0"
+description: >
+  Level-3 AMBER adapter. Wraps Jube (AGPLv3) for real-time transaction
+  scoring using behavioural models. INTERNAL USE ONLY — Jube is AGPLv3
+  and must not be exposed as a commercial API (invariant I-20).
+level: 3
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - tx_monitoring
+  - risk_assessment
+ports:
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+allowed_callers:
+  - aml_orchestrator
+allowed_callees: []
+invariants:
+  - I-20
+  - I-24
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - CTIO
+fca_references:
+  - "MLR 2017 Reg.28(3)"
+aigf_risks:
+  - AIGF-D-02

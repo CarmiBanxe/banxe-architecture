@@ -1,0 +1,37 @@
+agent_id: clickhouse_writer
+name: "ClickHouse Audit Writer"
+version: "1.0.0"
+description: >
+  Level-3 GREEN adapter. Persists DecisionEvents to ClickHouse (banxe DB,
+  decision_events table) with TTL = 5 years (I-17: DORA data retention).
+  Append-only — no UPDATE or DELETE queries permitted (I-24).
+level: 3
+trust_zone: GREEN
+bounded_context: CTX-03
+capabilities:
+  - event_write
+  - audit_read
+ports:
+  inbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+      adapter: src/compliance/utils/decision_event_log.py
+allowed_callers:
+  - banxe_aml_orchestrator
+  - aml_orchestrator
+allowed_callees: []
+invariants:
+  - I-17
+  - I-24
+governance:
+  change_class: CLASS_A
+  owner: "Platform Engineering"
+  review_cycle: annually
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+fca_references:
+  - "DORA Art.14(2) — immutable audit logs"
+  - "MLR 2017 Reg.40 — record keeping 5 years"
+aigf_risks:
+  - AIGF-B-02

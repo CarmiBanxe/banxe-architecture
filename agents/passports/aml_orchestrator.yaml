@@ -1,0 +1,45 @@
+agent_id: aml_orchestrator
+name: "AML Orchestrator (Layer 2)"
+version: "2.0.0"
+description: >
+  Level-2 sub-orchestrator. Receives pre-screened CustomerProfile from Level-1
+  and coordinates risk scoring across Layer-3 adapters. Merges partial scores
+  and returns consolidated RiskSignal to the Level-1 orchestrator.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - risk_assessment
+  - score_aggregate
+  - tx_monitoring
+ports:
+  inbound:
+    - port: PolicyPort
+      interface: src/compliance/ports/policy_port.py
+      adapter: src/compliance/adapters/compliance_config_adapter.py
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+      adapter: src/compliance/adapters/banxe_aml_decision_adapter.py
+allowed_callers:
+  - banxe_aml_orchestrator
+allowed_callees:
+  - watchman_adapter
+  - jube_adapter
+  - yente_adapter
+invariants:
+  - I-21
+  - I-24
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - CTIO
+fca_references:
+  - "MLR 2017 Reg.28 — ongoing monitoring"
+aigf_risks:
+  - AIGF-A-02
+  - AIGF-C-01

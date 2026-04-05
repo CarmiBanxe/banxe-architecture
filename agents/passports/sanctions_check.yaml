@@ -1,0 +1,48 @@
+agent_id: sanctions_check
+name: "Sanctions Screening Agent"
+version: "2.0.0"
+description: >
+  Level-2 agent. Screens customer name, country and entity against OFAC SDN,
+  HMT/OFSI consolidated list, and UN sanctions. Applies 10-jurisdiction HARD
+  REJECT policy (Category A) and 30+ jurisdiction EDD/HOLD policy (Category B).
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - sanctions_screening
+  - risk_assessment
+ports:
+  inbound:
+    - port: PolicyPort
+      interface: src/compliance/ports/policy_port.py
+      adapter: src/compliance/adapters/compliance_config_adapter.py
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+allowed_callers:
+  - banxe_aml_orchestrator
+allowed_callees:
+  - yente_adapter
+  - watchman_adapter
+invariants:
+  - I-21
+  - I-24
+decision_thresholds:
+  reject: 70.0
+  hold: 40.0
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: monthly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - CTIO
+    - MLRO
+fca_references:
+  - "MLR 2017 Reg.28(1) — sanctions checking"
+  - "OFSI Consolidated List"
+  - "UK Sanctions List"
+aigf_risks:
+  - AIGF-A-01
+  - AIGF-E-01

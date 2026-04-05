@@ -1,0 +1,40 @@
+agent_id: crypto_aml
+name: "Crypto AML Screening Agent"
+version: "1.2.0"
+description: >
+  Level-2 agent. Screens crypto wallet addresses for darknet market exposure,
+  mixer usage, and high-risk exchange associations. Integrates heuristic scoring
+  and optional Chainalysis-compatible feed (not connected, placeholder).
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - crypto_aml
+  - risk_assessment
+ports:
+  inbound:
+    - port: PolicyPort
+      interface: src/compliance/ports/policy_port.py
+      adapter: src/compliance/adapters/compliance_config_adapter.py
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+allowed_callers:
+  - banxe_aml_orchestrator
+allowed_callees: []
+invariants:
+  - I-21
+  - I-24
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - CTIO
+fca_references:
+  - "FCA PS19/22 — cryptoasset AML"
+aigf_risks:
+  - AIGF-A-03
+  - AIGF-D-01
