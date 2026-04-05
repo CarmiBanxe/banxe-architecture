@@ -14,12 +14,12 @@
 | G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | DONE |
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | OPEN |
 | G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | OPEN |
-| G-16 | Нет формализованных Ports & Adapters для агентов | Hexagonal Architecture | — | OPEN |
+| G-16 | Нет формализованных Ports & Adapters для агентов | Hexagonal Architecture | — | DONE |
 | G-17 | Нет Event Sourcing для решений агентов | Event Sourcing / CQRS | — | OPEN |
 
 **G-03 примечание:** DONE (3b5ad06). emergency_stop.py (dual-store Redis+file) + api.py endpoints + 17 integration tests (T-01..T-17, I-23 verified) + emergency_panel.html (MLRO admin panel, /compliance/admin/emergency) + marble_emergency_workflow.json (n8n webhook→API) + deploy-emergency-stop.sh. Production deploy: bash scripts/deploy-emergency-stop.sh.
 
-**G-16 примечание:** Агентная архитектура концептуально близка к Hexagonal, но не формализована через порты. Требуется: `PolicyPort` (read-only), `DecisionPort` (output), `AuditPort` (append-only), `EmergencyPort` (stop channel). Инвариант I-22 станет архитектурным ограничением (отсутствие write-порта), а не только правилом.
+**G-16 примечание:** DONE (7b74ebd, 2026-04-05). 4 Port ABCs: PolicyPort (read-only, I-22 enforcement), DecisionPort (async emit_decision), AuditPort (append-only, existing), EmergencyPort (is_stopped/activate/clear). 5 Adapters: ComplianceConfigPolicyAdapter (production, backed by compliance_config.yaml G-07), InMemoryPolicyAdapter (test/dev), BanxeAMLDecisionAdapter (→AuditPort via constructor injection), MockDecisionAdapter (test captures), InMemoryEmergencyAdapter (full lifecycle). 30 tests T-01..T-30, full suite 169/169. Инвариант I-22 реализован как архитектурное ограничение (PolicyPort не имеет write-методов).
 
 **G-17 примечание:** I-24 (append-only audit trail) декларирован, но нет архитектурного паттерна Event Sourcing, гарантирующего это. Каждое решение агента = DomainEvent. CQRS: отдельные модели для записи событий и чтения состояния.
 
@@ -65,7 +65,7 @@
 
 ### Sprint 0 (архитектурный, 0-1 неделя) — НОВЫЙ
 
-- [ ] G-16: Формализовать Port-интерфейсы: PolicyPort, DecisionPort, AuditPort, EmergencyPort
+- [x] G-16: Формализовать Port-интерфейсы: PolicyPort, DecisionPort, AuditPort, EmergencyPort — DONE 7b74ebd
 - [ ] G-18: Реструктурировать в 5 bounded contexts (Compliance, Decision Engine, Policy, Audit, Operations)
 - [ ] G-21: Настроить Claude Code hooks (policy-guard, invariant-check, bounded-context-check, load-architecture)
 - [ ] G-22: Замапить AIGF v2.0 risk catalogue на GAP-REGISTER
