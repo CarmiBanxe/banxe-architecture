@@ -11,13 +11,13 @@
 |----|--------|---------|---------|--------|
 | G-01 | Нет immutable audit trail / Decision Event Log | CQRS+ES, DORA 14(2) | — | OPEN |
 | G-02 | Нет XAI / ExplanationBundle в BanxeAMLResult | XAI, FCA SS1/23 | — | OPEN |
-| G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | PAUSED |
+| G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | PARTIAL |
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | OPEN |
 | G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | OPEN |
 | G-16 | Нет формализованных Ports & Adapters для агентов | Hexagonal Architecture | — | OPEN |
 | G-17 | Нет Event Sourcing для решений агентов | Event Sourcing / CQRS | — | OPEN |
 
-**G-03 примечание:** `emergency_stop.py` + `api.py` созданы (d5c1007), syntax OK. Остаётся: integration tests + Marble UI кнопка + production deploy. PAUSED, priority #1.
+**G-03 примечание:** `emergency_stop.py` + `api.py` (d5c1007) + 17 integration tests T-01..T-17 (b48d802). I-23 fully tested: все 4 screening endpoints возвращают 503 при активном стопе, fail-open при dual-store failure, полный lifecycle activate→resume. Остаётся: Marble UI кнопка + production deploy на GMKtec.
 
 **G-16 примечание:** Агентная архитектура концептуально близка к Hexagonal, но не формализована через порты. Требуется: `PolicyPort` (read-only), `DecisionPort` (output), `AuditPort` (append-only), `EmergencyPort` (stop channel). Инвариант I-22 станет архитектурным ограничением (отсутствие write-порта), а не только правилом.
 
