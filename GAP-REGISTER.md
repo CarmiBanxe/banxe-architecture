@@ -45,7 +45,7 @@
 
 **G-06 примечание:** DONE (2026-04-05). domain/context-map.yaml: 5 bounded contexts (CTX-01 Compliance/Decision Engine AMBER, CTX-02 Policy RED, CTX-03 Audit RED, CTX-04 Operations GREEN, CTX-05 Agent Trust AMBER). Для каждого: owner, trust_zone, modules[], ports[], adapters[], allowed/forbidden dependencies, invariants. 4 relationship types (conformist, ACL, published_language, partnership). 2 shared kernels (DecisionEvent, BanxeAMLResult). GREEN/AMBER/RED trust boundary summary.
 
-**G-08 примечание:** DONE (2026-04-05). validators/policy_drift_check.py: SHA-256 для 5 файлов (SOUL.md, AGENTS.md, compliance_config.yaml, banxe_compliance.rego, INVARIANTS.md). Baseline: policy_checksums.json. --verify: exit 0 OK / exit 1 drift / exit 2 no baseline. --update: обновляет baseline. Интегрирован в check-compliance.sh (шаг 6/7). 15 тестов T-01..T-15.
+**G-08 примечание:** DONE (2026-04-05). validators/policy_drift_check.py: SHA-256 для 5 файлов (SOUL.md, AGENTS.md, compliance_config.yaml, banxe_compliance.rego, INVARIANTS.md). Baseline: - [x] G-04policy_checksums.json. --verify: exit 0 OK / exit 1 drift / exit 2 no baseline. --update: обновляет baseline. Интегрирован в check-compliance.sh (шаг 6/7). 15 тестов T-01..T-15.
 
 **G-12 примечание:** DONE (2026-04-05). schemas/agent_passport.schema.json (JSON Schema draft-07): 14 поля (agent_id, name, version, level 1/2/3, trust_zone GREEN/AMBER/RED, capabilities[], ports, bounded_context CTX-01..05, invariants[], governance, fca_references, aigf_risks). 9 паспортов в agents/passports/ (banxe_aml_orchestrator L1, aml_orchestrator/tx_monitor/sanctions_check/crypto_aml L2, watchman_adapter/jube_adapter/yente_adapter/clickhouse_writer L3). validate_agent_passport.py: business rules B-04/B-06/I-22 + schema validation. 20 тестов T-01..T-20, 124/124 pass.
 **G-09 примечание:** DEFERRED — EMI-масштаб BANXE пока не требует. Пересмотреть при transaction volume > 10K/day.
@@ -83,13 +83,13 @@
 ### Sprint 1 (немедленно, 1-2 недели)
 
 - [x] G-05: `governance/change-classes.yaml` — запрет auto-apply для Class B (SOUL.md/AGENTS.md) — DONE 5130232
-- [ ] G-04: Orchestration Tree в AGENTS.md + новые инварианты I-21..I-25 в INVARIANTS.md
-- [ ] G-03: Завершить G-03 (тесты + Marble UI + deploy) — `emergency_stop.py` уже есть
+- [x] G-04: Orchestration Tree в AGENTS.md + новые инварианты I-21..I-25 в INVARIANTS.md
+- [x] G-03: Завершить G-03 (тесты + Marble UI + deploy) — `emergency_stop.py` уже есть
 - [x] G-17: Базовый event store (append-only) для решений агентов — DONE a8b47cb
 
 ### Sprint 2 (2-4 недели)
 
-- [ ] G-02: `ExplanationBundle` dataclass в `risk_contract.py`
+- [x] G-02: `ExplanationBundle` dataclass в `risk_contract.py`
 - [x] G-01: Decision Event Log — PARTIAL (код b6541ab: AuditPort ABC, PostgresEventLogAdapter, InMemoryAuditAdapter, decision_events.sql; 15 тестов 89/89 pass; миграция на GMKtec pending)
 - [x] G-07: `compliance_config.yaml` — DONE (d7a1310: config_loader.py, 18 тестов, 114/114 pass; compliance_validator/explanation_builder/sanctions_check/tx_monitor переведены на config)
 - [x] G-19: OPA/Rego для критических инвариантов — DONE (1cbe34d: banxe_compliance.rego + rego_evaluator.py, 25 тестов, 139/139 pass; OPA sidecar → Sprint 3 G-14)
@@ -98,7 +98,7 @@
 ### Sprint 3 (4-8 недель)
 
 - [ ] G-11: Zone RED/AMBER/GREEN в CONTRIBUTING.md + branch protection
-- [ ] G-08: Policy checksum verification в CI
+- [x] G-08: Policy checksum verification в CI
 - [ ] G-15: Review agent step в feedback_loop.py
 
 ### Sprint 4 (8-16 недель)
