@@ -33,7 +33,7 @@
 |----|--------|---------|--------|
 | G-06 | Нет Bounded Context Map в коде | DDD | OPEN |
 | G-07 | Compliance thresholds захардкожены в Python | 12-Factor Factor III | OPEN |
-| G-08 | Нет drift detection для policy-файлов | GitOps | OPEN |
+| G-08 | Нет drift detection для policy-файлов | GitOps | DONE |
 | G-09 | Pre-tx gate без Redis hot-path (<80ms p99) | Latency / DIP | DEFERRED |
 | G-10 | Нет Zero Standing Privileges для агентов | ZSP / JIT secrets | OPEN |
 | G-11 | Партнёрский доступ не разграничен (Zone RED/AMBER) | Trust zones | OPEN |
@@ -42,6 +42,8 @@
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | OPEN |
 | G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | PARTIAL |
 | G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | DONE |
+
+**G-08 примечание:** DONE (2026-04-05). validators/policy_drift_check.py: SHA-256 для 5 файлов (SOUL.md, AGENTS.md, compliance_config.yaml, banxe_compliance.rego, INVARIANTS.md). Baseline: policy_checksums.json. --verify: exit 0 OK / exit 1 drift / exit 2 no baseline. --update: обновляет baseline. Интегрирован в check-compliance.sh (шаг 6/7). 15 тестов T-01..T-15.
 
 **G-12 примечание:** SOUL.md + ADR частично закрывают. Не хватает `agent_id`, `version`, `capabilities[]` как structured metadata.
 **G-09 примечание:** DEFERRED — EMI-масштаб BANXE пока не требует. Пересмотреть при transaction volume > 10K/day.
