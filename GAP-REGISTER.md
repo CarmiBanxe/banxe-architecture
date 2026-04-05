@@ -32,14 +32,14 @@
 | ID | Пробел | Принцип | Статус |
 |----|--------|---------|--------|
 | G-06 | Нет Bounded Context Map в коде | DDD | DONE |
-| G-07 | Compliance thresholds захардкожены в Python | 12-Factor Factor III | OPEN |
+| G-07 | Compliance thresholds захардкожены в Python | 12-Factor Factor III | DONE |
 | G-08 | Нет drift detection для policy-файлов | GitOps | DONE |
 | G-09 | Pre-tx gate без Redis hot-path (<80ms p99) | Latency / DIP | DEFERRED |
 | G-10 | Нет Zero Standing Privileges для агентов | ZSP / JIT secrets | OPEN |
 | G-11 | Партнёрский доступ не разграничен (Zone RED/AMBER) | Trust zones | OPEN |
 | G-12 | Нет формального agent passport | KPMG AIGF | DONE |
 | G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | OPEN |
-| G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | OPEN |
+| G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | DONE |
 | G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | DONE |
 | G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | DONE |
 
