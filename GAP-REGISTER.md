@@ -1,6 +1,6 @@
 # GAP-REGISTER.md — Реестр архитектурных | 12-Factor Factor III | DONE |пробелов BANXE
 
-**Версия аудита:** v4 (2026-04-05) — Sprint 3 complete, 18/22 DONE, 480 tests
+**Версия аудита:** v5 (2026-04-05) — Sprint 4 in progress, 20/22 DONE, 520 tests
 **Следующий пересмотр:** 2026-07-01 (до EU AI Act дедлайна 2026-08-02)
 
 Каждый gap отслеживается: приоритет, принцип, описание, статус, sprint.
@@ -76,7 +76,7 @@
 ### Sprint 0 (архитектурный, 0-1 неделя) — НОВЫЙ
 
 - [x] G-16: Формализовать Port-интерфейсы: PolicyPort, DecisionPort, AuditPort, EmergencyPort — DONE 7b74ebd
-- [ ] G-18: Реструктурировать в 5 bounded contexts (Compliance, Decision Engine, Policy, Audit, Operations)
+- [x] G-18: Реструктурировать в 5 bounded contexts (Compliance, Decision Engine, Policy, Audit, Operations)
 - [x] G-21: Настроить Claude Code hooks (policy-guard, invariant-check, bounded-context-check, load-architecture) — DONE 819f315
 - [x] G-22: Замапить AIGF v2.0 risk catalogue на GAP-REGISTER — DONE aigf-risk-mapping.yaml
 
@@ -92,7 +92,7 @@
 ### Sprint 2 (2-4 недели)
 
 - [x] G-02: `ExplanationBundle` dataclass в `risk_contract.py`
-- [x] G-01: Decision Event Log — PARTIAL (код b6541ab: AuditPort ABC, PostgresEventLogAdapter, InMemoryAuditAdapter, decision_events.sql; 15 тестов 89/89 pass; миграция на GMKtec pending)
+- [x] G-01: Decision Event Log — PARTIAL (код b6541ab: AuditPort ABC, PostgresEventLogAdapter, InMemoryAuditAdapter, decision_events.sql; 15 тестов 89/89 pass; DONE — deployed on GMKtec: Docker PG17, I-24 enforced (INSERT+SELECT only), smoke test passed)
 - [x] G-07: `compliance_config.yaml` — DONE (d7a1310: config_loader.py, 18 тестов, 114/114 pass; compliance_validator/explanation_builder/sanctions_check/tx_monitor переведены на config)
 - [x] G-19: OPA/Rego для критических инвариантов — DONE (1cbe34d: banxe_compliance.rego + rego_evaluator.py, 25 тестов, 139/139 pass; OPA sidecar → Sprint 3 G-14)
 - [x] G-20: Structured logging — DONE (structured_logger.py, ebc54c9). Release pipeline: DONE (ad5e9cf + 17658ce). .github/workflows/compliance-ci.yml (5-step gate). scripts/release.sh (semver + CHANGELOG + 5 pre-release gates).
