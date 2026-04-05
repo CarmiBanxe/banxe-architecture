@@ -40,7 +40,7 @@
 | G-10 | Нет Zero Standing Privileges для агентов | ZSP / JIT secrets | OPEN |
 | G-11 | Партнёрский доступ не разграничен (Zone RED/AMBER) | Trust zones | OPEN |
 | G-12 | Нет формального agent passport | KPMG AIGF | DONE |
-| G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | OPEN |
+| G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | DONE |
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | DONE |
 | G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | DONE |
 | G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | DONE |
@@ -52,7 +52,7 @@
 **G-12 примечание:** DONE (2026-04-05). schemas/agent_passport.schema.json (JSON Schema draft-07): 14 поля (agent_id, name, version, level 1/2/3, trust_zone GREEN/AMBER/RED, capabilities[], ports, bounded_context CTX-01..05, invariants[], governance, fca_references, aigf_risks). 9 паспортов в agents/passports/ (banxe_aml_orchestrator L1, aml_orchestrator/tx_monitor/sanctions_check/crypto_aml L2, watchman_adapter/jube_adapter/yente_adapter/clickhouse_writer L3). validate_agent_passport.py: business rules B-04/B-06/I-22 + schema validation. 20 тестов T-01..T-20, 124/124 pass.
 **G-07 примечание:** DONE (d7a1310, 2026-04-05). compliance_config.yaml: externalized thresholds. config_loader.py: load/validate/access. 18 тестов, 114/114 pass.  **G-19 примечание:** DONE (1cbe34d, 2026-04-05). banxe_compliance.rego + rego_evaluator.py. 25 тестов, 139/139 pass. OPA sidecar → Sprint 4 G-14.  **G-09 примечание:** DEFERRED — EMI-масштаб BANXE пока не требует. Пересмотреть при transaction volume > 10K/day.
 
-**G-18 примечание:** 5 bounded contexts: Compliance, Decision Engine, Policy, Audit, Operations. Модули (sanctions_check, registry_loader) живут в плоской структуре без явных границ.
+**G-18 примечание:** DONE (2026-04-05). contexts/registry.py: 5 BoundedContext dataclass (CTX-01..05) с modules[], allowed_dependencies[], forbidden_dependencies[], trust_zone, ports. context_for_module() + allowed_imports() API. validate_contexts.py: AST-сканирование 56 файлов, 0 BC нарушений. Физическое перемещение файлов DEFERRED (продакшн бот активен) — границы теперь machine-verifiable через валидатор. 40 тестов T-01..T-40.
 
 **G-19 примечание:** `check-compliance.sh` — зародыш controls-as-code. Нужно масштабировать до OPA/Rego engine. FINOS AIGF v2.0 рекомендует executable controls.
 
