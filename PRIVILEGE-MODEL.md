@@ -95,3 +95,21 @@ DEVELOPER/CTIO
     ├── Telegram (@mycarmi_moa_bot)  ← алерты + HITL + справки
     └── Marble UI (:5003)            ← case queue + SAR review + audit
 ```
+
+---
+
+## --force policy (train-agent.sh)
+
+`--force` флаг в `train-agent.sh --deploy --force` пропускает интерактивное подтверждение.
+
+### --force допустим ТОЛЬКО:
+- CI/CD на staging (тестовый прогон, не production)
+- Автоматический cron при `composite_drift < 0.10` (low-risk)
+
+### --force ЗАПРЕЩЁН:
+- На production policy (SOUL.md, compliance_validator.py) при `accuracy < 85%` или `drift > 0.15`
+- Ручной запуск без предварительного review diff
+
+**Нарушение:** деплой блокируется с `exit 1`.
+
+Без `--force`: показывается diff изменённых файлов, запрашивается `[y/N]` подтверждение.

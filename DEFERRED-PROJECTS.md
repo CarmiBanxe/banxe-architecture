@@ -11,6 +11,7 @@
 | Проект | Описание | Почему отложен | Инсталляция |
 |--------|----------|----------------|-------------|
 | **Telegram-бот (клиентский)** | Банковское приложение для клиентов: платежи, баланс, KYC onboarding | Требует FCA authorisation, отдельная архитектура | Отдельный OpenClaw instance |
+| **CM migration plan** | Миграция кейсов при смене case management layer | Marble единственный CM, миграция нулевая задача | Триггер: второй CM-провайдер ИЛИ смена лицензии Marble |
 | **Web-приложение Banxe** | Личный кабинет клиента (браузер) | Зависит от API readiness, design, auth service | Отдельный проект |
 | **Мобильное приложение** | iOS / Android банковское приложение | Зависит от web-app + доп. FCA requirements | Отдельный проект |
 | **Telegram-бот для клиентского KYC** | Onboarding через Telegram | Зависит от PassportEye/DeepFace Phase 3 | Часть клиентского бота |
@@ -25,6 +26,8 @@
 | Compliance stack (:8090) | ACTIVE | AML/KYC/Sanctions API |
 | Training pipeline | ACTIVE | Обучение агентов (developer only) |
 | Promptfoo eval cron | ACTIVE | Воскресенье 04:00 UTC |
+| Feedback loop + train-agent.sh | DONE | GAP 4 — corpus → patches → auto-deploy |
+| Drift monitoring 6h | DONE | GAP 5 — Evidently AI + cron |
 
 ## GAP-задачи (не блокирующие)
 

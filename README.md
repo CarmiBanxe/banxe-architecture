@@ -53,3 +53,15 @@ bash validators/check-compliance.sh ~/developer
 | `CarmiBanxe/vibe-coding` | primary |
 | `CarmiBanxe/developer-core` | policy source |
 | `CarmiBanxe/banxe-training-data` | corpus |
+
+## Стратегия: Reference vs Dependency
+
+Подробно: `decisions/ADR-011-reference-vs-dependency.md`
+
+| Тип | Примеры | Подход |
+|-----|---------|--------|
+| **Ядро (незаменяемое)** | compliance_validator.py, feedback_loop.py, orchestrator | Собственное, не зависит от внешних лицензий |
+| **Operational dependency (заменяемое)** | Marble, Watchman, Yente | Используем в production, меняем при лицензионном конфликте |
+| **Reference (не зависим)** | Jube, Tazama, AMLTRIX | Учимся паттернам, не создаём dependency |
+
+**Принцип:** собственные validators + feedback loop = ядро. Внешние компоненты = заменяемые. Open-source платформы с restrictive licenses = reference только.

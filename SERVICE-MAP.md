@@ -16,6 +16,7 @@
 | FastAPI compliance | 8090 | HTTP | — | ✅ | AML/KYC/Sanctions API |
 | Moov Watchman | 8084 | HTTP | Apache 2.0 | ✅ | OFAC/UN/EU/UK sanctions screening |
 | Banxe Screener | 8085 | HTTP | — | ✅ | Watchman + PEP wrapper |
+| Yente (OpenSanctions) | 8086 | HTTP | MIT | PLANNED Phase 3 | Primary sanctions/PEP (200K+ entities) |
 | Jube TM | 5001 | HTTP | AGPLv3 | ✅ | Probabilistic transaction monitoring |
 | Marble API | 5002 | HTTP | Apache 2.0 | ✅ | Case management backend |
 | Marble UI | 5003 | HTTP | Apache 2.0 | ✅ | MLRO dashboard (mark@banxe.com) |

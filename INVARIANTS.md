@@ -61,8 +61,8 @@ FCA MLR 2017 record-keeping. Не уменьшать.
 **I-14 — Canonical key для компаний: (jurisdiction_code, registration_number)**
 Никогда не использовать `company_number` в одиночку — коллизии между юрисдикциями.
 
-**I-15 — Jube AGPLv3 — только internal**
-Любой external exposure требует AGPL compliance review перед деплоем.
+**I-15 — Jube AGPLv3 — ТОЛЬКО internal, reference only**
+Jube используется исключительно для внутреннего compliance. Любой external exposure (B2B, SaaS, партнёрский API) требует ПОЛНОЙ замены Jube-зависимости на Apache 2.0 альтернативу до запуска. Изучать архитектуру Jube как reference — допустимо. Создавать техническую зависимость (код, API-контракт) — запрещено.
 
 ---
 
@@ -76,3 +76,9 @@ FCA MLR 2017 record-keeping. Не уменьшать.
 
 **I-18 — GUIYON исключён из Banxe**
 Никаких shared services, cross-routing, shared ports с проектом GUIYON.
+
+**I-19 — Marble ELv2 — только internal compliance workflow**
+Marble используется только для внутреннего MLRO workflow. Предоставление Marble как managed service третьим лицам — прямое нарушение Elastic License V2.
+
+**I-20 — Compliance контуры независимы и заменяемы**
+Каждый из 6 контуров (onboarding, screening, monitoring, triage, audit, training) может быть заменён независимо от остальных. Монолитная зависимость между контурами — баг архитектуры. Общий контракт: models.py (RiskSignal, AMLResult, EvidenceBundle).
