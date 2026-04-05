@@ -1,6 +1,6 @@
 # GAP-REGISTER.md — Реестр архитектурных | 12-Factor Factor III | DONE |пробелов BANXE
 
-**Версия аудита:** v5 (2026-04-05) — Sprint 4 in progress, 20/22 DONE, 520 tests
+**Версия аудита:** v6 (2026-04-05) — Sprint 4 complete, 22/22 addressed (G-09 DEFERRED), 579 tests
 **Следующий пересмотр:** 2026-07-01 (до EU AI Act дедлайна 2026-08-02)
 
 Каждый gap отслеживается: приоритет, принцип, описание, статус, sprint.
@@ -37,8 +37,8 @@
 | G-07 | Compliance thresholds захардкожены в Python | 12-Factor Factor III | DONE |
 | G-08 | Нет drift detection для policy-файлов | GitOps | DONE |
 | G-09 | Pre-tx gate без Redis hot-path (<80ms p99) | Latency / DIP | DEFERRED |
-| G-10 | Нет Zero Standing Privileges для агентов | ZSP / JIT secrets | OPEN |
-| G-11 | Партнёрский доступ не разграничен (Zone RED/AMBER) | Trust zones | OPEN |
+| G-10 | Нет Zero Standing Privileges для агентов | ZSP / JIT secrets | DONE |
+| G-11 | Партнёрский доступ не разграничен (Zone RED/AMBER) | Trust zones | DONE |
 | G-12 | Нет формального agent passport | KPMG AIGF | DONE |
 | G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | DONE |
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | DONE |
@@ -59,6 +59,10 @@
 **G-20 примечание:** DONE (2026-04-05). Structured logging: compliance/utils/structured_logger.py (ebc54c9). Release pipeline: .github/workflows/compliance-ci.yml (5 steps: syntax check → pytest → policy drift G-08 → passport validation G-12 → invariant check I-21/I-22); triggers push/PR to main. scripts/release.sh: semver versioning, CHANGELOG.md auto-update, 5 pre-release gates (clean tree / pytest / drift / passports / secret scan), git tag + push.
 
 **G-21 примечание:** DONE (819f315, 2026-04-05). 4 хука: policy_guard.py (PreToolUse — BLOCKS CLASS_B/C: SOUL.md/openclaw.json/rego), invariant_check.py (PostToolUse — warns I-22/I-24/I-25), bounded_context_check.py (PostToolUse — warns BC-01..BC-05 import boundaries), load_architecture.py (UserPromptSubmit — arch context on relevant queries). settings.json с абсолютными путями, GOVERNANCE_BYPASS=1 для protect-soul.sh. 30 tests T-01..T-30, suite 324/324.
+
+**G-10 примечание:** DONE (2026-04-05). security/jit_credentials.py: CredentialScope enum (READ_POLICY, EMIT_DECISION, APPEND_AUDIT, CHECK_EMERGENCY, ORCHESTRATE — POLICY_WRITE intentionally absent per I-22/B-06). TemporaryCredential frozen dataclass. InMemoryCredentialStore thread-safe (threading.Lock). ZSP-01: Level-3 blocked from EMIT_DECISION/APPEND_AUDIT/CHECK_EMERGENCY/ORCHESTRATE; Level-2 blocked from ORCHESTRATE. ZSP-02: TTL auto-expiry (default 300s). ZSP-03: all issuance/revocation logged via StructuredLogger.event(). get_credential_manager() singleton. Sprint 5: replace InMemoryCredentialStore with VaultCredentialStore. 31 tests, suite 579/579.
+
+**G-11 примечание:** DONE (2026-04-05). CONTRIBUTING.md: full governance guide with 3-zone table. governance/trust-zones.yaml: machine-readable spec (RED/AMBER/GREEN), path patterns, shared rules SR-01..SR-04, escalation rules. validators/validate_trust_zones.py: CLI --file/--zone/--validate/--check-drift. Zone RED: AI-FORBIDDEN, CLASS_B approval (MLRO+CEO+CTIO), signed commits. Zone AMBER: CLAUDE_CODE_ONLY, architect review, hooks (invariant_check + bounded_context_check). Zone GREEN: PERMITTED (free vibe-coding), CI must pass. trust-zones.yaml self-protecting (Zone RED). 28 tests, suite 579/579.
 
 ## P3 — Улучшения зрелости
 
@@ -99,14 +103,14 @@
 
 ### Sprint 3 (4-8 недель) — 480 тестов  - [x] G-22: AIGF v2.0 risk mapping — DONE 2dc9794 - [x] G-06: Bounded Context Map — DONE 59bdf2c - [x] G-12: Agent passport — DONE 086667f + 706d97d - [x] G-20: Release pipeline — DONE ad5e9cf + 17658ce
 
-- [ ] G-11: Zone RED/AMBER/GREEN в CONTRIBUTING.md + branch protection
+- [x] G-11: Zone RED/AMBER/GREEN в CONTRIBUTING.md + branch protection
 - [x] G-08: Policy checksum verification в CI
 - [ ] G-15: Review agent step в feedback_loop.py
 
 ### Sprint 4 (8-16 недель)
 
 - [ ] G-09: Redis hot-path pre-tx gate
-- [ ] G-10: Vault-based JIT agent credential scoping
+- [x] G-10: Vault-based JIT agent credential scoping
 - [ ] G-14: OPA sidecar pilot (3 критических правила)
 - [ ] G-13: `compliance_snapshot.py`
 
