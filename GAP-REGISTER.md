@@ -40,7 +40,7 @@
 | G-12 | Нет формального agent passport | KPMG AIGF | DONE |
 | G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | OPEN |
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | OPEN |
-| G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | PARTIAL |
+| G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | DONE |
 | G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | DONE |
 
 **G-06 примечание:** DONE (2026-04-05). domain/context-map.yaml: 5 bounded contexts (CTX-01 Compliance/Decision Engine AMBER, CTX-02 Policy RED, CTX-03 Audit RED, CTX-04 Operations GREEN, CTX-05 Agent Trust AMBER). Для каждого: owner, trust_zone, modules[], ports[], adapters[], allowed/forbidden dependencies, invariants. 4 relationship types (conformist, ACL, published_language, partnership). 2 shared kernels (DecisionEvent, BanxeAMLResult). GREEN/AMBER/RED trust boundary summary.
@@ -54,7 +54,7 @@
 
 **G-19 примечание:** `check-compliance.sh` — зародыш controls-as-code. Нужно масштабировать до OPA/Rego engine. FINOS AIGF v2.0 рекомендует executable controls.
 
-**G-20 примечание:** Structured logging реализован — `compliance/utils/structured_logger.py` (vibe-coding ebc54c9). JSON одна строка на событие, correlation IDs (tx_id + case_id + scenario_id), интегрирован в sanctions_check + banxe_aml_orchestrator. Остаток: immutable release pipeline.
+**G-20 примечание:** DONE (2026-04-05). Structured logging: compliance/utils/structured_logger.py (ebc54c9). Release pipeline: .github/workflows/compliance-ci.yml (5 steps: syntax check → pytest → policy drift G-08 → passport validation G-12 → invariant check I-21/I-22); triggers push/PR to main. scripts/release.sh: semver versioning, CHANGELOG.md auto-update, 5 pre-release gates (clean tree / pytest / drift / passports / secret scan), git tag + push.
 
 **G-21 примечание:** DONE (819f315, 2026-04-05). 4 хука: policy_guard.py (PreToolUse — BLOCKS CLASS_B/C: SOUL.md/openclaw.json/rego), invariant_check.py (PostToolUse — warns I-22/I-24/I-25), bounded_context_check.py (PostToolUse — warns BC-01..BC-05 import boundaries), load_architecture.py (UserPromptSubmit — arch context on relevant queries). settings.json с абсолютными путями, GOVERNANCE_BYPASS=1 для protect-soul.sh. 30 tests T-01..T-30, suite 324/324.
 
