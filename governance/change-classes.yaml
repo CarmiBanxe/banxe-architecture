@@ -1,0 +1,115 @@
+# change-classes.yaml — Governance gate для изменений BANXE
+#
+# Аудит v2 (2026-04-05) выявил критический пробел G-05:
+# feedback_loop.py --apply может изменять SOUL.md и AGENTS.md
+# (поведенческую идентичность агентов) без отдельного governance gate.
+#
+# Это документирует три класса изменений с разными approval gates.
+# Enforced через: ADR-003 (train-agent.sh safety gate),
+#                 INVARIANTS.md I-21..I-22,
+#                 будущий CI check в validate-scenario-registry.yml.
+#
+# GAP-REGISTER.md: G-05 (Sprint 1)
+
+change_classes:
+
+  CLASS_A_CODE:
+    label: "Compliance code (rules, validators, engines)"
+    description: >
+      Изменения в compliance_validator.py, tx_monitor.py, sanctions_check.py,
+      crypto_aml.py, scenario_registry.yaml, triage_policy.yaml и других
+      rule/engine файлах. Меняет ЧТО проверяется, но не КТО проверяет.
+    examples:
+      - compliance_validator.py — forbidden patterns, thresholds
+      - scenario_registry.yaml — добавление/изменение сценария
+      - triage_policy.yaml — scoring weights
+    approval:
+      required: [MLRO_review, CI_gate]
+      unanimous: false
+    auto_deploy: false
+    feedback_loop:
+      can_propose: true
+      can_apply: false          # propose only — human applies after review
+      diff_preview_required: true
+    adr_required: false         # ADR рекомендуется для материальных изменений
+
+  CLASS_B_SOUL_AGENTS:
+    label: "Behavioral identity (SOUL.md, AGENTS.md)"
+    description: >
+      Изменения в SOUL.md, AGENTS.md и любых документах, определяющих
+      поведенческую идентичность, ценности и ограничения агентов.
+      Это НЕ конфиг — это кто есть агент. Изменение требует
+      принципиально иного уровня governance.
+    examples:
+      - SOUL.md — цели, запреты, поведенческие правила
+      - AGENTS.md — routing rules, trust hierarchy, tool permissions
+      - IDENTITY.md, BOOTSTRAP.md — identity documents
+    approval:
+      required: [MLRO_review, CTO_review]
+      unanimous: true           # ОБА должны явно одобрить
+    auto_deploy: false
+    feedback_loop:
+      can_propose: true
+      can_apply: NEVER          # NEVER auto-patch — только человек применяет
+      diff_preview_required: true
+      separate_review_required: true
+    adr_required: true          # Каждое изменение = новый ADR или запись в существующем
+    protect_soul_script: "bash scripts/protect-soul.sh update"
+    note: >
+      Обоснование: изменение SOUL.md — это изменение того, кем является агент.
+      Это не технический рефакторинг. Аналог в банке — изменение должностной
+      инструкции compliance officer. Требует формальной процедуры.
+
+  CLASS_C_CONFIG:
+    label: "Externalized thresholds (compliance_config.yaml)"
+    description: >
+      Количественные параметры: пороги, лимиты, веса, временны`е окна.
+      После реализации G-07 (compliance_config.yaml) эти значения
+      будут жить здесь, а не в Python-коде.
+    examples:
+      - fps_structuring_window_hours
+      - velocity_max_outflow_ratio
+      - behavior_deviation_sigma
+      - sanctions_min_match_score
+    approval:
+      required: [MLRO_review]
+      unanimous: false
+    auto_deploy: false
+    feedback_loop:
+      can_propose: true
+      can_apply: false
+    adr_required: false
+    note: >
+      G-07 OPEN — compliance_config.yaml ещё не создан.
+      До создания G-07 эти параметры считаются CLASS_A_CODE.
+
+  CLASS_D_ARCHITECTURE:
+    label: "Architecture decisions (ADRs, INVARIANTS.md, schemas)"
+    description: >
+      Изменения в banxe-architecture/: ADRs, инварианты, JSON Schema,
+      bounded context maps. Меняет контракты всей системы.
+    examples:
+      - banxe-architecture/decisions/ADR-*.md
+      - banxe-architecture/INVARIANTS.md
+      - banxe-architecture/schemas/*.json
+      - banxe-architecture/GAP-REGISTER.md
+    approval:
+      required: [CEO_review, CTO_review]
+      unanimous: true
+    auto_deploy: false
+    feedback_loop:
+      can_propose: false        # feedback_loop не предлагает изменения архитектуры
+      can_apply: NEVER
+    adr_required: true
+
+# ── Примечания к enforcement ──────────────────────────────────────────────────
+#
+# Сейчас (2026-04-05): этот файл является governance-документом.
+# Технического enforcement нет — он планируется в Sprint 3 через CI.
+#
+# Будущий enforcement path:
+#   CI step: diff изменённых файлов → определить change class → проверить
+#            наличие required approvals в PR → FAIL если не соответствует
+#
+# ADR: нет отдельного ADR для этого файла; он реализует решение ADR-003
+#      (training developer-only) и закрывает G-05 из GAP-REGISTER.md.

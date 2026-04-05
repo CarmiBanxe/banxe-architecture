@@ -82,3 +82,41 @@ Marble используется только для внутреннего MLRO 
 
 **I-20 — Compliance контуры независимы и заменяемы**
 Каждый из 6 контуров (onboarding, screening, monitoring, triage, audit, training) может быть заменён независимо от остальных. Монолитная зависимость между контурами — баг архитектуры. Общий контракт: models.py (RiskSignal, AMLResult, EvidenceBundle).
+
+---
+
+## Инварианты агентной архитектуры (добавлены 2026-04-05, аудит v2)
+
+**I-21 — feedback_loop.py НИКОГДА не изменяет SOUL.md/AGENTS.md автоматически**
+`feedback_loop.py --apply` может предлагать патчи для Class B (SOUL.md, AGENTS.md),
+но не применять их. Применение — только вручную через `protect-soul.sh update` после
+MLRO + CTO approval. Нарушение: если `feedback_loop.py` делает commit/push
+изменений в SOUL.md без явного человеческого действия.
+Обоснование: `governance/change-classes.yaml` CLASS_B_SOUL_AGENTS. GAP-REGISTER G-05.
+
+**I-22 — Агент Level 2 не пишет в policy layer**
+Агенты, обрабатывающие внешние данные (транзакции, KYC-документы, ответы
+от контрагентов), не имеют write-доступа к `developer-core/compliance/`.
+Policy layer (compliance_validator.py) изменяется только через developer terminal.
+Нарушение открывает вектор prompt injection → policy modification.
+Обоснование: Orchestration Tree (NCC Group), GAP-REGISTER G-04.
+
+**I-23 — Emergency stop state проверяется ДО любого автоматического решения**
+Все screening endpoints обязаны проверять `emergency_stop.get_stop_state()`
+перед выполнением. HTTP 503 при активном стопе — не опция, а обязательное поведение.
+Нарушение: любой endpoint, выдающий compliance-решение без проверки stop state.
+Обоснование: EU AI Act Art. 14(4)(e). GAP-REGISTER G-03.
+
+**I-24 — Decision Event Log = append-only, без UPDATE/DELETE**
+Записи аудит-трейла compliance-решений нельзя изменять или удалять.
+При реализации G-01 (PostgreSQL decision_events): `REVOKE UPDATE, DELETE ON decision_events`.
+До реализации G-01: ClickHouse append-only является допустимым промежуточным состоянием.
+Нарушение: любой UPDATE/DELETE в audit-таблицах — немедленный alert MLRO.
+Обоснование: DORA Art. 14(2), FCA MLR 2017 record-keeping. GAP-REGISTER G-01.
+
+**I-25 — ExplanationBundle обязателен для решений > £10,000**
+`BanxeAMLResult` для транзакций >= £10,000 должен содержать заполненный
+`ExplanationBundle` с `top_factors`, `narrative` и `method`.
+До реализации G-02: поле может быть null с `method: "pending"`.
+Нарушение: REJECT/SAR > £10k без readable explanation — FCA SS1/23 нарушение.
+Обоснование: UK GDPR, FCA PS7/24, EU AI Act transparency. GAP-REGISTER G-02.
