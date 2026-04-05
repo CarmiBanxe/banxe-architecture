@@ -337,3 +337,4 @@ def run_review_agent(proposed_patch: str) -> ReviewReport:
 | `decisions/ADR-009-opensanctions-yente.md`| sanctions_check → SanctionsAPIAdapter (PolicyPort)    |
 | `GAP-REGISTER.md` G-03                    | emergency_stop.py → EmergencyPort refactor             |
 | `GAP-REGISTER.md` G-07                    | compliance_config.yaml → ComplianceConfigAdapter      |
+
