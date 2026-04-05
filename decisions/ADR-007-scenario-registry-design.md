@@ -131,6 +131,23 @@ A scenario `id` (format `SCN-NNN`) is a stable key and must not be reused for
 a different scenario. Renaming or merging scenarios requires an ADR, not a
 silent edit to `scenario_registry.yaml`.
 
+**I-8 — Engine id must be from closed enum**
+The `engines[].id` field must be a value from the closed set defined in
+`scenario_registry.schema.json` (currently: `tx_monitor`, `sanctions_check`,
+`crypto_aml`, `compliance_validator`, `workflow_agent`, `banxe_aml_orchestrator`,
+`case_orchestrator`). Adding a new engine requires updating the schema enum and
+deploying the engine before enabling it in the registry.
+
+**I-9 — Engine mode enum**
+`engines[].mode` must be one of `{rule, ml, hybrid}`. Changing mode from `rule`
+to `ml` or `hybrid` is a significant change requiring testing and review.
+
+**I-10 — Engine binding uniqueness within scenario**
+The triple `(scenario_id, engine.id, rule_id)` must be unique within a scenario.
+A single engine may appear multiple times with different `rule_id` values
+(e.g., two `sanctions_check` bindings: one for hard-match, one for fuzzy-ML).
+Duplicate `(engine_id, rule_id)` within the same scenario is a load-time error.
+
 **I-7 — AMLTRIX version pin immutability**
 `amltrix.amltrix_version` records the AMLTRIX catalog version used for the
 mapping. Changing `amltrix_version` is only allowed when explicitly re-mapping
