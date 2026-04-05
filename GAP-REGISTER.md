@@ -10,7 +10,7 @@
 | ID | Пробел | Принцип | Дедлайн | Статус |
 |----|--------|---------|---------|--------|
 | G-01 | Нет immutable audit trail / Decision Event Log | CQRS+ES, DORA 14(2) | — | PARTIAL |
-| G-02 | Нет XAI / ExplanationBundle в BanxeAMLResult | XAI, FCA SS1/23 | — | OPEN |
+| G-02 | Нет XAI / ExplanationBundle в BanxeAMLResult | XAI, FCA SS1/23 | — | DONE |
 | G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | DONE |
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | OPEN |
 | G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | OPEN |
