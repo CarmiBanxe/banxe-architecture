@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://banxe.internal/schemas/agent_passport.schema.json",
+  "title": "BANXE Agent Passport",
+  "description": "Validation schema for agent passport YAML files — enforces KPMG AIGF agent identity requirements (G-12)",
+  "type": "object",
+  "required": ["agent_id", "name", "version", "level", "trust_zone", "capabilities", "ports", "bounded_context", "invariants", "governance"],
+  "additionalProperties": false,
+
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,63}$",
+      "description": "Unique snake_case agent identifier — matches orchestration_tree.py agent_id"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 120,
+      "description": "Human-readable agent name"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the agent implementation"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this agent does and why it exists"
+    },
+    "level": {
+      "type": "integer",
+      "enum": [1, 2, 3],
+      "description": "Trust level: 1=Orchestrator, 2=Sub-agent, 3=Adapter/Leaf"
+    },
+    "trust_zone": {
+      "type": "string",
+      "enum": ["GREEN", "AMBER", "RED"],
+      "description": "Trust zone — must match orchestration_tree.py registration"
+    },
+    "bounded_context": {
+      "type": "string",
+      "enum": ["CTX-01", "CTX-02", "CTX-03", "CTX-04", "CTX-05"],
+      "description": "Primary bounded context this agent belongs to (see domain/context-map.yaml)"
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "risk_assessment",
+          "sanctions_screening",
+          "pep_screening",
+          "kyb_check",
+          "crypto_aml",
+          "adverse_media",
+          "tx_monitoring",
+          "event_write",
+          "policy_read",
+          "decision_emit",
+          "audit_read",
+          "emergency_check",
+          "orchestrate",
+          "score_aggregate",
+          "explanation_build"
+        ]
+      },
+      "description": "Declared capabilities — must not include policy_write for Level 2/3 (I-22/B-06)"
+    },
+    "ports": {
+      "type": "object",
+      "description": "Port interfaces used by this agent",
+      "properties": {
+        "inbound": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PortRef" }
+        },
+        "outbound": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PortRef" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "allowed_callers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "agent_ids that are permitted to call this agent (empty = any same-level)"
+    },
+    "allowed_callees": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "agent_ids this agent is permitted to call"
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^I-\\d+$"
+      },
+      "description": "Invariant IDs this agent must uphold (see INVARIANTS.md)"
+    },
+    "decision_thresholds": {
+      "type": "object",
+      "description": "Override thresholds if different from global policy (rare)",
+      "properties": {
+        "sar":    { "type": "number", "minimum": 0, "maximum": 100 },
+        "reject": { "type": "number", "minimum": 0, "maximum": 100 },
+        "hold":   { "type": "number", "minimum": 0, "maximum": 100 }
+      },
+      "additionalProperties": false
+    },
+    "governance": {
+      "type": "object",
+      "required": ["change_class", "owner"],
+      "description": "Governance metadata for change control",
+      "properties": {
+        "change_class": {
+          "type": "string",
+          "enum": ["CLASS_A", "CLASS_B", "CLASS_C"],
+          "description": "Change class per governance/change-classes.yaml"
+        },
+        "owner": {
+          "type": "string",
+          "description": "Team/role responsible for this agent"
+        },
+        "review_cycle": {
+          "type": "string",
+          "enum": ["monthly", "quarterly", "annually", "on_change"],
+          "description": "How often this passport must be reviewed"
+        },
+        "last_reviewed": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Date of last review (YYYY-MM-DD)"
+        },
+        "approvers": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "fca_references": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "FCA/regulatory references this agent satisfies (e.g. MLR 2017 Reg.28)"
+    },
+    "aigf_risks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^AIGF-[A-Z]+-\\d+$"
+      },
+      "description": "FINOS AIGF v2.0 risk IDs mitigated by this agent (see governance/aigf-risk-mapping.yaml)"
+    }
+  },
+
+  "definitions": {
+    "PortRef": {
+      "type": "object",
+      "required": ["port", "interface"],
+      "properties": {
+        "port":      { "type": "string" },
+        "interface": { "type": "string", "description": "Path to Port ABC" },
+        "adapter":   { "type": "string", "description": "Active adapter implementation" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

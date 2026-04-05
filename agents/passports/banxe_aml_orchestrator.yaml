@@ -1,0 +1,60 @@
+agent_id: banxe_aml_orchestrator
+name: "Banxe AML Orchestrator"
+version: "3.0.0"
+description: >
+  Top-level Level-1 orchestrator. Receives CustomerProfile and coordinates all
+  Level-2 sub-agents (aml_orchestrator, sanctions_check, tx_monitor, crypto_aml).
+  Aggregates scores, builds ExplanationBundle, and emits the final BanxeAMLResult.
+level: 1
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - orchestrate
+  - risk_assessment
+  - score_aggregate
+  - explanation_build
+  - emergency_check
+ports:
+  inbound:
+    - port: PolicyPort
+      interface: src/compliance/ports/policy_port.py
+      adapter: src/compliance/adapters/compliance_config_adapter.py
+    - port: EmergencyPort
+      interface: src/compliance/ports/emergency_port.py
+      adapter: src/compliance/emergency_stop.py
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+      adapter: src/compliance/adapters/banxe_aml_decision_adapter.py
+    - port: DecisionPort
+      interface: src/compliance/ports/decision_port.py
+      adapter: src/compliance/adapters/banxe_aml_decision_adapter.py
+allowed_callers: []
+allowed_callees:
+  - aml_orchestrator
+  - sanctions_check
+  - tx_monitor
+  - crypto_aml
+invariants:
+  - I-21
+  - I-22
+  - I-23
+  - I-24
+  - I-25
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - CTIO
+    - CEO
+fca_references:
+  - "MLR 2017 Reg.28 — ongoing monitoring"
+  - "FCA SS1/23 — model risk management"
+  - "EU AI Act Art.14 — human oversight"
+aigf_risks:
+  - AIGF-A-01
+  - AIGF-B-01
+  - AIGF-C-01

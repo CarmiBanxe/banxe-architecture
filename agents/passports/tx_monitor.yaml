@@ -1,0 +1,39 @@
+agent_id: tx_monitor
+name: "Transaction Monitor"
+version: "2.1.0"
+description: >
+  Level-2 agent. Evaluates transaction patterns against AMLTRIX scenarios
+  loaded from scenario_registry.yaml. Computes velocity signals, structuring
+  patterns, and rapid movement indicators. Operates independently of sanctions.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - tx_monitoring
+  - risk_assessment
+ports:
+  inbound:
+    - port: PolicyPort
+      interface: src/compliance/ports/policy_port.py
+      adapter: src/compliance/adapters/compliance_config_adapter.py
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+allowed_callers:
+  - banxe_aml_orchestrator
+allowed_callees: []
+invariants:
+  - I-21
+  - I-24
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - CTIO
+fca_references:
+  - "MLR 2017 Reg.28(3) — transaction monitoring"
+aigf_risks:
+  - AIGF-A-03

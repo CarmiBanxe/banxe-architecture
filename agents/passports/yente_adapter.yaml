@@ -1,0 +1,36 @@
+agent_id: yente_adapter
+name: "Yente OpenSanctions Adapter"
+version: "1.0.0"
+description: >
+  Level-3 AMBER adapter. Wraps OpenSanctions Yente API for PEP and
+  sanctions matching. Provides richer dataset than Watchman for complex
+  entity matching. Used as fallback/cross-check alongside Watchman.
+level: 3
+trust_zone: AMBER
+bounded_context: CTX-01
+capabilities:
+  - sanctions_screening
+  - pep_screening
+ports:
+  outbound:
+    - port: AuditPort
+      interface: src/compliance/ports/audit_port.py
+allowed_callers:
+  - sanctions_check
+  - aml_orchestrator
+allowed_callees: []
+invariants:
+  - I-24
+governance:
+  change_class: CLASS_B
+  owner: "Compliance Engineering"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-05"
+  approvers:
+    - DEVELOPER
+    - MLRO
+fca_references:
+  - "MLR 2017 Reg.28(1)"
+  - "FCA JMLSG Part I 5.3 — PEP screening"
+aigf_risks:
+  - AIGF-E-01
