@@ -1,6 +1,6 @@
-# GAP-REGISTER.md — Реестр архитектурных пробелов BANXE
+# GAP-REGISTER.md — Реестр архитектурных | 12-Factor Factor III | DONE |пробелов BANXE
 
-**Версия аудита:** v3 (2026-04-05)
+**Версия аудита:** v4 (2026-04-05) — Sprint 3 complete, 18/22 DONE, 480 tests
 **Следующий пересмотр:** 2026-07-01 (до EU AI Act дедлайна 2026-08-02)
 
 Каждый gap отслеживается: приоритет, принцип, описание, статус, sprint.
@@ -45,10 +45,10 @@
 
 **G-06 примечание:** DONE (2026-04-05). domain/context-map.yaml: 5 bounded contexts (CTX-01 Compliance/Decision Engine AMBER, CTX-02 Policy RED, CTX-03 Audit RED, CTX-04 Operations GREEN, CTX-05 Agent Trust AMBER). Для каждого: owner, trust_zone, modules[], ports[], adapters[], allowed/forbidden dependencies, invariants. 4 relationship types (conformist, ACL, published_language, partnership). 2 shared kernels (DecisionEvent, BanxeAMLResult). GREEN/AMBER/RED trust boundary summary.
 
-**G-08 примечание:** DONE (2026-04-05). validators/policy_drift_check.py: SHA-256 для 5 файлов (SOUL.md, AGENTS.md, compliance_config.yaml, banxe_compliance.rego, INVARIANTS.md). Baseline: - [x] G-04policy_checksums.json. --verify: exit 0 OK / exit 1 drift / exit 2 no baseline. --update: обновляет baseline. Интегрирован в check-compliance.sh (шаг 6/7). 15 тестов T-01..T-15.
+**G-08 примечание:** DONE (2026-04-05). validators/policy_drift_check.py: SHA-256 для 5 файлов (SOUL.md, AGENTS.md, compliance_config.yaml, banxe_compliance.rego, INVARIANTS.md). Baseline: policy_checksums.json. --verify: exit 0 OK / exit 1 drift / exit 2 no baseline. --update: обновляет baseline. Интегрирован в check-compliance.sh (шаг 6/7). 15 тестов T-01..T-15.
 
 **G-12 примечание:** DONE (2026-04-05). schemas/agent_passport.schema.json (JSON Schema draft-07): 14 поля (agent_id, name, version, level 1/2/3, trust_zone GREEN/AMBER/RED, capabilities[], ports, bounded_context CTX-01..05, invariants[], governance, fca_references, aigf_risks). 9 паспортов в agents/passports/ (banxe_aml_orchestrator L1, aml_orchestrator/tx_monitor/sanctions_check/crypto_aml L2, watchman_adapter/jube_adapter/yente_adapter/clickhouse_writer L3). validate_agent_passport.py: business rules B-04/B-06/I-22 + schema validation. 20 тестов T-01..T-20, 124/124 pass.
-**G-09 примечание:** DEFERRED — EMI-масштаб BANXE пока не требует. Пересмотреть при transaction volume > 10K/day.
+**G-07 примечание:** DONE (d7a1310, 2026-04-05). compliance_config.yaml: externalized thresholds. config_loader.py: load/validate/access. 18 тестов, 114/114 pass.  **G-19 примечание:** DONE (1cbe34d, 2026-04-05). banxe_compliance.rego + rego_evaluator.py. 25 тестов, 139/139 pass. OPA sidecar → Sprint 4 G-14.  **G-09 примечание:** DEFERRED — EMI-масштаб BANXE пока не требует. Пересмотреть при transaction volume > 10K/day.
 
 **G-18 примечание:** 5 bounded contexts: Compliance, Decision Engine, Policy, Audit, Operations. Модули (sanctions_check, registry_loader) живут в плоской структуре без явных границ.
 
@@ -93,9 +93,9 @@
 - [x] G-01: Decision Event Log — PARTIAL (код b6541ab: AuditPort ABC, PostgresEventLogAdapter, InMemoryAuditAdapter, decision_events.sql; 15 тестов 89/89 pass; миграция на GMKtec pending)
 - [x] G-07: `compliance_config.yaml` — DONE (d7a1310: config_loader.py, 18 тестов, 114/114 pass; compliance_validator/explanation_builder/sanctions_check/tx_monitor переведены на config)
 - [x] G-19: OPA/Rego для критических инвариантов — DONE (1cbe34d: banxe_compliance.rego + rego_evaluator.py, 25 тестов, 139/139 pass; OPA sidecar → Sprint 3 G-14)
-- [x] G-20: Structured logging — DONE (structured_logger.py, ebc54c9). Release pipeline — остаток Sprint 3.
+- [x] G-20: Structured logging — DONE (structured_logger.py, ebc54c9). Release pipeline: DONE (ad5e9cf + 17658ce). .github/workflows/compliance-ci.yml (5-step gate). scripts/release.sh (semver + CHANGELOG + 5 pre-release gates).
 
-### Sprint 3 (4-8 недель)
+### Sprint 3 (4-8 недель) — 480 тестов  - [x] G-22: AIGF v2.0 risk mapping — DONE 2dc9794 - [x] G-06: Bounded Context Map — DONE 59bdf2c - [x] G-12: Agent passport — DONE 086667f + 706d97d - [x] G-20: Release pipeline — DONE ad5e9cf + 17658ce
 
 - [ ] G-11: Zone RED/AMBER/GREEN в CONTRIBUTING.md + branch protection
 - [x] G-08: Policy checksum verification в CI
