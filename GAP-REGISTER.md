@@ -83,7 +83,7 @@
 
 - [ ] G-02: `ExplanationBundle` dataclass в `risk_contract.py`
 - [x] G-01: Decision Event Log — PARTIAL (код b6541ab: AuditPort ABC, PostgresEventLogAdapter, InMemoryAuditAdapter, decision_events.sql; 15 тестов 89/89 pass; миграция на GMKtec pending)
-- [ ] G-07: `compliance_config.yaml` — externalize пороги из compliance_validator.py
+- [x] G-07: `compliance_config.yaml` — DONE (d7a1310: config_loader.py, 18 тестов, 114/114 pass; compliance_validator/explanation_builder/sanctions_check/tx_monitor переведены на config)
 - [ ] G-19: OPA/Rego для критических инвариантов (I-21, I-22, I-23)
 - [x] G-20: Structured logging — DONE (structured_logger.py, ebc54c9). Release pipeline — остаток Sprint 3.
 
