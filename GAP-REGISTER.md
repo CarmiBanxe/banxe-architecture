@@ -15,7 +15,7 @@
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | DONE |
 | G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | DONE |
 | G-16 | Нет формализованных Ports & Adapters для агентов | Hexagonal Architecture | — | DONE |
-| G-17 | Нет Event Sourcing для решений агентов | Event Sourcing / CQRS | — | OPEN |
+| G-17 | Нет Event Sourcing для решений агентов | Event Sourcing / CQRS | — | DONE |
 
 **G-05 примечание:** DONE (5130232, 2026-04-05). change_classes.yaml: CLASS_A (auto, AGENTS.md/docs), CLASS_B (DEVELOPER|CTIO|CEO required, SOUL.md/openclaw.json), CLASS_C (MLRO|CEO required, compliance_config.yaml/.rego). GovernanceGate.evaluate() raises GovernanceError for B/C without approver. Append-only governance_log.jsonl. CLI wrapper для protect-soul.sh. feedback_loop.py патчен: --approver/--role/--reason/--strict; без approver soul_patches пропускаются (non-breaking). 44 tests T-01..T-44, suite 247/247.
 
@@ -25,7 +25,7 @@
 
 **G-16 примечание:** DONE (7b74ebd, 2026-04-05). 4 Port ABCs: PolicyPort (read-only, I-22 enforcement), DecisionPort (async emit_decision), AuditPort (append-only, existing), EmergencyPort (is_stopped/activate/clear). 5 Adapters: ComplianceConfigPolicyAdapter (production, backed by compliance_config.yaml G-07), InMemoryPolicyAdapter (test/dev), BanxeAMLDecisionAdapter (→AuditPort via constructor injection), MockDecisionAdapter (test captures), InMemoryEmergencyAdapter (full lifecycle). 30 tests T-01..T-30, full suite 169/169. Инвариант I-22 реализован как архитектурное ограничение (PolicyPort не имеет write-методов).
 
-**G-17 примечание:** I-24 (append-only audit trail) декларирован, но нет архитектурного паттерна Event Sourcing, гарантирующего это. Каждое решение агента = DomainEvent. CQRS: отдельные модели для записи событий и чтения состояния.
+**G-17 примечание:** DONE (a8b47cb, 2026-04-05). EventStore (write side): StreamId factory (customer/case/channel/all), AppendResult, append()→AuditPort, load_stream(), replay_into(Projector). CQRS read models: RiskSummaryView (per-customer: counts/avg-score/risk_trend ESCALATING|DE-ESCALATING|STABLE), DailyStatsView (per-date: reject_rate, channels, policy_versions), CustomerRiskView (full MLRO history, high_risk_events). Projector: apply()/apply_batch() with idempotency guard, escalating_customers(), customers_with_sar(), customers_requiring_mlro(), snapshot(). 47 tests T-01..T-47, suite 294/294.
 
 ## P2 — Существенные (compliance провал при масштабировании)
 
@@ -81,7 +81,7 @@
 - [x] G-05: `governance/change-classes.yaml` — запрет auto-apply для Class B (SOUL.md/AGENTS.md) — DONE 5130232
 - [ ] G-04: Orchestration Tree в AGENTS.md + новые инварианты I-21..I-25 в INVARIANTS.md
 - [ ] G-03: Завершить G-03 (тесты + Marble UI + deploy) — `emergency_stop.py` уже есть
-- [ ] G-17: Базовый event store (append-only) для решений агентов
+- [x] G-17: Базовый event store (append-only) для решений агентов — DONE a8b47cb
 
 ### Sprint 2 (2-4 недели)
 
