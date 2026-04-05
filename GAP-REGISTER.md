@@ -36,7 +36,7 @@
 | G-12 | Нет формального agent passport | KPMG AIGF | PARTIAL |
 | G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | OPEN |
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | OPEN |
-| G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | OPEN |
+| G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | PARTIAL |
 | G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | OPEN |
 
 **G-12 примечание:** SOUL.md + ADR частично закрывают. Не хватает `agent_id`, `version`, `capabilities[]` как structured metadata.
@@ -46,7 +46,7 @@
 
 **G-19 примечание:** `check-compliance.sh` — зародыш controls-as-code. Нужно масштабировать до OPA/Rego engine. FINOS AIGF v2.0 рекомендует executable controls.
 
-**G-20 примечание:** Config вне кода (change-classes.yaml) — частично. Отсутствует: immutable release pipeline, structured logging format.
+**G-20 примечание:** Structured logging реализован — `compliance/utils/structured_logger.py` (vibe-coding ebc54c9). JSON одна строка на событие, correlation IDs (tx_id + case_id + scenario_id), интегрирован в sanctions_check + banxe_aml_orchestrator. Остаток: immutable release pipeline.
 
 **G-21 примечание:** Три зоны: RED (Policy Layer — AI-генерация запрещена), AMBER (Decision Engine — через Claude Code + review), GREEN (Infrastructure — свободная vibe-coding + hooks).
 
@@ -85,7 +85,7 @@
 - [ ] G-01: Decision Event Log — append-only таблица в ClickHouse/PostgreSQL
 - [ ] G-07: `compliance_config.yaml` — externalize пороги из compliance_validator.py
 - [ ] G-19: OPA/Rego для критических инвариантов (I-21, I-22, I-23)
-- [ ] G-20: Structured logging + release pipeline
+- [x] G-20: Structured logging — DONE (structured_logger.py, ebc54c9). Release pipeline — остаток Sprint 3.
 
 ### Sprint 3 (4-8 недель)
 
