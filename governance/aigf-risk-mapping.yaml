@@ -1,0 +1,411 @@
+# aigf-risk-mapping.yaml — BANXE × FINOS AIGF v2.0 Risk Catalogue
+#
+# Maps FINOS AI Governance Framework v2.0 risk categories to BANXE
+# architecture gaps, current controls, and target controls.
+#
+# Source: https://github.com/finos/ai-governance-framework
+# Version: AIGF v2.0 (2024)
+# Mapped by: Sprint 3 (2026-04-05)
+#
+# Status values:
+#   CONTROLLED    — control fully implemented, invariant enforced
+#   PARTIAL       — control partially implemented, gap open
+#   PLANNED       — in backlog / sprint
+#   DEFERRED      — not required at current EMI scale
+#   TODO          — unmapped risk, needs gap analysis
+#
+# Gap IDs reference: banxe-architecture/GAP-REGISTER.md
+# Invariant IDs reference: banxe-architecture/INVARIANTS.md
+
+metadata:
+  framework: "FINOS AI Governance Framework v2.0"
+  source: "https://github.com/finos/ai-governance-framework"
+  banxe_version: "Sprint 3 (2026-04-05)"
+  total_aigf_risks: 46
+  mapped: 20
+  controlled: 9
+  partial: 6
+  planned: 3
+  deferred: 1
+  todo: 27
+
+# ── Domain A: Agent Autonomy & Self-Modification ────────────────────────────
+
+risks:
+
+  - id: AIGF-A-01
+    category: "Agent autonomy creep"
+    description: >
+      Agent progressively expands its own capabilities or permissions
+      beyond original design without explicit human authorisation.
+    domain: agent_autonomy
+    banxe_gaps: [G-05]
+    current_control:
+      description: "change-classes.yaml CLASS_B — SOUL.md edits require DEVELOPER|CTIO|CEO approval"
+      implementation: "src/compliance/governance/soul_governance.py"
+      invariant: null
+    target_control: "CI enforcement of governance gate (Sprint 3, G-20)"
+    status: CONTROLLED
+    notes: "GovernanceGate.evaluate() raises GovernanceError for unapproved CLASS_B/C changes"
+
+  - id: AIGF-A-02
+    category: "Self-modifying agent"
+    description: >
+      Agent modifies its own system prompt, identity, or behavioural rules
+      without governance oversight.
+    domain: agent_autonomy
+    banxe_gaps: [G-05]
+    current_control:
+      description: "chattr +i on SOUL.md workspaces + SOUL GUARD watcher (5-min cron)"
+      implementation: "scripts/protect-soul.sh + memory-autosync-watcher.sh"
+      invariant: "I-21"
+    target_control: "policy_guard.py Claude Code hook blocks direct Edit/Write to SOUL.md"
+    status: CONTROLLED
+    notes: "Dual protection: filesystem immutability + governance gate + hook layer"
+
+  - id: AIGF-A-03
+    category: "Model drift / feedback loops"
+    description: >
+      Agent behaviour drifts from intended design through accumulated
+      self-learning or feedback loop without review.
+    domain: agent_autonomy
+    banxe_gaps: [G-05, G-15]
+    current_control:
+      description: "feedback_loop.py requires --approver for soul_patches; corpus REFUTED entries"
+      implementation: "developer/compliance/training/feedback_loop.py"
+      invariant: "I-21"
+    target_control: "review_agent as independent LLM reviewer (G-15)"
+    status: PARTIAL
+    notes: "Approval gate implemented. Independent review_agent not yet built."
+
+  - id: AIGF-A-04
+    category: "Unsafe agent chaining"
+    description: >
+      Agent A calls agent B without enforcing privilege boundaries,
+      enabling lateral escalation or trust zone bypass.
+    domain: agent_autonomy
+    banxe_gaps: [G-04, G-16, G-18]
+    current_control:
+      description: "OrchestrationTree with 6 boundary rules B-01..B-06"
+      implementation: "src/compliance/agents/orchestration_tree.py"
+      invariant: "I-22"
+    target_control: "Bounded context refactor (G-18) to enforce at import level"
+    status: CONTROLLED
+    notes: "TrustBoundaryError raised on Level-2→Level-1 calls. B-06 blocks policy_write."
+
+# ── Domain B: Audit & Explainability ────────────────────────────────────────
+
+  - id: AIGF-B-01
+    category: "Audit trail integrity"
+    description: >
+      Decision audit records can be modified or deleted, preventing
+      forensic reconstruction and regulatory accountability.
+    domain: audit_explainability
+    banxe_gaps: [G-01, G-17]
+    current_control:
+      description: "AuditPort append-only ABC (no update/delete methods). PostgreSQL REVOKE UPDATE/DELETE."
+      implementation: "src/compliance/ports/audit_port.py + decision_events.sql"
+      invariant: "I-24"
+    target_control: "G-01 GMKtec deploy (pending): migrate decision_events.sql to production"
+    status: PARTIAL
+    notes: "Structural I-24 enforcement complete. Production Postgres deploy pending (G-01 PARTIAL)."
+
+  - id: AIGF-B-02
+    category: "Explainability gap"
+    description: >
+      AI decisions lack human-readable explanations, preventing FCA
+      SS1/23 compliance and customer right-to-explanation (GDPR Art.22).
+    domain: audit_explainability
+    banxe_gaps: [G-02]
+    current_control:
+      description: "ExplanationBundle with top_factors, narrative, counterfactuals"
+      implementation: "src/compliance/utils/explanation_builder.py"
+      invariant: "I-25"
+    target_control: "Completed"
+    status: CONTROLLED
+    notes: "Deterministic rule-based XAI. I-25 enforced by rego_evaluator — missing bundle raises RuntimeError."
+
+  - id: AIGF-B-03
+    category: "Decision audit replay"
+    description: >
+      Inability to reconstruct the exact decision state at a point in
+      time for FCA supervisory review.
+    domain: audit_explainability
+    banxe_gaps: [G-01, G-17]
+    current_control:
+      description: "EventStore.replay_into(Projector) — full CQRS rebuild from DecisionEvent stream"
+      implementation: "src/compliance/event_sourcing/event_store.py"
+      invariant: "I-24"
+    target_control: "Production PostgresEventLogAdapter (G-01 deploy)"
+    status: PARTIAL
+    notes: "Event Sourcing pattern complete. Production store pending GMKtec deploy."
+
+  - id: AIGF-B-04
+    category: "Insufficient oversight / HITL gap"
+    description: >
+      High-risk AI decisions executed without mandatory human review,
+      violating EU AI Act Art.14 human oversight requirements.
+    domain: audit_explainability
+    banxe_gaps: [G-03]
+    current_control:
+      description: "emergency_stop.py dual-store + EmergencyPort + MLRO admin panel"
+      implementation: "src/compliance/emergency_stop.py + src/compliance/api.py"
+      invariant: "I-23"
+    target_control: "Full EU AI Act Art.14 HITL map (MLRO queue for SAR/REJECT)"
+    status: CONTROLLED
+    notes: "Emergency stop + API + Marble n8n workflow. requires_mlro_review flag gates MLRO queue."
+
+# ── Domain C: Policy & Threshold Controls ───────────────────────────────────
+
+  - id: AIGF-C-01
+    category: "Policy drift"
+    description: >
+      Compliance policy files (thresholds, sanctions lists, OPA rules)
+      drift from approved baseline without detection.
+    domain: policy_controls
+    banxe_gaps: [G-08]
+    current_control:
+      description: "None — no checksum baseline exists yet"
+      implementation: null
+      invariant: null
+    target_control: "validators/policy_drift_check.py SHA-256 baseline + CI step"
+    status: PLANNED
+    notes: "Sprint 3 Task 2."
+
+  - id: AIGF-C-02
+    category: "Threshold manipulation"
+    description: >
+      AML decision thresholds (SAR/REJECT/HOLD) modified outside
+      approved governance process.
+    domain: policy_controls
+    banxe_gaps: [G-07, G-08]
+    current_control:
+      description: "compliance_config.yaml CLASS_C (MLRO|CEO only) + config_loader lru_cache"
+      implementation: "src/compliance/governance/change_classes.yaml + src/compliance/utils/config_loader.py"
+      invariant: "I-05"
+    target_control: "policy_drift_check.py detects yaml changes. CI blocks unapproved diffs."
+    status: CONTROLLED
+    notes: "policy_guard.py hook blocks direct Edit of compliance_config.yaml without MLRO."
+
+  - id: AIGF-C-03
+    category: "Sanctions list staleness"
+    description: >
+      Sanctions screening uses outdated jurisdiction lists, missing
+      newly-added entities or jurisdictions.
+    domain: policy_controls
+    banxe_gaps: []
+    current_control:
+      description: "compliance_config.yaml hard_block + high_risk lists. Watchman for entity screening."
+      implementation: "src/compliance/compliance_config.yaml + src/compliance/sanctions_check.py"
+      invariant: "I-01, I-02"
+    target_control: "Periodic Watchman index refresh (already managed by Watchman deployment)"
+    status: CONTROLLED
+    notes: "Static jurisdiction lists versioned in config. Dynamic entity screening via Watchman."
+
+# ── Domain D: Trust & Security ───────────────────────────────────────────────
+
+  - id: AIGF-D-01
+    category: "Trust boundary violation"
+    description: >
+      Agent from untrusted zone accesses resources in trusted zone
+      without explicit authorisation.
+    domain: trust_security
+    banxe_gaps: [G-04]
+    current_control:
+      description: "OrchestrationTree B-04: RED→GREEN BLOCKED. B-05: AMBER→GREEN WARN."
+      implementation: "src/compliance/agents/orchestration_tree.py"
+      invariant: null
+    target_control: "Completed"
+    status: CONTROLLED
+    notes: "TrustBoundaryError raised. 34 tests covering all boundary rules."
+
+  - id: AIGF-D-02
+    category: "Confidentiality breach / credential leak"
+    description: >
+      API keys, passwords, or PII accidentally committed to repository
+      or logged in audit trail.
+    domain: trust_security
+    banxe_gaps: [G-10]
+    current_control:
+      description: ".env on GMKtec only. Pre-commit Semgrep secret detection. banxe-hardcoded-secret rule."
+      implementation: ".pre-commit-config.yaml + .semgrep/banxe-rules.yml"
+      invariant: null
+    target_control: "Vault JIT secrets (Sprint 4). PII Proxy (Presidio, port 8089) for logs."
+    status: PARTIAL
+    notes: "Static secret detection in place. Runtime JIT secrets deferred."
+
+  - id: AIGF-D-03
+    category: "Prompt injection"
+    description: >
+      Malicious user input manipulates agent reasoning to bypass
+      compliance controls or exfiltrate data.
+    domain: trust_security
+    banxe_gaps: [G-11]
+    current_control:
+      description: "forbidden_patterns list in compliance_config.yaml (17 patterns)"
+      implementation: "src/compliance/verification/compliance_validator.py"
+      invariant: null
+    target_control: "PII Proxy (Presidio) normalises input before LLM. Input sanitisation layer."
+    status: PARTIAL
+    notes: "Pattern-based detection only. Semantic injection (indirect prompt injection) not covered."
+
+  - id: AIGF-D-04
+    category: "Zero standing privileges"
+    description: >
+      Agents maintain permanent elevated permissions rather than
+      time-limited, task-scoped JIT access.
+    domain: trust_security
+    banxe_gaps: [G-10]
+    current_control:
+      description: "PRIVILEGE-MODEL.md defines Level-1/2/3 roles. OrchestrationTree enforces at runtime."
+      implementation: "banxe-architecture/PRIVILEGE-MODEL.md"
+      invariant: null
+    target_control: "JIT secrets + scoped API tokens (Sprint 4)"
+    status: PARTIAL
+    notes: "Conceptual model complete. Runtime JIT enforcement deferred."
+
+# ── Domain E: Regulatory Compliance ─────────────────────────────────────────
+
+  - id: AIGF-E-01
+    category: "EU AI Act Art.14 — Human oversight"
+    description: >
+      High-risk AI system (AML screening = high-risk per Annex III)
+      must have documented human oversight mechanisms.
+    domain: regulatory
+    banxe_gaps: [G-03]
+    current_control:
+      description: "emergency_stop.py + MLRO panel + requires_mlro_review flag + Marble workflow"
+      implementation: "src/compliance/emergency_stop.py"
+      invariant: "I-23"
+    target_control: "Completed for Art.14 core. Annual conformity assessment pending."
+    status: CONTROLLED
+    notes: "EU AI Act deadline 2026-08-02. Current implementation satisfies Art.14 core requirements."
+
+  - id: AIGF-E-02
+    category: "FCA SS1/23 — AI explainability"
+    description: >
+      FCA Supervisory Statement 1/23 requires firms to explain AI-driven
+      decisions to customers and supervisors.
+    domain: regulatory
+    banxe_gaps: [G-02]
+    current_control:
+      description: "ExplanationBundle with SHAP-style top_factors + narrative + counterfactuals"
+      implementation: "src/compliance/utils/explanation_builder.py"
+      invariant: "I-25"
+    target_control: "Completed"
+    status: CONTROLLED
+    notes: "Deterministic XAI — fully auditable, no black-box ML."
+
+  - id: AIGF-E-03
+    category: "MLR 2017 — Record keeping"
+    description: >
+      FCA MLR 2017 requires compliance records to be kept for minimum
+      5 years and available for supervisory review.
+    domain: regulatory
+    banxe_gaps: [G-01]
+    current_control:
+      description: "decision_events.sql TTL=5Y. ClickHouse + PostgreSQL adapters."
+      implementation: "src/compliance/utils/decision_event_log.py + decision_events.sql"
+      invariant: "I-24"
+    target_control: "Production deploy (G-01 pending GMKtec)"
+    status: PARTIAL
+    notes: "Schema and adapters complete. Production Postgres migration pending."
+
+  - id: AIGF-E-04
+    category: "DORA Art.14(2) — Audit integrity"
+    description: >
+      Digital Operational Resilience Act Art.14(2) requires tamper-evident
+      audit logs for critical ICT third-party services.
+    domain: regulatory
+    banxe_gaps: [G-01, G-17]
+    current_control:
+      description: "AuditPort append-only (I-24). CQRS EventStore + Projector read models."
+      implementation: "src/compliance/event_sourcing/"
+      invariant: "I-24"
+    target_control: "Production immutable Postgres + ClickHouse dual-write"
+    status: PARTIAL
+    notes: "Pattern complete. Production deployment pending."
+
+# ── Domain F: Unmapped AIGF v2.0 Risks (TODO) ───────────────────────────────
+# These risks appear in the AIGF v2.0 catalogue but have no current BANXE control.
+# Each needs a gap analysis and potential new GAP-REGISTER entry.
+
+  - id: AIGF-TODO-01
+    category: "Data poisoning"
+    description: "Malicious training data corrupts agent decision-making."
+    domain: data_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "No corpus integrity validation. Consider hash-checking training data."
+
+  - id: AIGF-TODO-02
+    category: "Model performance degradation"
+    description: "Underlying LLM performance degrades over time without detection."
+    domain: model_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "promptfoo eval exists but not scheduled. Consider scheduled eval runs."
+
+  - id: AIGF-TODO-03
+    category: "Third-party AI component risk"
+    description: "Dependency on Ollama/Watchman/Yente creates supply chain risk."
+    domain: operational_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "Watchman + Yente are self-hosted. Ollama model provenance not verified."
+
+  - id: AIGF-TODO-04
+    category: "Availability / resilience"
+    description: "Single point of failure in GMKtec — no hot standby."
+    domain: operational_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "Emergency stop provides graceful degradation. Full HA requires Sprint 4+."
+
+  - id: AIGF-TODO-05
+    category: "Data minimisation (GDPR Art.5)"
+    description: "Audit logs may retain more PII than necessary for the retention period."
+    domain: data_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "PII Proxy (Presidio) available on port 8089 but not integrated into audit log path."
+
+  - id: AIGF-TODO-06
+    category: "Fairness / discrimination"
+    description: "AML scoring may have disparate impact on protected characteristics."
+    domain: ethical_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "Rule-based (not ML) scoring reduces bias risk. Formal fairness audit recommended."
+
+  - id: AIGF-TODO-07
+    category: "Model card / documentation"
+    description: "No formal model card documenting intended use, limitations, and performance."
+    domain: governance_risks
+    banxe_gaps: [G-12]
+    status: TODO
+    notes: "Agent passports (G-12) partially address. Full model card standard TBD."
+
+  - id: AIGF-TODO-08
+    category: "Incident response for AI failures"
+    description: "No documented runbook for AI-specific incidents (hallucination, jailbreak, etc.)."
+    domain: operational_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "emergency_stop.py handles compliance halt. AI-specific incident types not classified."
+
+  - id: AIGF-TODO-09
+    category: "Vendor lock-in (LLM provider)"
+    description: "Tight coupling to Ollama/specific model creates migration risk."
+    domain: operational_risks
+    banxe_gaps: []
+    status: TODO
+    notes: "Hexagonal Architecture (G-16) reduces coupling. LLM port abstraction recommended."
+
+  - id: AIGF-TODO-10
+    category: "Adversarial robustness"
+    description: "Agent susceptible to adversarial inputs designed to bypass AML controls."
+    domain: security_risks
+    banxe_gaps: [G-11]
+    status: TODO
+    notes: "forbidden_patterns covers known bypass patterns. Adversarial red-teaming not performed."

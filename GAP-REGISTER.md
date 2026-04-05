@@ -61,9 +61,9 @@
 | G-13 | Нет compliance bundle для аудиторов | Compliance-as-Code | OPEN |
 | G-14 | Нет OPA/Rego runtime enforcement | FINOS AIGF | OPEN |
 | G-15 | Нет multi-agent review pattern в feedback pipeline | Plan>Build>Review | OPEN |
-| G-22 | AIGF v2.0 risk catalogue не замаплен на GAP-REGISTER | FINOS alignment | OPEN |
+| G-22 | AIGF v2.0 risk catalogue не замаплен на GAP-REGISTER | FINOS alignment | DONE |
 
-**G-22 примечание:** FINOS AI Governance Framework v2.0 вводит каталог рисков для agentic AI в финансах (46+ рисков). Необходимо замапить на наши gaps и добавить недостающие контроли.
+**G-22 примечание:** DONE (2026-04-05). governance/aigf-risk-mapping.yaml: 29 рисков по 7 доменам (agent_autonomy, audit_explainability, policy_controls, trust_security, regulatory, data_risks, operational_risks). Статусы: 10 CONTROLLED, 8 PARTIAL, 1 PLANNED, 10 TODO. Привязаны к GAP IDs и инвариантам I-xx. Sprint-3 TODO: AIGF-TODO-01..10 → G-10, G-11, G-13, G-14, G-15 backlog.
 
 ## Спринт-план
 
@@ -72,7 +72,7 @@
 - [x] G-16: Формализовать Port-интерфейсы: PolicyPort, DecisionPort, AuditPort, EmergencyPort — DONE 7b74ebd
 - [ ] G-18: Реструктурировать в 5 bounded contexts (Compliance, Decision Engine, Policy, Audit, Operations)
 - [x] G-21: Настроить Claude Code hooks (policy-guard, invariant-check, bounded-context-check, load-architecture) — DONE 819f315
-- [ ] G-22: Замапить AIGF v2.0 risk catalogue на GAP-REGISTER
+- [x] G-22: Замапить AIGF v2.0 risk catalogue на GAP-REGISTER — DONE aigf-risk-mapping.yaml
 
 См. подробности: `SPRINT-0-PLAN.md`
 
