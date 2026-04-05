@@ -13,9 +13,11 @@
 | G-02 | Нет XAI / ExplanationBundle в BanxeAMLResult | XAI, FCA SS1/23 | — | DONE |
 | G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | DONE |
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | DONE |
-| G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | OPEN |
+| G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | DONE |
 | G-16 | Нет формализованных Ports & Adapters для агентов | Hexagonal Architecture | — | DONE |
 | G-17 | Нет Event Sourcing для решений агентов | Event Sourcing / CQRS | — | OPEN |
+
+**G-05 примечание:** DONE (5130232, 2026-04-05). change_classes.yaml: CLASS_A (auto, AGENTS.md/docs), CLASS_B (DEVELOPER|CTIO|CEO required, SOUL.md/openclaw.json), CLASS_C (MLRO|CEO required, compliance_config.yaml/.rego). GovernanceGate.evaluate() raises GovernanceError for B/C without approver. Append-only governance_log.jsonl. CLI wrapper для protect-soul.sh. feedback_loop.py патчен: --approver/--role/--reason/--strict; без approver soul_patches пропускаются (non-breaking). 44 tests T-01..T-44, suite 247/247.
 
 **G-04 примечание:** DONE (3b84592, 2026-04-05). OrchestrationTree с 6 правилами (B-01..B-06): Level-2→Level-1 BLOCKED (B-01), Level-3→Level-1 BLOCKED (B-02), Level-3→Level-2 BLOCKED (B-03, must use Ports), RED→GREEN BLOCKED (B-04), AMBER→GREEN WARN (B-05), policy_write для Level-2/3 BLOCKED (B-06/I-22). AgentDescriptor frozen dataclass + TrustBoundaryError. Default tree: 1 Level-1, 4 Level-2, 4 Level-3. Интегрирован в banxe_aml_orchestrator Step-1 перед _layer2_assess. 34 tests T-01..T-34, suite 203/203.
 
@@ -76,7 +78,7 @@
 
 ### Sprint 1 (немедленно, 1-2 недели)
 
-- [ ] G-05: `governance/change-classes.yaml` — запрет auto-apply для Class B (SOUL.md/AGENTS.md)
+- [x] G-05: `governance/change-classes.yaml` — запрет auto-apply для Class B (SOUL.md/AGENTS.md) — DONE 5130232
 - [ ] G-04: Orchestration Tree в AGENTS.md + новые инварианты I-21..I-25 в INVARIANTS.md
 - [ ] G-03: Завершить G-03 (тесты + Marble UI + deploy) — `emergency_stop.py` уже есть
 - [ ] G-17: Базовый event store (append-only) для решений агентов
