@@ -1,6 +1,6 @@
 # GAP-REGISTER.md — Реестр архитектурных | 12-Factor Factor III | DONE |пробелов BANXE
 
-**Версия аудита:** v6 (2026-04-05) — Sprint 4 complete, 22/22 addressed (G-09 DEFERRED), 579 tests
+**Версия аудита:** v7 (2026-04-05) — ALL SPRINTS COMPLETE, 22/22 addressed (G-09 DEFERRED), 663 tests
 **Следующий пересмотр:** 2026-07-01 (до EU AI Act дедлайна 2026-08-02)
 
 Каждый gap отслеживается: приоритет, принцип, описание, статус, sprint.
@@ -68,12 +68,18 @@
 
 | ID | Пробел | Принцип | Статус |
 |----|--------|---------|--------|
-| G-13 | Нет compliance bundle для аудиторов | Compliance-as-Code | OPEN |
-| G-14 | Нет OPA/Rego runtime enforcement | FINOS AIGF | OPEN |
-| G-15 | Нет multi-agent review pattern в feedback pipeline | Plan>Build>Review | OPEN |
+| G-13 | Нет compliance bundle для аудиторов | Compliance-as-Code | DONE |
+| G-14 | Нет OPA/Rego runtime enforcement | FINOS AIGF | DONE |
+| G-15 | Нет multi-agent review pattern в feedback pipeline | Plan>Build>Review | DONE |
 | G-22 | AIGF v2.0 risk catalogue не замаплен на GAP-REGISTER | FINOS alignment | DONE |
 
 **G-22 примечание:** DONE (2026-04-05). governance/aigf-risk-mapping.yaml: 29 рисков по 7 доменам (agent_autonomy, audit_explainability, policy_controls, trust_security, regulatory, data_risks, operational_risks). Статусы: 10 CONTROLLED, 8 PARTIAL, 1 PLANNED, 10 TODO. Привязаны к GAP IDs и инвариантам I-xx. Sprint-3 TODO: AIGF-TODO-01..10 → G-10, G-11, G-13, G-14, G-15 backlog.
+
+**G-13 примечание:** DONE (2026-04-05). utils/compliance_snapshot.py: ComplianceSnapshot dataclass, collect_snapshot() (policy checksums SHA-256, agent passport count, rego rules, GAP summary, git SHA), export_snapshot_zip() (snapshot.json + snapshot.md + 5 policy artefacts), to_markdown() (MLRO-readable report). CLI: python -m compliance.utils.compliance_snapshot --output /tmp/audit.zip. 28 tests, suite 663/663.
+
+**G-14 примечание:** DONE (2026-04-05). security/opa_sidecar.py: OPASidecar class, evaluate_pre_decision(agent_id, action, context) → PolicyDecision (frozen: ALLOW/DENY/ESCALATE). 3 runtime rules: R-01 policy_write blocked for L2/L3 (I-22), R-02 emergency check required (I-23), R-03 ExplanationBundle required >£10K (I-25). Fail-closed: exception → DENY. All evaluations logged via StructuredLogger. 28 tests, suite 663/663.
+
+**G-15 примечание:** DONE (2026-04-05). review/review_agent.py: ReviewAgent independent rule-based reviewer. ReviewRequest/ReviewResult frozen dataclasses. CLASS_B/D → auto REJECT (risk=100), CLASS_C → ESCALATE_TO_HUMAN, CLASS_A → rule scoring (trust zone + invariant I-21/I-22 + BC boundary checks). risk_score > 50 → ESCALATE. All reviews logged append-only (I-24). 28 tests, suite 663/663.
 
 ## Спринт-план
 
@@ -105,14 +111,20 @@
 
 - [x] G-11: Zone RED/AMBER/GREEN в CONTRIBUTING.md + branch protection
 - [x] G-08: Policy checksum verification в CI
-- [ ] G-15: Review agent step в feedback_loop.py
+- [x] G-15: Review agent step в feedback_loop.py
 
 ### Sprint 4 (8-16 недель)
 
 - [ ] G-09: Redis hot-path pre-tx gate
 - [x] G-10: Vault-based JIT agent credential scoping
-- [ ] G-14: OPA sidecar pilot (3 критических правила)
-- [ ] G-13: `compliance_snapshot.py`
+- [x] G-14: OPA sidecar pilot (3 критических правила)
+- [x] G-13: `compliance_snapshot.py`
+
+### Sprint 5 (2026-04-05) — 663 тестов, ALL P3 DONE
+
+- [x] G-13: Compliance Snapshot Bundle — DONE (28 tests)
+- [x] G-14: OPA Sidecar Pilot — DONE (28 tests)
+- [x] G-15: Multi-Agent Review Pattern — DONE (28 tests)
 
 ## Что реализовано лучше стандарта
 
