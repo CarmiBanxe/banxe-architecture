@@ -1,0 +1,213 @@
+# trust-zones.yaml — G-11 Machine-readable Trust Zone Governance
+# Version: 1.0 (2026-04-05)
+# Canonical prose: governance/trust-zones.md
+# Validator: vibe-coding/src/compliance/validators/validate_trust_zones.py
+#
+# Three zones prevent supply-chain attacks via partner code.
+# Each zone defines: allowed actors, AI-generation policy, approval requirements.
+#
+# Integration with:
+#   - governance/change-classes.yaml (CLASS_B/C for RED zone files)
+#   - .claude/hooks/policy_guard.py  (blocks Edit/Write on RED files)
+#   - banxe-architecture/domain/context-map.yaml (CTX trust_zone field)
+
+version: "1.0"
+updated_at: "2026-04-05"
+
+zones:
+
+  # ── Zone RED: Immutable governance core ────────────────────────────────────
+  - id: RED
+    name: "Zone RED — Governance Core"
+    description: >
+      Immutable governance and compliance configuration. AI-generated changes
+      FORBIDDEN. Any modification requires explicit human approval from
+      MLRO or CEO (CLASS_B/CLASS_C change class).
+    trust_level: 1
+    ai_generation_policy: FORBIDDEN
+    approval:
+      required: true
+      roles: [MLRO, CEO, CTIO]
+      change_class: CLASS_B_or_C
+      requires_signed_commit: true
+    actors:
+      allowed: [CEO, CTIO]
+      partners: FORBIDDEN
+    enforcement:
+      hook: policy_guard.py
+      ci_check: validate_trust_zones.py
+      git_protection: branch_protection_main
+    paths:
+      # Governance and policy files (absolute patterns)
+      - pattern: "**/SOUL.md"
+        reason: "AI agent identity — CLASS_B, GOVERNANCE_BYPASS required"
+      - pattern: "**/IDENTITY.md"
+        reason: "Agent identity file — CLASS_B"
+      - pattern: "**/BOOTSTRAP.md"
+        reason: "Agent bootstrap — CLASS_B"
+      - pattern: "**/openclaw.json"
+        reason: "Gateway config — CLASS_B"
+      - pattern: "**/compliance_config.yaml"
+        reason: "Compliance thresholds — CLASS_C, MLRO required"
+      - pattern: "**/*.rego"
+        reason: "OPA/Rego policies — CLASS_C, MLRO required"
+      - pattern: "**/change-classes.yaml"
+        reason: "Governance classification — CLASS_B"
+      - pattern: "**/INVARIANTS.md"
+        reason: "System invariants — CLASS_B"
+      - pattern: "**/GAP-REGISTER.md"
+        reason: "Architecture register — CLASS_B"
+      - pattern: "**/trust-zones.yaml"
+        reason: "This file — self-protecting, CLASS_B"
+      # Architecture decisions
+      - pattern: "**/decisions/ADR-*.md"
+        reason: "Architectural decision records — CLASS_B"
+      # Validator scripts that enforce governance
+      - pattern: "**/validators/validate_trust_zones.py"
+        reason: "Trust zone enforcement script — CLASS_B"
+      - pattern: "**/validators/policy_drift_check.py"
+        reason: "Policy drift detection — CLASS_B"
+      - pattern: "**/governance/soul_governance.py"
+        reason: "Governance gate engine — CLASS_C"
+
+  # ── Zone AMBER: Compliance decision engine ─────────────────────────────────
+  - id: AMBER
+    name: "Zone AMBER — Compliance Decision Engine"
+    description: >
+      Core compliance logic. AI-generation permitted via Claude Code ONLY,
+      with human architect review before merge. Changes must pass invariant
+      checks (I-21..I-25) and bounded context validation.
+    trust_level: 2
+    ai_generation_policy: CLAUDE_CODE_ONLY
+    approval:
+      required: true
+      roles: [DEVELOPER, CTIO]
+      change_class: CLASS_B
+      requires_review: true
+      reviewer_count: 1
+    actors:
+      allowed: [CEO, CTIO, DEVELOPER]
+      partners: RESTRICTED  # signed commits, no direct push to main
+    enforcement:
+      hooks: [invariant_check.py, bounded_context_check.py]
+      ci_check: compliance-ci.yml
+      validators: [validate_contexts.py, validate_agent_passport.py]
+    paths:
+      # Core decision engine
+      - pattern: "src/compliance/banxe_aml_orchestrator.py"
+        reason: "Level-1 orchestrator — I-21..I-25 enforced"
+      - pattern: "src/compliance/aml_orchestrator.py"
+        reason: "Level-2 AML orchestrator"
+      - pattern: "src/compliance/sanctions_check.py"
+        reason: "Sanctions screening — monthly review cycle"
+      - pattern: "src/compliance/tx_monitor.py"
+        reason: "Transaction monitoring — I-21 (thresholds via config)"
+      - pattern: "src/compliance/crypto_aml.py"
+        reason: "Crypto AML screening"
+      - pattern: "src/compliance/pep_check.py"
+        reason: "PEP screening"
+      - pattern: "src/compliance/adverse_media.py"
+        reason: "Adverse media check"
+      - pattern: "src/compliance/kyb_check.py"
+        reason: "KYB verification"
+      # Ports and adapters (hexagonal boundary)
+      - pattern: "src/compliance/ports/*.py"
+        reason: "Port interfaces — I-22 (PolicyPort no write)"
+      - pattern: "src/compliance/adapters/*.py"
+        reason: "Production adapters"
+      # Agent trust
+      - pattern: "src/compliance/agents/orchestration_tree.py"
+        reason: "Trust boundary rules B-01..B-06"
+      # Models
+      - pattern: "src/compliance/models.py"
+        reason: "AMLResult, ExplanationBundle — shared kernel"
+      # Architecture docs
+      - pattern: "src/compliance/COMPLIANCE_ARCH.md"
+        reason: "Compliance architecture documentation"
+      - pattern: "banxe-architecture/domain/context-map.yaml"
+        reason: "Bounded context map — machine-verifiable"
+      - pattern: "banxe-architecture/agents/passports/*.yaml"
+        reason: "Agent passports — KPMG AIGF compliance"
+
+  # ── Zone GREEN: Free vibe-coding area ─────────────────────────────────────
+  - id: GREEN
+    name: "Zone GREEN — Operations & Tests"
+    description: >
+      Free vibe-coding zone. AI-generation fully permitted. Changes must pass
+      check-compliance.sh and hook warnings (non-blocking). Low regulatory risk.
+    trust_level: 3
+    ai_generation_policy: PERMITTED
+    approval:
+      required: false
+      change_class: CLASS_A
+    actors:
+      allowed: [CEO, CTIO, DEVELOPER, PARTNER]
+      partners: ALLOWED
+    enforcement:
+      ci_check: compliance-ci.yml  # syntax + tests only
+      validators: []
+    paths:
+      # Operations
+      - pattern: "src/compliance/emergency_stop.py"
+        reason: "Emergency stop — operational tooling"
+      - pattern: "src/compliance/api.py"
+        reason: "FastAPI endpoints"
+      - pattern: "src/compliance/dashboard.py"
+        reason: "Admin dashboard"
+      - pattern: "src/compliance/utils/structured_logger.py"
+        reason: "Logging infrastructure"
+      # Audit adapters (read-only view)
+      - pattern: "src/compliance/event_sourcing/*.py"
+        reason: "CQRS read models and projections"
+      - pattern: "src/compliance/utils/decision_event_log.py"
+        reason: "Event log adapter"
+      # Tests
+      - pattern: "src/compliance/test_*.py"
+        reason: "Test files — free to iterate"
+      # Scripts
+      - pattern: "scripts/*.sh"
+        reason: "Deployment and operational scripts"
+      # Docs and config
+      - pattern: "docs/*.md"
+        reason: "Project documentation"
+      - pattern: "AGENTS.md"
+        reason: "Agent instructions — CLASS_A (auto-approved)"
+      - pattern: ".github/workflows/*.yml"
+        reason: "CI/CD workflows"
+
+# ── Shared rules ───────────────────────────────────────────────────────────────
+shared_rules:
+
+  - id: SR-01
+    name: "No secrets in any zone"
+    description: "API keys, passwords, tokens MUST NOT be committed to any zone"
+    zones: [RED, AMBER, GREEN]
+    enforcement: "pre-commit secret scan in release.sh"
+
+  - id: SR-02
+    name: "All changes must pass CI"
+    description: "compliance-ci.yml must pass before merge to main"
+    zones: [RED, AMBER, GREEN]
+    enforcement: "GitHub Actions branch protection"
+
+  - id: SR-03
+    name: "I-24: Append-only audit log"
+    description: "No UPDATE/DELETE on decision_events table in any zone"
+    zones: [AMBER, GREEN]
+    enforcement: "PostgreSQL REVOKE at DB level"
+
+  - id: SR-04
+    name: "Policy drift baseline must be current"
+    description: "policy_checksums.json must be updated when RED zone files change"
+    zones: [RED]
+    enforcement: "validate_trust_zones.py --check-drift"
+
+# ── Zone escalation rules ──────────────────────────────────────────────────────
+escalation:
+  description: >
+    A file discovered in a zone that does not match its expected zone
+    triggers a governance review. Validators report zone mismatches.
+  on_mismatch:
+    RED_in_GREEN: BLOCK    # policy_guard.py blocks Edit/Write
+    AMBER_in_GREEN: WARN   # bounded_context_check.py warns
+    GREEN_in_RED: BLOCK    # unexpected — investigate
