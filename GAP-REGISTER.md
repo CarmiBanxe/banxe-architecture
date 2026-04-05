@@ -9,13 +9,15 @@
 
 | ID | Пробел | Принцип | Дедлайн | Статус |
 |----|--------|---------|---------|--------|
-| G-01 | Нет immutable audit trail / Decision Event Log | CQRS+ES, DORA 14(2) | — | PARTIAL |
+| G-01 | Нет immutable audit trail / Decision Event Log | CQRS+ES, DORA 14(2) | — | DONE |
 | G-02 | Нет XAI / ExplanationBundle в BanxeAMLResult | XAI, FCA SS1/23 | — | DONE |
 | G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | DONE |
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | DONE |
 | G-05 | feedback_loop.py может менять SOUL.md без governance gate | Self-rewriting risk | — | DONE |
 | G-16 | Нет формализованных Ports & Adapters для агентов | Hexagonal Architecture | — | DONE |
 | G-17 | Нет Event Sourcing для решений агентов | Event Sourcing / CQRS | — | DONE |
+
+**G-01 примечание:** DONE (2026-04-05). PostgreSQL 17 Docker (port 5432) на GMKtec. Schema: banxe_compliance.decision_events (15 полей). Indexes: case_id, customer_id, occurred_at, tx_id, decision. I-24: banxe_app_role имеет INSERT+SELECT, UPDATE+DELETE REVOKED. asyncpg установлен. PostgresEventLogAdapter smoke test: append→query→idempotency PASSED. Миграция запускается через `docker exec postgres psql -U postgres -d banxe_compliance -f decision_events.sql`.
 
 **G-05 примечание:** DONE (5130232, 2026-04-05). change_classes.yaml: CLASS_A (auto, AGENTS.md/docs), CLASS_B (DEVELOPER|CTIO|CEO required, SOUL.md/openclaw.json), CLASS_C (MLRO|CEO required, compliance_config.yaml/.rego). GovernanceGate.evaluate() raises GovernanceError for B/C without approver. Append-only governance_log.jsonl. CLI wrapper для protect-soul.sh. feedback_loop.py патчен: --approver/--role/--reason/--strict; без approver soul_patches пропускаются (non-breaking). 44 tests T-01..T-44, suite 247/247.
 
