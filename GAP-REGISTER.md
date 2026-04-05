@@ -41,7 +41,7 @@
 | G-18 | Нет bounded contexts — плоская структура модулей | DDD Bounded Contexts | OPEN |
 | G-19 | Нет controls-as-code (OPA/Rego) — только bash-скрипт | FINOS AIGF v2.0 | OPEN |
 | G-20 | 12-Factor: отсутствует release pipeline и structured logging | 12-Factor App | PARTIAL |
-| G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | OPEN |
+| G-21 | Нет зонирования для AI-генерированного кода в Claude Code hooks | Vibe-coding governance | DONE |
 
 **G-12 примечание:** SOUL.md + ADR частично закрывают. Не хватает `agent_id`, `version`, `capabilities[]` как structured metadata.
 **G-09 примечание:** DEFERRED — EMI-масштаб BANXE пока не требует. Пересмотреть при transaction volume > 10K/day.
@@ -52,7 +52,7 @@
 
 **G-20 примечание:** Structured logging реализован — `compliance/utils/structured_logger.py` (vibe-coding ebc54c9). JSON одна строка на событие, correlation IDs (tx_id + case_id + scenario_id), интегрирован в sanctions_check + banxe_aml_orchestrator. Остаток: immutable release pipeline.
 
-**G-21 примечание:** Три зоны: RED (Policy Layer — AI-генерация запрещена), AMBER (Decision Engine — через Claude Code + review), GREEN (Infrastructure — свободная vibe-coding + hooks).
+**G-21 примечание:** DONE (819f315, 2026-04-05). 4 хука: policy_guard.py (PreToolUse — BLOCKS CLASS_B/C: SOUL.md/openclaw.json/rego), invariant_check.py (PostToolUse — warns I-22/I-24/I-25), bounded_context_check.py (PostToolUse — warns BC-01..BC-05 import boundaries), load_architecture.py (UserPromptSubmit — arch context on relevant queries). settings.json с абсолютными путями, GOVERNANCE_BYPASS=1 для protect-soul.sh. 30 tests T-01..T-30, suite 324/324.
 
 ## P3 — Улучшения зрелости
 
@@ -71,7 +71,7 @@
 
 - [x] G-16: Формализовать Port-интерфейсы: PolicyPort, DecisionPort, AuditPort, EmergencyPort — DONE 7b74ebd
 - [ ] G-18: Реструктурировать в 5 bounded contexts (Compliance, Decision Engine, Policy, Audit, Operations)
-- [ ] G-21: Настроить Claude Code hooks (policy-guard, invariant-check, bounded-context-check, load-architecture)
+- [x] G-21: Настроить Claude Code hooks (policy-guard, invariant-check, bounded-context-check, load-architecture) — DONE 819f315
 - [ ] G-22: Замапить AIGF v2.0 risk catalogue на GAP-REGISTER
 
 См. подробности: `SPRINT-0-PLAN.md`
