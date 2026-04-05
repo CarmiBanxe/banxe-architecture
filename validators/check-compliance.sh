@@ -145,9 +145,33 @@ else
   fi
 fi
 
-# ─── CHECK 6: forbidden_patterns present ──────────────────────────────────────
+# ─── CHECK 6: Policy drift detection ─────────────────────────────────────────
 echo ""
-echo "[6/6] Forbidden patterns in compliance_validator.py"
+echo "[6/7] Policy drift detection (G-08)"
+
+DRIFT_SCRIPT=$(find "$PROJECT" -path "*/validators/policy_drift_check.py" 2>/dev/null | head -1)
+if [[ -z "$DRIFT_SCRIPT" ]]; then
+  check_warn "policy_drift_check.py not found in $PROJECT (skip drift check)"
+else
+  BASELINE=$(dirname "$DRIFT_SCRIPT")/policy_checksums.json
+  if [[ ! -f "$BASELINE" ]]; then
+    check_warn "policy_checksums.json not found — run: python3 validators/policy_drift_check.py --update"
+  else
+    DRIFT_OUT=$(python3 "$DRIFT_SCRIPT" --verify 2>&1)
+    DRIFT_RC=$?
+    if [[ "$DRIFT_RC" -eq 0 ]]; then
+      check_pass "Policy files match baseline (SOUL.md, AGENTS.md, compliance_config.yaml, *.rego, INVARIANTS.md)"
+    elif [[ "$DRIFT_RC" -eq 2 ]]; then
+      check_warn "Drift baseline missing: $DRIFT_OUT"
+    else
+      check_fail "Policy drift detected: $(echo "$DRIFT_OUT" | grep -E 'MODIFIED|DELETED|DRIFT' | head -3)"
+    fi
+  fi
+fi
+
+# ─── CHECK 7: forbidden_patterns present ──────────────────────────────────────
+echo ""
+echo "[7/7] Forbidden patterns in compliance_validator.py"
 
 if [[ -n "$CV_FILE" ]]; then
   if grep -q "_FORBIDDEN_PATTERNS" "$CV_FILE" 2>/dev/null; then
