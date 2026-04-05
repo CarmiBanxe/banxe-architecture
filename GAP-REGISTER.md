@@ -9,7 +9,7 @@
 
 | ID | Пробел | Принцип | Дедлайн | Статус |
 |----|--------|---------|---------|--------|
-| G-01 | Нет immutable audit trail / Decision Event Log | CQRS+ES, DORA 14(2) | — | OPEN |
+| G-01 | Нет immutable audit trail / Decision Event Log | CQRS+ES, DORA 14(2) | — | PARTIAL |
 | G-02 | Нет XAI / ExplanationBundle в BanxeAMLResult | XAI, FCA SS1/23 | — | OPEN |
 | G-03 | HITL не формализован по EU AI Act Art.14 | EU AI Act Art.14 | 2026-08-02 | DONE |
 | G-04 | Нет trust boundaries между агентами (Orchestration Tree) | Multi-agent security | — | OPEN |
@@ -82,7 +82,7 @@
 ### Sprint 2 (2-4 недели)
 
 - [ ] G-02: `ExplanationBundle` dataclass в `risk_contract.py`
-- [ ] G-01: Decision Event Log — append-only таблица в ClickHouse/PostgreSQL
+- [x] G-01: Decision Event Log — PARTIAL (код b6541ab: AuditPort ABC, PostgresEventLogAdapter, InMemoryAuditAdapter, decision_events.sql; 15 тестов 89/89 pass; миграция на GMKtec pending)
 - [ ] G-07: `compliance_config.yaml` — externalize пороги из compliance_validator.py
 - [ ] G-19: OPA/Rego для критических инвариантов (I-21, I-22, I-23)
 - [x] G-20: Structured logging — DONE (structured_logger.py, ebc54c9). Release pipeline — остаток Sprint 3.
