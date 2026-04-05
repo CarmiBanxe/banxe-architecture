@@ -150,3 +150,105 @@ Key completed gaps (Sprint 4):
 | G-13 test_compliance_snapshot.py | 28 | ✅ |
 | G-14 test_opa_sidecar.py | 28 | ✅ |
 | G-15 test_review_agent.py | 28 | ✅ |
+
+---
+
+## Sprint 6 — Production Infrastructure
+
+### G-09 — Redis Pre-Tx Gate (DONE 2026-04-05)
+
+**Deliverables:**
+- `src/compliance/gates/pre_tx_gate.py` — fast-path gate, <80ms SLA, 4-check pipeline
+- `src/compliance/gates/__init__.py`
+- `src/compliance/test_pre_tx_gate.py` — 30 tests T-01..T-30
+
+**Key design decisions:**
+- 4-check order: EMERGENCY_STOP → JURISDICTION → SANCTIONS_CACHE → VELOCITY
+- Fail-open: Redis unavailable → ESCALATE (not BLOCK), business continuity over safety
+- Velocity member format: `"{amount}:{timestamp}"` (backward compat: plain float also supported)
+- `InMemoryRedisStub` for testing; real Redis for production
+- `get_pre_tx_gate()` singleton
+
+**Test result:** 30/30 passed
+
+---
+
+### VaultCredentialStore (DONE 2026-04-05)
+
+**Deliverables:**
+- `src/compliance/security/vault_credential_store.py` — Vault KV v2 adapter with InMemory fallback
+- `src/compliance/test_vault_credential_store.py` — 28 tests T-01..T-28
+
+**Key design decisions:**
+- Same interface as `InMemoryCredentialStore` (drop-in replacement)
+- `VaultConfig.from_env()` reads VAULT_ADDR, VAULT_TOKEN from environment
+- `_probe_vault()` at startup: if unreachable → fallback to InMemory + WARNING log
+- `get_credential_manager(prefer_vault=True)` factory: uses Vault if VAULT_TOKEN present + reachable
+
+**Test result:** 28/28 passed
+
+---
+
+### Commercial Adapter Stubs (DONE 2026-04-05)
+
+**Deliverables:**
+- `src/compliance/adapters/dowjones_adapter.py` — sanctions + PEP screening
+- `src/compliance/adapters/sumsub_adapter.py` — KYC/KYB document verification
+- `src/compliance/adapters/chainalysis_adapter.py` — crypto wallet/transaction AML
+- `src/compliance/test_commercial_adapters.py` — 30 tests T-01..T-30
+
+**Key design decisions:**
+- STUB mode (no API key) → `NotConfiguredError` with onboarding message (never silent fail)
+- LIVE mode → real API call with HMAC signing (Sumsub), bearer auth (Dow Jones, Chainalysis)
+- All results map to `RiskSignal` via `.to_risk_signal()` (unified interface)
+- Risk thresholds: Chainalysis score 0-10 → SEVERE(≥7)/HIGH(≥5)/MEDIUM(≥3)/LOW
+
+**Test result:** 30/30 passed
+
+---
+
+### Production Scripts (DONE 2026-04-05)
+
+- `scripts/deploy-sprint6.sh` — 8-step deploy: pull → rsync → Redis → PG check → emergency → FastAPI → tests → snapshot
+- `scripts/verify-production.sh` — 14-check verification script across 5 categories
+
+---
+
+## Full Test Suite Status (2026-04-05, Sprint 6 complete)
+
+| Scope | Tests | Status |
+|-------|-------|--------|
+| `src/compliance/` full suite | 747 | ✅ ALL PASSED |
+| G-09 test_pre_tx_gate.py | 30 | ✅ |
+| VaultCredentialStore | 28 | ✅ |
+| Commercial Adapters | 30 | ✅ |
+
+---
+
+## Sprint 7 — CANON System (DONE 2026-04-05)
+
+**Deliverables:** `~/developer/canon/` — модульная система правил
+
+| Файл | Назначение |
+|------|------------|
+| `CANON.md` | Маршрутизатор профилей |
+| `modules/CORE.md` | Ядро (P-01..P-05, абсолютные запреты) |
+| `modules/DOC.md` | Работа с файлами и документами |
+| `modules/DEV.md` | BANXE-специфика (I-21..I-25, B-01..B-06, CLASS_A/B/C/D) |
+| `modules/DECISION.md` | Framework принятия решений, ADR-шаблон |
+| `modules/LEGAL.md` | Юридический профиль (guiyon, ss1) |
+| `modules/FR_MODULE.md` | Французское право (надстройка над LEGAL) |
+| `rules/DIALOGUE.md` | КАНОН 2+7: QRAA + консультационный протокол |
+| `rules/COLLABORATION.md` | КАНОН 1+9: роли агентов + изоляция проектов |
+| `rules/AUTOMATION.md` | КАНОН 3+4+10: MEMORY.md, скрипты, auto-git |
+| `rules/REPORTING.md` | КАНОН 5+6: объяснения + прогресс |
+| `rules/VERIFICATION.md` | КАНОН 8: 5-шаговый протокол (FIXATION→FINALIZATION) |
+| `scripts/check-canon.sh` | Проверка установки CANON |
+| `scripts/activate-profile.sh` | Активация профиля banxe/legal/mixed |
+
+**Профили:**
+- `BANXE/DEV` — разработка (DEV primary, LEGAL=off)
+- `LEGAL` — юридические проекты (guiyon, ss1; DEV=off)
+- `MIXED` — LEGAL overlay поверх DEV (переключение внутри сессии)
+
+**Коммит:** `8bd5525` в `CarmiBanxe/developer-core`
