@@ -114,14 +114,13 @@
 - **Источник:** CEO акцепт 2026-04-06 17:15 CEST
 - **Приоритет:** P1 (Block J deadline 7 May 2026 зависит от D)
 - **Шаги:**
-  1. MiroFish: исследовать Midaz Transaction API endpoints + DSL → ⏳
+  1. MiroFish: исследовать Midaz Transaction API endpoints + DSL → ✅ `docs/midaz-transaction-api-research.md`
   2. Aider: реализовать LedgerPort.create_transaction() + list_transactions() → ⏳
   3. Aider: frozen dataclass TransactionRequest / TransactionResponse → ⏳
   4. Aider: тесты T-01..T-15 (CTX-06 AMBER, G-16) → ⏳
-  5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ✅
+  5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ✅ commit 98ca7d7
   6. Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → ⏳
   7. git commit + push → ⏳
   8. CEO verify → ⏳
 - **Статус:** IN_PROGRESS
-- **Proof:** (будет заполнен по шагам)
-- **Deviation:** нет
+- **Proof:** Step 1: `docs/midaz-transaction-api-research.md` (MiroFish, 55 tool uses, endpoints + DSL + errors). Step 5: commit 98ca7d7.
