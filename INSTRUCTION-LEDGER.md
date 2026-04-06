@@ -213,14 +213,15 @@
 - **Приоритет:** P0 (FCA CASS 7.15, deadline 7 May 2026)
 - **Описание:** Задеплоить adorsys open-banking-gateway в sandbox-режиме на GMKtec. Создать statement_poller.py. Интегрировать с bankstatement_parser.py → ReconciliationEngine.
 - **Шаги:**
-  1. Исследование: выбрать минимальный образ (open-banking-gateway vs xs2a-sandbox) → ✅ open-banking-gateway:develop + aspsp-mock
-  2. docker-compose.psd2.yml: gateway :8888 + aspsp-mock :8090 + postgres DB `adorsys` → ⏳
-  3. services/recon/statement_poller.py — ежедневный poll → CAMT.053 → STATEMENT_DIR → ⏳
-  4. Обновить StatementFetcher: Phase 2 path (adorsys → bankstatement_parser.py) → ⏳
-  5. Деплой на GMKtec + smoke test (GET /v1/accounts → CAMT.053) → ⏳
-  6. cron в daily-recon.sh: poll → parse → recon → ⏳
-  7. git commit + push banxe-emi-stack → ⏳
-  8. CEO verify → ⏳
-- **Статус:** IN_PROGRESS
-- **Proof:** —
-- **Deviation:** —
+  1. Исследование: adorsys образы в приватном GitLab registry → недоступны → вариант B (mock FastAPI) → ✅
+  2. docker-compose.psd2.yml: banxe-mock-aspsp :8888 (FastAPI, python:3.12-slim) → ✅ commit cb782aa
+  3. services/recon/statement_poller.py — poll → CAMT.053 → STATEMENT_DIR → ✅ commit cb782aa
+  4. StatementFetcher: Phase 2 path (CSV → adorsys fallback) → ✅ commit cb782aa
+  5. Деплой на GMKtec + smoke test → ✅ health UP, /v1/accounts OK, CAMT.053 XML OK
+  6. E2E pipeline: statement_poller → 2 CAMT.053 files → IBAN/balance verified → ✅
+  7. cron в daily-recon.sh: poll → parse → recon → ⏳
+  8. git commit + push banxe-emi-stack → ✅ cb782aa
+  9. CEO verify → ⏳
+- **Статус:** VERIFY
+- **Proof:** `banxe-mock-aspsp Up`. E2E: `camt053_20260406_3459.xml IBAN=GB29BARC... balance=125000.00 GBP` + `camt053_20260406_3460.xml balance=480000.00 GBP`. Port :8888, image 8f006ca5.
+- **Deviation:** adorsys образы в приватном GitLab registry (не Docker Hub) → заменён на FastAPI mock-ASPSP (вариант B, акцепт CEO). Port 8090 занят guiyon_api.py (I-18) → не использован. Real IBANs не заполнены — заблокированы до отдельной валидации (logging/env-exposure/network-isolation).

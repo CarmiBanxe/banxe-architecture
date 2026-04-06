@@ -61,8 +61,9 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 - ✅ Step 6: daily-recon.sh dry-run OK (imports verified)
 - ✅ Step 5: pgAudit 17.1 — `pgaudit.log='write,ddl'`, log_relation=on. postgres restart OK, все сервисы живы.
 
-### IL-011 — IN_PROGRESS:
-- adorsys PSD2 gateway (FA-07): sandbox deploy + statement_poller.py + CAMT.053 integration
+### IL-011 — VERIFY:
+- FA-07: mock-ASPSP FastAPI :8888 deployed. E2E OK: poller → 2×CAMT.053 → IBAN/balance verified.
+- Real IBANs заблокированы до отдельной валидации (logging/env/network).
 
 ### NOT_DEFINED блоки (ждут CEO):
 - B (Infra/DevOps), E, G, H, I — не определены в ADR-013/014
@@ -320,7 +321,7 @@ Offline:
 | FA-04 | pgAudit | ✅ **DEPLOYED** pgaudit 17.1 | IL-010 |
 | FA-05 | WeasyPrint FIN060 PDF | ✅ code | IL-009 |
 | FA-06 | Frankfurter FX :8181 | ✅ **DEPLOYED** | IL-010 |
-| FA-07 | adorsys PSD2 gateway | ⏳ Phase 2 | — |
+| FA-07 | mock-ASPSP FastAPI :8888 | ✅ **DEPLOYED** (sandbox) | IL-011 |
 
 **Safeguarding accounts (ADR-013):**
 - client_funds: `019d6332-da7f-752f-b9fd-fa1c6fc777ec`
