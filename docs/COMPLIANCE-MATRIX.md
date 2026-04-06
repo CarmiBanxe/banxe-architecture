@@ -535,4 +535,75 @@ graph TD
 
 ---
 
+---
+
+## РАЗДЕЛ 16 — Financial Analytics & Accounting Block (IL-009)
+
+**Source:** docs/financial-analytics-research.md | CEO report 2026-04-06
+
+### 16.1 P0 — CASS 15 Deadline 7 May 2026
+
+| ID | Компонент | Статус | Proof | Gap |
+|----|-----------|--------|-------|-----|
+| FA-01 | **Blnk Finance** (reconciliation engine) | ❌ NOT_STARTED | — | P0 — ежедневный recon CAMT.053 |
+| FA-02 | **bankstatementparser** (CAMT.053/MT940) | ❌ NOT_STARTED | — | P0 — парсинг bank statement |
+| FA-03 | **dbt Core** + dbt-clickhouse | ❌ NOT_STARTED | — | P0 → FIN060 models |
+| FA-04 | **pgAudit** (PostgreSQL DDL/DML logging) | ❌ NOT_STARTED | — | P0 — PCI DSS / FCA audit |
+| FA-05 | **JasperReports** или **WeasyPrint** (PDF FIN060) | ❌ NOT_STARTED | — | P0 → RegData submission |
+| FA-06 | **Frankfurter** (self-hosted ECB FX rates) | ❌ NOT_STARTED | — | P0 — мультивалютная EMI |
+| FA-07 | **adorsys PSD2 gateway** (bank statement API) | ❌ NOT_STARTED | — | P0 — automated safeguarding polling |
+
+### 16.2 Phase 1 — Q2–Q3 2026
+
+| ID | Компонент | Статус | Proof | Gap |
+|----|-----------|--------|-------|-----|
+| FA-08 | Apache Superset / Metabase (BI dashboards) | ❌ NOT_STARTED | — | CFO / Compliance officer UI |
+| FA-09 | Great Expectations (data quality before FCA return) | ❌ NOT_STARTED | — | Pre-reporting validation |
+| FA-10 | Debezium CDC → Kafka (immutable event log) | ❌ NOT_STARTED | — | Audit trail for external auditor |
+| FA-11 | Temporal (saga patterns, exactly-once payments) | ❌ NOT_STARTED | — | Replace n8n for critical flows |
+| FA-12 | Sequin CDC (50k ops/sec Postgres CDC) | ❌ NOT_STARTED | — | Alternative to Debezium |
+| FA-13 | Jaeger v2 (distributed tracing per payment) | ❌ NOT_STARTED | — | Full payment trace |
+| FA-14 | Keycloak (IAM — RBAC для AI агентов и людей) | ❌ NOT_STARTED | — | SSO, MFA, OAuth2 |
+
+### 16.3 Phase 2 — Q3–Q4 2026
+
+| ID | Компонент | Статус | Proof | Gap |
+|----|-----------|--------|-------|-----|
+| FA-15 | Apache Kafka (event streaming) | ❌ NOT_STARTED | — | Уже в roadmap Phase 1 |
+| FA-16 | Formance Ledger (hash chain, tamper-evident) | ⏳ PLANNED | — | Supplement Midaz for annual audit |
+| FA-17 | Camunda 7 CE (BPMN compliance processes) | ❌ NOT_STARTED | — | Visual modelling KYC/safeguarding flows |
+| FA-18 | OpenMetadata (data lineage для FCA регулятора) | ❌ NOT_STARTED | — | Where does each FIN060 number come from |
+| FA-19 | Airbyte OSS (PSP → ClickHouse ELT) | ❌ NOT_STARTED | — | Payment provider data sync |
+| FA-20 | Apache Airflow (batch DAG orchestration) | ❌ NOT_STARTED | — | Monthly recon runs |
+
+### 16.4 Phase 3 — Q4 2026+
+
+| ID | Компонент | Статус | Proof | Gap |
+|----|-----------|--------|-------|-----|
+| FA-21 | FinGPT (financial LLM analysis) | ❌ NOT_STARTED | — | AI narrative for FCA reports |
+| FA-22 | OpenBB Platform (financial data + AI agents) | ❌ NOT_STARTED | — | Portfolio analytics |
+| FA-23 | Apache Flink (real-time AML scoring) | ❌ NOT_STARTED | — | Upgrade from Jube batch |
+| FA-24 | ERPNext / LedgerSMB (full ERP accounting) | ↗️ DEFERRED | — | Not needed for EMI (Midaz covers) |
+| FA-25 | Beancount + Fava (plain-text audit trail) | ↗️ DEFERRED | — | Optional for AI-readable audit |
+
+### 16.5 Уже в стеке (не требуют добавления)
+
+| Компонент | Статус |
+|-----------|--------|
+| Midaz (PRIMARY ledger) | ✅ :8095 |
+| ClickHouse (OLAP, 5yr TTL) | ✅ :9000 |
+| n8n (workflow automation) | ✅ :5678 |
+| Midaz Reporter | ✅ available |
+| Grafana + Prometheus | ✅ Midaz native |
+| OpenTelemetry | ✅ Midaz native |
+| Jube (AGPLv3) | ✅ :5001 |
+| Redis (velocity/cache) | ✅ :6379 |
+| RabbitMQ (Midaz events) | ✅ :3003/3004 |
+
+**Покрытие S16: 9 already deployed / 25 new components needed**
+**P0 gap (7 May 2026): FA-01..FA-07**
+
+---
+
 *IL-008 | Сформировано: 2026-04-06 | Ruflo audit: docs/reviews/IL-008-review.md*
+*IL-009 S16 добавлен: 2026-04-06 | Research: docs/financial-analytics-research.md*

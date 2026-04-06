@@ -168,7 +168,7 @@
 - **Описание:** Добавить в архитектуру Banxe AI Bank финансово-аналитический и бухгалтерский блок: ClickHouse OLAP + dbt + Blnk reconciliation + JasperReports + WeasyPrint + Great Expectations + n8n workflows + pgAudit + Debezium CDC + Keycloak IAM
 - **Assignee:** Claude Code (arch) + Aider (code) + MiroFish (research)
 - **Шаги:**
-  1. Получить полный CLAUDE.md (Разделы 3–7 обрезаны) → ⏳ BLOCKED — ждём CEO
+  1. Research: получить полный список компонентов (50+ tools, 13 блоков) → ✅ docs/financial-analytics-research.md
   2. Создать `banxe-emi-stack/` структуру репозитория → ⏳
   3. Docker Compose стек (base + ledger + analytics + reconcile + aml + observe + workflow) → ⏳
   4. Python reconciliation engine (Midaz + Blnk + CAMT.053 parser) → ⏳
@@ -180,6 +180,6 @@
   10. n8n workflow JSON (daily recon + monthly FCA return) → ⏳
   11. git commit + push → ⏳
   12. CEO verify → ⏳
-- **Статус:** BLOCKED — ожидаем полный CLAUDE.md (Разделы 3–7)
-- **Proof:** (будет заполнен по шагам)
-- **Deviation:** Сообщение обрезано на Numscript Раздел 2.1.2 "a"
+- **Статус:** IN_PROGRESS
+- **Proof:** Step 1 DONE — docs/financial-analytics-research.md (47 компонентов, 13 блоков). S16 добавлен в COMPLIANCE-MATRIX.md. FA-01..FA-07 = P0 до 7 May 2026.
+- **Deviation:** Вместо CLAUDE.md CEO предоставил полный research report (19 разделов, 50+ repos). Приступаем к архитектуре стека.
