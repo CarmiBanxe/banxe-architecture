@@ -74,7 +74,7 @@ Output: ClickHouse compliance_screenings, SAR draft
 ```
 
 - Текущее: ClickHouse `banxe.compliance_screenings` (TTL 5Y, FCA MLR 2017)
-- Dashboard: CEO dashboard via FastAPI `:8090`
+- Dashboard: CEO dashboard via FastAPI `:8093`
 - SAR: `sar_generator.py` → MLRO queue → Marble
 - Владелец: `vibe-coding/src/compliance/audit_trail.py`
 - Statус: active
