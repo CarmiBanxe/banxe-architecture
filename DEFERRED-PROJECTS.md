@@ -23,7 +23,7 @@
 |-----------|--------|----------|
 | `@mycarmi_moa_bot` | ACTIVE | Терминал оператора-дублёра (MLRO/CTIO) |
 | Marble UI (:5003) | ACTIVE | Case management для оператора |
-| Compliance stack (:8090) | ACTIVE | AML/KYC/Sanctions API |
+| Compliance stack (:8093) | ACTIVE | AML/KYC/Sanctions API |
 | Training pipeline | ACTIVE | Обучение агентов (developer only) |
 | Promptfoo eval cron | ACTIVE | Воскресенье 04:00 UTC |
 | Feedback loop + train-agent.sh | DONE | GAP 4 — corpus → patches → auto-deploy |

@@ -13,7 +13,7 @@
 | OpenClaw moa-bot | 18789 | Telegram/HTTP | Commercial | ✅ | @mycarmi_moa_bot — оператор MLRO |
 | OpenClaw ctio-bot | 18791 | Telegram/HTTP | Commercial | ✅ | Бот Олега (CTIO) |
 | OpenClaw @mycarmibot | 18793 | Telegram/HTTP | Commercial | ✅ | Отдельный проект (не трогать) |
-| FastAPI compliance | 8090 | HTTP | — | ✅ | AML/KYC/Sanctions API |
+| FastAPI compliance | 8093 | HTTP | — | ✅ | AML/KYC/Sanctions API |
 | Moov Watchman | 8084 | HTTP | Apache 2.0 | ✅ | OFAC/UN/EU/UK sanctions screening |
 | Banxe Screener | 8085 | HTTP | — | ✅ | Watchman + PEP wrapper |
 | Yente (OpenSanctions) | 8086 | HTTP | MIT | PLANNED Phase 3 | Primary sanctions/PEP (200K+ entities) |
