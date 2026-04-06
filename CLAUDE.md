@@ -54,12 +54,15 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 - Services: midaz_client, recon engine, CAMT.053 parser, FIN060 generator
 - dbt: 3 модели. Docker: 2 compose files. Scripts: 3 cron scripts.
 
-### IL-010 — IN_PROGRESS:
+### IL-010 — DONE ✅ (CEO акцепт 2026-04-06):
 - ✅ Step 1-2: rsync banxe-emi-stack → GMKtec `/data/banxe/banxe-emi-stack/`
 - ✅ Step 3: banxe-frankfurter deployed `:8181` (bridge, hakanensari/frankfurter)
 - ✅ Step 4: smoke test → `{"base":"GBP","rates":{"EUR":1.1461,"USD":1.3209}}`
 - ✅ Step 6: daily-recon.sh dry-run OK (imports verified)
 - ✅ Step 5: pgAudit 17.1 — `pgaudit.log='write,ddl'`, log_relation=on. postgres restart OK, все сервисы живы.
+
+### IL-011 — IN_PROGRESS:
+- adorsys PSD2 gateway (FA-07): sandbox deploy + statement_poller.py + CAMT.053 integration
 
 ### NOT_DEFINED блоки (ждут CEO):
 - B (Infra/DevOps), E, G, H, I — не определены в ADR-013/014

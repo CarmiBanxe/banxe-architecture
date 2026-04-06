@@ -200,7 +200,27 @@
   4. Smoke test: `curl localhost:8181/latest?from=GBP` → ✅ `{"EUR":1.1461,"USD":1.3209}`
   5. pgAudit: install postgresql-17-pgaudit + shared_preload_libraries + restart postgres + CREATE EXTENSION → ✅ pgaudit 17.1
   6. First recon dry-run: `bash scripts/daily-recon.sh` → ✅ imports OK
-  7. CEO verify → ⏳
-- **Статус:** VERIFY
+  7. CEO verify → ✅ акцепт 2026-04-06
+- **Статус:** DONE ✅
+- **CEO Акцепт:** 2026-04-06
 - **Proof:** pgaudit 17.1 installed, `pgaudit.log = 'write, ddl'`, `log_relation = on`. Frankfurter :8181 Up. Jube/Marble/Midaz all healthy after postgres restart. banxe-emi-stack commit 3400839.
 - **Deviation:** Port 8080 занят nginx → использован 8181. rsync вместо git clone (SSH key не имел доступа к новому репо).
+
+---
+
+### IL-011 — FA-07: adorsys PSD2 Gateway (CAMT.053 automated statement pull)
+- **Источник:** CEO акцепт IL-010, 2026-04-06
+- **Приоритет:** P0 (FCA CASS 7.15, deadline 7 May 2026)
+- **Описание:** Задеплоить adorsys open-banking-gateway в sandbox-режиме на GMKtec. Создать statement_poller.py. Интегрировать с bankstatement_parser.py → ReconciliationEngine.
+- **Шаги:**
+  1. Исследование: выбрать минимальный образ (open-banking-gateway vs xs2a-sandbox) → ✅ open-banking-gateway:develop + aspsp-mock
+  2. docker-compose.psd2.yml: gateway :8888 + aspsp-mock :8090 + postgres DB `adorsys` → ⏳
+  3. services/recon/statement_poller.py — ежедневный poll → CAMT.053 → STATEMENT_DIR → ⏳
+  4. Обновить StatementFetcher: Phase 2 path (adorsys → bankstatement_parser.py) → ⏳
+  5. Деплой на GMKtec + smoke test (GET /v1/accounts → CAMT.053) → ⏳
+  6. cron в daily-recon.sh: poll → parse → recon → ⏳
+  7. git commit + push banxe-emi-stack → ⏳
+  8. CEO verify → ⏳
+- **Статус:** IN_PROGRESS
+- **Proof:** —
+- **Deviation:** —
