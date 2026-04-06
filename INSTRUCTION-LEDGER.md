@@ -119,7 +119,7 @@
   3. Aider: frozen dataclass TransactionRequest / TransactionResult → ✅ commit 8ae7dd0
   4. Aider: тесты T-01..T-15 (CTX-06 AMBER, G-16) → ✅ 15/15 passed, commit 8ae7dd0
   5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ✅ commit 98ca7d7
-  6. Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → ⏳
+  6. Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → ✅ docs/reviews/IL-006-review.md (APPROVED)
   7. git commit + push → ✅ vibe-coding 8ae7dd0
   8. CEO verify → ⏳
 - **Статус:** VERIFY

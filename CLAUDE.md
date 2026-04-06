@@ -39,12 +39,13 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 - IL-005: DONE (GAP-REGISTER Sprint 8, blocks-sprint8.md, CTX-06)
 - D-RECON-DESIGN.md: DONE (commit 98ca7d7)
 
-### В работе (IL-006):
-- Step 1: MiroFish — Midaz Transaction API research → 🔄
-- Steps 2-4: Aider — LedgerPort.create_transaction() + tests → ⏳
-- Step 5: D-RECON-DESIGN.md → ✅
-- Step 6: Ruflo review → ⏳
-- Steps 7-8: commit + CEO verify → ⏳
+### В работе (IL-006) → VERIFY:
+- Step 1: MiroFish research → ✅ `docs/midaz-transaction-api-research.md`
+- Steps 2-4: create_transaction + frozen dataclasses + T-01..T-15 → ✅ commit 8ae7dd0 (29/29)
+- Step 5: D-RECON-DESIGN.md → ✅ commit 98ca7d7
+- Step 6: Ruflo review → ✅ `docs/reviews/IL-006-review.md` (APPROVED)
+- Step 7: commit + push → ✅
+- Step 8: CEO verify → ⏳
 
 ### NOT_DEFINED блоки (ждут CEO):
 - B (Infra/DevOps), E, G, H, I — не определены в ADR-013/014
