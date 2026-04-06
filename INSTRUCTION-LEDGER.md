@@ -159,3 +159,27 @@
 - **Статус:** VERIFY
 - **Proof:** commit a8f4b99 — 8 files, 3052 insertions. Ruflo: 10/10 PASS, APPROVED. Overall EMI: 35% | Payment Rails: 0% CRITICAL | CASS deadline: 7 May 2026.
 - **Deviation:** Master Document скопирован из Windows Downloads (не был прикреплён к первому сообщению)
+
+---
+
+### IL-009 — Financial Analytics & Accounting Block (FinDev Stack)
+- **Источник:** CEO, 2026-04-06
+- **Приоритет:** P0 для компонентов CASS 15 (7 May 2026); P1 для остального
+- **Описание:** Добавить в архитектуру Banxe AI Bank финансово-аналитический и бухгалтерский блок: ClickHouse OLAP + dbt + Blnk reconciliation + JasperReports + WeasyPrint + Great Expectations + n8n workflows + pgAudit + Debezium CDC + Keycloak IAM
+- **Assignee:** Claude Code (arch) + Aider (code) + MiroFish (research)
+- **Шаги:**
+  1. Получить полный CLAUDE.md (Разделы 3–7 обрезаны) → ⏳ BLOCKED — ждём CEO
+  2. Создать `banxe-emi-stack/` структуру репозитория → ⏳
+  3. Docker Compose стек (base + ledger + analytics + reconcile + aml + observe + workflow) → ⏳
+  4. Python reconciliation engine (Midaz + Blnk + CAMT.053 parser) → ⏳
+  5. dbt модели (staging → marts → fin060) + Great Expectations → ⏳
+  6. ClickHouse схемы (ledger_events, materialized views, safeguarding_daily_mv) → ⏳
+  7. Ruflo агенты (.claude/agents/) + OpenClaw config → ⏳
+  8. Отчётность: JasperReports JRXML + WeasyPrint FIN060 PDF → ⏳
+  9. Security: pgAudit + Keycloak + pre-commit hooks → ⏳
+  10. n8n workflow JSON (daily recon + monthly FCA return) → ⏳
+  11. git commit + push → ⏳
+  12. CEO verify → ⏳
+- **Статус:** BLOCKED — ожидаем полный CLAUDE.md (Разделы 3–7)
+- **Proof:** (будет заполнен по шагам)
+- **Deviation:** Сообщение обрезано на Numscript Раздел 2.1.2 "a"
