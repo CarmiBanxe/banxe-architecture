@@ -169,7 +169,7 @@
 - **Assignee:** Claude Code (arch) + Aider (code) + MiroFish (research)
 - **Шаги:**
   1. Research: получить полный список компонентов (50+ tools, 13 блоков) → ✅ docs/financial-analytics-research.md
-  2. Создать `banxe-emi-stack/` структуру репозитория → ⏳
+  2. Создать отдельный GitHub репо `banxe-emi-stack/` (CEO 2026-04-06) → ⏳
   3. Docker Compose стек (base + ledger + analytics + reconcile + aml + observe + workflow) → ⏳
   4. Python reconciliation engine (Midaz + Blnk + CAMT.053 parser) → ⏳
   5. dbt модели (staging → marts → fin060) + Great Expectations → ⏳
