@@ -138,3 +138,13 @@ Claim «self-improving system» в описании `feedback_loop.py` — **REF
 До реализации G-02: поле может быть null с `method: "pending"`.
 Нарушение: REJECT/SAR > £10k без readable explanation — FCA SS1/23 нарушение.
 Обоснование: UK GDPR, FCA PS7/24, EU AI Act transparency. GAP-REGISTER G-02.
+
+**I-28 — Instruction Ledger Discipline (Execution Accountability)**
+Каждая инструкция CEO/CTIO фиксируется в `banxe-architecture/INSTRUCTION-LEDGER.md`.
+Claude Code НЕ переходит к следующей задаче при наличии >3 незавершённых IL без Proof.
+Статус DONE только при наличии Proof (команда + реальный вывод).
+Отклонение от инструкции (Deviation) фиксируется обязательно.
+Hook `il_gate.py` (PreToolUse) программно блокирует Edit/Write/Bash при нарушении.
+`scripts/il-check.sh` — CLI для CEO: мгновенный статус всех инструкций.
+Нарушение = архитектурный дефект уровня P1. Требует Deviation-записи и объяснения.
+Обоснование: исполнительская дисциплина агента — основа доверия и FCA governance.
