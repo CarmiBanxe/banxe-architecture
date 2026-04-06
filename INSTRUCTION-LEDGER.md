@@ -226,3 +226,17 @@
 - **CEO Акцепт:** 2026-04-06
 - **Proof:** `banxe-mock-aspsp Up`. E2E: `camt053_20260406_3459.xml IBAN=GB29BARC... balance=125000.00 GBP` + `camt053_20260406_3460.xml balance=480000.00 GBP`. Port :8888, image 8f006ca5. Commit cb782aa.
 - **Deviation:** adorsys образы в приватном GitLab registry → заменён на FastAPI mock-ASPSP (вариант B, акцепт CEO). Port 8090 занят guiyon_api.py (I-18) → не использован. Real IBANs заблокированы до отдельной валидации.
+
+---
+
+### IL-012 — Payment Rails Research + BaaS Selection
+- **Источник:** CEO, 2026-04-06
+- **Приоритет:** P1 (критический gap S4, 0% coverage)
+- **Описание:** Исследовать BaaS провайдеров для Payment Rails. Выбрать оптимального для Banxe EMI (FCA-regulated, API-first, GBP FPS + EUR SEPA, webhooks, Midaz integration path).
+- **Шаги:**
+  1. MiroFish: исследовать ClearBank, Modulr, Banking Circle, Railsr → ⏳
+  2. Сравнительная таблица → `docs/payment-rails-research.md` → ⏳
+  3. Рекомендация CEO → ⏳
+- **Статус:** IN_PROGRESS
+- **Proof:** —
+- **Deviation:** —
