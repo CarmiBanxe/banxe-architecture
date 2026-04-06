@@ -234,9 +234,10 @@
 - **Приоритет:** P1 (критический gap S4, 0% coverage)
 - **Описание:** Исследовать BaaS провайдеров для Payment Rails. Выбрать оптимального для Banxe EMI (FCA-regulated, API-first, GBP FPS + EUR SEPA, webhooks, Midaz integration path).
 - **Шаги:**
-  1. MiroFish: исследовать ClearBank, Modulr, Banking Circle, Railsr → ⏳
-  2. Сравнительная таблица → `docs/payment-rails-research.md` → ⏳
-  3. Рекомендация CEO → ⏳
-- **Статус:** IN_PROGRESS
-- **Proof:** —
-- **Deviation:** —
+  1. WebSearch: исследовать ClearBank, Modulr, Banking Circle, Railsr → ✅
+  2. Сравнительная таблица → `docs/payment-rails-research.md` → ✅
+  3. Рекомендация CEO → ✅ (Modulr первичный, ClearBank резерв, Railsr исключён)
+- **Статус:** DONE ✅
+- **CEO Акцепт:** ожидание
+- **Proof:** `docs/payment-rails-research.md` создан, 4 провайдера, 12 критериев. Рекомендация: Modulr Finance (FCA EMI, open sandbox, FPS+SEPA+Bacs direct, unlimited sub-accounts via API, webhooks, 99.99% uptime).
+- **Deviation:** MiroFish agent недоступен (API overload) → WebSearch выполнен напрямую Claude Code. Результат эквивалентен.
