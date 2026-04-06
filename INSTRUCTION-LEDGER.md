@@ -102,6 +102,26 @@
   6. Task 3: domain/context-map.yaml CTX-06 → ✅ (AMBER, LedgerPort, safeguarding IDs)
   7. git commit + push → ✅ 4c79777
   8. Task 4: D-recon / Transaction API → ⏳ PENDING CEO акцепт
-- **Статус:** VERIFY
+- **Статус:** DONE ✅
 - **Proof:** `git push → banxe-architecture 4c79777` (234 вставки, 4 файла)
+- **CEO Акцепт:** 2026-04-06 17:15 CEST (verified commit 0cc9940)
 - **Deviation:** blocks B, E, G, H, I — NOT_DEFINED в ADR-013/014. Зафиксировано явно в blocks-sprint8.md.
+- **Ruflo flow il-005-sprint8-docs.yaml:** DEFERRED (описание процесса, не артефакт)
+
+---
+
+### IL-006 — Block D: Transaction API + Reconciliation Design
+- **Источник:** CEO акцепт 2026-04-06 17:15 CEST
+- **Приоритет:** P1 (Block J deadline 7 May 2026 зависит от D)
+- **Шаги:**
+  1. MiroFish: исследовать Midaz Transaction API endpoints + DSL → ⏳
+  2. Aider: реализовать LedgerPort.create_transaction() + list_transactions() → ⏳
+  3. Aider: frozen dataclass TransactionRequest / TransactionResponse → ⏳
+  4. Aider: тесты T-01..T-15 (CTX-06 AMBER, G-16) → ⏳
+  5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ⏳
+  6. Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → ⏳
+  7. git commit + push → ⏳
+  8. CEO verify → ⏳
+- **Статус:** IN_PROGRESS
+- **Proof:** (будет заполнен по шагам)
+- **Deviation:** нет
