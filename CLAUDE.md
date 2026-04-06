@@ -38,20 +38,24 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 - Sprint 8 Block F: Compliance 80% DONE
 - IL-006 DONE: Transaction API + T-01..T-15 (commit 8ae7dd0, Ruflo APPROVED)
 
-### IL-007 — VERIFY (ждёт CEO акцепт):
+### IL-007 — DONE ✅ (CEO акцепт 2026-04-06):
 - ReconciliationEngine + StatementFetcher + T-16..T-30 (15/15 passed)
 - ClickHouse banxe.safeguarding_events table (GMKtec)
 - Commit: vibe-coding 3f7060f
 
-### IL-008 — VERIFY (ждёт CEO акцепт):
+### IL-008 — DONE ✅ (CEO акцепт 2026-04-06):
 - COMPLIANCE-MATRIX.md: 15 разделов, 200+ требований (banxe-architecture a8f4b99)
 - Overall EMI readiness: ~35% | Payment Rails: 0% | AI/HITL: 95%
 - Ruflo: 10/10 PASS APPROVED (docs/reviews/IL-008-review.md)
 
-### IL-009 — IN_PROGRESS (Financial Analytics Block):
-- Step 1 DONE: docs/financial-analytics-research.md (47 компонентов)
-- COMPLIANCE-MATRIX S16 добавлен (FA-01..FA-25)
-- P0 до 7 May 2026: pgAudit, Blnk recon, bankstatementparser, dbt, JasperReports, Frankfurter, adorsys PSD2
+### IL-009 — DONE ✅ (CEO акцепт 2026-04-06):
+- banxe-emi-stack P0 skeleton: 24 файла, commit ab81ecc
+- https://github.com/CarmiBanxe/banxe-emi-stack (private)
+- Services: midaz_client, recon engine, CAMT.053 parser, FIN060 generator
+- dbt: 3 модели. Docker: 2 compose files. Scripts: 3 cron scripts.
+
+### IL-010 — PENDING (следующий):
+- P0 Deploy на GMKtec: Frankfurter FX + pgAudit + docker-compose.recon.yml + first recon-run
 
 ### NOT_DEFINED блоки (ждут CEO):
 - B (Infra/DevOps), E, G, H, I — не определены в ADR-013/014
