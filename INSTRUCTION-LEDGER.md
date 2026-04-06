@@ -125,3 +125,19 @@
 - **Статус:** DONE ✅
 - **CEO Акцепт:** 2026-04-06 ~18:00 CEST
 - **Proof:** Steps 2-4: commit 8ae7dd0 (vibe-coding, 29/29 tests). Step 5: 98ca7d7. Step 6: Ruflo APPROVED 4cc61f5. Step 7: push 4cc61f5.
+
+---
+
+### IL-007 — Block D-recon Phase 2: ReconciliationEngine + ClickHouse
+- **Источник:** CEO "продолжай", 2026-04-06
+- **Приоритет:** P0 (Block J FCA CASS 7.15, deadline 7 May 2026)
+- **Шаги:**
+  1. ClickHouse: CREATE TABLE banxe.safeguarding_events (MergeTree, TTL 5Y) → ✅ GMKtec, DESCRIBE TABLE 13 cols verified
+  2. ReconciliationEngine Python class (compare internal vs external) → ✅ commit 3f7060f
+  3. StatementFetcher placeholder (CSV) → ✅ commit 3f7060f
+  4. Тесты: T-16..T-30 (unit, no real CH/Midaz) → ✅ 15/15 passed, commit 3f7060f
+  5. git commit + push → ✅ vibe-coding 3f7060f
+  6. CEO verify → ⏳
+- **Статус:** VERIFY
+- **Proof:** `python3 -m pytest src/compliance/recon/test_reconciliation.py --override-ini='addopts=' -v` → 15 passed in 0.06s. Commit: vibe-coding 3f7060f (4 files, 551 insertions).
+- **Deviation:** нет
