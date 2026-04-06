@@ -59,7 +59,7 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 - ✅ Step 3: banxe-frankfurter deployed `:8181` (bridge, hakanensari/frankfurter)
 - ✅ Step 4: smoke test → `{"base":"GBP","rates":{"EUR":1.1461,"USD":1.3209}}`
 - ✅ Step 6: daily-recon.sh dry-run OK (imports verified)
-- ⏳ Step 5: pgAudit — ждёт отдельного CEO акцепта (docker restart postgres ~8 сек)
+- ✅ Step 5: pgAudit 17.1 — `pgaudit.log='write,ddl'`, log_relation=on. postgres restart OK, все сервисы живы.
 
 ### NOT_DEFINED блоки (ждут CEO):
 - B (Infra/DevOps), E, G, H, I — не определены в ADR-013/014
@@ -314,7 +314,7 @@ Offline:
 | FA-01 | ReconciliationEngine (Midaz vs bank) | ✅ code | IL-007 |
 | FA-02 | bankstatementparser (CAMT.053) | ✅ wrapper | IL-009 |
 | FA-03 | dbt Core (staging→safeguarding→fin060) | ✅ models | IL-009 |
-| FA-04 | pgAudit | ⏳ pending CEO акцепт | IL-010 |
+| FA-04 | pgAudit | ✅ **DEPLOYED** pgaudit 17.1 | IL-010 |
 | FA-05 | WeasyPrint FIN060 PDF | ✅ code | IL-009 |
 | FA-06 | Frankfurter FX :8181 | ✅ **DEPLOYED** | IL-010 |
 | FA-07 | adorsys PSD2 gateway | ⏳ Phase 2 | — |
