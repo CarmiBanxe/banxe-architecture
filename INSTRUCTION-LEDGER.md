@@ -221,7 +221,8 @@
   6. E2E pipeline: statement_poller → 2 CAMT.053 files → IBAN/balance verified → ✅
   7. cron в daily-recon.sh: poll → parse → recon → ⏳
   8. git commit + push banxe-emi-stack → ✅ cb782aa
-  9. CEO verify → ⏳
-- **Статус:** VERIFY
-- **Proof:** `banxe-mock-aspsp Up`. E2E: `camt053_20260406_3459.xml IBAN=GB29BARC... balance=125000.00 GBP` + `camt053_20260406_3460.xml balance=480000.00 GBP`. Port :8888, image 8f006ca5.
-- **Deviation:** adorsys образы в приватном GitLab registry (не Docker Hub) → заменён на FastAPI mock-ASPSP (вариант B, акцепт CEO). Port 8090 занят guiyon_api.py (I-18) → не использован. Real IBANs не заполнены — заблокированы до отдельной валидации (logging/env-exposure/network-isolation).
+  9. CEO verify → ✅ акцепт 2026-04-06
+- **Статус:** DONE ✅
+- **CEO Акцепт:** 2026-04-06
+- **Proof:** `banxe-mock-aspsp Up`. E2E: `camt053_20260406_3459.xml IBAN=GB29BARC... balance=125000.00 GBP` + `camt053_20260406_3460.xml balance=480000.00 GBP`. Port :8888, image 8f006ca5. Commit cb782aa.
+- **Deviation:** adorsys образы в приватном GitLab registry → заменён на FastAPI mock-ASPSP (вариант B, акцепт CEO). Port 8090 занят guiyon_api.py (I-18) → не использован. Real IBANs заблокированы до отдельной валидации.

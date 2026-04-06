@@ -29,41 +29,40 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 | Ruflo | Review Agent | — | PR review, invariants, BC boundaries |
 | MiroFish | Research Agent | :3001/:5004 | API research, changelog, feature parity |
 
-## 3. ТЕКУЩЕЕ СОСТОЯНИЕ (Sprint P2, IL-007..IL-009 in progress)
+## 3. ТЕКУЩЕЕ СОСТОЯНИЕ — P0 CASS 15 COMPLETE ✅ (2026-04-06)
 
-### Завершено (до 2026-04-06):
-- Sprint 0-5: ALL DONE, 663 теста, 22/22 GAPs DONE
-- Sprint 8 Block A: Midaz CBS DEPLOYED (midaz-ledger :8095)
-- Sprint 8 Block J Phase 1: Safeguarding accounts (IL-002 DONE)
-- Sprint 8 Block F: Compliance 80% DONE
-- IL-006 DONE: Transaction API + T-01..T-15 (commit 8ae7dd0, Ruflo APPROVED)
+### IL-001..IL-011 — ALL DONE ✅
+| IL | Задача | Commit |
+|----|--------|--------|
+| IL-001 | Midaz healthcheck fix | — |
+| IL-002 | Safeguarding accounts (ADR-013) | — |
+| IL-003 | LedgerPort ABC + MidazAdapter | — |
+| IL-004 | Instruction Ledger System (I-28) | — |
+| IL-005 | Sprint 8 итог | 4c79777 |
+| IL-006 | Transaction API T-01..T-15 | 8ae7dd0 |
+| IL-007 | ReconciliationEngine + T-16..T-30 | vibe-coding 3f7060f |
+| IL-008 | COMPLIANCE-MATRIX 200+ req, Ruflo 10/10 | banxe-arch a8f4b99 |
+| IL-009 | banxe-emi-stack P0 skeleton 24 файла | emi ab81ecc |
+| IL-010 | Frankfurter :8181 + pgAudit 17.1 deployed | emi 3400839 |
+| IL-011 | mock-ASPSP :8888 + E2E CAMT.053 pipeline | emi cb782aa |
 
-### IL-007 — DONE ✅ (CEO акцепт 2026-04-06):
-- ReconciliationEngine + StatementFetcher + T-16..T-30 (15/15 passed)
-- ClickHouse banxe.safeguarding_events table (GMKtec)
-- Commit: vibe-coding 3f7060f
+### P0 FA-01..FA-07 — все DEPLOYED ✅
+| FA | Компонент | Порт / Артефакт | Статус |
+|----|-----------|-----------------|--------|
+| FA-01 | ReconciliationEngine (Midaz vs bank) | vibe-coding 3f7060f | ✅ |
+| FA-02 | bankstatementparser CAMT.053 wrapper | services/recon/ | ✅ |
+| FA-03 | dbt staging→safeguarding→fin060 | dbt/models/ (3) | ✅ |
+| FA-04 | pgAudit 17.1 on banxe_compliance | postgres :5432 | ✅ |
+| FA-05 | WeasyPrint FIN060 PDF generator | services/reporting/ | ✅ code |
+| FA-06 | Frankfurter FX (self-hosted ECB) | :8181 | ✅ live |
+| FA-07 | mock-ASPSP PSD2 (FastAPI sandbox) | :8888 | ✅ live |
 
-### IL-008 — DONE ✅ (CEO акцепт 2026-04-06):
-- COMPLIANCE-MATRIX.md: 15 разделов, 200+ требований (banxe-architecture a8f4b99)
-- Overall EMI readiness: ~35% | Payment Rails: 0% | AI/HITL: 95%
-- Ruflo: 10/10 PASS APPROVED (docs/reviews/IL-008-review.md)
-
-### IL-009 — DONE ✅ (CEO акцепт 2026-04-06):
-- banxe-emi-stack P0 skeleton: 24 файла, commit ab81ecc
-- https://github.com/CarmiBanxe/banxe-emi-stack (private)
-- Services: midaz_client, recon engine, CAMT.053 parser, FIN060 generator
-- dbt: 3 модели. Docker: 2 compose files. Scripts: 3 cron scripts.
-
-### IL-010 — DONE ✅ (CEO акцепт 2026-04-06):
-- ✅ Step 1-2: rsync banxe-emi-stack → GMKtec `/data/banxe/banxe-emi-stack/`
-- ✅ Step 3: banxe-frankfurter deployed `:8181` (bridge, hakanensari/frankfurter)
-- ✅ Step 4: smoke test → `{"base":"GBP","rates":{"EUR":1.1461,"USD":1.3209}}`
-- ✅ Step 6: daily-recon.sh dry-run OK (imports verified)
-- ✅ Step 5: pgAudit 17.1 — `pgaudit.log='write,ddl'`, log_relation=on. postgres restart OK, все сервисы живы.
-
-### IL-011 — VERIFY:
-- FA-07: mock-ASPSP FastAPI :8888 deployed. E2E OK: poller → 2×CAMT.053 → IBAN/balance verified.
-- Real IBANs заблокированы до отдельной валидации (logging/env/network).
+### P1 — следующий фронт (после 7 May 2026)
+- Payment Rails (ClearBank/Modulr) — S4, 0% → CRITICAL
+- Real IBAN validation для FA-07 Phase 1 (logging + env + network isolation)
+- dbt production run против реального ClickHouse
+- FIN060 PDF → RegData upload
+- Metabase/Superset, Great Expectations, Debezium, Temporal, Kafka
 
 ### NOT_DEFINED блоки (ждут CEO):
 - B (Infra/DevOps), E, G, H, I — не определены в ADR-013/014
