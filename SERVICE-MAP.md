@@ -1,6 +1,6 @@
 # Service Map — Banxe GMKtec (192.168.0.72)
 
-**Последнее обновление:** 2026-04-05  
+**Последнее обновление:** 2026-04-06 (Sprint 8: Midaz CBS deployed)  
 **Платформа:** AMD Ryzen AI MAX+ 395, 128GB RAM, ROCm
 
 ---
@@ -33,6 +33,9 @@
 | Firebase emulator | 9099/4000 | HTTP | Apache 2.0 | ✅ | Marble auth (local mode) |
 | Auto-Verify API | 8094 | HTTP | — | ✅ | Agent response verification |
 | AutoResearchClaw | — | — | — | ✅ | R&D optimization (not prod) |
+| **Midaz Ledger** | **8095** | HTTP | Apache 2.0 | **✅ Sprint 8** | CBS PRIMARY: unified ledger (onboarding + transaction) |
+| **MongoDB (Midaz)** | 5703 | TCP | SSPL | **✅ Sprint 8** | Midaz metadata store (rs0 replica set) |
+| **RabbitMQ (Midaz)** | 3003/3004 | HTTP/AMQP | MPL 2.0 | **✅ Sprint 8** | Midaz async transaction queue |
 
 ## Модели Ollama (актуально 2026-04-05)
 
