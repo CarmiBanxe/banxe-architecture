@@ -141,3 +141,21 @@
 - **Статус:** VERIFY
 - **Proof:** `python3 -m pytest src/compliance/recon/test_reconciliation.py --override-ini='addopts=' -v` → 15 passed in 0.06s. Commit: vibe-coding 3f7060f (4 files, 551 insertions).
 - **Deviation:** нет
+
+---
+
+### IL-008 — COMPLIANCE MATRIX: Master Document vs Реализация
+- **Источник:** CEO запрос, 2026-04-06
+- **Приоритет:** P0 (стратегический аудит)
+- **Assignee:** Claude Code (lead) + MiroFish (research) + Ruflo (audit)
+- **Шаги:**
+  1. Парсинг Master Document — извлечь ВСЕ требования по разделам → ⏳
+  2. Сверка каждого требования с артефактами в репо → ⏳
+  3. Создать `docs/COMPLIANCE-MATRIX.md` → ⏳
+  4. Создать `docs/diagrams/compliance-heatmap.md` (Mermaid) → ⏳
+  5. Ruflo: аудит матрицы на полноту → ⏳
+  6. git commit + push → ⏳
+  7. CEO verify → ⏳
+- **Статус:** ACCEPTED
+- **Proof:** (будет заполнен по шагам)
+- **Deviation:** нет — ожидаем Master Document от CEO (не прикреплён)
