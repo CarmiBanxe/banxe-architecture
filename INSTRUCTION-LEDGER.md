@@ -115,12 +115,12 @@
 - **Приоритет:** P1 (Block J deadline 7 May 2026 зависит от D)
 - **Шаги:**
   1. MiroFish: исследовать Midaz Transaction API endpoints + DSL → ✅ `docs/midaz-transaction-api-research.md`
-  2. Aider: реализовать LedgerPort.create_transaction() + list_transactions() → ⏳
-  3. Aider: frozen dataclass TransactionRequest / TransactionResponse → ⏳
-  4. Aider: тесты T-01..T-15 (CTX-06 AMBER, G-16) → ⏳
+  2. Aider: реализовать LedgerPort.create_transaction() + list_transactions() → ✅ commit 8ae7dd0
+  3. Aider: frozen dataclass TransactionRequest / TransactionResult → ✅ commit 8ae7dd0
+  4. Aider: тесты T-01..T-15 (CTX-06 AMBER, G-16) → ✅ 15/15 passed, commit 8ae7dd0
   5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ✅ commit 98ca7d7
   6. Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → ⏳
-  7. git commit + push → ⏳
+  7. git commit + push → ✅ vibe-coding 8ae7dd0
   8. CEO verify → ⏳
-- **Статус:** IN_PROGRESS
-- **Proof:** Step 1: `docs/midaz-transaction-api-research.md` (MiroFish, 55 tool uses, endpoints + DSL + errors). Step 5: commit 98ca7d7.
+- **Статус:** VERIFY
+- **Proof:** Steps 2-4: commit 8ae7dd0 (vibe-coding). Files: ledger_port.py +53, midaz_adapter.py +115, test_midaz_transaction.py +292 (new). Tests: 29/29 passed (15 new T-01..T-15 + 14 existing). Step 5: commit 98ca7d7.
