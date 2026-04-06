@@ -118,7 +118,7 @@
   2. Aider: реализовать LedgerPort.create_transaction() + list_transactions() → ⏳
   3. Aider: frozen dataclass TransactionRequest / TransactionResponse → ⏳
   4. Aider: тесты T-01..T-15 (CTX-06 AMBER, G-16) → ⏳
-  5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ⏳
+  5. Claude Code: D-RECON-DESIGN.md (ClickHouse ↔ safeguarding recon) → ✅
   6. Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → ⏳
   7. git commit + push → ⏳
   8. CEO verify → ⏳
