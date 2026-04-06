@@ -38,3 +38,22 @@
 | GAP 6 | Autoresearch program.md | Низкий |
 | GAP 7 | OpenRLHF pipeline | Низкий |
 | GAP 8 | TinyTroupe / AMLSim adversarial | Низкий |
+
+---
+
+## P0 Blockers (FCA Regulatory — Hard Deadlines)
+
+| Block | Description | Deadline | Status | Notes |
+|-------|-------------|----------|--------|-------|
+| J — Safeguarding | FCA CASS 15 safeguarding engine, segregated accounts | **7 May 2026** | 0% — ABSENT | Blocks EMI operation |
+| K — FIN-RPT | FCA RegData/Gabriel regulatory returns | **Q2 2026** | 0% — ABSENT | Required for FCA authorisation maintenance |
+
+## P1 Core Banking Gaps (Sprint 8-10)
+
+| Block | Description | Priority | Status | Sprint |
+|-------|-------------|----------|--------|--------|
+| D-gl | Midaz GL deploy + LedgerPort adapter | P1 | 5% — In Progress | Sprint 8 |
+| D-recon | Reconciliation engine (Midaz ↔ safeguarding accounts) | P1 | 0% | Sprint 9 |
+| D-fin | Financial reporting (P&L, balance sheet) | P1 | 0% | Sprint 10 |
+| E-safeguard | Safeguarding account management | P0 | 0% | Sprint 9 — URGENT |
+| F-fatca | FATCA/CRS tax reporting | P2 | 0% | Sprint 11 |
