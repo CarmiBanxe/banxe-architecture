@@ -97,9 +97,11 @@
   1. Собрать данные: порты, контексты, хуки, ADR, инварианты, контейнеры → ✅
   2. Написать отчёт в установленном формате → ✅ (отчёт выдан CEO)
   3. Акцепт CEO + verdict → ✅
-  4. Task 1: GAP-REGISTER.md Sprint 8 → ⏳ IN_PROGRESS
-  5. Task 2: blocks-sprint8.md → ⏳ PENDING
-  6. Task 3: context-map.yaml CTX-06 → ⏳ PENDING
-  7. git commit + push → ⏳ PENDING
-- **Статус:** IN_PROGRESS
-- **Deviation:** нет
+  4. Task 1: GAP-REGISTER.md Sprint 8 → ✅ (diff показан CEO перед коммитом)
+  5. Task 2: docs/blocks-sprint8.md → ✅ (138 строк, блоки A-J)
+  6. Task 3: domain/context-map.yaml CTX-06 → ✅ (AMBER, LedgerPort, safeguarding IDs)
+  7. git commit + push → ✅ 4c79777
+  8. Task 4: D-recon / Transaction API → ⏳ PENDING CEO акцепт
+- **Статус:** VERIFY
+- **Proof:** `git push → banxe-architecture 4c79777` (234 вставки, 4 файла)
+- **Deviation:** blocks B, E, G, H, I — NOT_DEFINED в ADR-013/014. Зафиксировано явно в blocks-sprint8.md.
