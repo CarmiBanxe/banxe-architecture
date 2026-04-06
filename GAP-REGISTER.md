@@ -126,6 +126,17 @@
 - [x] G-14: OPA Sidecar Pilot — DONE (28 tests)
 - [x] G-15: Multi-Agent Review Pattern — DONE (28 tests)
 
+### Sprint 8 (2026-04-06) — Midaz CBS Integration + IL System
+
+- [x] ADR-012: Compliance API port :8090→:8093 — DONE (commit 20831f8, DEF-001 resolved)
+- [x] ADR-013: Midaz v3.5.3 PRIMARY CBS — DONE (commit 22201fe, midaz-ledger healthy :8095)
+- [x] ADR-014: Composable Financial Stack — DONE
+- [x] DEF-002: midaz-ledger healthcheck — DONE (distroless/static: `disable:true` + external cron `/usr/local/bin/midaz-healthcheck.sh`, API → "healthy")
+- [x] G-16 extension: LedgerPort ABC + MidazLedgerAdapter — DONE (ports/ledger_port.py, adapters/midaz_adapter.py, 14/14 tests passing)
+- [x] I-28: Instruction Ledger System — DONE (INSTRUCTION-LEDGER.md, il-check.sh, il_gate.py hook, KA-11 CANON, .claude/CLAUDE.md)
+- [ ] Block J: Safeguarding accounts — IN_PROGRESS (org + ledger + GBP asset + 2 accounts created; reconciliation engine pending Sprint 9, deadline 7 May 2026)
+- [ ] D-recon: Reconciliation engine — NOT_STARTED (Sprint 9)
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |

@@ -290,6 +290,84 @@ relationships:
       before delegating to Level-2/3 adapters. Tight coupling intentional
       at the security boundary; both contexts evolve together.
 
+  - id: CTX-06
+    name: Core Banking (CBS)
+    bounded_context: core_banking_context
+    description: >
+      General Ledger and account management via Midaz v3.5.3 (LerianStudio).
+      Unified ledger: onboarding (organisations, ledgers, assets, accounts) +
+      transaction (double-entry journal entries). Implements CASS 7 safeguarding
+      account model: client_funds (liability) + operational (asset) segregation.
+      All upstream consumers (reconciliation, compliance, safeguarding) access
+      CBS exclusively through LedgerPort — enabling PRIMARY/FALLBACK swap
+      (Midaz → Fineract) without upstream changes (I-10, ADR-013).
+    team_owner: CTIO
+    trust_zone: AMBER
+    change_class: CLASS_B
+    invariants:
+      - I-10  # No fake integrations — Midaz receives live API calls
+      - I-18  # Port isolation — :8095 reserved for Midaz
+    sprint_introduced: "Sprint 8 (2026-04-06)"
+    adr_refs:
+      - ADR-013  # Midaz CBS PRIMARY
+      - ADR-014  # Composable Financial Stack
+    ports:
+      - name: LedgerPort
+        type: DRIVEN
+        interface: src/compliance/ports/ledger_port.py
+        description: >
+          Abstract CBS interface. Adapters: MidazLedgerAdapter (PRIMARY),
+          FineractLedgerAdapter (FALLBACK — not yet implemented).
+        methods:
+          - health_check()
+          - create_organization()
+          - create_ledger()
+          - create_account()
+          - get_balance()
+          - create_transaction()   # NotImplementedError — Sprint 9
+    adapters:
+      - name: MidazLedgerAdapter
+        file: src/compliance/adapters/midaz_adapter.py
+        target: "http://127.0.0.1:8095"   # Midaz Ledger :8095
+        tests: 14
+        test_file: src/compliance/test_midaz_adapter.py
+        status: ACTIVE
+    infrastructure:
+      - service: midaz-ledger
+        image: lerianstudio/midaz-ledger:latest
+        port: 8095
+        note: distroless/static-debian12, healthcheck external (cron /usr/local/bin/midaz-healthcheck.sh)
+      - service: midaz-mongodb
+        image: mongo:8
+        port: 5703
+        note: single-node replica set rs0 (required for change streams)
+      - service: midaz-rabbitmq
+        image: rabbitmq:4.1.3-management-alpine
+        ports: [3003, 3004]
+        note: async transaction queue; management UI :3003, AMQP :3004
+      - service: postgres (shared)
+        note: midaz_onboarding + midaz_transaction schemas on existing postgres:17 :5432
+      - service: redis (shared)
+        note: DB 1 (isolated from compliance DB 0)
+    relationships:
+      - target: CTX-01
+        pattern: DOWNSTREAM
+        description: >
+          CTX-01 (Decision Engine) calls LedgerPort to emit financial events
+          post-decision. Downstream of compliance decisions.
+      - target: CTX-03
+        pattern: DOWNSTREAM
+        description: >
+          CTX-03 (Audit) reads ledger events for FCA audit trail completeness.
+    safeguarding_accounts:
+      organisation: "019d6301-32d7-70a1-bc77-0a05379ee510"
+      ledger: "019d632f-519e-7865-8a30-3c33991bba9c"
+      gbp_asset: "019d632f-7c06-75e0-9a49-8249da13f609"
+      client_funds: "019d6332-da7f-752f-b9fd-fa1c6fc777ec"
+      operational: "019d6332-f274-709a-b3a7-983bc8745886"
+      fca_deadline: "2026-05-07"
+      regulation: "FCA CASS 7 / EMR 2011 Reg.19"
+
 shared_kernels:
   - name: DecisionEvent
     description: >
@@ -313,7 +391,7 @@ trust_boundary_summary:
     contexts: [CTX-04]
     policy: "Full access to operational tooling; no direct policy writes"
   AMBER:
-    contexts: [CTX-01, CTX-05]
+    contexts: [CTX-01, CTX-05, CTX-06]
     policy: "Core business logic; strict port/adapter discipline enforced"
   RED:
     contexts: [CTX-02, CTX-03]
