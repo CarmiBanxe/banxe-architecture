@@ -137,8 +137,9 @@
   3. StatementFetcher placeholder (CSV) → ✅ commit 3f7060f
   4. Тесты: T-16..T-30 (unit, no real CH/Midaz) → ✅ 15/15 passed, commit 3f7060f
   5. git commit + push → ✅ vibe-coding 3f7060f
-  6. CEO verify → ⏳
-- **Статус:** VERIFY
+  6. CEO verify → ✅ акцепт 2026-04-06
+- **Статус:** DONE ✅
+- **CEO Акцепт:** 2026-04-06
 - **Proof:** `python3 -m pytest src/compliance/recon/test_reconciliation.py --override-ini='addopts=' -v` → 15 passed in 0.06s. Commit: vibe-coding 3f7060f (4 files, 551 insertions).
 - **Deviation:** нет
 
@@ -155,8 +156,9 @@
   4. Создать `docs/diagrams/compliance-heatmap.md` (Mermaid) → ✅ pie+bar+gantt+agent
   5. Ruflo: аудит матрицы на полноту → ✅ 10/10 PASS, APPROVED
   6. git commit + push → ✅ banxe-architecture a8f4b99 (3052 insertions)
-  7. CEO verify → ⏳
-- **Статус:** VERIFY
+  7. CEO verify → ✅ акцепт 2026-04-06
+- **Статус:** DONE ✅
+- **CEO Акцепт:** 2026-04-06
 - **Proof:** commit a8f4b99 — 8 files, 3052 insertions. Ruflo: 10/10 PASS, APPROVED. Overall EMI: 35% | Payment Rails: 0% CRITICAL | CASS deadline: 7 May 2026.
 - **Deviation:** Master Document скопирован из Windows Downloads (не был прикреплён к первому сообщению)
 
@@ -179,7 +181,26 @@
   9. Security: pgAudit → ✅ docker-compose.recon.yml (postgres + pgaudit.log config)
   10. Scripts: daily-recon.sh + monthly-fca-return.sh + audit-export.sh → ✅ commit ab81ecc
   11. git commit + push → ✅ banxe-emi-stack ab81ecc (24 files, 1385 insertions)
-  12. CEO verify → ⏳
-- **Статус:** VERIFY
+  12. CEO verify → ✅ акцепт 2026-04-06
+- **Статус:** DONE ✅
+- **CEO Акцепт:** 2026-04-06
 - **Proof:** `gh repo view CarmiBanxe/banxe-emi-stack` → private repo exists. Commit ab81ecc: 24 files, 1385 insertions. Структура: CLAUDE.md, .env.example, .claude/agents×2, docker×2, services/ledger+recon+reporting, dbt models×3, scripts×3.
-- **Deviation:** CEO: "P0 skeleton first, не делай full structure". Создана только P0-critical skeleton (ledger/recon/reporting/CASS). n8n workflow JSON (Step 10) отложен → P1 (требует live n8n instance). pgAudit SQL init file отмечен как todo в docker-compose.
+- **Deviation:** CEO: "P0 skeleton first, не делай full structure". Создана только P0-critical skeleton (ledger/recon/reporting/CASS). n8n workflow JSON отложен → P1. pgAudit SQL init file → IL-010.
+
+---
+
+### IL-010 — P0 Deploy: Frankfurter + pgAudit + Recon Stack on GMKtec
+- **Источник:** CEO акцепт IL-009, 2026-04-06
+- **Приоритет:** P0 (FCA CASS 7.15, deadline 7 May 2026)
+- **Описание:** Задеплоить P0 финансовый стек на GMKtec: Frankfurter FX (FA-06), pgAudit init SQL (FA-04), docker-compose.recon.yml, первый live recon-run.
+- **Шаги:**
+  1. Frankfurter: docker pull + run на GMKtec (:8080) → ⏳
+  2. pgAudit init SQL: создать `docker/postgres/pgaudit.sql` в banxe-emi-stack → ⏳
+  3. Деплой docker-compose.recon.yml на GMKtec (Postgres + pgAudit + ClickHouse + Redis + n8n + Frankfurter) → ⏳
+  4. Smoke test: curl http://gmktec:8080/latest?from=GBP → ⏳
+  5. First recon dry-run: `bash scripts/daily-recon.sh` на GMKtec → ⏳
+  6. git commit + push banxe-emi-stack → ⏳
+  7. CEO verify → ⏳
+- **Статус:** PENDING
+- **Proof:** —
+- **Deviation:** —
