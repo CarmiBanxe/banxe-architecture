@@ -367,3 +367,23 @@
   - banxe-emi-stack: commit 630f647 (5 files, 868 insertions — CHANGELOG, RUNBOOK, ONBOARDING, API.md, openapi.yml)
   - banxe-architecture: commit c876a07 (DOC-STANDARD.md + I-29 в INVARIANTS.md)
   - Стандарт установлен как КАНОН: I-29 блокирует IL DONE без обязательных doc файлов
+
+---
+
+### IL-018 — Claude Code Local/Cloud Routing Policy
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1 (архитектурный стандарт)
+- **Описание:** Формализовать, когда Claude Code работает через Anthropic Cloud API (cc-cloud), а когда — через локальную модель на GMKtec (cc-local). Установить обязательные правила для каждого режима и каждой плоскости (Plane). Только верифицированные факты, честное описание quality delta.
+- **Шаги:**
+  1. `banxe-architecture/docs/LOCAL-CLOUD-ROUTING.md` — политика routing с [ФАКТ]/[ВЫВОД]/[НЕИЗВЕСТНО] labels → ✅
+  2. `banxe-architecture/INVARIANTS.md` — добавить I-30 (PROPOSED): quality-gate.sh mandatory независимо от routing mode → ✅
+  3. `banxe-architecture/docs/COMPLIANCE-MATRIX.md` — добавить S13-18: quality gate mandatory cc-cloud AND cc-local → ✅
+  4. `banxe-architecture/INSTRUCTION-LEDGER.md` — эта запись → ✅
+  5. git commit + push → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - `banxe-architecture/docs/LOCAL-CLOUD-ROUTING.md` создан (221 строка): Verified Facts, Risks, Routing Policy per Plane, Model Matrix, Operational Rules, Open Questions (OQ-1..OQ-5), Proposed Invariant I-30
+  - INVARIANTS.md: I-30 добавлен как PROPOSED
+  - COMPLIANCE-MATRIX.md: S13-18 добавлен, покрытие S13: 11/17 → 12/18 = 67%
+  - git commit: `feat(il-018): add local/cloud routing policy for Claude Code`
+- **Deviation:** нет

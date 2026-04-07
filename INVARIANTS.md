@@ -160,3 +160,13 @@ CHANGELOG.md обновляется при каждом IL. API.md при изм
 Нарушение: IL не может получить статус DONE без обновлённой документации.
 Обоснование: FCA audit trail требует воспроизводимости и объяснимости каждого решения.
 "If it's not documented, it didn't happen."
+
+**I-30 — Quality Gate Mandatory Regardless of Model Routing (PROPOSED)**
+`quality-gate.sh` обязателен для всех Product Plane репозиториев независимо от
+модельного routing режима (cc-cloud / cc-local).
+Коммит в Product Plane принимается только после quality gate PASS.
+Режим cc-local не является основанием для пропуска gate.
+Канон: `banxe-architecture/docs/LOCAL-CLOUD-ROUTING.md`, раздел Operational Rules.
+*PROPOSED — требует явного утверждения CEO перед переводом в обязательный статус.*
+Обоснование: деградация качества локальных моделей не должна приводить к снижению
+стандарта для FCA-regulated кода. Gate одинаков для Sonnet и qwen3-coder.
