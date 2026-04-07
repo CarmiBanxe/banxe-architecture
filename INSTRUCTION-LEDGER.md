@@ -690,7 +690,7 @@
   3. `tests/test_customer_service.py` — 25+ тестов → ⏳
   4. COMPLIANCE-MATRIX.md S17-01/S17-09: ❌ → 🔄 → ⏳
   5. git commit + push → ⏳
-- **Статус:** 🔄 IN_PROGRESS
+- **Статус:** DONE ✅ (см. ниже)
 
 ---
 
@@ -703,8 +703,8 @@
   2. `services/agreement/agreement_service.py` — InMemoryAgreementService + DocuSign stub → ⏳
   3. `tests/test_agreement_service.py` — 20+ тестов → ⏳
   4. COMPLIANCE-MATRIX.md S17-02: ❌ → 🔄 → ⏳
-  5. git commit + push → ⏳
-- **Статус:** ⏳ PENDING
+  5. git commit + push → ✅
+- **Статус:** DONE ✅ (см. ниже)
 
 ---
 
@@ -716,8 +716,8 @@
   1. `services/events/event_bus.py` — DomainEvent base, BanxeEventType enum, InMemoryEventBus, RabbitMQEventBus stub → ⏳
   2. `tests/test_event_bus.py` — 15+ тестов → ⏳
   3. COMPLIANCE-MATRIX.md S17-11: 🔄 → DONE → ⏳
-  4. git commit + push → ⏳
-- **Статус:** ⏳ PENDING
+  4. git commit + push → ✅
+- **Статус:** DONE ✅ (см. ниже)
 
 ---
 
