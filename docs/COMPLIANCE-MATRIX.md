@@ -219,8 +219,9 @@
 | S7-18 | SOUL.md protection (chattr+i) | ✅ DONE | docs/SOUL-PROTECTION.md | Claude Code | — |
 | S7-19 | Feedback loop + REFUTED corpus | ✅ DONE | G-05 DONE, feedback_loop.py | Aider | — |
 | S7-20 | ReviewAgent (multi-agent review) | ✅ DONE | G-15 DONE, review_agent.py | Aider | — |
+| S7-21 | ComplianceValidator live deploy on GMKtec | 🔄 IN_PROGRESS | IL-021: 3/5 PASS, drift 0.253, compliance-officer FAIL | Claude Code | REFUTED recall remediation |
 
-**Покрытие S7: 19/20 = 95%** | ✅ EXCEEDS industry standard | Gap: S7-09 (Lerian MCP)
+**Покрытие S7: 19/21 = 90%** | S7-09 (Lerian MCP), S7-21 (live deploy partial)
 
 ---
 
