@@ -182,16 +182,16 @@
 | S6-05 | ClickHouse banxe.safeguarding_events table | ✅ DONE | IL-007 Step 1, GMKtec SSH, DESCRIBE TABLE 13 cols | Claude Code | — |
 | S6-06 | ReconciliationEngine Python (MATCHED/DISCREPANCY/PENDING) | 🔄 IN_PROGRESS | recon/reconciliation_engine.py, commit 3f7060f, T-16..T-30 15/15 | Claude Code | Код написан+тесты, не деплоен на GMKtec |
 | S6-07 | StatementFetcher (CSV Phase 1) | 🔄 IN_PROGRESS | recon/statement_fetcher.py, commit 3f7060f | Claude Code | Не деплоен; STATEMENT_DIR не настроен |
-| S6-08 | Daily reconciliation cron job (CASS 7.15) | ❌ NOT_STARTED | — | — | Нужен cron + actual Barclays/HSBC statement |
+| S6-08 | Daily reconciliation cron job (CASS 7.15) | 🔄 IN_PROGRESS | cron deployed GMKtec 07:00 Mon-Fri, IL-025 | Claude Code | Лог /var/log/banxe/recon.log, первый запуск завтра; IBANs не настроены |
 | S6-09 | External safeguarding bank account (Barclays/HSBC) | ❌ NOT_STARTED | — | CEO | P0 — требует корпоративного банк-счёта |
 | S6-10 | BaaS API polling для bank balance | ❌ NOT_STARTED | — | — | Блокирован S4 (нет BaaS) |
-| S6-11 | Shortfall alert (n8n → MLRO Telegram) | ❌ NOT_STARTED | — | — | n8n не сконфигурирован для safeguarding |
+| S6-11 | Shortfall alert (n8n → MLRO Telegram) | 🔄 IN_PROGRESS | safeguarding-shortfall-alert.json + daily-recon.sh Step 5, IL-025 | Claude Code | Ждёт n8n import (CEO action) + N8N_WEBHOOK_URL в .env |
 | S6-12 | Monthly FCA RegData return (automation) | ❌ NOT_STARTED | — | — | Phase 0 |
 | S6-13 | Annual safeguarding audit | ❌ NOT_STARTED | — | — | External auditor required |
 | S6-14 | CASS 10A resolution pack (48h retrieval) | ❌ NOT_STARTED | — | — | ClickHouse готов как base, нужен pack builder |
 
-**Покрытие S6: 6/14 = 43%** | 🔴 КРИТИЧНО — DEADLINE 7 MAY 2026 (~31 дней)
-**Оставшийся объём до дедлайна: S6-08, S6-10, S6-11, S6-12**
+**Покрытие S6: 7/14 = 50%** | 🔴 КРИТИЧНО — DEADLINE 7 MAY 2026 (~29 дней)
+**Оставшийся объём до дедлайна: S6-09 (CEO), S6-10 (BaaS), S6-11 (n8n import), S6-12**
 
 ---
 

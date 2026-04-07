@@ -553,3 +553,24 @@
   - Accuracy: 100.0% (cat A: 100%, C: 100%, D: 100%)
   - Commit: `0704010` (developer-core)
 - **Deviation:** Drift 0.667 > 0.15 threshold — модель qwen3.5 имеет высокую вариативность. Не блокирует: training STATUS=PASS достигнут. Drift снизится с большим объёмом corpus.
+
+---
+
+### IL-025 — S6-08/S6-11: recon cron verify + safeguarding shortfall alert
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1
+- **Описание:** S6-08: верифицировать daily-recon cron на GMKtec. S6-11: создать n8n shortfall alert workflow.
+- **Шаги:**
+  1. Проверка crontab GMKtec: `daily-recon.sh` задеплоен (07:00 пн-пт) → ✅
+  2. `daily-recon.sh` — добавлен Step 5: n8n webhook call при любом статусе → ✅
+  3. `n8n/workflows/safeguarding-shortfall-alert.json` — создан (Webhook → IF → Telegram MLRO + ClickHouse log) → ✅
+  4. COMPLIANCE-MATRIX.md S6-08: NOT_STARTED → IN_PROGRESS, S6-11: NOT_STARTED → IN_PROGRESS, покрытие 43% → 50% → ✅
+  5. git commit + push banxe-emi-stack → ✅
+  6. banxe-architecture commit + push → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - GMKtec crontab: `0 7 * * 1-5 ... daily-recon.sh` (verified)
+  - `safeguarding-shortfall-alert.json` создан (7 узлов, webhook trigger)
+  - daily-recon.sh: Step 5 добавлен (curl POST → N8N_WEBHOOK_URL)
+  - S6 покрытие: 6/14 → 7/14 (50%)
+- **Deviation:** n8n workflow import + N8N_WEBHOOK_URL в .env — требуют CEO action (ручной импорт в n8n UI). SAFEGUARDING IBANs не настроены (S6-09 BLOCKED).
