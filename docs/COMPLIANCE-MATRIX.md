@@ -161,13 +161,13 @@
 | ID | Требование | Статус | Proof | Owner | Gap |
 |----|-----------|--------|-------|-------|-----|
 | S5-21 | Velocity rules (txmonitor + Redis) | ✅ DONE | tx_monitor v2.1, Redis :6379 | Aider | — |
-| S5-22 | Real-time fraud scoring <100ms (Sardine.ai) | ❌ NOT_STARTED | — | — | P1 — PSR APP 2024 overdue |
+| S5-22 | Real-time fraud scoring <100ms (Sardine.ai) | 🔄 IN_PROGRESS | MockFraudAdapter + FraudScoringPort + 21 tests, IL-027 | Claude Code | Live Sardine.ai: BLOCKED на SARDINE_CLIENT_ID (CEO) |
 | S5-23 | Device fingerprinting | ❌ NOT_STARTED | — | — | P1 |
 | S5-24 | Account Takeover (ATO) prevention | ❌ NOT_STARTED | — | — | P1 |
 | S5-25 | 3DS authentication (via Monavate) | ❌ NOT_STARTED | — | — | P1 — при картах |
-| S5-26 | APP scam detection (PSR APP 2024) | ❌ NOT_STARTED | — | — | ❗ OVERDUE Oct 2024 |
+| S5-26 | APP scam detection (PSR APP 2024) | 🔄 IN_PROGRESS | AppScamIndicator enum + INVESTMENT_SCAM detection, IL-027 | Claude Code | Phase 1 mock; live requires Sardine.ai keys |
 
-**Покрытие S5: 13/26 = 50%** | Deployed AML strong; IDV/KYB/Fraud — gaps
+**Покрытие S5: 14/26 = 54%** | AML strong; fraud mock layer добавлен (PSR APP 2024 Phase 1)
 
 ---
 
