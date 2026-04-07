@@ -354,13 +354,16 @@
 - **Приоритет:** P1 (профессиональный стандарт разработки)
 - **Описание:** Закрыть doc gaps: CHANGELOG, RUNBOOK, ONBOARDING, API.md, OpenAPI spec. Установить doc standard в CANON (INVARIANTS.md + DOC-STANDARD.md).
 - **Шаги:**
-  1. `banxe-emi-stack/CHANGELOG.md` → ⏳
-  2. `banxe-emi-stack/docs/RUNBOOK.md` → ⏳
-  3. `banxe-emi-stack/docs/ONBOARDING.md` → ⏳
-  4. `banxe-emi-stack/docs/API.md` → ⏳
-  5. `banxe-emi-stack/services/payment/openapi.yml` → ⏳
-  6. `banxe-architecture/docs/DOC-STANDARD.md` — канон документации → ⏳
-  7. `banxe-architecture/INVARIANTS.md` — добавить I-29 (doc standard) → ⏳
-  8. git commit + push → ⏳
-- **Статус:** IN_PROGRESS 🔄
-- **Proof:** pending
+  1. `banxe-emi-stack/CHANGELOG.md` → ✅
+  2. `banxe-emi-stack/docs/RUNBOOK.md` → ✅
+  3. `banxe-emi-stack/docs/ONBOARDING.md` → ✅
+  4. `banxe-emi-stack/docs/API.md` → ✅
+  5. `banxe-emi-stack/services/payment/openapi.yml` → ✅
+  6. `banxe-architecture/docs/DOC-STANDARD.md` — канон документации → ✅
+  7. `banxe-architecture/INVARIANTS.md` — добавить I-29 (doc standard) → ✅
+  8. git commit + push → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - banxe-emi-stack: commit 630f647 (5 files, 868 insertions — CHANGELOG, RUNBOOK, ONBOARDING, API.md, openapi.yml)
+  - banxe-architecture: commit c876a07 (DOC-STANDARD.md + I-29 в INVARIANTS.md)
+  - Стандарт установлен как КАНОН: I-29 блокирует IL DONE без обязательных doc файлов
