@@ -148,3 +148,15 @@ Hook `il_gate.py` (PreToolUse) программно блокирует Edit/Writ
 `scripts/il-check.sh` — CLI для CEO: мгновенный статус всех инструкций.
 Нарушение = архитектурный дефект уровня P1. Требует Deviation-записи и объяснения.
 Обоснование: исполнительская дисциплина агента — основа доверия и FCA governance.
+
+**I-29 — Documentation Standard (Doc as First-Class Artifact)**
+Каждый репозиторий Product Plane обязан содержать: `CHANGELOG.md`, `docs/ONBOARDING.md`,
+`docs/RUNBOOK.md`, `docs/API.md`, `QUALITY.md`.
+Каждый Python модуль обязан иметь module-level docstring с WHY + FCA rule.
+Каждый HTTP endpoint обязан иметь OpenAPI 3.1 spec рядом с кодом.
+CHANGELOG.md обновляется при каждом IL. API.md при изменении публичного интерфейса.
+Устаревшая документация = tech debt уровня P2. Отсутствие обязательного файла = блокировка IL DONE.
+Канон: `banxe-architecture/docs/DOC-STANDARD.md`.
+Нарушение: IL не может получить статус DONE без обновлённой документации.
+Обоснование: FCA audit trail требует воспроизводимости и объяснимости каждого решения.
+"If it's not documented, it didn't happen."
