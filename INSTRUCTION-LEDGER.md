@@ -387,3 +387,58 @@
   - COMPLIANCE-MATRIX.md: S13-18 добавлен, покрытие S13: 11/17 → 12/18 = 67%
   - git commit: `feat(il-018): add local/cloud routing policy for Claude Code`
 - **Deviation:** нет
+
+---
+
+### IL-019 — Training Block Foundation (ретроспективное закрытие)
+- **Источник:** CEO, 2026-04-07 (ретроспектива)
+- **Приоритет:** P1
+- **Описание:** Закрыть блок обучения (MetaClaw / HITL feedback loop) как завершённый IL. Блок строился в рамках GAP-REGISTER G-05, G-15 и сопутствующих задач. Все компоненты задеплоены и работают на GMKtec.
+- **Компоненты (все DONE):**
+  - `developer/compliance/training/feedback_loop.py` (665 строк) — corpus → patch → governance gate → deploy
+  - `developer/compliance/training/verification_graph.py` — LangGraph 3-layer verification + HITL
+  - `developer/compliance/training/adversarial_sim.py` — 5 персон, adversarial testing
+  - `developer/compliance/training/deepeval_runner.py` — production readiness metrics
+  - `developer/compliance/training/promptfoo.yaml` — 25 test cases × 5 категорий
+  - `src/compliance/training/llm_judge.py` — Ollama LLM-as-judge (qwen3-banxe-v2)
+  - `src/compliance/training/evidently_monitor.py` — drift detection (threshold 0.15)
+  - `src/compliance/governance/soul_governance.py` — G-05 governance gate (CLASS_A/B/C)
+  - `training/scenarios/` — 160+ сценариев для 5 ролей (kyc, aml, compliance, risk, crypto)
+  - Cron jobs на GMKtec: adversarial sim вс 02:00, promptfoo вс 04:00, drift каждые 6ч
+  - CI/CD: `.github/workflows/compliance-ci.yml` + `extract-training-data.yml`
+- **Статус:** DONE ✅
+- **Proof:**
+  - G-05 governance gate: commit 5130232, suite 247/247 ✅
+  - G-15 multi-agent review: commit 3b84592, suite 663/663 ✅
+  - Corpus: 22 записи (corpus_20260403.jsonl + corpus_20260404.jsonl), growing via production
+  - Feedback loop cycle замкнут: agent → corpus → patch → SOUL.md/AGENTS.md → GMKtec deploy
+  - S7 COMPLIANCE-MATRIX: 19/20 = **95%** ✅
+- **Известные ограничения (не блокируют DONE):**
+  - Promptfoo pass rate: 28% (7/25) — ниже production threshold → закрывается отдельным IL-020
+  - Corpus: 22 записи — минимальный baseline, растёт через production
+  - S7-09 Lerian MCP Server — Phase 1, не начат
+
+---
+
+### IL-020 — Training Sprint: 10 раундов → Promptfoo ≥95% (A/B)
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P2
+- **Описание:** Довести promptfoo pass rate для категорий A/B с текущих 28% (7/25) до ≥95%. Запустить 10 раундов adversarial training на GMKtec, переобучить qwen3-banxe-v2, верифицировать через deepeval_runner.
+- **Целевые метрики:**
+  - `confirmed_ab_rate` ≥ 95% (категории A — compliance, B — architecture)
+  - `escalation_correct_cd` = 100% (категории C/D — red lines)
+  - `role_boundary_rate` = 100%
+  - `hallucination_rate_e` < 5%
+  - `max_drift_score` < 0.15
+- **Шаги:**
+  1. `bash scripts/train-agent.sh --agent kyc-specialist-v2 --rounds 10` на GMKtec → ⏳
+  2. Верификация: `python3 training/deepeval_runner.py` → `production_ready: true` → ⏳
+  3. Верификация: `promptfoo eval` → ≥95% pass A/B → ⏳
+  4. Если pass rate <95% — ещё 5 раундов, повторить → ⏳
+  5. `python3 feedback_loop.py --apply --approver mark-001 --approver-role DEVELOPER --reason "training sprint il-020"` → ⏳
+  6. Deploy на GMKtec: `bash scripts/train-agent.sh --deploy` → ⏳
+  7. Обновить COMPLIANCE-MATRIX.md S7: 95% → 100% → ⏳
+  8. git commit + push → ⏳
+- **Статус:** IN_PROGRESS ⏳
+- **Blocker:** Требует CEO action — запустить `bash scripts/train-agent.sh --rounds 10` на GMKtec (или дать команду Claude Code)
+- **Deviation:** нет
