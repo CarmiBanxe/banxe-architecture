@@ -15,7 +15,7 @@
 | Дата | ISO timestamp |
 | Инструкция | Дословный текст CEO |
 | Шаги | Разбивка на атомарные шаги |
-| Статус | PENDING → IN_PROGRESS → VERIFY → DONE / FAILED / BLOCKED |
+| Статус | ⏳→🔄→🔍→✅ / ❌ / 🚫 (DONE \| FAILED \| BLOCKED) |
 | Proof | Команда + её вывод (доказательство исполнения) |
 | Deviation | Отклонение от инструкции (если было) |
 | Blocker | Что помешало (если FAILED/BLOCKED) |
@@ -101,7 +101,7 @@
   5. Task 2: docs/blocks-sprint8.md → ✅ (138 строк, блоки A-J)
   6. Task 3: domain/context-map.yaml CTX-06 → ✅ (AMBER, LedgerPort, safeguarding IDs)
   7. git commit + push → ✅ 4c79777
-  8. Task 4: D-recon / Transaction API → ⏳ PENDING CEO акцепт
+  8. Task 4: D-recon / Transaction API → ✅ (IL-006)
 - **Статус:** DONE ✅
 - **Proof:** `git push → banxe-architecture 4c79777` (234 вставки, 4 файла)
 - **CEO Акцепт:** 2026-04-06 17:15 CEST (verified commit 0cc9940)
@@ -607,7 +607,7 @@
   2. `services/reporting/regdata_return.py` — RegDataReturnService, MockFIN060Generator, StubRegDataClient, _previous_month_period() → ✅
   3. `tests/test_resolution_pack.py` — 22 теста (build, manifest, ZIP, SLA <1s) → PASS → ✅
   4. `tests/test_regdata_return.py` — 14 тестов (period, deadline, pipeline, errors) → PASS → ✅
-  5. COMPLIANCE-MATRIX.md: S6-14 → DONE, S6-12 → IN_PROGRESS, покрытие 50% → 79% → ✅
+  5. COMPLIANCE-MATRIX.md: S6-14 → DONE, S6-12 → 🔄, покрытие 50% → 79% → ✅
   6. git commit + push: `152281c` → ✅
 - **Статус:** DONE ✅
 - **Proof:**
@@ -677,3 +677,70 @@
   - 4 agent passports: PaymentRouterAgent / CustomerLifecycleAgent / AgreementAgent / ReportingAgent
   - Общий миграционный статус Legacy→Banxe AI Bank: ~49%
 - **Deviation:** Блокеры: BT-005 (Companies House key), BT-010 (RegData key), BT-011 (Keycloak deploy), BT-001 (Modulr payment rails). CEO actions required.
+
+---
+
+### IL-032 — S17-01/S17-09: CustomerLifecycleAgent service (dual entity + lifecycle state machine)
+- **Источник:** GAP-REGISTER, 2026-04-08
+- **Приоритет:** P1
+- **Описание:** Реализовать CustomerManagement service в banxe-emi-stack: dual entity model (Individual/Company), UBO registry skeleton, 5-state lifecycle machine, full PII profile. Покрывает S17-01 + S17-09.
+- **Шаги:**
+  1. `services/customer/customer_port.py` — EntityType, LifecycleState, CustomerProfile, CustomerManagementPort Protocol → ⏳
+  2. `services/customer/customer_service.py` — InMemoryCustomerService + UBO registry → ⏳
+  3. `tests/test_customer_service.py` — 25+ тестов → ⏳
+  4. COMPLIANCE-MATRIX.md S17-01/S17-09: ❌ → 🔄 → ⏳
+  5. git commit + push → ⏳
+- **Статус:** 🔄 IN_PROGRESS
+
+---
+
+### IL-033 — S17-02: AgreementAgent service skeleton (T&C + e-sig stub)
+- **Источник:** GAP-REGISTER, 2026-04-08
+- **Приоритет:** P1
+- **Описание:** T&C generation per product, DocuSign e-signature stub (eIDAS), version history.
+- **Шаги:**
+  1. `services/agreement/agreement_port.py` — ProductType, SignatureStatus, Agreement, AgreementPort Protocol → ⏳
+  2. `services/agreement/agreement_service.py` — InMemoryAgreementService + DocuSign stub → ⏳
+  3. `tests/test_agreement_service.py` — 20+ тестов → ⏳
+  4. COMPLIANCE-MATRIX.md S17-02: ❌ → 🔄 → ⏳
+  5. git commit + push → ⏳
+- **Статус:** ⏳ PENDING
+
+---
+
+### IL-034 — S17-11: Event Bus domain events (RabbitMQ publisher pattern)
+- **Источник:** GAP-REGISTER, 2026-04-08
+- **Приоритет:** P1
+- **Описание:** Асинхронный Event Bus для cross-department messaging: PaymentCompleted, KYCApproved, SafeguardingShortfall и т.д. RabbitMQ publisher + InMemory stub.
+- **Шаги:**
+  1. `services/events/event_bus.py` — DomainEvent base, BanxeEventType enum, InMemoryEventBus, RabbitMQEventBus stub → ⏳
+  2. `tests/test_event_bus.py` — 15+ тестов → ⏳
+  3. COMPLIANCE-MATRIX.md S17-11: 🔄 → DONE → ⏳
+  4. git commit + push → ⏳
+- **Статус:** ⏳ PENDING
+
+---
+
+**ЗАКРЫТИЕ IL-032, IL-033, IL-034, IL-035** (2026-04-08)
+
+### IL-032 — CustomerLifecycleAgent service
+- **Статус:** DONE ✅
+- **Proof:** `services/customer/customer_port.py` (EntityType, LifecycleState 5-state, UBORecord) + `customer_service.py` (InMemoryCustomerService, I-02 enforced, lifecycle guard) + 25+ tests. Commit `27f8b81`.
+
+### IL-033 — AgreementAgent service
+- **Статус:** DONE ✅
+- **Proof:** `services/agreement/agreement_port.py` + `agreement_service.py` (T&C templates, DocuSign stub, version history, supersede) + 22 tests. Commit `27f8b81`.
+
+### IL-034 — Event Bus
+- **Статус:** DONE ✅
+- **Proof:** `services/events/event_bus.py` (22 BanxeEventType, InMemoryEventBus + RabbitMQEventBus stub) + 18 tests. Commit `27f8b81`.
+
+### IL-035 — Geniusto v5 Patterns: Provider Registry + Webhook Router + Event Bus wiring
+- **Статус:** DONE ✅
+- **Proof:**
+  - `services/providers/provider_registry.py` — YAML-driven, primary→fallback→sandbox, health check. 18 tests.
+  - `config/providers.yaml` — 6 categories, BT blockers documented.
+  - `services/webhooks/webhook_router.py` — HMAC Modulr/Sumsub/n8n, audit trail, replay. 20 tests.
+  - `payment_service.py` — Event Bus DI wiring, emits PAYMENT_COMPLETED/FAILED.
+  - BT-012/BT-013 в BLOCKED-TASKS.md (Saga + Three-Balance).
+  - 335/335 tests, ruff clean. Commit `30637fc`.

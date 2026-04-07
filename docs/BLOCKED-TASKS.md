@@ -135,4 +135,28 @@
 
 ---
 
+---
+
+### BT-012: Saga Coordinator (Payment flow) — зависит от Payment Rails
+- **Задача:** S4: Stateful payment saga — AML_CHECK → DEBIT_POSTED → RAIL_SUBMITTED → CONFIRMED (с compensation на fail)
+- **IL ref:** IL-035 (PROPOSED)
+- **Blocker:** Без реального Payment Rail (BT-001) saga не может быть протестирована end-to-end. MockAdapter никогда не падает с timeout — compensation path не покрыть.
+- **Тип:** EXTERNAL_CONTRACT (зависит от BT-001)
+- **Unblock trigger:** BT-001 разблокирован (Modulr API key) → реализовать `services/orchestration/saga.py` + интеграционный тест с Modulr webhook
+- **Дата блокировки:** 2026-04-08
+- **Статус:** BLOCKED
+
+---
+
+### BT-013: Three-Balance model (Virtual/Real/Snapshot) — зависит от Payment Rails
+- **Задача:** S5 Virtual/Real balance separation — available/pending/total per account; ClickHouse `balance_snapshots`; FCA CASS 7.15 daily recon по pending
+- **IL ref:** IL-036 (PROPOSED)
+- **Blocker:** Pending balance появляется только при реальном FPS authorization от BaaS (Modulr). MockAdapter сразу COMPLETED — pending state не существует. Нет смысла строить Three-Balance без реального settlement lifecycle.
+- **Тип:** EXTERNAL_CONTRACT (зависит от BT-001)
+- **Unblock trigger:** BT-001 разблокирован → Modulr webhook `payment.pending` → реализовать Three-Balance + snapshot cron
+- **Дата блокировки:** 2026-04-08
+- **Статус:** BLOCKED
+
+---
+
 *Файл поддерживается: Claude Code | I-31 (PROPOSED) | append-only*

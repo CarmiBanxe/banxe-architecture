@@ -621,17 +621,17 @@ graph TD
 
 | ID | Требование | FCA Rule | Приоритет | Статус | Owner | Gap |
 |----|-----------|----------|-----------|--------|-------|-----|
-| S17-01 | Customer Management Service — dual entity model (Individual / Company) + UBO registry | UK GDPR Art.5, FCA COBS 9A, MLR 2017 | P1 | ❌ NOT_STARTED | Claude Code | `CustomerLifecycleAgent` PROPOSED |
-| S17-02 | Agreement Service — T&C generation per product + DocuSign e-signature + version history | FCA COBS 6, eIDAS 910/2014 | P1 | ❌ NOT_STARTED | Legal Counsel | `AgreementAgent` PROPOSED |
+| S17-01 | Customer Management Service — dual entity model (Individual / Company) + UBO registry | UK GDPR Art.5, FCA COBS 9A, MLR 2017 | P1 | 🔄 IN_PROGRESS | Claude Code | `customer_port.py` + `customer_service.py` + 25 tests (IL-032); I-02 enforced; UBO registry done; no ClickHouse backend yet |
+| S17-02 | Agreement Service — T&C generation per product + DocuSign e-signature + version history | FCA COBS 6, eIDAS 910/2014 | P1 | 🔄 IN_PROGRESS | Claude Code | `agreement_port.py` + `agreement_service.py` + 22 tests (IL-033); DocuSign stub; version history done |
 | S17-03 | Notification Service — Email + SMS (OTP/alerts) + Push + multilingual templates (EN/RU/FR) | FCA COBS 4, UK GDPR (consent) | P1 | 🔄 IN_PROGRESS | Claude Code | n8n workflows partial (IL-025/IL-026), no unified port |
 | S17-04 | 2FA/MFA — TOTP + SMS OTP (RFC 6238) + Keycloak OIDC session management | PSR 2017 Reg.71 (SCA), FCA SM&CR SYSC 4.7 | P0 | 🔄 IN_PROGRESS | CTIO | Keycloak mock done (IL-029), deployment pending BT-011 |
 | S17-05 | Mass Payment Service — batch payroll / bulk transfers (FPS + BACS) | PSR 2017, FCA PS7/24 | P2 | ❌ NOT_STARTED | Treasury Manager | Blocked by payment rails BT-001 |
 | S17-06 | NOSTRO correspondent account reconciliation with external banks | PSR 2017, CASS 7 | P2 | ❌ NOT_STARTED | CFO | Blocked by safeguarding bank BT-002 |
 | S17-07 | Client Statement Service — monthly PDF/CSV per customer | CASS 15.12.4R, FCA PS7/24 | P2 | ❌ NOT_STARTED | Claude Code | `ReportingAgent` PROPOSED |
 | S17-08 | Device Fingerprinting — known device registry per customer | PSR 2017 Reg.71, FCA SM&CR | P1 | ❌ NOT_STARTED | CTIO | Part of SecurityAgent (Keycloak IAM) |
-| S17-09 | Customer Lifecycle State Machine — onboarding → active → dormant → offboarded → deceased | MLR 2017 record-keeping, FCA COBS 9A | P1 | ❌ NOT_STARTED | Claude Code | `CustomerLifecycleAgent` PROPOSED |
+| S17-09 | Customer Lifecycle State Machine — onboarding → active → dormant → offboarded → deceased | MLR 2017 record-keeping, FCA COBS 9A | P1 | 🔄 IN_PROGRESS | Claude Code | `LifecycleState` 5-state machine + `transition_lifecycle()` + transition guard (IL-032) |
 | S17-10 | Director/Shareholder/UBO Registry — full KYB chain for corporate customers | MLR 2017 §19, Companies House API (BT-005) | P0 | 🚫 BLOCKED | Claude Code | BT-005 Companies House key required |
-| S17-11 | Event Bus — async inter-department messaging (payment confirmed → notification → ledger) | FCA operational resilience PS21/3 | P1 | 🔄 IN_PROGRESS | CTIO | RabbitMQ deployed (Midaz), no Banxe domain events |
+| S17-11 | Event Bus — async inter-department messaging (payment confirmed → notification → ledger) | FCA operational resilience PS21/3 | P1 | 🔄 IN_PROGRESS | Claude Code | `event_bus.py` — 22 event types, InMemoryEventBus + RabbitMQEventBus stub + 18 tests (IL-034); integration into services pending (IL-035) |
 | S17-12 | Provider Registry — pluggable external service registry (IDV, fraud, payment rails) | FCA SYSC 8 (outsourcing), MLR 2017 | P1 | ❌ NOT_STARTED | Claude Code | Port/Adapter pattern exists; no central registry |
 
 ### Покрытие S17
