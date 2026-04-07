@@ -161,6 +161,15 @@ CHANGELOG.md обновляется при каждом IL. API.md при изм
 Обоснование: FCA audit trail требует воспроизводимости и объяснимости каждого решения.
 "If it's not documented, it didn't happen."
 
+**I-31 — BLOCKED-TASKS.md Append-Only Catalogue (PROPOSED)**
+`banxe-architecture/docs/BLOCKED-TASKS.md` — единственный источник истины по заблокированным задачам.
+Claude Code ОБЯЗАН добавить запись при BLOCKED статусе любой IL.
+При разблокировке — обновить запись (BLOCKED → UNBLOCKED, дата, trigger).
+Запрещено удалять записи — только обновлять статус (append-only, I-24 аналог для task tracking).
+Формат: BT-NNN, задача, IL ref, blocker, тип блокера, unblock trigger, дата, статус.
+*PROPOSED — требует явного утверждения CEO.*
+Обоснование: без явного каталога блокировки накапливаются незаметно и теряются при смене контекста.
+
 **I-30 — Quality Gate Mandatory Regardless of Model Routing (PROPOSED)**
 `quality-gate.sh` обязателен для всех Product Plane репозиториев независимо от
 модельного routing режима (cc-cloud / cc-local).
