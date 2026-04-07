@@ -574,3 +574,24 @@
   - daily-recon.sh: Step 5 добавлен (curl POST → N8N_WEBHOOK_URL)
   - S6 покрытие: 6/14 → 7/14 (50%)
 - **Deviation:** n8n workflow import + N8N_WEBHOOK_URL в .env — требуют CEO action (ручной импорт в n8n UI). SAFEGUARDING IBANs не настроены (S6-09 BLOCKED).
+
+---
+
+### IL-026 — S9-06 deploy: Consumer Duty complaints workflow на GMKtec
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1
+- **Описание:** Задеплоить IL-022 (complaints workflow) на GMKtec: rsync файлов + ClickHouse schema.
+- **Шаги:**
+  1. rsync `services/complaints/` → GMKtec `/data/banxe/banxe-emi-stack/services/complaints/` → ✅
+  2. scp `scripts/schema/clickhouse_complaints.sql` → GMKtec → ✅
+  3. Apply ClickHouse schema: `complaints` + `complaint_events` таблицы → ✅
+  4. Импорт Python: `from services.complaints.complaint_service import ComplaintService` → OK → ✅
+  5. Импорт FastAPI: `from services.complaints.n8n_webhook import app` → OK → ✅
+  6. scp `scripts/daily-recon.sh` (с Step 5) + n8n workflow JSON → GMKtec → ✅
+  7. git commit banxe-architecture → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - ClickHouse: `complaints` + `complaint_events` tables created (SHOW TABLES FROM banxe | grep complaint)
+  - Python import: `FastAPI OK`
+  - complaints service: `Import OK`
+- **Deviation:** n8n workflow import + запуск n8n_webhook.py как сервиса — требуют CEO action (ручной запуск или systemd unit). S9-06 остаётся IN_PROGRESS до запуска webhook сервиса.
