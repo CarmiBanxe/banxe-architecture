@@ -323,3 +323,21 @@
   - banxe-architecture: commit d6e750d (COMPLIANCE-MATRIX.md S9-09: 43%→75%, INSTRUCTION-LEDGER.md)
   - 75/75 tests pass на Legion + GMKtec
   - Cron `0 8 1 * *` установлен на GMKtec (monthly-fin060.sh)
+
+---
+
+### IL-016 — QualityGuard Agent + Planes + GUIYON/SS1 Standby
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1
+- **Assignee:** Claude Code (lead)
+- **Описание:** (A) quality-gate.sh + QualityGuard Agent + hook + Semgrep +2 правила; (B) PLANES.md — Developer/Product/Standby planes; GUIYON/SS1 в Standby Plane.
+- **Шаги:**
+  1. `vibe-coding/scripts/quality-gate.sh` → ⏳
+  2. `vibe-coding/.claude/agents/qualityguard-agent.md` → ⏳
+  3. `vibe-coding/.claude/hooks/quality_gate_hook.py` + settings.json → ⏳
+  4. `banxe-emi-stack/scripts/quality-gate.sh` (адаптированный) → ⏳
+  5. `.semgrep/banxe-rules.yml` +2 правила (banxe-audit-delete, banxe-clickhouse-ttl-reduce) → ⏳
+  6. `banxe-architecture/docs/PLANES.md` → ⏳
+  7. git commit + push всё → ⏳
+- **Статус:** IN_PROGRESS 🔄
+- **Proof:** pending
