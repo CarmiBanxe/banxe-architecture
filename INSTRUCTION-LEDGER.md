@@ -509,3 +509,23 @@
   - quality gate: PASS (106 tests, 78% coverage, ruff clean)
   - S9-06: 20% → 60%
 - **Deviation:** Deploy на GMKtec + n8n workflow import — не выполнялись (требуют CEO action: rsync + n8n UI import). Логика работает, схема и тесты готовы.
+
+---
+
+### IL-023 — BLOCKED-TASKS.md Каталог заблокированных задач
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P2
+- **Описание:** Создать `banxe-architecture/docs/BLOCKED-TASKS.md` — append-only каталог заблокированных задач. При блокировке любой IL — Claude Code добавляет BT-запись. При разблокировке — обновляет.
+- **Шаги:**
+  1. `banxe-architecture/docs/BLOCKED-TASKS.md` — создан с BT-001..BT-008 → ✅
+  2. `banxe-architecture/CLAUDE.md` — добавлено правило: при BLOCKED → BLOCKED-TASKS.md → ✅
+  3. `banxe-architecture/INVARIANTS.md` — добавлен I-31 PROPOSED (append-only blocked catalogue) → ✅
+  4. `banxe-architecture/INSTRUCTION-LEDGER.md` — эта запись → ✅
+  5. git commit + push → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - `docs/BLOCKED-TASKS.md` создан: 8 блокировок (BT-001..BT-008)
+  - CLAUDE.md: правило добавлено в нижний колонтитул
+  - INVARIANTS.md: I-31 PROPOSED
+  - git commit: `feat(il-023): BLOCKED-TASKS.md catalogue — 8 blockers catalogued`
+- **Deviation:** нет
