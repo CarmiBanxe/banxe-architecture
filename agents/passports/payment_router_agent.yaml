@@ -1,0 +1,94 @@
+agent_id: payment_router_agent
+name: "PaymentRouterAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Routes outbound payments across available rails (FPS, SEPA SCT, CHAPS, BACS)
+  based on amount, currency, urgency, and regulatory constraints.
+  Integrates TomPayment 1/2 + Fasterpayment Service + Mass Payment batch.
+  Applies strong-auth gate (PSR 2017 Reg.71) for transactions >£30.
+level: 2
+trust_zone: RED
+bounded_context: CTX-04-PAYMENT
+autonomy: L3_MLRO
+capabilities:
+  - payment_routing
+  - rail_selection
+  - strong_auth_gate
+  - batch_payment
+  - nostro_reconciliation
+department: "Payment Operations"
+human_double: "Treasury Manager"
+ports:
+  inbound:
+    - port: PaymentPort
+      description: Receives PaymentRequest (amount, currency, beneficiary, urgency)
+  outbound:
+    - port: LedgerPort
+      description: Posts double-entry to Midaz (ABS Posting Service)
+    - port: SafeguardingPort
+      description: Pre-execution balance check
+    - port: AMLPort
+      description: Pre-screening before execution
+    - port: NotificationPort
+      description: Payment confirmation to customer
+    - port: AuthPort
+      description: SCA gate >£30 (Keycloak OIDC)
+allowed_callers:
+  - customer_app
+  - admin_panel
+  - mass_payment_batch
+allowed_callees:
+  - ledger_agent
+  - safeguarding_engine
+  - aml_orchestrator
+  - notification_agent
+  - security_agent
+rails:
+  - name: TomPayment1
+    type: FPS
+    currency: GBP
+    sla: "<15s"
+    priority: PRIMARY
+  - name: TomPayment2
+    type: SEPA_SCT
+    currency: EUR
+    priority: BACKUP
+  - name: CHAPS
+    type: CHAPS
+    currency: GBP
+    threshold: ">£250,000"
+  - name: BACS
+    type: BACS
+    currency: GBP
+    batch: true
+invariants:
+  - I-02  # blocked jurisdictions
+  - I-03  # SAR / freeze threshold
+  - I-05  # FPS SLA <15s
+governance:
+  change_class: CLASS_A
+  owner: "Treasury Manager + CTIO"
+  review_cycle: monthly
+  last_reviewed: "2026-04-08"
+  approvers:
+    - MLRO
+    - CEO
+fca_references:
+  - "PSR 2017 Reg.71 — SCA >£30"
+  - "FCA PS7/24 — payment service requirements"
+  - "PSR APP 2024 — authorised push payment scam detection"
+  - "CASS 7 — safeguarding pre-check"
+blockers:
+  - id: BT-001
+    description: "Modulr/ClearBank API key — payment rails live"
+    owner: CEO
+    action: "Register at modulrfinance.com/developer"
+migration_status: 40%
+compliance_matrix_refs:
+  - S4  # Payment Rails
+  - S17-05  # Mass Payment
+  - S17-06  # NOSTRO reconciliation
+aigf_risks:
+  - AIGF-A-01  # financial loss from routing error
+  - AIGF-C-02  # regulatory breach (SCA bypass)
