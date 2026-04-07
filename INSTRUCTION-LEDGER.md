@@ -473,3 +473,27 @@
 - **Статус:** PENDING
 - **Deviation:** —
 - **Blocker:** ComplianceValidator не задеплоен на GMKtec (IL-020 Deviation)
+
+---
+
+### IL-022 — Consumer Duty DISP Workflow (S9-06)
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1 (FCA Consumer Duty, S9-06: 20% → 60%)
+- **Описание:** Complaints workflow: жалоба клиента → ClickHouse → 8-week SLA таймер → FOS эскалация. n8n cron + Telegram MLRO alert.
+- **Шаги:**
+  1. `scripts/schema/clickhouse_complaints.sql` — banxe.complaints + banxe.complaint_events (TTL 7Y) → ✅
+  2. `services/complaints/complaint_service.py` — ComplaintService: open_complaint, resolve, check_sla_breaches, check_sla_warnings, escalate_to_fos → ✅
+  3. `services/complaints/n8n_webhook.py` — FastAPI: POST /complaints/new, GET /complaints/sla-check, POST /{id}/resolve, POST /{id}/escalate-fos → ✅
+  4. `n8n/workflows/complaint-sla-monitor.json` — n8n cron 09:00: SLA check → Telegram MLRO alert → CH event log → ✅
+  5. `tests/test_complaint_service.py` — 19 unit tests (open, SLA, breach, warning, FOS, audit trail) → ✅
+  6. `tests/test_complaints_webhook.py` — 12 FastAPI TestClient tests → ✅
+  7. `.coveragerc` — omit external-service clients (modulr, webhook_handler, mock_aspsp, midaz_client, CH) → ✅
+  8. quality-gate.sh PASS: 106/106 tests, 78% coverage, ruff clean → ✅
+  9. COMPLIANCE-MATRIX.md S9-06: 20% → 60% → ✅
+  10. git commit + push banxe-emi-stack commit c0a201b → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - banxe-emi-stack: commit c0a201b (8 files, 1282 insertions)
+  - quality gate: PASS (106 tests, 78% coverage, ruff clean)
+  - S9-06: 20% → 60%
+- **Deviation:** Deploy на GMKtec + n8n workflow import — не выполнялись (требуют CEO action: rsync + n8n UI import). Логика работает, схема и тесты готовы.
