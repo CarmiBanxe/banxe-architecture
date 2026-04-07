@@ -332,12 +332,17 @@
 - **Assignee:** Claude Code (lead)
 - **Описание:** (A) quality-gate.sh + QualityGuard Agent + hook + Semgrep +2 правила; (B) PLANES.md — Developer/Product/Standby planes; GUIYON/SS1 в Standby Plane.
 - **Шаги:**
-  1. `vibe-coding/scripts/quality-gate.sh` → ⏳
-  2. `vibe-coding/.claude/agents/qualityguard-agent.md` → ⏳
-  3. `vibe-coding/.claude/hooks/quality_gate_hook.py` + settings.json → ⏳
-  4. `banxe-emi-stack/scripts/quality-gate.sh` (адаптированный) → ⏳
-  5. `.semgrep/banxe-rules.yml` +2 правила (banxe-audit-delete, banxe-clickhouse-ttl-reduce) → ⏳
-  6. `banxe-architecture/docs/PLANES.md` → ⏳
-  7. git commit + push всё → ⏳
-- **Статус:** IN_PROGRESS 🔄
-- **Proof:** pending
+  1. `vibe-coding/scripts/quality-gate.sh` → ✅
+  2. `vibe-coding/.claude/agents/qualityguard-agent.md` → ✅
+  3. `vibe-coding/.claude/hooks/quality_gate_hook.py` + settings.json → ✅
+  4. `banxe-emi-stack/scripts/quality-gate.sh` (адаптированный) → ✅
+  5. `.semgrep/banxe-rules.yml` +2 правила (banxe-audit-delete, banxe-clickhouse-ttl-reduce) → ✅ (10 правил)
+  6. `banxe-architecture/docs/PLANES.md` → ✅
+  7. git commit + push всё → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - vibe-coding: commits 1a4df37, 92665e4 (quality-gate.sh, agent.md, hook, settings.json, semgrep +2)
+  - banxe-emi-stack: commit dc8daed (quality-gate.sh, .semgrep/banxe-rules.yml)
+  - banxe-architecture: commit d527db0 (PLANES.md — Developer/Product/Standby)
+  - Gate enforces Product Plane only (banxe-emi-stack); Developer Plane commits не блокируются
+  - banxe-emi-stack quality-gate.sh --fast: ✅ PASS (75/75 tests, ruff clean, invariants OK)
