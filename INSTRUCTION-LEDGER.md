@@ -346,3 +346,21 @@
   - banxe-architecture: commit d527db0 (PLANES.md — Developer/Product/Standby)
   - Gate enforces Product Plane only (banxe-emi-stack); Developer Plane commits не блокируются
   - banxe-emi-stack quality-gate.sh --fast: ✅ PASS (75/75 tests, ruff clean, invariants OK)
+
+---
+
+### IL-017 — Documentation Standard + Canon
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1 (профессиональный стандарт разработки)
+- **Описание:** Закрыть doc gaps: CHANGELOG, RUNBOOK, ONBOARDING, API.md, OpenAPI spec. Установить doc standard в CANON (INVARIANTS.md + DOC-STANDARD.md).
+- **Шаги:**
+  1. `banxe-emi-stack/CHANGELOG.md` → ⏳
+  2. `banxe-emi-stack/docs/RUNBOOK.md` → ⏳
+  3. `banxe-emi-stack/docs/ONBOARDING.md` → ⏳
+  4. `banxe-emi-stack/docs/API.md` → ⏳
+  5. `banxe-emi-stack/services/payment/openapi.yml` → ⏳
+  6. `banxe-architecture/docs/DOC-STANDARD.md` — канон документации → ⏳
+  7. `banxe-architecture/INVARIANTS.md` — добавить I-29 (doc standard) → ⏳
+  8. git commit + push → ⏳
+- **Статус:** IN_PROGRESS 🔄
+- **Proof:** pending
