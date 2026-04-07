@@ -241,3 +241,25 @@
 - **CEO Акцепт:** ожидание
 - **Proof:** `docs/payment-rails-research.md` создан, 4 провайдера, 12 критериев. Рекомендация: Modulr Finance (FCA EMI, open sandbox, FPS+SEPA+Bacs direct, unlimited sub-accounts via API, webhooks, 99.99% uptime).
 - **Deviation:** MiroFish agent недоступен (API overload) → WebSearch выполнен напрямую Claude Code. Результат эквивалентен.
+
+---
+
+### IL-013 — Sprint 9: D-recon + J-audit (Block J, FCA CASS 15)
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P0 (deadline 7 May 2026)
+- **Описание:** Завершить Block J — подключить ReconciliationEngine к Midaz + ClickHouse audit trail. Первый dbt run. FIN060 smoke test.
+- **Шаги:**
+  1. Исправить дубликат `fetch()` в `statement_fetcher.py` → ✅
+  2. Создать `services/ledger/midaz_adapter.py` — sync LedgerPortProtocol adapter → ✅
+  3. Создать `services/recon/clickhouse_client.py` — ClickHouseClientProtocol + schema SQL → ✅
+  4. Создать `services/recon/midaz_reconciliation.py` — wiring + run_daily_recon() → ✅
+  5. Создать `tests/test_reconciliation.py` — unit tests с mock adapters → ✅ 13/13 pass
+  6. Создать `scripts/schema/clickhouse_safeguarding.sql` — CREATE TABLE IF NOT EXISTS → ✅
+  7. Обновить `scripts/daily-recon.sh` — полный pipeline cron → ✅
+  8. Создать `dbt/models/sources.yml` + fix stg_ledger_transactions.sql → ✅
+  9. Создать `scripts/deploy-sprint9.sh` — GMKtec deploy script → ✅
+  10. git commit + push banxe-emi-stack → ✅ commit a2a688e
+  11. `dbt run` + FIN060 smoke test на GMKtec → ⏳ (CEO: запустить deploy-sprint9.sh)
+- **Статус:** IN_PROGRESS (шаг 11 — deploy на GMKtec)
+- **Proof:** `python3 -m pytest tests/test_reconciliation.py -v` → 13/13 passed в 0.05s. Commit a2a688e: 11 files, 1254 insertions.
+- **Deviation:** dbt run перенесён в шаг 11 — требует live GMKtec ClickHouse.
