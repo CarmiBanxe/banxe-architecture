@@ -452,3 +452,24 @@
   - Corpus сохранён: `/data/developer/compliance/training/corpus/corpus_*_20260407_*.jsonl`
   - Results: `/data/vibe-coding/data/training-results/*_20260407_*.json`
 - **Deviation:** Verifier (ComplianceValidator) недоступен на GMKtec — тренинг прошёл в scenario-bank mode (expected_consensus). Accuracy 100% отражает корректность scenario matching, не live inference. Для полного live-тренинга нужен деплой `developer-core` validators на GMKtec.
+
+---
+
+### IL-021 — ComplianceValidator Live Deploy + Live Training Sprint
+
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1 (FCA audit readiness, зависит от IL-019/IL-020)
+- **Описание:** Задеплоить ComplianceValidator на GMKtec для live Ollama inference. Повторить training sprint в live-режиме (не scenario-bank). Цель: promptfoo ≥95% на категориях A/B с реальным LLM-as-judge через Ollama.
+- **Шаги:**
+  - i. rsync `developer-core/compliance/verification/` → GMKtec `/data/developer/compliance/verification/`
+  - ii. Установить зависимости на GMKtec: `pip install` для ComplianceValidator + LangGraph + Evidently
+  - iii. Проверить Ollama на GMKtec: `curl http://localhost:11434/api/tags` — убедиться что qwen3-banxe-v2 (или актуальная модель) загружена
+  - iv. Запустить `train-agent.sh --rounds 10 --live` (live mode, не scenario-bank)
+  - v. Проверить promptfoo результат: ≥95% на категориях A/B
+  - vi. Если <95% — дополнительные раунды до достижения порога
+  - vii. Запустить drift check: `python3 evidently_monitor.py --baseline`
+  - viii. Обновить COMPLIANCE-MATRIX.md: S7 coverage
+  - ix. git commit + push
+- **Статус:** PENDING
+- **Deviation:** —
+- **Blocker:** ComplianceValidator не задеплоен на GMKtec (IL-020 Deviation)
