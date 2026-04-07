@@ -390,8 +390,9 @@
 | S13-15 | Board of Directors | ❌ | — | FCA required |
 | S13-16 | Internal Audit function | ❌ | — | Outsource as minimum |
 | S13-17 | SMF FCA Connect registration | ❌ | — | BLOCKED by S13-03..06 |
+| S13-18 | quality-gate.sh mandatory (cc-cloud AND cc-local) | ✅ | LOCAL-CLOUD-ROUTING.md, I-30 PROPOSED | — |
 
-**Покрытие S13: 11/17 = 65%** | Gaps: SMF roles (human, not technical)
+**Покрытие S13: 12/18 = 67%** | Gaps: SMF roles (human, not technical)
 
 ---
 
