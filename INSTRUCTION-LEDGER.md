@@ -293,9 +293,10 @@
 - **Статус:** DONE ✅
 - **CEO Акцепт:** ожидание
 - **Proof:**
-  - 20/20 payment tests, 33/33 total — Legion + GMKtec
+  - 20/20 payment tests, 33/33 total → 51/51 после quality sprint
   - ClickHouse: `payment_events` + `mv_payment_daily_volume` на GMKtec
   - FPS → COMPLETED (instant), SEPA CT → PROCESSING, SEPA Instant → COMPLETED
   - Audit trail: каждый платёж, включая FAILED (I-24)
   - Commit 27cd168: 8 files, 1554 insertions
+  - Quality sprint (commit 3f641d3 + c1522e1): ruff 0 issues, coverage 74.3%→80.0%, 51/51 tests
 - **Deviation:** Modulr API key не получен → MockPaymentAdapter (default). Переключение: PAYMENT_ADAPTER=modulr + MODULR_API_KEY в .env — zero code changes.
