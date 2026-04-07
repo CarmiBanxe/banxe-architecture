@@ -273,3 +273,29 @@
   - Existing `safeguarding_events` schema (event_time/Decimal) → adapter выровнен
   - Bearer header fix: пустой MIDAZ_TOKEN → header не отправляется
   - dbt `accepted_values` syntax → `arguments:` (dbt 1.11.7 requirement)
+
+---
+
+### IL-014 — Payment Rails: Modulr Integration (C-fps + C-sepa)
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P1 (C-fps + C-sepa = 0% coverage; critical for EMI product)
+- **Описание:** Построить Payment Rails слой в banxe-emi-stack. Провайдер: Modulr Finance (FCA EMI, FPS direct, SEPA Instant). Архитектура: PaymentRailPort (hex) → ModulrAdapter (real) / MockAdapter (sandbox). Интеграция с Midaz ledger + ClickHouse audit.
+- **Шаги:**
+  1. `services/payment/payment_port.py` — PaymentRailPort interface + dataclasses → ⏳
+  2. `services/payment/modulr_client.py` — Modulr REST API adapter (FPS + SEPA) → ⏳
+  3. `services/payment/mock_payment_adapter.py` — Mock adapter (работает без API key) → ⏳
+  4. `services/payment/payment_service.py` — PaymentService: wiring + Midaz posting + CH audit → ⏳
+  5. `services/payment/webhook_handler.py` — FastAPI webhook для Modulr events → ⏳
+  6. `scripts/schema/clickhouse_payments.sql` — payment_events table, TTL 5Y → ⏳
+  7. `tests/test_payment_service.py` — 20/20 unit tests → ✅
+  8. Deploy на GMKtec: rsync → schema → 33/33 tests → ✅
+  9. git commit + push → ✅ commit 27cd168
+- **Статус:** DONE ✅
+- **CEO Акцепт:** ожидание
+- **Proof:**
+  - 20/20 payment tests, 33/33 total — Legion + GMKtec
+  - ClickHouse: `payment_events` + `mv_payment_daily_volume` на GMKtec
+  - FPS → COMPLETED (instant), SEPA CT → PROCESSING, SEPA Instant → COMPLETED
+  - Audit trail: каждый платёж, включая FAILED (I-24)
+  - Commit 27cd168: 8 files, 1554 insertions
+- **Deviation:** Modulr API key не получен → MockPaymentAdapter (default). Переключение: PAYMENT_ADAPTER=modulr + MODULR_API_KEY в .env — zero code changes.
