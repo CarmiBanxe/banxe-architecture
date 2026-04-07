@@ -124,4 +124,15 @@
 
 ---
 
+### BT-009: Sardine.ai live fraud adapter — API keys
+- **Задача:** S5-22 (Real-time fraud scoring <100ms), S5-26 (APP scam detection PSR APP 2024)
+- **IL ref:** IL-027 (Deviation)
+- **Blocker:** Sardine.ai production contract не заключён. `SARDINE_CLIENT_ID` + `SARDINE_SECRET_KEY` отсутствуют. `SardineFraudAdapter` — stub (NotImplementedError).
+- **Тип:** EXTERNAL_CONTRACT (vendor API key)
+- **Unblock trigger:** CEO → контакт sales@sardine.ai → API keys → добавить в GMKtec `.env` → реализовать `SardineFraudAdapter.score()` → тест против Sardine sandbox
+- **Дата блокировки:** 2026-04-08
+- **Статус:** BLOCKED
+
+---
+
 *Файл поддерживается: Claude Code | I-31 (PROPOSED) | append-only*
