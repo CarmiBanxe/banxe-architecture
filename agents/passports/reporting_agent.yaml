@@ -1,0 +1,116 @@
+agent_id: reporting_agent
+name: "ReportingAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Orchestrates all FCA regulatory reporting pipelines: monthly FIN060
+  safeguarding return (CASS 15), RegData submission (FCA Gabriel portal),
+  MLRO annual SAR statistics, and monthly client statements (PDF/CSV).
+  Wraps existing regdata_return.py + fin060_generator.py under a unified
+  agent interface with MLRO+CFO dual-sign approval gate.
+level: 2
+trust_zone: RED
+bounded_context: CTX-10-REPORTING
+autonomy: L3_MLRO
+capabilities:
+  - fin060_generation
+  - regdata_submission
+  - mlro_annual_report
+  - client_statement_generation
+  - regulatory_deadline_tracking
+department: "Reporting / FCA Regulatory"
+human_double: "CFO + MLRO"
+reporting_outputs:
+  - id: FIN060
+    description: "Monthly safeguarding return"
+    deadline: "15th of following month"
+    fca_rule: "CASS 15.12.4R"
+    format: [PDF, RegData]
+    status: IMPLEMENTED  # regdata_return.py + fin060_generator.py
+  - id: MLRO_ANNUAL
+    description: "Annual SAR statistics + risk assessment"
+    deadline: "Annually"
+    fca_rule: "MLR 2017 §19"
+    format: [PDF]
+    status: NOT_STARTED
+  - id: CLIENT_STATEMENTS
+    description: "Monthly PDF/CSV per customer"
+    deadline: "Monthly"
+    fca_rule: "CASS 15, FCA PS7/24"
+    format: [PDF, CSV]
+    status: NOT_STARTED
+  - id: RESOLUTION_PACK
+    description: "CASS 10A 48h retrieval pack"
+    deadline: "On-demand (48h SLA)"
+    fca_rule: "CASS 10A.3.1R"
+    format: [ZIP]
+    status: IMPLEMENTED  # resolution_pack.py
+ports:
+  inbound:
+    - port: ReportingPort
+      description: Receives ReportingRequest (type, period, format)
+  outbound:
+    - port: SafeguardingPort
+      description: Reads safeguarding data (FIN060 source)
+    - port: AMLPort
+      description: Reads SAR statistics for MLRO report
+    - port: LedgerPort
+      description: Reads GL extract from Midaz (CBS)
+    - port: RegDataPort
+      description: Submits to FCA Gabriel/RegData API (stubbed BT-010)
+    - port: CustomerPort
+      description: Reads customer list for client statements
+    - port: AuditPort
+      description: Records all submissions (MLR 2017 5yr retention)
+allowed_callers:
+  - cron_scheduler  # 14th of each month for FIN060
+  - admin_panel
+  - mlro_office
+allowed_callees:
+  - safeguarding_engine
+  - aml_analyst_v1
+  - ledger_agent
+  - customer_lifecycle_agent
+approval_gate:
+  type: DUAL_SIGN
+  signatories:
+    - role: MLRO
+      smf: SMF17
+    - role: CFO
+      smf: SMF2
+  applies_to: [FIN060, MLRO_ANNUAL]
+invariants:
+  - I-06  # retention 5yr (MLR 2017)
+  - I-07  # FIN060 deadline 15th
+governance:
+  change_class: CLASS_A
+  owner: "CFO + MLRO"
+  review_cycle: monthly
+  last_reviewed: "2026-04-08"
+  approvers:
+    - MLRO
+    - CFO
+    - CEO
+fca_references:
+  - "CASS 15.12.4R — monthly safeguarding return"
+  - "CASS 10A.3.1R — 48h resolution pack"
+  - "MLR 2017 §19 — SAR annual statistics"
+  - "FCA PS7/24 — client statement obligations"
+  - "FCA Gabriel/RegData — submission portal"
+blockers:
+  - id: BT-010
+    description: "FCA RegData API key — live submission"
+    owner: CEO
+    action: "Obtain from FCA RegData portal (frn=000000 placeholder)"
+  - id: S1-02
+    description: "MLRO (SMF17) appointment — dual-sign gate"
+    owner: CEO
+    action: "Appoint MLRO before FCA authorization"
+migration_status: 65%
+compliance_matrix_refs:
+  - S6   # Safeguarding Engine
+  - S15  # Regulatory Deadlines
+  - S17-07  # Client Statement PDF/CSV
+aigf_risks:
+  - AIGF-C-06  # late FCA submission → regulatory sanction
+  - AIGF-C-07  # incorrect FIN060 data → material misstatement

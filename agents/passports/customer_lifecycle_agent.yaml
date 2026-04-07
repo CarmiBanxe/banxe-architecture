@@ -1,0 +1,85 @@
+agent_id: customer_lifecycle_agent
+name: "CustomerLifecycleAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Manages the full customer lifecycle from onboarding to offboarding.
+  Maintains dual entity model (Individual / Company) with UBO registry
+  for corporate customers. Handles lifecycle state transitions:
+  onboarding → active → dormant → offboarded → deceased.
+  Stores full PII + KYC status + risk level per FCA COBS 9A and MLR 2017.
+level: 2
+trust_zone: GREEN
+bounded_context: CTX-06-CUSTOMER
+autonomy: L1_AUTO
+capabilities:
+  - customer_profile_management
+  - dual_entity_model
+  - ubo_registry
+  - lifecycle_state_machine
+  - kyc_status_sync
+department: "Customer Management"
+human_double: "Customer Support Lead"
+entity_types:
+  individual:
+    fields: [name, DOB, nationality, PII, kyc_status, risk_level]
+    fca_rule: "MLR 2017 §18 (CDD)"
+  company:
+    fields: [company_name, registration_number, UBO_chain, director_registry]
+    fca_rule: "MLR 2017 §19 (KYB), Companies House API"
+lifecycle_states:
+  - ONBOARDING
+  - ACTIVE
+  - DORMANT
+  - OFFBOARDED
+  - DECEASED
+ports:
+  inbound:
+    - port: CustomerPort
+      description: Receives CustomerProfileRequest (create/update/query)
+  outbound:
+    - port: KYCPort
+      description: Reads KYC verification status from KYC-Specialist-v2
+    - port: AgreementPort
+      description: Binding post-KYC approval
+    - port: NotificationPort
+      description: Status change alerts
+    - port: AuditPort
+      description: FCA audit trail (CASS 7.13, UK GDPR)
+allowed_callers:
+  - kyc_specialist_v2
+  - aml_analyst_v1
+  - agreement_agent
+  - admin_panel
+allowed_callees:
+  - agreement_agent
+  - notification_agent
+  - reporting_agent
+invariants:
+  - I-02  # blocked jurisdictions
+  - I-06  # data retention 5yr
+governance:
+  change_class: CLASS_B
+  owner: "Customer Support Lead + CTIO"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-08"
+  approvers:
+    - DEVELOPER
+    - CTIO
+fca_references:
+  - "UK GDPR Art.5 — data minimisation + storage limitation"
+  - "FCA COBS 9A — customer record keeping"
+  - "MLR 2017 — AML record retention"
+blockers:
+  - id: BT-005
+    description: "Companies House API key — UBO registry (KYB)"
+    owner: CEO
+    action: "Register at developer.company-information.service.gov.uk"
+migration_status: 10%
+compliance_matrix_refs:
+  - S17-01  # dual entity model
+  - S17-09  # lifecycle state machine
+  - S17-10  # UBO registry (blocked BT-005)
+aigf_risks:
+  - AIGF-P-01  # PII data breach
+  - AIGF-C-03  # GDPR non-compliance

@@ -147,7 +147,7 @@
 
 | ID | Требование | Статус | Proof | Owner | Gap |
 |----|-----------|--------|-------|-------|-----|
-| S5-13 | Ballerine KYC/KYB orchestration | ❌ NOT_STARTED | — | — | P1 — нет deploy |
+| S5-13 | Ballerine KYC/KYB orchestration | 🔄 IN_PROGRESS | KYCWorkflowPort + MockKYCWorkflow (7-state) + 30 tests, IL-030 | Claude Code | Live Ballerine: stub (deploy required); mock enforces I-02/I-03/I-04 |
 | S5-14 | Sumsub IDV integration (document + liveness) | ❌ NOT_STARTED | — | — | P0 — API key pending |
 | S5-15 | Onfido IDV (backup) | ❌ NOT_STARTED | — | — | P0 backup |
 | S5-16 | Companies House API (KYB, UBO) | ❌ NOT_STARTED | — | — | P0 — CLAUDE.md: key pending |
@@ -167,7 +167,7 @@
 | S5-25 | 3DS authentication (via Monavate) | ❌ NOT_STARTED | — | — | P1 — при картах |
 | S5-26 | APP scam detection (PSR APP 2024) | 🔄 IN_PROGRESS | AppScamIndicator enum + INVESTMENT_SCAM detection, IL-027 | Claude Code | Phase 1 mock; live requires Sardine.ai keys |
 
-**Покрытие S5: 14/26 = 54%** | AML strong; fraud mock layer добавлен (PSR APP 2024 Phase 1)
+**Покрытие S5: 15/26 = 58%** | AML strong; fraud + KYC mock layers добавлены (PSR APP 2024 + MLR 2017)
 
 ---
 
@@ -186,12 +186,12 @@
 | S6-09 | External safeguarding bank account (Barclays/HSBC) | ❌ NOT_STARTED | — | CEO | P0 — требует корпоративного банк-счёта |
 | S6-10 | BaaS API polling для bank balance | ❌ NOT_STARTED | — | — | Блокирован S4 (нет BaaS) |
 | S6-11 | Shortfall alert (n8n → MLRO Telegram) | 🔄 IN_PROGRESS | safeguarding-shortfall-alert.json + daily-recon.sh Step 5, IL-025 | Claude Code | Ждёт n8n import (CEO action) + N8N_WEBHOOK_URL в .env |
-| S6-12 | Monthly FCA RegData return (automation) | ❌ NOT_STARTED | — | — | Phase 0 |
+| S6-12 | Monthly FCA RegData return (automation) | 🔄 IN_PROGRESS | regdata_return.py + MockFIN060Generator + StubRegDataClient, IL-028 | Claude Code | Live: FCA_REGDATA_API_KEY pending (CEO); FIN060 pipeline ready |
 | S6-13 | Annual safeguarding audit | ❌ NOT_STARTED | — | — | External auditor required |
-| S6-14 | CASS 10A resolution pack (48h retrieval) | ❌ NOT_STARTED | — | — | ClickHouse готов как base, нужен pack builder |
+| S6-14 | CASS 10A resolution pack (48h retrieval) | ✅ DONE | resolution_pack.py — ZIP (manifest + positions.csv + payments + recon), 17 tests, IL-028 | Claude Code | — |
 
-**Покрытие S6: 7/14 = 50%** | 🔴 КРИТИЧНО — DEADLINE 7 MAY 2026 (~29 дней)
-**Оставшийся объём до дедлайна: S6-09 (CEO), S6-10 (BaaS), S6-11 (n8n import), S6-12**
+**Покрытие S6: 11/14 = 79%** | 🟡 ON TRACK — DEADLINE 7 MAY 2026 (~29 дней)
+**Оставшийся объём: S6-09 (CEO: банк-счёт), S6-10 (BaaS), S6-11 (n8n import CEO), S6-13 (external auditor)**
 
 ---
 
@@ -565,7 +565,7 @@ graph TD
 | FA-11 | Temporal (saga patterns, exactly-once payments) | ❌ NOT_STARTED | — | Replace n8n for critical flows |
 | FA-12 | Sequin CDC (50k ops/sec Postgres CDC) | ❌ NOT_STARTED | — | Alternative to Debezium |
 | FA-13 | Jaeger v2 (distributed tracing per payment) | ❌ NOT_STARTED | — | Full payment trace |
-| FA-14 | Keycloak (IAM — RBAC для AI агентов и людей) | ❌ NOT_STARTED | — | SSO, MFA, OAuth2 |
+| FA-14 | Keycloak (IAM — RBAC для AI агентов и людей) | 🔄 IN_PROGRESS | IAMPort + MockIAMAdapter (7 roles, 15 permissions, SM&CR) + realm.json, IL-029 | Claude Code | Live Keycloak: stub (deploy + KEYCLOAK_URL required) |
 
 ### 16.3 Phase 2 — Q3–Q4 2026
 
@@ -609,3 +609,56 @@ graph TD
 
 *IL-008 | Сформировано: 2026-04-06 | Ruflo audit: docs/reviews/IL-008-review.md*
 *IL-009 S16 добавлен: 2026-04-06 | Research: docs/financial-analytics-research.md*
+*IL-031 S17 добавлен: 2026-04-08 | Source: Banxe_v5.archimate ArchiMate analysis*
+
+---
+
+## РАЗДЕЛ 17 — Незамигрированные сервисы Geniusto (ArchiMate Banxe_v5)
+
+> Источник: ArchiMate-анализ Banxe_v5 (IL-031, 2026-04-08).
+> Эти 12 требований выявлены как ~40% Legacy → Banxe AI Bank gap.
+> Статус NEW = не фигурировал в предыдущих разделах S1..S16.
+
+| ID | Требование | FCA Rule | Приоритет | Статус | Owner | Gap |
+|----|-----------|----------|-----------|--------|-------|-----|
+| S17-01 | Customer Management Service — dual entity model (Individual / Company) + UBO registry | UK GDPR Art.5, FCA COBS 9A, MLR 2017 | P1 | ❌ NOT_STARTED | Claude Code | `CustomerLifecycleAgent` PROPOSED |
+| S17-02 | Agreement Service — T&C generation per product + DocuSign e-signature + version history | FCA COBS 6, eIDAS 910/2014 | P1 | ❌ NOT_STARTED | Legal Counsel | `AgreementAgent` PROPOSED |
+| S17-03 | Notification Service — Email + SMS (OTP/alerts) + Push + multilingual templates (EN/RU/FR) | FCA COBS 4, UK GDPR (consent) | P1 | 🔄 IN_PROGRESS | Claude Code | n8n workflows partial (IL-025/IL-026), no unified port |
+| S17-04 | 2FA/MFA — TOTP + SMS OTP (RFC 6238) + Keycloak OIDC session management | PSR 2017 Reg.71 (SCA), FCA SM&CR SYSC 4.7 | P0 | 🔄 IN_PROGRESS | CTIO | Keycloak mock done (IL-029), deployment pending BT-011 |
+| S17-05 | Mass Payment Service — batch payroll / bulk transfers (FPS + BACS) | PSR 2017, FCA PS7/24 | P2 | ❌ NOT_STARTED | Treasury Manager | Blocked by payment rails BT-001 |
+| S17-06 | NOSTRO correspondent account reconciliation with external banks | PSR 2017, CASS 7 | P2 | ❌ NOT_STARTED | CFO | Blocked by safeguarding bank BT-002 |
+| S17-07 | Client Statement Service — monthly PDF/CSV per customer | CASS 15.12.4R, FCA PS7/24 | P2 | ❌ NOT_STARTED | Claude Code | `ReportingAgent` PROPOSED |
+| S17-08 | Device Fingerprinting — known device registry per customer | PSR 2017 Reg.71, FCA SM&CR | P1 | ❌ NOT_STARTED | CTIO | Part of SecurityAgent (Keycloak IAM) |
+| S17-09 | Customer Lifecycle State Machine — onboarding → active → dormant → offboarded → deceased | MLR 2017 record-keeping, FCA COBS 9A | P1 | ❌ NOT_STARTED | Claude Code | `CustomerLifecycleAgent` PROPOSED |
+| S17-10 | Director/Shareholder/UBO Registry — full KYB chain for corporate customers | MLR 2017 §19, Companies House API (BT-005) | P0 | 🚫 BLOCKED | Claude Code | BT-005 Companies House key required |
+| S17-11 | Event Bus — async inter-department messaging (payment confirmed → notification → ledger) | FCA operational resilience PS21/3 | P1 | 🔄 IN_PROGRESS | CTIO | RabbitMQ deployed (Midaz), no Banxe domain events |
+| S17-12 | Provider Registry — pluggable external service registry (IDV, fraud, payment rails) | FCA SYSC 8 (outsourcing), MLR 2017 | P1 | ❌ NOT_STARTED | Claude Code | Port/Adapter pattern exists; no central registry |
+
+### Покрытие S17
+
+| Приоритет | Всего | DONE | IN_PROGRESS | NOT_STARTED | BLOCKED |
+|-----------|-------|------|-------------|-------------|---------|
+| P0 | 2 | 0 | 1 (S17-04) | 0 | 1 (S17-10) |
+| P1 | 7 | 0 | 2 (S17-03, S17-11) | 5 | 0 |
+| P2 | 3 | 0 | 0 | 3 | 0 |
+| **Итого** | **12** | **0** | **3** | **8** | **1** |
+
+**Покрытие S17: ~25%** (3 в работе / 12 всего)
+
+### Блокеры S17
+
+| Блокер | ID | CEO Action |
+|--------|----|-----------|
+| Companies House API key | BT-005 | Зарегистрировать на developer.company-information.service.gov.uk |
+| Keycloak deployment | BT-011 | `docker-compose up keycloak` на GMKtec |
+| Payment rails (Mass Payment / NOSTRO) | BT-001 | Modulr/ClearBank sandbox key |
+| Safeguarding bank account | BT-002 | Barclays/HSBC EMI account |
+
+### Связанные Agent Passports (PROPOSED)
+
+| Агент | Файл | Покрывает |
+|-------|------|-----------|
+| `CustomerLifecycleAgent` | `agents/passports/customer_lifecycle_agent.yaml` | S17-01, S17-09 |
+| `AgreementAgent` | `agents/passports/agreement_agent.yaml` | S17-02 |
+| `ReportingAgent` | `agents/passports/reporting_agent.yaml` | S17-07 |
+| `PaymentRouterAgent` | `agents/passports/payment_router_agent.yaml` | S17-05, S17-06 |

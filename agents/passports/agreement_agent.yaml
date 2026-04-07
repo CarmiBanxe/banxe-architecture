@@ -1,0 +1,75 @@
+agent_id: agreement_agent
+name: "AgreementAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Generates, versions, and manages customer agreements (Terms & Conditions)
+  per product (e-money, FX, savings). Collects qualified e-signatures via
+  DocuSign (eIDAS Reg.910/2014 compatible). Maintains full version history
+  with diffs. Required for binding post-KYC customer onboarding.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-07-AGREEMENT
+autonomy: L2_REVIEW
+capabilities:
+  - terms_generation
+  - esignature_collection
+  - version_control
+  - product_disclosure
+  - regulatory_review_trigger
+department: "Agreement / Contract"
+human_double: "Legal Counsel"
+products:
+  - emoney_account
+  - fx_service
+  - savings_account
+  - payment_services
+signature_providers:
+  - name: DocuSign
+    standard: eIDAS Reg.910/2014
+    type: qualified_esig
+    status: PROPOSED
+ports:
+  inbound:
+    - port: AgreementPort
+      description: Receives AgreementRequest (customer_id, product, version)
+  outbound:
+    - port: CustomerPort
+      description: Writes signed_terms back to CustomerLifecycleAgent
+    - port: ProductCatalogPort
+      description: Reads per-product terms template
+    - port: CompliancePort
+      description: Triggers regulatory review for material T&C changes
+    - port: NotificationPort
+      description: Sends signature request + confirmation to customer
+    - port: AuditPort
+      description: Immutable audit trail of all signings
+allowed_callers:
+  - customer_lifecycle_agent
+  - admin_panel
+  - kyc_specialist_v2
+allowed_callees:
+  - customer_lifecycle_agent
+  - notification_agent
+  - compliance_officer_v1
+invariants:
+  - I-06  # data retention 5yr (eIDAS + MLR 2017)
+governance:
+  change_class: CLASS_A
+  owner: "Legal Counsel + CCO"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-08"
+  approvers:
+    - CCO
+    - CEO
+fca_references:
+  - "FCA COBS 6 — product disclosure obligations"
+  - "eIDAS Reg.910/2014 — qualified electronic signature"
+  - "MLR 2017 — record retention"
+  - "FCA COBS 4 — communications with clients"
+migration_status: 5%
+compliance_matrix_refs:
+  - S17-02  # T&C generation + e-signature + version history
+aigf_risks:
+  - AIGF-C-04  # invalid e-signature → unenforceable contract
+  - AIGF-C-05  # T&C version mismatch → regulatory breach
