@@ -262,7 +262,7 @@
 | S9-06 | Consumer Duty / DISP | Обязательно FCA | **20%** | P1 | Phase 1 |
 | S9-07 | Core Banking / GL Logic | Обязательно | **20%** | P0 | Jul 2026 |
 | S9-08 | Payment Rails | Обязательно | **0%** | **P0** | **ASAP** |
-| S9-09 | Safeguarding Engine | Обязательно EMR | **43%** | **P0** | **7 May 2026** |
+| S9-09 | Safeguarding Engine | Обязательно EMR | **75%** | **P0** | **7 May 2026** |
 | S9-10 | Treasury / ALM | Обязательно | **0%** | P0 | Phase 1 |
 | S9-11 | Product Catalog | Необходимо | **10%** | P1 | Phase 1 |
 | S9-12 | Customer Interface (App) | Необходимо | **15%** | P1 | Phase 1 |
