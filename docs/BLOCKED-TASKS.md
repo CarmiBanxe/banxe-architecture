@@ -103,18 +103,24 @@
 
 ### BT-008: compliance-officer-v1 live training FAIL
 - **Задача:** S7-21 (ComplianceValidator live training ≥95% A/B)
-- **IL ref:** IL-021 (Deviation)
+- **IL ref:** IL-021 (Deviation) → IL-024 (Fix)
 - **Blocker:** compliance-officer-v1 accuracy 60% в live mode. REFUTED recall < 90%, drift 0.253 > 0.15. Нужны дополнительные C/D категорийные сценарии.
 - **Тип:** INFRA (модельная calibration)
 - **Unblock trigger:** Расширить `scenarios/compliance_officer.json` добавив 20+ REFUTED сценариев категорий C/D → запустить feedback_loop.py --apply → повторный sprint → accuracy ≥ 85%
 - **Дата блокировки:** 2026-04-08
-- **Статус:** BLOCKED
+- **Дата разблокировки:** 2026-04-08
+- **Статус:** UNBLOCKED ✅
 
 ---
 
 ## РАЗБЛОКИРОВАННЫЕ ЗАДАЧИ
 
-*(Пока нет)*
+### BT-008 (UNBLOCKED 2026-04-08)
+- Сценарии расширены: 30 → 50 (добавлены CO-C09..C20, D04..D09, E04..E05)
+- SAR check в compliance_validator.py исправлен (narrowed to filing actions)
+- GMKtec validation: 50/50 PASS
+- Live training: STATUS=PASS, accuracy=100% (cat A/C/D)
+- IL-024 DONE — commit `0704010`
 
 ---
 
