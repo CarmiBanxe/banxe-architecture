@@ -308,14 +308,18 @@
 - **Приоритет:** P0 (deadline 7 May 2026 — 30 дней)
 - **Описание:** Довести S9-09 Safeguarding Engine с 43% до 75%+. Три компонента: (A) BreachDetector — если DISCREPANCY держится >3 бизнес-дня → пишем в `safeguarding_breaches` + n8n FCA alert; (B) FIN060 smoke test — WeasyPrint PDF smoke test + тест генератора; (C) Monthly FIN060 cron — 1-го числа генерировать PDF, deadline 15-е.
 - **Шаги:**
-  1. `services/recon/breach_detector.py` — BreachDetector: проверяет `safeguarding_events` за последние N дней, если DISCREPANCY >= 3 дня подряд → INSERT в `safeguarding_breaches` → n8n FCA alert → ⏳
-  2. `services/recon/clickhouse_client.py` — добавить `write_breach()` + `get_breach_days()` в ClickHouseReconClient + InMemoryReconClient → ⏳
-  3. `services/recon/midaz_reconciliation.py` — вызвать `breach_detector.check_and_escalate()` после reconcile → ⏳
-  4. `tests/test_breach_detector.py` — unit tests BreachDetector (in-memory CH stub) → ⏳
-  5. `tests/test_fin060.py` — FIN060 smoke test: mock WeasyPrint + mock CH → PDF path returned → ⏳
-  6. `scripts/monthly-fin060.sh` — cron wrapper (1-го числа, /data/banxe/reports/fin060/) → ⏳
-  7. Deploy на GMKtec: rsync → `ensure_schema()` → cron `0 8 1 * *` → ⏳
-  8. Обновить COMPLIANCE-MATRIX.md S9-09: 43% → 75% → ⏳
-  9. git commit + push → ⏳
-- **Статус:** IN_PROGRESS 🔄
-- **Proof:** pending
+  1. `services/recon/breach_detector.py` — BreachDetector: проверяет `safeguarding_events` за последние N дней, если DISCREPANCY >= 3 дня подряд → INSERT в `safeguarding_breaches` → n8n FCA alert → ✅
+  2. `services/recon/clickhouse_client.py` — добавить `write_breach()` + `get_discrepancy_streak()` + `get_latest_discrepancy()` в ClickHouseReconClient + InMemoryReconClient → ✅
+  3. `services/recon/midaz_reconciliation.py` — вызвать `breach_detector.check_and_escalate()` после reconcile → ✅
+  4. `tests/test_breach_detector.py` — unit tests BreachDetector (in-memory CH stub) → ✅
+  5. `tests/test_fin060.py` — FIN060 smoke test: mock WeasyPrint + mock CH → PDF path returned → ✅
+  6. `scripts/monthly-fin060.sh` — cron wrapper (1-го числа, /data/banxe/reports/fin060/) → ✅
+  7. Deploy на GMKtec: rsync → cron `0 8 1 * *` → 75/75 tests → ✅
+  8. Обновить COMPLIANCE-MATRIX.md S9-09: 43% → 75% → ✅
+  9. git commit + push → ✅
+- **Статус:** DONE ✅
+- **Proof:**
+  - banxe-emi-stack: commit 0eb787f (6 files, 807 insertions — breach_detector.py, clickhouse_client.py, midaz_reconciliation.py, test_breach_detector.py, test_fin060.py, monthly-fin060.sh)
+  - banxe-architecture: commit d6e750d (COMPLIANCE-MATRIX.md S9-09: 43%→75%, INSTRUCTION-LEDGER.md)
+  - 75/75 tests pass на Legion + GMKtec
+  - Cron `0 8 1 * *` установлен на GMKtec (monthly-fin060.sh)
