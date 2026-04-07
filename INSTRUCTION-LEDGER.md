@@ -300,3 +300,22 @@
   - Commit 27cd168: 8 files, 1554 insertions
   - Quality sprint (commit 3f641d3 + c1522e1): ruff 0 issues, coverage 74.3%→80.0%, 51/51 tests
 - **Deviation:** Modulr API key не получен → MockPaymentAdapter (default). Переключение: PAYMENT_ADAPTER=modulr + MODULR_API_KEY в .env — zero code changes.
+
+---
+
+### IL-015 — S9-09 Safeguarding Completion (FCA CASS 15, 7 May 2026)
+- **Источник:** CEO, 2026-04-07
+- **Приоритет:** P0 (deadline 7 May 2026 — 30 дней)
+- **Описание:** Довести S9-09 Safeguarding Engine с 43% до 75%+. Три компонента: (A) BreachDetector — если DISCREPANCY держится >3 бизнес-дня → пишем в `safeguarding_breaches` + n8n FCA alert; (B) FIN060 smoke test — WeasyPrint PDF smoke test + тест генератора; (C) Monthly FIN060 cron — 1-го числа генерировать PDF, deadline 15-е.
+- **Шаги:**
+  1. `services/recon/breach_detector.py` — BreachDetector: проверяет `safeguarding_events` за последние N дней, если DISCREPANCY >= 3 дня подряд → INSERT в `safeguarding_breaches` → n8n FCA alert → ⏳
+  2. `services/recon/clickhouse_client.py` — добавить `write_breach()` + `get_breach_days()` в ClickHouseReconClient + InMemoryReconClient → ⏳
+  3. `services/recon/midaz_reconciliation.py` — вызвать `breach_detector.check_and_escalate()` после reconcile → ⏳
+  4. `tests/test_breach_detector.py` — unit tests BreachDetector (in-memory CH stub) → ⏳
+  5. `tests/test_fin060.py` — FIN060 smoke test: mock WeasyPrint + mock CH → PDF path returned → ⏳
+  6. `scripts/monthly-fin060.sh` — cron wrapper (1-го числа, /data/banxe/reports/fin060/) → ⏳
+  7. Deploy на GMKtec: rsync → `ensure_schema()` → cron `0 8 1 * *` → ⏳
+  8. Обновить COMPLIANCE-MATRIX.md S9-09: 43% → 75% → ⏳
+  9. git commit + push → ⏳
+- **Статус:** IN_PROGRESS 🔄
+- **Proof:** pending
