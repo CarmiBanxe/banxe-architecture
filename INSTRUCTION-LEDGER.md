@@ -470,9 +470,21 @@
   - vii. Запустить drift check: `python3 evidently_monitor.py --baseline`
   - viii. Обновить COMPLIANCE-MATRIX.md: S7 coverage
   - ix. git commit + push
-- **Статус:** PENDING
-- **Deviation:** —
-- **Blocker:** ComplianceValidator не задеплоен на GMKtec (IL-020 Deviation)
+- **Статус:** DONE ✅
+- **Proof:**
+  - rsync `developer/compliance/verification/` → GMKtec `/data/developer/compliance/verification/` → ✅
+  - ComplianceValidator shim добавлен в compliance_validator.py (commit 37b5f46, developer) → ✅
+  - `from compliance.verification.compliance_validator import ComplianceValidator` на GMKtec → OK ✅
+  - Ollama: `qwen3-banxe-v2:latest` загружен на GMKtec ✅
+  - Live training sprint 10 раундов × 5 агентов:
+    - kyc-specialist-v2: **90%** ✅ PASS
+    - aml-analyst-v1: **80%** ⚠️ MARGINAL
+    - compliance-officer-v1: **60%** ❌ FAIL (requires remediation)
+    - risk-manager-v1: **90%** ✅ PASS
+    - crypto-aml-v1: **90%** ✅ PASS
+  - Drift check: score=0.253 > 0.15 — DRIFT DETECTED (refuted_rate drop: 50%→13.6%)
+  - fix(train-agent): ConsensusResult dataclass path (commit ec8b72b, vibe-coding) → ✅
+- **Deviation:** Promptfoo ≥95% A/B не достигнут для всех агентов. compliance-officer-v1 FAIL (60%) — нужны дополнительные сценарии и calibration REFUTED categories. Drift > 0.15 — модель over-confirms (REFUTED recall слабый). Это блокирует production deploy (ADR-003 safety gate). Remediation план: расширить C/D сценарии для compliance-officer, запустить feedback_loop --apply.
 
 ---
 
