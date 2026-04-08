@@ -835,6 +835,35 @@
 
 ---
 
+### IL-045 — Spec-First Infrastructure (Developer Plane)
+- **Источник:** CEO, 2026-04-08 — "MANDATORY EXECUTION ORDER: IL-045 — Spec-First Infrastructure"
+- **Приоритет:** P1
+- **Описание:** Создать полную Spec-First инфраструктуру в Developer Plane (`~/developer/`). Размещение строго по PLANES.md принципу: методология → `~/developer/`, runtime → `banxe-emi-stack/`, архитектура → `banxe-architecture/`. Аудитор-агент контролирует территориальные границы.
+- **Шаги:**
+  1. `banxe-architecture/agents/passports/spec_first_auditor.yaml` — паспорт агента-контролёра ✅
+  2. `developer/spec-first/audit/spec_first_auditor.py` — скрипт аудита (блоки 0–6, territory violations) ✅
+  3. `developer/spec-first/PROJECTIDEA.md` — 10 секций: проблема/стек/MVP/метрики/AI-специфика ✅
+  4. `developer/spec-first/SPEC-TEMPLATE.md` — User Stories (9 routers, 20 endpoints), DB Schema (4 PostgreSQL + 5 ClickHouse tables), API Endpoints table ✅
+  5. `developer/rules/quality.md` — правила качества (type hints, docstrings, secrets, 300-строчный лимит) ✅
+  6. `developer/rules/compliance.md` — FCA правила (audit trail, SAR, Decimal, PII, EDD thresholds) ✅
+  7. `developer/rules/testing.md` — тестовые правила (≥15 тестов, coverage ≥80%, no float в assertions) ✅
+  8. `developer/skills/implement-feature.md` — 11-шаговый процесс от user story до IL DONE ✅
+  9. `developer/skills/create-migration.md` — SQL migrations (ClickHouse TTL + PostgreSQL constraints) ✅
+  10. `developer/skills/deploy-gmktec.md` — QRAA-based deployment skill ✅
+  11. `developer/agents/database-architect.md` — DB schema specialist ✅
+  12. `developer/agents/backend-engineer.md` — Port+Service+Adapter implementer ✅
+  13. `developer/agents/compliance-specialist.md` — FCA compliance reviewer ✅
+  14. `developer/agents/qa-reviewer.md` — quality gate runner ✅
+  15. `developer/agents/devops-engineer.md` — GMKtec infra specialist ✅
+  16. `developer/.claude/CLAUDE.md` — Developer Plane instructions с Spec-First + EXECUTION ORDER ✅
+- **Proof:**
+  - `python3 ~/developer/spec-first/audit/spec_first_auditor.py` → **7/7 PASS**, нет territory violations
+  - audit_log.jsonl: 14 записей PASS (по 2 на блок — блоки 0–6)
+  - Все файлы в `~/developer/` — ничего не попало в `banxe-emi-stack/.claude/` или `banxe-architecture/`
+- **Статус:** DONE ✅ 2026-04-08
+
+---
+
 ### IL-043 — Task 1: Safeguarding Deployment on GMKtec (FCA CASS 15 P0)
 - **Источник:** CEO execution plan (Banxe AI Bank project plan, Task 1), 2026-04-08
 - **Приоритет:** P0 — FCA CASS 15, deadline 7 May 2026
