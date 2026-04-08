@@ -1034,3 +1034,23 @@
   8. `requirements.txt` — добавить pika, psycopg2-binary, pyyaml
   9. `tests/test_infra_stubs.py` — тесты с unittest.mock
 - **Статус:** DONE ✅\n- **Proof:** `python3 -m pytest tests/test_infra_stubs.py` → 29/29 PASS | Full suite 780/780 PASS | ruff clean\n- **Артефакты:** 3 SQL schemas, ClickHouseCustomerService (7 methods), ClickHouseWebhookAuditStore (3 methods), PostgreSQLConfigStore.reload(), RabbitMQEventBus.subscribe(), 29 tests | commit 348ea6a
+
+### IL-054 — PDF Statement Template (WeasyPrint — FCA PS7/24)
+- **Источник:** CEO, 2026-04-08 | **Приоритет:** P1
+- **Описание:** Улучшить HTML-шаблон выписки: добавить CSS/брендинг Banxe, убрать `# pragma: no cover`, добавить тесты для `_render_html()` и `generate_pdf()`.
+- **Шаги:**
+  1. `services/statements/statement_service.py` — улучшить `_render_html()`, убрать pragma ✅
+  2. `tests/test_statement_pdf.py` — 28 тестов: HTML output, PDF mock WeasyPrint, to_csv, to_dict ✅
+- **Proof:** 832/832 pytest green, ruff clean
+- **Статус:** DONE ✅ 2026-04-09
+
+### IL-055 — Ballerine KYC Real Integration (self-hosted, no API key)
+- **Источник:** CEO, 2026-04-08 | **Приоритет:** P1
+- **Описание:** Реализовать `BallerineAdapter` через httpx REST API. Создать `infra/ballerine/docker-compose.yml`. Ballerine self-hosted — не требует внешнего API ключа.
+- **Шаги:**
+  1. `infra/ballerine/docker-compose.yml` — стек Ballerine (workflow-service + UI + PostgreSQL) ✅
+  2. `infra/ballerine/.env.example` — переменные окружения ✅
+  3. `services/kyc/mock_kyc_workflow.py` — BallerineAdapter: 6 методов + 2 status maps + KYCType import ✅
+  4. `tests/test_ballerine_adapter.py` — 24 тесты: все методы, edge cases, init guards ✅
+- **Proof:** 832/832 pytest green, ruff clean
+- **Статус:** DONE ✅ 2026-04-09
