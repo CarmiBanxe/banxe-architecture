@@ -565,7 +565,7 @@ graph TD
 | FA-11 | Temporal (saga patterns, exactly-once payments) | ❌ NOT_STARTED | — | Replace n8n for critical flows |
 | FA-12 | Sequin CDC (50k ops/sec Postgres CDC) | ❌ NOT_STARTED | — | Alternative to Debezium |
 | FA-13 | Jaeger v2 (distributed tracing per payment) | ❌ NOT_STARTED | — | Full payment trace |
-| FA-14 | Keycloak (IAM — RBAC для AI агентов и людей) | 🔄 IN_PROGRESS | IAMPort + MockIAMAdapter (7 roles, 15 permissions, SM&CR) + realm.json, IL-029 | Claude Code | Live Keycloak: stub (deploy + KEYCLOAK_URL required) |
+| FA-14 | Keycloak (IAM — RBAC для AI агентов и людей) | ✅ DEPLOYED | IAMPort + MockIAMAdapter (7 roles, 15 permissions, SM&CR) + KeycloakAdapter live; BT-011 UNBLOCKED 2026-04-08 | Claude Code | Keycloak 26.2.5 on GMKtec :8180, realm banxe, PostgreSQL-backed; IAM_ADAPTER=keycloak |
 
 ### 16.3 Phase 2 — Q3–Q4 2026
 
@@ -624,7 +624,7 @@ graph TD
 | S17-01 | Customer Management Service — dual entity model (Individual / Company) + UBO registry | UK GDPR Art.5, FCA COBS 9A, MLR 2017 | P1 | 🔄 IN_PROGRESS | Claude Code | `customer_port.py` + `customer_service.py` + 25 tests (IL-032); I-02 enforced; UBO registry done; no ClickHouse backend yet |
 | S17-02 | Agreement Service — T&C generation per product + DocuSign e-signature + version history | FCA COBS 6, eIDAS 910/2014 | P1 | 🔄 IN_PROGRESS | Claude Code | `agreement_port.py` + `agreement_service.py` + 22 tests (IL-033); DocuSign stub; version history done |
 | S17-03 | Notification Service — Email + SMS (OTP/alerts) + Push + multilingual templates (EN/RU/FR) | FCA COBS 4, UK GDPR (consent) | P1 | 🔄 IN_PROGRESS | Claude Code | n8n workflows partial (IL-025/IL-026), no unified port |
-| S17-04 | 2FA/MFA — TOTP + SMS OTP (RFC 6238) + Keycloak OIDC session management | PSR 2017 Reg.71 (SCA), FCA SM&CR SYSC 4.7 | P0 | 🔄 IN_PROGRESS | CTIO | Keycloak mock (IL-029) + TOTP/backup codes pyotp (IL-038); Keycloak deploy pending BT-011; SMS OTP pending Twilio |
+| S17-04 | 2FA/MFA — TOTP + SMS OTP (RFC 6238) + Keycloak OIDC session management | PSR 2017 Reg.71 (SCA), FCA SM&CR SYSC 4.7 | P0 | 🔄 IN_PROGRESS | CTIO | Keycloak 26.2.5 DEPLOYED GMKtec :8180 (BT-011 UNBLOCKED 2026-04-08) + TOTP/backup codes pyotp (IL-038); SMS OTP still pending Twilio (BT-010) |
 | S17-05 | Mass Payment Service — batch payroll / bulk transfers (FPS + BACS) | PSR 2017, FCA PS7/24 | P2 | ❌ NOT_STARTED | Treasury Manager | Blocked by payment rails BT-001 |
 | S17-06 | NOSTRO correspondent account reconciliation with external banks | PSR 2017, CASS 7 | P2 | ❌ NOT_STARTED | CFO | Blocked by safeguarding bank BT-002 |
 | S17-07 | Client Statement Service — monthly PDF/CSV per customer | CASS 15.12.4R, FCA PS7/24 | P2 | 🔄 IN_PROGRESS | Claude Code | `statement_service.py` — CSV/PDF + InMemoryRepo + 20 tests (IL-037); PDF requires WeasyPrint template TBD; ClickHouse TX repo pending |
@@ -650,7 +650,7 @@ graph TD
 | Блокер | ID | CEO Action |
 |--------|----|-----------|
 | Companies House API key | BT-005 | Зарегистрировать на developer.company-information.service.gov.uk |
-| Keycloak deployment | BT-011 | `docker-compose up keycloak` на GMKtec |
+| ~~Keycloak deployment~~ | BT-011 | ✅ UNBLOCKED 2026-04-08 — Keycloak 26.2.5 running GMKtec :8180 |
 | Payment rails (Mass Payment / NOSTRO) | BT-001 | Modulr/ClearBank sandbox key |
 | Safeguarding bank account | BT-002 | Barclays/HSBC EMI account |
 

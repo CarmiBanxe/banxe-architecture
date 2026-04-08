@@ -768,3 +768,22 @@
 - **Приоритет:** P1
 - **Описание:** Lightweight TOTP 2FA без Keycloak. pyotp + backup codes + rate limiting. Covers S17-04 partial.
 - **Статус:** DONE ✅ (см. commit)
+
+---
+
+### IL-039 — BT-011 Unblock: Keycloak IAM деплой на GMKtec
+- **Источник:** CEO "BT-011 можно разблокировать прямо сейчас без внешних контрактов — просто деплой Keycloak на GMKtec", 2026-04-08
+- **Приоритет:** P0
+- **Описание:** Развернуть Keycloak 26.2.5 на GMKtec :8180, настроить realm banxe с 7 ролями, реализовать live KeycloakAdapter (Resource Owner PW Grant + userinfo JWT introspection). Разблокировать FA-14, S17-04.
+- **Proof:**
+  - Keycloak 26.2.5: `docker run --network host quay.io/keycloak/keycloak:26.2.5 start-dev` на GMKtec :8180
+  - PostgreSQL: контейнер keycloak-db :5433, БД keycloak
+  - Realm `banxe`: 7 ролей (CEO/MLRO/CCO/OPERATOR/AGENT/AUDITOR/READONLY), clients banxe-backend + banxe-agents, user `mark` (CEO role)
+  - `KeycloakAdapter.authenticate()`: Resource Owner Password Grant → `/realms/banxe/protocol/openid-connect/token`
+  - `KeycloakAdapter.validate_token()`: userinfo endpoint → `realm_access.roles` → BanxeRole mapping
+  - `KeycloakAdapter.health()`: HTTP GET `/realms/banxe` → 200/302
+  - GMKtec `.env`: `IAM_ADAPTER=keycloak`, `KEYCLOAK_URL=http://localhost:8180`, `KEYCLOAK_REALM=banxe`
+  - banxe-emi-stack commit `b226c56` — KeycloakAdapter live
+  - COMPLIANCE-MATRIX.md: FA-14 🔄→✅ DEPLOYED, S17-04 updated
+  - BLOCKED-TASKS.md: BT-011 BLOCKED→UNBLOCKED ✅
+- **Статус:** DONE ✅ 2026-04-08
