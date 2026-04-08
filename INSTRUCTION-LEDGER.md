@@ -1054,3 +1054,13 @@
   4. `tests/test_ballerine_adapter.py` — 24 тесты: все методы, edge cases, init guards ✅
 - **Proof:** 832/832 pytest green, ruff clean
 - **Статус:** DONE ✅ 2026-04-09
+
+### IL-056 — HITL Feedback Loop (AI learns from CTIO actions — I-27)
+- **Источник:** CEO, ROADMAP Phase 2 #10, 2026-04-09 | **Приоритет:** P1
+- **Описание:** Создать `feedback_loop.py` — FeedbackLoopAnalyser, который читает corpus решений CTIO/CEO, анализирует паттерны и ПРЕДЛАГАЕТ изменения порогов (никогда не применяет автономно). I-27: supervised feedback, EU AI Act Art.14.
+- **Шаги:**
+  1. `services/hitl/feedback_loop.py` — FeedbackLoopAnalyser: analyse(), 5 методов анализа, ThresholdProposal ✅
+  2. `tests/test_feedback_loop.py` — 35 тестов: ReasonStats, RiskBuckets, AmountBuckets, DeciderStats, Proposals (I-27 guard), custom watermarks ✅
+  3. `ROADMAP.md` — создан: Phase 1 COMPLETE, Phase 2 IN PROGRESS, Phase 3 COMPLETE ✅
+- **Proof:** 867/867 pytest green, ruff clean
+- **Статус:** DONE ✅ 2026-04-09
