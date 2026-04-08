@@ -953,3 +953,16 @@
   6. `tests/test_notification_port.py` + `tests/test_api_notifications.py` — ≥15 + ≥15 tests
 - **Статус:** DONE ✅
 - **Proof:** commit `4793303` (banxe-emi-stack) — 10 files, 1342 lines. Services: notification_port.py, notification_service.py (14 templates, 9 EventBus subscriptions), mock_notification_adapter.py (bounce simulation, GDPR gate), sendgrid_adapter.py (stub). API: models/notifications.py, routers/notifications.py (3 endpoints). Tests: 38 tests (21 service + 17 API), 598/598 total PASS, Ruff CLEAN, Invariants PASS.
+
+---
+
+### IL-048 — Redis VelocityTracker (S9-04 AML Infrastructure)
+- **Источник:** CEO execution plan, 2026-04-08 — Task 4 P2
+- **Приоритет:** P2 | **Дедлайн:** 7 May 2026
+- **Описание:** Создать `RedisVelocityTracker` — продовая реализация `VelocityTrackerPort` через Redis Sorted Sets. Заменяет `InMemoryVelocityTracker` в `TxMonitorService` в production. Cluster-safe, TTL per key, pipeline ZADD+EXPIRE.
+- **Шаги:**
+  1. `services/aml/redis_velocity_tracker.py` — RedisVelocityTracker: sorted set per customer, ZRANGEBYSCORE windows
+  2. `requirements.txt` — добавить redis>=5.0, fakeredis>=2.21 (dev)
+  3. `tests/test_redis_velocity_tracker.py` — ≥20 тестов: unit + интеграция с TxMonitorService
+- **Статус:** DONE ✅
+- **Proof:** commit `dad1025` (banxe-emi-stack) — 3 files, 484 lines. `redis_velocity_tracker.py`: sorted sets, ZRANGEBYSCORE windows, cluster-safe pipeline. 22 tests (unit + 3 TxMonitorService integration). 620/620 PASS, Ruff CLEAN.
