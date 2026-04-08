@@ -989,3 +989,17 @@
   4. `tests/test_consumer_duty_service.py` — 33 tests
 - **Статус:** DONE ✅
 - **Proof:** commit `086db88` (banxe-emi-stack) — 7 files, 1364 lines. 9 VulnerabilityFlags + category mapping + 73 support actions, FairValueAssessment (COBS 6.1A), OutcomeMonitor (PS22/9 §10), ConsumerDutyReport. 33 tests (20 unit + 13 API). 680/680 PASS, Ruff CLEAN, Invariants PASS.
+
+---
+
+### IL-051 — HITL Feedback Loop (Phase 2 #10)
+- **Источник:** ROADMAP Phase 2 #10, 2026-04-08
+- **Приоритет:** P1 | **Дедлайн:** 7 May 2026
+- **Описание:** Human-In-The-Loop review queue для HOLD-кейсов из FraudAMLPipeline. SLA 24h (стандарт) / 4h (SAR). Feedback corpus для feedback_loop.py. I-27: supervised, НЕ автономный. EU AI Act Art.14.
+- **Шаги:**
+  1. `services/hitl/hitl_port.py` — ReviewCase, CaseStatus, DecisionOutcome, HITLStats
+  2. `services/hitl/hitl_service.py` — enqueue, decide, list_queue, get_case, stats, feedback_corpus
+  3. `api/models/hitl.py` + `api/routers/hitl.py` — 5 endpoints
+  4. `tests/test_hitl_service.py` — 34 tests
+- **Статус:** DONE ✅
+- **Proof:** commit `64a70d8` (banxe-emi-stack) — 7 files, 1175 lines. HITLService: enqueue/decide/list/stats/feedback corpus. SLA 24h/4h SAR. from_pipeline_result() bridge. 34 tests (23 unit + 11 API). 714/714 PASS, Ruff CLEAN, Invariants PASS.
