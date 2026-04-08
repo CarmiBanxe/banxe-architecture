@@ -237,6 +237,59 @@ GUIYON (France, criminal law) and SS1 (Israel, investigative judge) are fully is
 
 ---
 
+## Skills Orchestration by Plane
+
+Full orchestration detail is in **SKILLS-ORCHESTRATION.md**. This section provides the per-plane summary.
+
+### Developer Plane — Allowed Orchestrations
+
+All 10 scenarios (A–J) are allowed. Enforcement is **advisory** for most scenarios; **mandatory** for CI/CD and IL registration (I-28).
+
+| Scenario | Mode in Developer Plane |
+|----------|------------------------|
+| A. New feature / IL | MANDATORY — IL entry required (I-28) |
+| B. Product code modification | N/A — code changes here are tooling, not FCA P0 |
+| C. Safe refactor | ADVISORY — quality-gate.sh must pass |
+| D. Performance-sensitive | ADVISORY — no production data |
+| E. API / integration work | ADVISORY — full enforcement when code ships to Product Plane |
+| F. Error model hardening | ADVISORY |
+| G. Dependency cleanup | ADVISORY — licence audit still required |
+| H. Test coverage expansion | ADVISORY |
+| I. Cross-repo governance | MANDATORY — IL + consistency validation |
+| J. Standby workflows | Not applicable — Standby is isolated |
+
+### Product Plane — Mandatory Orchestrations
+
+Enforcement is **stricter** here because `banxe-emi-stack` is FCA P0. `quality-gate.sh` is the final blocker for all scenarios.
+
+| Scenario | Mode in Product Plane |
+|----------|----------------------|
+| A. New feature / IL | MANDATORY — Rapid Spec Builder + IL before any implementation |
+| B. Product code modification | MANDATORY — full sequence B required |
+| C. Safe refactor | CONTROLLED — MUST NOT touch compliance contours |
+| D. Performance-sensitive | MANDATORY — Performance Scanner before any performance claim |
+| E. API / integration work | MANDATORY — API Contract Guardian MUST run; QRAA for breaking changes |
+| F. Error model hardening | MANDATORY — ruff/semgrep block on bare-except |
+| G. Dependency cleanup | CONTROLLED — IL entry + licence audit mandatory |
+| H. Test coverage expansion | MANDATORY — 75% coverage gate enforced |
+| I. Cross-repo governance | MANDATORY |
+| J. Standby workflows | PROHIBITED — Product Plane code MUST NOT be used in Standby context |
+
+### Standby Plane — Local-First and Isolated
+
+Only Scenario J applies. All other scenarios are local advisory.
+
+| Rule | Detail |
+|------|--------|
+| Context Memory Sync | MUST — local Standby context only; no Banxe IL IDs referenced |
+| Rapid Spec Builder | SHOULD — spec stays in Standby repo |
+| No Product Plane scenarios | Scenarios A–I must not cross into Standby plane |
+| No Banxe data | No ClickHouse, Midaz, Redis, or `.env` from Banxe |
+| No shared MiroFish context | Separate activation per project |
+| Output isolation | Standby outputs MUST NOT propagate to Developer or Product planes |
+
+---
+
 ## Межплоскостные правила
 
 | Правило | Описание |
