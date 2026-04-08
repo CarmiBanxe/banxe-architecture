@@ -114,3 +114,13 @@ compliance_matrix_refs:
 aigf_risks:
   - AIGF-C-06  # late FCA submission → regulatory sanction
   - AIGF-C-07  # incorrect FIN060 data → material misstatement
+allowed_skills:
+  - context_memory_sync       # MANDATORY — IL continuity; FCA reporting deadlines
+  - rapid_spec_builder        # MANDATORY — before new FIN060 or RegData change
+  - error_handling_standardizer  # MANDATORY — reporting errors must be typed and logged
+  - api_contract_guardian     # MANDATORY — RegData API contract must not change silently
+  - smart_test_generator      # CONTROLLED — no real safeguarding data in test fixtures
+  - clean_architecture_enforcer  # MANDATORY advisory
+prohibited_skills:
+  - auto_refactor_pro         # PROHIBITED — FCA reporting logic is compliance-critical
+  - cicd_quick_setup          # CONTROLLED — RegData submission pipeline = QRAA required

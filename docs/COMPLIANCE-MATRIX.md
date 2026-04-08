@@ -664,3 +664,33 @@ graph TD
 | `AgreementAgent` | `agents/passports/agreement_agent.yaml` | S17-02 |
 | `ReportingAgent` | `agents/passports/reporting_agent.yaml` | S17-07 |
 | `PaymentRouterAgent` | `agents/passports/payment_router_agent.yaml` | S17-05, S17-06 |
+
+---
+
+## РАЗДЕЛ FA — Skills Controls vs Invariants (IL-042, 2026-04-08)
+
+Maps each project skill to the existing invariants and FCA controls it relates to.
+Full governance: `docs/SKILLS-MATRIX.md` + `docs/SKILLS-OPERATING-MODEL.md`.
+
+| Skill | Invariants enforced / reinforced | FCA / Regulatory control | Enforcement mode (Product Plane) |
+|-------|----------------------------------|--------------------------|----------------------------------|
+| Context Memory Sync | I-28 (IL discipline) | FCA SYSC 4 (record-keeping), operational continuity | MANDATORY |
+| CI/CD Quick Setup | I-06 (no secrets in pipeline), I-28 | FCA PS21/3 (operational resilience) | CONTROLLED (CEO approval) |
+| Rapid Spec Builder | I-28 (IL required before action), I-20 (contour independence stated in spec) | FCA SYSC 4 (governance documentation) | MANDATORY |
+| Error Handling Standardizer | I-05 (Decimal only — no float in error fields), I-24 (audit writes survive errors) | FCA SYSC 6.3 (error logging), MLR 2017 audit trail | MANDATORY |
+| Performance Scanner | I-05 FPS SLA <15s; fraud scoring SLA <100ms (S5-22) | PSR 2017 Reg.71 (payment execution time), FCA PS7/24 | MANDATORY (payment/AML/recon path) |
+| API Contract Guardian | I-10 (no fake capabilities), I-20 (contour coupling prevention) | FCA SYSC 8 (outsourcing — external API stability) | MANDATORY |
+| Dependency Optimizer | I-15 (Jube internal only — AGPLv3), I-19 (Marble internal only — ELv2) | FCA SYSC 8 (third-party risk), licence compliance | CONTROLLED |
+| Smart Test Generator | I-05, I-06, I-24 (tests must not mock audit writes) | FCA SYSC 4 (testing governance) | CONTROLLED (human review before coverage count) |
+| Auto Refactor Pro | I-20 (contour independence preserved), I-24 (audit writes survive refactor), I-28 (IL if touching critical files) | FCA change management (SYSC 4) | CONTROLLED (prohibited on compliance contours) |
+| Clean Architecture Enforcer | I-13 (orchestrator delegates), I-20 (cross-contour imports), I-28 (LedgerPort — no direct HTTP to CBS) | FCA SYSC 6 (system integrity) | MANDATORY advisory; blocking where semgrep rule exists |
+
+### Standby Plane Isolation Controls (I-18, I-20)
+
+| Control | GUIYON | SS1 |
+|---------|--------|-----|
+| No Banxe ClickHouse/Midaz/Redis access | PROHIBITED | PROHIBITED |
+| No shared MiroFish context | PROHIBITED | PROHIBITED |
+| No Banxe IL IDs referenced | PROHIBITED | PROHIBITED |
+| Skills mode | ADVISORY only | ADVISORY only |
+| Output propagation to Banxe planes | PROHIBITED | PROHIBITED |

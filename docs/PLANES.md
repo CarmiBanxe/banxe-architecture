@@ -1,6 +1,6 @@
 # PLANES.md — Архитектура плоскостей Banxe AI Bank
 
-**Version:** 1.0 | **Date:** 2026-04-07 | **Owner:** CEO + CTIO
+**Version:** 1.1 | **Date:** 2026-04-08 | **Owner:** CEO + CTIO
 
 ---
 
@@ -172,6 +172,68 @@ shared services или shared routing между Standby и Product/Developer pl
 - Отдельный GitHub репозиторий (уже существует)
 - Нет shared code или services с Banxe ecosystem
 - Иврит + арабский языковой контекст — отдельный MiroFish профиль
+
+---
+
+## Skills Distribution by Plane
+
+Skills governance is defined in full in SKILLS-MATRIX.md and SKILLS-OPERATING-MODEL.md.
+This section provides the per-plane summary.
+
+### Developer Plane — Shared Tooling and Governance Skills
+
+| Skill | Mode | Notes |
+|-------|------|-------|
+| Context Memory Sync | MANDATORY | IL continuity, session handoff |
+| CI/CD Quick Setup | MANDATORY | All pipeline changes must pass quality-gate |
+| Rapid Spec Builder | MANDATORY | IL entry required before implementation |
+| Error Handling Standardizer | ADVISORY | Enforced by ruff in Product Plane |
+| Performance Scanner | ADVISORY | No production data in Developer Plane |
+| API Contract Guardian | ADVISORY | Full enforcement in Product Plane |
+| Dependency Optimizer | ADVISORY | Licence audit still required |
+| Smart Test Generator | ADVISORY | Outputs advisory until human-reviewed |
+| Auto Refactor Pro | ADVISORY | All tests must pass after refactor |
+| Clean Architecture Enforcer | MANDATORY (advisory) | Proposes semgrep rules; blocks only where rule exists |
+
+### Product Plane — Product-Safe Execution Skills Only
+
+Enforcement is stricter here because `banxe-emi-stack` is FCA P0.
+
+| Skill | Mode | Notes |
+|-------|------|-------|
+| Context Memory Sync | MANDATORY | — |
+| CI/CD Quick Setup | CONTROLLED | CEO explicit approval + QRAA for any pipeline or GMKtec change |
+| Rapid Spec Builder | MANDATORY | No IL = no action (I-28) |
+| Error Handling Standardizer | MANDATORY | Ruff/semgrep blocks on violation |
+| Performance Scanner | MANDATORY | Payment/AML/recon path changes only |
+| API Contract Guardian | MANDATORY | Any port or router change triggers contract diff |
+| Dependency Optimizer | CONTROLLED | IL entry required; licence audit mandatory |
+| Smart Test Generator | CONTROLLED | Human review before counting toward coverage gate |
+| Auto Refactor Pro | CONTROLLED | Prohibited on compliance contours; IL required |
+| Clean Architecture Enforcer | MANDATORY (blocking where rule exists) | Semgrep enforces |
+
+### Standby Plane — Isolated Local-First, Document-Heavy
+
+GUIYON (France, criminal law) and SS1 (Israel, investigative judge) are fully isolated from Banxe.
+
+| Skill | Mode | Key constraint |
+|-------|------|----------------|
+| Context Memory Sync | ADVISORY | No Banxe IL, no Banxe memory files referenced |
+| CI/CD Quick Setup | CONTROLLED | Local pipelines only; no Banxe infra connections |
+| Rapid Spec Builder | ADVISORY | Spec stays in Standby repo; no Banxe IL IDs |
+| Error Handling Standardizer | ADVISORY | Local conventions only |
+| Performance Scanner | ADVISORY | No Banxe data |
+| API Contract Guardian | ADVISORY | Local APIs only |
+| Dependency Optimizer | ADVISORY | No shared packages with Banxe services |
+| Smart Test Generator | ADVISORY | No Banxe fixtures |
+| Auto Refactor Pro | ADVISORY | Local refactor only |
+| Clean Architecture Enforcer | ADVISORY | Local architecture conventions |
+
+**Absolute rules for Standby Plane skills (I-18, I-20):**
+- No Banxe ClickHouse, Midaz, Redis, or `.env` access
+- No shared MiroFish context with Banxe sessions
+- No propagation of Standby output to Developer or Product planes
+- No Banxe IL entries for Standby-only work
 
 ---
 
