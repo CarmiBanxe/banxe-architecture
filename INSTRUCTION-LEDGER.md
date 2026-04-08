@@ -844,23 +844,32 @@
   2. `developer/spec-first/audit/spec_first_auditor.py` — скрипт аудита (блоки 0–6, territory violations) ✅
   3. `developer/spec-first/PROJECTIDEA.md` — 10 секций: проблема/стек/MVP/метрики/AI-специфика ✅
   4. `developer/spec-first/SPEC-TEMPLATE.md` — User Stories (9 routers, 20 endpoints), DB Schema (4 PostgreSQL + 5 ClickHouse tables), API Endpoints table ✅
-  5. `developer/rules/quality.md` — правила качества (type hints, docstrings, secrets, 300-строчный лимит) ✅
-  6. `developer/rules/compliance.md` — FCA правила (audit trail, SAR, Decimal, PII, EDD thresholds) ✅
-  7. `developer/rules/testing.md` — тестовые правила (≥15 тестов, coverage ≥80%, no float в assertions) ✅
-  8. `developer/skills/implement-feature.md` — 11-шаговый процесс от user story до IL DONE ✅
-  9. `developer/skills/create-migration.md` — SQL migrations (ClickHouse TTL + PostgreSQL constraints) ✅
-  10. `developer/skills/deploy-gmktec.md` — QRAA-based deployment skill ✅
-  11. `developer/agents/database-architect.md` — DB schema specialist ✅
-  12. `developer/agents/backend-engineer.md` — Port+Service+Adapter implementer ✅
-  13. `developer/agents/compliance-specialist.md` — FCA compliance reviewer ✅
-  14. `developer/agents/qa-reviewer.md` — quality gate runner ✅
-  15. `developer/agents/devops-engineer.md` — GMKtec infra specialist ✅
-  16. `developer/.claude/CLAUDE.md` — Developer Plane instructions с Spec-First + EXECUTION ORDER ✅
+  5. `developer/.claude/rules/quality.md` — правила качества (type hints, docstrings, secrets, 300-строчный лимит) ✅
+  6. `developer/.claude/rules/compliance.md` — FCA правила (audit trail, SAR, Decimal, PII, EDD thresholds) ✅
+  7. `developer/.claude/rules/testing.md` — тестовые правила (≥15 тестов, coverage ≥80%, no float в assertions) ✅
+  8. `developer/.claude/skills/implement-feature.md` — 11-шаговый процесс от user story до IL DONE ✅
+  9. `developer/.claude/skills/create-migration.md` — SQL migrations (ClickHouse TTL + PostgreSQL constraints) ✅
+  10. `developer/.claude/skills/deploy-gmktec.md` — QRAA-based deployment skill ✅
+  11. `developer/.claude/agents/gsd-planner.md` — GSD: декомпозиция фичи → спринт-план ✅
+  12. `developer/.claude/agents/gsd-executor.md` — GSD: выполнение плана → вызов dev-агентов ✅
+  13. `developer/.claude/agents/gsd-verifier.md` — GSD: финальная верификация (read-only) ✅
+  14. `developer/.claude/agents/database-architect.md` — DB schema specialist ✅
+  15. `developer/.claude/agents/backend-engineer.md` — Port+Service+Adapter implementer ✅
+  16. `developer/.claude/agents/compliance-specialist.md` — FCA compliance reviewer ✅
+  17. `developer/.claude/agents/qa-reviewer.md` — quality gate runner ✅
+  18. `developer/.claude/agents/devops-engineer.md` — GMKtec infra specialist ✅
+  19. `developer/.claude/commands/` — 6 GSD slash commands (new/plan/execute/quick/health/help) ✅
+  20. `developer/.claude/CLAUDE.md` — Developer Plane instructions с Spec-First + GSD framework ✅
+  21. `developer/.planning/PROJECT.md` — текущий спринт (6 P0 задач) ✅
+  22. `developer/.planning/STATE.md` — статус задач ✅
+  23. `developer/.planning/REQUIREMENTS.md` — технические ограничения ✅
+  24. `developer/.planning/roadmap/ROADMAP.md` — фазы до 7 May 2026 ✅
 - **Proof:**
-  - `python3 ~/developer/spec-first/audit/spec_first_auditor.py` → **7/7 PASS**, нет territory violations
-  - audit_log.jsonl: 14 записей PASS (по 2 на блок — блоки 0–6)
-  - Все файлы в `~/developer/` — ничего не попало в `banxe-emi-stack/.claude/` или `banxe-architecture/`
-- **Статус:** DONE ✅ 2026-04-08
+  - `python3 ~/developer/spec-first/audit/spec_first_auditor.py --full` → **8/8 PASS**, нет territory violations
+  - audit_log.jsonl: записи по всем блокам 0-7
+  - commit developer-core: `99781b9` — 28 files changed, 1568 insertions
+  - Все файлы в `~/developer/.claude/` — ничего не попало в `banxe-emi-stack/.claude/` или `banxe-architecture/`
+- **Статус:** DONE ✅ 2026-04-08 (GSD v2 — Blocks 0-7)
 
 ---
 
