@@ -1003,3 +1003,18 @@
   4. `tests/test_hitl_service.py` — 34 tests
 - **Статус:** DONE ✅
 - **Proof:** commit `64a70d8` (banxe-emi-stack) — 7 files, 1175 lines. HITLService: enqueue/decide/list/stats/feedback corpus. SLA 24h/4h SAR. from_pipeline_result() bridge. 34 tests (23 unit + 11 API). 714/714 PASS, Ruff CLEAN, Invariants PASS.
+
+---
+
+### IL-052 — Compliance Reporting Phase 3 (FIN060 API + SAR Auto-Filing)
+- **Источник:** ROADMAP Phase 3 #11-#12, 2026-04-08
+- **Приоритет:** P2 | **Дедлайн:** 7 May 2026
+- **Описание:** (A) FIN060 API router поверх существующего regdata_return.py. (B) SARService: DRAFT → MLRO_APPROVED → SUBMITTED (NCA SAROnline stub). POCA 2002 s.330, 5-year ClickHouse retention. Consumer Duty Annual Report (#13) уже реализован в IL-050.
+- **Шаги:**
+  1. `services/aml/sar_service.py` — SARReport, SARService (file/approve/submit/withdraw/list)
+  2. `api/models/reporting.py` — Pydantic schemas: FIN060 + SAR
+  3. `api/routers/reporting.py` — 8 endpoints: 2 FIN060 + 6 SAR
+  4. `tests/test_sar_service.py` — ≥25 tests
+- **Статус:** DONE ✅
+- **Proof:** `python3 -m pytest tests/test_sar_service.py -v` → 37/37 PASS | Full suite 751/751 PASS | ruff clean
+- **Артефакты:** services/aml/sar_service.py, api/models/reporting.py, api/routers/reporting.py, tests/test_sar_service.py (37 tests), api/main.py (reporting router added)
