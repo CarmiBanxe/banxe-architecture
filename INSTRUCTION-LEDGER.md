@@ -975,3 +975,17 @@
 - **Описание:** `FraudAMLPipeline` — оркестратор: FraudScoringPort + TxMonitorService → APPROVE/HOLD/BLOCK. POST /v1/fraud/assess. FCA: PSR APP 2024, MLR 2017 Reg.28, POCA 2002 s.330, I-04, I-06.
 - **Статус:** DONE ✅
 - **Proof:** commit `236c3ab` (banxe-emi-stack) — 5 files, 886 lines. Decision matrix: BLOCK > HOLD > APPROVE. 27 tests (20 unit + 7 API). 647/647 PASS, Ruff CLEAN.
+
+---
+
+### IL-050 — Consumer Duty S9-06 (FCA PS22/9)
+- **Источник:** CEO execution plan, 2026-04-08 — Task 6 P2
+- **Приоритет:** P2 | **Дедлайн:** 7 May 2026
+- **Описание:** Implement FCA Consumer Duty PS22/9 framework: 4 outcome areas (Products/Services, Price/Value, Consumer Understanding, Consumer Support). Vulnerability assessment (FCA FG21/1), Fair Value assessment (COBS 6), Outcome monitoring, Consumer Duty Report.
+- **Шаги:**
+  1. `services/consumer_duty/consumer_duty_port.py` — VulnerabilityFlag, ConsumerDutyOutcome, FairValueAssessment, OutcomeRecord, ConsumerDutyReport types
+  2. `services/consumer_duty/consumer_duty_service.py` — assess_vulnerability, assess_fair_value, record_outcome, generate_report
+  3. `api/models/consumer_duty.py` + `api/routers/consumer_duty.py` — 5 endpoints
+  4. `tests/test_consumer_duty_service.py` — 33 tests
+- **Статус:** DONE ✅
+- **Proof:** commit `086db88` (banxe-emi-stack) — 7 files, 1364 lines. 9 VulnerabilityFlags + category mapping + 73 support actions, FairValueAssessment (COBS 6.1A), OutcomeMonitor (PS22/9 §10), ConsumerDutyReport. 33 tests (20 unit + 13 API). 680/680 PASS, Ruff CLEAN, Invariants PASS.
