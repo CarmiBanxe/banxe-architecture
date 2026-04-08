@@ -137,6 +137,39 @@
 
 ---
 
+### BT-010: SendGrid/Twilio notification adapters — API keys
+- **Задача:** S17-06 (Notification service — SMS/email delivery)
+- **IL ref:** —
+- **Blocker:** `SENDGRID_API_KEY` + `TWILIO_ACCOUNT_SID` / `TWILIO_AUTH_TOKEN` отсутствуют. Notification adapter работает только через Telegram (mock channel).
+- **Тип:** API_KEY + CEO_DECISION
+- **Unblock trigger:** CEO регистрируется на SendGrid/Twilio sandbox → получает API keys → `.env` на GMKtec
+- **Дата блокировки:** 2026-04-08
+- **Статус:** BLOCKED
+
+---
+
+### BT-011: Keycloak IAM — деплой на GMKtec
+- **Задача:** FA-14 / S17-04 (IAM/SSO — Keycloak, FCA SM&CR role enforcement)
+- **IL ref:** IL-039
+- **Blocker:** Keycloak требует отдельного Docker инстанса + PostgreSQL. До разблокировки IAM работал через MockIAMAdapter.
+- **Тип:** INFRA
+- **Unblock trigger:** CEO подтверждает деплой Keycloak на GMKtec (QRAA выполнен 2026-04-08)
+- **Дата блокировки:** 2026-04-07
+- **Дата разблокировки:** 2026-04-08
+- **Статус:** UNBLOCKED ✅
+
+**Разблокировка 2026-04-08:**
+- Keycloak 26.2.5 запущен `docker run --network host` на GMKtec :8180
+- PostgreSQL БД: keycloak (отдельный контейнер :5433)
+- Realm `banxe` настроен: 7 ролей (CEO/MLRO/CCO/OPERATOR/AGENT/AUDITOR/READONLY)
+- Clients: `banxe-backend` (Resource Owner PW Grant) + `banxe-agents`
+- User `mark` (Moriel Carmi) создан с ролью CEO
+- `KeycloakAdapter` реализован в `services/iam/mock_iam_adapter.py` (live — не mock)
+- GMKtec `.env`: `IAM_ADAPTER=keycloak`, `KEYCLOAK_URL=http://localhost:8180`
+- Health check: `curl http://gmktec:8180/` → 302 ✅
+
+---
+
 ### BT-012: Saga Coordinator (Payment flow) — зависит от Payment Rails
 - **Задача:** S4: Stateful payment saga — AML_CHECK → DEBIT_POSTED → RAIL_SUBMITTED → CONFIRMED (с compensation на fail)
 - **IL ref:** IL-035 (PROPOSED)
