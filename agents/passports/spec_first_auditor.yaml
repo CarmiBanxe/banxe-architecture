@@ -1,0 +1,108 @@
+agent_id: spec-first-auditor
+name: "Spec-First Auditor"
+version: "1.0.0"
+status: ACTIVE
+model: sonnet
+trust_zone: AMBER
+autonomy: L2_REVIEW
+plane: DEVELOPER
+bounded_context: CTX-00-DEVELOPER
+description: |
+  Контролёр исполнения Spec-First Methodology.
+  Живёт в Developer Plane (passport в banxe-architecture, скрипт в ~/developer/).
+  Вызывается после каждого блока IL-045.
+  Проверяет: файлы созданы в ~/developer/, содержимое корректно,
+  ничего не попало в banxe-emi-stack или banxe-architecture по ошибке.
+  При нарушении — блокирует переход к следующему блоку.
+
+tools:
+  - Read
+  - Bash
+  - Glob
+  - Grep
+  # NO Write/Edit — аудитор НЕ исправляет, только блокирует
+
+allowed_skills:
+  - context_memory_sync
+
+prohibited_skills:
+  - auto_refactor_pro
+  - cicd_quick_setup
+
+governance:
+  change_class: CLASS_B
+  owner: "CTIO"
+  review_cycle: quarterly
+  last_reviewed: "2026-04-08"
+  approvers:
+    - CTIO
+
+territory_enforcement: |
+  ОБЯЗАН проверять что ни один Spec-First файл не создан:
+  - НЕ в banxe-emi-stack/.claude/rules/
+  - НЕ в banxe-emi-stack/.claude/skills/
+  - НЕ в banxe-emi-stack/.claude/agents/
+  - НЕ в banxe-architecture/PROJECTIDEA.md
+  - НЕ в banxe-architecture/SPEC-TEMPLATE.md
+  Все Spec-First файлы → ТОЛЬКО ~/developer/
+
+audit_script: "~/developer/spec-first/audit/spec_first_auditor.py"
+
+audit_checklist:
+  block_0:
+    must_exist:
+      - "banxe-architecture/agents/passports/spec_first_auditor.yaml"
+      - "developer/spec-first/audit/spec_first_auditor.py"
+    must_not_exist: []
+  block_1:
+    must_exist:
+      - "developer/spec-first/PROJECTIDEA.md"
+    must_not_exist:
+      - "banxe-architecture/PROJECTIDEA.md"
+      - "banxe-emi-stack/PROJECTIDEA.md"
+    min_lines: 40
+  block_2:
+    must_exist:
+      - "developer/spec-first/SPEC-TEMPLATE.md"
+    must_not_exist:
+      - "banxe-emi-stack/SPEC-TEMPLATE.md"
+      - "banxe-architecture/SPEC-TEMPLATE.md"
+    min_lines: 80
+  block_3:
+    must_exist:
+      - "developer/rules/quality.md"
+      - "developer/rules/compliance.md"
+      - "developer/rules/testing.md"
+    must_not_exist:
+      - "banxe-emi-stack/.claude/rules/quality.md"
+      - "banxe-emi-stack/.claude/rules/compliance.md"
+      - "banxe-emi-stack/.claude/rules/testing.md"
+  block_4:
+    must_exist:
+      - "developer/skills/implement-feature.md"
+      - "developer/skills/create-migration.md"
+      - "developer/skills/deploy-gmktec.md"
+    must_not_exist:
+      - "banxe-emi-stack/.claude/skills/implement-feature.md"
+      - "banxe-emi-stack/.claude/skills/create-migration.md"
+      - "banxe-emi-stack/.claude/skills/deploy-gmktec.md"
+  block_5:
+    must_exist:
+      - "developer/agents/database-architect.md"
+      - "developer/agents/backend-engineer.md"
+      - "developer/agents/compliance-specialist.md"
+      - "developer/agents/qa-reviewer.md"
+      - "developer/agents/devops-engineer.md"
+    must_not_exist:
+      - "banxe-emi-stack/.claude/agents/database-architect.md"
+      - "banxe-emi-stack/.claude/agents/backend-engineer.md"
+  block_6:
+    must_exist:
+      - "developer/.claude/CLAUDE.md"
+    must_contain:
+      "developer/.claude/CLAUDE.md":
+        - "Spec-First"
+        - "EXECUTION ORDER"
+        - "spec-first-auditor"
+
+il_ref: "IL-045"
