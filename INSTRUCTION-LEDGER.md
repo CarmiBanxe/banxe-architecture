@@ -787,3 +787,32 @@
   - COMPLIANCE-MATRIX.md: FA-14 🔄→✅ DEPLOYED, S17-04 updated
   - BLOCKED-TASKS.md: BT-011 BLOCKED→UNBLOCKED ✅
 - **Статус:** DONE ✅ 2026-04-08
+
+---
+
+### IL-040 — Geniusto v5 #6: Config-as-Data (fees/limits/enums from YAML/PostgreSQL)
+- **Источник:** CEO "продолжай с Config-as-Data (#6 из Geniusto v5)", 2026-04-08
+- **Приоритет:** P2
+- **Описание:** Перенести hardcoded fees/limits из кода в YAML-конфиг. YAMLConfigStore + InMemoryConfigStore + PostgreSQLConfigStore stub. 4 продукта: EMI/BUSINESS/FX/PREPAID.
+- **Proof:**
+  - `services/config/config_port.py` — FeeSchedule, PaymentLimits, ProductConfig, ConfigPort Protocol
+  - `services/config/config_service.py` — YAMLConfigStore.reload() + InMemoryConfigStore + stub
+  - `config/banxe_config.yaml` — 4 продукта, fee schedules per tx_type, limits per entity_type
+  - 37 тестов (test_config_service.py)
+  - commit `aa48293`
+- **Статус:** DONE ✅ 2026-04-08
+
+---
+
+### IL-041 — Dual-Entity AML Thresholds (Individual vs Corporate tx_monitor rules)
+- **Источник:** CEO "Dual Entity AML thresholds (разные правила tx_monitor для Individual vs Corporate)", 2026-04-08
+- **Приоритет:** P1
+- **Описание:** INDIVIDUAL £10k EDD / £50k SAR vs COMPANY £50k EDD / £250k SAR. TxMonitorService: 5-rule engine (sanctions/EDD/velocity/structuring/SAR). MockFraudAdapter entity-aware.
+- **Proof:**
+  - `services/aml/aml_thresholds.py` — AMLThresholdSet, INDIVIDUAL_THRESHOLDS, COMPANY_THRESHOLDS, get_thresholds()
+  - `services/aml/tx_monitor.py` — TxMonitorService + InMemoryVelocityTracker
+  - `services/fraud/fraud_port.py` — entity_type field в FraudScoringRequest
+  - `services/fraud/mock_fraud_adapter.py` — CRITICAL £100k; EDD via get_thresholds(entity_type)
+  - 43 тестов (test_aml_thresholds.py + test_tx_monitor.py + обновлены test_fraud_adapter.py)
+  - 480/480 tests, ruff clean. commit `aa48293`
+- **Статус:** DONE ✅ 2026-04-08

@@ -632,16 +632,18 @@ graph TD
 | S17-09 | Customer Lifecycle State Machine — onboarding → active → dormant → offboarded → deceased | MLR 2017 record-keeping, FCA COBS 9A | P1 | 🔄 IN_PROGRESS | Claude Code | `LifecycleState` 5-state machine + `transition_lifecycle()` + transition guard (IL-032) |
 | S17-10 | Director/Shareholder/UBO Registry — full KYB chain for corporate customers | MLR 2017 §19, Companies House API (BT-005) | P0 | 🚫 BLOCKED | Claude Code | BT-005 Companies House key required |
 | S17-11 | Event Bus — async inter-department messaging (payment confirmed → notification → ledger) | FCA operational resilience PS21/3 | P1 | 🔄 IN_PROGRESS | Claude Code | `event_bus.py` — 22 event types, InMemoryEventBus + RabbitMQEventBus stub + 18 tests (IL-034); integration into services pending (IL-035) |
-| S17-12 | Provider Registry — pluggable external service registry (IDV, fraud, payment rails) | FCA SYSC 8 (outsourcing), MLR 2017 | P1 | ❌ NOT_STARTED | Claude Code | Port/Adapter pattern exists; no central registry |
+| S17-12 | Provider Registry — pluggable external service registry (IDV, fraud, payment rails) | FCA SYSC 8 (outsourcing), MLR 2017 | P1 | 🔄 IN_PROGRESS | Claude Code | `services/providers/provider_registry.py` — YAML-driven, primary→fallback→sandbox, health check (IL-035) |
+| S17-13 | Config-as-Data — fees/limits/enums from YAML/PostgreSQL (no hardcoded values) | FCA COBS 6 (fee disclosure), PSR 2017 Reg.67 | P2 | 🔄 IN_PROGRESS | Claude Code | `services/config/` — YAMLConfigStore, 4 products, per-entity limits; PostgreSQLConfigStore stub (IL-040) |
+| S17-14 | Dual-Entity AML Thresholds — INDIVIDUAL vs COMPANY tx_monitor rules (EDD/velocity/SAR) | MLR 2017 Reg.28, POCA 2002 s.330, FCA SYSC 6.3 | P1 | 🔄 IN_PROGRESS | Claude Code | `services/aml/` — AMLThresholdSet (£10k EDD individual / £50k corporate), TxMonitorService 5-rule engine, InMemoryVelocityTracker (IL-041) |
 
 ### Покрытие S17
 
 | Приоритет | Всего | DONE | IN_PROGRESS | NOT_STARTED | BLOCKED |
 |-----------|-------|------|-------------|-------------|---------|
 | P0 | 2 | 0 | 1 (S17-04) | 0 | 1 (S17-10) |
-| P1 | 7 | 0 | 2 (S17-03, S17-11) | 5 | 0 |
-| P2 | 3 | 0 | 0 | 3 | 0 |
-| **Итого** | **12** | **0** | **3** | **8** | **1** |
+| P1 | 8 | 0 | 4 (S17-03, S17-11, S17-12, S17-14) | 4 | 0 |
+| P2 | 4 | 0 | 1 (S17-13) | 3 | 0 |
+| **Итого** | **14** | **0** | **6** | **7** | **1** |
 
 **Покрытие S17: ~25%** (3 в работе / 12 всего)
 
