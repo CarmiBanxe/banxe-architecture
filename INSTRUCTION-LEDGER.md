@@ -966,3 +966,12 @@
   3. `tests/test_redis_velocity_tracker.py` — ≥20 тестов: unit + интеграция с TxMonitorService
 - **Статус:** DONE ✅
 - **Proof:** commit `dad1025` (banxe-emi-stack) — 3 files, 484 lines. `redis_velocity_tracker.py`: sorted sets, ZRANGEBYSCORE windows, cluster-safe pipeline. 22 tests (unit + 3 TxMonitorService integration). 620/620 PASS, Ruff CLEAN.
+
+---
+
+### IL-049 — Fraud + AML Pipeline S9-05
+- **Источник:** CEO execution plan, 2026-04-08 — Task 5 P2
+- **Приоритет:** P2 | **Дедлайн:** 7 May 2026
+- **Описание:** `FraudAMLPipeline` — оркестратор: FraudScoringPort + TxMonitorService → APPROVE/HOLD/BLOCK. POST /v1/fraud/assess. FCA: PSR APP 2024, MLR 2017 Reg.28, POCA 2002 s.330, I-04, I-06.
+- **Статус:** DONE ✅
+- **Proof:** commit `236c3ab` (banxe-emi-stack) — 5 files, 886 lines. Decision matrix: BLOCK > HOLD > APPROVE. 27 tests (20 unit + 7 API). 647/647 PASS, Ruff CLEAN.
