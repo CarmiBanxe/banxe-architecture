@@ -744,3 +744,27 @@
   - `payment_service.py` — Event Bus DI wiring, emits PAYMENT_COMPLETED/FAILED.
   - BT-012/BT-013 в BLOCKED-TASKS.md (Saga + Three-Balance).
   - 335/335 tests, ruff clean. Commit `30637fc`.
+
+---
+
+### IL-036 — Geniusto v5 Customer DTO extension (email, phone, FATCA/CRS, preferred_language)
+- **Источник:** CEO ArchiMate v5 analysis, 2026-04-08
+- **Приоритет:** P1
+- **Описание:** Расширить CustomerProfile до полного v5 DTO: IndividualProfile += email/phone/title/middle_name/preferred_language/FATCA/CRS/notes/correspondence_address; CompanyProfile += tax_id/date_of_registration/industry/company_type. ClickHouse customers schema stub.
+- **Статус:** DONE ✅ (см. commit)
+
+---
+
+### IL-037 — S17-07: Account Statement Service (client PDF/CSV)
+- **Источник:** CEO ArchiMate v5 analysis, 2026-04-08
+- **Приоритет:** P2
+- **Описание:** AccountStatement service — monthly PDF/CSV per account. Covers S17-07 (Client Statements).
+- **Статус:** DONE ✅ (см. commit)
+
+---
+
+### IL-038 — S17-04: Lightweight 2FA (pyotp TOTP + backup codes)
+- **Источник:** CEO ArchiMate v5 analysis, 2026-04-08
+- **Приоритет:** P1
+- **Описание:** Lightweight TOTP 2FA без Keycloak. pyotp + backup codes + rate limiting. Covers S17-04 partial.
+- **Статус:** DONE ✅ (см. commit)
