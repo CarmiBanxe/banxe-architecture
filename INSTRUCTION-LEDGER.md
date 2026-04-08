@@ -832,3 +832,23 @@
   - `agents/passports/` — добавлен `allowed_skills` в ключевые passports
   - Standby Plane (GUIYON/SS1) isolation rules задокументированы в каждом файле
 - **Статус:** DONE ✅ 2026-04-08
+
+---
+
+### IL-043 — Task 1: Safeguarding Deployment on GMKtec (FCA CASS 15 P0)
+- **Источник:** CEO execution plan (Banxe AI Bank project plan, Task 1), 2026-04-08
+- **Приоритет:** P0 — FCA CASS 15, deadline 7 May 2026
+- **Описание:** Создать unified idempotent deploy script для safeguarding stack на GMKtec. Upgrade от crontab → systemd timer. Добавить Python entry point для systemd. Создать n8n workflow для MLRO алерта при дискрепансии.
+- **Шаги:**
+  1. Создать `services/recon/cron_daily_recon.py` — systemd-совместимый Python entry point, загружает .env, вызывает `run_daily_recon()`, возвращает exit codes 0/1/2/3 ✅
+  2. Создать `config/n8n/shortfall-alert-workflow.json` — n8n workflow: webhook trigger → IF discrepancy → Telegram alert MLRO + CEO ✅
+  3. Создать `scripts/deploy-safeguarding-gmktec.sh` — unified idempotent deploy: rsync → deps → schema → remove legacy crontab → systemd service+timer → tests → dry-run → n8n import ✅
+  4. CEO запускает: `cd ~/banxe-emi-stack && bash scripts/deploy-safeguarding-gmktec.sh` (требует QRAA подтверждения)
+  5. После deploy: настроить n8n workflow вручную (Telegram bot token credentials) → активировать → N8N_WEBHOOK_URL в .env
+- **Proof:**
+  - `services/recon/cron_daily_recon.py` — создан, входная точка: `python3 -m services.recon.cron_daily_recon`
+  - `config/n8n/shortfall-alert-workflow.json` — 5 нод: Webhook → IF → Alert MLRO + Alert CEO (true) / Heartbeat OK (false)
+  - `scripts/deploy-safeguarding-gmktec.sh` — 10 шагов, идемпотентный, заменяет crontab на systemd timer `07:00 UTC Mon-Fri`
+  - Systemd units embedded: `banxe-recon.service` (oneshot, User=banxe) + `banxe-recon.timer` (Persistent=true, RandomizedDelaySec=120)
+- **Статус:** IN_PROGRESS 🔄 — артефакты созданы; требуется CEO запустить deploy script на GMKtec (QRAA)
+- **Blocker:** CEO action required — QRAA подтверждение перед SSH на GMKtec

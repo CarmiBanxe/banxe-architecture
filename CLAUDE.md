@@ -387,3 +387,56 @@ bash scripts/il-check.sh
 # При BLOCKED статусе любой IL → ОБЯЗАТЕЛЬНО добавить запись в docs/BLOCKED-TASKS.md
 # Формат: BT-NNN, задача, IL ref, blocker, тип, unblock trigger, дата, статус BLOCKED
 # ═══════════════════════════════════════════════════════════════════════════════
+
+---
+
+## SESSION CONTINUITY PROTOCOL (инвариант — нарушение = P1 дефект)
+
+### После завершения ЛЮБОЙ задачи (IL, bug fix, review, research):
+
+1. Проверить незавершённый план:
+   ```bash
+   grep -c "pending\|⏳\|IN_PROGRESS" /home/mmber/banxe-architecture/INSTRUCTION-LEDGER.md
+   ```
+
+2. Если есть незавершённые задачи — напомнить CEO:
+   ```
+   ✅ [текущая задача] завершена.
+
+   📋 НАПОМИНАНИЕ: В очереди остаётся план из N задач:
+   1. [название] — [приоритет] — [дедлайн если есть]
+   2. ...
+
+   Продолжить следующую задачу? (да / нет / позже)
+   ```
+
+3. Если CEO говорит "да" — продолжить без вопросов.
+   Если "нет" или "позже" — принять и ждать.
+   Если CEO даёт ДРУГУЮ задачу — выполнить её, затем СНОВА напомнить про план.
+
+### Текущий активный план (обновлять при изменениях):
+
+| # | Задача | Приоритет | Статус |
+|---|--------|-----------|--------|
+| 1 | Safeguarding deploy GMKtec (systemd timer, n8n shortfall alert) | P0 CASS 7 May | ⏳ IL-043 IN_PROGRESS |
+| 2 | FastAPI REST API Layer (9 routers, JWT, dependency injection) | P1 | ⏳ |
+| 3 | Notification Service S17-03 (email/SMS/telegram/push ports) | P1 | ⏳ |
+| 4 | Redis VelocityTracker (sorted sets, 24h/30d windows) | P1 | ⏳ |
+| 5 | Fraud + AML Pipeline Wiring S9-05 (FraudService orchestrator) | P1 | ⏳ |
+| 6 | Consumer Duty S9-06 FCA PS22/9 (4 outcomes assessor) | P1 | ⏳ |
+
+### При старте НОВОЙ сессии — ПЕРВОЕ сообщение должно быть:
+
+```
+🔄 Восстановление контекста...
+
+Последний закрытый IL: IL-0XX
+Тесты: NNN/NNN pass
+Keycloak: :8180 ✅
+
+📋 Незавершённый план: N задач (P0 дедлайн: 7 мая — safeguarding)
+
+Продолжить с Задачи N или есть другие приоритеты?
+```
+
+**Claude Code НИКОГДА не "забывает" про план. После каждой задачи — напоминание.**
