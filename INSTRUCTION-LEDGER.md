@@ -1066,3 +1066,15 @@
   3. `ROADMAP.md` — создан: Phase 1 COMPLETE, Phase 2 IN PROGRESS, Phase 3 COMPLETE ✅
 - **Proof:** 867/867 pytest green, ruff clean
 - **Статус:** DONE ✅ 2026-04-09
+
+### IL-057 — Jube Fraud Rules Engine Adapter (FraudScoringPort)
+- **Источник:** CEO, ROADMAP Phase 2 #18, 2026-04-09 | **Приоритет:** P1
+- **Описание:** Создать JubeAdapter → FraudScoringPort. Jube запущен на GMKtec :5001, требует JWT auth. Credentials injectable из env (JUBE_URL, JUBE_USERNAME, JUBE_PASSWORD, JUBE_MODEL_GUID).
+- **Статус:** DONE ✅
+- **Proof:** commit cfd002d — services/fraud/jube_adapter.py + tests/test_jube_adapter.py (67 tests). get_fraud_adapter() поддерживает FRAUD_ADAPTER=jube. **Pending CEO:** Jube Administrator password для live testing.
+
+### IL-058 — Ballerine KYC Workflow Definitions + workflow-service fix
+- **Источник:** CEO, ROADMAP Phase 2 #19, 2026-04-09 | **Приоритет:** P1
+- **Описание:** workflow-service крашился (MAGIC_LINK_AUTH_JWT_SECRET: Required). Исправить docker-compose, зарегистрировать banxe-individual-kyc-v1 + banxe-business-kyb-v1.
+- **Статус:** DONE ✅
+- **Proof:** commit bf6b78c — docker-compose.yml + MAGIC_LINK_AUTH_JWT_SECRET + workflow-definitions/ (2 JSON) + scripts/register-ballerine-workflows.sh. **Pending CEO:** редеплой на GMKtec + запуск register-ballerine-workflows.sh.
