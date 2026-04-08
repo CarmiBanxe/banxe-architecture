@@ -1078,3 +1078,9 @@
 - **Описание:** workflow-service крашился (MAGIC_LINK_AUTH_JWT_SECRET: Required). Исправить docker-compose, зарегистрировать banxe-individual-kyc-v1 + banxe-business-kyb-v1.
 - **Статус:** DONE ✅
 - **Proof:** commit bf6b78c — docker-compose.yml + MAGIC_LINK_AUTH_JWT_SECRET + workflow-definitions/ (2 JSON) + scripts/register-ballerine-workflows.sh. **Pending CEO:** редеплой на GMKtec + запуск register-ballerine-workflows.sh.
+
+### IL-059 — Marble Case Management Adapter
+- **Источник:** CEO, ROADMAP Phase 2 #20, 2026-04-09 | **Приоритет:** P2
+- **Описание:** Создать CaseManagementPort + MarbleAdapter для self-hosted Marble на GMKtec :5002. Marble — open-source transaction monitoring + case management (EU AI Act Art.14 human oversight). Cases создаются при HITL review (HIGH/MEDIUM risk), SAR, EDD. Интеграция с HITL service и FraudAML pipeline.
+- **Статус:** DONE ✅
+- **Proof:** commit 9aabc93 — services/case_management/ (port + mock + marble + factory) + tests/test_case_management.py (61 tests). EU AI Act Art.14 invariants проверены. **Pending CEO:** MARBLE_API_KEY + MARBLE_INBOX_ID для live mode (CASE_ADAPTER=marble в .env).
