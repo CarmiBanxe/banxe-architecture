@@ -921,3 +921,19 @@
   - `CLAUDE.md` §1b — scenario→sequence reference table, quality-gate rule
   - 5 паспортов — `preferred_skill_sequences` + `mandatory_skill_triggers` в YAML формате
 - **Статус:** DONE ✅ 2026-04-08
+
+---
+
+### IL-046 — FastAPI REST API Layer (S17-01)
+- **Источник:** CEO execution plan, 2026-04-08 — Task 2 P1
+- **Приоритет:** P1 | **Дедлайн:** 7 May 2026
+- **Описание:** Создать FastAPI REST API layer поверх hexagonal сервисов (customer, kyc, payment, ledger). Единая точка входа для UI и внешних интеграций. JWT auth через Keycloak (IAM_ADAPTER). Pydantic v2 request/response models. OpenAPI docs на /docs.
+- **Шаги:**
+  1. `api/main.py` — FastAPI app, CORS, middleware (X-Request-ID), lifespan, router registration
+  2. `api/deps.py` — Dependency injection: get_customer_service, get_kyc_service, get_payment_service, get_ledger_service, get_current_user (JWT)
+  3. `api/models/` — Pydantic v2 schemas: customers.py, kyc.py, payments.py, ledger.py
+  4. `api/routers/` — health.py, customers.py, kyc.py, payments.py, ledger.py
+  5. `tests/test_api_*.py` — TestClient tests ≥15 per router (health + 4 routers = ≥75 total)
+  6. Обновить `requirements.txt` — добавить fastapi, uvicorn[standard], pydantic≥2.0
+- **Proof (2026-04-08):** api/main.py + deps.py + models/ + routers/ (10 endpoints) + 80 tests, Quality Gate PASS (560/560), commit 537f6a4
+- **Статус:** DONE ✅
