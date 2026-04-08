@@ -43,3 +43,14 @@ fca_references:
 aigf_risks:
   - AIGF-A-02
   - AIGF-C-01
+allowed_skills:
+  - context_memory_sync       # MANDATORY — IL continuity and session handoff
+  - rapid_spec_builder        # MANDATORY — before any new AML rule or threshold change
+  - error_handling_standardizer  # MANDATORY — all AML exception paths must be typed
+  - performance_scanner       # MANDATORY — AML scoring SLA <100ms (S5-22)
+  - api_contract_guardian     # MANDATORY — AMLPort contract must not break silently
+  - smart_test_generator      # CONTROLLED — human review required; must not mock audit writes (I-24)
+  - clean_architecture_enforcer  # MANDATORY advisory — no cross-contour imports
+prohibited_skills:
+  - auto_refactor_pro         # PROHIBITED — AML contour is compliance-critical (I-20)
+  - cicd_quick_setup          # PROHIBITED — infra changes require CEO approval + QRAA

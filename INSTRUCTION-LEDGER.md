@@ -816,3 +816,19 @@
   - 43 тестов (test_aml_thresholds.py + test_tx_monitor.py + обновлены test_fraud_adapter.py)
   - 480/480 tests, ruff clean. commit `aa48293`
 - **Статус:** DONE ✅ 2026-04-08
+
+---
+
+### IL-042 — Skills Governance Integration across Developer / Product / Standby Planes
+- **Источник:** CEO "Implement full relevant skills layer for Banxe across Developer / Product / Standby planes", 2026-04-08
+- **Приоритет:** P1
+- **Описание:** Определить, задокументировать и интегрировать 10 project skills в архитектуру Banxe. Создать SKILLS-MATRIX.md, SKILLS-OPERATING-MODEL.md. Обновить PLANES.md, CLAUDE.md, COMPLIANCE-MATRIX.md. Зарегистрировать skills в agent passports. Определить роль каждого skill в Developer/Product/Standby planes с явными enforcement modes и invariant refs.
+- **Proof:**
+  - `docs/SKILLS-MATRIX.md` — полная матрица 10 skills × 3 planes; purpose, trigger, output, safety constraints, invariant refs, quality gate relation
+  - `docs/SKILLS-OPERATING-MODEL.md` — invocation model, precedence order, advisory vs enforcement, interaction with quality-gate/hooks/semgrep/passports/IL
+  - `docs/PLANES.md` v1.1 — добавлена секция "Skills Distribution by Plane" с таблицами per plane
+  - `CLAUDE.md` — добавлена секция "1a. SKILLS GOVERNANCE" с жёсткими правилами и приоритетами
+  - `docs/COMPLIANCE-MATRIX.md` — добавлен раздел FA Skills Controls
+  - `agents/passports/` — добавлен `allowed_skills` в ключевые passports
+  - Standby Plane (GUIYON/SS1) isolation rules задокументированы в каждом файле
+- **Статус:** DONE ✅ 2026-04-08

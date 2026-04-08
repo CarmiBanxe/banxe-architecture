@@ -83,3 +83,13 @@ compliance_matrix_refs:
 aigf_risks:
   - AIGF-P-01  # PII data breach
   - AIGF-C-03  # GDPR non-compliance
+allowed_skills:
+  - context_memory_sync       # MANDATORY — IL continuity
+  - rapid_spec_builder        # MANDATORY — before new lifecycle state or KYC rule
+  - error_handling_standardizer  # MANDATORY — typed CustomerManagementError (I-24)
+  - api_contract_guardian     # MANDATORY — CustomerPort contract stability
+  - smart_test_generator      # CONTROLLED — no PII in fixtures (UK GDPR)
+  - clean_architecture_enforcer  # MANDATORY advisory
+prohibited_skills:
+  - auto_refactor_pro         # PROHIBITED — lifecycle state machine is business-critical
+  - performance_scanner       # N/A — no SLA-sensitive path in customer lifecycle

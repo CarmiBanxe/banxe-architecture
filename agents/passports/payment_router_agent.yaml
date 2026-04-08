@@ -92,3 +92,14 @@ compliance_matrix_refs:
 aigf_risks:
   - AIGF-A-01  # financial loss from routing error
   - AIGF-C-02  # regulatory breach (SCA bypass)
+allowed_skills:
+  - context_memory_sync       # MANDATORY — IL continuity
+  - rapid_spec_builder        # MANDATORY — before new rail or SCA gate change
+  - error_handling_standardizer  # MANDATORY — payment errors must be typed and logged
+  - performance_scanner       # MANDATORY — FPS SLA <15s (I-05)
+  - api_contract_guardian     # MANDATORY — PaymentPort, Modulr webhook schema
+  - smart_test_generator      # CONTROLLED — human review; no float in assertions (I-05)
+  - clean_architecture_enforcer  # MANDATORY advisory
+prohibited_skills:
+  - auto_refactor_pro         # PROHIBITED — payment routing is business-critical (I-20)
+  - dependency_optimizer      # CONTROLLED — licence audit required for new payment libs

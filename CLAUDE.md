@@ -20,6 +20,36 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 7. CLASS_B/C (SOUL.md, rego, compliance_config) → governance gate
 8. Zone RED: AI-FORBIDDEN. Zone AMBER: CLAUDE_CODE_ONLY + hooks. Zone GREEN: free.
 
+## 1a. SKILLS GOVERNANCE (добавлено 2026-04-08, IL-042)
+
+### Определение
+
+Skill — многократно используемая операционная процедура (не плагин), которую Claude Code вызывает для специфического класса задач. Полная матрица — `docs/SKILLS-MATRIX.md`. Операционная модель — `docs/SKILLS-OPERATING-MODEL.md`.
+
+### Жёсткие правила (нарушение = STOP)
+
+1. **Ни один skill не обходит quality-gate.sh** — gate всегда запускается после skill.
+2. **Ни один skill не обходит инварианты I-01..I-28** — инварианты имеют высший приоритет.
+3. **Ни один skill не пересекает границы репо неявно** — cross-repo действия только по явной инструкции CEO.
+4. **Ни один skill не смешивает Banxe данные с GUIYON/SS1** — I-18, I-20 абсолютны.
+5. **Ни один skill не запускается без IL-записи** если результатом является новая реализация (I-28).
+
+### Приоритет (от высшего к низшему)
+
+```
+FCA regulations > Invariants I-01..I-28 > ADRs > quality-gate.sh > IL (I-28) > Skill MANDATORY > Skill ADVISORY
+```
+
+### Права доступа по умолчанию
+
+| Plane | Skills | Ограничения |
+|-------|--------|-------------|
+| Developer | Все 10 | CI/CD MANDATORY; остальные per SKILLS-MATRIX.md |
+| Product | Все, кроме Auto Refactor Pro на compliance контурах | CONTROLLED = CEO approval + IL |
+| Standby | Все — только ADVISORY | Нет пересечения с Banxe данными (I-18, I-20) |
+
+---
+
 ## 2. КОЛЛАБОРАНТЫ (рой агентов)
 
 | Агент | Роль | Порт | Когда вызывать |
