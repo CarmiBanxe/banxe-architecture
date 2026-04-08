@@ -888,8 +888,18 @@
   - `config/n8n/shortfall-alert-workflow.json` — 5 нод: Webhook → IF → Alert MLRO + Alert CEO (true) / Heartbeat OK (false)
   - `scripts/deploy-safeguarding-gmktec.sh` — 10 шагов, идемпотентный, заменяет crontab на systemd timer `07:00 UTC Mon-Fri`
   - Systemd units embedded: `banxe-recon.service` (oneshot, User=banxe) + `banxe-recon.timer` (Persistent=true, RandomizedDelaySec=120)
-- **Статус:** IN_PROGRESS 🔄 — артефакты созданы; требуется CEO запустить deploy script на GMKtec (QRAA)
-- **Blocker:** CEO action required — QRAA подтверждение перед SSH на GMKtec
+- **Deploy proof (2026-04-08T13:37Z):**
+  - rsync OK → gmktec:/data/banxe/banxe-emi-stack
+  - Python deps installed (httpx, clickhouse-driver, pyyaml, dbt-clickhouse)
+  - ClickHouse schema applied: banxe.safeguarding_events + banxe.safeguarding_breaches (TTL 5y, I-08 ✅)
+  - Legacy crontab `daily-recon` removed ✅
+  - systemd banxe-recon.service + banxe-recon.timer installed, enabled, active ✅
+  - Next activation: Thu 2026-04-09 09:00:21 CEST (07:00 UTC, CASS 7.15.17R ✅)
+  - Unit tests: 13/13 passed ✅
+  - Dry-run: PENDING exit=2 (sandbox, no bank statement — non-critical ✅)
+  - n8n: workflow file ready, N8N_API_KEY needed for auto-import (manual import pending)
+- **Статус:** DONE ✅
+- **Blocker:** n8n manual steps: import workflow → set TELEGRAM vars → set N8N_WEBHOOK_URL in .env (non-blocking for FCA CASS 15)
 
 ---
 
