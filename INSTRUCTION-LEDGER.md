@@ -898,8 +898,10 @@
   - Unit tests: 13/13 passed ✅
   - Dry-run: PENDING exit=2 (sandbox, no bank statement — non-critical ✅)
   - n8n: workflow file ready, N8N_API_KEY needed for auto-import (manual import pending)
-- **Статус:** DONE ✅
-- **Blocker:** n8n manual steps: import workflow → set TELEGRAM vars → set N8N_WEBHOOK_URL in .env (non-blocking for FCA CASS 15)
+- **Re-deploy proof (2026-04-09T22:51Z):** rsync OK, schema idempotent, timer active (next: Thu 09:01 CEST), 13/13 tests ✅
+- **n8n:** CEO подтвердил ручной импорт `shortfall-alert-workflow.json` ✅
+- **Ballerine:** CEO развернул docker-compose (workflow-service :3000, backoffice :5137) ✅
+- **Статус:** DONE ✅ (все три деплоя выполнены CEO 2026-04-09)
 
 ---
 
