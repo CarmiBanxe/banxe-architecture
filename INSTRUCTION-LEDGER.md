@@ -1018,3 +1018,19 @@
 - **Статус:** DONE ✅
 - **Proof:** `python3 -m pytest tests/test_sar_service.py -v` → 37/37 PASS | Full suite 751/751 PASS | ruff clean
 - **Артефакты:** services/aml/sar_service.py, api/models/reporting.py, api/routers/reporting.py, tests/test_sar_service.py (37 tests), api/main.py (reporting router added)
+
+### IL-053 — Infrastructure Stubs → Real Implementations (ClickHouse + PostgreSQL + RabbitMQ)
+- **Источник:** CEO, 2026-04-08
+- **Приоритет:** P1 | **Дедлайн:** 7 May 2026
+- **Описание:** Заменить `NotImplementedError` stubs реальными реализациями: ClickHouseCustomerService (7 методов), ClickHouseWebhookAuditStore (3 метода), PostgreSQLConfigStore.reload(), RabbitMQEventBus.subscribe(). Создать SQL schema-файлы. Добавить pika + psycopg2-binary в requirements.
+- **Шаги:**
+  1. `scripts/schema/clickhouse_customers.sql` — ReplacingMergeTree для CustomerProfile
+  2. `scripts/schema/clickhouse_webhooks.sql` — MergeTree для webhook_events
+  3. `scripts/schema/postgres_config.sql` — 3 таблицы (product_config, fee_schedule, payment_limits)
+  4. `services/customer/customer_service.py` — реализовать ClickHouseCustomerService (7 методов)
+  5. `services/webhooks/webhook_router.py` — реализовать ClickHouseWebhookAuditStore (3 метода)
+  6. `services/config/config_service.py` — реализовать PostgreSQLConfigStore.reload()
+  7. `services/events/event_bus.py` — реализовать RabbitMQEventBus.subscribe()
+  8. `requirements.txt` — добавить pika, psycopg2-binary, pyyaml
+  9. `tests/test_infra_stubs.py` — тесты с unittest.mock
+- **Статус:** DONE ✅\n- **Proof:** `python3 -m pytest tests/test_infra_stubs.py` → 29/29 PASS | Full suite 780/780 PASS | ruff clean\n- **Артефакты:** 3 SQL schemas, ClickHouseCustomerService (7 methods), ClickHouseWebhookAuditStore (3 methods), PostgreSQLConfigStore.reload(), RabbitMQEventBus.subscribe(), 29 tests | commit 348ea6a
