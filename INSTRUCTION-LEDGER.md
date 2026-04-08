@@ -937,3 +937,19 @@
   6. Обновить `requirements.txt` — добавить fastapi, uvicorn[standard], pydantic≥2.0
 - **Proof (2026-04-08):** api/main.py + deps.py + models/ + routers/ (10 endpoints) + 80 tests, Quality Gate PASS (560/560), commit 537f6a4
 - **Статус:** DONE ✅
+
+---
+
+### IL-047 — Notification Service S17-03
+- **Источник:** CEO execution plan, 2026-04-08 — Task 3 P1
+- **Приоритет:** P1 | **Дедлайн:** 7 May 2026
+- **Описание:** Создать полный Notification Service: Port → Service → MockAdapter. Channels: EMAIL / SMS / TELEGRAM / PUSH. Подписывается на EventBus (PAYMENT_COMPLETED, PAYMENT_FAILED, KYC_APPROVED, KYC_REJECTED, CUSTOMER_ACTIVATED). Audit log в ClickHouse. FastAPI роутер /v1/notifications. FCA COBS 2.2 (clear communication).
+- **Шаги:**
+  1. `services/notifications/notification_port.py` — Port: NotificationChannel, NotificationType, NotificationRequest, NotificationResult, NotificationPort Protocol
+  2. `services/notifications/notification_service.py` — NotificationService: шаблоны, EventBus subscriptions, dispatch
+  3. `services/notifications/mock_notification_adapter.py` — MockNotificationAdapter: in-memory log
+  4. `services/notifications/sendgrid_adapter.py` — SendGrid stub (production)
+  5. `api/models/notifications.py` + `api/routers/notifications.py` — GET /v1/notifications/{customer_id}, POST /v1/notifications/send
+  6. `tests/test_notification_port.py` + `tests/test_api_notifications.py` — ≥15 + ≥15 tests
+- **Статус:** DONE ✅
+- **Proof:** commit `4793303` (banxe-emi-stack) — 10 files, 1342 lines. Services: notification_port.py, notification_service.py (14 templates, 9 EventBus subscriptions), mock_notification_adapter.py (bounce simulation, GDPR gate), sendgrid_adapter.py (stub). API: models/notifications.py, routers/notifications.py (3 endpoints). Tests: 38 tests (21 service + 17 API), 598/598 total PASS, Ruff CLEAN, Invariants PASS.
