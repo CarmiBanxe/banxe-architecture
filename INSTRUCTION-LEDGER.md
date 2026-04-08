@@ -1084,3 +1084,9 @@
 - **Описание:** Создать CaseManagementPort + MarbleAdapter для self-hosted Marble на GMKtec :5002. Marble — open-source transaction monitoring + case management (EU AI Act Art.14 human oversight). Cases создаются при HITL review (HIGH/MEDIUM risk), SAR, EDD. Интеграция с HITL service и FraudAML pipeline.
 - **Статус:** DONE ✅
 - **Proof:** commit 9aabc93 — services/case_management/ (port + mock + marble + factory) + tests/test_case_management.py (61 tests). EU AI Act Art.14 invariants проверены. **Pending CEO:** MARBLE_API_KEY + MARBLE_INBOX_ID для live mode (CASE_ADAPTER=marble в .env).
+
+### IL-060 — spec_first_auditor.py v2: content validation + pre-commit hooks + blocks 8-11
+- **Источник:** CEO, 2026-04-09 | **Приоритет:** P1 | **Репо:** developer-core
+- **Описание:** (1) content validation в BLOCK_CHECKS (quality/compliance/testing/CLAUDE/agents/skills/PROJECTIDEA/SPEC); (2) pre-commit hooks для developer-core + banxe-emi-stack + banxe-architecture; (3) блоки 8-11 (Obsidian vault, Infrastructure, API layer, Quality gate). Тесты обязательны.
+- **Статус:** DONE ✅
+- **Proof:** commit e0dd9d1 developer-core — spec_first_auditor.py v2 (content validation, blocks 8-11, pre-commit hooks) + 61 tests. Hooks symlinked в 3 repos. **Note:** CLAUDE.md, agents, skills, PROJECTIDEA, SPEC-TEMPLATE потребуют обновления контента для прохождения strict-режима.
