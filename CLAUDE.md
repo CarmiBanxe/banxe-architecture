@@ -50,6 +50,47 @@ FCA regulations > Invariants I-01..I-28 > ADRs > quality-gate.sh > IL (I-28) > S
 
 ---
 
+## 1b. SKILLS ORCHESTRATION RULES (добавлено 2026-04-08, IL-044)
+
+Full model: `docs/SKILLS-ORCHESTRATION.md`. Enforced alongside SKILLS-MATRIX.md and SKILLS-OPERATING-MODEL.md.
+
+### Critical distinction
+
+> `allowed_skills` in a passport = **permission to use**.
+> Orchestration rules = **obligation to run in order**.
+> These are different. Orchestration rules take precedence over local agent discretion.
+
+### Agent behavior expectations
+
+1. Before any implementation: run **Context Memory Sync** + **Rapid Spec Builder** (if IL not yet written).
+2. Before any interface/API/schema change: run **API Contract Guardian**.
+3. Before any commit in Product Plane: **quality-gate.sh MUST pass**.
+4. After any code change: run **Clean Architecture Enforcer** check.
+5. For compliance contours (AML, payments, safeguarding, reporting): **Auto Refactor Pro MUST NOT run** as primary driver.
+
+### Scenario → Sequence reference
+
+| Scenario | Sequence |
+|----------|---------|
+| A. New feature | CMS → RSB → ACG → CAE → STG → gate |
+| B. Product code | CMS → CAE → EHS → ACG → STG → gate |
+| C. Safe refactor | CMS → ARP → CAE → STG → gate |
+| D. Performance | CMS → PS → DO? → STG → gate |
+| E. API/integration | CMS → RSB → ACG → EHS → STG → gate |
+| F. Error model | CMS → EHS → CAE → STG → gate |
+| G. Deps cleanup | CMS → DO → CAE → STG → gate |
+| H. Test coverage | CMS → STG → gate |
+| I. Governance | CMS → RSB → CAE → gate? |
+| J. Standby | CMS → RSB → local → STG? |
+
+*Abbreviations: CMS=Context Memory Sync, RSB=Rapid Spec Builder, ACG=API Contract Guardian, CAE=Clean Architecture Enforcer, EHS=Error Handling Standardizer, PS=Performance Scanner, DO=Dependency Optimizer, STG=Smart Test Generator, ARP=Auto Refactor Pro*
+
+### quality-gate.sh is always the final enforcement layer
+
+No skill output, no agent decision, no CEO instruction removes the obligation to pass `quality-gate.sh` before a Product Plane commit. If the gate is failing, fix the root cause — do not add skip flags.
+
+---
+
 ## 2. КОЛЛАБОРАНТЫ (рой агентов)
 
 | Агент | Роль | Порт | Когда вызывать |

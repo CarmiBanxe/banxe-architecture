@@ -103,3 +103,30 @@ allowed_skills:
 prohibited_skills:
   - auto_refactor_pro         # PROHIBITED — payment routing is business-critical (I-20)
   - dependency_optimizer      # CONTROLLED — licence audit required for new payment libs
+preferred_skill_sequences:
+  scenario_product_code_modification:
+    - context_memory_sync       # CMS first — FPS SLA <15s (I-05), SCA gate state
+    - clean_architecture_enforcer  # payment routing boundary check
+    - error_handling_standardizer  # payment errors must be typed and logged
+    - api_contract_guardian     # PaymentPort, Modulr webhook schema
+    - smart_test_generator      # no float in SLA assertions (I-05)
+    # quality-gate.sh MUST follow
+  scenario_api_integration:
+    - context_memory_sync
+    - rapid_spec_builder        # IL entry for new rail or SCA gate change (I-28)
+    - api_contract_guardian     # MUST — Modulr/ClearBank contract
+    - error_handling_standardizer
+    - smart_test_generator
+    # quality-gate.sh MUST follow
+  scenario_performance_sensitive:
+    - context_memory_sync
+    - performance_scanner       # MANDATORY — FPS SLA <15s (I-05)
+    - smart_test_generator      # SLA assertion added to pytest suite
+    # quality-gate.sh MUST follow
+mandatory_skill_triggers:
+  context_memory_sync: ["any payment session start"]
+  rapid_spec_builder: ["new payment rail", "new SCA gate change", "new currency added"]
+  api_contract_guardian: ["PaymentPort change", "Modulr webhook schema change", "SEPA contract change"]
+  performance_scanner: ["any change to FPS hot path", "SLA regression detected (I-05 >15s)"]
+  error_handling_standardizer: ["payment exception added", "retry logic added"]
+  smart_test_generator: ["routing rule change", "SCA threshold change", "rail added or removed"]

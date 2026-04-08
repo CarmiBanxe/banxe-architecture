@@ -852,3 +852,24 @@
   - Systemd units embedded: `banxe-recon.service` (oneshot, User=banxe) + `banxe-recon.timer` (Persistent=true, RandomizedDelaySec=120)
 - **Статус:** IN_PROGRESS 🔄 — артефакты созданы; требуется CEO запустить deploy script на GMKtec (QRAA)
 - **Blocker:** CEO action required — QRAA подтверждение перед SSH на GMKtec
+
+---
+
+### IL-044 — Skills Orchestration: trigger model, sequencing, enforcement rules for Banxe agents
+- **Источник:** CEO, 2026-04-08 — "Implement skills orchestration for Banxe agents"
+- **Приоритет:** P1
+- **Описание:** `allowed_skills/prohibited_skills` задают policy boundaries, но не автоматическую оркестрацию. Добавить explicit trigger model, execution order (Scenarios A–J), mandatory vs advisory steps, artifact handoffs, conflict resolution, и passport-level `preferred_skill_sequences` + `mandatory_skill_triggers`.
+- **Шаги:**
+  1. Создать `docs/SKILLS-ORCHESTRATION.md` — полная матрица 10 сценариев (A–J), trigger rules, artifact handoffs, enforcement points ✅
+  2. Обновить `docs/SKILLS-OPERATING-MODEL.md` — добавить §8 Execution Order, §9 Pre-commit enforcement, §10 Fallback rules, §11 Conflict resolution ✅
+  3. Обновить `docs/PLANES.md` — добавить "Skills Orchestration by Plane" (Developer/Product/Standby per-scenario modes) ✅
+  4. Обновить `CLAUDE.md` — добавить §1b Skills Orchestration Rules, scenario → sequence table, quality-gate rule ✅
+  5. Обновить 5 паспортов (`aml_orchestrator`, `payment_router_agent`, `customer_lifecycle_agent`, `reporting_agent`, `tx_monitor`) — добавить `preferred_skill_sequences` + `mandatory_skill_triggers` ✅
+  6. Consistency validation: все sequences ссылаются только на `allowed_skills`, нет конфликта с `prohibited_skills` ✅
+- **Proof:**
+  - `docs/SKILLS-ORCHESTRATION.md` — 10 сценариев × trigger/sequence/mode/artifacts/blocker; enforcement points table; Standby rules
+  - `docs/SKILLS-OPERATING-MODEL.md` — §8..§12 добавлены (execution order, pre-commit, fallback, conflict resolution)
+  - `docs/PLANES.md` — "Skills Orchestration by Plane" секция с per-scenario таблицами
+  - `CLAUDE.md` §1b — scenario→sequence reference table, quality-gate rule
+  - 5 паспортов — `preferred_skill_sequences` + `mandatory_skill_triggers` в YAML формате
+- **Статус:** DONE ✅ 2026-04-08

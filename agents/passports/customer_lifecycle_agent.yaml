@@ -93,3 +93,24 @@ allowed_skills:
 prohibited_skills:
   - auto_refactor_pro         # PROHIBITED — lifecycle state machine is business-critical
   - performance_scanner       # N/A — no SLA-sensitive path in customer lifecycle
+preferred_skill_sequences:
+  scenario_product_code_modification:
+    - context_memory_sync       # CMS first — KYC state, lifecycle transitions
+    - clean_architecture_enforcer  # boundary: CustomerPort must not couple to AML contour
+    - api_contract_guardian     # CustomerPort contract stability
+    - error_handling_standardizer  # typed CustomerManagementError (I-24)
+    - smart_test_generator      # no PII in fixtures (UK GDPR)
+    # quality-gate.sh MUST follow
+  scenario_new_feature:
+    - context_memory_sync
+    - rapid_spec_builder        # IL required before new lifecycle state or KYC rule (I-28)
+    - clean_architecture_enforcer
+    - api_contract_guardian
+    - smart_test_generator
+    # quality-gate.sh MUST follow
+mandatory_skill_triggers:
+  context_memory_sync: ["any customer lifecycle session start"]
+  rapid_spec_builder: ["new lifecycle state added", "new KYC rule", "UBO registry change"]
+  api_contract_guardian: ["CustomerPort change", "AgreementPort change", "KYCPort change"]
+  error_handling_standardizer: ["exception path added", "state transition error handling changed"]
+  smart_test_generator: ["lifecycle state machine change", "onboarding flow change", "KYC status sync change"]

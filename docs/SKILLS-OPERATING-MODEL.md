@@ -157,7 +157,93 @@ GUIYON and SS1 are Standby Plane projects. The following applies to all skills w
 
 ---
 
-## 8. Change Control for Skills
+## 8. Execution Order and Trigger Model
+
+Skill invocation order is defined in **SKILLS-ORCHESTRATION.md**. The operating model governs _how_ skills run; the orchestration model governs _when_ and _in what order_.
+
+### 8.1 Key principle
+
+`allowed_skills` in an agent passport is a **permission boundary**, not an execution schedule. Mandatory execution order is defined by the applicable scenario in SKILLS-ORCHESTRATION.md (Scenarios A–J).
+
+### 8.2 Trigger priority
+
+When multiple trigger conditions apply simultaneously, resolve by highest invariant risk first:
+
+1. I-24 violation risk (audit trail) → Error Handling Standardizer MUST run first
+2. I-28 violation risk (no IL) → Rapid Spec Builder MUST run before implementation
+3. I-20 violation risk (cross-contour) → Clean Architecture Enforcer MUST run before commit
+4. SLA risk (I-05) → Performance Scanner MUST run before optimization commits
+
+### 8.3 Sequence abbreviations used in SKILLS-ORCHESTRATION.md
+
+| Short form | Meaning |
+|-----------|---------|
+| CMS | Context Memory Sync |
+| RSB | Rapid Spec Builder |
+| ACG | API Contract Guardian |
+| EHS | Error Handling Standardizer |
+| PS | Performance Scanner |
+| DO | Dependency Optimizer |
+| STG | Smart Test Generator |
+| ARP | Auto Refactor Pro |
+| CAE | Clean Architecture Enforcer |
+
+---
+
+## 9. Pre-commit / Pre-merge / Pre-release Enforcement
+
+| Gate | When | Enforced by | Blocks what |
+|------|------|-------------|-------------|
+| Pre-action | Before any implementation begins | `il_gate.py` hook | No IL → no action (I-28) |
+| Pre-action | Before any cross-contour change | `bounded_context_check.py` hook | Cross-context imports |
+| Pre-action | Before CLASS_B/C changes | `policy_guard.py` hook | Governance-classified changes |
+| Pre-commit | After all code changes, before `git commit` | `quality_gate_hook.py` → `quality-gate.sh` | semgrep + ruff + pytest + coverage |
+| Pre-commit | Every action | `invariant_check.py` hook | I-01..I-28 violations |
+| Skill output | After skill runs | Claude Code validation | Skill output contradicting invariants |
+
+**Pre-merge (PR):** quality-gate.sh MUST pass on the merge commit. No merge with failing tests, semgrep blocks, or ruff violations.
+
+**Pre-release:** No release without DONE status in INSTRUCTION-LEDGER.md for all P0 ILs and all FCA P0 compliance items (CASS 15, PS25/12).
+
+---
+
+## 10. Skill Fallback Rules
+
+If a MANDATORY skill fails to run (tool unavailable, timeout, tool error):
+
+| Skill | Fallback action |
+|-------|----------------|
+| Context Memory Sync | Proceed but log "CMS unavailable — session may lack prior context" |
+| Rapid Spec Builder | STOP — no implementation without spec (I-28 hard rule) |
+| API Contract Guardian | STOP for external provider changes; log advisory for internal-only changes |
+| Error Handling Standardizer | Proceed only if ruff/semgrep clean; flag for follow-up IL |
+| Performance Scanner | ADVISORY only — do not block; log gap in IL |
+| Smart Test Generator | Proceed if existing tests cover scenario; log coverage gap |
+| quality-gate.sh | NEVER bypass — fix infrastructure before proceeding |
+| Clean Architecture Enforcer | ADVISORY only unless semgrep rule exists (then BLOCK) |
+
+**No skill failure justifies skipping `quality-gate.sh`.** If quality-gate infrastructure is down, escalate to CTIO before committing.
+
+---
+
+## 11. Conflict Resolution Between Skills
+
+When two skills produce conflicting outputs:
+
+| Conflict | Resolution |
+|----------|-----------|
+| Clean Architecture Enforcer says "restructure module" vs Auto Refactor Pro says "inline" | Clean Architecture Enforcer wins (boundary preservation > readability) |
+| Smart Test Generator produces test using `float` in Decimal context | Reject test output — violates I-05; regenerate with Decimal |
+| API Contract Guardian flags breaking change vs feature request requires it | QRAA required; no unilateral proceeding |
+| Error Handling Standardizer adds catch-all vs I-24 requires audit write to survive | I-24 wins — error must log to audit before raising |
+| Dependency Optimizer removes a package vs existing test imports it | Smart Test Generator MUST update test or removal is blocked |
+| Performance Scanner recommends caching vs I-24 requires immutable audit trail | I-24 wins — cache MUST NOT apply to audit writes |
+
+**General rule:** When any skill output conflicts with invariants I-01..I-28, the invariant wins and the skill output is rejected. Document the conflict in the IL proof section.
+
+---
+
+## 12. Change Control for Skills
 
 | Change type | Process |
 |-------------|---------|
