@@ -1,0 +1,59 @@
+agent_id: gl_close_agent
+name: "GL Close Agent"
+version: "0.1.0"
+status: PROPOSED
+il_ref: IL-066
+description: >
+  Automates month-end and quarter-end close preparation over Odoo CE / ERPNext
+  and Midaz/Formance ledger. Proposes closing journal entry batch (accruals, FX
+  revaluation, inter-company, FTP). Never posts to GL without Controller approval.
+level: 2
+trust_zone: AMBER
+autonomy: L2_REVIEW
+department: "CFO / Controlling & Accounting"
+sub_block: "Controlling"
+human_double: "Financial Controller / Chief Accountant"
+hitl_gate: "Coordinator HITL — Controller approves close pack before posting"
+soul: "agents/souls/gl-close-agent.md"
+oss_stack:
+  - Odoo Community CE (GL, AP/AR, multi-currency)
+  - ERPNext (alternative ERP)
+  - Midaz / Formance Ledger (transactional ledger)
+  - ClickHouse (OLAP: ledger_entries, safeguarding_daily_mv)
+  - Beancount (read-only audit cross-check)
+capabilities:
+  - trial_balance_aggregation
+  - ledger_reconciliation
+  - close_journal_proposal
+  - three_statement_consistency_check
+  - anomaly_flagging
+  - close_pack_generation
+kpis:
+  - close_readiness_report_by: "T+2 business days"
+  - critical_anomaly_flags_in_batch: 0
+  - controller_review_latency: "≤4h after delivery"
+authority:
+  can:
+    - read Odoo/ERPNext GL
+    - query ClickHouse
+    - propose journal entries as draft
+  cannot:
+    - post to GL
+    - modify ledger records
+    - suppress anomaly flags
+escalation:
+  gl_ledger_discrepancy_gt: "£1,000 → alert Controller immediately"
+  three_statement_fail: "block close, alert Controller"
+  unresolved_flags_gt: "5 → escalate to CFO"
+ports:
+  inbound:
+    - SafeguardingAgent (daily recon data)
+    - Treasury CashPositionAgent (period-end cash)
+    - AP/AR Agent (outstanding invoices)
+  outbound:
+    - FP&A BudgetAgent / ForecastAgent (actuals P&L, balance)
+    - FCA DataExtractionAgent (period GL for regulatory returns)
+    - FinanceBI Agent (finalised metrics)
+    - Beancount Export Agent (trigger for export)
+swarm: "agents/swarms/accounting-swarm.yaml"
+fca_basis: "I-04, FCA SYSC 4, IFRS record-keeping, CASS 15"

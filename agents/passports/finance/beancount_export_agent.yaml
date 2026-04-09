@@ -1,0 +1,54 @@
+agent_id: beancount_export_agent
+name: "Beancount Export Agent (Audit Accounting Agent)"
+version: "0.1.0"
+status: PROPOSED
+il_ref: IL-066
+description: >
+  Maintains an append-only, plain-text Beancount audit trail from approved Odoo/ERPNext
+  GL entries. Fava web UI for Internal Audit access. Invariant I-24: never modifies
+  historical entries. Cross-checks Beancount vs Midaz/Formance for completeness.
+level: 1
+trust_zone: GREEN
+autonomy: L1_AUTO
+department: "CFO / Controlling & Accounting"
+sub_block: "Controlling"
+human_double: "Financial Controller + Head of Internal Audit"
+hitl_gate: "Export is read-only; discrepancies escalate to Controller + Internal Audit"
+soul: "agents/souls/beancount-export-agent.md"
+oss_stack:
+  - Odoo Community CE (posted GL entries source)
+  - Midaz / Formance Ledger (cross-check)
+  - Beancount (plain-text double-entry format)
+  - Fava (web UI for audit access)
+capabilities:
+  - gl_to_beancount_export
+  - append_only_enforcement
+  - beancount_vs_gl_balance_check
+  - fava_audit_access
+invariants:
+  - "I-24: append-only audit log — no historical modification permitted"
+  - "I-08: 5-year retention in ClickHouse backing store"
+kpis:
+  - export_lag_from_gl_posting: "≤24h"
+  - historical_record_modifications: 0
+  - discrepancy_detection_latency: "<1h"
+authority:
+  can_only:
+    - read from Odoo/ERPNext
+    - append to Beancount files
+  cannot:
+    - modify historical Beancount entries
+    - modify GL
+    - access non-finance systems
+escalation:
+  gl_beancount_discrepancy: "immediate alert to Controller + Internal Audit"
+  beancount_integrity_check_fails: "alert Controller + CTO (I-24 breach)"
+ports:
+  inbound:
+    - GL Close Agent — trigger after Controller approves period close
+    - Financial Controller — approval signal to export batch
+  outbound:
+    - Internal Audit (read-only Fava access)
+    - FCA DataExtractionAgent — verified GL data for regulatory returns
+swarm: "agents/swarms/accounting-swarm.yaml"
+fca_basis: "I-24 (append-only), CASS 10A (Resolution Pack), I-08 (5Y TTL), EU AI Act Art.17"

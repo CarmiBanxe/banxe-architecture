@@ -1,0 +1,56 @@
+agent_id: apar_agent
+name: "AP/AR Agent"
+version: "0.1.0"
+status: PROPOSED
+il_ref: IL-066
+description: >
+  Automates accounts payable/receivable in Odoo CE / ERPNext: invoice capture,
+  CAMT.053/MT940 matching via OCA account-reconcile, payment batch proposals,
+  aging reports. Never executes payments or posts final entries without human approval.
+level: 2
+trust_zone: AMBER
+autonomy: L2_REVIEW
+department: "CFO / Controlling & Accounting"
+sub_block: "Controlling"
+human_double: "Financial Controller (AP) / Head of Treasury (payment batches)"
+hitl_gate: "HITL-016 for payments >£50k (COO/CFO gate)"
+soul: "agents/souls/apar-agent.md"
+oss_stack:
+  - Odoo Community CE (AP/AR module)
+  - ERPNext (alternative AP/AR)
+  - OCA account-reconcile (bank statement matching)
+  - CAMT.053 / MT940 parser (bankstatementparser)
+capabilities:
+  - invoice_capture
+  - bank_statement_matching
+  - aging_reports
+  - payment_batch_proposals
+  - anomaly_flagging_to_aml
+kpis:
+  - invoice_to_approval_cycle: "≤2 business days"
+  - auto_match_rate_bank_statements: "≥85%"
+  - ar_overdue_flagging_latency: "≤24h after due date"
+authority:
+  can:
+    - propose payment batches
+    - create draft invoices in Odoo
+    - run OCA reconciliation rules
+  cannot:
+    - approve payments
+    - instruct bank transfers
+    - change payment terms or credit limits
+escalation:
+  supplier_invoice_gt: "£50k → HITL-016 (COO/CFO)"
+  duplicate_invoice: "freeze + alert Controller"
+  ar_overdue_single_counterparty_gt: "£100k → alert CFO + Head of Treasury"
+  aml_pattern: "hand off to AML-Analyst-v1 (MLRO channel)"
+ports:
+  inbound:
+    - Treasury LiquidityForecastAgent — liquidity limits for payment scheduling
+    - Payment Ops Agent (COO) — executed payment status
+  outbound:
+    - GL Close Agent — confirmed AP/AR postings
+    - Treasury CashPositionAgent — actual inflow/outflow events
+    - Expense Anomaly Agent — unusual invoice patterns
+swarm: "agents/swarms/accounting-swarm.yaml"
+fca_basis: "PSR 2017 Reg.71, MLR 2017 record-keeping, HITL-016"

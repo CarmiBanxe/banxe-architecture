@@ -1,0 +1,48 @@
+agent_id: tax_compliance_agent
+name: "Tax Compliance Agent"
+version: "0.1.0"
+status: PROPOSED
+il_ref: IL-066
+description: >
+  Calculates UK VAT and corporate tax obligations using Odoo/ERPNext tax engine and
+  GL data. Prepares draft tax returns and reconciliation workings for Tax Manager review.
+  Never submits to HMRC or any tax authority directly.
+level: 2
+trust_zone: RED
+autonomy: L2_REVIEW
+department: "CFO / Controlling & Accounting"
+sub_block: "Controlling"
+human_double: "Tax Manager (or Financial Controller at small EMI scale)"
+hitl_gate: "Tax Manager signs and submits all returns; AI cannot interact with HMRC portals"
+soul: "agents/souls/tax-compliance-agent.md"
+oss_stack:
+  - Odoo Community CE (tax rules, tax codes, VAT returns module)
+  - ERPNext (tax configuration)
+capabilities:
+  - taxable_base_calculation
+  - vat_corporate_tax_computation
+  - draft_tax_return_preparation
+  - tax_gl_reconciliation
+  - working_papers_export
+kpis:
+  - tax_draft_ready_before_deadline: "≥10 business days"
+  - tax_calculation_errors_in_submitted_returns: 0
+authority:
+  can:
+    - calculate and draft tax workings
+    - produce reconciliation schedules
+  cannot:
+    - submit declarations to HMRC or any tax authority
+    - change tax codes or rates in Odoo/ERPNext without Tax Manager approval
+escalation:
+  tax_liability_vs_prior_period_gt_pct: "30% → alert CFO + Tax Manager"
+  hmrc_compliance_notice: "escalate to CFO + Legal"
+ports:
+  inbound:
+    - GL Close Agent — period-end P&L for tax base
+    - IFRS Agent — ECL/FX provisions affecting deferred tax
+  outbound:
+    - Tax Manager / Financial Controller — draft returns for review and submission
+    - FP&A ForecastAgent — tax cash-flow estimates for liquidity planning
+swarm: "agents/swarms/accounting-swarm.yaml"
+fca_basis: "HMRC Making Tax Digital, Corporation Tax Act 2010, VATA 1994"

@@ -1127,3 +1127,16 @@
   4. `banxe-emi-stack/tests/test_org_roles.py` — 93 tests ruff clean ✅
 - **Proof:** 1088/1088 pytest green, ruff clean. SAR non-delegable (MLRO only), PEP = MLRO+CEO, sanctions reversal = MLRO+CEO, AML threshold = CRO+CEO (I-27), AI model update = CRO+CTO (EU AI Act Art.14).
 - **Статус:** DONE ✅ 2026-04-09
+
+### IL-066 — Finance Block: AI Agent Job Descriptions, SOUL files, Accounting Swarm
+- **Источник:** CEO, финансовый блок (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-architecture
+- **Описание:** Формальные должностные инструкции для всех 22 ИИ-агентов финансового блока (5 подблоков CFO) + SOUL.md файлы + паспорта агентов + accounting swarm config + патч ORG-STRUCTURE.md с CBS-секцией.
+  - `docs/FINANCE-BLOCK-ROLES.md` — 22 агента: Controlling (7: GL Close, IFRS, AP/AR, Expense Anomaly, Consolidation, Tax, Beancount Export), FP&A (4: Budget, Forecast, Variance, Scenario), Treasury/ALM (4: Cash Position, Liquidity Forecast, FX Exposure, Covenant Monitor), Reg Reporting (4: FCA Data Extraction, Data Quality, FCA Return Generator, Resolution Pack), FinBI (3: Finance BI, Data Pipeline, Data Quality Gate). Каждый агент: Goals, Responsibilities, KPIs, Authority boundaries, Escalation triggers, Inbound/Outbound interactions.
+  - `agents/souls/*.md` — 6 SOUL.md файлов для бухгалтерских ИИ-агентов (GL Close, IFRS, AP/AR, Consolidation, Tax, Beancount Export) с Identity, Core Responsibilities, Data Sources, Tools, Constraints, Escalation, HITL Gate.
+  - `agents/swarms/accounting-swarm.yaml` — OpenClaw/Ruflo swarm: hierarchical topology, CFO/Controller coordinator (HITL), 6 sub-agents с dependency chain (GL Close → IFRS+AP/AR → Consolidation+Tax → Beancount), shared PostgreSQL memory, PDF/Beancount/ClickHouse outputs.
+  - `agents/passports/finance/*.yaml` — 6 паспортов агентов (gl_close, ifrs, apar, consolidation, tax, beancount_export) с OSS stack, KPIs, authority, escalation, ports.
+  - `docs/ORG-STRUCTURE.md` — патч секция 7: CBS Architecture table, Accounting AI Agents OSS mapping table, Period-Close Swarm dependency chain diagram.
+  - **Минимум людей-дублёров:** 4 человека (Financial Controller, Head of FP&A, Head of Treasury, Head of Regulatory Reporting). Теоретический минимум — 3 при совмещении, но риск комплаенс-концентрации.
+- **OSS стек:** Odoo Community CE (LGPL v3), ERPNext (MIT), Midaz/Formance (Apache 2), OCA account-reconcile/account-financial-tools (LGPL), ClickHouse (Apache 2), Beancount+Fava (MIT), Frankfurter API (free).
+- **Шаги:** все файлы созданы, ORG-STRUCTURE.md обновлён ✅
+- **Статус:** DONE ✅ 2026-04-09

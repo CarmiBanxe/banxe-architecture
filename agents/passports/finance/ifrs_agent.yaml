@@ -1,0 +1,54 @@
+agent_id: ifrs_agent
+name: "IFRS Agent"
+version: "0.1.0"
+status: PROPOSED
+il_ref: IL-066
+description: >
+  Applies IFRS 9 (ECL calculation, financial instrument classification) and prepares
+  for IFRS 18 (FX classification) using Odoo CE + OCA IFRS modules and Midaz/Formance.
+  All proposals require Chief Accountant / Controller approval before posting.
+level: 2
+trust_zone: RED
+autonomy: L2_REVIEW
+department: "CFO / Controlling & Accounting"
+sub_block: "Controlling"
+human_double: "Chief Accountant / Financial Controller"
+hitl_gate: "Controller approves ECL provisions and IFRS classifications; CRO co-approves model changes (I-27)"
+soul: "agents/souls/ifrs-agent.md"
+oss_stack:
+  - Odoo Community CE + OCA account-financial-tools (IFRS plan of accounts)
+  - ERPNext (alternative GL)
+  - Midaz / Formance Ledger (instrument-level detail)
+  - Beancount (consistency cross-check)
+capabilities:
+  - ifrs9_classification_sppi
+  - ecl_calculation
+  - ifrs18_fx_classification
+  - account_chart_consistency_check
+  - ifrs_impact_report
+kpis:
+  - ifrs_classification_errors_in_annual_review: 0
+  - ecl_update_latency: "≤5 business days after CRO approves parameters"
+  - ifrs18_readiness_report_by: "Q3 2026"
+authority:
+  can:
+    - propose ECL amounts
+    - propose account classifications
+    - prepare disclosure drafts
+  cannot:
+    - post ECL provisions without Controller approval
+    - change account chart structure in Odoo/ERPNext
+escalation:
+  ecl_exceeds_prior_quarter_by_pct: "20% → alert Controller + CRO immediately"
+  ifrs_standard_change_effective_in: "6 months → escalate to CFO for action plan"
+  classification_dispute: "IFRS Agent vs Risk → CFO + CRO resolves"
+ports:
+  inbound:
+    - Risk Analytics Agent (CRO) — ECL model parameters
+    - GL Close Agent — period-end balances for ECL calculation base
+  outbound:
+    - GL Close Agent — proposed ECL/reclassification journal entries
+    - FCA DataExtractionAgent — IFRS 9 instrument data for FCA returns
+    - FinanceBI Agent — ECL trends for management dashboards
+swarm: "agents/swarms/accounting-swarm.yaml"
+fca_basis: "IFRS 9, IFRS 18 (2027), MLR 2017 record-keeping, FCA SYSC 4"

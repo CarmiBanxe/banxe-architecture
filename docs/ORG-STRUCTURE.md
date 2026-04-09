@@ -380,4 +380,76 @@ See full 17-row machine-readable matrix: `../HITL-MATRIX.yaml`
 
 ---
 
-*Document maintained by: Claude Code | IL-065 | 2026-04-09 | I-29 (Documentation Standard)*
+---
+
+## 7. CBS & Accounting AI Agents — OSS Stack Integration
+> Added: IL-066 | 2026-04-09
+
+This section binds the CFO/Finance org structure to the open-source CBS stack:
+Odoo Community CE as accounting backend, Midaz/Formance as transactional ledger,
+and Beancount/Fava as plain-text audit layer.
+
+### 7.1 CBS Architecture
+
+```
+Midaz / Formance Ledger ──webhooks──► Odoo Community CE (GL/AP/AR)
+                                      ERPNext (alt ERP / multi-subsidiary)
+                                            │
+                                  OCA modules (account-reconcile,
+                                  account-financial-tools, IFRS)
+                                            │
+                            ClickHouse ◄──extract──► Beancount + Fava
+                            (OLAP, 5Y audit trail)    (plain-text audit)
+```
+
+| Layer | Product | Licence | Role |
+|-------|---------|---------|------|
+| Transactional ledger | Midaz / Formance | Apache 2 | Source of truth for account events |
+| General Ledger / AP/AR | Odoo Community CE | LGPL v3 | Accounting backend, multi-currency, bank recon |
+| Alt ERP | ERPNext | MIT | Multi-subsidiary / alternative GL |
+| Bank reconciliation | OCA account-reconcile | LGPL | CAMT.053/MT940 auto-matching |
+| IFRS modules | OCA account-financial-tools | LGPL | IFRS plan of accounts, FX classification |
+| OLAP / audit | ClickHouse | Apache 2 | Aggregated views, 5-year retention (I-08) |
+| Plain-text audit | Beancount + Fava | MIT | External audit, append-only trail (I-24) |
+
+**Invariant**: All AI agents propose only. No agent posts to GL, submits to regulator,
+or initiates a payment without human approval (HITL gates in HITL-MATRIX.yaml).
+
+### 7.2 Accounting AI Agents — OSS Mapping
+
+| AI Agent | OSS Systems | Task | Human Double |
+|----------|------------|------|-------------|
+| **GL Close Agent** | Odoo CE, ERPNext, Midaz, ClickHouse | Proposes period-close journal batch; 3-statement check | Financial Controller |
+| **IFRS Agent** | Odoo + OCA IFRS modules, Beancount | IFRS 9 ECL/FX classification; IFRS 18 prep | Chief Accountant / Controller |
+| **AP/AR Agent** | Odoo / ERPNext, OCA account-reconcile | Invoice capture, CAMT.053 matching, aging, payment proposals | Controller / Head of Treasury |
+| **Consolidation Agent** | Odoo multicompany, ERPNext multi-subsidiary | Multi-entity consolidation, elimination entries | Financial Controller |
+| **Tax Compliance Agent** | Odoo / ERPNext | VAT/corporate tax calculations, draft returns | Tax Manager / Controller |
+| **Beancount Export Agent** | Odoo, Midaz, Beancount, Fava | Append-only audit-grade GL export (I-24) | Controller + Internal Audit |
+
+Full job descriptions: `docs/FINANCE-BLOCK-ROLES.md`
+SOUL files: `agents/souls/*.md`
+Accounting swarm config: `agents/swarms/accounting-swarm.yaml`
+
+### 7.3 Period-Close Swarm — Dependency Chain
+
+```
+Trigger: period-end
+    │
+    ▼
+[GL Close Agent] ─────────────────────────────────────────────────┐
+    │                                                              │
+    ├──► [IFRS Agent]  ──────────────────────────┐               │
+    └──► [AP/AR Agent] ─ parallel ─              │               │
+                                                 ▼               ▼
+                                    [Consolidation Agent]  [Tax Agent]
+                                                 │
+                                                 ▼
+                                    [Beancount Export Agent]
+                                                 │
+                                                 ▼
+                              CFO/Controller Agent → HITL → Financial Controller ✋
+```
+
+---
+
+*Document maintained by: Claude Code | IL-065, IL-066 | 2026-04-09 | I-29 (Documentation Standard)*

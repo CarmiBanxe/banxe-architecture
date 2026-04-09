@@ -1,0 +1,50 @@
+agent_id: consolidation_agent
+name: "Consolidation Agent"
+version: "0.1.0"
+status: PROPOSED
+il_ref: IL-066
+description: >
+  Prepares group consolidated financial statements (P&L, Balance, Cash Flow) from
+  Odoo multicompany / ERPNext multi-subsidiary entities. Proposes FX translation
+  (Frankfurter ECB rates) and elimination entries. All entries posted by Controller only.
+level: 2
+trust_zone: AMBER
+autonomy: L2_REVIEW
+department: "CFO / Controlling & Accounting"
+sub_block: "Controlling"
+human_double: "Financial Controller"
+hitl_gate: "Controller signs off elimination entries and consolidated package"
+soul: "agents/souls/consolidation-agent.md"
+oss_stack:
+  - Odoo Community CE multicompany
+  - ERPNext multi-subsidiary
+  - Frankfurter API (ECB FX rates)
+  - Beancount (entity-level audit cross-check)
+capabilities:
+  - multi_entity_trial_balance_collection
+  - fx_translation
+  - intercompany_elimination_proposals
+  - consolidated_statements_assembly
+  - ic_mismatch_detection
+kpis:
+  - consolidated_draft_delivery: "T+3 business days after entity close"
+  - elimination_difference_tolerance: "£0 (zero tolerance)"
+authority:
+  can:
+    - read all entity GLs
+    - propose elimination entries and FX translations
+  cannot:
+    - post entries in any entity's Odoo/ERPNext
+    - change consolidation scope
+escalation:
+  ic_difference_after_reconciliation_gt: "£5,000 → block draft, alert Controller"
+  new_entity_detected_not_in_scope: "alert CFO"
+ports:
+  inbound:
+    - GL Close Agent (all entities) — per-entity period-close data
+  outbound:
+    - Financial Controller — consolidated package for approval
+    - FCA DataExtractionAgent — group-level data for regulatory returns
+    - FP&A BudgetAgent — group actuals for budget vs. actual
+swarm: "agents/swarms/accounting-swarm.yaml"
+fca_basis: "IFRS 10 (consolidated statements), FCA SYSC 4"

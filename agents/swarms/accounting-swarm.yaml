@@ -1,0 +1,169 @@
+# Banxe AI Bank — Accounting Swarm (OpenClaw / Ruflo)
+# IL-066 | banxe-architecture/agents/swarms/
+# Created: 2026-04-09
+#
+# Topology: hierarchical
+# Coordinator: CFO/Controller Analytics Agent (single HITL point for period close)
+# Sub-agents: GL Close → IFRS / AP-AR (parallel) → Consolidation / Tax → Beancount Export
+#
+# Dependency chain:
+#   [GL Close] ──► [IFRS, AP/AR] ──► [Consolidation, Tax] ──► [Beancount Export]
+#
+# All agents are read-only on CBS (Odoo/ERPNext/Midaz/Formance/Beancount).
+# Proposals are submitted to coordinator; human Controller approves before any posting.
+
+name: accounting-swarm
+version: "1.0"
+topology: hierarchical
+il_ref: IL-066
+
+coordinator:
+  id: cfo_controller_agent
+  soul: agents/souls/cfo-controller-agent.md
+  description: >
+    CFO/Controller Analytics Agent — orchestrates the period-close cycle.
+    Single HITL point: all agent proposals are reviewed here before the Financial
+    Controller approves and posts to GL.
+  tools:
+    - clickhouse_query           # OLAP checks and aggregates across all finance data
+    - send_alert                 # Telegram/Slack notifications to Controller/CFO
+    - start_approval_workflow    # Fluxnova/BPMN approval gate for period close pack
+  human_in_loop: true
+  human_double: "Financial Controller / CFO"
+  hitl_gate: "HITL-010 (FCA RegData), HITL-011 (Safeguarding shortfall)"
+
+agents:
+
+  # ── Step 1: GL Close (runs first — all others depend on it) ──────────────────
+  - id: gl_close_agent
+    soul: agents/souls/gl-close-agent.md
+    description: >
+      Month-end/quarter-end close preparation. Reconciles Odoo/ERPNext GL
+      against Midaz/Formance ledger. Proposes closing journal entry batch.
+    tools:
+      - odoo_trial_balance           # Odoo CE GL trial balance
+      - erpnext_trial_balance        # ERPNext trial balance (if applicable)
+      - midaz_balance                # Midaz/Formance ledger balance snapshot
+      - clickhouse_query             # Analytical cross-checks (P&L/BS/CF consistency)
+      - list_reconciliation_breaks   # Safeguarding reconciliation breaks
+      - generate_report              # HTML/PDF close readiness report
+    depends_on: []
+    parallel: true                   # Can run from period-end trigger immediately
+
+  # ── Step 2a: IFRS Agent (after GL close base is available) ───────────────────
+  - id: ifrs_agent
+    soul: agents/souls/ifrs-agent.md
+    description: >
+      IFRS 9 ECL calculation and IFRS 18 FX classification proposals.
+      Uses CRO-approved models; proposes journal entries to coordinator.
+    tools:
+      - fetch_instrument_positions
+      - run_sppt_classification
+      - calculate_ecl
+      - propose_ifrs_journals
+      - generate_ifrs_impact_report
+    depends_on:
+      - gl_close_agent               # Needs closing balances as ECL calculation base
+    parallel: false
+
+  # ── Step 2b: AP/AR Agent (after GL close, parallel with IFRS) ────────────────
+  - id: apar_agent
+    soul: agents/souls/apar-agent.md
+    description: >
+      Invoice matching, bank reconciliation (CAMT.053/MT940 via OCA account-reconcile),
+      aging reports, payment batch proposals.
+    tools:
+      - import_invoices
+      - run_auto_reconcile
+      - generate_aging_report
+      - suggest_payment_batch
+      - flag_unusual_payment
+    depends_on:
+      - gl_close_agent               # Uses closed balances and reconciliation status
+    parallel: true                   # Runs parallel to IFRS Agent
+
+  # ── Step 3a: Consolidation Agent (after IFRS adjustments known) ──────────────
+  - id: consolidation_agent
+    soul: agents/souls/consolidation-agent.md
+    description: >
+      Multi-entity consolidation (Odoo multicompany / ERPNext multi-subsidiary).
+      FX translation via Frankfurter ECB rates. Elimination entry proposals.
+    tools:
+      - fetch_entity_trial_balance
+      - get_fx_rates
+      - detect_intercompany_pairs
+      - propose_elimination_entries
+      - build_consolidated_statements
+    depends_on:
+      - gl_close_agent
+      - ifrs_agent                   # Consolidation incorporates IFRS adjustments
+    parallel: false
+
+  # ── Step 3b: Tax Agent (after IFRS adjustments known) ────────────────────────
+  - id: tax_agent
+    soul: agents/souls/tax-compliance-agent.md
+    description: >
+      VAT and corporate tax calculation using Odoo/ERPNext tax engine.
+      Draft tax returns and reconciliation workings for Tax Manager review.
+    tools:
+      - fetch_taxable_base
+      - calculate_tax
+      - prepare_tax_return_draft
+      - run_tax_gl_reconciliation
+      - export_tax_working_papers
+    depends_on:
+      - gl_close_agent
+      - ifrs_agent                   # IFRS ECL/FX affects deferred tax base
+    parallel: true                   # Can run parallel to Consolidation Agent
+
+  # ── Step 4: Beancount Export (last — after approved consolidated picture) ────
+  - id: beancount_export_agent
+    soul: agents/souls/beancount-export-agent.md
+    description: >
+      Append-only plain-text audit trail export from approved GL to Beancount.
+      Fava web UI for Internal Audit. Invariant I-24: never modifies history.
+    tools:
+      - fetch_posted_entries
+      - generate_beancount_fragment
+      - append_to_beancount_file
+      - run_balance_check
+    depends_on:
+      - gl_close_agent
+      - consolidation_agent          # Export includes approved consolidated entries
+    parallel: false
+
+# ── Shared memory ─────────────────────────────────────────────────────────────
+memory:
+  type: shared_persistent
+  backend: postgresql
+  schema: accounting_swarm
+  retention_years: 5               # I-08: 5-year audit trail retention
+
+# ── Output artefacts ──────────────────────────────────────────────────────────
+output:
+  - type: pdf
+    template: templates/accounting-close-pack.html
+    destination: ./output/accounting-close-packs
+    description: >
+      Consolidated period-close pack for Financial Controller approval:
+      trial balance, proposed journals, 3-statement consistency check,
+      IFRS adjustments summary, reconciliation breaks log.
+
+  - type: beancount
+    destination: ./output/beancount-audit
+    description: Append-only plain-text audit trail for Internal Audit / Fava
+
+  - type: auditlog
+    backend: clickhouse
+    table: accounting_swarm_runs
+    description: >
+      Full run log: agent steps, data sources accessed, proposals generated,
+      human approvals captured. 5-year retention (I-08). EU AI Act Art.17.
+
+# ── Escalation policy ─────────────────────────────────────────────────────────
+escalation:
+  gl_ledger_discrepancy_threshold: 1000   # £ — alert Controller immediately if exceeded
+  p_l_inconsistency: block                # 3-statement fail → block close, alert Controller
+  safeguarding_shortfall: hitl_011        # Route to HITL-011 gate (CFO + MLRO)
+  covenant_breach: hitl_016_plus_cfo      # Route to CFO + Head of Treasury
+  sar_pattern_detected: aml_analyst       # Hand off to AML-Analyst-v1 (MLRO channel)
