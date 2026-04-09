@@ -1108,3 +1108,9 @@
 - **Описание:** AI инструменты для BANXE UI разработки: MCP серверы (Context7/Figma/Storybook) в banxe-ui/.mcp.json + developer/.mcp.json; BANXE UI CLAUDE.md (8 блоков: стек, дизайн-система, правила компонентов, статус экранов, MCP инструкции, команды); SessionStart hook (git + компоненты + экраны + IL + дизайн-правила + Pro-Workflow patterns); Pro-Workflow SQLite capture (patterns/fixes/conventions из PostToolUse + session-end summary); параллельные агент-команды через tmux (Frontend/Backend/QA, сокращают 30-40 мин → 10-15 мин); screenshot-to-code setup (abi/screenshot-to-code + Ollama local inference).
 - **Статус:** DONE ✅
 - **Proof:** commit 95e3042 banxe-ui (3 файла: .claude/CLAUDE.md, .claude/settings.json, .mcp.json) + commit cf03852 developer-core (5 файлов: 2 hooks + 2 scripts + .mcp.json). Spec-First Auditor 12/12 PASS. Все скрипты chmod +x.
+
+### IL-064 — Developer Quality Gate: Vitest root config + Semgrep rules + /semgrep-scan + PR-Agent
+- **Источник:** CEO, quality tools guide (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-ui + developer-core
+- **Описание:** Quality gate для Developer Plane: root vitest.config.ts (все тесты: packages/ui + tests/unit + tests/a11y, coverage ≥70%); 8 Semgrep правил banxe-specific (.semgrep/banxe-ui-rules.yaml): I-05 parseFloat/Number, hardcoded hex, AI badge, Skeleton loading, font-mono, no-console, ARIA, ComplianceFlag; /semgrep-scan slash command в banxe-ui/.claude/commands/; npm quality script (typecheck + lint + test:all + semgrep); PR-Agent (Qodo) setup script с Ollama local inference (не уходит в облако).
+- **Статус:** DONE ✅
+- **Proof:** commit b65557c banxe-ui (vitest.config.ts + .semgrep/banxe-ui-rules.yaml + .claude/commands/semgrep-scan.md + package.json) + commit 2c103d0 developer-core (pr-agent-setup.sh). Spec-First Auditor 12/12 PASS.
