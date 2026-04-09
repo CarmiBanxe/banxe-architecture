@@ -1115,3 +1115,15 @@
 - **Статус:** DONE ✅
 - **Proof:** commit b65557c banxe-ui (vitest.config.ts + .semgrep/banxe-ui-rules.yaml + .claude/commands/semgrep-scan.md + package.json) + commit 2c103d0 developer-core (pr-agent-setup.sh). Spec-First Auditor 12/12 PASS.
 - **Quality Gate RUN (2026-04-09):** commit 3023bc4 banxe-ui — GATE ✅ PASS: ESLint 0 errors, 128/128 tests (32 packages/ui + 96 root), Semgrep 0 ERRORs / 5 WARNINGs. Fixes: I-05 parseFloat→unary+, ARIA violations, ComplianceFlag FlagType, React dual-instance, rules-of-hooks.
+
+
+### IL-065 — Org Structure: 10 functional blocks + HITL matrix + OrgRoleChecker
+- **Источник:** CEO, org structure document (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-architecture + banxe-emi-stack
+- **Описание:** Полная организационная структура Banxe AI Bank: (1) `docs/ORG-STRUCTURE.md` — 10 функциональных блоков (Board/CEO SMF1, CRO SMF4, MLRO SMF17, Internal Audit SMF5, CFO SMF2 [5 суббоков], COO SMF24 [3 субблока], CTO SMF26 [4 субблока], Front Office, HR/Legal), Three Lines of Defence, SM&CR таблица, EU AI Act Art.14 compliance, HITL summary; (2) `HITL-MATRIX.yaml` — machine-readable матрица 17 HITL-шлюзов (AND/OR логика ролей, SLA, auto_allowed, fca_basis); (3) `services/hitl/org_roles.py` — OrgRoleChecker enforcement layer: HITLGate (frozen dataclass), GATE_REGISTRY, is_satisfied_by(), missing_roles(), gates_for_role(), critical_gates(); (4) `tests/test_org_roles.py` — 93 теста: все 17 шлюзов, AND/OR логика, SM&CR non-delegable (SAR/PEP/sanctions), CEO escalation paths, utility методы, edge cases.
+- **Шаги:**
+  1. `banxe-architecture/docs/ORG-STRUCTURE.md` — ORG structure canonical document ✅
+  2. `banxe-architecture/HITL-MATRIX.yaml` — machine-readable 17-row matrix ✅
+  3. `banxe-emi-stack/services/hitl/org_roles.py` — OrgRoleChecker enforcement ✅
+  4. `banxe-emi-stack/tests/test_org_roles.py` — 93 tests ruff clean ✅
+- **Proof:** 1088/1088 pytest green, ruff clean. SAR non-delegable (MLRO only), PEP = MLRO+CEO, sanctions reversal = MLRO+CEO, AML threshold = CRO+CEO (I-27), AI model update = CRO+CTO (EU AI Act Art.14).
+- **Статус:** DONE ✅ 2026-04-09

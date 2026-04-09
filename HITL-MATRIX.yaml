@@ -1,0 +1,278 @@
+# HITL-MATRIX.yaml — Human-In-The-Loop Decision Matrix
+# IL-065 | banxe-architecture
+# Created: 2026-04-09
+#
+# Purpose: Machine-readable authority matrix for all HITL gates across Banxe AI Bank.
+# Consumed by: banxe-emi-stack/services/hitl/org_roles.py
+# Human-readable: docs/ORG-STRUCTURE.md section 6
+#
+# Fields:
+#   id:           Unique gate identifier (HITL-nnn)
+#   name:         Human-readable decision type
+#   trigger:      When this gate activates (maps to ReviewReason enum values)
+#   required_roles: List of roles — ALL must approve if multiple (AND semantics)
+#   any_of_roles: List of roles — ONE is sufficient (OR semantics)
+#   sla_hours:    Maximum hours before auto-escalation / FCA alert
+#   auto_allowed: Whether AI can proceed without human approval (rare — only BLOCK)
+#   fca_basis:    Regulatory reference
+#   severity:     critical | high | medium | low
+#   notes:        Additional context
+
+version: "1.0"
+created: "2026-04-09"
+il_ref: "IL-065"
+
+gates:
+
+  - id: HITL-001
+    name: SAR Filing
+    trigger: SAR_REQUIRED
+    required_roles: [MLRO]
+    any_of_roles: []
+    sla_hours: 4
+    auto_allowed: false
+    fca_basis: "POCA 2002 s.330; MLR 2017 Reg.19"
+    severity: critical
+    notes: >
+      SAR filing is personally non-delegable from MLRO (SMF17).
+      AI prepares the draft; MLRO reviews and submits via FCA Connect.
+      CEO may be informed but cannot substitute for MLRO.
+
+  - id: HITL-002
+    name: EDD Sign-off
+    trigger: EDD_REQUIRED
+    required_roles: []
+    any_of_roles: [MLRO, COMPLIANCE_OFFICER]
+    sla_hours: 24
+    auto_allowed: false
+    fca_basis: "MLR 2017 Reg.28; I-04"
+    severity: high
+    notes: >
+      Enhanced Due Diligence required for customers/transactions ≥£10k (individual)
+      or ≥£50k (corporate). Compliance Officer is sufficient; MLRO required if PEP.
+
+  - id: HITL-003
+    name: Sanctions AUTO-BLOCK
+    trigger: SANCTIONS_HIT
+    required_roles: []
+    any_of_roles: []
+    sla_hours: 0
+    auto_allowed: true
+    fca_basis: "SAMLA 2018; OFSI guidance; I-15"
+    severity: critical
+    notes: >
+      Sanctions match triggers automatic BLOCK — no HITL gate required for the block itself.
+      MLRO is notified immediately. Proceeds to HITL-004 if reversal is requested.
+
+  - id: HITL-004
+    name: Sanctions Reversal
+    trigger: SANCTIONS_REVERSAL_REQUEST
+    required_roles: [MLRO, CEO]
+    any_of_roles: []
+    sla_hours: 2
+    auto_allowed: false
+    fca_basis: "SAMLA 2018 s.20; OFSI consent"
+    severity: critical
+    notes: >
+      Reversing a sanctions BLOCK requires BOTH MLRO AND CEO.
+      OFSI written consent required for designated persons. Logged to ClickHouse.
+
+  - id: HITL-005
+    name: Customer BLOCK (AML)
+    trigger: AML_CUSTOMER_BLOCK
+    required_roles: [MLRO]
+    any_of_roles: []
+    sla_hours: 4
+    auto_allowed: false
+    fca_basis: "MLR 2017 Reg.27; POCA 2002"
+    severity: critical
+    notes: >
+      Blocking a customer account for AML reasons requires MLRO sign-off.
+      Customer must NOT be tipped off (POCA 2002 s.333A tipping-off offence).
+
+  - id: HITL-006
+    name: KYC Rejection (HIGH/PROHIBITED risk)
+    trigger: KYC_HIGH_RISK_REJECTION
+    required_roles: []
+    any_of_roles: [MLRO, COMPLIANCE_OFFICER]
+    sla_hours: 24
+    auto_allowed: false
+    fca_basis: "MLR 2017 Reg.21; FCA SYSC 6.3"
+    severity: high
+    notes: >
+      KYC rejections for HIGH or PROHIBITED risk customers require human review.
+      LOW/MEDIUM risk auto-approve is permitted.
+
+  - id: HITL-007
+    name: PEP Onboarding
+    trigger: PEP_ONBOARDING
+    required_roles: [MLRO, CEO]
+    any_of_roles: []
+    sla_hours: 48
+    auto_allowed: false
+    fca_basis: "MLR 2017 Reg.35 (PEP enhanced measures)"
+    severity: critical
+    notes: >
+      Politically Exposed Persons require BOTH MLRO AND CEO approval.
+      Source of wealth documentation must be verified before approval.
+
+  - id: HITL-008
+    name: SAR Retraction
+    trigger: SAR_RETRACTION_REQUEST
+    required_roles: [MLRO, CEO]
+    any_of_roles: []
+    sla_hours: 4
+    auto_allowed: false
+    fca_basis: "POCA 2002 s.330 (ongoing duty to report)"
+    severity: critical
+    notes: >
+      Retracting a submitted SAR requires BOTH MLRO AND CEO.
+      Extremely rare — requires documented justification. NCA/UKFIU must be notified.
+
+  - id: HITL-009
+    name: Transaction HOLD (Fraud HIGH)
+    trigger: FRAUD_HIGH
+    required_roles: []
+    any_of_roles: [MLRO, COMPLIANCE_OFFICER, OPERATOR]
+    sla_hours: 24
+    auto_allowed: false
+    fca_basis: "PSR APP 2024; FCA PS7/24; EU AI Act Art.14"
+    severity: high
+    notes: >
+      Fraud score ≥70 triggers HOLD; human must approve or reject payment.
+      Operator (COO team) sufficient; MLRO required if also SAR_REQUIRED.
+
+  - id: HITL-010
+    name: FCA RegData Submission
+    trigger: FCA_REGDATA_SUBMISSION
+    required_roles: [CFO]
+    any_of_roles: []
+    sla_hours: 168
+    auto_allowed: false
+    fca_basis: "CASS 15.12.4R; FCA PS7/24 FIN060"
+    severity: high
+    notes: >
+      CFO must personally submit FIN060 and other RegData returns.
+      AI generates the report; CFO reviews and submits. SLA = 168h (7 days before deadline).
+
+  - id: HITL-011
+    name: Safeguarding Shortfall Alert
+    trigger: SAFEGUARDING_SHORTFALL
+    required_roles: [CFO, MLRO]
+    any_of_roles: []
+    sla_hours: 4
+    auto_allowed: false
+    fca_basis: "CASS 7.15.17R; CASS 7.13.6R"
+    severity: critical
+    notes: >
+      Safeguarding shortfall requires BOTH CFO AND MLRO. FCA must be notified if shortfall
+      persists >1 business day. BreachDetector fires after discrepancy streak >3 days.
+
+  - id: HITL-012
+    name: AML Threshold Change
+    trigger: AML_THRESHOLD_CHANGE
+    required_roles: [CRO, CEO]
+    any_of_roles: []
+    sla_hours: 168
+    auto_allowed: false
+    fca_basis: "MLR 2017 Reg.18; FCA SYSC 6.3; I-04; I-27"
+    severity: high
+    notes: >
+      I-27: FeedbackLoopAnalyser PROPOSES threshold changes; CRO + CEO must approve.
+      No autonomous model updates. Change logged to ClickHouse with approval chain.
+
+  - id: HITL-013
+    name: Production Deploy
+    trigger: PRODUCTION_DEPLOY
+    required_roles: [CTO]
+    any_of_roles: []
+    sla_hours: 24
+    auto_allowed: false
+    fca_basis: "FCA SYSC 8.1; FCA operational resilience policy"
+    severity: medium
+    notes: >
+      All production deployments require CTO approval. Staging is L2 (CI auto-approve).
+      Rollback authority: CTO can unilaterally rollback without CEO.
+
+  - id: HITL-014
+    name: AI Model Update (High-risk system)
+    trigger: AI_MODEL_UPDATE
+    required_roles: [CRO, CTO]
+    any_of_roles: []
+    sla_hours: 168
+    auto_allowed: false
+    fca_basis: "EU AI Act Art.9 (risk management); Art.17 (quality management); I-27"
+    severity: high
+    notes: >
+      Updates to high-risk AI models (fraud scoring, AML, KYC) require BOTH CRO AND CTO.
+      Non-high-risk models (BI, marketing) require CTO only.
+
+  - id: HITL-015
+    name: Security Incident CRITICAL
+    trigger: SECURITY_INCIDENT_CRITICAL
+    required_roles: [CTO, CEO]
+    any_of_roles: []
+    sla_hours: 2
+    auto_allowed: false
+    fca_basis: "FCA SYSC 8.1.1R; NIS Regulations 2018"
+    severity: critical
+    notes: >
+      CRITICAL security incidents (data breach, ransomware, authentication bypass) require
+      BOTH CTO AND CEO within 2h. FCA notification may be required within 72h (UK GDPR Art.33).
+
+  - id: HITL-016
+    name: Large Transaction (>£50k)
+    trigger: LARGE_TRANSACTION
+    required_roles: []
+    any_of_roles: [COO, CFO]
+    sla_hours: 1
+    auto_allowed: false
+    fca_basis: "MLR 2017 Reg.28 (EDD); PSR 2017 Reg.71"
+    severity: high
+    notes: >
+      Transactions >£50k require COO or CFO approval in addition to standard AML checks.
+      EDD is also triggered (HITL-002). Both gates must be satisfied.
+
+  - id: HITL-017
+    name: New Product Launch
+    trigger: NEW_PRODUCT_LAUNCH
+    required_roles: [CEO]
+    any_of_roles: []
+    sla_hours: 720
+    auto_allowed: false
+    fca_basis: "FCA PRIN 2A (Consumer Duty); FCA COBS 2 (suitability); FCA Product Governance"
+    severity: high
+    notes: >
+      New financial products require CEO sign-off and FCA product governance review.
+      Consumer Duty PS22/9: AI model for product recommendation must pass CRO review first.
+      SLA = 720h (30 days) for standard product governance cycle.
+
+# ── Role definitions ─────────────────────────────────────────────────────────────
+roles:
+  CEO:
+    smf: SMF1
+    description: "Chief Executive Officer — ultimate FCA accountability"
+  CFO:
+    smf: SMF2
+    description: "Chief Financial Officer — financial control + regulatory reporting"
+  CRO:
+    smf: SMF4
+    description: "Chief Risk Officer — risk oversight + AI governance"
+  MLRO:
+    smf: SMF17
+    description: "Money Laundering Reporting Officer — AML + SAR authority"
+  COO:
+    smf: SMF24
+    description: "Chief Operating Officer — payments + safeguarding + customer ops"
+  CTO:
+    smf: SMF26
+    description: "Chief Technology Officer / CTIO — AI platform + security"
+  COMPLIANCE_OFFICER:
+    smf: null
+    description: "Compliance Officer — KYC/EDD/CDD decisions (not SAR)"
+  OPERATOR:
+    smf: null
+    description: "Operations staff — routine HOLD approve/reject within limits"
+  INTERNAL_AUDITOR:
+    smf: SMF5
+    description: "Internal Audit — 3rd line assurance (read-only access)"
