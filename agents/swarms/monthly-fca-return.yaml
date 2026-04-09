@@ -1,0 +1,157 @@
+# Banxe AI Bank — Ruflo Swarm: Monthly FCA CASS 15 Return
+# IL-067 | banxe-architecture/agents/swarms/
+# Created: 2026-04-09
+#
+# Replaces Camunda 7 CE (EOL) with FINOS Fluxnova (Apache 2.0) for human approval.
+# Replaces JasperReports Server CE (withdrawn) with WeasyPrint + ReportLab for PDF.
+# No programmatic FCA API: My FCA portal only (renamed from RegData 31 March 2025).
+#
+# Timeline (monthly, due 15th of following month):
+#   T-5 days: data quality validation (Great Expectations)
+#   T-4 days: dbt transformation run
+#   T-3 days: draft PDF → CFO notified
+#   T-2 days: CFO reviews in Fluxnova BPMN
+#   T-1 day:  CFO approves → final PDF
+#   T-0:      Manual upload to My FCA portal by authorised person
+
+name: monthly_fca_return
+version: "1.0"
+topology: hierarchical
+il_ref: IL-067
+coordinator: cfo_analytics_agent
+
+agents:
+
+  # Step 1: Parallel data extraction from all sources
+  - id: data_extractor
+    soul: agents/souls/fca-data-extraction-agent.md
+    description: >
+      Extracts safeguarding positions, client balances, P&L, and IFRS 9 data
+      from ClickHouse, Midaz/Formance, and Odoo CE for the reporting period.
+    tools:
+      - clickhouse_query         # ClickHouse: safeguarding_daily_mv, ledger_entries, fx_positions_mv
+      - midaz_balance            # Midaz/Formance balance snapshot at period end
+      - odoo_trial_balance       # Odoo CE trial balance for the period
+    parallel: true
+    depends_on: []
+
+  # Step 2a: Data quality gate (blocks report on critical failures)
+  - id: data_validator
+    soul: agents/souls/reg-data-quality-agent.md
+    description: >
+      Runs Great Expectations validation suite on extracted regulatory data.
+      Blocks report generator if critical errors present.
+    tools:
+      - run_great_expectations_suite    # Great Expectations (Apache 2.0)
+      - generate_validation_report      # JSON + HTML quality report
+    depends_on: [data_extractor]
+    parallel: false
+    on_failure: block_downstream        # Critical failure → halt entire pipeline
+
+  # Step 2b: Safeguarding reconciliation check (parallel with data validation)
+  - id: reconciliation_checker
+    soul: agents/souls/safeguarding-reconciliation-agent.md
+    description: >
+      Reconciles internal ledger (Midaz/Formance) against custodian bank statements
+      (CAMT.053/MT940 via bankstatementparser). Uses Blnk Finance reconciliation engine.
+    tools:
+      - bankstatementparser_parse       # bankstatementparser (Apache 2.0)
+      - blnk_reconcile                  # Blnk Finance reconciliation
+      - formance_reconcile              # Formance ledger reconciliation
+      - compare_balances                # Internal vs external balance diff
+    depends_on: [data_extractor]
+    parallel: true
+
+  # Step 3: Report assembly (after data quality and reconciliation pass)
+  - id: report_generator
+    soul: agents/souls/fca-return-generator-agent.md
+    description: >
+      Assembles FIN060 / CASS 15 monthly return PDF from quality-validated data.
+      Uses WeasyPrint (BSD) for HTML→PDF rendering (replaces JasperReports Server CE).
+      Attaches OpenMetadata data lineage log for every field.
+    tools:
+      - dbt_run                         # dbt Core (Apache 2.0) — period transformation models
+      - weasyprint_render               # WeasyPrint (BSD) — HTML/CSS → PDF
+      - reportlab_supplement            # ReportLab (BSD) — compliance appendix tables
+      - openmetadata_lineage_attach     # OpenMetadata (Apache 2.0) — data lineage log
+      - generate_resolution_pack_snapshot  # Monthly Resolution Pack update (CASS 10A)
+    depends_on: [data_validator, reconciliation_checker]
+    parallel: false
+
+  # Step 4: Human review and approval (HITL-010 gate)
+  - id: cfo_reviewer
+    soul: agents/souls/cfo-controller-agent.md
+    description: >
+      Sends draft return to CFO/Head of Regulatory Reporting via Telegram.
+      Initiates FINOS Fluxnova BPMN approval workflow for CFO sign-off.
+      Authorised person then manually uploads to My FCA portal.
+    tools:
+      - send_telegram               # Alert CFO + Head of Reg Reporting with draft PDF link
+      - fluxnova_start_workflow     # FINOS Fluxnova (Apache 2.0) — BPMN approval (replaces Camunda 7 CE)
+      - temporal_await_approval     # Temporal (MIT) — durable wait for CFO approval signal
+    depends_on: [report_generator]
+    human_in_loop: true
+    human_double: "CFO (SMF2) or Head of Regulatory Reporting"
+    hitl_gate: HITL-010             # HITL-MATRIX.yaml: CFO non-delegable submission gate
+
+# Shared memory
+memory:
+  type: shared_persistent
+  backend: postgresql
+  schema: fca_return_swarm
+  retention_years: 5              # I-08: 5-year audit trail
+
+# Output artefacts
+output:
+  - type: pdf
+    template: templates/fca-cass15-monthly-return.html
+    renderer: weasyprint            # WeasyPrint (BSD) — NOT JasperReports
+    destination: ./output/fca-monthly-returns/
+    naming: "CASS15_Return_{period}_{timestamp}.pdf"
+
+  - type: pdf
+    template: templates/resolution-pack.html
+    renderer: weasyprint
+    destination: ./output/resolution-packs/
+    naming: "Resolution_Pack_{period}.pdf"
+
+  - type: json
+    destination: ./output/reconciliation-results/
+    naming: "Recon_{period}.json"
+
+  - type: audit_log
+    backend: openmetadata
+    dataset: fca_return_pipeline_runs
+    description: >
+      Full pipeline run log: sources queried, data quality results,
+      reconciliation status, agent decisions, human approvals.
+      5-year retention (I-08). EU AI Act Art.17.
+
+  - type: clickhouse_metrics
+    table: fca_return_runs
+    fields:
+      - run_id
+      - period
+      - data_quality_pass
+      - reconciliation_break_amount
+      - pdf_generated_at
+      - cfo_approved_at
+      - portal_upload_reminder_sent
+
+# Escalation policy
+escalation:
+  data_quality_critical_failure: "block pipeline + immediate alert CFO + Head of Reg Reporting"
+  reconciliation_break_gt: "£10,000 → alert CFO + MLRO (HITL-011 chain)"
+  safeguarding_coverage_below_100pct: "immediate alert CFO + MLRO — HITL-011"
+  deadline_t_minus_3_no_draft: "alert CFO — pipeline delay"
+  cfo_approval_timeout_hours: 48    # Temporal workflow timeout → escalate to Board
+
+# Note on My FCA portal
+my_fca_portal:
+  url: "https://myfca.fca.org.uk"
+  submission: manual
+  api: false
+  note: >
+    My FCA portal replaced RegData on 31 March 2025. No public programmatic API exists.
+    Final PDF must be manually uploaded by CFO or Head of Regulatory Reporting.
+    This agent prepares and validates the PDF; human performs the actual submission.

@@ -1140,3 +1140,15 @@
 - **OSS стек:** Odoo Community CE (LGPL v3), ERPNext (MIT), Midaz/Formance (Apache 2), OCA account-reconcile/account-financial-tools (LGPL), ClickHouse (Apache 2), Beancount+Fava (MIT), Frankfurter API (free).
 - **Шаги:** все файлы созданы, ORG-STRUCTURE.md обновлён ✅
 - **Статус:** DONE ✅ 2026-04-09
+
+### IL-067 — Finance Block OSS Stack: Corrected Architecture (13 errors fixed)
+- **Источник:** CEO, "Исправленная Архитектура EMI" (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-architecture
+- **Описание:** Исправление 13 структурных и лицензионных ошибок предыдущего анализа финансово-аналитического блока. Создан авторитетный документ стека + обновлены все SOUL файлы + swarm конфиги + ORG-STRUCTURE.md.
+  - `docs/FINANCE-BLOCK-OSS-STACK.md` — авторитетный документ исправленного OSS стека: 5 уровней CFO, workflow, AI agents, IAM, observability; полная таблица компонентов с лицензиями и maturity; интеграционная цепочка; Ruflo swarm config; MetaClaw seed skills.
+  - `docs/FINANCE-BLOCK-ROLES.md` — обновлён section 0: исправленная CBS-архитектура со всем 5-уровневым стеком, ссылки на FINANCE-BLOCK-OSS-STACK.md.
+  - `docs/ORG-STRUCTURE.md` — обновлён section 7: 5-уровневая структура, исправленная интеграционная цепочка, полная таблица всех 22 AI-агентов с OSS-стеком.
+  - `agents/swarms/accounting-swarm.yaml` — обновлён: Fluxnova вместо Camunda-placeholder.
+  - `agents/swarms/monthly-fca-return.yaml` — новый: Ruflo swarm для месячного FCA CASS 15 return (Fluxnova BPMN + Temporal + WeasyPrint + My FCA manual upload).
+  - `agents/souls/`: 6 новых SOUL файлов с корректным OSS стеком: budget-agent.md, forecast-agent.md, cash-position-agent.md, fx-exposure-agent.md, fca-data-extraction-agent.md, finance-bi-agent.md.
+- **Ключевые исправления:** Camunda 7 CE (EOL) → FINOS Fluxnova; JasperReports → WeasyPrint+ReportLab; ELK/SSPL → OpenSearch; OpenBB удалён (market data, AGPL v3); RegData API = не существует → My FCA portal ручная подача; AML/KYC/Fraud вынесен в MLRO (не CFO блок).
+- **Статус:** DONE ✅ 2026-04-09

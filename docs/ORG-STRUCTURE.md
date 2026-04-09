@@ -382,74 +382,125 @@ See full 17-row machine-readable matrix: `../HITL-MATRIX.yaml`
 
 ---
 
-## 7. CBS & Accounting AI Agents — OSS Stack Integration
-> Added: IL-066 | 2026-04-09
+## 7. CBS & Finance AI Agents — Corrected OSS Stack
+> IL-066 (created) | IL-067 (OSS stack corrected) | 2026-04-09
+>
+> Full authoritative OSS stack: `docs/FINANCE-BLOCK-OSS-STACK.md`
+> Previous errors corrected: Camunda 7 CE → FINOS Fluxnova; JasperReports → WeasyPrint;
+> ELK (SSPL) → OpenSearch; OpenBB excluded; My FCA portal = manual only (no API).
 
-This section binds the CFO/Finance org structure to the open-source CBS stack:
-Odoo Community CE as accounting backend, Midaz/Formance as transactional ledger,
-and Beancount/Fava as plain-text audit layer.
-
-### 7.1 CBS Architecture
+### 7.1 Five-Level CFO Block Structure
 
 ```
-Midaz / Formance Ledger ──webhooks──► Odoo Community CE (GL/AP/AR)
-                                      ERPNext (alt ERP / multi-subsidiary)
-                                            │
-                                  OCA modules (account-reconcile,
-                                  account-financial-tools, IFRS)
-                                            │
-                            ClickHouse ◄──extract──► Beancount + Fava
-                            (OLAP, 5Y audit trail)    (plain-text audit)
+┌──────────────────────────────────────────────────────────────────┐
+│              OFFICE OF CFO — FINANCE BLOCK                       │
+├─────────────────────┬────────────────────────────────────────────┤
+│ 1. Financial Control│ Odoo CE, ERPNext, Midaz, Formance,         │
+│    (Controlling)    │ Beancount/Fava, OCA IFRS modules           │
+├─────────────────────┼────────────────────────────────────────────┤
+│ 2. FP&A             │ dbt Core, ClickHouse, Superset, Metabase,  │
+│                     │ OSEM, H2O.ai, Airflow                      │
+├─────────────────────┼────────────────────────────────────────────┤
+│ 3. Treasury / ALM   │ Frankfurter, QuantLib, OSEM, Blnk Finance, │
+│                     │ Prometheus + Grafana, ClickHouse MVs       │
+├─────────────────────┼────────────────────────────────────────────┤
+│ 4. Regulatory       │ Midaz Reporter, WeasyPrint, ReportLab,     │
+│    Reporting        │ FINOS ORR/DRR, OpenMetadata, Great Expect.,│
+│                     │ bankstatementparser, pgAudit, Debezium     │
+├─────────────────────┼────────────────────────────────────────────┤
+│ 5. Data Analytics BI│ ClickHouse, dbt, Superset, Metabase,       │
+│                     │ Grafana, Airflow, Airbyte, OpenSearch ⭐   │
+└─────────────────────┴────────────────────────────────────────────┘
+
+ ┌───────────────────────────────────────────────────────────────┐
+ │  MLRO FUNCTION (independent from CFO — reports to Board)     │
+ │  AML + Fraud Detection + KYC/KYB + Sanctions Screening       │
+ │  ── NOT part of CFO finance block ──                         │
+ └───────────────────────────────────────────────────────────────┘
+
+Workflow: FINOS Fluxnova ⭐ (Apache 2.0) — replaces Camunda 7 CE (EOL)
+Workflow: Temporal (MIT) — durable orchestration
+AI Agents: OpenClaw + MetaClaw + Ruflo (Claude Flow v3)
 ```
 
-| Layer | Product | Licence | Role |
-|-------|---------|---------|------|
-| Transactional ledger | Midaz / Formance | Apache 2 | Source of truth for account events |
-| General Ledger / AP/AR | Odoo Community CE | LGPL v3 | Accounting backend, multi-currency, bank recon |
-| Alt ERP | ERPNext | MIT | Multi-subsidiary / alternative GL |
-| Bank reconciliation | OCA account-reconcile | LGPL | CAMT.053/MT940 auto-matching |
-| IFRS modules | OCA account-financial-tools | LGPL | IFRS plan of accounts, FX classification |
-| OLAP / audit | ClickHouse | Apache 2 | Aggregated views, 5-year retention (I-08) |
-| Plain-text audit | Beancount + Fava | MIT | External audit, append-only trail (I-24) |
+### 7.2 Corrected Integration Chain
 
-**Invariant**: All AI agents propose only. No agent posts to GL, submits to regulator,
-or initiates a payment without human approval (HITL gates in HITL-MATRIX.yaml).
+```
+Midaz / Formance Ledger
+    │ event webhooks
+    ▼
+Odoo Community CE (GL/AP/AR) ←── OCA CAMT.053 reconcile ←── bankstatementparser
+    │ OCA account-financial-tools (IFRS)
+    │ dbt Core transformations
+    ▼
+ClickHouse (OLAP)
+    ├──► Superset / Metabase     ──► CFO / ALCO dashboards
+    ├──► dbt variance models     ──► FP&A variance reports
+    ├──► Great Expectations      ──► Data quality gate
+    ├──► Midaz Reporter / WeasyPrint ──► FIN060 / CASS 15 PDF (NOT JasperReports)
+    │                                       │ manual upload (no API)
+    │                                       ▼
+    │                              My FCA portal (CFO/Head of Reg Reporting)
+    ├──► Beancount + Fava        ──► External Auditor (read-only)
+    ├──► OpenMetadata            ──► Data lineage (every FCA field)
+    └──► OpenSearch ⭐           ──► Audit log search (NOT ELK/SSPL)
 
-### 7.2 Accounting AI Agents — OSS Mapping
+Blnk Finance + Prometheus/Grafana ──► Safeguarding pool + ALCO dashboard
+Frankfurter (ECB FX) + QuantLib   ──► FX rates + derivative pricing
+OSEM + H2O.ai                     ──► ALM models + AutoML forecasting
+FINOS Fluxnova ──► Human approval BPMN (CFO close sign-off, FCA return approval)
+```
 
-| AI Agent | OSS Systems | Task | Human Double |
-|----------|------------|------|-------------|
-| **GL Close Agent** | Odoo CE, ERPNext, Midaz, ClickHouse | Proposes period-close journal batch; 3-statement check | Financial Controller |
-| **IFRS Agent** | Odoo + OCA IFRS modules, Beancount | IFRS 9 ECL/FX classification; IFRS 18 prep | Chief Accountant / Controller |
-| **AP/AR Agent** | Odoo / ERPNext, OCA account-reconcile | Invoice capture, CAMT.053 matching, aging, payment proposals | Controller / Head of Treasury |
-| **Consolidation Agent** | Odoo multicompany, ERPNext multi-subsidiary | Multi-entity consolidation, elimination entries | Financial Controller |
-| **Tax Compliance Agent** | Odoo / ERPNext | VAT/corporate tax calculations, draft returns | Tax Manager / Controller |
-| **Beancount Export Agent** | Odoo, Midaz, Beancount, Fava | Append-only audit-grade GL export (I-24) | Controller + Internal Audit |
+### 7.3 AI Agents OSS Mapping (all 22 agents)
 
-Full job descriptions: `docs/FINANCE-BLOCK-ROLES.md`
-SOUL files: `agents/souls/*.md`
-Accounting swarm config: `agents/swarms/accounting-swarm.yaml`
+| AI Agent | Sub-block | OSS Stack | Human Double |
+|----------|-----------|-----------|-------------|
+| GL Close Agent | Controlling | Odoo CE, ERPNext, Midaz, ClickHouse, Beancount | Financial Controller |
+| IFRS Agent | Controlling | Odoo + OCA IFRS, Midaz, Beancount | Chief Accountant |
+| AP/AR Agent | Controlling | Odoo/ERPNext, OCA account-reconcile, CAMT.053, bankstatementparser | Controller / Head of Treasury |
+| Expense Anomaly Agent | Controlling | Odoo CE, ClickHouse | Financial Controller |
+| Consolidation Agent | Controlling | Odoo multicompany, ERPNext, Frankfurter | Financial Controller |
+| Tax Compliance Agent | Controlling | Odoo/ERPNext | Tax Manager / Controller |
+| Beancount Export Agent | Controlling | Odoo, Midaz, Beancount, Fava | Controller + Internal Audit |
+| Budget Agent | FP&A | ClickHouse, dbt Core, Odoo CE, Frankfurter, OSEM, Superset | Head of FP&A |
+| Forecast Agent | FP&A | ClickHouse, H2O.ai AutoML, dbt Core, Frankfurter, OSEM | Head of FP&A |
+| Variance Analysis Agent | FP&A | ClickHouse, dbt, Superset/Metabase | Head of FP&A |
+| Scenario Agent | FP&A | OSEM, ClickHouse, dbt, Python | Head of FP&A |
+| Cash Position Agent | Treasury | Blnk Finance, ClickHouse MVs, CAMT.053, bankstatementparser, Midaz, Prometheus/Grafana | Head of Treasury |
+| Liquidity Forecast Agent | Treasury | dbt, ClickHouse, OSEM, Prometheus/Grafana | Head of Treasury |
+| FX Exposure Agent | Treasury | Frankfurter, QuantLib, ClickHouse, OSEM, Grafana | Head of Treasury |
+| Covenant Monitor Agent | Treasury | ClickHouse, Blnk Finance, Prometheus/Grafana | Head of Treasury |
+| FCA Data Extraction Agent | Reg Reporting | ClickHouse, Midaz, Odoo CE, bankstatementparser, OpenMetadata | Head of Reg Reporting |
+| Reg Data Quality Agent | Reg Reporting | Great Expectations, ClickHouse | Head of Reg Reporting |
+| FCA Return Generator Agent | Reg Reporting | dbt, WeasyPrint, ReportLab, OpenMetadata | Head of Reg Reporting (CFO submits) |
+| Resolution Pack Agent | Reg Reporting | ClickHouse, Odoo CE, Beancount, WeasyPrint | Head of Reg Reporting + CFO |
+| Finance BI Agent | Finance BI | ClickHouse, Superset, Metabase, Grafana, OpenSearch, dbt | Head of Finance Systems |
+| Data Pipeline Agent | Finance BI | Airflow, dbt, Airbyte, ClickHouse | Head of Finance Systems / CTO |
+| Data Quality Gate Agent | Finance BI | Great Expectations, dbt tests, ClickHouse | Head of Finance Systems |
 
-### 7.3 Period-Close Swarm — Dependency Chain
+### 7.4 Period-Close Swarm — Dependency Chain
 
 ```
 Trigger: period-end
     │
     ▼
-[GL Close Agent] ─────────────────────────────────────────────────┐
-    │                                                              │
-    ├──► [IFRS Agent]  ──────────────────────────┐               │
-    └──► [AP/AR Agent] ─ parallel ─              │               │
-                                                 ▼               ▼
-                                    [Consolidation Agent]  [Tax Agent]
-                                                 │
-                                                 ▼
-                                    [Beancount Export Agent]
-                                                 │
-                                                 ▼
-                              CFO/Controller Agent → HITL → Financial Controller ✋
+[GL Close Agent] ──────────────────────────────────────────────────────┐
+    │                                                                   │
+    ├──► [IFRS Agent] ─────────────────────────────┐                  │
+    └──► [AP/AR Agent] ── parallel ──               │                  │
+                                                    ▼                  ▼
+                                       [Consolidation Agent]    [Tax Agent]
+                                                    │
+                                                    ▼
+                                       [Beancount Export Agent]
+                                                    │
+                                                    ▼
+                              CFO/Controller Agent → FINOS Fluxnova BPMN → Financial Controller ✋
 ```
+
+Full swarm configs: `agents/swarms/accounting-swarm.yaml` (close cycle)
+                    `agents/swarms/monthly-fca-return.yaml` (FCA reporting cycle)
 
 ---
 
-*Document maintained by: Claude Code | IL-065, IL-066 | 2026-04-09 | I-29 (Documentation Standard)*
+*Document maintained by: Claude Code | IL-065, IL-066, IL-067 | 2026-04-09 | I-29 (Documentation Standard)*

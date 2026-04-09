@@ -1,40 +1,69 @@
 # FINANCE-BLOCK-ROLES.md — Banxe AI Bank: Finance Block AI Agent Job Descriptions
-> IL-066 | Developer Plane | banxe-architecture
+> IL-066 (created) | IL-067 (OSS stack corrected) | Developer Plane | banxe-architecture
 > Created: 2026-04-09 | Author: Claude Code
 >
 > **Scope**: CFO block — 5 sub-blocks, 22 AI agents, 4–5 human doubles.
-> **Source**: Banxe AI Bank Klassicheskiy Finansovo-Analiticheskiy Blok (research doc)
+> **Source**: "Banxe AI Bank: Классический Финансово-Аналитический Блок EMI — Исправленная Архитектура"
 >           + ORG-STRUCTURE.md section 2.5 + HITL-MATRIX.yaml
-> **OSS Stack**: Odoo Community CE + ERPNext + Midaz/Formance + Beancount/Fava + ClickHouse
+> **Full OSS stack reference**: `docs/FINANCE-BLOCK-OSS-STACK.md` (IL-067)
 >
 > **Key principle**: AI agent = "always-on analyst/executor" that monitors data and prepares
 > decisions. Human double = block head who sets tasks, approves assumptions,
 > signs all legally significant actions (IFRS, taxes, regulatory returns).
+>
+> **AML/KYC/Fraud is NOT part of this block.** It is under MLRO function, reporting
+> directly to Board — independent from CFO. See ORG-STRUCTURE.md section 2.3.
 
 ---
 
-## 0. CBS Architecture (shared by all Finance AI agents)
+## 0. Corrected CBS Architecture (shared by all Finance AI agents)
+
+> OSS stack corrected per IL-067. Previous errors: Camunda 7 CE (EOL) → FINOS Fluxnova;
+> JasperReports Server CE (withdrawn) → WeasyPrint + ReportLab; ELK (SSPL) → OpenSearch;
+> OpenBB excluded (market data tool, not banking analytics; AGPL v3 licence).
+> RegData API does not exist — My FCA portal only (renamed 31 March 2025).
 
 ```
-Midaz / Formance Ledger  ──webhooks──►  Odoo Community CE (GL/AP/AR)
-                                        ERPNext (alt ERP / multi-subsidiary)
-                                              │
-                                    OCA modules (account-reconcile,
-                                    account-financial-tools, IFRS)
-                                              │
-                              ClickHouse ◄──extract──► Beancount + Fava
-                              (OLAP, audit trail)       (plain-text audit)
+Midaz / Formance Ledger
+    │ event webhooks
+    ▼
+Odoo Community CE (GL/AP/AR) ←── OCA CAMT.053 reconcile ←── Bank statements
+    │ OCA account-financial-tools (IFRS)     parsed by bankstatementparser
+    │ dbt Core transformations
+    ▼
+ClickHouse (OLAP: P&L, safeguarding_daily_mv, fx_positions_mv)
+    ├──► Apache Superset / Metabase       ──► CFO / ALCO dashboards
+    ├──► dbt variance models              ──► FP&A variance reports
+    ├──► Great Expectations               ──► Data quality gate (blocks FCA return on failure)
+    ├──► Midaz Reporter / WeasyPrint      ──► FIN060 / CASS 15 return PDF
+    │                                             │ manual upload
+    │                                             ▼
+    │                                      My FCA portal (CFO/Head of Reg Reporting)
+    ├──► Beancount + Fava export          ──► External Auditor (read-only)
+    ├──► OpenMetadata                     ──► Data lineage for every FCA figure
+    └──► OpenSearch                       ──► Audit log search (compliance / Internal Audit)
+
+Blnk Finance / Prometheus + Grafana ──► Safeguarding pool monitoring + ALCO dashboard
+Frankfurter (ECB FX rates)          ──► FX revaluation + consolidation
+QuantLib / OSEM                     ──► ALM models (yield curves, liquidity stress)
+FINOS Fluxnova (BPMN)               ──► Human approval workflows (CFO sign-off, Controller close)
+Temporal                            ──► Durable orchestration of monthly FCA reporting cycle
+Ruflo (Claude Flow v3)              ──► AI multi-agent swarm coordination
 ```
 
-| Layer | Product | Licence | Role |
-|-------|---------|---------|------|
-| Transactional ledger | Midaz / Formance | Apache 2 | Source of truth for all account events |
-| General Ledger / AP/AR | Odoo Community CE | LGPL v3 | Accounting backend, bank reconciliation, multi-currency |
-| Alt ERP | ERPNext | MIT | Multi-subsidiary / alternative GL |
-| Bank reconciliation | OCA account-reconcile | LGPL | CAMT.053/MT940 auto-match |
-| IFRS modules | OCA account-financial-tools | LGPL | IFRS plan of accounts, FX classification |
-| OLAP / audit | ClickHouse | Apache 2 | Aggregated views, 5-year audit trail (I-08) |
-| Plain-text audit | Beancount + Fava | MIT | External audit, read-only audit trail |
+### Level-by-Level OSS Stack
+
+| CFO Level | Key Components | Licence |
+|-----------|---------------|---------|
+| **1 · Financial Controlling** | Odoo CE + OCA modules, ERPNext, Midaz, Formance, Beancount/Fava | LGPL v3 / MIT / Apache 2 / GPL v2 |
+| **2 · FP&A** | dbt Core, ClickHouse, Superset, Metabase, OSEM, H2O.ai, Airflow | Apache 2 / AGPL v3 / MIT |
+| **3 · Treasury/ALM** | Frankfurter, QuantLib, OSEM, Blnk Finance, Prometheus + Grafana | MIT / BSD / Apache 2 / AGPL v3 |
+| **4 · Regulatory Reporting** | Midaz Reporter, WeasyPrint, ReportLab, FINOS ORR/DRR, OpenMetadata, Great Expectations, bankstatementparser, pgAudit, Debezium | Apache 2 / BSD / PostgreSQL Lic. |
+| **5 · Data Analytics & BI** | ClickHouse, dbt, Superset, Metabase, Grafana, Airflow, Airbyte, OpenSearch | Apache 2 / AGPL v3 / ELv2 |
+| **Workflow** | FINOS Fluxnova ⭐, Temporal | Apache 2 / MIT |
+| **AI Agents** | OpenClaw, MetaClaw, Ruflo | MIT |
+
+Full stack table with maturity ratings: `docs/FINANCE-BLOCK-OSS-STACK.md`
 
 **Invariant**: All AI agents propose only. No agent writes to GL, submits to regulator,
 or initiates a real payment without human approval (HITL gate, see HITL-MATRIX.yaml).

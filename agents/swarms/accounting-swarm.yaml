@@ -27,7 +27,7 @@ coordinator:
   tools:
     - clickhouse_query           # OLAP checks and aggregates across all finance data
     - send_alert                 # Telegram/Slack notifications to Controller/CFO
-    - start_approval_workflow    # Fluxnova/BPMN approval gate for period close pack
+    - fluxnova_start_workflow    # FINOS Fluxnova (Apache 2.0) BPMN approval gate (replaces Camunda 7 CE EOL)
   human_in_loop: true
   human_double: "Financial Controller / CFO"
   hitl_gate: "HITL-010 (FCA RegData), HITL-011 (Safeguarding shortfall)"
