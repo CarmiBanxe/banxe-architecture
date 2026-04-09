@@ -1096,3 +1096,9 @@
 - **Описание:** Реализовать полный UI developer block: (1) `/new-screen` slash command; (2) `inject-design-rules.py` hook; (3) обновить settings.json (SessionStart hook); (4) 5 web screens (W-02..W-06); (5) 6 mobile screens (M-01..M-06); (6) unit tests + a11y tests.
 - **Статус:** DONE ✅
 - **Proof:** commit 87f3213 banxe-ui (14 files, 3487 lines) + commit 0d2d3d4 developer-core (3 files). W-02..W-06 web screens + M-01..M-06 mobile screens (Expo Router). Unit tests (42 assertions) + axe-core a11y tests. `/new-screen` command + `inject-design-rules.py` hook installed.
+
+### IL-062 — BANXE UI Infra: web app scaffold + primitives + mobile config + component tests
+- **Источник:** CEO, аудит пробелов (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-ui
+- **Описание:** Фазы 1+3 UI audit: tailwind.config.ts (полный token→Tailwind маппинг), Vite+React app entry (main.tsx/App.tsx/router.tsx), AppLayout sidebar (240px, collapsible), AuthLayout, GlobalBanner, API layer (client.ts + endpoints + hooks), MSW handlers, customer.json mock, 4 UI primitives (Button/Input/Dialog/Skeleton), обновлён barrel export, mobile config (package.json, app.json, tsconfig), 42 component unit tests (BalanceWidget/TransactionRow/StatusChip/AmountInput), 2 Storybook stories (Button/Skeleton).
+- **Статус:** DONE ✅
+- **Proof:** commit 0d69484 banxe-ui — 34 files, 1884 lines. Web app clickable via `npm run dev`. MSW перехватывает /api/wallets, /api/transactions, /api/customer. I-05 тест: AmountInput не использует parseFloat.
