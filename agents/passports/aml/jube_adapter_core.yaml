@@ -1,0 +1,46 @@
+# banxe-architecture/agents/passports/aml/jube_adapter_core.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: jube_adapter_core
+description: >
+  Integration adapter around Jube AML/Fraud Transaction Monitoring. Normalizes
+  Midaz ledger events into Jube format, manages scenario routing, and exposes
+  a stable internal API to banxe_aml_* and tx_monitor_* agents.
+
+trust_zone: RED
+autonomy_level: L3        # может инициировать TM-запросы, но не меняет пороги/модели
+
+human_double:
+  primary: HEAD_OF_FINCRIME
+  secondary: MLRO
+
+fca_basis:
+  smf_function: SMF17
+  oversight: >
+    MLRO (SMF17) maintains oversight over transaction monitoring systems,
+    including Jube, and remains personally accountable for their design and
+    effectiveness.
+
+change_class: MAJOR       # изменения адаптера = изменения TM-инфры → всегда под change control
+
+hitl_gates:
+  - gate_id: AML_threshold_change
+    auto_allowed: false
+  - gate_id: AI_model_update
+    auto_allowed: false
+
+allowed_actions:
+  - normalize_tx_payload      # нормализация транзакций в формат Jube
+  - call_jube_tm_api          # вызовы TM API по утверждённой схеме
+  - route_to_tm_scenario      # выбор нужного сценария/канала на основе COMPLIANCE-ARCH
+  - expose_tm_status          # отдача статусов TM внутренним агентам
+
+forbidden_actions:
+  - modify_tm_thresholds
+  - enable_disable_tm_scenarios
+  - retrain_tm_models
+  - bypass_hitl_gates
+
+audit:
+  log_channel: clickhouse_tm_adapter_events
+  pii_policy: PII_PROXY_REQUIRED

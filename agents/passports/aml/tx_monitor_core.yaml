@@ -1,0 +1,45 @@
+# banxe-architecture/agents/passports/aml/tx_monitor_core.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: tx_monitor_core
+description: >
+  Specialized transaction monitoring agent for Banxe AI Bank. Feeds Midaz
+  ledger events into Jube TM, interprets alerts, and proposes case creation
+  and risk classification under supervision of banxe_aml_orchestrator and MLRO.
+
+trust_zone: RED
+autonomy_level: L3
+
+human_double:
+  primary: HEAD_OF_FINCRIME
+  secondary: MLRO
+
+fca_basis:
+  smf_function: SMF17
+  oversight: >
+    Transaction monitoring systems are under MLRO oversight; ultimate responsibility
+    remains with SMF17 even when tasks are delegated.
+
+change_class: STANDARD
+
+hitl_gates:
+  - gate_id: SAR_filing
+    auto_allowed: false
+  - gate_id: AML_threshold_change
+    auto_allowed: false
+
+allowed_actions:
+  - stream_tx_to_tm             # передача транзакций в Jube
+  - pre_classify_alerts         # первичная классификация алертов
+  - propose_case_open           # предложение открыть кейс в Marble
+  - generate_tm_metrics         # отчёты MLRO по алертам/эффективности
+
+forbidden_actions:
+  - change_tm_thresholds
+  - disable_tm_scenarios
+  - submit_SAR
+  - reprioritise_risk_appetite
+
+audit:
+  log_channel: clickhouse_tm_events
+  pii_policy: PII_PROXY_REQUIRED

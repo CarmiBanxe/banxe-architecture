@@ -1,0 +1,44 @@
+# banxe-architecture/agents/passports/aml/watchman_adapter_core.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: watchman_adapter_core
+description: >
+  Deep screening adapter around Banxe Screener (Moov Watchman backend).
+  Normalizes party/payment data into Watchman search requests, interprets
+  results, and exposes an internal API to sanctions_check_* agents.
+
+trust_zone: RED
+autonomy_level: L3
+
+human_double:
+  primary: MLRO
+  secondary: HEAD_OF_FINCRIME
+
+fca_basis:
+  smf_function: SMF17
+  oversight: >
+    MLRO (SMF17) is accountable for sanctions/PEP screening systems and their
+    effectiveness, including Watchman integrations.
+
+change_class: MAJOR
+
+hitl_gates:
+  - gate_id: Sanctions_reversal
+    auto_allowed: false
+  - gate_id: PEP_onboarding
+    auto_allowed: false
+
+allowed_actions:
+  - build_search_query          # формирование запросов к Watchman
+  - call_watchman_api           # HTTP вызов /search и других эндпоинтов
+  - parse_watchman_results      # нормализация результатов
+  - annotate_internal_hit       # добавление внутренних статусов к hit
+
+forbidden_actions:
+  - modify_watchlists
+  - disable_updates
+  - override_hitl_decisions
+
+audit:
+  log_channel: clickhouse_watchman_adapter_events
+  pii_policy: PII_PROXY_REQUIRED

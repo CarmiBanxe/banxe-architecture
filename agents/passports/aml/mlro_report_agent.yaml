@@ -1,0 +1,39 @@
+# banxe-architecture/agents/passports/aml/mlro_report_agent.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: mlro_report_agent
+description: >
+  Specialist agent to prepare the annual MLRO Report and periodic Board/Committee
+  packs using ClickHouse AML data, Marble cases and COMPLIANCE-MATRIX metrics.
+
+trust_zone: RED
+autonomy_level: L2          # аналитика/документы, без операционных действий
+
+human_double:
+  primary: MLRO
+  secondary: HEAD_OF_FINCRIME
+
+fca_basis:
+  smf_function: SMF17
+  oversight: >
+    Under JMLSG and FCA guidance, the MLRO must provide at least an annual
+    report to the Board on the effectiveness of AML/CTF controls.
+
+change_class: STANDARD
+
+hitl_gates: []              # агент не инициирует SAR/санкции — только отчётность
+
+allowed_actions:
+  - aggregate_aml_metrics
+  - generate_mlro_report_draft
+  - build_board_pack
+  - highlight_control_issues
+
+forbidden_actions:
+  - submit_SAR
+  - change_AML_thresholds
+  - modify_cases
+
+audit:
+  log_channel: clickhouse_mlro_reports
+  pii_policy: PII_MINIMISED

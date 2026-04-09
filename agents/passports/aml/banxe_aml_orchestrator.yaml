@@ -1,0 +1,53 @@
+# banxe-architecture/agents/passports/aml/banxe_aml_orchestrator.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: banxe_aml_orchestrator
+description: >
+  Core AML orchestration agent for Banxe AI Bank. Coordinates Jube TM, Marble
+  cases, sanctions/watchlist checks and MLRO workflows across all customer
+  and transaction types, in line with COMPLIANCE-ARCH and COMPLIANCE-MATRIX.
+
+trust_zone: RED             # High-risk financial crime domain
+autonomy_level: L3          # Can initiate workflows and propose actions, never final SAR/PEP/SUBMIT
+
+human_double:
+  primary: HEAD_OF_FINCRIME # Руководитель блока AML/Financial Crime
+  secondary: MLRO           # MLRO как отдельный дублёр для всех критичных решений
+
+fca_basis:
+  smf_function: SMF17       # MLRO function under FSMA s59 (JMLSG 3.10–3.20)
+  oversight: >
+    MLRO retains ultimate managerial responsibility for AML/CTF controls,
+    including transaction monitoring, sanctions and SAR decisions.
+
+change_class: MAJOR         # Любое изменение логики требует SMF17 sign-off и HITL обновления
+
+hitl_gates:
+  # агент может только ИНИЦИИРОВАТЬ эти воркфлоу, финал — строго по HITL-MATRIX.yaml
+  - gate_id: SAR_filing
+    auto_allowed: false
+  - gate_id: AML_threshold_change
+    auto_allowed: false
+  - gate_id: Sanctions_reversal
+    auto_allowed: false
+  - gate_id: Sanctions_BLOCK
+    auto_allowed: true      # Автоблок разрешён, но с немедленным уведомлением MLRO
+
+allowed_actions:
+  - run_tm_scenarios          # запуск Jube TM сценариев
+  - create_tm_case            # создание кейсов в Marble
+  - trigger_sanctions_screen  # запуск скрининга через Watchman / Banxe Screener
+  - propose_alert_routing     # маршрутизация алертов по COMPLIANCE-MATRIX
+  - generate_risk_summary     # подготовка резюме для MLRO / Head of FinCrime
+  - hitl_check_gate           # вызов OrgRoleChecker для проверки присутствия ролей
+
+forbidden_actions:
+  - submit_SAR                # подача SAR в NCA
+  - retract_SAR               # отзыв SAR
+  - final_PEP_approval        # финальное решение по PEP
+  - change_AML_thresholds     # изменение порогов TM / сценариев Jube
+  - modify_HITL_matrix        # любые правки HITL-MATRIX.yaml
+
+audit:
+  log_channel: clickhouse_aml_events  # логирование в ClickHouse (5 лет, I-08)
+  pii_policy: PII_PROXY_REQUIRED      # всё PII только через Presidio proxy

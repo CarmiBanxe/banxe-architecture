@@ -1,0 +1,45 @@
+# banxe-architecture/agents/passports/aml/yente_adapter_agent.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: yente_adapter_agent
+description: >
+  Deep screening and name-normalization adapter on top of Banxe Screener /
+  Moov Watchman. Provides transliteration, language-specific matching hints,
+  and additional context to sanctions_check_core without changing final
+  decisions or watchlists.
+
+trust_zone: RED
+autonomy_level: L3
+
+human_double:
+  primary: MLRO
+  secondary: HEAD_OF_FINCRIME
+
+fca_basis:
+  smf_function: SMF17
+  oversight: >
+    MLRO remains responsible for the operation and effectiveness of screening
+    systems, including any enrichment layers.
+
+change_class: STANDARD
+
+hitl_gates:
+  - gate_id: Sanctions_reversal
+    auto_allowed: false
+  - gate_id: PEP_onboarding
+    auto_allowed: false
+
+allowed_actions:
+  - normalize_name              # нормализация имён (кириллица/иврит/арабский → латиница)
+  - transliterate_name          # транслитерация по утверждённым схемам
+  - enrich_search_params        # обогащение запросов (алиасы, альтернативные написания)
+  - post_process_hits           # группировка и расстановка сходства по хитам
+
+forbidden_actions:
+  - change_watchman_configuration
+  - override_decision_logic
+  - modify_hit_status_persistently
+
+audit:
+  log_channel: clickhouse_yente_adapter_events
+  pii_policy: PII_PROXY_REQUIRED

@@ -1,0 +1,47 @@
+# banxe-architecture/agents/passports/aml/sanctions_check_core.yaml
+# IL-068 | Governance passport (SMF17/HITL format)
+
+agent_id: sanctions_check_core
+description: >
+  Core sanctions and PEP screening agent using Banxe Screener (Moov Watchman
+  backend). Performs name and entity screening, risk scoring and routing to
+  MLRO and business owners under HITL control.
+
+trust_zone: RED
+autonomy_level: L3
+
+human_double:
+  primary: MLRO
+  secondary: CEO            # для санкционных reversal и PEP onboarding по HITL-MATRIX
+
+fca_basis:
+  smf_function: SMF17
+  oversight: >
+    SMF17 MLRO is personally accountable for the design, operation and
+    effectiveness of sanctions and PEP screening systems.
+
+change_class: MAJOR
+
+hitl_gates:
+  - gate_id: Sanctions_reversal
+    auto_allowed: false
+  - gate_id: PEP_onboarding
+    auto_allowed: false
+  - gate_id: Sanctions_BLOCK
+    auto_allowed: true
+
+allowed_actions:
+  - run_sanctions_screen        # запуск скрининга через Screener/Watchman
+  - run_pep_screen              # PEP/RCJ/other watchlist checks
+  - classify_hits               # классификация совпадений (clear / false positive / potential match)
+  - propose_block_or_review     # предложение блокировки или эскалации
+
+forbidden_actions:
+  - final_sanctions_reversal
+  - final_pep_approval
+  - modify_watchlists
+  - disable_screening
+
+audit:
+  log_channel: clickhouse_sanctions_events
+  pii_policy: PII_PROXY_REQUIRED

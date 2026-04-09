@@ -1152,3 +1152,19 @@
   - `agents/souls/`: 6 новых SOUL файлов с корректным OSS стеком: budget-agent.md, forecast-agent.md, cash-position-agent.md, fx-exposure-agent.md, fca-data-extraction-agent.md, finance-bi-agent.md.
 - **Ключевые исправления:** Camunda 7 CE (EOL) → FINOS Fluxnova; JasperReports → WeasyPrint+ReportLab; ELK/SSPL → OpenSearch; OpenBB удалён (market data, AGPL v3); RegData API = не существует → My FCA portal ручная подача; AML/KYC/Fraud вынесен в MLRO (не CFO блок).
 - **Статус:** DONE ✅ 2026-04-09
+
+### IL-068 — AML/Compliance Block: AI Agent Passports, SOUL Files, AML Swarm
+- **Источник:** CEO, "начинаем комплектацию блока Комплаенс" (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-architecture
+- **Описание:** Формализация AML/MLRO-блока: 7 ИИ-агентов (Trust Zone RED, Autonomy L2–L3), SOUL.md, governance паспорта, Ruflo swarm. Опора на COMPLIANCE-ARCH + HITL-MATRIX.yaml + org_roles.py (IL-065).
+  - `agents/passports/aml/banxe_aml_orchestrator.yaml` — core AML orchestrator (L3): координирует Jube, Marble, Screener; инициирует но не финализирует SAR/санкции; HITL: SAR_filing, AML_threshold_change, Sanctions_reversal, Sanctions_BLOCK(auto).
+  - `agents/passports/aml/tx_monitor_core.yaml` — TM агент (L3): Midaz→Jube→Marble pipeline; HITL: SAR_filing, AML_threshold_change.
+  - `agents/passports/aml/jube_adapter_core.yaml` — Jube integration adapter (L3): нормализация транзакций, route к TM сценариям, resilience; HITL: AML_threshold_change, AI_model_update.
+  - `agents/passports/aml/sanctions_check_core.yaml` — sanctions/PEP скрининг (L3): Watchman, classify hits, propose block/review; HITL: Sanctions_reversal(no), PEP_onboarding(no), Sanctions_BLOCK(auto).
+  - `agents/passports/aml/watchman_adapter_core.yaml` — Moov Watchman HTTP adapter (L3): /search + /alts + /addresses; нормализует результаты для sanctions_check_core.
+  - `agents/passports/aml/yente_adapter_agent.yaml` — deep screening enrichment (L3): транслитерация Cyrillic/Hebrew/Arabic, enrich Watchman queries, post-process hits.
+  - `agents/passports/aml/mlro_report_agent.yaml` — MLRO reporting (L2): агрегирует метрики из ClickHouse/Marble, готовит черновики MLRO Report + Board pack; нет оперативных HITL gates.
+  - `agents/souls/`: 7 SOUL.md файлов — banxe-aml-orchestrator.md, tx-monitor-core.md, jube-adapter-core.md, sanctions-check-core.md, watchman-adapter-core.md, yente-adapter-agent.md, mlro-report-agent.md.
+  - `agents/swarms/banxe-aml-swarm.yaml` — Ruflo swarm: hierarchical 3-layer (adapters → domain → reporting), hitl_check_gate, Watchman webhook integration, OpenMetadata audit log, ClickHouse retention 5Y (I-08).
+- **Регуляторная рамка:** MLR 2017, JMLSG 3.10–3.20, FCA SYSC 6.3, SMF17 personal accountability. SAR filing = MLRO only (non-delegable). Sanctions reversal + PEP onboarding = MLRO + CEO. AML threshold change = CRO + CEO (I-27). AI model update = CRO + CTO (EU AI Act Art.14).
+- **Человеки-дублёры:** Head of Financial Crime (операционный) + MLRO SMF17 (критические решения). ИИ-агенты = оркестраторы и аналитики, никаких финальных решений.
+- **Статус:** DONE ✅ 2026-04-09

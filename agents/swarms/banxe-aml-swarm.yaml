@@ -1,0 +1,119 @@
+# banxe-architecture/agents/swarms/banxe-aml-swarm.yaml
+# IL-068 | AML/Compliance block — Ruflo swarm configuration
+# Trust Zone: RED | All agents: Autonomy L2–L3 | MLRO (SMF17) supervises all gates
+
+name: aml-swarm
+topology: hierarchical
+
+coordinator:
+  id: banxe_aml_orchestrator
+  soul: ./souls/banxe-aml-orchestrator.md
+  tools:
+    - tm_send_event
+    - tm_fetch_alerts
+    - marble_create_case
+    - screener_check_party
+    - n8n_trigger_workflow
+    - clickhouse_log_event
+    - hitl_check_gate           # OrgRoleChecker wrapper (org_roles.py)
+  human_in_loop: true           # MLRO (SMF17) / Head of Financial Crime supervision
+
+hitl:
+  gates:
+    - SAR_filing
+    - AML_threshold_change
+    - Sanctions_reversal
+    - PEP_onboarding
+    - AI_model_update
+  roles_source: org_roles.OrgRoleChecker
+  matrix: banxe-architecture/HITL-MATRIX.yaml
+
+agents:
+  # Layer 1: Integration adapters (run in parallel, no dependencies)
+  - id: jube_adapter_core
+    soul: ./souls/jube-adapter-core.md
+    tools:
+      - midaz_read_tx_batch
+      - jube_tm_ingest
+      - jube_get_status
+      - clickhouse_log_adapter_event
+    dependson: []
+    parallel: true
+
+  - id: watchman_adapter_core
+    soul: ./souls/watchman-adapter-core.md
+    tools:
+      - watchman_search
+      - watchman_get_sdn_detail
+      - watchman_get_addresses
+      - clickhouse_log_adapter_event
+    dependson: []
+    parallel: true
+
+  - id: yente_adapter_agent
+    soul: ./souls/yente-adapter-agent.md
+    tools:
+      - normalize_name
+      - transliterate_name
+      - enrich_search_params
+      - clickhouse_log_adapter_event
+    dependson:
+      - watchman_adapter_core
+    parallel: true
+
+  # Layer 2: Domain agents (depend on adapters)
+  - id: tx_monitor_core
+    soul: ./souls/tx-monitor-core.md
+    tools:
+      - midaz_stream_txs
+      - jube_send_event           # proxied via jube_adapter_core
+      - jube_fetch_alerts
+      - marble_create_case_from_alert
+      - clickhouse_log_tm_event
+    dependson:
+      - jube_adapter_core
+    parallel: true
+
+  - id: sanctions_check_core
+    soul: ./souls/sanctions-check-core.md
+    tools:
+      - screener_search_party
+      - screener_search_payment
+      - clickhouse_log_sanctions_event
+      - n8n_trigger_workflow
+    dependson:
+      - watchman_adapter_core
+      - yente_adapter_agent
+    parallel: true
+
+  # Layer 3: Reporting (depends on data from Layer 2, no operational actions)
+  - id: mlro_report_agent
+    soul: ./souls/mlro-report-agent.md
+    tools:
+      - clickhouse_query
+      - marble_fetch_case_stats
+      - generate_report
+      - build_board_pack
+    dependson:
+      - tx_monitor_core
+      - sanctions_check_core
+    parallel: false               # sequential — aggregates from both L2 agents
+
+memory:
+  type: shared_persistent
+  backend: postgresql
+
+output:
+  - type: audit_log
+    backend: openmetadata
+    dataset: aml-swarm-runs
+  - type: clickhouse
+    table: aml_swarm_events
+    retention_years: 5            # I-08: FCA 5-year audit trail
+
+# Watchman webhook integration (events arrive via FastAPI compliance service)
+webhooks:
+  - event: watchman_list_updated
+    handler: n8n_workflow:watchman_list_update
+    notify: [MLRO, HEAD_OF_FINCRIME]
+    re_screen_segments: [HIGH_RISK, PEP_POTENTIAL]
