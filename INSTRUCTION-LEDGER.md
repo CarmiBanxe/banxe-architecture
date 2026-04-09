@@ -1090,3 +1090,9 @@
 - **Описание:** (1) content validation в BLOCK_CHECKS (quality/compliance/testing/CLAUDE/agents/skills/PROJECTIDEA/SPEC); (2) pre-commit hooks для developer-core + banxe-emi-stack + banxe-architecture; (3) блоки 8-11 (Obsidian vault, Infrastructure, API layer, Quality gate). Тесты обязательны.
 - **Статус:** DONE ✅
 - **Proof:** commit e0dd9d1 developer-core — spec_first_auditor.py v2 (content validation, blocks 8-11, pre-commit hooks) + 61 tests. Hooks symlinked в 3 repos. **Note:** CLAUDE.md, agents, skills, PROJECTIDEA, SPEC-TEMPLATE потребуют обновления контента для прохождения strict-режима.
+
+### IL-061 — BANXE UI Developer Block: Claude Code Workflow + Screens
+- **Источник:** CEO, "Реализуй" (2026-04-09) | **Приоритет:** P1 | **Репо:** banxe-ui + developer-core
+- **Описание:** Реализовать полный UI developer block: (1) `/new-screen` slash command; (2) `inject-design-rules.py` hook; (3) обновить settings.json (SessionStart hook); (4) 5 web screens (W-02..W-06); (5) 6 mobile screens (M-01..M-06); (6) unit tests + a11y tests.
+- **Статус:** DONE ✅
+- **Proof:** commit 87f3213 banxe-ui (14 files, 3487 lines) + commit 0d2d3d4 developer-core (3 files). W-02..W-06 web screens + M-01..M-06 mobile screens (Expo Router). Unit tests (42 assertions) + axe-core a11y tests. `/new-screen` command + `inject-design-rules.py` hook installed.
