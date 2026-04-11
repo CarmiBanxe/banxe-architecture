@@ -299,6 +299,41 @@ Treasury decisions >£100k require CFO sign-off.
 No HITL gates required for Front Office (no regulatory obligations attach directly).
 Consumer Duty PS22/9 outputs are monitored by CRO.
 
+#### 2.8.1 Customer Support Department
+
+| Agent | Task | Autonomy | Gate | OSS Stack |
+|-------|------|----------|------|----------|
+| `TicketRoutingAgent` | Category + priority + SLA assignment | L1 Auto | — | Chatwoot (MIT) |
+| `CustomerSupportAgent` | FAQ bot + first-line RAG chat | L1 Auto | — | Chatwoot + Ollama + ChromaDB |
+| `EscalationAgent` | SLA breach monitor + HITL escalation | L2 Review | COO | n8n + ClickHouse |
+| `ComplaintTriageAgent` | Link to DISP workflow (IL-022) | L2 Review | COO | complaints/ service |
+| `FeedbackAnalyticsAgent` | NPS/CSAT + Consumer Duty PS22/9 §4 | L1 Auto | CRO (quarterly) | ClickHouse + Superset |
+
+**SLA Standards:**
+- First response: ≤1h (business hours)
+- Resolution: ≤24h standard / ≤4h urgent
+- FCA Consumer Duty PS22/9 §4: Consumer Support outcome monitoring
+- Complaints → DISP workflow (8-week SLA, FOS escalation)
+
+**Human Double:** Head of Customer Support (or COO delegate)
+
+#### 2.8.2 Marketing & Growth Department
+
+| Agent | Task | Autonomy | Gate | OSS Stack |
+|-------|------|----------|------|----------|
+| `CampaignAgent` | Email/push campaign orchestration | L2 Review | MLRO (financial promos) | Listmonk (AGPL) |
+| `LeadScoringAgent` | Behavioral scoring (signup → active) | L1 Auto | — | ClickHouse + scikit-learn |
+| `ContentAgent` | Compliance-safe content generation | L2 Review | MLRO (financial promos) | Ollama |
+| `OnboardingNurtureAgent` | Incomplete KYC follow-up sequences | L1 Auto | — | n8n + Notifications service |
+| `AnalyticsAgent` | UTM tracking, cohort analysis, funnels | L1 Auto | — | Plausible (MIT) + ClickHouse |
+
+**FCA Compliance Gates:**
+- **COBS 4 (Financial Promotions):** All marketing content involving financial products MUST be reviewed by MLRO before publication. AI may draft but NEVER auto-publish.
+- **Consumer Duty PS22/9 §2 (Products & Services):** Product marketing must demonstrate fair value.
+- **UK GDPR:** Email campaigns require explicit opt-in consent. Unsubscribe mandatory.
+
+**Human Double:** Head of Marketing (reports to COO or CEO)
+
 ---
 
 ### 2.9 HR / Legal / Compliance Admin
