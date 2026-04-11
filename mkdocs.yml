@@ -1,0 +1,128 @@
+# MkDocs Configuration for Banxe AI Bank Architecture Documentation
+# https://www.mkdocs.org/
+# Deploy: mkdocs gh-deploy --force
+# Dev server: mkdocs serve -a 0.0.0.0:8000
+
+site_name: Banxe AI Bank — Architecture Documentation
+site_description: Canonical architecture decisions, invariants, and constraints for all Banxe AI Bank projects
+site_author: CarmiBanxe (Moriel Carmi, CEO)
+site_url: https://carmibanxe.github.io/banxe-architecture/
+
+repo_name: CarmiBanxe/banxe-architecture
+repo_url: https://github.com/CarmiBanxe/banxe-architecture
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search:
+      lang: en
+  - minify:
+      minify_html: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+  - tags
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - tables
+  - attr_list
+  - md_in_html
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/CarmiBanxe
+  version:
+    provider: mike
+  analytics:
+    provider: null
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - Organization Structure: docs/ORG-STRUCTURE.md
+    - Department Map: docs/DEPARTMENT-MAP.md
+    - System Architecture: docs/SYSTEM-ARCHITECTURE.md
+    - Relationship Tree: docs/RELATIONSHIP-TREE.md
+  - Compliance:
+    - Compliance Framework: docs/COMPLIANCE-FRAMEWORK.md
+    - Crypto Block: docs/CRYPTO-BLOCK.md
+  - AI Agents:
+    - Job Descriptions: docs/JOB-DESCRIPTIONS.md
+    - Feature Registry: docs/FEATURE-REGISTRY.md
+    - Skills Matrix: docs/SKILLS-MATRIX.md
+  - UI/UX:
+    - UI Architecture: docs/BANXE-UI-ARCHITECTURE.md
+    - UI/UX Spec: docs/BANXE-UI-UX-SPEC.md
+    - Design System: docs/BANXE-UI-UX-DESIGN-SYSTEM.md
+    - Screen Map: docs/BANXE-SCREEN-MAP.md
+  - Operations:
+    - Deployment Guide: docs/DEPLOYMENT-GUIDE.md
+    - Test Strategy: docs/TEST-STRATEGY.md
+    - Blocked Tasks: docs/BLOCKED-TASKS.md
+  - Planning:
+    - Roadmap: ROADMAP.md
+    - Collaboration: docs/COLLAB.md
+    - Documentation Standards: docs/DOC-STANDARDS.md
+  - Developer Guide:
+    - Auto-Documentation: docs/DEV-DOCUMENTATION-GUIDE.md
+    - Changelog Policy: docs/CHANGELOG-POLICY.md
+  - Decisions:
+    - ADR Index: decisions/
+  - Canon:
+    - Invariants: INVARIANTS.md
+    - Governance: governance/
