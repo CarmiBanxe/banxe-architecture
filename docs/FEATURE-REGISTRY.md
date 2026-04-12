@@ -15,6 +15,7 @@
 8. [Communication & Notification Features](#8-communication--notification-features)
 9. [Reporting Features](#9-reporting-features)
 10. [Security Features](#10-security-features)
+11. 11. [Safeguarding Features](#11-safeguarding-features)
 
 ---
 
@@ -413,7 +414,8 @@
 | Communication | 2 | F-070 to F-071 |
 | Reporting | 2 | F-080 to F-081 |
 | Security | 3 | F-090 to F-092 |
-| **TOTAL** | **30** | |
+| Safeguarding (CASS 15) | 4 | F-100 to F-103 |
+| **TOTAL** | **34** | |
 
 ---
 
