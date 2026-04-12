@@ -365,3 +365,4 @@ make generate-component COMPONENT=Button
 | Milestone | Count |
 |-----------|-------|
 | После IL-BIOME-01 | 1 931 ✅ |
+- [2026-04-12] ee683db — feat(IL-091): add post-task.sh hook + commit-log.jsonl
