@@ -1168,3 +1168,17 @@
 - **Регуляторная рамка:** MLR 2017, JMLSG 3.10–3.20, FCA SYSC 6.3, SMF17 personal accountability. SAR filing = MLRO only (non-delegable). Sanctions reversal + PEP onboarding = MLRO + CEO. AML threshold change = CRO + CEO (I-27). AI model update = CRO + CTO (EU AI Act Art.14).
 - **Человеки-дублёры:** Head of Financial Crime (операционный) + MLRO SMF17 (критические решения). ИИ-агенты = оркестраторы и аналитики, никаких финальных решений.
 - **Статус:** DONE ✅ 2026-04-09
+
+### IL-069 — Compliance Knowledge Base (Prompt 17 Part 1/3)
+- **Источник:** CEO, Prompt 17 Part 1/3 (2026-04-12) | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-CKS-01
+- **Описание:** RAG-based compliance knowledge service для compliance officers и AI-агентов. Централизованное хранилище регулятивных документов (EBA, FATF, FCA, SOPs, SAR-шаблоны) с MCP-доступом через 6 инструментов.
+  - `services/compliance_kb/` — полный сервис: ingestion pipeline (PDF/MD/URL), ChromaDB vector store, sentence-transformers embeddings, kb_service.py (RAG query, search, version compare, ingest)
+  - `api/routers/compliance_kb.py` — 8 REST эндпоинтов: GET /v1/kb/health|notebooks|notebooks/{id}|citations/{id}, POST /v1/kb/query|search|compare|ingest
+  - `banxe_mcp/server.py` — 6 новых MCP инструментов: kb_list_notebooks, kb_get_notebook, kb_query, kb_search, kb_compare_versions, kb_get_citations
+  - `config/compliance_notebooks.yaml` — 4 ноутбука (EU-AML, UK-FCA, Internal-SOP, Case-History) с 22 регулятивными источниками (EBA GL 2021-02, FATF 40 Recommendations, AMLD5/6, CASS 15, PSR 2017, MLR 2017, FCA Consumer Duty PS22/9...)
+  - `docker/docker-compose.compliance-kb.yaml` — standalone compose stack
+  - `tests/test_compliance_kb/` — 88 тестов (7 файлов): chunker (15), pdf_parser (8), chroma_store (13), embedding_service (10), mcp_tools (10), api_routes (15), notebooks_config (3). Protocol DI: InMemory стабы везде, нет внешних зависимостей при тестировании.
+- **Технологии (все free/OSS):** ChromaDB 0.4+ (локальный persistent), sentence-transformers all-MiniLM-L6-v2 (384-dim, CPU), PyMuPDF + unstructured.io (PDF), FastAPI + Pydantic, httpx, PyYAML
+- **Архитектура:** Protocol DI pattern — ChromaStoreProtocol + EmbeddingServiceProtocol → производственные impl ленивы (deferred import), тесты используют InMemory/Fixed стабы. MCP инструменты вызывают FastAPI эндпоинты (тот же паттерн что существующие MCP tools).
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** commit bf6f7a0 banxe-emi-stack (branch refactor/claude-ai-scaffold). Spec-First Auditor PASS. Ruff lint 0 errors. 88/88 pytest green.
