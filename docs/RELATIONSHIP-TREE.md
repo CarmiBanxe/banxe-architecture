@@ -319,6 +319,18 @@ AI Monitor (auto-alert)
     │       │       │       ├──→ CEO (L4)
 ```
 
+
+### 7.4 Safeguarding Engine Integration
+```
+safeguarding-engine (port 8094)
+    |--- reads from ---> Midaz GL (D-gl) [client fund liabilities]
+    |--- writes to ---> ClickHouse [immutable audit trail, 7Y TTL]
+    |--- calls -------> compliance-service (IL-CKS-01) [regulatory events]
+    |--- alerts via --> Telegram Bot [breach notifications]
+    |--- triggers ----> n8n [FCA Gabriel submission workflow]
+    |--- uses --------> Redis [caching, task queue]
+    |--- stores in ---> PostgreSQL [safeguarding schema]
+```
 ---
 
 > Document Version: 1.0 | Created: Phase 2 | I-29 (Documentation Standards)
