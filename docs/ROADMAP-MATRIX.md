@@ -37,7 +37,7 @@
 | **I — Technology & Infrastructure** | I-infra | GMKtec compute, WSL2 dev, n8n orchestration, ClickHouse (TTL 5Y) | 70% DONE | P0 | ONGOING | CTIO |
 | **I — Technology & Infrastructure** | I-security | OpenClaw hardening, PII Proxy (Presidio), Semgrep + CodeQL CI | 80% DONE | P0 | ONGOING | CTIO |
 | **I — Technology & Infrastructure** | I-api | API Gateway — developer-facing endpoints, auth, rate limiting | 0% | P1 | Sprint 10 | CTIO |
-| **J — Safeguarding Engine** | J-engine | FCA PS10/15 + CASS 15 safeguarding engine — segregated accounts, daily reconciliation, FCA breach reporting | 0% — ABSENT | P0 | **7 May 2026** | CEO + CTIO |
+| **J — Safeguarding Engine** | J-engine | FCA PS10/15 + CASS 15 safeguarding engine — segregated accounts, daily reconciliation, FCA breach reporting | Prompt Ready (IL-SAF-01) | P0 | **7 May 2026** | CEO + CTIO |
 | **J — Safeguarding Engine** | J-audit | Safeguarding audit trail — immutable log to ClickHouse, FCA-producible evidence | 0% | P0 | **7 May 2026** | CTIO |
 | **K — Regulatory Reporting** | K-gabriel | FCA Gabriel / RegData returns — FIN-REP, EMI statistical returns | 0% | P0 | Q2 2026 | CEO |
 | **K — Regulatory Reporting** | K-fscs | FSCS (Financial Services Compensation Scheme) reporting | 0% | P1 | Q3 2026 | CEO |
