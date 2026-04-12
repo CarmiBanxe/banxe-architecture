@@ -1383,3 +1383,14 @@
   - docs/compliance/: cass15-controls.md (FCA CASS 15 control matrix)
 - **Статус:** DONE ✅ 2026-04-12
 - **Proof:** коммит docs(IL-RETRO-02) banxe-emi-stack + banxe-architecture.
+
+### IL-091 — doc-sync.py (auto documentation sync script)
+- **Источник:** CEO, 2026-04-12 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-091
+- **Описание:** stdlib-only CLI script для автоматической синхронизации документации после git commit.
+  - `scripts/doc-sync.py` — `parse_commit`, `extract_il_id`, `extract_type`, `classify`, `DocSync`
+  - Аргументы: `--commit HASH`, `--dry-run`, `--auto-push`
+  - Обновляет: `commit-log.jsonl`, `INSTRUCTION-LEDGER`, `MEMORY.md`, `services-map.md`, `test-coverage.md`, generic `.claude/memory/*`
+  - `tests/test_doc_sync.py` — 44 тестов: `TestExtractIlId`, `TestExtractType`, `TestClassify`, `TestDryRun`, `TestCommitLog`, `TestInstructionLedger`, `TestServicesMap`, `TestFindRepoRoot`, `TestFullRun`
+- **Инварианты:** stdlib only (нет pip), dry-run не пишет файлы, ADR выводится в report как "requires manual creation"
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** commit b75626a banxe-emi-stack. 44/44 тестов, ruff 0 issues, semgrep 0 findings.
