@@ -1182,3 +1182,20 @@
 - **Архитектура:** Protocol DI pattern — ChromaStoreProtocol + EmbeddingServiceProtocol → производственные impl ленивы (deferred import), тесты используют InMemory/Fixed стабы. MCP инструменты вызывают FastAPI эндпоинты (тот же паттерн что существующие MCP tools).
 - **Статус:** DONE ✅ 2026-04-12
 - **Proof:** commit bf6f7a0 banxe-emi-stack (branch refactor/claude-ai-scaffold). Spec-First Auditor PASS. Ruff lint 0 errors. 88/88 pytest green.
+
+### IL-070 — Compliance Experiment Copilot (Prompt 17 Part 2/3)
+- **Источник:** CEO, Prompt 17 Part 2/3 (2026-04-12) | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-CEC-01
+- **Описание:** Experiment management system для управления AML/KYC изменениями с полным lifecycle (DRAFT→ACTIVE→FINISHED/REJECTED), audit trail, HITL checklist.
+  - `services/experiment_copilot/models/` — ComplianceExperiment, ExperimentMetrics (Decimal для £GBP, I-01), HITLChecklist, ChangeProposal, ProposeRequest
+  - `services/experiment_copilot/store/` — ExperimentStore (YAML git-tracked, index.json, status dirs), AuditTrail (append-only JSONL, I-24, 7-year FCA retention, delete_entries() заблокирован)
+  - `services/experiment_copilot/agents/` — 4 агента: ExperimentDesigner (KB→DRAFT), ExperimentSteward (validate/approve/reject/finish), ChangeProposer (dry_run PR + HITL checklist), MetricsReporter (ClickHouse, trend classify 10%/5% thresholds)
+  - `api/routers/experiments.py` — 8 эндпоинтов: POST /v1/experiments/design, GET /list, GET /{id}, PATCH /{id}/approve, PATCH /{id}/reject, GET /metrics/current, POST /{id}/propose, GET /{id}/audit
+  - `banxe_mcp/server.py` — 4 новых MCP инструмента: experiment_design, experiment_list, experiment_get_metrics, experiment_propose_change
+  - `config/aml_baselines.yaml` — AML performance baselines (hit_rate_24h=0.25/0.35, FP=0.75/0.60, SAR yield=0.10/0.15)
+  - `config/templates/compliance_pr_template.md` — PR template с HITL checklist (CTIO + Compliance Officer + backtest + rollback)
+  - `compliance-experiments/{draft,active,finished,rejected}/` — git-tracked YAML store + index.json
+  - `tests/test_experiment_copilot/` — 91 тестов (9 файлов): models (12), store (8), designer (7), steward (8), proposer (6), reporter (7), audit_trail (8), mcp_tools (10), api_routes (25). InMemory стабы для всех внешних портов.
+- **Технологии:** Protocol DI (KBQueryPort, GitHubPort, ClickHousePort), InMemory stubs, FastAPI, Pydantic, PyYAML, JSONL audit trail
+- **Инварианты:** I-01 (Decimal для £GBP), I-24 (append-only audit trail), I-27 (HITL: PROPOSES only, никогда не auto-applies), dry_run=True по умолчанию
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** commit 6d5aa3e banxe-emi-stack (branch refactor/claude-ai-scaffold). Spec-First Auditor PASS. Ruff lint 0 errors. Semgrep 0 findings. 91/91 pytest green. Total tests: 1826.
