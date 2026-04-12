@@ -1217,3 +1217,19 @@
 - **Инварианты:** I-01 (Decimal для £GBP amounts), I-02 (hard-block RU/BY/IR/KP/CU/MM/AF/VE/SY → score=1.0), I-04 (EDD £10k cumulative 24h), I-24 (append-only audit trail), I-27 (HITL gate: CRITICAL closure requires reviewer notes)
 - **Статус:** DONE ✅ 2026-04-12
 - **Proof:** commit d1432ab banxe-emi-stack (branch refactor/claude-ai-scaffold). Spec-First Auditor PASS. Ruff 0 errors. Semgrep 0 findings. 105/105 pytest green (86% coverage services/transaction_monitor). Total tests: 1931.
+
+### IL-072 — Biome + Ruff Integration (IL-BIOME-01)
+- **Источник:** CEO, 2026-04-12 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-BIOME-01
+- **Описание:** Интеграция Biome (Frontend) и расширенного Ruff (Python) во все пайплайны.
+  - `pyproject.toml` — расширен ruleset: E/F/I/W/UP + **B, SIM, ANN, S, DTZ, ERA**. `src = ["services","api","agents","tests"]` для isort. `per-file-ignores`: tests→no S/ANN, services/iam→no S310 (mock), banxe_mcp→no S608 (internal ClickHouse). Прогрессивные ignores с TODO-метками: ANN001/201/202/204/401→IL-ANN-01, DTZ011/001/003/005→IL-DTZ-01, B904/905/007/023→IL-B-01.
+  - `.pre-commit-config.yaml` — Ruff мигрирован с `local/system` на `astral-sh/ruff-pre-commit@v0.11.6`. Добавлен Biome local hook (cd frontend && npx biome check --apply .). Semgrep + Pytest без изменений.
+  - `frontend/biome.json` — Biome 2.3.0: lint+format+CSS+JSON. lineWidth=120, double quotes, trailing commas, LF. Исключения: `src/generated/**` (Mitosis output), `**/*.lite.tsx`.
+  - `frontend/package.json` — добавлены `@biomejs/biome@2.3.0`, `@builder.io/mitosis-cli`. Скрипты: lint/lint:fix/format/format:check/ci (заменяют eslint).
+  - `.github/workflows/lint-python.yml` — Ruff (astral-sh/ruff-action@v3) + Semgrep SARIF upload.
+  - `.github/workflows/lint-frontend.yml` — Biome CI (biomejs/setup-biome@v2) + Vitest с coverage artifact.
+  - `.github/workflows/quality-gate.yml` — рефакторинг: 5 параллельных jobs (ruff/biome/test/semgrep/vitest); test и vitest ждут lint jobs.
+  - `Makefile` — make lint/fix/test/test-full/test-frontend/generate-component/generate-all/quality-gate/install.
+- **Первый прогон:** 193 нарушения исправлено автоматически (unsorted imports, UP-паттерны, yoda conditions). 9 исправлено вручную (unused vars→`_*`, `isinstance` union, `noqa: S108`).
+- **Технологии:** Ruff 0.11.6, Biome 2.3.0, astral-sh/ruff-pre-commit, biomejs/setup-biome@v2, Mitosis CLI
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** commit b8aea31 banxe-emi-stack (branch refactor/claude-ai-scaffold). Все 5 pre-commit хуков PASS. 1931 тест зелёный.
