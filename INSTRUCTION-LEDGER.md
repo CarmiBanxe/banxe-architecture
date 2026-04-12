@@ -1394,3 +1394,14 @@
 - **Инварианты:** stdlib only (нет pip), dry-run не пишет файлы, ADR выводится в report как "requires manual creation"
 - **Статус:** DONE ✅ 2026-04-12
 - **Proof:** commit b75626a banxe-emi-stack. 44/44 тестов, ruff 0 issues, semgrep 0 findings.
+
+### IL-092 — post-task.sh (.claude/hooks/)
+- **Источник:** CEO, 2026-04-12 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-092
+- **Описание:** Post-task bash hook для автоматического doc-sync после каждой задачи Claude Code.
+  - `.claude/hooks/post-task.sh` — git status + last commit age + doc-sync dispatch + summary
+  - Порог: 5 минут (`SYNC_THRESHOLD=300`). Если коммит новее → запускает `scripts/doc-sync.py`.
+  - Вывод: секции "Updated" (✅) и "Needs attention" (⚠️ ❌ ⏭️) + счётчик.
+  - Регистрация в settings.json как Stop hook: `"Stop": [{"hooks": [{"type": "command", ...}]}]`
+- **Инварианты:** `_main || true; exit 0` — никогда не блокирует. Не использует `set -e`.
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** commit ee683db banxe-emi-stack. Оба пути (recent / old) верифицированы.
