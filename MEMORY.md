@@ -252,3 +252,61 @@ Key completed gaps (Sprint 4):
 - `MIXED` — LEGAL overlay поверх DEV (переключение внутри сессии)
 
 **Коммит:** `8bd5525` в `CarmiBanxe/developer-core`
+
+---
+
+## IL-BIOME-01 — Quality Gates Expansion (DONE 2026-04-12)
+
+**Scope:** `banxe-emi-stack` — расширение Ruff ruleset + Biome frontend linter + 5-parallel-job CI
+
+### Ruff: расширение с 5 до 12 rule groups
+
+| До | После |
+|----|-------|
+| E, F, I, W, UP | E, F, I, W, UP, **B, SIM, ANN, S, DTZ, ERA** |
+
+- Progressive adoption: новые группы добавлены с `ignore` записями, тегированными `→ IL-ANN-01 / IL-DTZ-01 / IL-B-01`
+- `ANN101/ANN102` — удалены из Ruff, **не** добавлять в ignore (вызывают предупреждение)
+- `per-file-ignores`: tests→no S/ANN; services/iam→S310; banxe_mcp/server.py→S608; services/design_pipeline→S602/S105
+- `src = ["services","api","agents","tests"]` добавлен для корректного isort first-party
+
+### Biome 2.3.0 — frontend linter (заменяет ESLint)
+
+- Config: `frontend/biome.json` (lineWidth: 120, double quotes, trailing commas, semicolons)
+- Scope: `src/**` + `*.json` + `*.config.ts/js`
+- **Исключения:** `src/generated/**` (Mitosis output) + `**/*.lite.tsx` (Mitosis source)
+- Pre-commit: local bash hook `cd frontend && npx biome check --apply .`, files: `^frontend/`
+- Scripts: `lint → biome check .`, `ci → biome ci --reporter=github .`
+
+### GitHub Actions — 5 parallel jobs
+
+| Job | Trigger |
+|-----|---------|
+| `ruff` | `**.py`, `pyproject.toml` |
+| `biome` | `frontend/src/**`, `frontend/*.json` |
+| `test` | needs: ruff |
+| `semgrep` | any push |
+| `vitest` | needs: biome |
+
+Отдельные workflows: `lint-python.yml` (ruff + semgrep с SARIF), `lint-frontend.yml` (biome + vitest с coverage artifact)
+
+### Makefile — Mitosis → React pipeline
+
+```makefile
+make generate-component COMPONENT=Button
+# → npx mitosis compile --from=mitosis --to=react Button.lite.tsx → src/generated/Button.tsx
+# → npx biome check --apply src/generated/Button.tsx
+```
+
+### Коммиты
+
+| Репо | Коммит | IL |
+|------|--------|----|
+| banxe-emi-stack | (on refactor/claude-ai-scaffold) | IL-072 |
+| banxe-architecture | `395f33f` | IL-072 recorded |
+
+### Тесты (banxe-emi-stack)
+
+| Milestone | Count |
+|-----------|-------|
+| После IL-BIOME-01 | 1 931 ✅ |
