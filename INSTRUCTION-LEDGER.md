@@ -1199,3 +1199,21 @@
 - **Инварианты:** I-01 (Decimal для £GBP), I-24 (append-only audit trail), I-27 (HITL: PROPOSES only, никогда не auto-applies), dry_run=True по умолчанию
 - **Статус:** DONE ✅ 2026-04-12
 - **Proof:** commit 6d5aa3e banxe-emi-stack (branch refactor/claude-ai-scaffold). Spec-First Auditor PASS. Ruff lint 0 errors. Semgrep 0 findings. 91/91 pytest green. Total tests: 1826.
+
+### IL-071 — Realtime Transaction Monitoring Agent (Prompt 17 Part 3/3)
+- **Источник:** CEO, Prompt 17 Part 3/3 (2026-04-12) | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-RTM-01
+- **Описание:** Полная AML pipeline для realtime скоринга транзакций с explainable alerts и routing в Marble.
+  - `services/transaction_monitor/models/` — TransactionEvent (Decimal I-01), RiskScore (composite factors, float scores nosemgrep), AMLAlert (audit trail, HITL gate), AlertSeverity/Status, BacktestRequest/Result
+  - `services/transaction_monitor/scoring/` — FeatureExtractor (10 features: velocity/amount deviation/jurisdiction/crypto), InMemoryVelocityTracker (sliding windows 1h/24h/7d; I-02 hard-block RU/BY/...; I-04 EDD £10k), RuleEngine (JubePort Protocol + InMemoryJubePort + HTTPJubePort), RiskScorer (composite: rules 40% + ML 30% + velocity 30%; IsolationForest deferred import)
+  - `services/transaction_monitor/alerts/` — ExplanationEngine (KB citations, regulation refs, per-severity recommendations), AlertGenerator (score→severity mapping, auto-close LOW), AlertRouter (CRITICAL→Marble+MLRO ESCALATED, HIGH→Marble+analyst REVIEWING, MEDIUM→analyst REVIEWING, LOW→AUTO_CLOSED)
+  - `services/transaction_monitor/consumer/` — TransactionParser (Decimal validation, ParseError), EventConsumer (StreamPort Protocol + InMemoryStreamPort, stop(), stats())
+  - `services/transaction_monitor/store/` — AlertStorePort Protocol + InMemoryAlertStore (list/filter/count_by_severity)
+  - `services/transaction_monitor/config.py` — TransactionMonitorConfig (env vars; Decimal для GBP; float nosemgrep для weights/thresholds)
+  - `api/routers/transaction_monitor.py` — 8 эндпоинтов: GET /health, POST /score, GET /alerts (filter by severity/status/customer), GET /alerts/{id}, PATCH /alerts/{id} (HITL: CRITICAL+CLOSED требует notes), GET /velocity/{cid}, GET /metrics, POST /backtest
+  - `banxe_mcp/server.py` — 5 MCP инструментов: monitor_score_transaction, monitor_get_alerts, monitor_get_alert_detail, monitor_get_velocity, monitor_dashboard_metrics
+  - `docker/docker-compose.transaction-monitor.yml` — Redis (velocity) + ClickHouse (audit I-24) + Marble (case management) + Grafana + PostgreSQL
+  - `tests/test_transaction_monitor/` — 105 тестов (11 файлов): models (13), parser (8), feature_extractor (12), risk_scorer (7), velocity_tracker (9), alert_generator (5), alert_router (7), explanation_engine (8), event_consumer (4), mcp_tools (14), api_routes (18). InMemory стабы для всех внешних портов.
+- **Технологии:** Protocol DI (StreamPort, JubePort, MarblePort, MLModelPort, KBPort), InMemory stubs, FastAPI, Pydantic, FastMCP, scikit-learn (deferred), Redis (deferred)
+- **Инварианты:** I-01 (Decimal для £GBP amounts), I-02 (hard-block RU/BY/IR/KP/CU/MM/AF/VE/SY → score=1.0), I-04 (EDD £10k cumulative 24h), I-24 (append-only audit trail), I-27 (HITL gate: CRITICAL closure requires reviewer notes)
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** commit d1432ab banxe-emi-stack (branch refactor/claude-ai-scaffold). Spec-First Auditor PASS. Ruff 0 errors. Semgrep 0 findings. 105/105 pytest green (86% coverage services/transaction_monitor). Total tests: 1931.
