@@ -255,6 +255,61 @@ Key completed gaps (Sprint 4):
 
 ---
 
+## banxe-emi-stack P0 Features (IL-SK-01..IL-SAF-01, DONE 2026-04-12)
+
+Ретроспективные записи из IL-RETRO-02 — фичи были реализованы но не зафиксированы в MEMORY.
+
+### IL-SK-01 — Starter Kit (IL-073)
+
+**Deliverables:**
+- `.claude/rules/` — 16 правил для Claude Code агентов
+- `.semgrep/banxe-rules.yml` — 10 SAST правил (float-money, audit-delete, clickhouse-ttl-reduce, …)
+- `.pre-commit-config.yaml` — ruff + semgrep + pytest hooks
+- `.github/workflows/` — quality-gate.yml + PR/Issue templates
+- `.claude/specs/` — 5 шаблонов (bug, feature, incident, migration, risk)
+
+**Key decision:** Starter Kit устанавливает фундаментальные правила. Все последующие ILs следуют этим правилам. Commit: `d39d709`.
+
+---
+
+### IL-MCP-01 — MCP Server (IL-074)
+
+**Deliverables:**
+- `banxe_mcp/server.py` — начальные 11 инструментов (финансы, recon, FX, payments)
+- `.mcp.json` — Claude Code server config
+- Расширен до 34 инструментов в IL-075..IL-071
+
+**Architecture:** MCP → FastAPI → Protocol DI → PostgreSQL/ClickHouse. Commits: `b858855`, `91e2ed9`, `fbdb803`, `8688e74`.
+
+---
+
+### IL-075..077 — ARL + D2C + ADDS
+
+| IL | Тикет | Краткое описание | Тесты | Commit |
+|----|-------|-----------------|-------|--------|
+| IL-075 | IL-ARL-01 | 3-tier LLM routing (Haiku/Sonnet/Opus) + 4 MCP tools | 184 | 5f132dd |
+| IL-076 | IL-D2C-01 | Penpot MCP + Design-to-Code pipeline + 4 MCP tools | 207 | 9b8fb48 |
+| IL-077 | IL-ADDS-01 | React component library + DESIGN.md + 3 AI modules | ~160 | 3e592d0 |
+
+---
+
+### IL-078 — Safeguarding Engine CASS 15 (IL-SAF-01)
+
+**Deliverables:** ~40 коммитов. Полноценный FastAPI микросервис.
+
+| Компонент | Детали |
+|-----------|--------|
+| SQLAlchemy models | 5 таблиц: accounts, positions, position_details, reconciliation_records, breaches |
+| Сервисы | SafeguardingService, ReconciliationService, BreachService, PositionCalculator, AuditLogger |
+| API | 8 endpoints (safeguarding, reconciliation, breach, accounts, health) |
+| MCP tools | 4: safeguarding_position, reconciliation_status, breach_report, safeguarding_health |
+| Integrations | MidazClient, BankApiClient, ComplianceClient, NotificationClient |
+| Alembic | PostgreSQL migrations |
+
+**Why CRITICAL:** IL-SAF-01 — самый крупный gap в INSTRUCTION-LEDGER (~40 commits без записи). P0 deadline 7 May 2026. Commit range: `28c35cd..8d44179`.
+
+---
+
 ## IL-BIOME-01 — Quality Gates Expansion (DONE 2026-04-12)
 
 **Scope:** `banxe-emi-stack` — расширение Ruff ruleset + Biome frontend linter + 5-parallel-job CI

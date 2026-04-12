@@ -1233,3 +1233,153 @@
 - **Технологии:** Ruff 0.11.6, Biome 2.3.0, astral-sh/ruff-pre-commit, biomejs/setup-biome@v2, Mitosis CLI
 - **Статус:** DONE ✅ 2026-04-12
 - **Proof:** commit b8aea31 banxe-emi-stack (branch refactor/claude-ai-scaffold). Все 5 pre-commit хуков PASS. 1931 тест зелёный.
+
+### IL-073 — Starter Kit Merge (IL-SK-01)
+- **Источник:** CEO | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-SK-01
+- **Описание:** Merge полного Developer Starter Kit в banxe-emi-stack. Установил фундамент для всех последующих ILs.
+  - `.claude/rules/` — 16 правил (00-global, 10-backend-python, 20-api-contracts, 30-testing, 40-docs, 60-migrations, 90-reporting, 95-incidents, agent-authority, compliance-boundaries, financial-invariants, git-workflow, infrastructure-utilization, quality-gates, security-policy, session-continuity)
+  - `.claude/commands/` — slash commands (recon-status, quality-gate, etc.)
+  - `.claude/specs/` — templates (bug, feature, incident, migration, risk-assessment)
+  - `.semgrep/banxe-rules.yml` — 10 custom SAST rules (banxe-float-money, banxe-audit-delete, banxe-clickhouse-ttl-reduce, etc.)
+  - `.github/workflows/` — quality-gate.yml, PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE/
+  - `.pre-commit-config.yaml` — ruff + semgrep + pytest-fast hooks
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit d39d709 banxe-emi-stack.
+
+### IL-074 — MCP Server Full Integration (IL-MCP-01)
+- **Источник:** CEO | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-MCP-01
+- **Описание:** Полная интеграция MCP сервера со всеми финансовыми сервисами и AI-агентами.
+  - `banxe_mcp/server.py` — 11 финансовых инструментов: get_account_balance, list_accounts, get_transaction_history, get_kyc_status, check_aml_alert, get_exchange_rate, get_payment_status, get_recon_status, get_breach_history, get_discrepancy_trend, run_reconciliation
+  - `.mcp.json` — Claude Code integration config
+  - `agents/compliance/orchestrator.py` — agent skill registry
+  - Semgrep rules, soul files, n8n workflows, docker-compose, Grafana dashboard, dbt models — все проинтегрированы
+  - Расширен последующими ILs до 34 инструментов (ARL, Design, KB, Monitor, Experiments)
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commits b858855, 91e2ed9, fbdb803, 8688e74 banxe-emi-stack.
+
+### IL-075 — Agent Routing Layer (IL-ARL-01)
+- **Источник:** CEO, Prompt 14 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-ARL-01
+- **Описание:** 3-tier LLM routing scaffold для оптимального распределения задач между моделями.
+  - Tier 1: Claude Haiku (routing, classification, simple tasks)
+  - Tier 2: Claude Sonnet (standard analysis, compliance checks)
+  - Tier 3: Claude Opus (complex decisions, financial analysis)
+  - MCP tools: route_agent_task, query_reasoning_bank, get_routing_metrics, manage_playbooks
+  - 184 теста
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 5f132dd banxe-emi-stack. 184/184 тестов зелёных.
+
+### IL-076 — Design-to-Code Pipeline (IL-D2C-01)
+- **Источник:** CEO, Prompt 15 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-D2C-01
+- **Описание:** Penpot MCP + AI orchestration scaffold для автоматизации дизайна в код.
+  - Penpot MCP integration (Figma-compatible OSS design tool)
+  - MCP tools: generate_component, sync_design_tokens, visual_compare, list_design_components
+  - 207 тестов
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 9b8fb48 banxe-emi-stack. 207/207 тестов зелёных.
+
+### IL-077 — AI-Driven Design System (IL-ADDS-01)
+- **Источник:** CEO, Prompt 16 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-ADDS-01
+- **Описание:** DESIGN.md + React компонентная библиотека + 3 AI-driven модуля.
+  - `frontend/` — React 19, TypeScript, Tailwind, CVA, Zustand, Recharts
+  - `DESIGN.md` — design system specification
+  - 3 модуля: компоненты, токены, паттерны
+  - ~160 frontend тестов (Vitest)
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 3e592d0 banxe-emi-stack. ~160 тестов зелёных.
+
+### IL-078 — Safeguarding Engine CASS 15 (IL-SAF-01)
+- **Источник:** CEO, Prompt 19 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-SAF-01
+- **Описание:** Полноценный FastAPI микросервис для FCA CASS 15 compliance. ~40 коммитов.
+  - `services/safeguarding-engine/app/` — FastAPI factory, pydantic-settings config, DI dependencies
+  - `app/models/` — SQLAlchemy: 5 таблиц (safeguarding_accounts, positions, position_details, reconciliation_records, safeguarding_breaches)
+  - `app/schemas/` — Pydantic: safeguarding, reconciliation, breach, common
+  - `app/services/` — SafeguardingService, ReconciliationService, BreachService, PositionCalculator, AuditLogger (→ ClickHouse I-24)
+  - `app/api/` — 5 роутеров, 8 endpoints
+  - `app/mcp/` — 4 MCP tools: safeguarding_position, reconciliation_status, breach_report, safeguarding_health
+  - `app/integrations/` — MidazClient, BankApiClient, ComplianceClient, NotificationClient
+  - `alembic/` — PostgreSQL migrations
+  - `Dockerfile` — production container
+- **Инварианты:** I-01 (Decimal для GBP), I-08 (ClickHouse TTL 5yr), I-24 (append-only audit), CASS 15.2.2R (client funds segregated), CASS 15.12.4R (breach notification ≤1 business day)
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commits 28c35cd..8d44179 banxe-emi-stack (~40 commits). Safeguarding Engine production-ready.
+
+### IL-079 — Примечание о gap IL-027
+- **Источник:** IL-RETRO-01 аудит 2026-04-12
+- **Описание:** IL-027 отсутствует в числовой последовательности (gap между IL-026 и IL-028). IL-026 = Consumer Duty deploy; IL-028 = CASS 10A Resolution Pack. Исходная нумерация была с ошибкой. Gap намеренно оставлен для исторической точности.
+- **Статус:** ACKNOWLEDGED (не требует действий)
+
+### IL-080 — JOB-DESCRIPTIONS.md (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-080
+- **Описание:** AI agents & human doubles job descriptions — 30 ролей для BANXE AI Bank.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit ff49972 banxe-architecture.
+
+### IL-081 — FEATURE-REGISTRY.md (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-081
+- **Описание:** 30 features с purpose, value & KPIs для каждого блока системы.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit e7ed422 banxe-architecture.
+
+### IL-082 — RELATIONSHIP-TREE.md (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-082
+- **Описание:** Org relationships, agent interactions, escalation paths.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit ac7721d banxe-architecture.
+
+### IL-083 — ROADMAP.md (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-083
+- **Описание:** Architecture repo phases & document inventory.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 493bd3b banxe-architecture.
+
+### IL-084 — MkDocs Infrastructure (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-084
+- **Описание:** mkdocs.yml — documentation site infrastructure.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 3945cd2 banxe-architecture.
+
+### IL-085 — DEV-DOCUMENTATION-GUIDE.md (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-085
+- **Описание:** Developer documentation guide and standards.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit e27439e banxe-architecture.
+
+### IL-086 — MkDocs GitHub Pages Deploy Workflow (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-086
+- **Описание:** CI workflow для автодеплоя документации на GitHub Pages.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 9ce939e banxe-architecture.
+
+### IL-087 — CHANGELOG-POLICY.md (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-087
+- **Описание:** Changelog policy and standards for all repos.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 629eedc banxe-architecture.
+
+### IL-088 — Auto-Documentation Pipeline Prompt (banxe-emi-stack)
+- **Источник:** CEO, Prompt 18 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-088
+- **Описание:** Prompt 18 для автоматической генерации документации Banxe AI Bank.
+  - `prompts/18-auto-documentation-pipeline.md`
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit ac22c30 banxe-emi-stack.
+
+### IL-089 — Phase 3.5 Documentation (banxe-architecture)
+- **Источник:** CEO | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-089
+- **Описание:** ROADMAP.md update — add IL-CKS-01, 27 services, Phase 3.5 planning.
+- **Статус:** DONE ✅ (ретроспективная запись 2026-04-12)
+- **Proof:** commit 50f9c60 banxe-architecture.
+
+### IL-090 — Retrospective Documentation Backfill (IL-RETRO-02)
+- **Источник:** CEO, 2026-04-12 | **Приоритет:** P0 | **Репо:** banxe-emi-stack + banxe-architecture | **Тикет:** IL-RETRO-02
+- **Описание:** Заполнение всех документационных пробелов выявленных в IL-RETRO-01 аудите.
+  - INSTRUCTION-LEDGER: IL-073..IL-089 (17 ретроспективных записей)
+  - banxe-architecture/MEMORY.md: записи для SK/MCP/ARL/D2C/ADDS/SAF и IL-060..068
+  - .claude/memory/: project_safeguarding.md, project_mcp.md, project_sk.md
+  - .claude/rules/: 50-frontend.md, 70-mcp-tools.md, 80-ai-agents.md
+  - docs/adr/: ADR-002..ADR-009 (8 ADR для ключевых архитектурных решений)
+  - docs/API.md: v1.0.0 — добавлены TransactionMonitor, ComplianceKB, Experiments, MCP Tools Registry (34 tools)
+  - docs/architecture/: ARCHITECTURE-TRANSACTION-MONITOR.md, ARCHITECTURE-SAFEGUARDING-ENGINE.md, ARCHITECTURE-MCP-SERVER.md
+  - docs/runbooks/: safeguarding-engine.md, transaction-monitor.md, mcp-server.md
+  - docs/compliance/: cass15-controls.md (FCA CASS 15 control matrix)
+- **Статус:** DONE ✅ 2026-04-12
+- **Proof:** коммит docs(IL-RETRO-02) banxe-emi-stack + banxe-architecture.
