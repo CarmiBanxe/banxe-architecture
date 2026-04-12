@@ -1,6 +1,6 @@
 # Service Map — Banxe GMKtec (192.168.0.72)
 
-**Последнее обновление:** 2026-04-06 (Sprint 8: Midaz CBS deployed)  
+**Последнее обновление:** 2026-04-12 (Sprint 9 PLANNED: Hyperswitch payment stack)  
 **Платформа:** AMD Ryzen AI MAX+ 395, 128GB RAM, ROCm
 
 ---
@@ -36,6 +36,9 @@
 | **Midaz Ledger** | **8095** | HTTP | Apache 2.0 | **✅ Sprint 8** | CBS PRIMARY: unified ledger (onboarding + transaction) |
 | **MongoDB (Midaz)** | 5703 | TCP | SSPL | **✅ Sprint 8** | Midaz metadata store (rs0 replica set) |
 | **RabbitMQ (Midaz)** | 3003/3004 | HTTP/AMQP | MPL 2.0 | **✅ Sprint 8** | Midaz async transaction queue |
+| **Hyperswitch App Server** | **8096** | HTTP | Apache 2.0 | **PLANNED Sprint 9** | Payment orchestration & switch |
+| **Hyperswitch Control Center** | **8097** | HTTP | Apache 2.0 | **PLANNED Sprint 9** | Payment ops dashboard |
+| **Hyperswitch Card Vault** | **8098** | HTTP | Apache 2.0 | **PLANNED Sprint 9** | PCI-compliant card storage |
 
 ## Модели Ollama (актуально 2026-04-05)
 
