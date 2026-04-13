@@ -1,0 +1,44 @@
+id: gap_tracker_agent
+name: GapTrackerAgent
+version: "1.0"
+status: ACTIVE
+created: "2026-04-13"
+il_reference: IL-GAP-001
+
+purpose: |
+  Mandatory gap enforcement agent.
+  - Tracks all items in docs/GAP-REGISTER.md
+  - Runs at start of every Claude Code session
+  - Reports overdue + critical items before any other work
+  - Reminds operator to return to gap list if session diverges
+
+trigger:
+  - event: session_start
+  - event: pre_commit
+  - schedule: "0 9 * * 1"  # Every Monday 09:00
+
+checks:
+  - id: overdue_p0
+    description: "Any P0 gap past deadline = BLOCK — alert immediately"
+    action: print_table(filter=P0, status=OPEN)
+  - id: smf_vacancies
+    description: "SMF17 (MLRO) or SMF2 (CFO) unfilled = RED ALERT"
+    action: alert_ceo
+  - id: sprint_due
+    description: "Items assigned to current sprint that are still OPEN"
+    action: print_table(filter=current_sprint, status=OPEN)
+
+autonomy: L1_AUTO
+trust_zone: GREEN
+human_double: CTIO
+
+invariant: |
+  This agent CANNOT be disabled without CEO + CTIO approval.
+  GAP-REGISTER.md is the single source of truth for project gaps.
+  Any new feature work must not close without updating gap statuses.
+
+session_rule: |
+  EVERY Claude Code session must begin with:
+    python3 scripts/gap-tracker.py --status
+  EVERY Claude Code session must end with:
+    python3 scripts/gap-tracker.py --update
