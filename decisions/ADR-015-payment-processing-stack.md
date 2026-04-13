@@ -1,6 +1,6 @@
 # ADR-015: Payment Processing Stack — Hyperswitch + Paymentology
 
-**Status:** PROPOSED
+**Status:** ACCEPTED (2026-04-13, approved by Moriel Carmi, CEO)
 **Date:** 2026-04-12
 **Deciders:** CEO (Moriel Carmi)
 **Trust Zone:** AMBER
