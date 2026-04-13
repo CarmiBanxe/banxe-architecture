@@ -1,0 +1,13 @@
+ID,Type,Source,Target,Name
+id-rel-api-safeguarding,Serving,id-api-gateway,id-safeguarding-service,serves
+id-rel-api-recon,Serving,id-api-gateway,id-recon-engine,serves
+id-rel-api-payment,Serving,id-api-gateway,id-payment-service,serves
+id-rel-api-kyc,Serving,id-api-gateway,id-kyc-service,serves
+id-rel-api-aml,Serving,id-api-gateway,id-aml-service,serves
+id-rel-ledger-midaz,Serving,id-ledger-service,id-midaz,calls
+id-rel-iam-keycloak,Serving,id-iam-service,id-keycloak,authenticates via
+id-rel-safeguarding-clickhouse,Flow,id-safeguarding-service,id-clickhouse,audit trail
+id-rel-recon-midaz,Serving,id-recon-engine,id-midaz,reads GL balance
+id-rel-aml-marble,Flow,id-aml-service,id-marble,creates case
+id-rel-onboarding-kyc,Composition,id-onboarding-process,id-kyc-service,triggers
+id-rel-recon-process-engine,Composition,id-daily-recon-process,id-recon-engine,executes via

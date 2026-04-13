@@ -1,0 +1,68 @@
+[
+  {
+    "id": "id-view-application-layer",
+    "type": "ModelViewpoint",
+    "name": "Application Layer — Banxe EMI Stack",
+    "nodes": [
+      {
+        "id": "node-api",
+        "elementRef": "id-api-gateway",
+        "type": "Element"
+      },
+      {
+        "id": "node-safeguarding",
+        "elementRef": "id-safeguarding-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-recon",
+        "elementRef": "id-recon-engine",
+        "type": "Element"
+      },
+      {
+        "id": "node-payment",
+        "elementRef": "id-payment-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-aml",
+        "elementRef": "id-aml-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-iam",
+        "elementRef": "id-iam-service",
+        "type": "Element"
+      }
+    ],
+    "node_count": 6
+  },
+  {
+    "id": "id-view-safeguarding",
+    "type": "ModelViewpoint",
+    "name": "CASS 15 Safeguarding Architecture",
+    "nodes": [
+      {
+        "id": "node-s1",
+        "elementRef": "id-safeguarding-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-s2",
+        "elementRef": "id-recon-engine",
+        "type": "Element"
+      },
+      {
+        "id": "node-s3",
+        "elementRef": "id-clickhouse",
+        "type": "Element"
+      },
+      {
+        "id": "node-s4",
+        "elementRef": "id-midaz",
+        "type": "Element"
+      }
+    ],
+    "node_count": 4
+  }
+]

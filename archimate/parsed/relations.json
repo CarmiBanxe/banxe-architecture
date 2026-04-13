@@ -1,0 +1,86 @@
+[
+  {
+    "id": "id-rel-api-safeguarding",
+    "type": "Serving",
+    "source": "id-api-gateway",
+    "target": "id-safeguarding-service",
+    "name": "serves"
+  },
+  {
+    "id": "id-rel-api-recon",
+    "type": "Serving",
+    "source": "id-api-gateway",
+    "target": "id-recon-engine",
+    "name": "serves"
+  },
+  {
+    "id": "id-rel-api-payment",
+    "type": "Serving",
+    "source": "id-api-gateway",
+    "target": "id-payment-service",
+    "name": "serves"
+  },
+  {
+    "id": "id-rel-api-kyc",
+    "type": "Serving",
+    "source": "id-api-gateway",
+    "target": "id-kyc-service",
+    "name": "serves"
+  },
+  {
+    "id": "id-rel-api-aml",
+    "type": "Serving",
+    "source": "id-api-gateway",
+    "target": "id-aml-service",
+    "name": "serves"
+  },
+  {
+    "id": "id-rel-ledger-midaz",
+    "type": "Serving",
+    "source": "id-ledger-service",
+    "target": "id-midaz",
+    "name": "calls"
+  },
+  {
+    "id": "id-rel-iam-keycloak",
+    "type": "Serving",
+    "source": "id-iam-service",
+    "target": "id-keycloak",
+    "name": "authenticates via"
+  },
+  {
+    "id": "id-rel-safeguarding-clickhouse",
+    "type": "Flow",
+    "source": "id-safeguarding-service",
+    "target": "id-clickhouse",
+    "name": "audit trail"
+  },
+  {
+    "id": "id-rel-recon-midaz",
+    "type": "Serving",
+    "source": "id-recon-engine",
+    "target": "id-midaz",
+    "name": "reads GL balance"
+  },
+  {
+    "id": "id-rel-aml-marble",
+    "type": "Flow",
+    "source": "id-aml-service",
+    "target": "id-marble",
+    "name": "creates case"
+  },
+  {
+    "id": "id-rel-onboarding-kyc",
+    "type": "Composition",
+    "source": "id-onboarding-process",
+    "target": "id-kyc-service",
+    "name": "triggers"
+  },
+  {
+    "id": "id-rel-recon-process-engine",
+    "type": "Composition",
+    "source": "id-daily-recon-process",
+    "target": "id-recon-engine",
+    "name": "executes via"
+  }
+]

@@ -1,0 +1,188 @@
+[
+  {
+    "id": "id-api-gateway",
+    "type": "ApplicationComponent",
+    "name": "API Gateway",
+    "documentation": "FastAPI REST API layer (IL-046). 78 endpoints across 21 routers.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "api",
+      "prop-module": "api/main.py",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-safeguarding-service",
+    "type": "ApplicationComponent",
+    "name": "Safeguarding Service",
+    "documentation": "CASS 15 safeguarding: daily reconciliation, breach detection, FIN060 return. Sprint 12.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "safeguarding",
+      "prop-module": "src/safeguarding/",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-recon-engine",
+    "type": "ApplicationComponent",
+    "name": "Tri-Party Reconciliation Engine",
+    "documentation": "CASS 7.15.17R daily tri-party recon: rails vs Midaz GL vs safeguarding bank. GAP-010.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "settlement",
+      "prop-module": "src/settlement/reconciler_engine.py",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-kyc-service",
+    "type": "ApplicationComponent",
+    "name": "KYC Service",
+    "documentation": "KYC workflow lifecycle: create → documents → EDD → approve/reject. Ballerine adapter.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "kyc",
+      "prop-module": "services/kyc/",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-payment-service",
+    "type": "ApplicationComponent",
+    "name": "Payment Service",
+    "documentation": "FPS + SEPA CT + SEPA Instant via Modulr sandbox. Webhook signature verification.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "payment",
+      "prop-module": "services/payment/",
+      "prop-status": "ACTIVE+STUB"
+    }
+  },
+  {
+    "id": "id-aml-service",
+    "type": "ApplicationComponent",
+    "name": "AML / Fraud Service",
+    "documentation": "FraudAML pipeline with Jube (self-hosted ML). PSR APP 2024 compliant.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "fraud",
+      "prop-module": "services/fraud/",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-iam-service",
+    "type": "ApplicationComponent",
+    "name": "IAM Service",
+    "documentation": "Keycloak OIDC + RBAC. MockIAMAdapter for tests. KeycloakAdapter for production.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "iam",
+      "prop-module": "services/iam/",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-ledger-service",
+    "type": "ApplicationComponent",
+    "name": "Ledger Service",
+    "documentation": "Midaz CBS adapter. get_balance(), create_transaction(), list_transactions(). S13-01.",
+    "banxe_domain": "services",
+    "properties": {
+      "prop-domain": "ledger",
+      "prop-module": "services/ledger/",
+      "prop-status": "ACTIVE"
+    }
+  },
+  {
+    "id": "id-onboarding-process",
+    "type": "BusinessProcess",
+    "name": "Customer Onboarding",
+    "documentation": "EMR 2011 Reg.4 — customer creation + KYC + agreement lifecycle.",
+    "banxe_domain": "workflows",
+    "properties": {
+      "prop-domain": "customers"
+    }
+  },
+  {
+    "id": "id-daily-recon-process",
+    "type": "BusinessProcess",
+    "name": "Daily Reconciliation",
+    "documentation": "CASS 7.15.17R — daily internal (Midaz) vs external (CAMT.053) reconciliation. Cron at 23:50 UTC.",
+    "banxe_domain": "workflows",
+    "properties": {
+      "prop-domain": "safeguarding"
+    }
+  },
+  {
+    "id": "id-sar-process",
+    "type": "BusinessProcess",
+    "name": "SAR Filing",
+    "documentation": "POCA 2002 s.330 — Suspicious Activity Report lifecycle: file → MLRO approve → submit NCA.",
+    "banxe_domain": "workflows",
+    "properties": {
+      "prop-domain": "compliance"
+    }
+  },
+  {
+    "id": "id-midaz",
+    "type": "TechnologyService",
+    "name": "Midaz CBS",
+    "documentation": "Core Banking System. Self-hosted on GMKtec :8095. Double-entry GL ledger.",
+    "banxe_domain": "infrastructure",
+    "properties": {
+      "prop-host": "localhost:8095"
+    }
+  },
+  {
+    "id": "id-keycloak",
+    "type": "TechnologyService",
+    "name": "Keycloak IAM",
+    "documentation": "Keycloak 26.2.5 OIDC. Realm: banxe. GMKtec :8180. 7 roles.",
+    "banxe_domain": "infrastructure",
+    "properties": {
+      "prop-host": "localhost:8180"
+    }
+  },
+  {
+    "id": "id-clickhouse",
+    "type": "TechnologyService",
+    "name": "ClickHouse Audit DB",
+    "documentation": "Append-only audit trail. TTL 5 years (FCA MLR 2017 I-08). Tables: safeguarding_events, recon_events.",
+    "banxe_domain": "infrastructure",
+    "properties": {
+      "prop-host": "localhost:8123"
+    }
+  },
+  {
+    "id": "id-marble",
+    "type": "TechnologyService",
+    "name": "Marble Case Management",
+    "documentation": "Self-hosted Apache 2.0 case management. MLRO inbox, case assignment. GMKtec :5002. I-19: internal only.",
+    "banxe_domain": "infrastructure",
+    "properties": {
+      "prop-host": "localhost:5002"
+    }
+  },
+  {
+    "id": "id-transaction-record",
+    "type": "DataObject",
+    "name": "TransactionRecord",
+    "documentation": "Immutable transaction record. amount_gbp: Decimal (I-05). status: APPROVED|PENDING|CANCELLED.",
+    "banxe_domain": "models",
+    "properties": {
+      "prop-module": "services/ledger/midaz_adapter.py"
+    }
+  },
+  {
+    "id": "id-customer-profile",
+    "type": "DataObject",
+    "name": "CustomerProfile",
+    "documentation": "Customer entity with KYC status, risk tier, agreement refs. PII fields encrypted at rest.",
+    "banxe_domain": "models",
+    "properties": {
+      "prop-module": "api/models/customers.py"
+    }
+  }
+]

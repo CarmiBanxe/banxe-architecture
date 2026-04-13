@@ -1,0 +1,18 @@
+ID,Type,Name,Documentation
+id-api-gateway,ApplicationComponent,API Gateway,FastAPI REST API layer (IL-046). 78 endpoints across 21 routers.
+id-safeguarding-service,ApplicationComponent,Safeguarding Service,CASS 15 safeguarding: daily reconciliation + breach detection + FIN060 return.
+id-recon-engine,ApplicationComponent,Tri-Party Reconciliation Engine,CASS 7.15.17R daily tri-party recon: rails vs Midaz GL vs safeguarding bank.
+id-kyc-service,ApplicationComponent,KYC Service,KYC workflow lifecycle: create → documents → EDD → approve/reject.
+id-payment-service,ApplicationComponent,Payment Service,FPS + SEPA CT + SEPA Instant via Modulr sandbox.
+id-aml-service,ApplicationComponent,AML / Fraud Service,FraudAML pipeline with Jube (self-hosted ML). PSR APP 2024 compliant.
+id-iam-service,ApplicationComponent,IAM Service,Keycloak OIDC + RBAC. MockIAMAdapter for tests.
+id-ledger-service,ApplicationComponent,Ledger Service,Midaz CBS adapter. get_balance() + create_transaction() + list_transactions().
+id-onboarding-process,BusinessProcess,Customer Onboarding,EMR 2011 Reg.4 — customer creation + KYC + agreement lifecycle.
+id-daily-recon-process,BusinessProcess,Daily Reconciliation,CASS 7.15.17R — daily internal vs external reconciliation. Cron at 23:50 UTC.
+id-sar-process,BusinessProcess,SAR Filing,POCA 2002 s.330 — SAR lifecycle: file → MLRO approve → submit NCA.
+id-midaz,TechnologyService,Midaz CBS,Core Banking System. Self-hosted on GMKtec :8095. Double-entry GL ledger.
+id-keycloak,TechnologyService,Keycloak IAM,Keycloak 26.2.5 OIDC. Realm: banxe. GMKtec :8180. 7 roles.
+id-clickhouse,TechnologyService,ClickHouse Audit DB,Append-only audit trail. TTL 5 years (FCA MLR 2017 I-08).
+id-marble,TechnologyService,Marble Case Management,Self-hosted Apache 2.0 case management. MLRO inbox. GMKtec :5002.
+id-transaction-record,DataObject,TransactionRecord,Immutable transaction record. amount_gbp: Decimal (I-05).
+id-customer-profile,DataObject,CustomerProfile,Customer entity with KYC status + risk tier + agreement refs.

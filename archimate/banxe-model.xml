@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  banxe-model.xml — ArchiMate Open Exchange Format (Open Group Standard)
+  Namespace: http://www.opengroup.org/xsd/archimate/3.0/
+
+  SOURCE OF TRUTH: Export from Archi Tool
+  Instructions: See archimate/README.md
+
+  IMPORTANT: This file is a TEMPLATE/PLACEHOLDER.
+  Replace with real export: Archi → File → Export → Open Exchange XML
+-->
+<model
+  xmlns="http://www.opengroup.org/xsd/archimate/3.0/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.0/archimate3_Diagram.xsd"
+  identifier="id-banxe-emi-model"
+  version="3.0">
+
+  <name xml:lang="en">Banxe EMI Architecture Model</name>
+
+  <elements>
+    <!-- Application Layer -->
+    <element identifier="id-api-gateway" xsi:type="ApplicationComponent">
+      <name xml:lang="en">API Gateway</name>
+      <documentation xml:lang="en">FastAPI REST API layer (IL-046). 78 endpoints across 21 routers.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">api</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">api/main.py</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-safeguarding-service" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Safeguarding Service</name>
+      <documentation xml:lang="en">CASS 15 safeguarding: daily reconciliation, breach detection, FIN060 return. Sprint 12.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">safeguarding</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">src/safeguarding/</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-recon-engine" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Tri-Party Reconciliation Engine</name>
+      <documentation xml:lang="en">CASS 7.15.17R daily tri-party recon: rails vs Midaz GL vs safeguarding bank. GAP-010.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">settlement</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">src/settlement/reconciler_engine.py</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-kyc-service" xsi:type="ApplicationComponent">
+      <name xml:lang="en">KYC Service</name>
+      <documentation xml:lang="en">KYC workflow lifecycle: create → documents → EDD → approve/reject. Ballerine adapter.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">kyc</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">services/kyc/</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-payment-service" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Payment Service</name>
+      <documentation xml:lang="en">FPS + SEPA CT + SEPA Instant via Modulr sandbox. Webhook signature verification.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">payment</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">services/payment/</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE+STUB</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-aml-service" xsi:type="ApplicationComponent">
+      <name xml:lang="en">AML / Fraud Service</name>
+      <documentation xml:lang="en">FraudAML pipeline with Jube (self-hosted ML). PSR APP 2024 compliant.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">fraud</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">services/fraud/</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-iam-service" xsi:type="ApplicationComponent">
+      <name xml:lang="en">IAM Service</name>
+      <documentation xml:lang="en">Keycloak OIDC + RBAC. MockIAMAdapter for tests. KeycloakAdapter for production.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">iam</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">services/iam/</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-ledger-service" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Ledger Service</name>
+      <documentation xml:lang="en">Midaz CBS adapter. get_balance(), create_transaction(), list_transactions(). S13-01.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">ledger</value>
+        </property>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">services/ledger/</value>
+        </property>
+        <property propertyDefinitionRef="prop-status">
+          <value xml:lang="en">ACTIVE</value>
+        </property>
+      </properties>
+    </element>
+
+    <!-- Business Processes -->
+    <element identifier="id-onboarding-process" xsi:type="BusinessProcess">
+      <name xml:lang="en">Customer Onboarding</name>
+      <documentation xml:lang="en">EMR 2011 Reg.4 — customer creation + KYC + agreement lifecycle.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">customers</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-daily-recon-process" xsi:type="BusinessProcess">
+      <name xml:lang="en">Daily Reconciliation</name>
+      <documentation xml:lang="en">CASS 7.15.17R — daily internal (Midaz) vs external (CAMT.053) reconciliation. Cron at 23:50 UTC.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">safeguarding</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-sar-process" xsi:type="BusinessProcess">
+      <name xml:lang="en">SAR Filing</name>
+      <documentation xml:lang="en">POCA 2002 s.330 — Suspicious Activity Report lifecycle: file → MLRO approve → submit NCA.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-domain">
+          <value xml:lang="en">compliance</value>
+        </property>
+      </properties>
+    </element>
+
+    <!-- Technology Layer -->
+    <element identifier="id-midaz" xsi:type="TechnologyService">
+      <name xml:lang="en">Midaz CBS</name>
+      <documentation xml:lang="en">Core Banking System. Self-hosted on GMKtec :8095. Double-entry GL ledger.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-host">
+          <value xml:lang="en">localhost:8095</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-keycloak" xsi:type="TechnologyService">
+      <name xml:lang="en">Keycloak IAM</name>
+      <documentation xml:lang="en">Keycloak 26.2.5 OIDC. Realm: banxe. GMKtec :8180. 7 roles.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-host">
+          <value xml:lang="en">localhost:8180</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-clickhouse" xsi:type="TechnologyService">
+      <name xml:lang="en">ClickHouse Audit DB</name>
+      <documentation xml:lang="en">Append-only audit trail. TTL 5 years (FCA MLR 2017 I-08). Tables: safeguarding_events, recon_events.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-host">
+          <value xml:lang="en">localhost:8123</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-marble" xsi:type="TechnologyService">
+      <name xml:lang="en">Marble Case Management</name>
+      <documentation xml:lang="en">Self-hosted Apache 2.0 case management. MLRO inbox, case assignment. GMKtec :5002. I-19: internal only.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-host">
+          <value xml:lang="en">localhost:5002</value>
+        </property>
+      </properties>
+    </element>
+
+    <!-- Data Objects -->
+    <element identifier="id-transaction-record" xsi:type="DataObject">
+      <name xml:lang="en">TransactionRecord</name>
+      <documentation xml:lang="en">Immutable transaction record. amount_gbp: Decimal (I-05). status: APPROVED|PENDING|CANCELLED.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">services/ledger/midaz_adapter.py</value>
+        </property>
+      </properties>
+    </element>
+
+    <element identifier="id-customer-profile" xsi:type="DataObject">
+      <name xml:lang="en">CustomerProfile</name>
+      <documentation xml:lang="en">Customer entity with KYC status, risk tier, agreement refs. PII fields encrypted at rest.</documentation>
+      <properties>
+        <property propertyDefinitionRef="prop-module">
+          <value xml:lang="en">api/models/customers.py</value>
+        </property>
+      </properties>
+    </element>
+  </elements>
+
+  <relationships>
+    <relationship identifier="id-rel-api-safeguarding" xsi:type="Serving"
+      source="id-api-gateway" target="id-safeguarding-service">
+      <name xml:lang="en">serves</name>
+    </relationship>
+
+    <relationship identifier="id-rel-api-recon" xsi:type="Serving"
+      source="id-api-gateway" target="id-recon-engine">
+      <name xml:lang="en">serves</name>
+    </relationship>
+
+    <relationship identifier="id-rel-api-payment" xsi:type="Serving"
+      source="id-api-gateway" target="id-payment-service">
+      <name xml:lang="en">serves</name>
+    </relationship>
+
+    <relationship identifier="id-rel-api-kyc" xsi:type="Serving"
+      source="id-api-gateway" target="id-kyc-service">
+      <name xml:lang="en">serves</name>
+    </relationship>
+
+    <relationship identifier="id-rel-api-aml" xsi:type="Serving"
+      source="id-api-gateway" target="id-aml-service">
+      <name xml:lang="en">serves</name>
+    </relationship>
+
+    <relationship identifier="id-rel-ledger-midaz" xsi:type="Serving"
+      source="id-ledger-service" target="id-midaz">
+      <name xml:lang="en">calls</name>
+    </relationship>
+
+    <relationship identifier="id-rel-iam-keycloak" xsi:type="Serving"
+      source="id-iam-service" target="id-keycloak">
+      <name xml:lang="en">authenticates via</name>
+    </relationship>
+
+    <relationship identifier="id-rel-safeguarding-clickhouse" xsi:type="Flow"
+      source="id-safeguarding-service" target="id-clickhouse">
+      <name xml:lang="en">audit trail</name>
+    </relationship>
+
+    <relationship identifier="id-rel-recon-midaz" xsi:type="Serving"
+      source="id-recon-engine" target="id-midaz">
+      <name xml:lang="en">reads GL balance</name>
+    </relationship>
+
+    <relationship identifier="id-rel-aml-marble" xsi:type="Flow"
+      source="id-aml-service" target="id-marble">
+      <name xml:lang="en">creates case</name>
+    </relationship>
+
+    <relationship identifier="id-rel-onboarding-kyc" xsi:type="Composition"
+      source="id-onboarding-process" target="id-kyc-service">
+      <name xml:lang="en">triggers</name>
+    </relationship>
+
+    <relationship identifier="id-rel-recon-process-engine" xsi:type="Composition"
+      source="id-daily-recon-process" target="id-recon-engine">
+      <name xml:lang="en">executes via</name>
+    </relationship>
+  </relationships>
+
+  <views>
+    <diagrams>
+      <view identifier="id-view-application-layer" xsi:type="ModelViewpoint">
+        <name xml:lang="en">Application Layer — Banxe EMI Stack</name>
+        <node elementRef="id-api-gateway" identifier="node-api" type="Element" x="100" y="50" w="200" h="60"/>
+        <node elementRef="id-safeguarding-service" identifier="node-safeguarding" type="Element" x="50" y="180" w="200" h="60"/>
+        <node elementRef="id-recon-engine" identifier="node-recon" type="Element" x="300" y="180" w="200" h="60"/>
+        <node elementRef="id-payment-service" identifier="node-payment" type="Element" x="550" y="180" w="200" h="60"/>
+        <node elementRef="id-aml-service" identifier="node-aml" type="Element" x="50" y="300" w="200" h="60"/>
+        <node elementRef="id-iam-service" identifier="node-iam" type="Element" x="800" y="180" w="200" h="60"/>
+        <connection relationshipRef="id-rel-api-safeguarding" identifier="conn-1" source="node-api" target="node-safeguarding"/>
+        <connection relationshipRef="id-rel-api-recon" identifier="conn-2" source="node-api" target="node-recon"/>
+        <connection relationshipRef="id-rel-api-payment" identifier="conn-3" source="node-api" target="node-payment"/>
+        <connection relationshipRef="id-rel-api-aml" identifier="conn-4" source="node-api" target="node-aml"/>
+      </view>
+
+      <view identifier="id-view-safeguarding" xsi:type="ModelViewpoint">
+        <name xml:lang="en">CASS 15 Safeguarding Architecture</name>
+        <node elementRef="id-safeguarding-service" identifier="node-s1" type="Element" x="100" y="50" w="200" h="60"/>
+        <node elementRef="id-recon-engine" identifier="node-s2" type="Element" x="350" y="50" w="200" h="60"/>
+        <node elementRef="id-clickhouse" identifier="node-s3" type="Element" x="100" y="200" w="200" h="60"/>
+        <node elementRef="id-midaz" identifier="node-s4" type="Element" x="350" y="200" w="200" h="60"/>
+        <connection relationshipRef="id-rel-safeguarding-clickhouse" identifier="conn-s1" source="node-s1" target="node-s3"/>
+        <connection relationshipRef="id-rel-recon-midaz" identifier="conn-s2" source="node-s2" target="node-s4"/>
+      </view>
+    </diagrams>
+  </views>
+
+  <propertyDefinitions>
+    <propertyDefinition identifier="prop-domain" type="string">
+      <name xml:lang="en">banxe-domain</name>
+    </propertyDefinition>
+    <propertyDefinition identifier="prop-module" type="string">
+      <name xml:lang="en">banxe-module</name>
+    </propertyDefinition>
+    <propertyDefinition identifier="prop-status" type="string">
+      <name xml:lang="en">banxe-status</name>
+    </propertyDefinition>
+    <propertyDefinition identifier="prop-host" type="string">
+      <name xml:lang="en">banxe-host</name>
+    </propertyDefinition>
+  </propertyDefinitions>
+
+</model>
