@@ -64,5 +64,99 @@
       }
     ],
     "node_count": 4
+  },
+  {
+    "id": "id-view-compliance-stack",
+    "type": "ModelViewpoint",
+    "name": "Compliance & AML Stack",
+    "nodes": [
+      {
+        "id": "node-c-aml",
+        "elementRef": "id-aml-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-c-jube",
+        "elementRef": "id-jube-tm",
+        "type": "Element"
+      },
+      {
+        "id": "node-c-screener",
+        "elementRef": "id-banxe-screener",
+        "type": "Element"
+      },
+      {
+        "id": "node-c-yente",
+        "elementRef": "id-yente",
+        "type": "Element"
+      },
+      {
+        "id": "node-c-marble",
+        "elementRef": "id-marble",
+        "type": "Element"
+      },
+      {
+        "id": "node-c-pg",
+        "elementRef": "id-postgres-compliance",
+        "type": "Element"
+      }
+    ],
+    "node_count": 6
+  },
+  {
+    "id": "id-view-payment-stack",
+    "type": "ModelViewpoint",
+    "name": "Payment Stack — Hyperswitch",
+    "nodes": [
+      {
+        "id": "node-p-svc",
+        "elementRef": "id-payment-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-p-app",
+        "elementRef": "id-hyperswitch-app",
+        "type": "Element"
+      },
+      {
+        "id": "node-p-ctrl",
+        "elementRef": "id-hyperswitch-control",
+        "type": "Element"
+      },
+      {
+        "id": "node-p-vault",
+        "elementRef": "id-hyperswitch-vault",
+        "type": "Element"
+      }
+    ],
+    "node_count": 4
+  },
+  {
+    "id": "id-view-ledger-stack",
+    "type": "ModelViewpoint",
+    "name": "Ledger Stack — Midaz CBS",
+    "nodes": [
+      {
+        "id": "node-l-svc",
+        "elementRef": "id-ledger-service",
+        "type": "Element"
+      },
+      {
+        "id": "node-l-midaz",
+        "elementRef": "id-midaz",
+        "type": "Element"
+      },
+      {
+        "id": "node-l-mongo",
+        "elementRef": "id-mongodb-midaz",
+        "type": "Element"
+      },
+      {
+        "id": "node-l-rmq",
+        "elementRef": "id-rabbitmq-midaz",
+        "type": "Element"
+      }
+    ],
+    "node_count": 4
   }
 ]

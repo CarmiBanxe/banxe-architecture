@@ -1,18 +1,45 @@
 ID,Type,Name,Documentation
 id-api-gateway,ApplicationComponent,API Gateway,FastAPI REST API layer (IL-046). 78 endpoints across 21 routers.
-id-safeguarding-service,ApplicationComponent,Safeguarding Service,CASS 15 safeguarding: daily reconciliation + breach detection + FIN060 return.
-id-recon-engine,ApplicationComponent,Tri-Party Reconciliation Engine,CASS 7.15.17R daily tri-party recon: rails vs Midaz GL vs safeguarding bank.
-id-kyc-service,ApplicationComponent,KYC Service,KYC workflow lifecycle: create → documents → EDD → approve/reject.
-id-payment-service,ApplicationComponent,Payment Service,FPS + SEPA CT + SEPA Instant via Modulr sandbox.
+id-safeguarding-service,ApplicationComponent,Safeguarding Service,CASS 15 safeguarding: daily reconciliation + breach detection + FIN060 return. Sprint 12.
+id-recon-engine,ApplicationComponent,Tri-Party Reconciliation Engine,CASS 7.15.17R daily tri-party recon: rails vs Midaz GL vs safeguarding bank. GAP-010.
+id-kyc-service,ApplicationComponent,KYC Service,KYC workflow lifecycle: create → documents → EDD → approve/reject. Ballerine adapter.
+id-payment-service,ApplicationComponent,Payment Service,FPS + SEPA CT + SEPA Instant via Modulr sandbox. Webhook signature verification.
 id-aml-service,ApplicationComponent,AML / Fraud Service,FraudAML pipeline with Jube (self-hosted ML). PSR APP 2024 compliant.
-id-iam-service,ApplicationComponent,IAM Service,Keycloak OIDC + RBAC. MockIAMAdapter for tests.
-id-ledger-service,ApplicationComponent,Ledger Service,Midaz CBS adapter. get_balance() + create_transaction() + list_transactions().
+id-iam-service,ApplicationComponent,IAM Service,Keycloak OIDC + RBAC. MockIAMAdapter for tests. KeycloakAdapter for production.
+id-ledger-service,ApplicationComponent,Ledger Service,Midaz CBS adapter. get_balance() + create_transaction() + list_transactions(). S13-01.
+id-openclaw-moa-bot,ApplicationComponent,OpenClaw moa-bot,Telegram/HTTP bot @mycarmi_moa_bot. MLRO operator assistant. GMKtec :18789.
+id-openclaw-ctio-bot,ApplicationComponent,OpenClaw ctio-bot,Telegram/HTTP bot for CTIO (Oleg). GMKtec :18791.
+id-banxe-screener,ApplicationComponent,Banxe Screener,Moov Watchman + PEP wrapper. OFAC/UN/EU/UK sanctions + PEP screening. GMKtec :8085.
+id-yente,ApplicationComponent,Yente / OpenSanctions,OpenSanctions primary sanctions/PEP database (200K+ entities). MIT licence. GMKtec :8086. Phase 3 target.
+id-pii-proxy,ApplicationComponent,PII Proxy / Presidio,Microsoft Presidio GDPR PII anonymisation proxy. MIT licence. GMKtec :8089.
+id-deep-search,ApplicationComponent,Deep Search,Compliance research service. GMKtec :8088.
+id-auto-verify-api,ApplicationComponent,Auto-Verify API,Agent response verification API. GMKtec :8094.
+id-hyperswitch-app,ApplicationComponent,Hyperswitch App Server,Payment orchestration and switch. Apache 2.0. Sprint 9 (P0: env fix). GMKtec :8096.
+id-hyperswitch-control,ApplicationComponent,Hyperswitch Control Center,Payment operations dashboard. Apache 2.0. Sprint 9. GMKtec :8097.
+id-hyperswitch-vault,ApplicationComponent,Hyperswitch Card Vault,PCI-compliant card tokenisation storage. Apache 2.0. Sprint 9 (P0: env fix). GMKtec :8098.
 id-onboarding-process,BusinessProcess,Customer Onboarding,EMR 2011 Reg.4 — customer creation + KYC + agreement lifecycle.
 id-daily-recon-process,BusinessProcess,Daily Reconciliation,CASS 7.15.17R — daily internal vs external reconciliation. Cron at 23:50 UTC.
 id-sar-process,BusinessProcess,SAR Filing,POCA 2002 s.330 — SAR lifecycle: file → MLRO approve → submit NCA.
-id-midaz,TechnologyService,Midaz CBS,Core Banking System. Self-hosted on GMKtec :8095. Double-entry GL ledger.
+id-tx-monitoring-process,BusinessProcess,Transaction Monitoring,Real-time transaction screening via Jube probabilistic ML engine. PSR APP 2024 / MLR 2017.
+id-sanctions-screening-process,BusinessProcess,Sanctions Screening,OFAC/UN/EU/UK sanctions and PEP check. Triggered at onboarding and on each payment. MLR 2017 Reg.28.
+id-payment-processing-process,BusinessProcess,Payment Processing,FPS/SEPA payment lifecycle: initiate → screen → authorise → settle → notify. PSR 2017.
+id-consumer-duty-process,BusinessProcess,Consumer Duty DISP,FCA DISP complaints handling under Consumer Duty (PS22/9). 3-day acknowledgement + 8-week resolution SLA.
+id-fin060-process,BusinessProcess,FIN060 Return,FCA regulatory return FIN060 — safeguarding funds report. Annual submission via RegData.
+id-midaz,TechnologyService,Midaz CBS,Core Banking System. Self-hosted on GMKtec :8095. Double-entry GL ledger. Apache 2.0. Sprint 8.
 id-keycloak,TechnologyService,Keycloak IAM,Keycloak 26.2.5 OIDC. Realm: banxe. GMKtec :8180. 7 roles.
-id-clickhouse,TechnologyService,ClickHouse Audit DB,Append-only audit trail. TTL 5 years (FCA MLR 2017 I-08).
-id-marble,TechnologyService,Marble Case Management,Self-hosted Apache 2.0 case management. MLRO inbox. GMKtec :5002.
-id-transaction-record,DataObject,TransactionRecord,Immutable transaction record. amount_gbp: Decimal (I-05).
-id-customer-profile,DataObject,CustomerProfile,Customer entity with KYC status + risk tier + agreement refs.
+id-clickhouse,TechnologyService,ClickHouse Audit DB,Append-only audit trail. TTL 5 years (FCA MLR 2017 I-08). :8123/9000.
+id-marble,TechnologyService,Marble Case Management,Self-hosted Apache 2.0 case management. MLRO inbox. GMKtec :5002. I-19: internal only.
+id-ollama,TechnologyService,Ollama,LLM inference server. Primary model: qwen3-banxe-v2 (~30b-a3b). AMD ROCm. GMKtec :11434. MIT licence.
+id-jube-tm,TechnologyService,Jube TM,Probabilistic transaction monitoring engine. Self-hosted. AGPLv3. GMKtec :5001.
+id-postgres-compliance,TechnologyService,PostgreSQL (compliance),Compliance database. PEP records (14491) + KYB entities. PostgreSQL licence. GMKtec :5432.
+id-postgres-jube,TechnologyService,PostgreSQL (Jube),Jube TM internal database. PostgreSQL licence. GMKtec :15432.
+id-postgres-marble,TechnologyService,PostgreSQL (Marble),Marble case management database. PostgreSQL licence. GMKtec :15433.
+id-redis,TechnologyService,Redis,Velocity monitoring cache. 24h TTL. BSD licence. GMKtec :6379.
+id-redis-jube,TechnologyService,Redis (Jube),Jube TM internal cache. BSD licence. GMKtec :16379.
+id-n8n,TechnologyService,n8n,Workflow automation (developer tooling). Fair-code licence. GMKtec :5678.
+id-nginx,TechnologyService,nginx,Reverse proxy and Web UI gateway. MIT licence. GMKtec :443/:80.
+id-firebase-emulator,TechnologyService,Firebase Emulator,Firebase auth emulator for Marble local mode. Apache 2.0. GMKtec :9099/:4000.
+id-mongodb-midaz,TechnologyService,MongoDB (Midaz),Midaz metadata store. rs0 replica set. SSPL licence. GMKtec :5703. Sprint 8.
+id-rabbitmq-midaz,TechnologyService,RabbitMQ (Midaz),Midaz async transaction queue. MPL 2.0. GMKtec :3003/:3004. Sprint 8.
+id-transaction-record,DataObject,TransactionRecord,Immutable transaction record. amount_gbp: Decimal (I-05). status: APPROVED|PENDING|CANCELLED.
+id-customer-profile,DataObject,CustomerProfile,Customer entity with KYC status + risk tier + agreement refs. PII fields encrypted at rest.

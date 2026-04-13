@@ -23,9 +23,80 @@ id-iam-service,banxe-status,ACTIVE
 id-ledger-service,banxe-domain,ledger
 id-ledger-service,banxe-module,services/ledger/
 id-ledger-service,banxe-status,ACTIVE
+id-openclaw-moa-bot,banxe-host,localhost:18789
+id-openclaw-moa-bot,banxe-status,ACTIVE
+id-openclaw-moa-bot,banxe-license,Commercial
+id-openclaw-ctio-bot,banxe-host,localhost:18791
+id-openclaw-ctio-bot,banxe-status,ACTIVE
+id-openclaw-ctio-bot,banxe-license,Commercial
+id-banxe-screener,banxe-host,localhost:8085
+id-banxe-screener,banxe-status,ACTIVE
+id-yente,banxe-host,localhost:8086
+id-yente,banxe-status,PLANNED
+id-yente,banxe-license,MIT
+id-pii-proxy,banxe-host,localhost:8089
+id-pii-proxy,banxe-status,ACTIVE
+id-pii-proxy,banxe-license,MIT
+id-deep-search,banxe-host,localhost:8088
+id-deep-search,banxe-status,ACTIVE
+id-auto-verify-api,banxe-host,localhost:8094
+id-auto-verify-api,banxe-status,ACTIVE
+id-hyperswitch-app,banxe-host,localhost:8096
+id-hyperswitch-app,banxe-status,ACTIVE+P0
+id-hyperswitch-app,banxe-license,Apache 2.0
+id-hyperswitch-control,banxe-host,localhost:8097
+id-hyperswitch-control,banxe-status,ACTIVE
+id-hyperswitch-control,banxe-license,Apache 2.0
+id-hyperswitch-vault,banxe-host,localhost:8098
+id-hyperswitch-vault,banxe-status,ACTIVE+P0
+id-hyperswitch-vault,banxe-license,Apache 2.0
+id-onboarding-process,banxe-domain,customers
+id-daily-recon-process,banxe-domain,safeguarding
+id-sar-process,banxe-domain,compliance
+id-tx-monitoring-process,banxe-domain,fraud
+id-sanctions-screening-process,banxe-domain,compliance
+id-payment-processing-process,banxe-domain,payment
+id-consumer-duty-process,banxe-domain,compliance
+id-fin060-process,banxe-domain,safeguarding
 id-midaz,banxe-host,localhost:8095
+id-midaz,banxe-license,Apache 2.0
 id-keycloak,banxe-host,localhost:8180
 id-clickhouse,banxe-host,localhost:8123
+id-clickhouse,banxe-license,Apache 2.0
 id-marble,banxe-host,localhost:5002
+id-marble,banxe-license,Apache 2.0
+id-ollama,banxe-host,localhost:11434
+id-ollama,banxe-status,ACTIVE
+id-ollama,banxe-license,MIT
+id-jube-tm,banxe-host,localhost:5001
+id-jube-tm,banxe-status,ACTIVE
+id-jube-tm,banxe-license,AGPLv3
+id-postgres-compliance,banxe-host,localhost:5432
+id-postgres-compliance,banxe-status,ACTIVE
+id-postgres-jube,banxe-host,localhost:15432
+id-postgres-jube,banxe-status,ACTIVE
+id-postgres-marble,banxe-host,localhost:15433
+id-postgres-marble,banxe-status,ACTIVE
+id-redis,banxe-host,localhost:6379
+id-redis,banxe-status,ACTIVE
+id-redis,banxe-license,BSD
+id-redis-jube,banxe-host,localhost:16379
+id-redis-jube,banxe-status,ACTIVE
+id-redis-jube,banxe-license,BSD
+id-n8n,banxe-host,localhost:5678
+id-n8n,banxe-status,ACTIVE
+id-n8n,banxe-license,Fair-code
+id-nginx,banxe-host,localhost:443/80
+id-nginx,banxe-status,ACTIVE
+id-nginx,banxe-license,MIT
+id-firebase-emulator,banxe-host,localhost:9099
+id-firebase-emulator,banxe-status,ACTIVE
+id-firebase-emulator,banxe-license,Apache 2.0
+id-mongodb-midaz,banxe-host,localhost:5703
+id-mongodb-midaz,banxe-status,ACTIVE
+id-mongodb-midaz,banxe-license,SSPL
+id-rabbitmq-midaz,banxe-host,localhost:3003/3004
+id-rabbitmq-midaz,banxe-status,ACTIVE
+id-rabbitmq-midaz,banxe-license,MPL 2.0
 id-transaction-record,banxe-module,services/ledger/midaz_adapter.py
 id-customer-profile,banxe-module,api/models/customers.py

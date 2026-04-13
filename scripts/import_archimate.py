@@ -9,6 +9,10 @@ Parses Archi exports (Open Exchange XML + CSV) and generates:
   archimate/parsed/views.json           — all views with contents
   archimate/parsed/SERVICE-MAP-GENERATED.md — auto-generated service map
 
+Optional outputs:
+  .ai/registries/archimate-map.md       — registry (--generate-registry)
+  one-line JSON summary to stdout       — (--json-summary)
+
 ArchiMate type → banxe-emi-stack domain mapping:
   ApplicationComponent → services/ modules
   BusinessProcess      → workflows
@@ -17,6 +21,8 @@ ArchiMate type → banxe-emi-stack domain mapping:
 
 Usage:
     python3 scripts/import_archimate.py [--xml PATH] [--csv-dir PATH] [--output-dir PATH]
+    python3 scripts/import_archimate.py --generate-registry
+    python3 scripts/import_archimate.py --json-summary
     make import-archimate
 
 FCA compliance: no external calls, no secrets, pure local file processing.
@@ -32,6 +38,16 @@ from pathlib import Path
 from typing import Any
 
 logger = logging.getLogger("banxe.archimate.importer")
+
+# ── lxml with stdlib fallback ─────────────────────────────────────────────────
+try:
+    from lxml import etree as _etree  # type: ignore[import-untyped]
+    _USING_LXML = True
+    logger.debug("Using lxml for XML parsing")
+except ImportError:  # pragma: no cover
+    import xml.etree.ElementTree as _etree  # type: ignore[no-redef]
+    _USING_LXML = False
+    logger.debug("lxml not available — falling back to xml.etree.ElementTree")
 
 # ── ArchiMate 3.0 Open Exchange namespace ────────────────────────────────────
 _ARCHIMATE_NS = "http://www.opengroup.org/xsd/archimate/3.0/"
@@ -59,14 +75,80 @@ ARCHIMATE_TYPE_TO_DOMAIN: dict[str, str] = {
     "Principle": "compliance",
 }
 
+# ── ArchiMate layer grouping for registry ─────────────────────────────────────
+ARCHIMATE_LAYER: dict[str, str] = {
+    "ApplicationComponent": "Application",
+    "ApplicationFunction": "Application",
+    "ApplicationService": "Application",
+    "ApplicationInterface": "Application",
+    "BusinessProcess": "Business",
+    "BusinessFunction": "Business",
+    "BusinessService": "Business",
+    "BusinessRole": "Business",
+    "BusinessActor": "Business",
+    "TechnologyService": "Technology",
+    "TechnologyFunction": "Technology",
+    "Node": "Technology",
+    "SystemSoftware": "Technology",
+    "DataObject": "Data",
+    "Artifact": "Data",
+    "ConstraintElement": "Motivation",
+    "Requirement": "Motivation",
+    "Principle": "Motivation",
+}
+
 # ── Default paths ─────────────────────────────────────────────────────────────
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _XML_DEFAULT = _REPO_ROOT / "archimate" / "banxe-model.xml"
 _CSV_DEFAULT = _REPO_ROOT / "archimate" / "csv"
 _OUTPUT_DEFAULT = _REPO_ROOT / "archimate" / "parsed"
+_REGISTRY_DEFAULT = _REPO_ROOT / ".ai" / "registries" / "archimate-map.md"
 
 
 # ── XML Parser ────────────────────────────────────────────────────────────────
+
+
+def _etree_parse(xml_path: Path) -> Any:
+    """Parse XML file using whichever etree backend is available."""
+    if _USING_LXML:
+        tree = _etree.parse(str(xml_path))  # noqa: S320
+        return tree.getroot()
+    else:
+        tree = _etree.parse(str(xml_path))
+        return tree.getroot()
+
+
+def _find(node: Any, tag: str) -> Any | None:
+    """Namespace-aware find that works for both lxml and stdlib etree."""
+    return node.find(tag, _NS)
+
+
+def _findall(node: Any, tag: str) -> list[Any]:
+    """Namespace-aware findall that works for both lxml and stdlib etree."""
+    return node.findall(tag, _NS)
+
+
+def _build_prop_def_map(root: Any) -> dict[str, str]:
+    """
+    Build a mapping from propertyDefinition identifier → human-readable name.
+
+    Example:
+      "prop-domain" → "banxe-domain"
+      "prop-module" → "banxe-module"
+      "prop-status" → "banxe-status"
+      "prop-host"   → "banxe-host"
+    """
+    mapping: dict[str, str] = {}
+    prop_defs_node = _find(root, "a:propertyDefinitions")
+    if prop_defs_node is None:
+        return mapping
+    for pd in _findall(prop_defs_node, "a:propertyDefinition"):
+        identifier = pd.get("identifier", "")
+        name_node = _find(pd, "a:name")
+        name = name_node.text if name_node is not None else identifier
+        if identifier:
+            mapping[identifier] = name or identifier
+    return mapping
 
 
 def parse_xml(xml_path: Path) -> dict[str, Any]:
@@ -74,17 +156,19 @@ def parse_xml(xml_path: Path) -> dict[str, Any]:
     Parse ArchiMate Open Exchange XML file.
 
     Returns dict with keys: elements, relationships, views, property_definitions
+    Property keys in elements are resolved to human-readable names via
+    propertyDefinitions (e.g. "prop-domain" → "banxe-domain").
     """
-    from lxml import etree  # type: ignore[import-untyped]
-
     if not xml_path.exists():
         logger.warning("XML model not found at %s — returning empty model", xml_path)
         return {"elements": [], "relationships": [], "views": [], "property_definitions": []}
 
-    tree = etree.parse(str(xml_path))  # noqa: S320
-    root = tree.getroot()
+    root = _etree_parse(xml_path)
 
-    elements = _parse_elements(root)
+    # Build prop-def map first so element parsing can resolve names
+    prop_def_map = _build_prop_def_map(root)
+
+    elements = _parse_elements(root, prop_def_map)
     relationships = _parse_relationships(root)
     views = _parse_views(root)
     prop_defs = _parse_property_definitions(root)
@@ -103,27 +187,30 @@ def parse_xml(xml_path: Path) -> dict[str, Any]:
     }
 
 
-def _parse_elements(root: Any) -> list[dict[str, Any]]:
+def _parse_elements(root: Any, prop_def_map: dict[str, str] | None = None) -> list[dict[str, Any]]:
     """Extract all elements from the model."""
+    if prop_def_map is None:
+        prop_def_map = {}
+
     results: list[dict[str, Any]] = []
-    elements_node = root.find("a:elements", _NS)
+    elements_node = _find(root, "a:elements")
     if elements_node is None:
         return results
 
-    for elem in elements_node.findall("a:element", _NS):
+    for elem in _findall(elements_node, "a:element"):
         identifier = elem.get("identifier", "")
         elem_type = elem.get("{http://www.w3.org/2001/XMLSchema-instance}type", "")
         # Strip namespace prefix if present (xsi:type may include ns prefix)
         if ":" in elem_type:
             elem_type = elem_type.split(":")[-1]
 
-        name_node = elem.find("a:name", _NS)
+        name_node = _find(elem, "a:name")
         name = name_node.text if name_node is not None else ""
 
-        doc_node = elem.find("a:documentation", _NS)
+        doc_node = _find(elem, "a:documentation")
         documentation = doc_node.text if doc_node is not None else ""
 
-        properties = _parse_element_properties(elem)
+        properties = _parse_element_properties(elem, prop_def_map)
 
         banxe_domain = ARCHIMATE_TYPE_TO_DOMAIN.get(elem_type, "unknown")
 
@@ -141,18 +228,25 @@ def _parse_elements(root: Any) -> list[dict[str, Any]]:
     return results
 
 
-def _parse_element_properties(elem: Any) -> dict[str, str]:
-    """Extract properties from an element node."""
+def _parse_element_properties(elem: Any, prop_def_map: dict[str, str]) -> dict[str, str]:
+    """
+    Extract properties from an element node.
+
+    Resolves propertyDefinitionRef identifiers to human-readable names using
+    prop_def_map so that callers see "banxe-domain" instead of "prop-domain".
+    """
     props: dict[str, str] = {}
-    props_node = elem.find("a:properties", _NS)
+    props_node = _find(elem, "a:properties")
     if props_node is None:
         return props
 
-    for prop in props_node.findall("a:property", _NS):
+    for prop in _findall(props_node, "a:property"):
         prop_ref = prop.get("propertyDefinitionRef", "")
-        val_node = prop.find("a:value", _NS)
+        # Resolve to human-readable name; fall back to raw ref if not found
+        resolved_key = prop_def_map.get(prop_ref, prop_ref)
+        val_node = _find(prop, "a:value")
         if val_node is not None and val_node.text:
-            props[prop_ref] = val_node.text
+            props[resolved_key] = val_node.text
 
     return props
 
@@ -160,11 +254,11 @@ def _parse_element_properties(elem: Any) -> dict[str, str]:
 def _parse_relationships(root: Any) -> list[dict[str, Any]]:
     """Extract all relationships."""
     results: list[dict[str, Any]] = []
-    rels_node = root.find("a:relationships", _NS)
+    rels_node = _find(root, "a:relationships")
     if rels_node is None:
         return results
 
-    for rel in rels_node.findall("a:relationship", _NS):
+    for rel in _findall(rels_node, "a:relationship"):
         identifier = rel.get("identifier", "")
         rel_type = rel.get("{http://www.w3.org/2001/XMLSchema-instance}type", "")
         if ":" in rel_type:
@@ -173,7 +267,7 @@ def _parse_relationships(root: Any) -> list[dict[str, Any]]:
         source = rel.get("source", "")
         target = rel.get("target", "")
 
-        name_node = rel.find("a:name", _NS)
+        name_node = _find(rel, "a:name")
         name = name_node.text if name_node is not None else ""
 
         results.append(
@@ -192,19 +286,19 @@ def _parse_relationships(root: Any) -> list[dict[str, Any]]:
 def _parse_views(root: Any) -> list[dict[str, Any]]:
     """Extract all views (diagrams)."""
     results: list[dict[str, Any]] = []
-    views_root = root.find("a:views", _NS)
+    views_root = _find(root, "a:views")
     if views_root is None:
         return results
 
-    diagrams = views_root.find("a:diagrams", _NS)
+    diagrams = _find(views_root, "a:diagrams")
     if diagrams is None:
         return results
 
-    for view in diagrams.findall("a:view", _NS):
+    for view in _findall(diagrams, "a:view"):
         identifier = view.get("identifier", "")
         view_type = view.get("{http://www.w3.org/2001/XMLSchema-instance}type", "")
 
-        name_node = view.find("a:name", _NS)
+        name_node = _find(view, "a:name")
         name = name_node.text if name_node is not None else ""
 
         nodes = [
@@ -213,7 +307,7 @@ def _parse_views(root: Any) -> list[dict[str, Any]]:
                 "elementRef": node.get("elementRef", ""),
                 "type": node.get("type", ""),
             }
-            for node in view.findall("a:node", _NS)
+            for node in _findall(view, "a:node")
         ]
 
         results.append(
@@ -232,14 +326,14 @@ def _parse_views(root: Any) -> list[dict[str, Any]]:
 def _parse_property_definitions(root: Any) -> list[dict[str, str]]:
     """Extract property definitions."""
     results: list[dict[str, str]] = []
-    prop_defs = root.find("a:propertyDefinitions", _NS)
+    prop_defs = _find(root, "a:propertyDefinitions")
     if prop_defs is None:
         return results
 
-    for pd in prop_defs.findall("a:propertyDefinition", _NS):
+    for pd in _findall(prop_defs, "a:propertyDefinition"):
         identifier = pd.get("identifier", "")
         pd_type = pd.get("type", "string")
-        name_node = pd.find("a:name", _NS)
+        name_node = _find(pd, "a:name")
         name = name_node.text if name_node is not None else ""
         results.append({"id": identifier, "type": pd_type, "name": name})
 
@@ -444,6 +538,162 @@ def generate_service_map(model: dict[str, Any], output_dir: Path) -> Path:
     return path
 
 
+def generate_registry(model: dict[str, Any], registry_path: Path) -> Path:
+    """
+    Generate .ai/registries/archimate-map.md from the parsed model.
+
+    Groups elements by ArchiMate layer (Application, Business, Technology, Data)
+    with columns: Element Name, ArchiMate Type, Banxe Domain, Module/Host, Status.
+    Suitable for AI agent consumption and human review.
+    """
+    registry_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Group elements by ArchiMate layer
+    layers: dict[str, list[dict[str, Any]]] = {}
+    for elem in model["elements"]:
+        layer = ARCHIMATE_LAYER.get(elem["type"], "Other")
+        layers.setdefault(layer, []).append(elem)
+
+    n_elements = len(model["elements"])
+    n_rels = len(model["relationships"])
+    n_views = len(model["views"])
+
+    lines: list[str] = [
+        "# ArchiMate Registry — archimate-map.md",
+        "<!-- 13th registry for banxe-emi-stack | Source: archimate/banxe-model.xml -->",
+        "<!-- AUTO-SYNC: run `make import-archimate` after Archi export -->",
+        "",
+        "## Purpose",
+        "Maps ArchiMate enterprise architecture model (Archi Tool) to banxe-emi-stack code.",
+        "AI agents use this registry to understand which code modules implement which architecture components.",
+        "",
+        f"**Model stats:** {n_elements} elements · {n_rels} relationships · {n_views} views",
+        "",
+    ]
+
+    layer_order = ["Application", "Business", "Technology", "Data", "Motivation", "Other"]
+    layer_headers = {
+        "Application": "## Application Layer",
+        "Business": "## Business Process Layer",
+        "Technology": "## Technology Layer",
+        "Data": "## Data Objects",
+        "Motivation": "## Motivation / Compliance",
+        "Other": "## Other Elements",
+    }
+    layer_columns = {
+        "Application": (
+            "| Element Name | ArchiMate Type | Banxe Domain | Module/Host | Status |",
+            "|-------------|---------------|-------------|------------|--------|",
+        ),
+        "Business": (
+            "| Element Name | ArchiMate Type | Banxe Domain | Module/Host | Status |",
+            "|-------------|---------------|-------------|------------|--------|",
+        ),
+        "Technology": (
+            "| Element Name | ArchiMate Type | Banxe Domain | Module/Host | Status |",
+            "|-------------|---------------|-------------|------------|--------|",
+        ),
+        "Data": (
+            "| Element Name | ArchiMate Type | Banxe Domain | Module/Host | Status |",
+            "|-------------|---------------|-------------|------------|--------|",
+        ),
+        "Motivation": (
+            "| Element Name | ArchiMate Type | Banxe Domain | Module/Host | Status |",
+            "|-------------|---------------|-------------|------------|--------|",
+        ),
+        "Other": (
+            "| Element Name | ArchiMate Type | Banxe Domain | Module/Host | Status |",
+            "|-------------|---------------|-------------|------------|--------|",
+        ),
+    }
+
+    for layer in layer_order:
+        elems = layers.get(layer, [])
+        if not elems:
+            continue
+
+        lines.append(layer_headers[layer])
+        lines.append("")
+        header, separator = layer_columns[layer]
+        lines.append(header)
+        lines.append(separator)
+
+        for elem in sorted(elems, key=lambda e: (e.get("name") or "")):
+            props = elem.get("properties", {})
+            module_host = (
+                props.get("banxe-module")
+                or props.get("banxe-host")
+                or "—"
+            )
+            status = props.get("banxe-status", "—")
+            banxe_domain = elem.get("banxe_domain", "unknown")
+            elem_name = elem.get("name") or ""
+            elem_type = elem.get("type") or ""
+            lines.append(
+                f"| {elem_name} | {elem_type} | {banxe_domain} | `{module_host}` | {status} |"
+            )
+
+        lines.append("")
+
+    # Relationships summary
+    rel_counts: dict[str, int] = {}
+    for rel in model["relationships"]:
+        rel_counts[rel["type"]] = rel_counts.get(rel["type"], 0) + 1
+
+    if rel_counts:
+        lines.append("## Relationships Summary")
+        lines.append("")
+        lines.append("| Relationship Type | Count |")
+        lines.append("|------------------|-------|")
+        for rel_type, count in sorted(rel_counts.items(), key=lambda x: -x[1]):
+            lines.append(f"| {rel_type} | {count} |")
+        lines.append("")
+
+    # Views summary
+    if model["views"]:
+        lines.append("## Views (Diagrams)")
+        lines.append("")
+        lines.append("| View Name | Nodes |")
+        lines.append("|-----------|-------|")
+        for view in model["views"]:
+            lines.append(f"| {view['name']} | {view['node_count']} |")
+        lines.append("")
+
+    lines += [
+        "## Sync Instructions",
+        "1. Export from Archi: File → Export → Open Exchange XML → archimate/banxe-model.xml",
+        "2. Run: `make import-archimate`",
+        "3. This file auto-updates via `--generate-registry`",
+        "4. Commit changes to banxe-architecture",
+        "",
+        "<!-- Generated by scripts/import_archimate.py --generate-registry -->",
+    ]
+
+    with registry_path.open("w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+    logger.info("Wrote registry: %s (%d elements)", registry_path, n_elements)
+    return registry_path
+
+
+def print_json_summary(model: dict[str, Any]) -> None:
+    """
+    Print a one-line JSON summary to stdout for CI consumption.
+
+    Format: {"elements": N, "relationships": N, "views": N, "domains": [...]}
+    """
+    domains_seen: list[str] = sorted(
+        {elem.get("banxe_domain", "unknown") for elem in model["elements"]}
+    )
+    summary = {
+        "elements": len(model["elements"]),
+        "relationships": len(model["relationships"]),
+        "views": len(model["views"]),
+        "domains": domains_seen,
+    }
+    print(json.dumps(summary, separators=(",", ":")))
+
+
 def validate_service_map(model: dict[str, Any], service_map_path: Path) -> list[str]:
     """
     Validate that elements in SERVICE-MAP.md are in the ArchiMate model.
@@ -525,9 +775,37 @@ def main() -> int:
         default=_REPO_ROOT / "SERVICE-MAP.md",
         help="Path to SERVICE-MAP.md for validation",
     )
+    parser.add_argument(
+        "--generate-registry",
+        action="store_true",
+        help=(
+            "Generate .ai/registries/archimate-map.md — "
+            "an AI-readable registry grouping elements by ArchiMate layer"
+        ),
+    )
+    parser.add_argument(
+        "--registry-path",
+        type=Path,
+        default=_REGISTRY_DEFAULT,
+        help="Output path for --generate-registry (default: .ai/registries/archimate-map.md)",
+    )
+    parser.add_argument(
+        "--json-summary",
+        action="store_true",
+        help=(
+            "Print a one-line JSON summary to stdout: "
+            '{\"elements\": N, \"relationships\": N, \"views\": N, \"domains\": [...]} '
+            "— useful for CI pipelines"
+        ),
+    )
     args = parser.parse_args()
 
     model = load_model(args.xml, args.csv_dir)
+
+    # --json-summary: emit summary and exit (can be combined with other flags)
+    if args.json_summary:
+        print_json_summary(model)
+        return 0
 
     if not model["elements"]:
         logger.error("No elements found — check XML and CSV paths")
@@ -537,9 +815,16 @@ def main() -> int:
     svc_map_path = generate_service_map(model, args.output_dir)
     written.append(svc_map_path)
 
+    if args.generate_registry:
+        registry_path = generate_registry(model, args.registry_path)
+        written.append(registry_path)
+
     print(f"✅ ArchiMate import complete — {len(written)} files written to {args.output_dir}/")
     for p in written:
-        rel = p.relative_to(_REPO_ROOT)
+        try:
+            rel = p.relative_to(_REPO_ROOT)
+        except ValueError:
+            rel = p
         count = len(json.loads(p.read_text())) if p.suffix == ".json" else "md"
         print(f"   {rel}  ({count})")
 

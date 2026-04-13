@@ -11,3 +11,28 @@ id-rel-recon-midaz,Serving,id-recon-engine,id-midaz,reads GL balance
 id-rel-aml-marble,Flow,id-aml-service,id-marble,creates case
 id-rel-onboarding-kyc,Composition,id-onboarding-process,id-kyc-service,triggers
 id-rel-recon-process-engine,Composition,id-daily-recon-process,id-recon-engine,executes via
+id-rel-aml-jube,Serving,id-aml-service,id-jube-tm,ML scoring
+id-rel-aml-yente,Serving,id-aml-service,id-yente,sanctions screening
+id-rel-safeguarding-midaz,Serving,id-safeguarding-service,id-midaz,reads GL
+id-rel-payment-hyperswitch,Serving,id-payment-service,id-hyperswitch-app,payment orchestration
+id-rel-kyc-postgres-compliance,Access,id-kyc-service,id-postgres-compliance,reads PEP data
+id-rel-api-iam,Serving,id-api-gateway,id-iam-service,authenticates
+id-rel-api-ledger,Serving,id-api-gateway,id-ledger-service,serves
+id-rel-ledger-mongodb,Access,id-ledger-service,id-mongodb-midaz,metadata
+id-rel-ledger-rabbitmq,Flow,id-ledger-service,id-rabbitmq-midaz,async transactions
+id-rel-nginx-api,Serving,id-nginx,id-api-gateway,reverse proxy
+id-rel-pii-postgres-compliance,Access,id-pii-proxy,id-postgres-compliance,anonymisation
+id-rel-jube-postgres-jube,Access,id-jube-tm,id-postgres-jube,stores model data
+id-rel-jube-redis-jube,Access,id-jube-tm,id-redis-jube,internal cache
+id-rel-marble-postgres-marble,Access,id-marble,id-postgres-marble,stores cases
+id-rel-marble-firebase,Serving,id-marble,id-firebase-emulator,auth (local mode)
+id-rel-aml-redis,Access,id-aml-service,id-redis,velocity monitoring
+id-rel-tx-monitoring-aml,Composition,id-tx-monitoring-process,id-aml-service,executes via
+id-rel-sanctions-screener,Composition,id-sanctions-screening-process,id-banxe-screener,executes via
+id-rel-payment-proc-payment-svc,Composition,id-payment-processing-process,id-payment-service,executes via
+id-rel-fin060-safeguarding,Composition,id-fin060-process,id-safeguarding-service,executes via
+id-rel-openclaw-moa-ollama,Serving,id-openclaw-moa-bot,id-ollama,LLM inference
+id-rel-openclaw-ctio-ollama,Serving,id-openclaw-ctio-bot,id-ollama,LLM inference
+id-rel-midaz-mongodb,Access,id-midaz,id-mongodb-midaz,metadata store
+id-rel-midaz-rabbitmq,Flow,id-midaz,id-rabbitmq-midaz,async queue
+id-rel-hyperswitch-vault,Serving,id-hyperswitch-app,id-hyperswitch-vault,card tokenisation
