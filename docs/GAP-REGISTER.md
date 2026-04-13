@@ -28,7 +28,7 @@
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
 | GAP-009 | Appoint CRO (SMF4) — Elena Vasilenko appointed 2026-04-13 | — | CEO | ✅ DONE |
-| GAP-010 | D-recon: Reconciliation Engine (OVERDUE — was Sprint 9) | Sprint 12 | CTIO | ❌ OVERDUE |
+| GAP-010 | D-recon: Reconciliation Engine (OVERDUE — was Sprint 9) | Sprint 12 | CTIO | ✅ DONE |
 | GAP-011 | A-kyc: KYC individual — get Sumsub API key (BT-004) | Sprint 12 | CTIO | ❌ BLOCKED |
 | GAP-012 | A-idv: IDV pipeline (OCR + biometric) | Sprint 12 | CTIO | ❌ OPEN |
 | GAP-013 | A-kyb: KYB business — get Companies House API key (BT-005) | Sprint 13 | CTIO | ❌ BLOCKED |
