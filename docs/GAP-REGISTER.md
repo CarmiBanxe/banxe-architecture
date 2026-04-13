@@ -32,16 +32,16 @@
 | GAP-011 | A-kyc: KYC individual — get Sumsub API key (BT-004) | Sprint 12 | CTIO | ❌ BLOCKED |
 | GAP-012 | A-idv: IDV pipeline (OCR + biometric) | Sprint 12 | CTIO | ❌ OPEN |
 | GAP-013 | A-kyb: KYB business — get Companies House API key (BT-005) | Sprint 13 | CTIO | ❌ BLOCKED |
-| GAP-014 | B-emi: EMI product definitions (e-money, cards, IBAN) | Sprint 12 | CEO | ❌ OPEN |
+| GAP-014 | B-emi: EMI product definitions (e-money, cards, IBAN) | Sprint 12 | CEO | ✅ DONE |
 | GAP-015 | C-fps: UK Faster Payments FPS (needs Modulr) | Sprint 12 | CTIO | ❌ BLOCKED |
 | GAP-016 | C-sepa: SEPA CT + SEPA Instant | Sprint 13 | CTIO | ❌ OPEN |
-| GAP-017 | D-gl: General Ledger — complete GL reconciliation (5% done) | Sprint 12 | CTIO | ⚠️ IN PROGRESS |
+| GAP-017 | D-gl: General Ledger — complete GL reconciliation (5% done) | Sprint 12 | CTIO | ✅ DONE |
 | GAP-018 | D-fin: Financial Reporting (P&L, balance sheet) | Sprint 12 | CEO | ❌ OPEN |
-| GAP-019 | D-fee: Fee Engine & billing | Sprint 12 | CTIO | ❌ OPEN |
+| GAP-019 | D-fee: Fee Engine & billing | Sprint 12 | CTIO | ✅ DONE |
 | GAP-020 | E-capital: FCA ICARA capital adequacy | Sprint 16 | CEO | Q3 2026 | ❌ OPEN |
 | GAP-021 | G-rt: Real-time fraud scoring (Jube ML model) | Sprint 13 | CTIO | ❌ OPEN |
 | GAP-022 | G-device: Device fingerprinting, velocity checks | Sprint 13 | CTIO | ❌ OPEN |
-| GAP-023 | I-api: API Gateway — developer-facing endpoints | Sprint 12 | CTIO | ❌ OPEN |
+| GAP-023 | I-api: API Gateway — developer-facing endpoints | Sprint 12 | CTIO | ✅ DONE |
 | GAP-024 | K-fscs: FSCS reporting | Sprint 16 | CEO | Q3 2026 | ❌ OPEN |
 | GAP-025 | K-nca: NCA SARs automated filing | Sprint 13 | CTIO | ❌ OPEN |
 
