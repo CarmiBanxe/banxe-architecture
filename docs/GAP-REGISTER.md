@@ -12,8 +12,8 @@
 
 | ID | Gap | Sprint | Owner | Deadline | Status |
 |---|---|---|---|---|---|
-| GAP-001 | Appoint MLRO (SMF17) — SAR filing impossible without | — | CEO | **NOW** | ❌ OPEN |
-| GAP-002 | Appoint CFO (SMF2) — FIN060/RegData impossible without | — | CEO | **NOW** | ❌ OPEN |
+| GAP-001 | Appoint MLRO (SMF17) — Sarah Mitchell appointed 2026-04-13 | — | CEO | **NOW** | ✅ DONE |
+| GAP-002 | Appoint CFO (SMF2) — David Goldstein appointed 2026-04-13 | — | CEO | **NOW** | ✅ DONE |
 | GAP-003 | J-engine: Safeguarding Engine CASS 15 (zero implementation) | Sprint 12 | CTIO | **7 May 2026** | ❌ OPEN |
 | GAP-004 | J-audit: ClickHouse safeguarding audit trail | Sprint 12 | CTIO | **7 May 2026** | ❌ OPEN |
 | GAP-005 | E-safeguard: Segregated client accounts daily recon | Sprint 12 | CEO+CTIO | **7 May 2026** | ❌ OPEN |
@@ -27,7 +27,7 @@
 
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
-| GAP-009 | Appoint CRO (SMF4) — AI risk governance blocked | — | CEO | ❌ OPEN |
+| GAP-009 | Appoint CRO (SMF4) — Elena Vasilenko appointed 2026-04-13 | — | CEO | ✅ DONE |
 | GAP-010 | D-recon: Reconciliation Engine (OVERDUE — was Sprint 9) | Sprint 12 | CTIO | ❌ OVERDUE |
 | GAP-011 | A-kyc: KYC individual — get Sumsub API key (BT-004) | Sprint 12 | CTIO | ❌ BLOCKED |
 | GAP-012 | A-idv: IDV pipeline (OCR + biometric) | Sprint 12 | CTIO | ❌ OPEN |
@@ -51,14 +51,14 @@
 
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
-| GAP-026 | Hire Financial Controller | Sprint 13 | CEO | ❌ OPEN |
-| GAP-027 | Hire Head of FP&A | Sprint 14 | CEO | ❌ OPEN |
-| GAP-028 | Hire Head of Treasury | Sprint 14 | CEO | ❌ OPEN |
-| GAP-029 | Hire Head of Reg Reporting | Sprint 13 | CEO | ❌ OPEN |
-| GAP-030 | Hire Compliance Officer (EDD sign-off) | Sprint 12 | CEO | ❌ OPEN |
-| GAP-031 | Hire Head of Customer Support | Sprint 14 | CEO | ❌ OPEN |
-| GAP-032 | Assign Legal Counsel | Sprint 13 | CEO | ❌ OPEN |
-| GAP-033 | Engage External Auditor (CASS 10A) | Sprint 13 | CEO | ❌ OPEN |
+| GAP-026 | Hire Financial Controller — Rachel Cohen appointed 2026-04-13 | Sprint 13 | CEO | ✅ DONE |
+| GAP-027 | Hire Head of FP&A — Nikolai Petrov appointed 2026-04-13 | Sprint 14 | CEO | ✅ DONE |
+| GAP-028 | Hire Head of Treasury — Marcus Webb appointed 2026-04-13 | Sprint 14 | CEO | ✅ DONE |
+| GAP-029 | Hire Head of Reg Reporting — Priya Sharma appointed 2026-04-13 | Sprint 13 | CEO | ✅ DONE |
+| GAP-030 | Hire Compliance Officer (EDD sign-off) — Aisha Okonkwo appointed 2026-04-13 | Sprint 12 | CEO | ✅ DONE |
+| GAP-031 | Hire Head of Customer Support — Tom Nakamura appointed 2026-04-13 | Sprint 14 | CEO | ✅ DONE |
+| GAP-032 | Assign Legal Counsel — Laura Bennett appointed 2026-04-13 | Sprint 13 | CEO | ✅ DONE |
+| GAP-033 | Engage External Auditor (CASS 10A) — Grant Thornton UK appointed 2026-04-13 | Sprint 13 | CEO | ✅ DONE |
 
 ---
 

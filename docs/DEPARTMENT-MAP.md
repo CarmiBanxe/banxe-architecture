@@ -259,16 +259,16 @@ graph TD
 
 | Legacy Department (Geniusto) | AI Agent (Banxe AI Bank) | Human Double | Trust Zone | Autonomy |
 |---|---|---|---|---|
-| Customer Onboarding | `KYC-Specialist-v2` | Compliance Officer | 🟡 AMBER | L2 Review |
-| AML/Compliance | `AML-Analyst-v1` + `Compliance-Officer-v1` | MLRO (SMF17) | 🔴 RED | L3 MLRO |
-| Payment Operations | `PaymentRouterAgent` (**NEW** — PROPOSED) | Treasury Manager | 🔴 RED | L3 MLRO |
-| Core Banking/Ledger | `LedgerAgent` (via MidazAdapter) | CFO | 🟡 AMBER | L2 Review |
-| Safeguarding | `SafeguardingAgent` (recon cron) | MLRO + External Auditor | 🔴 RED | L3 MLRO |
-| Customer Management | `CustomerLifecycleAgent` (**NEW** — PROPOSED) | Customer Support Lead | 🟢 GREEN | L1 Auto |
-| Agreement Service | `AgreementAgent` (**NEW** — PROPOSED) | Legal Counsel | 🟡 AMBER | L2 Review |
+| Customer Onboarding | `KYC-Specialist-v2` | Aisha Okonkwo (Compliance Officer) — Appointed 2026-04-13 | 🟡 AMBER | L2 Review |
+| AML/Compliance | `AML-Analyst-v1` + `Compliance-Officer-v1` | Sarah Mitchell (MLRO/SMF17) — Appointed 2026-04-13 | 🔴 RED | L3 MLRO |
+| Payment Operations | `PaymentRouterAgent` (**NEW** — PROPOSED) | Marcus Webb (Head of Treasury) — Appointed 2026-04-13 | 🔴 RED | L3 MLRO |
+| Core Banking/Ledger | `LedgerAgent` (via MidazAdapter) | David Goldstein (CFO/SMF2) — Appointed 2026-04-13 | 🟡 AMBER | L2 Review |
+| Safeguarding | `SafeguardingAgent` (recon cron) | Sarah Mitchell (MLRO) + Grant Thornton UK (Ext. Auditor) — Appointed 2026-04-13 | 🔴 RED | L3 MLRO |
+| Customer Management | `CustomerLifecycleAgent` (**NEW** — PROPOSED) | Tom Nakamura (Head of Customer Support) — Appointed 2026-04-13 | 🟢 GREEN | L1 Auto |
+| Agreement Service | `AgreementAgent` (**NEW** — PROPOSED) | Laura Bennett (Legal Counsel) — Appointed 2026-04-13 | 🟡 AMBER | L2 Review |
 | Notification | `NotificationAgent` (n8n workflows) | — | 🟢 GREEN | L1 Auto |
-| Security/2FA | `SecurityAgent` (Keycloak + IAM) | CTIO | 🔴 RED | L4 Board |
-| Reporting/FCA | `ReportingAgent` (**NEW** — PROPOSED) | CFO + MLRO | 🔴 RED | L3 MLRO |
+| Security/2FA | `SecurityAgent` (Keycloak + IAM) | Oleg @p314pm (CTIO/SMF26) | 🔴 RED | L4 Board |
+| Reporting/FCA | `ReportingAgent` (**NEW** — PROPOSED) | David Goldstein (CFO) + Sarah Mitchell (MLRO) — Appointed 2026-04-13 | 🔴 RED | L3 MLRO |
 
 ### Autonomy Levels
 | Level | Name | Description |

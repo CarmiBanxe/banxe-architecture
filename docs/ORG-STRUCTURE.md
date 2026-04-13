@@ -361,11 +361,11 @@ Consumer Duty PS22/9 outputs are monitored by CRO.
 | SMF | Role | Holder | FCA Certification |
 |-----|------|--------|------------------|
 | SMF1 | CEO | Moriel Carmi | ✅ Required |
-| SMF2 | CFO | TBC | ✅ Required |
-| SMF4 | CRO | TBC | ✅ Required |
-| SMF5 | Internal Audit | TBC (or outsourced) | ✅ Required |
-| SMF17 | MLRO | TBC | ✅ Required |
-| SMF24 | COO | TBC | ✅ Required |
+| SMF2 | CFO | David Goldstein — Appointed (sandbox) 2026-04-13 | ✅ Required |
+| SMF4 | CRO | Elena Vasilenko — Appointed (sandbox) 2026-04-13 | ✅ Required |
+| SMF5 | Internal Audit | Grant Thornton UK (outsourced) — Appointed (sandbox) 2026-04-13 | ✅ Required |
+| SMF17 | MLRO | Sarah Mitchell — Appointed (sandbox) 2026-04-13 | ✅ Required |
+| SMF24 | COO | James Hargreaves — Appointed (sandbox) 2026-04-13 | ✅ Required |
 | SMF26 | CTO | Oleg (@p314pm) (CTIO) | ✅ Required |
 
 **FCA Conduct Rules apply to all Certified persons and SMF holders.**
