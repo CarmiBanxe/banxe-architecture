@@ -366,3 +366,58 @@ make generate-component COMPONENT=Button
 |-----------|-------|
 | После IL-BIOME-01 | 1 931 ✅ |
 - [2026-04-12] ee683db — feat(IL-091): add post-task.sh hook + commit-log.jsonl
+
+---
+
+## Sprint 12 — SMF Appointments + Safeguarding + D-recon (2026-04-13)
+
+### Personnel appointments (sandbox)
+
+| SMF | Role | Appointed |
+|-----|------|-----------|
+| SMF17 | MLRO | Sarah Mitchell |
+| SMF2 | CFO | David Goldstein |
+| SMF4 | CRO | Elena Vasilenko |
+| SMF24 | COO | James Hargreaves |
+| SMF5 | Internal Audit | Grant Thornton UK |
+
+Functional heads: Rachel Cohen (Financial Controller), Nikolai Petrov (Head FP&A),
+Marcus Webb (Head Treasury), Priya Sharma (Head Reg Reporting),
+Aisha Okonkwo (Compliance Officer), Tom Nakamura (Head Customer Support),
+Laura Bennett (Legal Counsel), Grant Thornton UK (External Auditor).
+
+Updated: `docs/ORG-STRUCTURE.md §4`, `docs/DEPARTMENT-MAP.md §3`.
+GAP-001, 002, 009, 026–033 → ✅ DONE. Commit: `33e8eaa`.
+
+### gap-tracker.py — GAP register status
+
+| Date | Open | Done | In Progress |
+|------|------|------|-------------|
+| Session start | 43 | 0 | 2 |
+| End of session | 29 | 14 | 2 |
+
+GAP-003 (safeguarding engine), GAP-004 (audit trail), GAP-010 (D-recon tri-party) → DONE.
+Run: `python3 scripts/gap-tracker.py --status` (mandatory session start/end).
+
+### banxe-emi-stack deliverables (commit `cabfb2f`)
+
+**src/safeguarding/** — CASS 15 / PS23/3 (deadline 7 May 2026):
+- `daily_reconciliation.py` — MATCHED/BREAK/PENDING, £0.01 tolerance
+- `breach_detector.py` — >3 day streak → CRITICAL FCA alert
+- `fin060_generator.py` — FIN060 return, to_dict/to_json/to_csv_row
+- `audit_trail.py` — ClickHouse MergeTree 6yr TTL, fail-open
+
+**src/settlement/reconciler_engine.py** — GAP-010 D-recon (was OVERDUE Sprint 9):
+- Tri-party: RAILS_VS_LEDGER + LEDGER_VS_BANK + RAILS_VS_BANK
+- Protocol ports (fully injectable, no infra deps)
+- ClickHouseDiscrepancyReporter → banxe.settlement_recon_events (5yr TTL)
+- ReconcilerCron: exit 0/1/2/3
+
+NOTE: Do NOT confuse with existing `services/recon/` (2-way Midaz↔bank, still used) or
+`services/safeguarding-engine/` (FastAPI microservice, stubs Phase 3.6 — not yet wired).
+
+### Sprint 12 remaining open (9 gaps)
+GAP-005 (real Barclays/HSBC account — external blocker),
+GAP-008/011/015 (API keys blocked),
+GAP-012 (IDV), GAP-014 (EMI products), GAP-018 (FCA reporting),
+GAP-019 (Fee Engine), GAP-023 (API Gateway).
