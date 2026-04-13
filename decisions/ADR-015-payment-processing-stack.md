@@ -2,6 +2,7 @@
 
 **Status:** ACCEPTED (2026-04-13, approved by Moriel Carmi, CEO)
 **Date:** 2026-04-12
+**Date Accepted:** 2026-04-13
 **Deciders:** CEO (Moriel Carmi)
 **Trust Zone:** AMBER
 **Change Class:** CLASS_B
