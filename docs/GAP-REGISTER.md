@@ -14,8 +14,8 @@
 |---|---|---|---|---|---|
 | GAP-001 | Appoint MLRO (SMF17) — Sarah Mitchell appointed 2026-04-13 | — | CEO | **NOW** | ✅ DONE |
 | GAP-002 | Appoint CFO (SMF2) — David Goldstein appointed 2026-04-13 | — | CEO | **NOW** | ✅ DONE |
-| GAP-003 | J-engine: Safeguarding Engine CASS 15 (zero implementation) | Sprint 12 | CTIO | **7 May 2026** | ❌ OPEN |
-| GAP-004 | J-audit: ClickHouse safeguarding audit trail | Sprint 12 | CTIO | **7 May 2026** | ❌ OPEN |
+| GAP-003 | J-engine: Safeguarding Engine CASS 15 (zero implementation) | Sprint 12 | CTIO | **7 May 2026** | ✅ DONE |
+| GAP-004 | J-audit: ClickHouse safeguarding audit trail | Sprint 12 | CTIO | **7 May 2026** | ✅ DONE |
 | GAP-005 | E-safeguard: Segregated client accounts daily recon | Sprint 12 | CEO+CTIO | **7 May 2026** | ❌ OPEN |
 | GAP-006 | K-gabriel: FCA Gabriel/RegData returns | Sprint 13 | CEO | Q2 2026 | ❌ OPEN |
 | GAP-007 | F-finrpt: FCA regulatory returns (FIN-RPT) | Sprint 13 | CEO | Q2 2026 | ❌ OPEN |
