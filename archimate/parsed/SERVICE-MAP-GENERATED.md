@@ -4,7 +4,7 @@
 
 ## Banxe EMI Architecture — Service Map
 
-Generated from ArchiMate model | Elements: 44 | Relationships: 37 | Views: 5
+Generated from ArchiMate model | Elements: 57 | Relationships: 46 | Views: 5
 
 ## Services
 
@@ -33,11 +33,24 @@ Generated from ArchiMate model | Elements: 44 | Relationships: 37 | Views: 5
 
 | Name | Type | Module/Host | Status |
 |------|------|-------------|--------|
+| BaaS SLA Monitoring | BusinessProcess | `` |  |
+| BaaS Settlement | BusinessProcess | `` |  |
+| BaaS Tenant Onboarding | BusinessProcess | `` |  |
+| Card Activation | BusinessProcess | `` |  |
+| Card Blocking | BusinessProcess | `` |  |
+| Card Issuance | BusinessProcess | `` |  |
+| Card Replacement | BusinessProcess | `` |  |
 | Consumer Duty DISP | BusinessProcess | `` |  |
 | Customer Onboarding | BusinessProcess | `` |  |
 | Daily Reconciliation | BusinessProcess | `` |  |
 | FIN060 Return | BusinessProcess | `` |  |
+| Fraud Detection | BusinessProcess | `` |  |
+| OKR Planning | BusinessProcess | `` |  |
+| Operational Risk Monitoring | BusinessProcess | `` |  |
 | Payment Processing | BusinessProcess | `` |  |
+| Product Roadmap Review | BusinessProcess | `` |  |
+| Regulatory Horizon Scanning | BusinessProcess | `` |  |
+| Risk Assessment | BusinessProcess | `` |  |
 | SAR Filing | BusinessProcess | `` |  |
 | Sanctions Screening | BusinessProcess | `` |  |
 | Transaction Monitoring | BusinessProcess | `` |  |
@@ -74,10 +87,10 @@ Generated from ArchiMate model | Elements: 44 | Relationships: 37 | Views: 5
 
 | Type | Count |
 |------|-------|
-| Serving | 19 |
+| Serving | 20 |
+| Composition | 11 |
 | Access | 8 |
-| Composition | 6 |
-| Flow | 4 |
+| Flow | 7 |
 
 ## Views (Diagrams)
 
