@@ -92,3 +92,22 @@ Offline:
 3. НИКОГДА не хранить секреты в коде — только `.env` / Vault
 4. ВСЕГДА логировать каждое действие с финансовыми данными (pgAudit / ClickHouse)
 5. НИКОГДА не использовать платные SaaS без self-hosted альтернативы в production
+
+---
+
+## Dev-time vs Runtime Separation (BUG-001)
+
+> Нарушение этой границы = архитектурный дефект уровня P0.
+
+| | MetaClo | mlro_agent |
+|---|---------|------------|
+| **Когда** | Dev-time (до коммита, pre-merge gate) | Runtime (в момент транзакции) |
+| **Что проверяет** | Код, правила, инварианты до мержа | Финансовые решения в production |
+| **Может override?** | НЕТ — не может override mlro_agent в prod | НЕТ — не может менять dev-time правила |
+
+### Правила разделения:
+- MetaClo = dev-time pre-merge gate: проверяет ДО коммита
+- mlro_agent = runtime decision maker: проверяет В МОМЕНТ транзакции
+- При конфликте dev-time решения и runtime решения → **автоэскалация на MLRO-человека**
+- MetaClo НЕ МОЖЕТ override решение mlro_agent в production
+- mlro_agent НЕ МОЖЕТ менять dev-time правила (I-22, I-26)
