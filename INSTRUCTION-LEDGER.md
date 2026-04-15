@@ -1422,3 +1422,14 @@
   - ◦ 3 коммита fix(ci) в developer-core: YAML indentation в workflows
   - ◦ 1931+ тестов green в banxe-emi-stack
   - ◦ Quality gate workflows: YAML syntax validatedbanxe-emi-stack. Оба пути (recent / old) верифицированы.
+ 
+  - ### IL-094 --- Sprint 16 Plan: Customer Support + Compliance AI Merge + Agent Routing
+
+- **Источник:** CEO, 2026-04-15 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** S16
+- **Описание:** Sprint 16 plan сформирован и зафиксирован в ROADMAP.md. 3 блока, 24 задачи (#108--#131).
+-   - ◦ **Блок A (Phase 12):** Customer Support Block -- IL-CSB-01 (#108--#118)
+  - ◦ **Блок B (Phase 11):** Compliance AI Copilot merge from refactor/claude-ai-scaffold -- IL-CKS-01, IL-CEC-01, IL-RTM-01 (#119--#123)
+  - ◦ **Блок C (Phase 8):** Agent Routing Layer foundation -- IL-ARL-01 (#124--#131)
+- **Targets:** Tests 2700->3100+, Coverage 87%->88%+, MCP tools 28->36+, API endpoints 80+->90+, Agent passports 9->14+
+- **Статус:** DONE ✅ (ROADMAP.md committed 2026-04-15)
+- **Proof:** banxe-emi-stack ROADMAP.md commit docs(sprint-16). 332 lines, 16.1 KB. No BT blockers.
