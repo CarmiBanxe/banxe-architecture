@@ -111,6 +111,23 @@ P3 (Year 2+): FinGPT, OpenBB, Apache Camel, Mojaloop, Beancount
 
 ---
 
+## HITL Confidence Thresholds (BUG-007 — MANDATORY for every L2+ agent)
+
+| Confidence | Action | Details |
+|-----------|--------|---------|
+| >90% | **AUTO** | Agent executes decision. Logged but no human review required. KYC-check style. |
+| 70-90% | **REVIEW** | Decision paused. Notify дублёр (MLRO/CEO). Wait 15 min max. If no response → escalate to BLOCK. |
+| <70% | **BLOCK** | Full stop. Human confirmation mandatory. SAR filing if amount ≥£10k. No timeout — wait for human. |
+
+### Rules:
+1. Every L2 agent (`mlro_agent`, `aml_check_agent`, `sanctions_check_agent`) MUST implement these thresholds
+2. Every agent response MUST include `confidence` score in output
+3. Thresholds are invariant — change only via ADR + MLRO + CEO approval
+4. EU AI Act Article 14: AI systems must allow human oversight at every L2+ decision
+5. Log all REVIEW and BLOCK decisions to ClickHouse with full context (correlation_id, agent_id, confidence, reason)
+
+---
+
 ## ARL (Agent Routing Layer) Pipeline (BUG-005)
 
 > `AGENT_ROUTING_ENABLED=false` — текущее состояние. **НЕ ВКЛЮЧАТЬ** до выполнения условий ниже.
