@@ -147,4 +147,11 @@ P3 (Year 2+): FinGPT, OpenBB, Apache Camel, Mojaloop, Beancount
 
 ## Agent Checklist (MANDATORY — выполнять перед каждым коммитом)
 
-- [ ] `banxe-subagent-context.md` передан каждому субагенту через `--context-file` (BUG-003)
+- [ ] Inspector Agent reviewed diff (BUG-002)
+- [ ] `banxe-subagent-context.md` passed to subagents via `--context-file` (BUG-003)
+- [ ] OpenClo consensus ≥70% documented and enforced (BUG-004)
+- [ ] Ruflo in ARL pipeline for payment/compliance/kyc (BUG-005)
+- [ ] HITL thresholds defined: AUTO >90% / REVIEW 70-90% / BLOCK <70% (BUG-007)
+- [ ] safeguarding-agent deployed and running on GMKtec (BUG-008)
+
+> BUG-001: MetaClo = dev-time gate, mlro_agent = runtime — never mix (see compliance.md)
