@@ -1,0 +1,14 @@
+# banxe-architecture/.claudeignore
+# Mostly docs repo — minimal ignores
+
+.git/
+*.log
+.idea/
+.vscode/
+*.swp
+__pycache__/
+*.pyc
+node_modules/
+.pytest_cache/
+site/
+.cache/
