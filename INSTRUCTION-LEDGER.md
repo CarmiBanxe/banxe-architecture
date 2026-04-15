@@ -1404,4 +1404,21 @@
   - Регистрация в settings.json как Stop hook: `"Stop": [{"hooks": [{"type": "command", ...}]}]`
 - **Инварианты:** `_main || true; exit 0` — никогда не блокирует. Не использует `set -e`.
 - **Статус:** DONE ✅ 2026-04-12
-- **Proof:** commit ee683db banxe-emi-stack. Оба пути (recent / old) верифицированы.
+- **Proof:** commit ee683db
+-
+- ### IL-093 — Claude Code Production Optimization + Quality Workflow Fixes
+
+- **Источник:** CEO, 2026-04-13 | **Приоритет:** P1 | **Репо:** developer-core + banxe-emi-stack
+- **Описание:** Практический продакшн-гайд по Claude Code (30+ доменов) — 8 пунктов оптимизации + аудит/фикс quality workflows.
+  - ◦ `.claudeignore` — создан для banxe-emi-stack, developer-core, banxe-architecture (30-40% экономии контекста)
+  - ◦ `settings.json` — CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=60, CLAUDE_CODE_SUBAGENT_MODEL=haiku, hooks (main block + ruff format)
+  - ◦ `CLAUDE.md` — оптимизирован до 44 строк, `@path` вместо inline
+  - ◦ Skills audit — README.md disabled, 3 skills отключены (user-invocable: false)
+  - ◦ `researcher.md` — агент-исследователь создан в .claude/agents/
+  - ◦ Quality workflows fix — 3 YAML файла (claude-daily-report, claude-issue-triage, claude-pr-review): permissions block indentation исправлен
+- **Статус:** DONE ✅ 2026-04-13
+- **Proof:**
+  - ◦ 7 коммитов в developer-core: .claudeignore, settings.json, CLAUDE.md, researcher.md, skills audit
+  - ◦ 3 коммита fix(ci) в developer-core: YAML indentation в workflows
+  - ◦ 1931+ тестов green в banxe-emi-stack
+  - ◦ Quality gate workflows: YAML syntax validatedbanxe-emi-stack. Оба пути (recent / old) верифицированы.
