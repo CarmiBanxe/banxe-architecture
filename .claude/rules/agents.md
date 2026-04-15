@@ -106,3 +106,9 @@ P3 (Year 2+): FinGPT, OpenBB, Apache Camel, Mojaloop, Beancount
 ```
 
 ### Repo: `banxe-emi-stack/` (отдельный репо — IL-009 Step 2+)
+
+---
+
+## Agent Checklist (MANDATORY — выполнять перед каждым коммитом)
+
+- [ ] `banxe-subagent-context.md` передан каждому субагенту через `--context-file` (BUG-003)
