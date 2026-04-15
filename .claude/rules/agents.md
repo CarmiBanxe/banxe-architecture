@@ -109,6 +109,25 @@ P3 (Year 2+): FinGPT, OpenBB, Apache Camel, Mojaloop, Beancount
 
 ---
 
+---
+
+## ARL (Agent Routing Layer) Pipeline (BUG-005)
+
+> `AGENT_ROUTING_ENABLED=false` — текущее состояние. **НЕ ВКЛЮЧАТЬ** до выполнения условий ниже.
+
+### Условия включения `AGENT_ROUTING_ENABLED=true`:
+1. **Ruflo ОБЯЗАН** быть mandatory middleware для типов: `payment`, `compliance`, `kyc`
+2. Pipeline порядок: `request → ARL → Ruflo (regulatory check) → target agent → response`
+3. Без Ruflo в pipeline: платежи могут обойти регуляторный чекер = FCA violation
+4. Тест готовности: отправить payment request с `AGENT_ROUTING_ENABLED=true` — Ruflo ДОЛЖЕН перехватить
+
+### Почему Ruflo mandatory:
+- Ruflo = regulatory boundary enforcer (проверяет инварианты I-01..I-07 на каждом запросе)
+- Без Ruflo: agent может принять платёж из Category A юрисдикции (I-02 violation)
+- Ruflo НЕ заменяет mlro_agent — Ruflo = pre-filter, mlro_agent = decision maker
+
+---
+
 ## Agent Checklist (MANDATORY — выполнять перед каждым коммитом)
 
 - [ ] `banxe-subagent-context.md` передан каждому субагенту через `--context-file` (BUG-003)
