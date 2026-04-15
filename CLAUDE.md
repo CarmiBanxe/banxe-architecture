@@ -87,4 +87,7 @@ grep -c "pending\|⏳\|IN_PROGRESS" /home/mmber/banxe-architecture/INSTRUCTION-L
 - `gsd-methodology.md` — GSD 7 фаз, IL формат
 - `safety-rules.md` — запрещённые действия
 
+## Quality Hook (BUG-006)
+Activate LucidShark/Semgrep pre-commit: `git config core.hooksPath .githooks`
+
 # Агенты: читать INSTRUCTION-LEDGER.md → ACCEPTED → работать → VERIFY → DONE
