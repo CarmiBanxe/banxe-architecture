@@ -1432,4 +1432,10 @@
   - ◦ **Блок C (Phase 8):** Agent Routing Layer foundation -- IL-ARL-01 (#124--#131)
 - **Targets:** Tests 2700->3100+, Coverage 87%->88%+, MCP tools 28->36+, API endpoints 80+->90+, Agent passports 9->14+
 - **Статус:** DONE ✅ (ROADMAP.md committed 2026-04-15)
-- **Proof:** banxe-emi-stack ROADMAP.md commit docs(sprint-16). 332 lines, 16.1 KB. No BT blockers.
+- **Proof:** banxe-emi-stack ROADMAP.md commit docs(sprint-16). 332 lines, 16.1 KB. No BT
+- - **Execution Proof (2026-04-16):**
+  - ◦ Block B (Phase 11 merge): commit 4fa0f0e ✅
+  - ◦ Block A (IL-CSB-01, #108-#118): commit 5257693 ✅ -- 27 files, 3796 lines, 105 tests, FCA DISP 1.1/1.3/1.6, PS22/9 §10
+  - ◦ Block C (IL-ARL-01, #124-#131): commit 5f132dd ✅ -- ARL gateway, swarm, reasoning bank, 184 tests
+  - ◦ Sprint finalization: commit a8a22ac ✅ -- ROADMAP updated, +12 MCP tests
+- **Results:** Tests 3104 (target 3100+) | MCP tools 38 (target 36+) | Agent passports 14 (target 14+) | ruff/semgrep/bandit 0 ✅blockers.
