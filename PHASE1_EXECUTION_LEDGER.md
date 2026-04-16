@@ -1,54 +1,73 @@
 # Phase 1 Execution Ledger (BANXE AI BANK)
 
-Status: BASELINE-LOCKED — all 16 domains classified, 0 UNKNOWN. Verification ongoing.
+Status: BASELINE-LOCKED — synced with actual project state 2026-04-17.
 
-| service | domain | legacy refs | classification | note | verified |
+## P0 Domains (EMI Core Foundation)
+
+| service | domain | target module | classification | status | verified |
 |---|---|---|---|---|---|
-| payments-service | payments | srvstagingbanxe.rar / services/payments/* | REWRITE-IN-PROGRESS | P0 payments core; structurally coupled to paymentaccounts; target core should be rebuilt with explicit source-to-target mapping and FX split retained | no |
-| paymentaccounts-service | accounts/ledger | srvstagingbanxe.rar / services/paymentaccounts/* | REWRITE-IN-PROGRESS | P0 ledger/accounts; must migrate together with payments domain and preserve reconciliation semantics | no |
-| identity-service | identity/KYC/KYB | srvstagingbanxe.rar / identity* | EVALUATE-CANDIDATE | P0 identity & KYC/KYB backbone; depends on actual KYC/KYB flows and SumSub/other provider usage; decision KEEP/WRAP/REWRITE requires ENTITYINVENTORY+MIGRATIONPLANDETAIL review | no |
-| auth-backend | auth | srvstagingbanxe.rar / auth-backend* | WRAP-CANDIDATE | P0 auth/JWT/session model; likely reusable as wrapper around legacy auth-backend with cleaned interfaces and security review | no |
-| acl-service | ACL | srvstagingbanxe.rar / acl* | WRAP-CANDIDATE | P0 roles/permissions/ACL engine; candidate for wrapping legacy ACL while defining target policy contracts | no |
-| twofa-service | 2FA | srvstagingbanxe.rar / 2fa* | WRAP-CANDIDATE | P0 2FA/OTP/approval flows; likely to be wrapped to preserve existing OTP/2FA operations with new auth/UX integration | no |
+| payments-service | payments | services/payment/ | REWRITE | DI wired (PaymentService+LedgerPort), 59+ tests pass, router aligned | yes |
+| paymentaccounts-service | accounts/ledger | services/ledger/ | REWRITE | MidazLedgerAdapter+StubLedgerAdapter, wired via DI | yes |
+| identity-service | identity/KYC/KYB | services/kyc/ | EVALUATE-CANDIDATE | kyc_port 97% coverage, mock workflow exists, Ballerine target | no |
+| auth-backend | auth | services/auth/ | WRAP-CANDIDATE | token_manager+sca_service+two_factor exist, not in DI | no |
+| acl-service | ACL/IAM | services/iam/ | WRAP-CANDIDATE | iam_port+mock_iam_adapter exist, not in DI | no |
+| twofa-service | 2FA | services/auth/ | WRAP-CANDIDATE | two_factor.py exists (TOTP RFC 6238), not in DI | no |
 
-| cards-service | cards | srvstagingbanxe.rar / cards* | EVALUATE-CANDIDATE | P1 card lifecycle; depends on external card provider decision (WRAP vs REWRITE) | no |
-| crypto-api | crypto | srvstagingbanxe.rar / crypto-api* | REWRITE-CANDIDATE | P1 crypto API; separate stream, likely full rewrite for target crypto-service | no |
-| crypto-processing | crypto | srvstagingbanxe.rar / crypto-processing* | REWRITE-CANDIDATE | P1 crypto processing; coupled to crypto-api, same rewrite stream | no |
-| sepa-service | payments/SEPA | srvstagingbanxe.rar / sepa-service* | WRAP-CANDIDATE | P1 SEPA; likely wrappable as payment-method adapter in target payments core | no |
-| acquiring-service | acquiring | srvstagingbanxe.rar / acquiring* | WRAP-CANDIDATE | P1 acquiring; likely wrappable as provider adapter | no |
-| transactions-service | transactions | srvstagingbanxe.rar / transactions* | REWRITE-CANDIDATE | P1 transactions; tightly coupled to payments/accounts, must align with target ledger | no |
-| companies-service | companies | srvstagingbanxe.rar / companies* | WRAP-CANDIDATE | P1 companies; KYB entity mgmt, likely wrappable with identity-service alignment | no |
-| tariff-service | tariff | srvstagingbanxe.rar / tariff* | KEEP-CANDIDATE | P1 tariff; reference/config data, likely retainable with minimal changes | no |
-| notification-service | notifications | srvstagingbanxe.rar / notification* | WRAP-CANDIDATE | P1 notifications; likely wrappable, channel adapters reusable | no |
-| core-service | core | srvstagingbanxe.rar / core* | EVALUATE-CANDIDATE | P1 core; shared utilities scope unclear, needs inventory before decision | no |
+## P1 Domains (Product Surfaces)
 
-## Phase 1 — Full Baseline Summary
+| service | domain | target module | classification | status | verified |
+|---|---|---|---|---|---|
+| cards-service | cards | services/card_issuing/ | IMPLEMENTED | Phase 19 done, models 85%, lifecycle+fraud+spend control | yes |
+| crypto-api | crypto | — | REWRITE-CANDIDATE | not yet started | no |
+| crypto-processing | crypto | — | REWRITE-CANDIDATE | not yet started | no |
+| sepa-service | payments/SEPA | services/payment/ | WRAP-CANDIDATE | PaymentRail.SEPA_CT+SEPA_INSTANT in payment_port | partial |
+| acquiring-service | acquiring | services/merchant_acquiring/ | IMPLEMENTED | Phase 20 done, onboarding+gateway+settlement+chargeback | yes |
+| transactions-service | transactions | services/transaction_monitor/ | IMPLEMENTED | scoring+alerts+velocity, models 95-100% | yes |
+| companies-service | companies | services/customer/ | WRAP-CANDIDATE | customer_port 91%, service exists | partial |
+| tariff-service | tariff | src/billing/ | KEEP-CANDIDATE | fee_engine exists | no |
+| notification-service | notifications | services/notification_hub/ | IMPLEMENTED | Phase 18 done, channel dispatcher+templates+preferences | yes |
+| core-service | core | services/config/ | EVALUATE-CANDIDATE | config_port+config_service exist | no |
 
-### P0 Classification candidates (all verified = no)
+## Supporting Systems (Already Implemented)
 
-- **REWRITE-CANDIDATE** (2): payments-service, paymentaccounts-service
-- **WRAP-CANDIDATE** (3): auth-backend, acl-service, twofa-service
-- **EVALUATE-CANDIDATE** (1): identity-service
+| service | domain | target module | phase | status |
+|---|---|---|---|---|
+| fx-exchange | FX | services/fx_exchange/ | Phase 21 | IMPLEMENTED |
+| multi-currency | multi-currency | services/multi_currency/ | Phase 22 | IMPLEMENTED |
+| treasury | treasury | services/treasury/ | Phase 17 | IMPLEMENTED |
+| open-banking | PSD2/AISP/PISP | services/open_banking/ | Phase 15 | IMPLEMENTED |
+| audit-dashboard | governance | services/audit_dashboard/ | Phase 16 | IMPLEMENTED |
+| fraud | AML/fraud | services/fraud/ | — | IMPLEMENTED |
+| recon | reconciliation | services/recon/ | — | IMPLEMENTED |
+| safeguarding | FCA CASS | src/safeguarding/ | — | IMPLEMENTED |
+| settlement | settlement | src/settlement/ | — | IMPLEMENTED |
+| compliance-kb | compliance | services/compliance_kb/ | — | IMPLEMENTED |
+| consumer-duty | consumer duty | services/consumer_duty/ | — | IMPLEMENTED |
+| support | customer support | services/support/ | — | IMPLEMENTED |
+| webhooks | integrations | services/webhooks/ | — | IMPLEMENTED |
+| events | event bus | services/events/ | — | IMPLEMENTED |
+| statements | account statements | services/statements/ | — | IMPLEMENTED |
+| complaints | complaints | services/complaints/ | — | IMPLEMENTED |
+| case-management | cases | services/case_management/ | — | IMPLEMENTED |
+| design-pipeline | UI generation | services/design_pipeline/ | — | IMPLEMENTED |
+| agent-routing | AI agents | services/agent_routing/ | — | IMPLEMENTED |
+| experiment-copilot | experiments | services/experiment_copilot/ | — | IMPLEMENTED |
+| compliance-automation | compliance | services/compliance_automation/ | — | NEW (untracked) |
+| document-management | documents | services/document_management/ | — | NEW (untracked) |
 
-### P1 Classification candidates (all verified = no)
-
-- **REWRITE-CANDIDATE** (3): crypto-api, crypto-processing, transactions-service
-- **WRAP-CANDIDATE** (4): sepa-service, acquiring-service, companies-service, notification-service
-- **EVALUATE-CANDIDATE** (2): cards-service, core-service
-- **KEEP-CANDIDATE** (1): tariff-service
-
-### Blockers before Phase 1 closure
-
-1. All P0 classifications require verification against ENTITYINVENTORY + MIGRATIONPLANDETAIL
-2. identity-service EVALUATE cannot be resolved without KYC/KYB flow analysis
-3. cards-service EVALUATE depends on external card provider decision
-4. core-service EVALUATE needs shared utilities inventory
-5. No critical UNKNOWN allowed for P0 before declaring Phase 1 done
+## Summary
 
 ### Ledger totals
+- Total modules: 38+
+- P0 verified: 2 of 6 (payments, ledger)
+- P0 pending: 4 (identity, auth, ACL/IAM, 2FA) — code exists, DI wiring needed
+- P1 implemented: 5 of 10 (cards, acquiring, transactions, notifications, fx)
+- Supporting systems implemented: 20+
+- Tests: 4103+ passed
+- Coverage: ~49% (target 80%)
 
-- Total services: 16
-- P0 classified: 6 (2 REWRITE, 3 WRAP, 1 EVALUATE) — 0 UNKNOWN
-- P1 classified: 10 (3 REWRITE, 4 WRAP, 2 EVALUATE, 1 KEEP) — 0 UNKNOWN
-- Verified: 0 of 16
-- Phase 1 status: BASELINE-LOCKED (ready for P0 execution start)
+### Next actions
+1. Wire auth/IAM/2FA into deps.py (Phase 2 P0 closure)
+2. Add auth guards to sensitive routers
+3. Raise coverage from 49% toward 80%
+4. Resolve identity-service EVALUATE (Ballerine vs SumSub decision)
