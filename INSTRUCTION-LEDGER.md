@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-099 — FX & Currency Exchange + Multi-Currency Ledger (IL-FXE-01 + IL-MCL-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-FXE-01 + IL-MCL-01
+- **Описание:** Sprint 21 — Phase 21 (FX & Currency Exchange) + Phase 22 (Multi-Currency Ledger Enhancement).
+  - **Phase 21 — FX & Currency Exchange (IL-FXE-01):**
+    - `services/fx_exchange/models.py` — Protocol DI ports + InMemory stubs (6 pairs, 6 spread configs, Decimal-only)
+    - `services/fx_exchange/rate_provider.py` — ECB rates aggregation (Frankfurter), auto-seed, Redis TTL 60s in prod
+    - `services/fx_exchange/quote_engine.py` — bid/ask from spread, quote TTL 30s
+    - `services/fx_exchange/fx_executor.py` — PENDING→EXECUTED transition, 0.1% fee (Decimal), dataclasses.replace()
+    - `services/fx_exchange/spread_manager.py` — per-pair config, VIP prefix detection, volume tiers
+    - `services/fx_exchange/fx_compliance.py` — EDD £10k, HITL £50k, blocked: RUB/IRR/KPW/BYR/SYP/CUC (I-02), structuring detection
+    - `services/fx_exchange/fx_agent.py` — L2/L4 orchestration, HITL_REQUIRED for ≥ £50k (HTTP 202)
+    - `api/routers/fx_exchange.py` — 8 REST endpoints (/v1/fx/* embedded prefix)
+    - `banxe_mcp/server.py` — 5 MCP tools: fx_get_quote, fx_execute, fx_get_rates, fx_get_spreads, fx_history
+    - `agents/passports/fx/` — fx_agent.yaml + SOUL.md
+    - `tests/test_fx_exchange/` — 129 tests (7 files)
+  - **Phase 22 — Multi-Currency Ledger Enhancement (IL-MCL-01):**
+    - `services/multi_currency/models.py` — Protocol DI ports + InMemory stubs (10 currencies, 2 nostros seeded)
+    - `services/multi_currency/account_manager.py` — create/add/get accounts, max 10 currencies enforced
+    - `services/multi_currency/balance_engine.py` — credit/debit/consolidated balance, overdraft check, ledger entries
+    - `services/multi_currency/nostro_reconciler.py` — CASS 15.3 nostro recon (tolerance £1.00)
+    - `services/multi_currency/currency_router.py` — cheapest/fastest path-finding, route cost in spread_bps
+    - `services/multi_currency/conversion_tracker.py` — 0.2% fee, conversion summary, append-only log
+    - `services/multi_currency/multicurrency_agent.py` — L2 orchestration (str→Decimal→str)
+    - `api/routers/multi_currency.py` — 8 REST endpoints (/v1/mc-accounts/* + /v1/nostro/*)
+    - `banxe_mcp/server.py` — 4 MCP tools: mc_get_balances, mc_convert, mc_reconcile_nostro, mc_currency_report
+    - `agents/passports/multicurrency/` — multicurrency_agent.yaml + SOUL.md
+    - `tests/test_multi_currency/` — 113 tests (7 files)
+- **Инварианты:** I-01 (Decimal all FX/balance amounts), I-02 (RUB/IRR/KPW/BYR/SYP/CUC blocked), I-05 (API strings), I-24 (append-only), I-27 (HITL FX ≥£50k)
+- **FCA refs:** PSR 2017, MLR 2017 §33 (FX AML), FCA PRIN 6 (spread transparency), EMD Art.10, CASS 15.3 (nostro recon), BoE Form BT
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 4103 tests green (↑242 new), ruff 0 issues. MCP tools: 80 total (+9). API endpoints: 165 total (+16). Agent passports: 23 total (+2).
+
+---
+
 ### IL-098 — Card Issuing & Management + Merchant Acquiring Gateway (IL-CIM-01 + IL-MAG-01)
 - **Источник:** CEO, 2026-04-16 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CIM-01 + IL-MAG-01
 - **Описание:** Sprint 20 — Phase 19 (Card Issuing & Management) + Phase 20 (Merchant Acquiring Gateway).
