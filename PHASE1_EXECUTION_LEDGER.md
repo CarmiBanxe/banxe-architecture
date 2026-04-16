@@ -4,8 +4,8 @@ Status: BASELINE-LOCKED — all 16 domains classified, 0 UNKNOWN. Verification o
 
 | service | domain | legacy refs | classification | note | verified |
 |---|---|---|---|---|---|
-| payments-service | payments | srvstagingbanxe.rar / services/payments/* | REWRITE-CANDIDATE | P0 payments core; structurally coupled to paymentaccounts; target core should be rebuilt with explicit source-to-target mapping and FX split retained | no |
-| paymentaccounts-service | accounts/ledger | srvstagingbanxe.rar / services/paymentaccounts/* | REWRITE-CANDIDATE | P0 ledger/accounts; must migrate together with payments domain and preserve reconciliation semantics | no |
+| payments-service | payments | srvstagingbanxe.rar / services/payments/* | REWRITE-IN-PROGRESS | P0 payments core; structurally coupled to paymentaccounts; target core should be rebuilt with explicit source-to-target mapping and FX split retained | no |
+| paymentaccounts-service | accounts/ledger | srvstagingbanxe.rar / services/paymentaccounts/* | REWRITE-IN-PROGRESS | P0 ledger/accounts; must migrate together with payments domain and preserve reconciliation semantics | no |
 | identity-service | identity/KYC/KYB | srvstagingbanxe.rar / identity* | EVALUATE-CANDIDATE | P0 identity & KYC/KYB backbone; depends on actual KYC/KYB flows and SumSub/other provider usage; decision KEEP/WRAP/REWRITE requires ENTITYINVENTORY+MIGRATIONPLANDETAIL review | no |
 | auth-backend | auth | srvstagingbanxe.rar / auth-backend* | WRAP-CANDIDATE | P0 auth/JWT/session model; likely reusable as wrapper around legacy auth-backend with cleaned interfaces and security review | no |
 | acl-service | ACL | srvstagingbanxe.rar / acl* | WRAP-CANDIDATE | P0 roles/permissions/ACL engine; candidate for wrapping legacy ACL while defining target policy contracts | no |
