@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-100 — Compliance Automation Engine + Document Management System (IL-CAE-01 + IL-DMS-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CAE-01 + IL-DMS-01
+- **Описание:** Sprint 22 — Phase 23 (Compliance Automation Engine) + Phase 24 (Document Management System).
+  - **Phase 23 — Compliance Automation Engine (IL-CAE-01):**
+    - `services/compliance_automation/models.py` — 6 enums, 8 frozen dataclasses, 5 Protocol ports + InMemory stubs (5 seed rules: AML/KYC/SANCTIONS/PEP/REPORTING)
+    - `services/compliance_automation/rule_engine.py` — evaluate_entity across all active rules, sanctions_hit → FAIL
+    - `services/compliance_automation/policy_manager.py` — DRAFT→REVIEW→ACTIVE→RETIRED lifecycle, diff_versions
+    - `services/compliance_automation/periodic_review.py` — annual (365d) customer risk, semi-annual (180d) PEP, daily sanctions
+    - `services/compliance_automation/breach_reporter.py` — MATERIAL (sanctions/AML) / SIGNIFICANT (KYC/PEP) / MINOR severity
+    - `services/compliance_automation/remediation_tracker.py` — OPEN→ASSIGNED→IN_PROGRESS→RESOLVED→VERIFIED→CLOSED state machine
+    - `services/compliance_automation/compliance_automation_agent.py` — report_breach ALWAYS returns HITL_REQUIRED (I-27)
+    - `api/routers/compliance_automation.py` — 8 REST endpoints (/v1/compliance/* embedded prefix)
+    - `banxe_mcp/server.py` — 5 MCP tools: compliance_evaluate, compliance_get_rules, compliance_report_breach, compliance_track_remediation, compliance_policy_diff
+    - `agents/passports/compliance_auto/` — compliance_automation_agent.yaml + SOUL.md
+    - `tests/test_compliance_automation/` — 116 tests (7 files)
+  - **Phase 24 — Document Management System (IL-DMS-01):**
+    - `services/document_management/models.py` — 4 enums, 5 frozen dataclasses, 5 Protocol ports + InMemory stubs (6 retention policies pre-seeded)
+    - `services/document_management/document_store.py` — SHA-256 content hash on upload (I-12), access log on every operation (I-24)
+    - `services/document_management/version_manager.py` — create_version, rollback creates new version (monotonic versioning)
+    - `services/document_management/retention_engine.py` — KYC/AML 5yr, REPORT/CONTRACT 7yr, POLICY/REGULATORY permanent (MLR 2017 Reg.40, SYSC 9)
+    - `services/document_management/search_engine.py` — keyword match with category/entity filters, relevance scoring (float)
+    - `services/document_management/access_controller.py` — 6-role RBAC (admin/compliance_officer/mlro/analyst/support/customer), ACCESS_DENIED logging
+    - `services/document_management/document_agent.py` — delete_document ALWAYS returns HITL_REQUIRED (I-27, GDPR Art.17)
+    - `api/routers/document_management.py` — 8 REST endpoints (/v1/documents/* embedded prefix, retention-policies before {doc_id})
+    - `banxe_mcp/server.py` — 4 MCP tools: doc_upload, doc_search, doc_get_versions, doc_retention_status
+    - `agents/passports/documents/` — document_management_agent.yaml + SOUL.md
+    - `tests/test_document_management/` — 110 tests (7 files)
+- **Инварианты:** I-01 (Decimal), I-05 (API strings), I-12 (SHA-256 document hash), I-24 (append-only audit + access log), I-27 (HITL: FCA breach + document deletion), I-28
+- **FCA refs:** SUP 15.3 (breach reporting 24h), SYSC 6.1 (compliance function), PRIN 11, MLR 2017 Reg.40+49 (5yr retention), SYSC 9 (permanent records), GDPR Art.17 (right to erasure with MLR override), FCA COND 2.7
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 4329 tests green (↑226 new), ruff 0 issues. MCP tools: 89 total (+9). API endpoints: 181 total (+16). Agent passports: 25 total (+2).
+
+---
+
 ### IL-099 — FX & Currency Exchange + Multi-Currency Ledger (IL-FXE-01 + IL-MCL-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-FXE-01 + IL-MCL-01
 - **Описание:** Sprint 21 — Phase 21 (FX & Currency Exchange) + Phase 22 (Multi-Currency Ledger Enhancement).
