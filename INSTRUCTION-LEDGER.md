@@ -1404,9 +1404,9 @@
   - Регистрация в settings.json как Stop hook: `"Stop": [{"hooks": [{"type": "command", ...}]}]`
 - **Инварианты:** `_main || true; exit 0` — никогда не блокирует. Не использует `set -e`.
 - **Статус:** DONE ✅ 2026-04-12
-- **Proof:** commit ee683db
--
-- ### IL-093 — Claude Code Production Optimization + Quality Workflow Fixes
+- **Proof:** commit ee683db banxe-emi-stack. Оба пути (recent / old) верифицированы.
+
+### IL-093 — Claude Code Production Optimization + Quality Workflow Fixes
 
 - **Источник:** CEO, 2026-04-13 | **Приоритет:** P1 | **Репо:** developer-core + banxe-emi-stack
 - **Описание:** Практический продакшн-гайд по Claude Code (30+ доменов) — 8 пунктов оптимизации + аудит/фикс quality workflows.
@@ -1421,21 +1421,39 @@
   - ◦ 7 коммитов в developer-core: .claudeignore, settings.json, CLAUDE.md, researcher.md, skills audit
   - ◦ 3 коммита fix(ci) в developer-core: YAML indentation в workflows
   - ◦ 1931+ тестов green в banxe-emi-stack
-  - ◦ Quality gate workflows: YAML syntax validatedbanxe-emi-stack. Оба пути (recent / old) верифицированы.
- 
-  - ### IL-094 --- Sprint 16 Plan: Customer Support + Compliance AI Merge + Agent Routing
+  - ◦ Quality gate workflows: YAML syntax validated
+
+### IL-094 — Sprint 16 Plan: Customer Support + Compliance AI Merge + Agent Routing
 
 - **Источник:** CEO, 2026-04-15 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** S16
 - **Описание:** Sprint 16 plan сформирован и зафиксирован в ROADMAP.md. 3 блока, 24 задачи (#108--#131).
--   - ◦ **Блок A (Phase 12):** Customer Support Block -- IL-CSB-01 (#108--#118)
+  - ◦ **Блок A (Phase 12):** Customer Support Block -- IL-CSB-01 (#108--#118)
   - ◦ **Блок B (Phase 11):** Compliance AI Copilot merge from refactor/claude-ai-scaffold -- IL-CKS-01, IL-CEC-01, IL-RTM-01 (#119--#123)
   - ◦ **Блок C (Phase 8):** Agent Routing Layer foundation -- IL-ARL-01 (#124--#131)
 - **Targets:** Tests 2700->3100+, Coverage 87%->88%+, MCP tools 28->36+, API endpoints 80+->90+, Agent passports 9->14+
 - **Статус:** DONE ✅ (ROADMAP.md committed 2026-04-15)
-- **Proof:** banxe-emi-stack ROADMAP.md commit docs(sprint-16). 332 lines, 16.1 KB. No BT
-- - **Execution Proof (2026-04-16):**
+- **Proof:** banxe-emi-stack ROADMAP.md commit docs(sprint-16). 332 lines, 16.1 KB.
+- **Execution Proof (2026-04-16):**
   - ◦ Block B (Phase 11 merge): commit 4fa0f0e ✅
   - ◦ Block A (IL-CSB-01, #108-#118): commit 5257693 ✅ -- 27 files, 3796 lines, 105 tests, FCA DISP 1.1/1.3/1.6, PS22/9 §10
   - ◦ Block C (IL-ARL-01, #124-#131): commit 5f132dd ✅ -- ARL gateway, swarm, reasoning bank, 184 tests
   - ◦ Sprint finalization: commit a8a22ac ✅ -- ROADMAP updated, +12 MCP tests
-- **Results:** Tests 3104 (target 3100+) | MCP tools 38 (target 36+) | Agent passports 14 (target 14+) | ruff/semgrep/bandit 0 ✅blockers.
+- **Results:** Tests 3104 (target 3100+) | MCP tools 38 (target 36+) | Agent passports 14 (target 14+) | ruff/semgrep/bandit 0 ✅
+
+### IL-095 — Regulatory Reporting Automation (IL-RRA-01)
+- **Источник:** CEO, 2026-04-16 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-RRA-01
+- **Описание:** Phase 14 — полноценный модуль автоматизированной регуляторной отчётности.
+  - `services/regulatory_reporting/models.py` — Protocol DI ports + InMemory stubs (6 report types)
+  - `services/regulatory_reporting/xml_generator.py` — FIN060/FIN071/FSA076/SAR_BATCH/BOE_FORM_BT/ACPR_EMI (I-01: Decimal)
+  - `services/regulatory_reporting/validators.py` — StructuralValidator + XSDValidator (graceful degradation)
+  - `services/regulatory_reporting/audit_trail.py` — ClickHouseAuditTrail append-only (I-24, SYSC 9.1.1R)
+  - `services/regulatory_reporting/scheduler.py` — N8nScheduler cron workflows
+  - `services/regulatory_reporting/regulatory_reporting_agent.py` — L2/L4 orchestration (I-27: HITL for submit)
+  - `api/routers/regulatory.py` — 7 REST endpoints (POST/GET /v1/regulatory/*)
+  - `banxe_mcp/server.py` — 5 MCP tools: report_generate, report_validate, report_schedule, report_audit_log, report_list_templates
+  - `agents/passports/reporting/regulatory_reporting_agent.yaml` + `SOUL.md`
+  - `tests/test_regulatory_reporting/` — 86 tests (5 files): xml_generator, validators, audit_trail, agent, API, MCP
+- **Инварианты:** I-01 (Decimal), I-24 (append-only), I-27 (HITL submit), I-08 (TTL ≥5yr)
+- **FCA refs:** SUP 16.12, SYSC 9.1.1R, POCA 2002 s.330, BoE Statistical Notice, ACPR 2014-P-01
+- **Статус:** DONE ✅ 2026-04-16
+- **Proof:** commit e42f71e banxe-emi-stack. 3190 tests green, ruff 0 issues, semgrep 0 findings. MCP tools: 43 total. API endpoints: 97 total.
