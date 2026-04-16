@@ -1489,3 +1489,34 @@
 - **FCA refs:** SYSC 9.1.1R, SYSC 4.1.1R, PS22/9, MLR 2017 Reg.28, EU AI Act Art.14
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
+
+### IL-097 — Treasury & Liquidity Management + Notification Hub (IL-TLM-01 + IL-NHB-01)
+- **Источник:** CEO, 2026-04-16 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-TLM-01 + IL-NHB-01
+- **Описание:** Sprint 19 — Phase 17 (Treasury & Liquidity Management) + Phase 18 (Notification Hub).
+  - **Phase 17 — Treasury & Liquidity Management (IL-TLM-01):**
+    - `services/treasury/models.py` — Protocol DI ports + InMemory stubs (Decimal-only amounts, 5 ports)
+    - `services/treasury/liquidity_monitor.py` — CASS 15.6 real-time cash position monitor
+    - `services/treasury/cash_flow_forecaster.py` — 7/14/30-day linear trend forecasting with shortfall_risk
+    - `services/treasury/funding_optimizer.py` — HOLD/SWEEP_OUT/DRAW_DOWN allocation recommendations
+    - `services/treasury/safeguarding_reconciler.py` — CASS 15.3 reconciliation (tolerance 1p)
+    - `services/treasury/sweep_engine.py` — sweep proposals (L4 HITL — I-27: execute requires human)
+    - `services/treasury/treasury_agent.py` — L2/L4 orchestration (Decimal → str serialization)
+    - `api/routers/treasury.py` — 8 REST endpoints (GET/POST /v1/treasury/*)
+    - `banxe_mcp/server.py` — 5 MCP tools: treasury_get_positions, treasury_forecast, treasury_propose_sweep, treasury_reconcile, treasury_pending_sweeps
+    - `agents/passports/treasury/` — treasury_agent.yaml + SOUL.md
+    - `tests/test_treasury/` — 127 tests (6 files)
+  - **Phase 18 — Notification Hub (IL-NHB-01):**
+    - `services/notification_hub/models.py` — Protocol DI ports + InMemory stubs (3 seed templates, 5 channels)
+    - `services/notification_hub/template_engine.py` — Jinja2 multi-language rendering (EN/FR/RU)
+    - `services/notification_hub/channel_dispatcher.py` — 5-channel dispatch (EMAIL/SMS/PUSH/TELEGRAM/WEBHOOK)
+    - `services/notification_hub/preference_manager.py` — GDPR opt-in/opt-out (SECURITY/OPERATIONAL default opt-in)
+    - `services/notification_hub/delivery_tracker.py` — exponential backoff retry (max 3 attempts)
+    - `services/notification_hub/notification_agent.py` — L2 orchestration (template→pref→dispatch→track)
+    - `api/routers/notifications_hub.py` — 7 REST endpoints (POST/GET /v1/notifications-hub/*)
+    - `banxe_mcp/server.py` — 4 MCP tools: notify_send, notify_list_templates, notify_get_preferences, notify_delivery_status
+    - `agents/passports/notifications/` — notification_agent.yaml + SOUL.md
+    - `tests/test_notification_hub/` — 97 tests (5 files)
+- **Инварианты:** I-01 (Decimal), I-05 (API strings), I-24 (append-only), I-27 (HITL sweep), I-08 (TTL ≥5yr)
+- **FCA refs:** CASS 15.3+15.6+15.12, DISP 1.3, PS22/9 §4, GDPR Art.7, UK PECR
+- **Статус:** DONE ✅ 2026-04-16
+- **Proof:** 3615 tests green (↑224 new), ruff 0 issues. MCP tools: 61 total (+9). API endpoints: 129 total (+16). Agent passports: 19 total (+2).
