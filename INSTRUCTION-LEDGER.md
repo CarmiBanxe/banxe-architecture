@@ -1457,3 +1457,35 @@
 - **FCA refs:** SUP 16.12, SYSC 9.1.1R, POCA 2002 s.330, BoE Statistical Notice, ACPR 2014-P-01
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** commit e42f71e banxe-emi-stack. 3190 tests green, ruff 0 issues, semgrep 0 findings. MCP tools: 43 total. API endpoints: 97 total.
+
+### IL-096 — Open Banking PSD2 Gateway + Audit Dashboard (IL-OBK-01 + IL-AGD-01)
+- **Источник:** CEO, 2026-04-16 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-OBK-01 + IL-AGD-01
+- **Описание:** Sprint 18 — Phase 15 (Open Banking PSD2 Gateway) + Phase 16 (Audit & Governance Dashboard).
+  - **Phase 15 — Open Banking PSD2 Gateway (IL-OBK-01):**
+    - `services/open_banking/models.py` — Protocol DI ports + InMemory stubs (6 enums, 6 dataclasses, 5 ports)
+    - `services/open_banking/consent_manager.py` — 90-day consent lifecycle (PSD2 RTS Art.10)
+    - `services/open_banking/pisp_service.py` — PISP single + bulk payments (PSR 2017 / PSD2 Art.66)
+    - `services/open_banking/aisp_service.py` — AISP balances/transactions (PSD2 Art.67)
+    - `services/open_banking/aspsp_adapter.py` — Berlin Group NextGenPSD2 3.1 + UK OBIE 3.1
+    - `services/open_banking/sca_orchestrator.py` — redirect/decoupled/embedded SCA (PSD2 RTS Art.4)
+    - `services/open_banking/token_manager.py` — OAuth2/PKCE/mTLS/OIDC FAPI token cache
+    - `services/open_banking/open_banking_agent.py` — L2/L4 orchestration (I-27: HITL for payment)
+    - `api/routers/open_banking.py` — 8 REST endpoints (POST/GET /v1/open-banking/*)
+    - `banxe_mcp/server.py` — 5 MCP tools: ob_create_consent, ob_initiate_payment, ob_get_accounts, ob_revoke_consent, ob_list_aspsps
+    - `agents/passports/open_banking/` — open_banking_agent.yaml + SOUL.md
+    - `tests/test_open_banking/` — 113 tests (5 files)
+  - **Phase 16 — Audit & Governance Dashboard (IL-AGD-01):**
+    - `services/audit_dashboard/models.py` — Protocol DI ports + InMemory stubs (4 enums, 5 dataclasses, 4 ports)
+    - `services/audit_dashboard/audit_aggregator.py` — unified event ingestion + query (8 categories)
+    - `services/audit_dashboard/risk_scorer.py` — AML+fraud+operational+regulatory scoring (0–100 float)
+    - `services/audit_dashboard/governance_reporter.py` — JSON/PDF board reports (SYSC 9)
+    - `services/audit_dashboard/dashboard_api.py` — live metrics + governance status (WebSocket-ready)
+    - `api/routers/audit_dashboard.py` — 8 REST endpoints (GET/POST /v1/audit/*)
+    - `banxe_mcp/server.py` — 4 MCP tools: audit_query_events, audit_generate_report, audit_risk_score, audit_governance_status
+    - `agents/passports/audit/` — audit_dashboard_agent.yaml + SOUL.md
+    - `tests/test_audit_dashboard/` — 88 tests (5 files)
+- **Инварианты:** I-01 (Decimal for payments), I-24 (append-only), I-27 (HITL payment initiation), I-08 (TTL ≥5yr), I-02 (blocked jurisdictions)
+- **PSD2 refs:** PSD2 Art.66+67, RTS Art.4+10, PSR 2017, UK OB OBIE 3.1, FCA PS19/4
+- **FCA refs:** SYSC 9.1.1R, SYSC 4.1.1R, PS22/9, MLR 2017 Reg.28, EU AI Act Art.14
+- **Статус:** DONE ✅ 2026-04-16
+- **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
