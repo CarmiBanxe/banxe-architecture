@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-098 — Card Issuing & Management + Merchant Acquiring Gateway (IL-CIM-01 + IL-MAG-01)
+- **Источник:** CEO, 2026-04-16 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CIM-01 + IL-MAG-01
+- **Описание:** Sprint 20 — Phase 19 (Card Issuing & Management) + Phase 20 (Merchant Acquiring Gateway).
+  - **Phase 19 — Card Issuing & Management (IL-CIM-01):**
+    - `services/card_issuing/models.py` — Protocol DI ports + InMemory stubs (BINs: MC 531604, Visa 427316)
+    - `services/card_issuing/card_issuer.py` — issue VIRTUAL/PHYSICAL cards, activate, set_pin (SHA-256, I-12)
+    - `services/card_issuing/card_lifecycle.py` — freeze (reversible), unfreeze, block/replace (HITL L4, I-27)
+    - `services/card_issuing/spend_control.py` — per-card limits (Decimal), MCC blocking, geo-restrictions
+    - `services/card_issuing/card_transaction_processor.py` — authorise + clear transactions, spend enforcement
+    - `services/card_issuing/fraud_shield.py` — velocity check + MCC risk scoring (risk_score: float 0–100)
+    - `services/card_issuing/card_agent.py` — L2/L4 orchestration (I-27: HITL for block/replace)
+    - `api/routers/card_issuing.py` — 10 REST endpoints (POST/GET /v1/cards/*)
+    - `banxe_mcp/server.py` — 5 MCP tools: card_issue, card_freeze, card_get_status, card_set_limits, card_list_transactions
+    - `agents/passports/cards/` — card_agent.yaml + SOUL.md
+    - `tests/test_card_issuing/` — 126 tests (7 files)
+  - **Phase 20 — Merchant Acquiring Gateway (IL-MAG-01):**
+    - `services/merchant_acquiring/models.py` — Protocol DI ports + InMemory stubs (5 ports, prohibited MCC list)
+    - `services/merchant_acquiring/merchant_onboarding.py` — KYB risk tier (PROHIBITED/HIGH/MEDIUM/LOW), MCCs 7995/9754/7801 blocked
+    - `services/merchant_acquiring/payment_gateway.py` — 3DS2 routing (≥ £30.00, PSD2 SCA RTS Art.11)
+    - `services/merchant_acquiring/settlement_engine.py` — batch settlement (FEE_RATE = Decimal("0.015"))
+    - `services/merchant_acquiring/chargeback_handler.py` — full lifecycle: RECEIVED→RESOLVED_WIN/LOSS
+    - `services/merchant_acquiring/merchant_risk_scorer.py` — risk score float 0–100 (chargeback_ratio: float)
+    - `services/merchant_acquiring/merchant_agent.py` — L2/L4 orchestration (I-27: HITL for suspend/terminate)
+    - `api/routers/merchant_acquiring.py` — 10 REST endpoints (POST/GET /v1/merchants/*)
+    - `banxe_mcp/server.py` — 5 MCP tools: merchant_onboard, merchant_accept_payment, merchant_get_settlements, merchant_handle_chargeback, merchant_risk_score
+    - `agents/passports/merchant/` — merchant_agent.yaml + SOUL.md
+    - `tests/test_merchant_acquiring/` — 120 tests (7 files)
+- **Инварианты:** I-01 (Decimal), I-05 (API strings), I-12 (PIN SHA-256), I-24 (append-only), I-27 (HITL block/replace/suspend/terminate), I-28
+- **FCA refs:** PSR 2017 / PSD2 Art.63+97, PCI-DSS v4, RTS Art.11 (3DS2), MLR 2017 Reg.28, FCA BCOBS 5, FCA SUP 16
+- **Статус:** DONE ✅ 2026-04-16
+- **Proof:** 3861 tests green (↑246 new), ruff 0 issues. MCP tools: 71 total (+10). API endpoints: 149 total (+20). Agent passports: 21 total (+2).
+
+---
+
 ### IL-097 — Treasury & Liquidity Management + Notification Hub (IL-TLM-01 + IL-NHB-01)
 - **Источник:** CEO, 2026-04-16 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-TLM-01 + IL-NHB-01
 - **Описание:** Sprint 19 — Phase 17 (Treasury & Liquidity Management) + Phase 18 (Notification Hub).
