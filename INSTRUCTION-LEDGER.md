@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-103 — Loyalty & Rewards Engine + Referral Program (IL-LRE-01 + IL-REF-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-LRE-01 + IL-REF-01
+- **Описание:** Sprint 25 — Phase 29 (Loyalty & Rewards Engine) + Phase 30 (Referral Program).
+  - **Phase 29 — Loyalty & Rewards Engine (IL-LRE-01):**
+    - `services/loyalty/models.py` — 4 enums (RewardTier, TransactionType, RedemptionType, ExpiryPolicy), 4 frozen dataclasses, 4 Protocol ports + InMemory stubs (7 seeded earn rules, 4 redemption options)
+    - `services/loyalty/points_engine.py` — earn points (MCC × tier multiplier × rate), apply_bonus (HITL >10k I-27), quantize(Decimal("1"))
+    - `services/loyalty/tier_manager.py` — BRONZE=0/SILVER=1000/GOLD=5000/PLATINUM=20000 lifetime thresholds, evaluate_tier, get_tier_benefits (multipliers 1.0/1.5/2.0/3.0)
+    - `services/loyalty/redemption_engine.py` — cashback (100pts→£1), card_fee, fx_discount, voucher — quantity multiplier, balance guard
+    - `services/loyalty/cashback_processor.py` — MCC cashback rates (5411→2%, 5812→3%, 5541→1%, 5912→2%, 5311→1.5%, 4111→1%, default→0.5%), 100pts/£1 cashback
+    - `services/loyalty/expiry_manager.py` — expire_points (floor Decimal("0")), extend_expiry (HITL >365 days, I-27)
+    - `services/loyalty/loyalty_agent.py` — L2 orchestration (earn → tier evaluate → cashback facade)
+    - `api/routers/loyalty.py` — 10 REST endpoints (/v1/loyalty/* embedded prefix)
+    - `banxe_mcp/server.py` — 5 MCP tools: loyalty_get_balance, loyalty_get_tier, loyalty_redeem, loyalty_earn_history, loyalty_expiry_forecast
+    - `agents/passports/loyalty/` — loyalty_agent.yaml + SOUL.md
+    - `tests/test_loyalty/` — 197 tests (6 files)
+  - **Phase 30 — Referral Program (IL-REF-01):**
+    - `services/referral/models.py` — 4 enums (ReferralStatus, RewardStatus, CampaignStatus, FraudReason), 4 frozen dataclasses, 4 Protocol ports + InMemory stubs (seeded camp-default: £25 referrer / £10 referee / £100k budget)
+    - `services/referral/code_generator.py` — 8-char random codes (A-Z0-9), vanity "BANXE"+suffix, 5-retry collision-safe (_MAX_RETRIES=5), validate_code
+    - `services/referral/referral_tracker.py` — track_referral (INVITED), advance_status state machine (INVITED→REGISTERED→KYC_COMPLETE→QUALIFIED→REWARDED/FRAUDULENT)
+    - `services/referral/reward_distributor.py` — distribute_rewards (budget check → REWARDED), approve_reward (PENDING→APPROVED→PAID), get_reward_summary
+    - `services/referral/fraud_detector.py` — self-referral (conf=1.0), velocity >5/IP/24h (conf=0.9), _VELOCITY_MAX_REFERRALS=5, _VELOCITY_WINDOW_HOURS=24
+    - `services/referral/campaign_manager.py` — DRAFT→ACTIVE→PAUSED→ENDED lifecycle, budget enforcement, list_active_campaigns
+    - `services/referral/referral_agent.py` — L2 orchestration (fraud-blocked rewards → HITL_REQUIRED, I-27, FCA COBS 4)
+    - `api/routers/referral.py` — 9 REST endpoints (/v1/referral/* embedded prefix)
+    - `banxe_mcp/server.py` — 4 MCP tools: referral_generate_code, referral_get_status, referral_campaign_stats, referral_fraud_report
+    - `agents/passports/referral/` — referral_agent.yaml + SOUL.md
+    - `tests/test_referral/` — 103 tests (5 files)
+- **Инварианты:** I-01 (Decimal for all points/rewards), I-05 (amounts as strings in API), I-24 (append-only FraudCheckStore + PointsTransactionStore), I-27 (HITL: bonus >10k points, reward extension >365 days, fraud-blocked rewards)
+- **FCA refs:** COBS 6.1 (fair value — rewards), BCOBS 5 (rewards transparency), COBS 4.2 (financial promotions — referral incentives), FCA PRIN 6 (customers' interests), PS22/9 (consumer duty — value and outcomes)
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 5133 tests green (↑300 new), ruff 0 issues. MCP tools: 116 total (+9). API endpoints: 236 total (+19). Agent passports: 31 total (+2).
+
+---
+
 ### IL-102 — API Gateway & Rate Limiting + Webhook Orchestrator (IL-AGW-01 + IL-WHO-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-AGW-01 + IL-WHO-01
 - **Описание:** Sprint 24 — Phase 27 (API Gateway & Rate Limiting) + Phase 28 (Webhook Orchestrator).
