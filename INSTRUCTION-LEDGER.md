@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-101 — Lending & Credit Engine + Insurance Integration (IL-LCE-01 + IL-INS-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-LCE-01 + IL-INS-01
+- **Описание:** Sprint 23 — Phase 25 (Lending & Credit Engine) + Phase 26 (Insurance Integration).
+  - **Phase 25 — Lending & Credit Engine (IL-LCE-01):**
+    - `services/lending/models.py` — 6 enums, 7 frozen dataclasses, 5 Protocol ports + InMemory stubs (3 seeded products: micro-loan £2k, personal £15k, credit-line £5k)
+    - `services/lending/credit_scorer.py` — Decimal 0-1000 scoring (income/history/AML risk factors), no float
+    - `services/lending/loan_originator.py` — apply/decide/disburse pipeline, ALL decisions return HITL_REQUIRED (I-27, FCA CONC)
+    - `services/lending/repayment_engine.py` — ANNUITY + LINEAR amortization in pure Decimal (no numpy), installments as strings (I-05)
+    - `services/lending/arrears_manager.py` — CURRENT/DAYS_1_30/DAYS_31_60/DAYS_61_90/DEFAULT_90_PLUS staging
+    - `services/lending/provisioning_engine.py` — IFRS 9 ECL: Stage1 PD=1%/LGD=45%, Stage2 PD=15%/LGD=45%, Stage3 PD=90%/LGD=65%
+    - `services/lending/lending_agent.py` — L2/L4 orchestration (HITL for all credit decisions)
+    - `api/routers/lending.py` — 10 REST endpoints (/v1/lending/* embedded prefix)
+    - `banxe_mcp/server.py` — 5 MCP tools: lending_apply, lending_score, lending_get_schedule, lending_arrears_status, lending_provision_report
+    - `agents/passports/lending/` — lending_agent.yaml + SOUL.md
+    - `tests/test_lending/` — 128 tests (7 files)
+  - **Phase 26 — Insurance Integration (IL-INS-01):**
+    - `services/insurance/models.py` — 4 enums, 5 frozen dataclasses, 4 Protocol ports + InMemory stubs (4 seeded products: TRAVEL/PURCHASE/DEVICE/PAYMENT_PROTECTION)
+    - `services/insurance/product_catalog.py` — tier filtering (PREMIUM=all 4, STANDARD=3, basic=2)
+    - `services/insurance/premium_calculator.py` — risk-adjusted Decimal pricing, quantize(0.01), no float
+    - `services/insurance/policy_manager.py` — QUOTED→BOUND→ACTIVE→CANCELLED state machine (dataclasses.replace())
+    - `services/insurance/claims_processor.py` — FILED→UNDER_ASSESSMENT→APPROVED/DECLINED→PAID, HITL >£1000 (I-27, FCA ICOBS 8.1)
+    - `services/insurance/underwriter_adapter.py` — Lloyd's/Munich Re stub adapter (Protocol DI)
+    - `services/insurance/insurance_agent.py` — L2/L4 orchestration (claim payout >£1000 HITL)
+    - `api/routers/insurance.py` — 10 REST endpoints (/v1/insurance/* embedded prefix)
+    - `banxe_mcp/server.py` — 4 MCP tools: insurance_get_quote, insurance_bind_policy, insurance_file_claim, insurance_list_products
+    - `agents/passports/insurance/` — insurance_agent.yaml + SOUL.md
+    - `tests/test_insurance/` — 106 tests (7 files)
+- **Инварианты:** I-01 (Decimal all loan/premium/claim amounts), I-05 (API strings), I-27 (HITL: ALL credit decisions + insurance payouts >£1000), I-28
+- **FCA refs:** CONC (consumer credit), CCA 1974 (credit agreements), IFRS 9 (ECL provisioning), ICOBS (insurance conduct), IDD (Insurance Distribution Directive), FCA PS21/3 (fair value)
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 4563 tests green (↑234 new), ruff 0 issues. MCP tools: 98 total (+9). API endpoints: 199 total (+18). Agent passports: 27 total (+2).
+
+---
+
 ### IL-100 — Compliance Automation Engine + Document Management System (IL-CAE-01 + IL-DMS-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CAE-01 + IL-DMS-01
 - **Описание:** Sprint 22 — Phase 23 (Compliance Automation Engine) + Phase 24 (Document Management System).
