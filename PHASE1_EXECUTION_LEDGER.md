@@ -9,9 +9,9 @@ Status: BASELINE-LOCKED — synced with actual project state 2026-04-17.
 | payments-service | payments | services/payment/ | REWRITE | DI wired (PaymentService+LedgerPort), 59+ tests pass, router aligned | yes |
 | paymentaccounts-service | accounts/ledger | services/ledger/ | REWRITE | MidazLedgerAdapter+StubLedgerAdapter, wired via DI | yes |
 | identity-service | identity/KYC/KYB | services/kyc/ | EVALUATE-CANDIDATE | kyc_port 97% coverage, mock workflow exists, Ballerine target | no |
-| auth-backend | auth | services/auth/ | WRAP-CANDIDATE | token_manager+sca_service+two_factor exist, not in DI | no |
-| acl-service | ACL/IAM | services/iam/ | WRAP-CANDIDATE | iam_port+mock_iam_adapter exist, not in DI | no |
-| twofa-service | 2FA | services/auth/ | WRAP-CANDIDATE | two_factor.py exists (TOTP RFC 6238), not in DI | no |
+| auth-backend | auth | services/auth/ | WRAP-CANDIDATE | token_manager+sca_service+two_factor+DI wired (api/deps.py) | yes |
+| acl-service | ACL/IAM | services/iam/ | WRAP-CANDIDATE | iam_port+mock_iam_adapter+DI wired (get_iam+require_auth) | yes |
+| twofa-service | 2FA | services/auth/ | WRAP-CANDIDATE | two_factor.py+DI wired (get_totp_service) | yes |
 
 ## P1 Domains (Product Surfaces)
 
