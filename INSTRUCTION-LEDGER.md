@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-102 — API Gateway & Rate Limiting + Webhook Orchestrator (IL-AGW-01 + IL-WHO-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-AGW-01 + IL-WHO-01
+- **Описание:** Sprint 24 — Phase 27 (API Gateway & Rate Limiting) + Phase 28 (Webhook Orchestrator).
+  - **Phase 27 — API Gateway & Rate Limiting (IL-AGW-01):**
+    - `services/api_gateway/models.py` — 5 enums (UsageTier, KeyStatus, RateLimitWindow, GeoAction), 5 frozen dataclasses, 5 Protocol ports + InMemory stubs (4 tier policies: FREE 1/s, BASIC 10/s, PREMIUM 50/s, ENTERPRISE 200/s)
+    - `services/api_gateway/api_key_manager.py` — create/rotate/revoke/verify — SHA-256 hash (I-12), raw key returned ONCE only
+    - `services/api_gateway/rate_limiter.py` — token-bucket rate limiting per tier, InMemory stub (Redis in prod)
+    - `services/api_gateway/quota_manager.py` — daily quota tracking per key/tier
+    - `services/api_gateway/ip_filter.py` — per-key CIDR allowlist/blocklist + blocked jurisdiction geo-filter (I-02)
+    - `services/api_gateway/request_logger.py` — append-only request log per key (I-24)
+    - `services/api_gateway/gateway_agent.py` — L2/L4 orchestration (revocation always HITL_REQUIRED I-27)
+    - `api/routers/api_gateway.py` — 8 REST endpoints (/v1/gateway/* embedded prefix)
+    - `banxe_mcp/server.py` — 5 MCP tools: gateway_create_key, gateway_get_usage, gateway_set_limits, gateway_revoke_key, gateway_request_analytics
+    - `agents/passports/gateway/` — gateway_agent.yaml + SOUL.md
+    - `tests/test_api_gateway/` — 125 tests (7 files)
+  - **Phase 28 — Webhook Orchestrator (IL-WHO-01):**
+    - `services/webhook_orchestrator/models.py` — 20 EventTypes, 4 enums (SubscriptionStatus, DeliveryStatus, CircuitState), 4 frozen dataclasses, 4 Protocol ports + InMemory stubs
+    - `services/webhook_orchestrator/subscription_manager.py` — HTTPS-only URL validation, HMAC signing secret generation, HITL deletion (I-27)
+    - `services/webhook_orchestrator/event_publisher.py` — fan-out to matching subscriptions, idempotency dedup by key
+    - `services/webhook_orchestrator/delivery_engine.py` — exponential backoff retry [1s, 5s, 30s, 5m, 30m, 2h], circuit breaker per subscription
+    - `services/webhook_orchestrator/signature_engine.py` — HMAC-SHA256 t={ts},v1={sig} format, 300s replay window (I-12)
+    - `services/webhook_orchestrator/dead_letter_queue.py` — append-only DLQ, retry creates new attempt (I-24)
+    - `services/webhook_orchestrator/webhook_agent.py` — L2 orchestration (subscribe, publish, deliver, retry)
+    - `api/routers/webhook_orchestrator.py` — 10 REST endpoints (/v1/webhooks/* embedded prefix)
+    - `banxe_mcp/server.py` — 4 MCP tools: webhook_subscribe, webhook_list_events, webhook_retry_dlq, webhook_delivery_status
+    - `agents/passports/webhooks/` — webhook_agent.yaml + SOUL.md
+    - `tests/test_webhook_orchestrator/` — 145 tests (7 files)
+- **Инварианты:** I-12 (SHA-256 key hashing, HMAC-SHA256 signatures), I-24 (append-only audit + DLQ), I-27 (HITL: key revocation + subscription deletion), I-02 (geo-blocked jurisdictions in IP filter)
+- **FCA refs:** COBS 2.1 (fair treatment), PS21/3 (pricing/rate limits), PSD2 RTS Art.30 (access logs), PSD2 Art.96 (security of communications)
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 4833 tests green (↑270 new), ruff 0 issues. MCP tools: 107 total (+9). API endpoints: 217 total (+18). Agent passports: 29 total (+2).
+
+---
+
 ### IL-101 — Lending & Credit Engine + Insurance Integration (IL-LCE-01 + IL-INS-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-LCE-01 + IL-INS-01
 - **Описание:** Sprint 23 — Phase 25 (Lending & Credit Engine) + Phase 26 (Insurance Integration).
