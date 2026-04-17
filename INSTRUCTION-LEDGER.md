@@ -1490,6 +1490,40 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-104 — Savings & Interest Engine + Standing Orders & Direct Debits (IL-SIE-01 + IL-SOD-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-SIE-01 + IL-SOD-01
+- **Описание:** Sprint 26 — Phase 31 (Savings & Interest Engine) + Phase 32 (Standing Orders & Direct Debits).
+  - **Phase 31 — Savings & Interest Engine (IL-SIE-01):**
+    - `services/savings/models.py` — 5 enums (SavingsAccountType×7, AccountStatus×5, InterestBasis×3, InterestType×2, MaturityAction×2), 6 frozen dataclasses, 4 Protocol ports + InMemory stubs (5 seeded products: easy-access, fixed-3m, fixed-6m, fixed-12m, notice-30d)
+    - `services/savings/product_catalog.py` — list_products (filter by type), list_eligible_products (by deposit), get_product_count
+    - `services/savings/interest_calculator.py` — daily_interest (balance×rate/365, 8dp), calculate_aer, maturity_amount, tax_withholding (20% basic rate), penalty_amount
+    - `services/savings/accrual_engine.py` — accrue_daily (append-only I-24), capitalize_monthly, get_accrual_history
+    - `services/savings/maturity_handler.py` — set_preference (AUTO_RENEW/PAYOUT), process_maturity, calculate_penalty (3M=30d, 6M=60d, 12M=90d)
+    - `services/savings/rate_manager.py` — set_rate → always HITL_REQUIRED (I-27), apply_rate_change, get_current_rate (fallback to product default), get_tiered_rate (+0.1%@£10k, +0.2%@£50k, +0.3%@£100k)
+    - `services/savings/savings_agent.py` — L2 facade: open_account, deposit, withdraw (HITL ≥£50k from fixed-term I-27), get_interest_summary, list_accounts
+    - `api/routers/savings.py` — 9 REST endpoints (/v1/savings/* embedded prefix)
+    - `banxe_mcp/server.py` — 5 MCP tools: savings_open_account, savings_get_interest, savings_get_products, savings_calculate_maturity, savings_rate_history
+    - `agents/passports/savings/` — savings_agent.yaml + SOUL.md
+    - `tests/test_savings/` — 110+ tests (7 files)
+  - **Phase 32 — Standing Orders & Direct Debits (IL-SOD-01):**
+    - `services/scheduled_payments/models.py` — 5 enums (PaymentFrequency×6, ScheduleStatus×5, DDStatus×5, FailureCode×5, PaymentType×2), 5 frozen dataclasses, 4 Protocol ports + InMemory stubs (list_due filters ACTIVE + scheduled_at ≤ as_of)
+    - `services/scheduled_payments/standing_order_engine.py` — create, cancel, pause, resume, advance_next_execution (WEEKLY+7d, MONTHLY+30d, past end_date → COMPLETED), list
+    - `services/scheduled_payments/direct_debit_engine.py` — create_mandate (PENDING), authorise (→AUTHORISED), activate (→ACTIVE), cancel → always HITL_REQUIRED (I-27), confirm_cancel (→CANCELLED), collect (requires ACTIVE, amount>0), list
+    - `services/scheduled_payments/schedule_executor.py` — schedule_payment, execute_due_payments, get_upcoming_payments, calculate_next_date (DAILY=1d, WEEKLY=7d, FORTNIGHTLY=14d, MONTHLY=30d, QUARTERLY=91d, ANNUAL=365d)
+    - `services/scheduled_payments/failure_handler.py` — record_failure (append-only I-24), max 2 retries at T+1/T+3 days, get_failure_summary, get_customer_failures
+    - `services/scheduled_payments/notification_bridge.py` — send_upcoming_reminder, send_failure_alert, send_mandate_change_notification (stub → QUEUED)
+    - `services/scheduled_payments/scheduled_payments_agent.py` — L2 facade: create_so, create_dd_mandate, cancel_mandate (HITL I-27), get_upcoming_payments, get_failure_report, record_payment_failure
+    - `api/routers/scheduled_payments.py` — 9 REST endpoints (/v1/standing-orders/* + /v1/direct-debits/* embedded)
+    - `banxe_mcp/server.py` — 4 MCP tools: schedule_create_standing_order, schedule_create_dd_mandate, schedule_get_upcoming, schedule_failure_report
+    - `agents/passports/scheduled_payments/` — scheduled_payments_agent.yaml + SOUL.md
+    - `tests/test_scheduled_payments/` — 100+ tests (5 files)
+- **Инварианты:** I-01 (Decimal for all monetary/rate values), I-05 (amounts as strings in API), I-24 (append-only accrual + failure record stores), I-27 (HITL: rate changes, early withdrawal ≥£50k fixed-term, DD mandate cancellation)
+- **FCA refs:** PS25/12 (safeguarding), BCOBS 5 (interest transparency), PSR 2017 (payment services), Bacs DD scheme rules, PS22/9 §4 (consumer duty — savings outcomes)
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 5350+ tests green (↑217+ new), ruff 0 issues. MCP tools: 125 total (+9). API endpoints: 254 total (+18). Agent passports: 33 total (+2).
+
+---
+
 ### IL-103 — Loyalty & Rewards Engine + Referral Program (IL-LRE-01 + IL-REF-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-LRE-01 + IL-REF-01
 - **Описание:** Sprint 25 — Phase 29 (Loyalty & Rewards Engine) + Phase 30 (Referral Program).
