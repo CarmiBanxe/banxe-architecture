@@ -1490,6 +1490,38 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-105 — Dispute Resolution & Chargeback Management + Beneficiary & Payee Management (IL-DRM-01 + IL-BPM-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-DRM-01 + IL-BPM-01
+- **Описание:** Sprint 27 — Phase 33 (Dispute Resolution & Chargeback Management) + Phase 34 (Beneficiary & Payee Management).
+  - **Phase 33 — Dispute Resolution & Chargeback Management (IL-DRM-01):**
+    - `services/dispute_resolution/models.py` — 5 enums (DisputeType×5, DisputeStatus×6, EvidenceType×5, ResolutionOutcome×4, EscalationLevel×3), 5 frozen dataclasses, 5 Protocols + InMemory stubs (EvidenceStore + EscalationStore append-only I-24), `compute_evidence_hash` (SHA-256 I-12), `_SLA_DAYS=56` (DISP 1.3)
+    - `services/dispute_resolution/dispute_intake.py` — `file_dispute` (sla_deadline=now+56d), `attach_evidence` (SHA-256 hash I-12), `get_dispute`, `list_disputes`
+    - `services/dispute_resolution/investigation_engine.py` — `assign_investigator` (→UNDER_INVESTIGATION), `gather_evidence`, `assess_liability` (MERCHANT/ISSUER/SHARED), `request_additional_evidence` (→PENDING_EVIDENCE)
+    - `services/dispute_resolution/resolution_engine.py` — `propose_resolution` → always HITL_REQUIRED (I-27, DISP 1.6), `approve_resolution`, `execute_refund` (Decimal, amount>0), `close_dispute`
+    - `services/dispute_resolution/escalation_manager.py` — `check_sla_breach`, `escalate_dispute`, `escalate_to_fos` (DISP 1.6), `get_escalations`
+    - `services/dispute_resolution/chargeback_bridge.py` — `initiate_chargeback` (VISA/MASTERCARD only, PSD2 Art.73), `submit_representment`, `get_chargeback_status`, `list_chargebacks_for_dispute`
+    - `services/dispute_resolution/dispute_agent.py` — L2/L4 facade: `open_dispute`, `submit_evidence`, `get_dispute_status`, `propose_resolution` (HITL), `escalate`, `get_resolution_report`
+    - `api/routers/dispute_resolution.py` — 9 REST endpoints (/v1/disputes/* + /v1/chargebacks/* embedded)
+    - `banxe_mcp/server.py` — 5 MCP tools: `dispute_file`, `dispute_get_status`, `dispute_submit_evidence`, `dispute_escalate`, `dispute_resolution_report`
+    - `agents/passports/disputes/` — `dispute_agent.yaml` + `SOUL.md`
+    - `tests/test_dispute_resolution/` — 115+ tests (7 files)
+  - **Phase 34 — Beneficiary & Payee Management (IL-BPM-01):**
+    - `services/beneficiary_management/models.py` — `BLOCKED_JURISDICTIONS` (9 countries I-02), `FATF_GREYLIST` (13 countries I-03), 4 enums, 5 frozen dataclasses, 4 Protocols + InMemory stubs (ScreeningStore + CoPStore append-only I-24)
+    - `services/beneficiary_management/beneficiary_registry.py` — `add_beneficiary` (hard-blocks I-02), `verify_beneficiary`, `activate_beneficiary`, `deactivate_beneficiary`, `delete_beneficiary` → HITL_REQUIRED (I-27), `get_beneficiary`, `list_beneficiaries`
+    - `services/beneficiary_management/sanctions_screener.py` — `screen` (Moov Watchman stub: blocked country→MATCH, high-risk name→PARTIAL, else→NO_MATCH, MLR 2017 Reg.28), append-only history (I-24)
+    - `services/beneficiary_management/payment_rail_router.py` — `route` (FPS: GBP+GB+≤£250k, CHAPS: GBP+GB+>£250k, SEPA: EUR+31 EU/EEA, SWIFT: fallback), `get_rail_details`, `list_rails`
+    - `services/beneficiary_management/confirmation_of_payee.py` — `check` (exact/close-match first-word/no-match, PSR 2017), append-only CoP history (I-24)
+    - `services/beneficiary_management/trusted_beneficiary.py` — `mark_trusted` → HITL_REQUIRED (I-27), `confirm_trust`, `revoke_trust`, `is_trusted`, `get_daily_limit`
+    - `services/beneficiary_management/beneficiary_agent.py` — L2/L4 facade: `add_beneficiary`, `screen_beneficiary`, `delete_beneficiary` (HITL), `route_payment`, `check_payee`, `list_beneficiaries`
+    - `api/routers/beneficiary.py` — 8 REST endpoints (/v1/beneficiaries/* embedded)
+    - `banxe_mcp/server.py` — 4 MCP tools: `beneficiary_add`, `beneficiary_screen`, `beneficiary_get_status`, `beneficiary_payment_rails`
+    - `agents/passports/beneficiary/` — `beneficiary_agent.yaml` + `SOUL.md`
+    - `tests/test_beneficiary_management/` — 110+ tests (7 files)
+- **Инварианты:** I-01 (Decimal for all amounts/limits), I-02 (hard-block RU/BY/IR/KP/CU/MM/AF/VE/SY), I-03 (FATF greylist EDD), I-12 (SHA-256 evidence hash), I-24 (append-only: evidence, escalation, screening, CoP), I-27 (HITL: resolution proposals, beneficiary deletion, trust marking), I-28 (IL entry required)
+- **FCA refs:** DISP 1.3 (8-week SLA), DISP 1.6 (FOS escalation), PSD2 Art.73 (chargeback), PS22/9 §4 (Consumer Duty), PSR 2017 (Confirmation of Payee), MLR 2017 Reg.28 (sanctions screening), FATF R.16 (wire transfer due diligence)
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 5570+ tests green (↑194+ new), ruff 0 issues. MCP tools: 134 total (+9). API endpoints: 271 total (+17). Agent passports: 35 total (+2).
+
 ### IL-104 — Savings & Interest Engine + Standing Orders & Direct Debits (IL-SIE-01 + IL-SOD-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-SIE-01 + IL-SOD-01
 - **Описание:** Sprint 26 — Phase 31 (Savings & Interest Engine) + Phase 32 (Standing Orders & Direct Debits).

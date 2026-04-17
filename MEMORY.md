@@ -421,3 +421,4 @@ GAP-005 (real Barclays/HSBC account — external blocker),
 GAP-008/011/015 (API keys blocked),
 GAP-012 (IDV), GAP-014 (EMI products), GAP-018 (FCA reporting),
 GAP-019 (Fee Engine), GAP-023 (API Gateway).
+- [2026-04-17] 9c140ef — feat(payments): wire PaymentService+LedgerPort in DI, align router type hints — Phase 2 P0
