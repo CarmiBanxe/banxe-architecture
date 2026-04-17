@@ -1490,6 +1490,38 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-106 — Crypto & Digital Assets Custody + Batch Payment Processing (IL-CDC-01 + IL-BPP-01)
+- **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CDC-01 + IL-BPP-01
+- **Описание:** Sprint 28 — Phase 35 (Crypto & Digital Assets Custody) + Phase 36 (Batch Payment Processing).
+  - **Phase 35 — Crypto & Digital Assets Custody (IL-CDC-01):**
+    - `services/crypto_custody/models.py` — 5 enums (AssetType×7, WalletStatus×4, TransferStatus×7, CustodyAction×5, NetworkType×3), 5 frozen dataclasses, 4 Protocols + InMemory stubs (seeded BTC/ETH/USDT wallets)
+    - `services/crypto_custody/wallet_manager.py` — `create_wallet` (HOT/COLD), `get_balance` (Decimal I-01), `list_wallets`, `archive_wallet` (HITL I-27)
+    - `services/crypto_custody/transfer_engine.py` — `initiate_transfer` (PENDING), `validate_address`, `execute_transfer` (HITL ≥£1k I-27), `confirm_on_chain`, `reject_transfer`
+    - `services/crypto_custody/travel_rule_engine.py` — FATF R.16: `requires_travel_rule` (≥€1000), `screen_jurisdiction` (I-02 blocks + I-03 EDD), originator/beneficiary data
+    - `services/crypto_custody/custody_reconciler.py` — on-chain vs off-chain recon (CASS 6), 1-satoshi tolerance, `flag_discrepancy` (I-24)
+    - `services/crypto_custody/fee_calculator.py` — network fee estimation (Decimal), withdrawal fee (0.1%), min/max limits per asset
+    - `services/crypto_custody/crypto_agent.py` — L2/L4 orchestration: all transfers HITL_REQUIRED ≥£1k (I-27), Travel Rule auto ≥€1000
+    - `api/routers/crypto_custody.py` — 10 REST endpoints (`/v1/crypto/*` + `/v1/travel-rule/check`)
+    - `banxe_mcp/server.py` — 5 MCP tools: `crypto_get_balance`, `crypto_initiate_transfer`, `crypto_travel_rule_check`, `crypto_reconcile`, `crypto_list_wallets`
+    - `agents/passports/crypto/` — `passport.md` + `SOUL.md`
+    - `tests/test_crypto_custody/` — 123 tests (7 files)
+  - **Phase 36 — Batch Payment Processing (IL-BPP-01):**
+    - `services/batch_payments/models.py` — 5 enums (BatchStatus×9, PaymentRail×5, BatchItemStatus×6, FileFormat×4, ValidationErrorCode×6), 5 frozen dataclasses, 4 Protocols + InMemory stubs
+    - `services/batch_payments/batch_creator.py` — `create_batch`, `add_item` (Decimal I-01), `validate_all` (IBAN + I-02 + Decimal), `submit_batch` (HITL always I-27), `get_batch_summary`
+    - `services/batch_payments/file_parser.py` — parse Bacs Std18 / SEPA pain.001 XML / CSV-Banxe, `detect_format`, `compute_file_hash` (SHA-256 I-12)
+    - `services/batch_payments/payment_dispatcher.py` — `dispatch_batch`, `dispatch_item` (FPS/BACS/CHAPS/SEPA/SWIFT routing), `retry_failed_items`
+    - `services/batch_payments/reconciliation_engine.py` — MATCHED/PARTIAL/FAILED, discrepancy report, `mark_reconciled`
+    - `services/batch_payments/limit_checker.py` — per-batch £500k, daily £2M, AML £10k threshold (I-04), velocity (10 batches/24h)
+    - `services/batch_payments/batch_agent.py` — L2/L4: submission HITL_REQUIRED always (I-27), auto-validate, auto-reconcile
+    - `api/routers/batch_payments.py` — 9 REST endpoints (`/v1/batch-payments/*`)
+    - `banxe_mcp/server.py` — 4 MCP tools: `batch_create`, `batch_submit`, `batch_get_status`, `batch_reconciliation_report`
+    - `agents/passports/batch_payments/` — `passport.md` + `SOUL.md`
+    - `tests/test_batch_payments/` — 108 tests (7 files)
+- **Инварианты:** I-01 (Decimal for all amounts, satoshi 8dp), I-02 (hard-block RU/BY/IR/KP/CU/MM/AF/VE/SY), I-03 (FATF greylist EDD), I-04 (£10k AML threshold), I-05 (string amounts in API), I-12 (SHA-256: address/file hash), I-24 (append-only audit), I-27 (HITL: transfers ≥£1k, archive, all batch submissions), I-28 (IL entry)
+- **FCA refs:** FCA PS22/10 (cryptoassets), MLR 2017 Reg.14A, FATF R.16 (Travel Rule), FCA CASS 6 (custody), PSR 2017, PSD2 Art.66/78, Bacs Standard 18, SEPA SCT (pain.001)
+- **Статус:** DONE ✅ 2026-04-17
+- **Proof:** 5842 tests green (↑199 new), ruff 0 issues. MCP tools: 143 total (+9). API endpoints: 290 total (+19). Agent passports: 37 total (+2). Commit: b1a84f6
+
 ### IL-105 — Dispute Resolution & Chargeback Management + Beneficiary & Payee Management (IL-DRM-01 + IL-BPM-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-DRM-01 + IL-BPM-01
 - **Описание:** Sprint 27 — Phase 33 (Dispute Resolution & Chargeback Management) + Phase 34 (Beneficiary & Payee Management).
