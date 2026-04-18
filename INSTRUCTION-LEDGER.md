@@ -1490,6 +1490,38 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-107 — Risk Management & Scoring Engine + Reporting & Analytics Platform (IL-RMS-01 + IL-RAP-01)
+- **Источник:** CEO, 2026-04-18 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-RMS-01 + IL-RAP-01
+- **Описание:** Sprint 29 — Phase 37 (Risk Management & Scoring Engine) + Phase 38 (Reporting & Analytics Platform).
+  - **Phase 37 — Risk Management & Scoring Engine (IL-RMS-01):**
+    - `services/risk_management/models.py` — 5 enums (RiskCategory×7, RiskLevel×4, ScoreModel×4, AssessmentStatus×5, MitigationAction×5), 5 frozen dataclasses, 4 Protocols + InMemory stubs (seeded 3 sample scores)
+    - `services/risk_management/risk_scorer.py` — multi-factor scoring (CREDIT/OPERATIONAL/AML/FRAUD/MARKET), weighted Decimal 0–100 (I-01), configurable weights, `classify_level` (LOW<25/MEDIUM<50/HIGH<75/CRITICAL≥75), batch scoring
+    - `services/risk_management/risk_aggregator.py` — entity-level roll-up, portfolio heatmap, concentration analysis (>20% HIGH/CRITICAL flag), top N risks
+    - `services/risk_management/threshold_manager.py` — per-category thresholds, `set_threshold` → HITL_REQUIRED (I-27), breach alerts
+    - `services/risk_management/mitigation_tracker.py` — action plans (IDENTIFIED→MITIGATED→ACCEPTED), SHA-256 evidence hash (I-12), SLA overdue tracking
+    - `services/risk_management/risk_reporter.py` — board-level JSON reports, distribution dict, trend data, regulatory returns
+    - `services/risk_management/risk_agent.py` — L1/L4: auto-scoring L1; threshold change + risk ACCEPTED/TRANSFERRED → HITL_REQUIRED (I-27)
+    - `api/routers/risk_management.py` — 9 REST endpoints (`/v1/risk/*`)
+    - `banxe_mcp/server.py` — 5 MCP tools: `risk_score_entity`, `risk_portfolio_summary`, `risk_set_threshold`, `risk_mitigation_status`, `risk_generate_report`
+    - `agents/passports/risk/` — `passport.md` + `SOUL.md`
+    - `tests/test_risk_management/` — 115+ tests (7 files)
+  - **Phase 38 — Reporting & Analytics Platform (IL-RAP-01):**
+    - `services/reporting_analytics/models.py` — 5 enums (ReportType×7, ReportFormat×4, ScheduleFrequency×5, DataSource×6, AggregationType×6), 5 frozen dataclasses, 4 Protocols + InMemory stubs (seeded 3 templates)
+    - `services/reporting_analytics/report_builder.py` — configurable templates, `render_json` (Decimal→string I-05), `render_csv`, job lifecycle
+    - `services/reporting_analytics/data_aggregator.py` — multi-source aggregation (transactions/AML/compliance/treasury/risk), time-series rollup
+    - `services/reporting_analytics/dashboard_metrics.py` — real-time KPIs (revenue/volume/compliance_rate/NPS), sparkline data, compliance score 0–100
+    - `services/reporting_analytics/scheduled_reports.py` — cron-based scheduling, `update_schedule` → HITL_REQUIRED (I-27), `run_due_reports`, deactivate
+    - `services/reporting_analytics/export_engine.py` — JSON/CSV export, SHA-256 integrity hash (I-12), GDPR PII redaction (IBAN + email regex), audit trail (I-24)
+    - `services/reporting_analytics/analytics_agent.py` — L1/L4: auto-report/export L1; schedule change → HITL_REQUIRED (I-27)
+    - `api/routers/reporting.py` — 9 REST endpoints (`/v1/reports/*`)
+    - `banxe_mcp/server.py` — 4 MCP tools: `report_generate`, `report_schedule`, `report_list_templates`, `report_export`
+    - `agents/passports/reporting_analytics/` — `passport.md` + `SOUL.md`
+    - `tests/test_reporting_analytics/` — 105+ tests (7 files)
+- **Инварианты:** I-01 (Decimal scores/amounts), I-02 (blocked jurisdictions), I-05 (string values in API), I-12 (SHA-256: evidence + export hash), I-24 (append-only risk log + export audit), I-27 (HITL: threshold changes, schedule changes, risk acceptance), I-28 (IL entry)
+- **FCA refs:** SYSC 7.1 (risk management systems), PRIN 11 (regulators), MLR 2017 Reg.18 (risk assessment), Basel III/CRD V, SUP 16 (regulatory returns), SYSC 9 (record keeping), PS22/9 §10 (MI reporting), BoE statistical reporting
+- **Статус:** DONE ✅ 2026-04-18
+- **Proof:** 6094 tests green (↑252 new), ruff 0 issues. MCP tools: 152 total (+9). API endpoints: 310 total (+20). Agent passports: 39 total (+2). Commit: 18edbe6
+
 ### IL-106 — Crypto & Digital Assets Custody + Batch Payment Processing (IL-CDC-01 + IL-BPP-01)
 - **Источник:** CEO, 2026-04-17 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CDC-01 + IL-BPP-01
 - **Описание:** Sprint 28 — Phase 35 (Crypto & Digital Assets Custody) + Phase 36 (Batch Payment Processing).
