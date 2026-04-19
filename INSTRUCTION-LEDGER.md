@@ -1490,6 +1490,38 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-109 — Fee Management Engine + Compliance Calendar & Deadline Tracker (IL-FME-01 + IL-CCD-01)
+- **Источник:** CEO, 2026-04-19 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-FME-01 + IL-CCD-01
+- **Описание:** Sprint 31 — Phase 41 (Fee Management Engine) + Phase 42 (Compliance Calendar & Deadline Tracker).
+  - **Phase 41 — Fee Management Engine (IL-FME-01, Trust Zone: AMBER):**
+    - `services/fee_management/models.py` — 5 enums (FeeType×6, FeeStatus×4, BillingCycle×4, WaiverReason×5, FeeCategory×5), 5 frozen dataclasses, 4 Protocols + InMemory stubs (5 seeded rules: maintenance £4.99, ATM £1.50, FX 0.5%, SWIFT £25, card £10)
+    - `services/fee_management/fee_calculator.py` — TIER_DISCOUNTS (STANDARD/GOLD/VIP/PREMIUM), TIERED_BRACKETS (volume-based %), `calculate_fee` (Decimal quantize 0.01 I-01), `calculate_tiered_fee`, `apply_discount`, `estimate_monthly_fees`, `get_fee_breakdown`
+    - `services/fee_management/billing_engine.py` — `generate_invoice` (MONTHLY/QUARTERLY/ANNUAL, I-24), `apply_charges`, `get_outstanding`, `mark_paid`, `get_billing_history`
+    - `services/fee_management/waiver_manager.py` — `request_waiver` → HITL_REQUIRED (I-27), `approve_waiver` (I-24), `reject_waiver`, `list_active_waivers`, `check_waiver_eligibility`
+    - `services/fee_management/fee_transparency.py` — `get_fee_schedule`, `compare_plans`, `estimate_annual_cost` (Decimal), `generate_disclosure` (PS22/9 plain-language), `get_regulatory_summary`
+    - `services/fee_management/fee_reconciler.py` — tolerance £0.01, `reconcile_charges`, `flag_overcharges`, `generate_refund_proposal` → HITL (I-27), `get_reconciliation_report`
+    - `services/fee_management/fee_agent.py` — L1 auto (charge); L4 HITL (waiver/refund/schedule change)
+    - `api/routers/fee_management.py` — 9 REST endpoints (`/v1/fees/*`)
+    - `banxe_mcp/server.py` — 5 MCP tools: `fee_calculate`, `fee_get_schedule`, `fee_request_waiver`, `fee_billing_summary`, `fee_reconcile`
+    - `agents/passports/fee_management/` + `agents/compliance/soul/fee_management.soul.md`
+    - `tests/test_fee_management/` — 110+ tests (7 files)
+  - **Phase 42 — Compliance Calendar & Deadline Tracker (IL-CCD-01, Trust Zone: RED):**
+    - `services/compliance_calendar/models.py` — 5 enums (DeadlineType×6, DeadlineStatus×5, Priority×4, RecurrencePattern×5, ReminderChannel×4), 5 frozen dataclasses, 4 Protocols + InMemory stubs (5 seeded: FIN060 Q1/AML Annual/Board Risk Q/Consumer Duty/MLR Annual)
+    - `services/compliance_calendar/deadline_manager.py` — `create_deadline` (I-24), `update_deadline` → HITL_REQUIRED (I-27), `complete_deadline` (SHA-256 evidence I-12), `miss_deadline` (CRITICAL → ESCALATED auto), `list_upcoming` (days_ahead filter), `get_overdue`
+    - `services/compliance_calendar/reminder_engine.py` — T-30d/T-7d/T-1d schedule, `send_reminder` stub (QUEUED), `acknowledge_reminder` (I-24), `get_pending_reminders`, `configure_channels`
+    - `services/compliance_calendar/recurrence_calculator.py` — DAILY/WEEKLY/MONTHLY/QUARTERLY/ANNUAL next, `generate_series`, `get_fiscal_quarters` (UK Apr–Mar), `adjust_for_weekends` (next business day), `get_fca_reporting_dates` (FIN060×4 + AML + MLR)
+    - `services/compliance_calendar/task_tracker.py` — create/assign/progress (0–100), auto-complete at 100, `get_workload_summary`, append-only (I-24)
+    - `services/compliance_calendar/calendar_reporter.py` — monthly/quarterly views, `get_compliance_score` (Decimal %), iCal stub, `generate_board_calendar_report` → HITL (I-27)
+    - `services/compliance_calendar/calendar_agent.py` — L1 auto (create/reminder); L4 HITL (update/board report)
+    - `api/routers/compliance_calendar.py` — 9 REST endpoints (`/v1/compliance-calendar/*`)
+    - `banxe_mcp/server.py` — 4 MCP tools: `calendar_list_deadlines`, `calendar_create_deadline`, `calendar_get_upcoming`, `calendar_compliance_score`
+    - `agents/passports/compliance_calendar/` + `agents/compliance/soul/compliance_calendar.soul.md`
+    - `tests/test_compliance_calendar/` — 105+ tests (7 files)
+- **Инварианты:** I-01 (Decimal fees, quantize 0.01), I-05 (string amounts in API), I-12 (SHA-256 deadline evidence), I-24 (append-only: billing/waiver/task/reminder audit), I-27 (HITL: fee waiver, refund, schedule change, deadline update, board report), I-28 (IL entry)
+- **FCA refs:** FCA PS21/3 (fair pricing), BCOBS 5 (transparent charges), PS22/9 §4 (price/value Consumer Duty), PSD2 Art.45 (fee transparency); SUP 16.3 (reporting deadlines), SYSC 4.3 (governance calendar), MLR 2017 Reg.49 (record-keeping), PS22/9 §10 (annual review)
+- **Статус:** DONE ✅ 2026-04-19
+- **Proof:** 6534 tests green (↑220 new), ruff 0 issues. MCP tools: 170 total (+9). API endpoints: 346 total (+18). Agent passports: 43 total (+2). Commit: da26607
+
 ### IL-108 — User Preferences & Settings + Audit Trail & Event Sourcing (IL-UPS-01 + IL-AES-01)
 - **Источник:** CEO, 2026-04-19 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-UPS-01 + IL-AES-01
 - **Описание:** Sprint 30 — Phase 39 (User Preferences & Settings) + Phase 40 (Audit Trail & Event Sourcing).
