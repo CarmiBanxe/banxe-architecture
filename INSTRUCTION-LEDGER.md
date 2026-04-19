@@ -1490,6 +1490,38 @@
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3391 tests green (↑201 new), ruff 0 issues. MCP tools: 52 total (+9). API endpoints: 113 total (+16). Agent passports: 17 total (+2).
 
+### IL-108 — User Preferences & Settings + Audit Trail & Event Sourcing (IL-UPS-01 + IL-AES-01)
+- **Источник:** CEO, 2026-04-19 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-UPS-01 + IL-AES-01
+- **Описание:** Sprint 30 — Phase 39 (User Preferences & Settings) + Phase 40 (Audit Trail & Event Sourcing).
+  - **Phase 39 — User Preferences & Settings (IL-UPS-01):**
+    - `services/user_preferences/models.py` — 5 enums (PreferenceCategory×5, NotificationChannel×5, Language×7, Theme×4, ConsentType×5), 5 frozen dataclasses, 4 Protocols + InMemory stubs (seeded USR-001 defaults)
+    - `services/user_preferences/preference_store.py` — DEFAULT_PREFERENCES (5 categories), get/set/reset with defaults fallback, append-only audit (I-24)
+    - `services/user_preferences/consent_manager.py` — GDPR consent lifecycle: `grant_consent`, `withdraw_consent` → HITL_REQUIRED (I-27), `confirm_withdrawal` (append-only I-24); ESSENTIAL consent cannot be withdrawn
+    - `services/user_preferences/notification_preferences.py` — per-channel opt-in/opt-out (EMAIL/SMS/PUSH/TELEGRAM/WEBHOOK), quiet hours (0–23 validation), DAILY_FREQUENCY_CAPS per channel
+    - `services/user_preferences/locale_manager.py` — Language/timezone/date-format, FALLBACK_CHAIN (AR/ZH/RU→EN), `format_amount` uses Decimal (I-01)
+    - `services/user_preferences/data_export.py` — GDPR Art.20 portability: SHA-256 export hash (I-12), `request_erasure` → HITL_REQUIRED (I-27), append-only log (I-24)
+    - `services/user_preferences/preferences_agent.py` — L1 auto (prefs/export); L4 HITL (consent withdrawal + erasure)
+    - `api/routers/user_preferences.py` — 9 REST endpoints (`/v1/preferences/*`)
+    - `banxe_mcp/server.py` — 4 MCP tools: `prefs_get`, `prefs_set`, `prefs_consent_status`, `prefs_export_data`
+    - `agents/passports/preferences/` + `agents/compliance/soul/user_preferences.soul.md`
+    - `tests/test_user_preferences/` — 100+ tests (7 files)
+  - **Phase 40 — Audit Trail & Event Sourcing (IL-AES-01):**
+    - `services/audit_trail/models.py` — 5 enums (EventCategory×7, EventSeverity×5, RetentionPolicy×4, SourceSystem×6, AuditAction×8), 5 frozen dataclasses, 4 Protocols + InMemory stubs (5 seeded events)
+    - `services/audit_trail/event_store.py` — `_compute_chain_hash` SHA-256 (I-12); append-only, NO delete/update (I-24); chain head tracking per SourceSystem
+    - `services/audit_trail/event_replayer.py` — replay by entity/category/time-range, `reconstruct_state`, point-in-time snapshots, timeline view
+    - `services/audit_trail/retention_enforcer.py` — DEFAULT_RULES: AML_5YR(1825d)/FINANCIAL_7YR(2555d)/OPERATIONAL_3YR(1095d)/SYSTEM_1YR(365d); `schedule_purge` → HITL_REQUIRED (I-27)
+    - `services/audit_trail/search_engine.py` — filter by category/severity/entity/actor/time, pagination, full-text search on details dict, severity summary
+    - `services/audit_trail/integrity_checker.py` — recomputes SHA-256 per event, detects tampering and time gaps (>1hr), FCA compliance report
+    - `services/audit_trail/audit_agent.py` — L1 auto (log/search/replay/integrity); L4 HITL (purge only)
+    - `api/routers/audit_trail.py` — 9 REST endpoints (`/v1/audit-trail/*`); no DELETE endpoint (I-24 enforced at API layer)
+    - `banxe_mcp/server.py` — 5 MCP tools: `audit_log_event`, `audit_search`, `audit_replay`, `audit_verify_integrity`, `audit_retention_status`
+    - `agents/passports/audit_trail/` + `agents/compliance/soul/audit_trail.soul.md`
+    - `tests/test_audit_trail/` — 120+ tests (7 files)
+- **Инварианты:** I-01 (Decimal amounts in events), I-02 (blocked jurisdictions), I-12 (SHA-256: export hash + event chain hash), I-24 (append-only: consent log + event store — CORE for Phase 40), I-27 (HITL: consent withdrawal, data erasure, audit purge), I-28 (IL entry)
+- **FCA refs:** GDPR Art.7 (consent), GDPR Art.17 (erasure), GDPR Art.20 (portability), PS22/9 §4 (consumer duty), PECR 2003; SYSC 9.1.1R (record keeping), SYSC 3.2 (audit trail), MLR 2017 Reg.40 (5yr retention), MiFID II Art.16
+- **Статус:** DONE ✅ 2026-04-19
+- **Proof:** 6314 tests green (↑220 new), ruff 0 issues. MCP tools: 161 total (+9). API endpoints: 328 total (+18). Agent passports: 41 total (+2). Commit: 13c5bdc
+
 ### IL-107 — Risk Management & Scoring Engine + Reporting & Analytics Platform (IL-RMS-01 + IL-RAP-01)
 - **Источник:** CEO, 2026-04-18 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-RMS-01 + IL-RAP-01
 - **Описание:** Sprint 29 — Phase 37 (Risk Management & Scoring Engine) + Phase 38 (Reporting & Analytics Platform).
