@@ -1981,3 +1981,38 @@
 - **FCA refs:** FCA MLR 2017 Reg.28 (CDD legal persons), SYSC 6.3 (AML controls), Companies House Act 2006, EU AMLD5 Art.30 (UBO register), OFSI sanctions regime, EU Reg 269/2014 (Ukraine sanctions), FATF R.6 (targeted financial sanctions), POCA 2002 s.330 (SAR obligation)
 - **Статус:** DONE ✅ 2026-04-20
 - **Proof:** 239 new tests green (239/239), ruff 0 issues, all pre-commit hooks passed. Commit e884d23 → pushed to main. MCP tools: 189 total (+10). API endpoints: 384 total (+19). Agent passports: 47 total (+2).
+
+### IL-112 — SWIFT Correspondent Banking + FX Engine (IL-SWF-01 + IL-FXE-01)
+- **Источник:** CEO, 2026-04-20 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-SWF-01 + IL-FXE-01
+- **Описание:** Sprint 34 — Phase 47 (SWIFT & Correspondent Banking) + Phase 48 (FX Engine).
+  - **Phase 47 — SWIFT & Correspondent Banking (IL-SWF-01, Trust Zone: RED):**
+    - `services/swift_correspondent/models.py` — SWIFTMessageType/MessageStatus/ChargeCode/CorrespondentType/GPIStatus (StrEnum), SWIFTMessage (BIC 8/11 validator, remittance 140-char cap), CorrespondentBank (fatf_risk="low" default), NostroPosition (mismatch_amount computed), HITLProposal, 3 Protocols + InMemory stubs (Deutsche Bank/Barclays/JPMorgan seeded)
+    - `services/swift_correspondent/message_builder.py` — build_mt103 (SHA-256 msg IDs, FATF greylist [EDD] prefix I-03, I-02 blocked jurisdictions raise ValueError), build_mt202 (OUR charges), validate_message, cancel_message (ALWAYS HITLProposal I-27)
+    - `services/swift_correspondent/correspondent_registry.py` — register_correspondent (SHA-256 bank_id cb_{hex8}, fatf_risk="high" for greylist I-03), lookup_by_currency (excludes I-02 blocked), deactivate_correspondent (HITLProposal I-27)
+    - `services/swift_correspondent/nostro_reconciler.py` — RECON_TOLERANCE=Decimal("0.01"), take_snapshot (I-24 append-only), reconcile (NostroPosition if within tolerance else HITLProposal TREASURY_OPS I-27), get_reconciliation_summary
+    - `services/swift_correspondent/gpi_tracker.py` — generate_uetr (UUID4), get_gpi_status (ACSP/ACCC/RJCT simulation via UETR hash), update_status (UTC I-23), webhook_stub (BT-003: NotImplementedError)
+    - `services/swift_correspondent/charges_calculator.py` — AML_EDD_THRESHOLD=Decimal("10000"), SHA=£25/BEN=£0 sender/OUR=£35+0.1%, apply_edd_surcharge (£10 for ≥£10k I-04)
+    - `services/swift_correspondent/swift_agent.py` — L1 auto for validation, L4 HITL for send/hold/reject/cancel (I-27, requires_approval_from="TREASURY_OPS")
+    - `api/routers/swift_correspondent.py` — 10 REST endpoints at /v1/swift/*: POST /messages/mt103, POST /messages/mt202, GET /messages/{id}, POST /messages/{id}/send, POST /messages/{id}/hold, POST /messages/{id}/cancel, GET /correspondents, POST /correspondents, GET /nostro/{bank_id}/{currency}, GET /gpi/{uetr}
+    - 5 MCP tools: swift_build_mt103, swift_send_message, swift_gpi_status, swift_nostro_reconcile, swift_list_correspondents
+    - `agents/passports/swift_correspondent/PASSPORT.md`
+    - `docs/adr/ADR-013-swift-correspondent.md`
+    - `tests/test_swift_correspondent/` — 120+ tests (5 files): test_models, test_message_builder, test_nostro_reconciler, test_gpi_tracker (+charges+agent+registry)
+  - **Phase 48 — FX Engine (IL-FXE-01, Trust Zone: AMBER):**
+    - `services/fx_engine/models.py` — FXRateType/FXQuoteStatus/FXExecutionStatus/RiskTier (StrEnum), FXRate/FXQuote (max_ttl>30s raises ValidationError I-04)/FXExecution/HedgePosition/HITLProposal, 4 Protocols + InMemory stubs (GBP/EUR, GBP/USD, EUR/USD seeded; ExecutionStore+HedgeStore append-only I-24)
+    - `services/fx_engine/rate_provider.py` — STALE_THRESHOLD_SECONDS=60, get_rate/get_all_rates/update_rate, get_bid/ask/mid (Decimal I-22), is_stale flag (UTC I-23), LiveRateProvider raises NotImplementedError("BT-004")
+    - `services/fx_engine/spread_calculator.py` — SPREAD_TIERS: retail=50bps/wholesale=30bps/institutional=15bps (PS22/9), LARGE_FX_THRESHOLD=£10k, INSTITUTIONAL_THRESHOLD=£100k, calculate_buy_amount (Decimal I-22)
+    - `services/fx_engine/fx_quoter.py` — create_quote (qte_{uuid8}, expires_at=UTC+30s I-23), is_quote_valid (UTC now vs expires_at), get_quote, list_quotes
+    - `services/fx_engine/fx_executor.py` — LARGE_FX_THRESHOLD=£10k, execute (expired→EXPIRED, ≥£10k→HITLProposal TREASURY_OPS I-27, else CONFIRMED I-24 append), reject ALWAYS HITLProposal
+    - `services/fx_engine/hedging_engine.py` — HEDGE_ALERT_THRESHOLD_GBP=£500k, record_position (I-24 append), check_threshold (|net_exposure|≥£500k→HITLProposal I-27), take_eod_snapshot, get_hedging_summary
+    - `services/fx_engine/fx_compliance_reporter.py` — report_large_fx (ALWAYS HITLProposal→COMPLIANCE_OFFICER), generate_ps229_report (stub), export_fx_audit_trail (SHA-256)
+    - `services/fx_engine/fx_agent.py` — L1 auto for <£10k valid quotes, L4 HITL for ≥£10k/reject/requote (I-27, requires_approval_from="TREASURY_OPS")
+    - `api/routers/fx_engine.py` — 9 REST endpoints at /v1/fx/*: GET /rates, GET /rates/{pair}, POST /quotes, GET /quotes/{id}, POST /quotes/{id}/execute, POST /quotes/{id}/reject, GET /executions/{id}, GET /hedge/positions/{pair}, GET /compliance/summary
+    - 5 MCP tools: fx_get_rate, fx_create_quote, fx_execute_quote, fx_get_hedge_exposure, fx_compliance_summary
+    - `agents/passports/fx_engine/PASSPORT.md`
+    - `docs/adr/ADR-014-fx-engine.md`
+    - `tests/test_fx_engine/` — 115+ tests (7 files): test_models, test_rate_provider, test_spread_calculator, test_fx_quoter, test_fx_executor, test_hedging_engine, test_fx_agent
+- **Инварианты:** I-01/I-22 (Decimal-only amounts/rates), I-02 (9 blocked jurisdictions for SWIFT), I-03 (FATF greylist [EDD] prefix), I-04 (£10k AML threshold/quote TTL≤30s), I-23 (UTC timestamps), I-24 (append-only NostroStore/ExecutionStore/HedgeStore), I-27 (HITL L4: send/cancel/execute≥£10k/hedge≥£500k), I-28 (quality gate)
+- **FCA refs:** PSR 2017 (SWIFT payment instructions), SWIFT gpi SRD (UETR/ACSP/ACCC/RJCT), MLR 2017 Reg.28 (CDD on correspondent banks + FX AML), FCA SUP 15.8 (suspicious transaction reporting), PS22/9 Consumer Duty (fair FX pricing tiers), EMIR (hedge position reporting), FCA COBS 14.3 (best execution)
+- **Статус:** DONE ✅ 2026-04-20
+- **Proof:** 300 new tests green (300/300), ruff 0 issues, all pre-commit hooks passed. Commit 08984b8 → pushed to feat/auth-router-thin-tokenmanager. MCP tools: 199 total (+10). API endpoints: 403 total (+19). Agent passports: 49 total (+2).
