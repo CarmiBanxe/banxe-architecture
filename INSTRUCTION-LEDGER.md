@@ -1918,3 +1918,34 @@
 - **FCA refs:** CASS 15.3+15.6+15.12, DISP 1.3, PS22/9 §4, GDPR Art.7, UK PECR
 - **Статус:** DONE ✅ 2026-04-16
 - **Proof:** 3615 tests green (↑224 new), ruff 0 issues. MCP tools: 61 total (+9). API endpoints: 129 total (+16). Agent passports: 19 total (+2).
+
+### IL-110 — Multi-Tenancy Infrastructure + API Versioning (IL-MT-01 + IL-AVD-01)
+- **Источник:** CEO, 2026-04-20 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-MT-01 + IL-AVD-01
+- **Описание:** Sprint 32 — Phase 43 (Multi-Tenancy Infrastructure) + Phase 44 (API Versioning & Deprecation).
+  - **Phase 43 — Multi-Tenancy Infrastructure (IL-MT-01, Trust Zone: RED):**
+    - `services/multi_tenancy/models.py` — Tenant/TenantContext/TenantQuota/HITLProposal + 3 Protocols + InMemory stubs (TenantPort, TenantAuditPort, QuotaPort)
+    - `services/multi_tenancy/tenant_manager.py` — provision/activate/suspend/terminate (HITL I-27), KYB verification, CASS 7 pool creation (cass_pool_id), I-12 SHA-256 tenant IDs
+    - `services/multi_tenancy/context_middleware.py` — tenant context extraction (X-Tenant-ID header), contextvars, scope validation
+    - `services/multi_tenancy/quota_enforcer.py` — per-tier quota enforcement (BASIC 1k/BUSINESS 10k/ENTERPRISE 999k tx/day), Decimal monthly volumes (I-01)
+    - `services/multi_tenancy/data_isolator.py` — SHARED/SCHEMA/DEDICATED isolation, cross-tenant access block, row-level filters
+    - `services/multi_tenancy/billing_engine.py` — monthly invoice + overage £0.01/tx (Decimal I-01), HITLProposal on payment failure (I-27)
+    - `services/multi_tenancy/isolation_validator.py` — CASS 7 pool separation, GDPR Art.25 data residence validation
+    - `api/routers/multi_tenancy.py` — 10 endpoints: provision/list/get/activate/suspend/terminate/tier/verify-kyb/quota/audit-log
+    - 5 MCP tools: tenant_provision, tenant_get_status, tenant_suspend, tenant_check_quota, tenant_audit_log
+    - `agents/passports/multi_tenancy/PASSPORT.md`
+    - `tests/test_multi_tenancy/` — 107+ tests (7 files): test_models, test_tenant_manager, test_context_middleware, test_quota_enforcer, test_data_isolator, test_billing_engine, test_isolation_validator
+  - **Phase 44 — API Versioning & Deprecation Management (IL-AVD-01, Trust Zone: AMBER):**
+    - `services/api_versioning/models.py` — ApiVersionSpec/BreakingChange/DeprecationNotice/HITLProposal (frozen dataclasses)
+    - `services/api_versioning/version_router.py` — VERSION_REGISTRY (v1 ACTIVE, v2 EXPERIMENTAL), Accept-Version header resolution, RFC 8594 Sunset header injection
+    - `services/api_versioning/deprecation_manager.py` — 90-day FCA notice (COND 2.2), HITLProposal for sunset broadcast (I-27), sunset risk calculation
+    - `services/api_versioning/changelog_generator.py` — breaking change registry, markdown changelog generation, migration guide export, OpenAPI diff format
+    - `services/api_versioning/compatibility_checker.py` — field removal detection, type change detection, compatibility matrix (v1→v2→v3)
+    - `services/api_versioning/version_analytics.py` — usage tracking per version/endpoint/tenant, migration pressure report, sunset risk report
+    - `api/routers/api_versioning.py` — 9 endpoints: list/get/deprecate/deprecations/upcoming/changelog/diff/compatibility/analytics
+    - 4 MCP tools: version_list_active, version_get_deprecations, version_check_compatibility, version_get_changelog
+    - `agents/passports/api_versioning/PASSPORT.md`
+    - `tests/test_api_versioning/` — 91+ tests (6 files): test_models, test_version_router, test_deprecation_manager, test_changelog_generator, test_compatibility_and_analytics
+- **Инварианты:** I-01 (Decimal fees/volumes), I-02 (jurisdiction check at provision), I-05 (string IDs), I-12 (SHA-256 tenant_id), I-14 (immutable audit), I-24 (append-only TenantAuditPort), I-27 (HITL: provision/suspend/terminate/tier-change/sunset-broadcast), I-28 (HITL before side-effects)
+- **FCA refs:** CASS 7 (client money per tenant), SYSC 8.1 (outsourcing controls), GDPR Art.25 (privacy by design), FCA COND 2.2 (transparency), PSD2 Art.30 (version notification), PS22/9 §4 (change management), RFC 8594 (Sunset header)
+- **Статус:** DONE ✅ 2026-04-20
+- **Proof:** 198 new tests green (198/198), ruff 0 issues. MCP tools: 179 total (+9). API endpoints: 365 total (+19). Agent passports: 45 total (+2).
