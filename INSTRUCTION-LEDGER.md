@@ -1949,3 +1949,35 @@
 - **FCA refs:** CASS 7 (client money per tenant), SYSC 8.1 (outsourcing controls), GDPR Art.25 (privacy by design), FCA COND 2.2 (transparency), PSD2 Art.30 (version notification), PS22/9 §4 (change management), RFC 8594 (Sunset header)
 - **Статус:** DONE ✅ 2026-04-20
 - **Proof:** 198 new tests green (198/198), ruff 0 issues. MCP tools: 179 total (+9). API endpoints: 365 total (+19). Agent passports: 45 total (+2).
+
+### IL-111 — KYB Business Onboarding + Sanctions Real-Time Screening (IL-KYB-01 + IL-SRS-01)
+- **Источник:** CEO, 2026-04-20 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-KYB-01 + IL-SRS-01
+- **Описание:** Sprint 33 — Phase 45 (KYB Business Onboarding) + Phase 46 (Sanctions Real-Time Screening Engine).
+  - **Phase 45 — KYB Business Onboarding (IL-KYB-01):**
+    - `services/kyb_onboarding/models.py` — BusinessType/KYBStatus/UBOVerification/RiskTier/DocumentType (StrEnum) + frozen dataclasses + Protocols + InMemory stubs (3 seeded apps)
+    - `services/kyb_onboarding/application_manager.py` — I-02 hard-block (9 jurisdictions), SHA-256 app_id, Companies House number validation (LTD 8-digit, LLP OC+6), HITLProposal for APPROVE/REJECT (I-27)
+    - `services/kyb_onboarding/ubo_registry.py` — UBO_THRESHOLD_PCT=25%, FATF greylist (12 countries) EDD (I-03), I-04 £10k EDD threshold, I-02 blocked jurisdiction check per UBO
+    - `services/kyb_onboarding/companies_house_adapter.py` — CompaniesHousePort Protocol + InMemory (3 seeded companies) + live stub (BT-002: NotImplementedError)
+    - `services/kyb_onboarding/risk_assessor.py` — Decimal scoring: BLOCKED=100, MEDIUM=50, BASE=10, UBO_HIGH=+15, CHARITY=+10, PLC=-5, AGE<1yr=+20; tiers LOW<25/MEDIUM<50/HIGH<75/PROHIBITED≥75
+    - `services/kyb_onboarding/onboarding_workflow.py` — 5-stage workflow (doc_check→ubo_verify→sanctions→risk→decision), SLA_BUSINESS_DAYS=5
+    - `services/kyb_onboarding/kyb_agent.py` — L4 HITL for all irreversible decisions (APPROVE/REJECT/SUSPEND)
+    - `api/routers/kyb_onboarding.py` — 10 REST endpoints at /v1/kyb/*
+    - 5 MCP tools: kyb_submit_application, kyb_get_status, kyb_screen_ubos, kyb_risk_assessment, kyb_get_decision
+    - `agents/passports/kyb_onboarding/PASSPORT.md`
+    - `tests/test_kyb_onboarding/` — 120+ tests (7 files): test_models, test_application_manager, test_ubo_registry, test_companies_house, test_risk_assessor, test_workflow, test_kyb_agent
+  - **Phase 46 — Sanctions Real-Time Screening Engine (IL-SRS-01):**
+    - `services/sanctions_screening/models.py` — ScreeningResult/ListSource/MatchConfidence/EntityType/AlertStatus (StrEnum) + frozen dataclasses + HITLProposal + InMemory stores (5 seeded OFSI/EU entries)
+    - `services/sanctions_screening/screening_engine.py` — I-02 immediate CONFIRMED_MATCH, difflib.SequenceMatcher fuzzy scoring (Decimal), I-04 EDD note ≥£10k, thresholds POSSIBLE≥65/CONFIRMED≥85
+    - `services/sanctions_screening/fuzzy_matcher.py` — Decimal composite score: name×0.6 + dob_match×0.3 + nationality×0.1; LOW<40/MEDIUM<65/HIGH≥85
+    - `services/sanctions_screening/alert_handler.py` — I-24 append-only AlertStore, I-27 HITLProposal for escalate/resolve/auto-block
+    - `services/sanctions_screening/compliance_reporter.py` — POCA 2002 s.330 SAR → ALWAYS HITLProposal MLRO (I-27), SHA-256 export checksum (I-12)
+    - `services/sanctions_screening/sanctions_agent.py` — CLEAR→L1 auto; POSSIBLE→L4 COMPLIANCE_OFFICER; CONFIRMED→L4 MLRO; SAR/freeze→L4 MLRO
+    - `services/sanctions_screening/list_manager.py` — SanctionsList management with SHA-256 checksum validation (I-12)
+    - `api/routers/sanctions_screening.py` — 9 REST endpoints at /v1/sanctions/*
+    - 5 MCP tools: sanctions_screen_entity, sanctions_screen_transaction, sanctions_get_alerts, sanctions_resolve_alert, sanctions_screening_stats
+    - `agents/passports/sanctions_screening/PASSPORT.md`
+    - `tests/test_sanctions_screening/` — 115+ tests (7 files): test_models, test_screening_engine, test_list_manager, test_fuzzy_matcher, test_alert_handler, test_compliance_reporter, test_sanctions_agent
+- **Инварианты:** I-01 (Decimal scores/amounts), I-02 (9 blocked jurisdictions), I-03 (FATF greylist EDD), I-04 (£10k EDD threshold), I-12 (SHA-256 checksums), I-24 (append-only AlertStore/DecisionStore), I-27 (HITL: approve/reject/suspend/escalate/SAR/freeze), I-28 (HITL before side-effects)
+- **FCA refs:** FCA MLR 2017 Reg.28 (CDD legal persons), SYSC 6.3 (AML controls), Companies House Act 2006, EU AMLD5 Art.30 (UBO register), OFSI sanctions regime, EU Reg 269/2014 (Ukraine sanctions), FATF R.6 (targeted financial sanctions), POCA 2002 s.330 (SAR obligation)
+- **Статус:** DONE ✅ 2026-04-20
+- **Proof:** 239 new tests green (239/239), ruff 0 issues, all pre-commit hooks passed. Commit e884d23 → pushed to main. MCP tools: 189 total (+10). API endpoints: 384 total (+19). Agent passports: 47 total (+2).
