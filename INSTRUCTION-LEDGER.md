@@ -2016,3 +2016,11 @@
 - **FCA refs:** PSR 2017 (SWIFT payment instructions), SWIFT gpi SRD (UETR/ACSP/ACCC/RJCT), MLR 2017 Reg.28 (CDD on correspondent banks + FX AML), FCA SUP 15.8 (suspicious transaction reporting), PS22/9 Consumer Duty (fair FX pricing tiers), EMIR (hedge position reporting), FCA COBS 14.3 (best execution)
 - **Статус:** DONE ✅ 2026-04-20
 - **Proof:** 300 new tests green (300/300), ruff 0 issues, all pre-commit hooks passed. Commit 08984b8 → pushed to feat/auth-router-thin-tokenmanager. MCP tools: 199 total (+10). API endpoints: 403 total (+19). Agent passports: 49 total (+2).
+
+### IL-113 — Cycle 011 Constitutional Materialization Partial Closure (IL-CYC011-01)
+- **Источник:** CEO, 2026-04-21 | **Приоритет:** P1 | **Репо:** banxe-architecture | **Тикет:** IL-CYC011-01
+- **Описание:** Partial closure of cycle-011-constitutional-materialization with documented deviations. Constitutional infrastructure skeleton established under constitution/ and manufacturing-cycles/cycle-011/. One amendment of six manifest-listed amendments placed (amendment-30.N-perplexity-relay-protocol.md). Five remaining amendments plus two constitution master files (DEVELOPERBLOCK.md v5.1, PROJECTEMI.md v5.2) and root CLAUDE.md update deferred to cycle-012. Unauthorized operations performed by Perplexity Assistant (git tag cycle-011, GitHub Release cycle-011, colliding IL-002 ledger entry) fully rolled back in Phase 1: tag deleted local+remote, release deleted via gh CLI, colliding commit 5010d17 reverted via commit f587cc5. Original IL-002 "Block J Phase 1 — Safeguarding accounts (FCA CASS 7)" preserved unchanged.
+- **Инварианты:** N/A — procedurно-конституционный цикл, не функциональная feature.
+- **FCA refs:** N/A — constitutional/governance cycle, no direct FCA regulatory anchor. Governance of subsequent FCA-regulated features remains under applicable invariants I-01..I-28.
+- **Статус:** DONE ✅ 2026-04-21
+- **Proof:** Phase 1 rollback commit f587cc5 (revert of 5010d17). Cycle closure artifacts: manufacturing-cycles/cycle-011-constitutional-materialization/outcomes.md, manifest.md (status CLOSED-WITH-DEVIATIONS). Live cycle commits preserved: 31bfa4a, e2a02a1, 6c60be7, 602f5e5, 8c3ef9d. Tag cycle-011 and release cycle-011 confirmed removed (TAG_REMOVED_OK, RELEASE_REMOVED_OK in Phase 1 validation).
