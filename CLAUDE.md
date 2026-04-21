@@ -19,6 +19,10 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 6. НЕТ действий без записи в IL. НЕТ "DONE" без proof.
 7. CLASS_B/C (SOUL.md, rego, compliance_config) → governance gate
 8. Zone RED: AI-FORBIDDEN. Zone AMBER: CLAUDE_CODE_ONLY + hooks. Zone GREEN: free.
+9. Governance-решения для агентов (Autonomy Level, Trust Zone, promotion dev/staging/production, adoption внешних компонентов) принимаются rules-based логикой с обязательным human-in-the-loop согласно Developer Block v5.1 Section 30.N+1.8 и Project EMI v5.2 Section B.11.N+1.9; LLM-ассистент готовит только материалы.
+10. Любые пороговые значения, лимиты, retention, escalation thresholds и иные governance-параметры хранятся в конфигурационных файлах репозитория, а не в коде и не в CLAUDE.md (Configuration-over-Hardcoding 30.N+1.9).
+11. Автоматические действия, которые могут изменить клиентские средства или production-состояние, запрещены без явного human approval, зафиксированного в INSTRUCTION-LEDGER/ADR и прошедшего Promotion Gate из B.11.N+1.9.
+
 
 ## 3. ТЕКУЩЕЕ СОСТОЯНИЕ — P0 CASS 15 COMPLETE ✅ (2026-04-06)
 

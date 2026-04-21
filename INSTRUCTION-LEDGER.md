@@ -2071,3 +2071,9 @@ Date: 2026-04-22T00:32Z
 Scope: project-level LLM-assistant behaviour
 Files: CLAUDE.md
 Outcome: CREATED
+
+IL-LLMGOV-01: integrate LLM governance into CLAUDE.md canon
+Date: 2026-04-21T23:41Z
+Scope: CLAUDE.md §1 GOVERNANCE КАНОНЫ (points 9-11)
+Files: CLAUDE.md
+Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Hardcoding, B.11.N+1.9 Promotion Gate)
