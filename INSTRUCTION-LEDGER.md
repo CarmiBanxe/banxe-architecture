@@ -2065,3 +2065,9 @@ Cycle-012 закрыт статусом CLOSED-WITH-DEVIATIONS. Исполнен
 - **FCA refs:** PSD2 Art.65-67 (AISP/PISP/CBPII), RTS on SCA, FCA PERG 15.5, PSR 2017 Reg.112-120, PS22/9 Consumer Duty (4 outcome areas), FCA FG21/1 (vulnerability guidance), FCA PROD (product governance), FCA COBS 2.1 (fair value), FCA PRIN 12
 - **Статус:** DONE ✅ 2026-04-21
 - **Proof:** 7510 tests green (7510/7510), ruff 0 issues, all pre-commit hooks passed. MCP tools: 209 total (+10). API endpoints: 423 total (+20). Agent passports: 51 total (+2). Tests: 7510 total (+304).
+
+IL-XXXX: add root CLAUDE.md repository canon
+Date: 2026-04-22T00:32Z
+Scope: project-level LLM-assistant behaviour
+Files: CLAUDE.md
+Outcome: CREATED
