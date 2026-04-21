@@ -2024,3 +2024,13 @@
 - **FCA refs:** N/A — constitutional/governance cycle, no direct FCA regulatory anchor. Governance of subsequent FCA-regulated features remains under applicable invariants I-01..I-28.
 - **Статус:** DONE ✅ 2026-04-21
 - **Proof:** Phase 1 rollback commit f587cc5 (revert of 5010d17). Cycle closure artifacts: manufacturing-cycles/cycle-011-constitutional-materialization/outcomes.md, manifest.md (status CLOSED-WITH-DEVIATIONS). Live cycle commits preserved: 31bfa4a, e2a02a1, 6c60be7, 602f5e5, 8c3ef9d. Tag cycle-011 and release cycle-011 confirmed removed (TAG_REMOVED_OK, RELEASE_REMOVED_OK in Phase 1 validation).
+
+---
+
+## IL-114 — Cycle 012 Execution Protocol Formalization Partial Closure (IL-CYC012-01)
+
+Статус: DONE
+Дата: 2026-04-22
+Цикл: cycle-012-execution-protocol-formalization
+
+Cycle-012 закрыт статусом CLOSED-WITH-DEVIATIONS. Исполнена одна директива из четырёх — IL-CYCLE-012-EXEC-PROTOCOL через размещение amendment-B.11.N+2-execution-protocol-formalization.md в constitution/amendments/ (commit a739825). Текст amendment сформирован в цикле от нуля и кодифицирует исполнительный protocol на конституционном уровне в девяти статьях. Три директивы размещения amendments v3-пакета (IL-CYCLE-012-AMEND-B.11.N, IL-CYCLE-012-AMEND-30.N+1, IL-CYCLE-012-AMEND-B.11.N+1) перенесены в cycle-012.1-v3-completion ввиду отсутствия загруженного обязательного материала cycle-011_perplexity_directives_v3.md в сессии открытия cycle-012. Deviation классифицирована как scope-deferral с полным документированием в outcomes.md cycle-012. Pre-commit Spec-First Auditor v2 вернул PASS по всем двенадцати блокам на всех коммитах цикла (b037e10, a739825, коммиты закрытия). Привилегированные операции (git tag, gh release) в цикле не выполнялись. Следующая запись — IL-CYC012.1-01 при закрытии patch-cycle cycle-012.1-v3-completion.
