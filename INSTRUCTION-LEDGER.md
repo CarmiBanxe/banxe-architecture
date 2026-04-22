@@ -2199,3 +2199,18 @@ Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Har
 - Origin: new untracked in banxe-emi-stack working tree
 - Goal: formalize SCA adapters model under auth scope (align with
   IL-SCA2F-* / services/auth/sca_service_port.py).
+
+---
+
+### IL-COMPSYNC-0X (mirror) — parking map v3 recorded
+- Status: TODO
+- Linked plan: /tmp/banxe_parking_il_contours_v3_20260422192527.txt
+
+### IL-COMPSYNC-MCP-TOOLS-FIX (mirror) — TODO (new blocker)
+- Status: TODO
+- Scope (emi-stack):
+  - banxe_mcp/server.py (missing name: compliance_scan)
+  - tests/test_compliance_sync/test_mcp_tools.py
+- Observed failure under pytest-fast:
+  - ImportError: cannot import name 'compliance_scan' from 'banxe_mcp.server'
+- Blocks: IL-LINT-03 commit proof
