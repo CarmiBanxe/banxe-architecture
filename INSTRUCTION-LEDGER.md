@@ -2214,3 +2214,23 @@ Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Har
 - Observed failure under pytest-fast:
   - ImportError: cannot import name 'compliance_scan' from 'banxe_mcp.server'
 - Blocks: IL-LINT-03 commit proof
+
+---
+
+### IL-LINT-03 (mirror) — DONE
+- Status: DONE
+- Proof SHA (emi-stack): 7708d4c541df94083bcd379d8aa005740617ec57
+- Deviation: IL-LINT-03 scoped diff landed as part of sprint-39 mixed commit;
+  anchored retroactively in emi-stack ledger.
+
+### IL-CNS-AUD-PIPELINE-FIX (mirror) — DONE
+- Status: DONE
+- Proof: emi-stack pre-commit pytest-fast Passed 2026-04-22T17:50:21Z
+
+### IL-OBS-MCP-TESTS-FIX (mirror) — DONE
+- Status: DONE
+- Proof: emi-stack pre-commit pytest-fast Passed 2026-04-22T17:50:21Z
+
+### IL-COMPSYNC-MCP-TOOLS-FIX (mirror) — DONE
+- Status: DONE
+- Proof: emi-stack pre-commit pytest-fast Passed 2026-04-22T17:50:21Z
