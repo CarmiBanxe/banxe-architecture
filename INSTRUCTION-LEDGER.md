@@ -2110,3 +2110,29 @@ Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Har
 - **FCA refs:** CASS 7.15 (daily safeguarding reconciliation), CASS 15 (P0 deadline 7 May 2026), FCA SUP 16 (FIN060 regulatory return), PS25/12
 - **Статус:** DONE ✅ 2026-04-22
 - **Proof:** commit 811f364 on banxe-emi-stack main. 233 new tests green (81 audit + 93 recon + 89 fin060). All pre-commit hooks passed (ruff/ruff-format/bandit/semgrep/pytest). 10 new MCP tools. 15 new REST endpoints. 3 new agent passports.
+
+### IL-117 — Sprint 37 P0: Frankfurter FX Rates + adorsys PSD2 Gateway (IL-FXR-01 + IL-PSD2GW-01)
+- **Источник:** CEO, 2026-04-21 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-FXR-01 + IL-PSD2GW-01
+- **Описание:** Sprint 37 — Phase 52A (Frankfurter FX Rates) + Phase 52B (adorsys PSD2 Gateway).
+  - **Phase 52A — Frankfurter FX Rates (IL-FXR-01):**
+    - `services/fx_rates/fx_rate_models.py` — RateEntry/ConversionResult/RateOverride frozen dataclasses, InMemoryRateStore (append-only I-24).
+    - `services/fx_rates/frankfurter_client.py` — FrankfurterClient (self-hosted hakanensari/frankfurter ECB :8087), BLOCKED_CURRENCIES (RUB/IRR/KPW/BYR/BYN/CUP/VES I-02), _safe_decimal() (I-01), retry 3x exponential, FXRateService HITL override L4 (I-27).
+    - `services/fx_rates/fx_rate_agent.py` — FXRateAgent: schedule_daily_fetch (GBP/EUR/USD), override_rate→HITLProposal L4, get_rate_dashboard.
+    - `docker/docker-compose.frankfurter.yml` — hakanensari/frankfurter:latest :8087.
+    - `api/routers/fx_rates.py` — 5 REST endpoints: GET /v1/fx-rates/latest, GET /v1/fx-rates/historical/{date}, GET /v1/fx-rates/time-series, POST /v1/fx-rates/convert, POST /v1/fx-rates/override.
+    - 3 MCP tools: fx_get_latest_rates, fx_convert_amount, fx_get_historical_rates.
+    - `agents/passports/fx_rates/PASSPORT.md` — FXRateAgent v1.0.0, Trust Zone AMBER, L4 for overrides.
+    - `tests/test_fx_rates/` — 90+ tests (5 files): test_fx_rate_models, test_frankfurter_client, test_fx_rate_service, test_fx_rate_agent, test_mcp_tools.
+  - **Phase 52B — adorsys PSD2 Gateway (IL-PSD2GW-01):**
+    - `services/psd2_gateway/psd2_models.py` — BLOCKED_JURISDICTIONS (RU/BY/IR/KP/CU/MM/AF/VE/SY I-02), _iban_country(), frozen dataclasses: ConsentRequest/ConsentResponse/AccountInfo/Transaction/BalanceResponse, InMemoryConsentStore/InMemoryTransactionStore (I-24).
+    - `services/psd2_gateway/adorsys_client.py` — AdorsysClient: _check_iban() I-02, create_consent() SHA-256 ID + I-24 append, get_accounts(), get_transactions() I-24, get_balances() Decimal I-01, initiate_payment_via_psd2()→NotImplementedError("BT-007").
+    - `services/psd2_gateway/camt053_auto_pull.py` — AutoPuller: schedule() SHA-256 ID I-24, execute_pull() masked IBAN (first 6 + ***), list_active_schedules().
+    - `services/psd2_gateway/psd2_agent.py` — PSD2Agent: create_consent_proposal()→HITLProposal L4 COMPLIANCE_OFFICER (I-27), configure_auto_pull()→HITLProposal L4 (I-27), get_accounts/get_transactions/get_balances L1, get_active_consents.
+    - `api/routers/psd2_gateway.py` — 5 REST endpoints: POST /v1/psd2/consents (202), GET /v1/psd2/accounts/{consent_id}, GET /v1/psd2/transactions/{consent_id}/{account_id}, GET /v1/psd2/balances/{consent_id}/{account_id}, POST /v1/psd2/auto-pull/configure (202).
+    - 3 MCP tools: psd2_create_consent, psd2_get_transactions, psd2_configure_autopull.
+    - `agents/passports/psd2_gateway/PASSPORT.md` — PSD2Agent v1.0.0, Trust Zone RED, L4 for consent+pull (COMPLIANCE_OFFICER).
+    - `tests/test_psd2_gateway/` — 120+ tests (5 files): test_psd2_models, test_adorsys_client, test_camt053_auto_pull, test_psd2_agent, test_mcp_tools.
+- **Инварианты:** I-01 (Decimal для rates/amounts/balances), I-02 (BLOCKED_CURRENCIES + BLOCKED_JURISDICTIONS), I-24 (append-only: InMemoryRateStore/InMemoryConsentStore/InMemoryTransactionStore/InMemoryPullScheduleStore), I-27 (HITL: fx_override/create_consent/configure_auto_pull L4), I-28 (quality gate)
+- **FCA refs:** PSD2 Art.65-67 (AISP/PISP), EBA RTS on SCA, CASS 15 (P0 deadline 7 May 2026), ESMA ECB rate guidelines
+- **Статус:** DONE ✅ 2026-04-21
+- **Proof:** commit 9d68940 on banxe-emi-stack main. 210 new tests green (90 fx_rates + 120 psd2_gateway). All pre-commit hooks passed (ruff/ruff-format/bandit/semgrep/pytest). 6 new MCP tools (total 225). 10 new REST endpoints (total 448). 2 new agent passports (total 56). Tests total: 7958.
