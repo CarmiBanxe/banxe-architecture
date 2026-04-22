@@ -2077,3 +2077,36 @@ Date: 2026-04-21T23:41Z
 Scope: CLAUDE.md §1 GOVERNANCE КАНОНЫ (points 9-11)
 Files: CLAUDE.md
 Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Hardcoding, B.11.N+1.9 Promotion Gate)
+
+### IL-116 — Sprint 36: Phase 51 pgAudit + Reconciliation + FIN060 (IL-PGA-01 + IL-REC-01 + IL-FIN060-01)
+- **Источник:** CEO, 2026-04-21 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-PGA-01 + IL-REC-01 + IL-FIN060-01
+- **Описание:** Sprint 36 — Phase 51A (pgAudit Infrastructure) + Phase 51B (Daily Safeguarding Reconciliation CASS 7.15) + Phase 51C (FIN060 Regulatory Reporting).
+  - **Phase 51A — pgAudit Infrastructure (IL-PGA-01):**
+    - `services/audit/pgaudit_config.py` — PGAUDIT_DATABASES (banxe_compliance/banxe_core/banxe_analytics), AuditEntry/AuditStats frozen dataclasses, AuditLogPort Protocol, InMemoryAuditLogPort with 5 seeded entries.
+    - `services/audit/audit_query.py` — AuditQueryService: query_audit_log (L2), get_stats (L2), get_all_stats (L2), export_audit_report→HITLProposal (L4, COMPLIANCE_OFFICER), health_check (L1).
+    - `api/routers/pgaudit.py` — 5 REST endpoints: GET /audit/logs, GET /audit/logs/{db_name}, GET /audit/stats, POST /audit/export, GET /audit/health.
+    - 3 MCP tools: audit_query_logs, audit_export_report, audit_health_check.
+    - `agents/passports/audit/PASSPORT.md` — AuditQueryAgent v1.0.0 passport.
+    - `docker/docker-compose.pgaudit.yml` — pgvector/pgvector:pg17 port 5433.
+    - `tests/test_audit/` — 81 tests (4 files).
+  - **Phase 51B — Daily Safeguarding Reconciliation CASS 7.15 (IL-REC-01):**
+    - `services/recon/reconciliation_engine_v2.py` — RECON_TOLERANCE_GBP=Decimal("0.01"), BREACH_HITL_THRESHOLD=Decimal("100"), HITLProposal/StatementEntry/ReconciliationItem/ReconciliationReport frozen dataclasses, InMemoryReconStore (append-only I-24), ReconciliationEngineV2.run_daily() IBAN-matching.
+    - `services/recon/camt053_parser.py` — defusedxml.ElementTree (XXE-safe, bandit B314 clean), _find_first() None-safe XPath helper, statement-level IBAN extraction, CRDT/DBIT sign logic, generate_sample_camt053().
+    - `services/recon/recon_agent.py` — ReconAgent: run_daily_recon (breach>£100→HITLProposal L4 COMPLIANCE_OFFICER I-27), get_report, list_unresolved_breaches, list_all_reports.
+    - `api/routers/safeguarding_recon.py` — 5 REST endpoints under /v1/safeguarding-recon/*.
+    - 3 MCP tools: recon_run_daily, recon_get_report, recon_list_breaches.
+    - `agents/passports/reconciliation/PASSPORT.md` — ReconAgent v2.0.0 passport.
+    - `tests/test_recon/` — 93 tests (4 files).
+  - **Phase 51C — FIN060 Regulatory Reporting (IL-FIN060-01):**
+    - `services/reporting/report_models.py` — FIN060Entry/FIN060Report frozen dataclasses (Decimal I-01), ReportStorePort Protocol, InMemoryReportStore (append-only I-24).
+    - `services/reporting/fin060_generator_v2.py` — FIN060Generator: generate_fin060→HITLProposal (L4 CFO I-27), approve_report→HITLProposal (L4 CFO I-27), submit_to_regdata→NotImplementedError("BT-006"), get_dashboard().
+    - `services/reporting/reporting_agent.py` — ReportingAgent wrapping FIN060Generator.
+    - `api/routers/fin060_reporting.py` — 5 REST endpoints under /v1/fin060/*.
+    - `dbt/models/fin060/fin060_monthly.sql` — incremental dbt model, unique_key='period_key', numeric(20,8).
+    - 4 MCP tools: fin060_generate, fin060_get_report, fin060_approve, fin060_dashboard.
+    - `agents/passports/reporting/PASSPORT.md` — ReportingAgent v2.0.0 passport.
+    - `tests/test_fin060_reporting/` — 89 tests (5 files).
+- **Инварианты:** I-01 (Decimal для всех amount/score/threshold), I-24 (append-only: InMemoryAuditLogPort/InMemoryReconStore/InMemoryReportStore), I-27 (HITL: export_audit_report/resolve_breach/generate_fin060/approve_report L4), I-28 (quality gate)
+- **FCA refs:** CASS 7.15 (daily safeguarding reconciliation), CASS 15 (P0 deadline 7 May 2026), FCA SUP 16 (FIN060 regulatory return), PS25/12
+- **Статус:** DONE ✅ 2026-04-22
+- **Proof:** commit 811f364 on banxe-emi-stack main. 233 new tests green (81 audit + 93 recon + 89 fin060). All pre-commit hooks passed (ruff/ruff-format/bandit/semgrep/pytest). 10 new MCP tools. 15 new REST endpoints. 3 new agent passports.
