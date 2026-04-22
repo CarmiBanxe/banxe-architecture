@@ -2136,3 +2136,29 @@ Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Har
 - **FCA refs:** PSD2 Art.65-67 (AISP/PISP), EBA RTS on SCA, CASS 15 (P0 deadline 7 May 2026), ESMA ECB rate guidelines
 - **Статус:** DONE ✅ 2026-04-21
 - **Proof:** commit 9d68940 on banxe-emi-stack main. 210 new tests green (90 fx_rates + 120 psd2_gateway). All pre-commit hooks passed (ruff/ruff-format/bandit/semgrep/pytest). 6 new MCP tools (total 225). 10 new REST endpoints (total 448). 2 new agent passports (total 56). Tests total: 7958.
+
+---
+
+### IL-LINT-03 (mirror from banxe-emi-stack) — OPEN
+- Status: OPEN
+- Linked-commit (emi-stack ledger): 3fcb668dc97160aefe0d0f2679655b796e4fcf68
+- Scope (emi-stack):
+  - services/batch_payments/file_parser.py
+  - tests/test_card_issuing/test_models.py
+  - tests/test_multi_currency/test_models.py
+- Blocked-by:
+  - IL-CNS-AUD-PIPELINE-FIX
+  - IL-OBS-MCP-TESTS-FIX
+- Handoff: /tmp/banxe_handoff_2026-04-22_1613.md
+
+### IL-CNS-AUD-PIPELINE-FIX (mirror) — TODO
+- Status: TODO
+- Scope (emi-stack):
+  - tests/test_integration/test_consent_audit_pipeline.py::TestConsentAuditPipeline::test_query_audit_log_by_event_type
+- Blocks: IL-LINT-03 commit proof
+
+### IL-OBS-MCP-TESTS-FIX (mirror) — TODO
+- Status: TODO
+- Scope (emi-stack):
+  - tests/test_observability/test_mcp_tools_observability.py (full test id TBD)
+- Blocks: IL-LINT-03 commit proof
