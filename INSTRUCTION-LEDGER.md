@@ -2111,38 +2111,50 @@
 - successor: IL-116 (Sprint 36 pgAudit + Reconciliation + FIN060)
 - notes: Phase 49 Consent Management & TPP Registry (Trust Zone RED) + Phase 50 Consumer Duty Outcome Monitoring (Trust Zone RED). 10+10 REST endpoints, 10 MCP tools, 2 passports, 304 new tests.
 
-### IL-116 — Sprint 36: Phase 51 pgAudit + Reconciliation + FIN060 (IL-PGA-01 + IL-REC-01 + IL-FIN060-01)
-- **Источник:** CEO, 2026-04-21 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-PGA-01 + IL-REC-01 + IL-FIN060-01
-- **Описание:** Sprint 36 — Phase 51A (pgAudit Infrastructure) + Phase 51B (Daily Safeguarding Reconciliation CASS 7.15) + Phase 51C (FIN060 Regulatory Reporting).
-  - **Phase 51A — pgAudit Infrastructure (IL-PGA-01):**
-    - `services/audit/pgaudit_config.py` — PGAUDIT_DATABASES (banxe_compliance/banxe_core/banxe_analytics), AuditEntry/AuditStats frozen dataclasses, AuditLogPort Protocol, InMemoryAuditLogPort with 5 seeded entries.
-    - `services/audit/audit_query.py` — AuditQueryService: query_audit_log (L2), get_stats (L2), get_all_stats (L2), export_audit_report→HITLProposal (L4, COMPLIANCE_OFFICER), health_check (L1).
-    - `api/routers/pgaudit.py` — 5 REST endpoints: GET /audit/logs, GET /audit/logs/{db_name}, GET /audit/stats, POST /audit/export, GET /audit/health.
-    - 3 MCP tools: audit_query_logs, audit_export_report, audit_health_check.
-    - `agents/passports/audit/PASSPORT.md` — AuditQueryAgent v1.0.0 passport.
-    - `docker/docker-compose.pgaudit.yml` — pgvector/pgvector:pg17 port 5433.
-    - `tests/test_audit/` — 81 tests (4 files).
-  - **Phase 51B — Daily Safeguarding Reconciliation CASS 7.15 (IL-REC-01):**
-    - `services/recon/reconciliation_engine_v2.py` — RECON_TOLERANCE_GBP=Decimal("0.01"), BREACH_HITL_THRESHOLD=Decimal("100"), HITLProposal/StatementEntry/ReconciliationItem/ReconciliationReport frozen dataclasses, InMemoryReconStore (append-only I-24), ReconciliationEngineV2.run_daily() IBAN-matching.
-    - `services/recon/camt053_parser.py` — defusedxml.ElementTree (XXE-safe, bandit B314 clean), _find_first() None-safe XPath helper, statement-level IBAN extraction, CRDT/DBIT sign logic, generate_sample_camt053().
-    - `services/recon/recon_agent.py` — ReconAgent: run_daily_recon (breach>£100→HITLProposal L4 COMPLIANCE_OFFICER I-27), get_report, list_unresolved_breaches, list_all_reports.
-    - `api/routers/safeguarding_recon.py` — 5 REST endpoints under /v1/safeguarding-recon/*.
-    - 3 MCP tools: recon_run_daily, recon_get_report, recon_list_breaches.
-    - `agents/passports/reconciliation/PASSPORT.md` — ReconAgent v2.0.0 passport.
-    - `tests/test_recon/` — 93 tests (4 files).
-  - **Phase 51C — FIN060 Regulatory Reporting (IL-FIN060-01):**
-    - `services/reporting/report_models.py` — FIN060Entry/FIN060Report frozen dataclasses (Decimal I-01), ReportStorePort Protocol, InMemoryReportStore (append-only I-24).
-    - `services/reporting/fin060_generator_v2.py` — FIN060Generator: generate_fin060→HITLProposal (L4 CFO I-27), approve_report→HITLProposal (L4 CFO I-27), submit_to_regdata→NotImplementedError("BT-006"), get_dashboard().
-    - `services/reporting/reporting_agent.py` — ReportingAgent wrapping FIN060Generator.
-    - `api/routers/fin060_reporting.py` — 5 REST endpoints under /v1/fin060/*.
-    - `dbt/models/fin060/fin060_monthly.sql` — incremental dbt model, unique_key='period_key', numeric(20,8).
-    - 4 MCP tools: fin060_generate, fin060_get_report, fin060_approve, fin060_dashboard.
-    - `agents/passports/reporting/PASSPORT.md` — ReportingAgent v2.0.0 passport.
-    - `tests/test_fin060_reporting/` — 89 tests (5 files).
-- **Инварианты:** I-01 (Decimal для всех amount/score/threshold), I-24 (append-only: InMemoryAuditLogPort/InMemoryReconStore/InMemoryReportStore), I-27 (HITL: export_audit_report/resolve_breach/generate_fin060/approve_report L4), I-28 (quality gate)
-- **FCA refs:** CASS 7.15 (daily safeguarding reconciliation), CASS 15 (P0 deadline 7 May 2026), FCA SUP 16 (FIN060 regulatory return), PS25/12
-- **Статус:** DONE ✅ 2026-04-22
-- **Proof:** commit 811f364 on banxe-emi-stack main. 233 new tests green (81 audit + 93 recon + 89 fin060). All pre-commit hooks passed (ruff/ruff-format/bandit/semgrep/pytest). 10 new MCP tools. 15 new REST endpoints. 3 new agent passports.
+### IL-116 — Sprint 36: Phase 51 pgAudit + Reconciliation + FIN060 (IL-PGA-01 + IL-REC-01 + IL-FIN060-01) [NORM-001]
+
+- parent-cycle: sprint-36
+- amendment-ref: (n/a — feature delivery)
+- source: CEO directive 2026-04-21 (P0)
+- status: integrated
+- status-history:
+  - proposed @ 2026-04-21
+  - accepted @ 2026-04-21
+  - integrated @ 2026-04-22 (emi-stack commit 811f3643b485900d9c0623d145479e276fe9c59a)
+- scope:
+  - banxe-emi-stack: services/audit/, api/routers/pgaudit.py, agents/passports/audit/, docker/docker-compose.pgaudit.yml, tests/test_audit/
+  - banxe-emi-stack: services/recon/, api/routers/safeguarding_recon.py, agents/passports/reconciliation/, tests/test_recon/
+  - banxe-emi-stack: services/reporting/, api/routers/fin060_reporting.py, agents/passports/reporting/, dbt/models/fin060/, tests/test_fin060_reporting/
+- integration-rule: supplement-only feature delivery
+- anchors:
+  - INVARIANTS: I-01, I-24, I-27, I-28
+  - REGULATORY: CASS 7.15, CASS 15 (P0 deadline 7 May 2026), FCA SUP 16 FIN060, PS25/12
+- verification:
+  - triple-check: PASS (233 new tests green: 81 audit + 93 recon + 89 fin060)
+  - emi-stack proof commit: 811f3643b485900d9c0623d145479e276fe9c59a
+  - sha256-anchors:
+      services/audit/pgaudit_config.py: b007a58fe727af33d38f48fcbdbfe692da1de771b98c7d5cb22abb8b87c682ec
+      services/audit/audit_query.py: aa432fe28056b9db5075c6d2769b2deeda4cf2aaaa204798dc80198b72ab0bee
+      api/routers/pgaudit.py: 62bfd4edad6eafe1c42df29dc182577468d6c180d11f5d1c0ecc304a4aa63c94
+      agents/passports/audit/PASSPORT.md: fe6668ffc5316d0e347377ac1ede8581d71e00e690eece9e6efdf5472ed0f2d9
+      docker/docker-compose.pgaudit.yml: b6d6f62428508f08cd86a61b7613530d90c6f2e28418556fd2174021ad0cdfa3
+      services/recon/reconciliation_engine_v2.py: 7424f4684cf0a063de9ce06706b2d71ba9c5bad64d040d181d10c4d60bd7a2e0
+      services/recon/camt053_parser.py: 0d9a325e6d7ce05a05033c774e61be3d5dcd279af5d214439a36dd4263376480
+      services/recon/recon_agent.py: 5974caea1bbb2d96a4293502a8d3454965cb66c51b0106763405c6b07446201d
+      api/routers/safeguarding_recon.py: 5a27baffc9e928c5abb9e5477c484612d72e0f17106a7f57bb113ce602e9214e
+      agents/passports/reconciliation/PASSPORT.md: 288b42d8e5849fcb18b4305a46cdb51c5869b24505e8ec65b90d6dbc863fb52c
+      services/reporting/report_models.py: 9ab678e17d337777881a24231284df43dc6ad53272907227c1899606a23d528d
+      services/reporting/fin060_generator_v2.py: 37e0686468555b824cca2419102fc0e473da635421b91238d04f2e1df6fd5544
+      services/reporting/reporting_agent.py: eccc2fa548bbcf9402696908177cfd26d263c0801c39d9aa86b12bde554a1585
+      api/routers/fin060_reporting.py: 4bed8114b5ba72b4b88bafbc526c405e8fafb66dc313d91592329613247ea4cd
+      dbt/models/fin060/fin060_monthly.sql: 3b60933a4e07264d8b17478c21b75daf2045dc72abd852cccbcee0781609a40c
+      agents/passports/reporting/PASSPORT.md: 9fedcd122a78dd4e14e5767891093f164486b9fd8eb649e1176207ac2c02a609
+- deviations: none
+- privileged-ops:
+  - git tag: NOT EXECUTED
+  - gh release: NOT EXECUTED
+- successor: IL-117 (Sprint 37 FX Rates + PSD2 Gateway)
+- notes: Phase 51A pgAudit (5 endpoints, 3 MCP tools), Phase 51B CASS 7.15 daily safeguarding reconciliation with breach>£100 HITL, Phase 51C FIN060 regulatory reporting with CFO HITL approval. 10 new MCP tools, 15 REST endpoints, 3 agent passports.
 
 ### IL-117 — Sprint 37 P0: Frankfurter FX Rates + adorsys PSD2 Gateway (IL-FXR-01 + IL-PSD2GW-01)
 - **Источник:** CEO, 2026-04-21 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-FXR-01 + IL-PSD2GW-01
