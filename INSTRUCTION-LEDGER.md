@@ -2029,12 +2029,43 @@
 
 ## IL-114 — Cycle 012 Execution Protocol Formalization Partial Closure (IL-CYC012-01)
 
-Статус: DONE
-Дата: 2026-04-22
-Цикл: cycle-012-execution-protocol-formalization
-
-Cycle-012 закрыт статусом CLOSED-WITH-DEVIATIONS. Исполнена одна директива из четырёх — IL-CYCLE-012-EXEC-PROTOCOL через размещение amendment-B.11.N+2-execution-protocol-formalization.md в constitution/amendments/ (commit a739825). Текст amendment сформирован в цикле от нуля и кодифицирует исполнительный protocol на конституционном уровне в девяти статьях. Три директивы размещения amendments v3-пакета (IL-CYCLE-012-AMEND-B.11.N, IL-CYCLE-012-AMEND-30.N+1, IL-CYCLE-012-AMEND-B.11.N+1) перенесены в cycle-012.1-v3-completion ввиду отсутствия загруженного обязательного материала cycle-011_perplexity_directives_v3.md в сессии открытия cycle-012. Deviation классифицирована как scope-deferral с полным документированием в outcomes.md cycle-012. Pre-commit Spec-First Auditor v2 вернул PASS по всем двенадцати блокам на всех коммитах цикла (b037e10, a739825, коммиты закрытия). Привилегированные операции (git tag, gh release) в цикле не выполнялись. Следующая запись — IL-CYC012.1-01 при закрытии patch-cycle cycle-012.1-v3-completion.
-
+- parent-cycle: cycle-012-execution-protocol-formalization
+- amendment-ref: amendment-B.11.N+2-execution-protocol-formalization
+- source: cycle-012 internal directive (IL-CYCLE-012-EXEC-PROTOCOL)
+- status: integrated
+- status-history:
+  - proposed @ 2026-04-22 (cycle-012 skeleton, commit b037e10)
+  - accepted @ 2026-04-22 (amendment published, commit a739825)
+  - integrated @ 2026-04-22 (CLOSED-WITH-DEVIATIONS, commits 3a344a2, 70122a0)
+- scope: constitution/amendments/, manufacturing-cycles/cycle-012-execution-protocol-formalization/
+- integration-rule: supplement-only, original constitution preserved 100%
+- anchors:
+  - CANON: B.11.N+2 Execution Protocol Formalization (9 articles)
+  - GATE: Spec-First Auditor v2, 12/12 blocks PASS
+- verification:
+  - triple-check: PASS (pre-commit on b037e10, a739825, closing commits)
+  - sha256-anchors:
+      constitution/amendments/amendment-B.11.N+2-execution-protocol-formalization.md: 218fb93d1ae6035940743ff003cbe35a2ea3173c55ffb2e9df94f7617cb0de71
+      manufacturing-cycles/cycle-012-execution-protocol-formalization/manifest.md: 37c916b4805055bc327206628f1a79b2088b130ddcba67c7bbce92a4f66b6bf8
+- deviations:
+  - scope-deferral: IL-CYCLE-012-AMEND-B.11.N, IL-CYCLE-012-AMEND-30.N+1,
+    IL-CYCLE-012-AMEND-B.11.N+1 moved to cycle-012.1-v3-completion
+    due to missing cycle-011_perplexity_directives_v3.md at cycle-012 opening;
+    documented in outcomes.md cycle-012.
+- privileged-ops:
+  - git tag: NOT EXECUTED
+  - gh release: NOT EXECUTED
+- successor:
+  - IL-CYC012.1-01 (upon closure of patch-cycle cycle-012.1-v3-completion)
+- notes:
+  Cycle-012 closed with status CLOSED-WITH-DEVIATIONS. One directive of four
+  executed (IL-CYCLE-012-EXEC-PROTOCOL) via publication of
+  amendment-B.11.N+2-execution-protocol-formalization.md in constitution/amendments/
+  (commit a739825). Amendment text was drafted from scratch inside the cycle and
+  codifies the executive protocol at constitutional level in nine articles.
+  Three v3-package amendment placement directives were carried over to
+  cycle-012.1-v3-completion. Spec-First Auditor v2 returned PASS on all twelve
+  blocks for every cycle commit (b037e10, a739825, closing commits).
 ### IL-115 — Sprint 35: Consent Management + Consumer Duty Outcome Monitoring (IL-CNS-01 + IL-CDO-01)
 - **Источник:** CEO, 2026-04-21 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CNS-01 + IL-CDO-01
 - **Описание:** Sprint 35 — Phase 49 (Consent Management & TPP Registry) + Phase 50 (Consumer Duty Outcome Monitoring).
