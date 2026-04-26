@@ -2326,3 +2326,56 @@
 - Supersedes: prior mirror anchor 7708d4c (ledger commit 1617db4)
 - Linked emi-stack ledger commit: 8063895 (docs(ledger): IL-LINT-03 anchor correction)
 - Reason: 7708d4c does not modify the three IL-LINT-03 files; ba3fccc does.
+
+
+### IL-118 — Sprint 40: Phase 55 FATCA/CRS + DISP Complaints + Device Fingerprint + ATO Prevention (IL-FAT-01 + IL-DSP-01 + IL-DFP-01 + IL-ATO-01) [NORM-001]
+
+- parent-cycle: sprint-40
+- amendment-ref: (n/a — feature delivery)
+- source: emi-stack commit 7294df5d5d6601cfb6cedfb12d23981ab22ab14b
+- status: integrated
+- status-history:
+  - proposed @ 2026-04-26
+  - accepted @ 2026-04-26
+  - integrated @ 2026-04-26 (emi-stack commit 7294df5d5d6601cfb6cedfb12d23981ab22ab14b)
+- scope:
+  - banxe-emi-stack: services/ato_prevention/, api/routers/ato_prevention.py, agents/passports/ato_prevention/, tests/test_ato_prevention/
+  - banxe-emi-stack: services/complaints/, api/routers/complaints.py, agents/passports/complaints/, tests/test_complaints/
+  - banxe-emi-stack: services/device_fingerprint/, api/routers/device_fingerprint.py, agents/passports/device_fingerprint/, tests/test_device_fingerprint/
+  - banxe-emi-stack: services/fatca_crs/, api/routers/fatca_crs.py, agents/passports/fatca_crs/, tests/test_fatca_crs/
+- integration-rule: supplement-only feature delivery
+- anchors:
+  - INVARIANTS: I-01, I-24, I-27, I-28
+  - REGULATORY: FATCA (IRC §1471-1474), CRS (OECD MCAA), FCA DISP, FCA SYSC 6.1, FCA PRIN 11/12
+- verification:
+  - triple-check: PASS (pre-commit on 7294df5d5d6601cfb6cedfb12d23981ab22ab14b)
+  - emi-stack proof commit: 7294df5d5d6601cfb6cedfb12d23981ab22ab14b
+  - sha256-anchors:
+      services/ato_prevention/ato_models.py: 12d61cbf66546840abcaa00df9ade438e334ddaabc40fe68076638d5b4a87c82
+      services/ato_prevention/ato_engine.py: 69fad64eff5eaac4b97673b1ae4d8ea124dfb700dbf20009806e744bc439f93b
+      services/ato_prevention/ato_agent.py: 3db375ff0aa4353549906ee524bb5a45db1a00a2a14b617a1565fb2b0840f75b
+      api/routers/ato_prevention.py: addef24cfaf44fe104a36200152d7b9046a2d76a4782d36bb532051132dec671
+      agents/passports/ato_prevention/PASSPORT.md: 9e1f6e669c0447e30a5d2820e8fb9f4faed360a61b5f7da0a1bd59b77dd9f87b
+      services/complaints/complaints_models.py: b00ef34b46597ea0416bee54732c21808f8c1062b7e9d3665b3df35dfe4c8958
+      services/complaints/complaints_engine.py: 0b33506c35c24493561d6f50d75aa68e207a95013bc77bfd11f6a730678d9769
+      services/complaints/complaints_agent.py: c113811bd4b472f041f0ad90aef4b5aefea024a38cc4b227c21ea562738127aa
+      services/complaints/complaint_service.py: c3fe47ba77e4e3a84317158656695c639d08f0c1b773b30c7f06f0fe5339ce84
+      services/complaints/n8n_webhook.py: 1deaf010fe4528c095f59d8e343dc4defa621e22452b376fa6ebf168d23c1e60
+      api/routers/complaints.py: dca42ae62694a9040e1427966d8475eb18558d0eb119b4c5b3c7a87cb80cd754
+      agents/passports/complaints/PASSPORT.md: 80954cc667117bba6c774ab30dea3957b8ba3fa253b196a3672489b1cc5a22d1
+      services/device_fingerprint/fingerprint_models.py: e00b75b2c46574fa2d7d6b155a3098f6a6fa0b03fde6c754d8d29a34da5505c3
+      services/device_fingerprint/fingerprint_engine.py: 0e71322e5c9f4b11bcd22548f62eb0da49a36b492eaf6840ee911cb11e18de91
+      services/device_fingerprint/fingerprint_agent.py: 30bb0a0018277cbd606e427179a38eddb4d22110f2a8ec11cca27abc8de54144
+      api/routers/device_fingerprint.py: 75f7c3509026e98c93a149e0e74b1f546dd73c15571b0ba9c6f0ff4225e60b6b
+      agents/passports/device_fingerprint/PASSPORT.md: cfbaf9d133b3d3cd03ac5b0620be9a8ec915a6f01175c6b4b298c7dc6742da6e
+      services/fatca_crs/fatca_models.py: 172729fbfd481f8406af1a3b254dea8e894bd9c79a3095e151ea4f7911d397e8
+      services/fatca_crs/fatca_agent.py: 2c8dc6160677f6d1cd0fc37b02ceca4c306934ab1340d8a5ff9340042bb0c55c
+      services/fatca_crs/self_cert_engine.py: 791121c0d8f20115e22e9e297788ce6f566789e75a23717c02356c165ce090e9
+      api/routers/fatca_crs.py: b867675f9fdf57373601f21c70463428bbced17f7fe4879bdcc2261a88b1f307
+      agents/passports/fatca_crs/PASSPORT.md: 6061c44106521b0cb4d8a186219b7dfbc6a45a1a06b433e0a76f1faf7891447e
+- deviations: mixed-scope — four IL scopes (FAT/DSP/DFP/ATO) landed in one emi-stack commit instead of four separate commits; tolerated, anchored together.
+- privileged-ops:
+  - git tag: NOT EXECUTED
+  - gh release: NOT EXECUTED
+- successor: (none)
+- notes: Phase 55 delivered ATO Prevention (account takeover detection), DISP complaints workflow with n8n webhook bridge, Device Fingerprint binding, FATCA/CRS self-certification engine on banxe-emi-stack. emi-stack commit 7294df5d5d6601cfb6cedfb12d23981ab22ab14b already pushed to origin/main.
