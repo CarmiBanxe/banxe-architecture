@@ -2380,3 +2380,29 @@
   - gh release: NOT EXECUTED
 - successor: (none)
 - notes: Sprint 40 Phase 55 delivered FATCA/CRS self-certification (annual 365-day TTL, TIN masked to last 4), FCA DISP complaints lifecycle (15/35 day SLA, n8n webhook), Device Fingerprint binding (max 5/customer, SHA-256), ATO Prevention (BLOCKED_JURISDICTION/FAILED_LOGIN_VELOCITY/IMPOSSIBLE_TRAVEL signals, haversine geo distance). 17 REST endpoints, 9 MCP tools, 4 agent passports.
+
+
+### IL-AUD-BLOCK12-PROPOSED — Spec-First Auditor v2 BLOCK 12 (scope-vs-message consistency) [NORM-001]
+
+- parent-cycle: cross-repo governance backlog
+- amendment-ref: amendment-B.11.N+2-execution-protocol-formalization (defines Auditor as mandatory gate)
+- source: this BANXE session 2026-04-26 — observed gap: Auditor BLOCK 0..11 do not catch mixed-scope commits (e.g. commit 70cf69e contained 34 files under message "IL-LINT-03 anchor correction"; PASS).
+- status: proposed
+- status-history:
+  - proposed @ 2026-04-26 (BANXE session retrospective)
+- scope:
+  - developer-core: ~/developer/spec-first/audit/spec_first_auditor.py
+  - banxe-architecture: agents/passports/spec_first_auditor.yaml (audit_blocks list update)
+- integration-rule: developer-core is a separate repo with its own governance; this IL is a cross-repo proposal, not a self-executing change.
+- anchors:
+  - GAP: BLOCK 0..11 pass for any commit message regardless of staged file set; "one scope = one commit" not mechanically enforced.
+  - CANON: PROMPT-CANON-DEVELOPER.md §4 "Один scope = один commit = один proof SHA"
+  - CANON: PROMPT-CANON-PROJECT.md §9 "Mixed-scope deviation"
+- verification:
+  - triple-check: N/A — proposed IL, no implementation yet
+  - acceptance criteria: BLOCK 12 must reject commit if (a) commit message references one IL-XXX, but staged files do not all match scope of that IL, OR (b) staged files belong to >=2 distinct IL prefixes without an explicit "deviation: mixed-scope" tag in commit message.
+- deviations: none
+- privileged-ops:
+  - developer-core change: NOT EXECUTED in this session (out of BANXE scope)
+- successor: (TBD — assigned to next developer-core sprint)
+- notes: This IL is logged in banxe-architecture ledger as a cross-repo requirement so it is not lost. Implementation belongs to developer-core repo and requires owner sanction per amendment-30.N. Until BLOCK 12 lands, the canon "one scope = one commit" is enforced only by human discipline, not by Auditor.
