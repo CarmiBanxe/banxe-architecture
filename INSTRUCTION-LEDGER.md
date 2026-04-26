@@ -2066,48 +2066,50 @@
   Three v3-package amendment placement directives were carried over to
   cycle-012.1-v3-completion. Spec-First Auditor v2 returned PASS on all twelve
   blocks for every cycle commit (b037e10, a739825, closing commits).
-### IL-115 — Sprint 35: Consent Management + Consumer Duty Outcome Monitoring (IL-CNS-01 + IL-CDO-01)
-- **Источник:** CEO, 2026-04-21 | **Приоритет:** P1 | **Репо:** banxe-emi-stack | **Тикет:** IL-CNS-01 + IL-CDO-01
-- **Описание:** Sprint 35 — Phase 49 (Consent Management & TPP Registry) + Phase 50 (Consumer Duty Outcome Monitoring).
-  - **Phase 49 — Consent Management & TPP Registry (IL-CNS-01, Trust Zone: RED):**
-    - `services/consent_management/models.py` — ConsentType/ConsentStatus/TPPType/TPPStatus/ConsentScope (StrEnum), ConsentGrant (expires_at>granted_at Pydantic validator), TPPRegistration (I-02 BLOCKED_JURISDICTIONS validator), HITLProposal (mutable dataclass), ConsentAuditEvent, 3 Protocols + InMemory stubs (2 seeded TPPs: Plaid UK, TrueLayer)
-    - `services/consent_management/consent_engine.py` — grant_consent (SHA-256 cns_{hex8}, validates TPP REGISTERED, I-24 audit append), revoke_consent (ALWAYS HITLProposal COMPLIANCE_OFFICER I-27), get_active_consents, validate_consent
-    - `services/consent_management/tpp_registry.py` — register_tpp (I-02 jurisdiction block, SHA-256 tpp_{hex8}), suspend_tpp/deregister_tpp (HITLProposal I-27 COMPLIANCE_OFFICER)
-    - `services/consent_management/consent_validator.py` — check_scope_coverage, check_transaction_limit (Decimal I-01), is_consent_valid, get_consent_summary
-    - `services/consent_management/psd2_flow_handler.py` — EDD_THRESHOLD=Decimal("10000") I-04, initiate_aisp_flow (PENDING + audit I-24), complete_aisp_flow (ACTIVE/REVOKED), initiate_pisp_payment (ALWAYS HITLProposal I-27), handle_cbpii_check (EDD threshold raises ValueError)
-    - `services/consent_management/consent_agent.py` — L1 auto: validate_consent, get_consents, cbpii_check; L4 HITL: revoke_consent, initiate_pisp_payment, suspend_tpp
-    - `api/routers/consent_management.py` — 10 REST endpoints at /v1/consent/*
-    - 5 MCP tools: consent_grant, consent_validate, consent_revoke, consent_list_tpps, consent_cbpii_check
-    - `agents/passports/consent_management/PASSPORT.md`
-    - `tests/test_consent_management/` — 119+ tests (6 files): test_models, test_consent_engine, test_tpp_registry, test_consent_validator, test_psd2_flow_handler, test_mcp_tools
-  - **Phase 50 — Consumer Duty Outcome Monitoring (IL-CDO-01, Trust Zone: RED):**
-    - `services/consumer_duty/models_v2.py` — OutcomeType×4 (PS22/9 areas), VulnerabilityFlag×4, InterventionType×3, AssessmentStatus×2 (StrEnum), 4 frozen dataclasses (ConsumerProfile, OutcomeAssessment, ProductGovernanceRecord, VulnerabilityAlert), mutable HITLProposal, 3 Protocols + InMemory stubs
-    - `services/consumer_duty/outcome_assessor.py` — OUTCOME_THRESHOLDS: PS=0.7/PV=0.65/CU=0.7/CS=0.75 (all Decimal I-01), assess_outcome (asm_{hex8} SHA-256 IDs, clamp 0-1, I-24 append), get_failing_outcomes (type filter), aggregate_outcome_score (Decimal weighted average)
-    - `services/consumer_duty/vulnerability_detector.py` — VULNERABILITY_TRIGGERS set, detect_vulnerability (LOW/MEDIUM→alert I-24, HIGH/CRITICAL→HITLProposal I-27), update_vulnerability_flag (ALWAYS HITL I-27), review_alert (append-only I-24)
-    - `services/consumer_duty/product_governance.py` — FAIR_VALUE_THRESHOLD=Decimal("0.6") I-01, record_product_assessment (<threshold→RESTRICT+HITLProposal I-27, >=threshold→MONITOR I-24 append), get_failing_products, propose_product_withdrawal (ALWAYS HITLProposal I-27)
-    - `services/consumer_duty/consumer_support_tracker.py` — SLA_TARGETS (complaint=8x24x3600s, support=2x3600s), record_interaction/record_resolution (I-24 append), get_sla_breach_rate (Decimal I-01), get_support_outcomes_summary
-    - `services/consumer_duty/consumer_duty_reporter.py` — generate_annual_report: NotImplementedError("BT-005 Consumer Duty Annual Report"), generate_outcome_dashboard (all 4 PS22/9 areas + vulnerability + products), export_board_report (ALWAYS HITLProposal requires_approval_from="CFO" I-27)
-    - `services/consumer_duty/consumer_duty_agent.py` — L1: get_outcomes, get_dashboard, detect LOW/MEDIUM; L2: check_failing_outcomes, check_sla_breaches; L4 HITL: update_vulnerability_flag, propose_product_withdrawal, export_board_report
-    - `api/routers/consumer_duty_v2.py` — 10 REST endpoints at /v1/consumer-duty/*
-    - 5 MCP tools: consumer_duty_assess_outcome, consumer_duty_get_dashboard, consumer_duty_detect_vulnerability, consumer_duty_failing_products, consumer_duty_export_board_report
-    - `agents/passports/consumer_duty/PASSPORT.md`
-    - `tests/test_consumer_duty/` — 120+ tests (6 files): test_models_v2, test_outcome_assessor, test_vulnerability_detector, test_product_governance, test_consumer_support_tracker, test_consumer_duty_reporter
-- **Инварианты:** I-01 (Decimal scores/amounts/thresholds), I-02 (9 blocked jurisdictions TPP), I-04 (EDD £10k CBPII/PISP), I-24 (append-only consent audit/outcome/alert/product stores), I-27 (HITL: revoke/suspend/pisp/withdraw/board_report L4), I-28 (quality gate)
-- **FCA refs:** PSD2 Art.65-67 (AISP/PISP/CBPII), RTS on SCA, FCA PERG 15.5, PSR 2017 Reg.112-120, PS22/9 Consumer Duty (4 outcome areas), FCA FG21/1 (vulnerability guidance), FCA PROD (product governance), FCA COBS 2.1 (fair value), FCA PRIN 12
-- **Статус:** DONE ✅ 2026-04-21
-- **Proof:** 7510 tests green (7510/7510), ruff 0 issues, all pre-commit hooks passed. MCP tools: 209 total (+10). API endpoints: 423 total (+20). Agent passports: 51 total (+2). Tests: 7510 total (+304).
+### IL-115 — Sprint 35: Consent Management + Consumer Duty Outcome Monitoring (IL-CNS-01 + IL-CDO-01) [NORM-001]
 
-IL-XXXX: add root CLAUDE.md repository canon
-Date: 2026-04-22T00:32Z
-Scope: project-level LLM-assistant behaviour
-Files: CLAUDE.md
-Outcome: CREATED
-
-IL-LLMGOV-01: integrate LLM governance into CLAUDE.md canon
-Date: 2026-04-21T23:41Z
-Scope: CLAUDE.md §1 GOVERNANCE КАНОНЫ (points 9-11)
-Files: CLAUDE.md
-Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Hardcoding, B.11.N+1.9 Promotion Gate)
+- parent-cycle: sprint-35
+- amendment-ref: (n/a — feature delivery)
+- source: CEO directive 2026-04-21 (P1)
+- status: integrated
+- status-history:
+  - proposed @ 2026-04-21
+  - accepted @ 2026-04-21
+  - integrated @ 2026-04-21 (emi-stack commit 1c752133e85b45ac9a9fae12951ce03daaedadcc)
+- scope:
+  - banxe-emi-stack: services/consent_management/, api/routers/consent_management.py, agents/passports/consent_management/, tests/test_consent_management/
+  - banxe-emi-stack: services/consumer_duty/, api/routers/consumer_duty_v2.py, agents/passports/consumer_duty/, tests/test_consumer_duty/
+- integration-rule: supplement-only feature delivery
+- anchors:
+  - INVARIANTS: I-01, I-02, I-04, I-24, I-27, I-28
+  - REGULATORY: PSD2 Art.65-67, RTS on SCA, PSR 2017 Reg.112-120, PS22/9, FCA FG21/1, FCA PROD, FCA COBS 2.1, FCA PRIN 12
+- verification:
+  - triple-check: PASS (ruff 0, 7510/7510 tests green)
+  - emi-stack proof commit: 1c752133e85b45ac9a9fae12951ce03daaedadcc
+  - sha256-anchors:
+      services/consent_management/models.py: cdb87a0ee683987849d2539a61e884f2bf6320312932167f7d5175cd1a68e6b0
+      services/consent_management/consent_engine.py: fd273a8126b50ea42a673b033467e88c01f0c34c1550afba971380c7502ff9d8
+      services/consent_management/tpp_registry.py: 4c0698ff74f12851163e023e990c3d19ba7bbc7ef7be0da5745370f286711fdc
+      services/consent_management/consent_validator.py: c27e14ce2782285eccb0f24b79adf50479bbf40410578fceab2bdea60e14810c
+      services/consent_management/psd2_flow_handler.py: 54338d958f4925edad65961a7aacf047edae97ec878f4f23f23f55da636e5ce1
+      services/consent_management/consent_agent.py: c70be70cf0b97b59bdc4c8255c4ba155dfc56fee5e5ef1ab7d764db60059df38
+      api/routers/consent_management.py: dc798101069c9069caddd2208a7c37e383b189357a932f526f4b386c090515d4
+      agents/passports/consent_management/PASSPORT.md: d3090aa09de69ac7511d13cc70eed933ce8c42ec806dea4bcdf7c30c576b38c1
+      services/consumer_duty/models_v2.py: 8bfe3712eb7d4c28f136f93860a43763616f5873696888360aed77076bd1ce7d
+      services/consumer_duty/outcome_assessor.py: 5e605598824c0a76c9d9f55239a88a1a87401ec5dc247c9eb6eaf31068d2fc7b
+      services/consumer_duty/vulnerability_detector.py: b9b21a3217e4d34c9a08f094f73437ff8e31e07615ec4f3c709461eb6a19bcfd
+      services/consumer_duty/product_governance.py: c53605f631f06cc27d1743261e95a661462adf854b40d243fa8efe6a220959c9
+      services/consumer_duty/consumer_support_tracker.py: 57d43e54f41d3923d9aec357c68ff8cd899f83d87ab20336c0507703b8ff9586
+      services/consumer_duty/consumer_duty_reporter.py: b6ca148a56c022a8a34b54f3c87dbc693ced6d133833763e1bb29aba692cc086
+      services/consumer_duty/consumer_duty_agent.py: db58585687d9b166466b648c1136fa1ae3e28ecddf7c5dd66b39d7e7122b3f4b
+      api/routers/consumer_duty_v2.py: 79571662c4c492f244e45a23ac2f6c819beb69bad594237979d4b72f15ffecbf
+      agents/passports/consumer_duty/PASSPORT.md: 0611fc5f6f5dd35e96db48da23e44d8cb6f6d191c1dcffa6b5960f7cd6d19e95
+- deviations: none
+- privileged-ops:
+  - git tag: NOT EXECUTED
+  - gh release: NOT EXECUTED
+- successor: IL-116 (Sprint 36 pgAudit + Reconciliation + FIN060)
+- notes: Phase 49 Consent Management & TPP Registry (Trust Zone RED) + Phase 50 Consumer Duty Outcome Monitoring (Trust Zone RED). 10+10 REST endpoints, 10 MCP tools, 2 passports, 304 new tests.
 
 ### IL-116 — Sprint 36: Phase 51 pgAudit + Reconciliation + FIN060 (IL-PGA-01 + IL-REC-01 + IL-FIN060-01)
 - **Источник:** CEO, 2026-04-21 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-PGA-01 + IL-REC-01 + IL-FIN060-01
