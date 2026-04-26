@@ -2156,33 +2156,45 @@
 - successor: IL-117 (Sprint 37 FX Rates + PSD2 Gateway)
 - notes: Phase 51A pgAudit (5 endpoints, 3 MCP tools), Phase 51B CASS 7.15 daily safeguarding reconciliation with breach>£100 HITL, Phase 51C FIN060 regulatory reporting with CFO HITL approval. 10 new MCP tools, 15 REST endpoints, 3 agent passports.
 
-### IL-117 — Sprint 37 P0: Frankfurter FX Rates + adorsys PSD2 Gateway (IL-FXR-01 + IL-PSD2GW-01)
-- **Источник:** CEO, 2026-04-21 | **Приоритет:** P0 | **Репо:** banxe-emi-stack | **Тикет:** IL-FXR-01 + IL-PSD2GW-01
-- **Описание:** Sprint 37 — Phase 52A (Frankfurter FX Rates) + Phase 52B (adorsys PSD2 Gateway).
-  - **Phase 52A — Frankfurter FX Rates (IL-FXR-01):**
-    - `services/fx_rates/fx_rate_models.py` — RateEntry/ConversionResult/RateOverride frozen dataclasses, InMemoryRateStore (append-only I-24).
-    - `services/fx_rates/frankfurter_client.py` — FrankfurterClient (self-hosted hakanensari/frankfurter ECB :8087), BLOCKED_CURRENCIES (RUB/IRR/KPW/BYR/BYN/CUP/VES I-02), _safe_decimal() (I-01), retry 3x exponential, FXRateService HITL override L4 (I-27).
-    - `services/fx_rates/fx_rate_agent.py` — FXRateAgent: schedule_daily_fetch (GBP/EUR/USD), override_rate→HITLProposal L4, get_rate_dashboard.
-    - `docker/docker-compose.frankfurter.yml` — hakanensari/frankfurter:latest :8087.
-    - `api/routers/fx_rates.py` — 5 REST endpoints: GET /v1/fx-rates/latest, GET /v1/fx-rates/historical/{date}, GET /v1/fx-rates/time-series, POST /v1/fx-rates/convert, POST /v1/fx-rates/override.
-    - 3 MCP tools: fx_get_latest_rates, fx_convert_amount, fx_get_historical_rates.
-    - `agents/passports/fx_rates/PASSPORT.md` — FXRateAgent v1.0.0, Trust Zone AMBER, L4 for overrides.
-    - `tests/test_fx_rates/` — 90+ tests (5 files): test_fx_rate_models, test_frankfurter_client, test_fx_rate_service, test_fx_rate_agent, test_mcp_tools.
-  - **Phase 52B — adorsys PSD2 Gateway (IL-PSD2GW-01):**
-    - `services/psd2_gateway/psd2_models.py` — BLOCKED_JURISDICTIONS (RU/BY/IR/KP/CU/MM/AF/VE/SY I-02), _iban_country(), frozen dataclasses: ConsentRequest/ConsentResponse/AccountInfo/Transaction/BalanceResponse, InMemoryConsentStore/InMemoryTransactionStore (I-24).
-    - `services/psd2_gateway/adorsys_client.py` — AdorsysClient: _check_iban() I-02, create_consent() SHA-256 ID + I-24 append, get_accounts(), get_transactions() I-24, get_balances() Decimal I-01, initiate_payment_via_psd2()→NotImplementedError("BT-007").
-    - `services/psd2_gateway/camt053_auto_pull.py` — AutoPuller: schedule() SHA-256 ID I-24, execute_pull() masked IBAN (first 6 + ***), list_active_schedules().
-    - `services/psd2_gateway/psd2_agent.py` — PSD2Agent: create_consent_proposal()→HITLProposal L4 COMPLIANCE_OFFICER (I-27), configure_auto_pull()→HITLProposal L4 (I-27), get_accounts/get_transactions/get_balances L1, get_active_consents.
-    - `api/routers/psd2_gateway.py` — 5 REST endpoints: POST /v1/psd2/consents (202), GET /v1/psd2/accounts/{consent_id}, GET /v1/psd2/transactions/{consent_id}/{account_id}, GET /v1/psd2/balances/{consent_id}/{account_id}, POST /v1/psd2/auto-pull/configure (202).
-    - 3 MCP tools: psd2_create_consent, psd2_get_transactions, psd2_configure_autopull.
-    - `agents/passports/psd2_gateway/PASSPORT.md` — PSD2Agent v1.0.0, Trust Zone RED, L4 for consent+pull (COMPLIANCE_OFFICER).
-    - `tests/test_psd2_gateway/` — 120+ tests (5 files): test_psd2_models, test_adorsys_client, test_camt053_auto_pull, test_psd2_agent, test_mcp_tools.
-- **Инварианты:** I-01 (Decimal для rates/amounts/balances), I-02 (BLOCKED_CURRENCIES + BLOCKED_JURISDICTIONS), I-24 (append-only: InMemoryRateStore/InMemoryConsentStore/InMemoryTransactionStore/InMemoryPullScheduleStore), I-27 (HITL: fx_override/create_consent/configure_auto_pull L4), I-28 (quality gate)
-- **FCA refs:** PSD2 Art.65-67 (AISP/PISP), EBA RTS on SCA, CASS 15 (P0 deadline 7 May 2026), ESMA ECB rate guidelines
-- **Статус:** DONE ✅ 2026-04-21
-- **Proof:** commit 9d68940 on banxe-emi-stack main. 210 new tests green (90 fx_rates + 120 psd2_gateway). All pre-commit hooks passed (ruff/ruff-format/bandit/semgrep/pytest). 6 new MCP tools (total 225). 10 new REST endpoints (total 448). 2 new agent passports (total 56). Tests total: 7958.
+### IL-117 — Sprint 37: Phase 52 Frankfurter FX Rates + adorsys PSD2 Gateway (IL-FXR-01 + IL-PSD2GW-01) [NORM-001]
 
----
+- parent-cycle: sprint-37
+- amendment-ref: (n/a — feature delivery)
+- source: CEO directive 2026-04-21 (P0)
+- status: integrated
+- status-history:
+  - proposed @ 2026-04-21
+  - accepted @ 2026-04-21
+  - integrated @ 2026-04-21 (emi-stack commit 9d68940fb6a62791ddc6c15287635ff3d0357a38)
+- scope:
+  - banxe-emi-stack: services/fx_rates/, api/routers/fx_rates.py, agents/passports/fx_rates/, docker/docker-compose.frankfurter.yml, tests/test_fx_rates/
+  - banxe-emi-stack: services/psd2_gateway/, api/routers/psd2_gateway.py, agents/passports/psd2_gateway/, tests/test_psd2_gateway/
+- integration-rule: supplement-only feature delivery
+- anchors:
+  - INVARIANTS: I-01, I-02, I-24, I-27, I-28
+  - REGULATORY: PSD2 Art.65-67, EBA RTS on SCA, CASS 15 (P0 deadline 7 May 2026), ESMA ECB rate guidelines
+- verification:
+  - triple-check: PASS (210 new tests green: 90 fx_rates + 120 psd2_gateway, total 7958)
+  - emi-stack proof commit: 9d68940fb6a62791ddc6c15287635ff3d0357a38
+  - sha256-anchors:
+      services/fx_rates/fx_rate_models.py: da8091666975113853c8c403f363a8a090622dd2e27333b8cda621706d604da6
+      services/fx_rates/frankfurter_client.py: d43476b76ba613de530e40f64d5a929b764cc4c08bc61699094cb2537963f769
+      services/fx_rates/fx_rate_agent.py: 9ad2aa21d69b4331fbd0a1c7300be0c1669ca9cdeb3fe59dc05fcda7c71ba095
+      docker/docker-compose.frankfurter.yml: c10dd9b3a7ea5fc250a06cc17773455873e863eb0400ebfd17f1f288dc0a684a
+      api/routers/fx_rates.py: 52afb9c86634eada67e5dfaaa9d26a0697611fd09aeaae10db6f86c933bc854a
+      agents/passports/fx_rates/PASSPORT.md: 2cc73f4ca3ce2f383774c0cebe230174521cab229f2894e4d9298c303965027c
+      services/psd2_gateway/psd2_models.py: ddcfe1e680ed54a718698caf91d991f7bcfeb4c3c372d14fdd0219aecccea38a
+      services/psd2_gateway/adorsys_client.py: 7f7ce35e51cc181d01692c3f4a9928e1f3cd0d2598fae0c7801e78391f7c1da6
+      services/psd2_gateway/camt053_auto_pull.py: 125a58a8d8bd2465ab66c879b8c6c6ad8153f318ae7e185d84e980e6304bf4ef
+      services/psd2_gateway/psd2_agent.py: a8a09c8ce657d209272aaeadc7ecf872d35c05262b467dcc5930957e67b55ce8
+      api/routers/psd2_gateway.py: a6fd58b69288f8ff5f622dc8d44a79e449c91d3b6c93e6238a8fe5fdbb5fe7d9
+      agents/passports/psd2_gateway/PASSPORT.md: 1f5d507e2412b4c444daf216fa254bbb8b212a2b870bfbb658e7218c7792846f
+- deviations: none
+- privileged-ops:
+  - git tag: NOT EXECUTED
+  - gh release: NOT EXECUTED
+- successor: IL-INT-01/IL-OBS-01 (Sprint 38 Phase 53 Integration Hardening + Observability), IL-CMS-01/IL-MCP-01/IL-TRC-01 (Sprint 39 Phase 54)
+- notes: Phase 52A Frankfurter ECB self-hosted FX rates with BLOCKED_CURRENCIES (RUB/IRR/KPW/BYR/BYN/CUP/VES) + L4 HITL override. Phase 52B adorsys PSD2 Gateway (AISP/PISP) with BLOCKED_JURISDICTIONS (RU/BY/IR/KP/CU/MM/AF/VE/SY) + L4 HITL consent + auto-pull. 6 new MCP tools (total 225), 10 REST endpoints (total 448), 2 passports.
 
 ### IL-LINT-03 (mirror from banxe-emi-stack) — OPEN
 - Status: OPEN
