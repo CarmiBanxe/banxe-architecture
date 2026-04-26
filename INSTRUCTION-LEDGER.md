@@ -2290,3 +2290,13 @@ Outcome: DONE (points 9-11 added: 30.N+1.8 HITL, 30.N+1.9 Configuration-over-Har
 - Status: DONE
 - Proof/notes: tracked in HEAD (1 files), last path SHA=82b69b2d21a61328eae1b925566ec6860c0e13fd
 
+
+
+---
+
+### IL-LINT-03 (mirror) — anchor correction
+- Status: integrated
+- Real proof SHA (emi-stack code): ba3fccceaa376b6ec1273f416bd6fb916353fca6
+- Supersedes: prior mirror anchor 7708d4c (ledger commit 1617db4)
+- Linked emi-stack ledger commit: 8063895 (docs(ledger): IL-LINT-03 anchor correction)
+- Reason: 7708d4c does not modify the three IL-LINT-03 files; ba3fccc does.
