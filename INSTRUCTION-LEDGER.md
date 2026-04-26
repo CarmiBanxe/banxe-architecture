@@ -2337,18 +2337,20 @@
 - status-history:
   - proposed @ 2026-04-26
   - accepted @ 2026-04-26
-  - integrated @ 2026-04-26 (emi-stack commit 7294df5d5d6601cfb6cedfb12d23981ab22ab14b)
+  - integrated @ 2026-04-26 22:43 CEST (emi-stack commit 7294df5d5d6601cfb6cedfb12d23981ab22ab14b, pushed to origin/main)
 - scope:
-  - banxe-emi-stack: services/ato_prevention/, api/routers/ato_prevention.py, agents/passports/ato_prevention/, tests/test_ato_prevention/
+  - banxe-emi-stack: services/fatca_crs/, api/routers/fatca_crs.py, agents/passports/fatca_crs/, tests/test_fatca_crs/
   - banxe-emi-stack: services/complaints/, api/routers/complaints.py, agents/passports/complaints/, tests/test_complaints/
   - banxe-emi-stack: services/device_fingerprint/, api/routers/device_fingerprint.py, agents/passports/device_fingerprint/, tests/test_device_fingerprint/
-  - banxe-emi-stack: services/fatca_crs/, api/routers/fatca_crs.py, agents/passports/fatca_crs/, tests/test_fatca_crs/
+  - banxe-emi-stack: services/ato_prevention/, api/routers/ato_prevention.py, agents/passports/ato_prevention/, tests/test_ato_prevention/
+  - banxe-emi-stack: api/main.py (router registrations), banxe_mcp/server.py (9 new MCP tools)
 - integration-rule: supplement-only feature delivery
 - anchors:
-  - INVARIANTS: I-01, I-24, I-27, I-28
-  - REGULATORY: FATCA (IRC §1471-1474), CRS (OECD MCAA), FCA DISP, FCA SYSC 6.1, FCA PRIN 11/12
+  - INVARIANTS: I-01 (Decimal scores), I-02 (BLOCKED_JURISDICTIONS for FATCA), I-24 (append-only stores/logs), I-27 (HITL L4), I-28 (quality gate)
+  - REGULATORY: FATCA (IRC §1471-1474), CRS (OECD MCAA), FCA DISP, FCA SYSC 6.1, FCA PRIN 11/12, BT-010 FOS stub
+  - HITL ROLES: COMPLIANCE_OFFICER (US person change), MLRO (CRS override), COMPLAINTS_OFFICER (redress > £500), FRAUD_ANALYST (suspicious device), SECURITY_OFFICER (ATO lock/unlock)
 - verification:
-  - triple-check: PASS (pre-commit on 7294df5d5d6601cfb6cedfb12d23981ab22ab14b)
+  - triple-check: PASS (94 new tests green; 8345 total)
   - emi-stack proof commit: 7294df5d5d6601cfb6cedfb12d23981ab22ab14b
   - sha256-anchors:
       services/ato_prevention/ato_models.py: 12d61cbf66546840abcaa00df9ade438e334ddaabc40fe68076638d5b4a87c82
@@ -2359,8 +2361,6 @@
       services/complaints/complaints_models.py: b00ef34b46597ea0416bee54732c21808f8c1062b7e9d3665b3df35dfe4c8958
       services/complaints/complaints_engine.py: 0b33506c35c24493561d6f50d75aa68e207a95013bc77bfd11f6a730678d9769
       services/complaints/complaints_agent.py: c113811bd4b472f041f0ad90aef4b5aefea024a38cc4b227c21ea562738127aa
-      services/complaints/complaint_service.py: c3fe47ba77e4e3a84317158656695c639d08f0c1b773b30c7f06f0fe5339ce84
-      services/complaints/n8n_webhook.py: 1deaf010fe4528c095f59d8e343dc4defa621e22452b376fa6ebf168d23c1e60
       api/routers/complaints.py: dca42ae62694a9040e1427966d8475eb18558d0eb119b4c5b3c7a87cb80cd754
       agents/passports/complaints/PASSPORT.md: 80954cc667117bba6c774ab30dea3957b8ba3fa253b196a3672489b1cc5a22d1
       services/device_fingerprint/fingerprint_models.py: e00b75b2c46574fa2d7d6b155a3098f6a6fa0b03fde6c754d8d29a34da5505c3
@@ -2373,9 +2373,10 @@
       services/fatca_crs/self_cert_engine.py: 791121c0d8f20115e22e9e297788ce6f566789e75a23717c02356c165ce090e9
       api/routers/fatca_crs.py: b867675f9fdf57373601f21c70463428bbced17f7fe4879bdcc2261a88b1f307
       agents/passports/fatca_crs/PASSPORT.md: 6061c44106521b0cb4d8a186219b7dfbc6a45a1a06b433e0a76f1faf7891447e
-- deviations: mixed-scope — four IL scopes (FAT/DSP/DFP/ATO) landed in one emi-stack commit instead of four separate commits; tolerated, anchored together.
+- deviations: mixed-scope — four IL scopes (IL-FAT-01 + IL-DSP-01 + IL-DFP-01 + IL-ATO-01) landed in one emi-stack commit instead of four separate commits; tolerated, all four anchored to the same proof SHA.
 - privileged-ops:
+  - git push origin main: EXECUTED in emi-stack (HEAD = origin/main)
   - git tag: NOT EXECUTED
   - gh release: NOT EXECUTED
 - successor: (none)
-- notes: Phase 55 delivered ATO Prevention (account takeover detection), DISP complaints workflow with n8n webhook bridge, Device Fingerprint binding, FATCA/CRS self-certification engine on banxe-emi-stack. emi-stack commit 7294df5d5d6601cfb6cedfb12d23981ab22ab14b already pushed to origin/main.
+- notes: Sprint 40 Phase 55 delivered FATCA/CRS self-certification (annual 365-day TTL, TIN masked to last 4), FCA DISP complaints lifecycle (15/35 day SLA, n8n webhook), Device Fingerprint binding (max 5/customer, SHA-256), ATO Prevention (BLOCKED_JURISDICTION/FAILED_LOGIN_VELOCITY/IMPOSSIBLE_TRAVEL signals, haversine geo distance). 17 REST endpoints, 9 MCP tools, 4 agent passports.
