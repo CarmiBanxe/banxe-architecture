@@ -2446,3 +2446,45 @@
     - .claude/agents/code-guardian.md untracked (new agent artefact)
   ARCHI working tree: M MEMORY.md (auto-maintained), 5 untracked artefacts (.swp, banxe_dev.db, compliance-experiments/, compliance_ingest.log, data/) — all pre-existing operational files, not session output.
   This session deliberately did not touch Sprint 41 staged work or pre-existing untracked artefacts to preserve canon "не смешивать чужие фичи в свой scope".
+
+
+### IL-121 — Sprint 41: Phase 56 FOS Escalation + HMRC FATCA/CRS Reporting + Client Statements + Lifecycle FSM (IL-FOS-01 + IL-HMR-01 + IL-CST-01 + IL-LCY-01) [NORM-001]
+
+- parent-cycle: sprint-41
+- amendment-ref: (n/a — feature delivery)
+- source: emi-stack commit fe675b9 (base) + MCP test additions 2026-04-27
+- status: integrated
+- status-history:
+  - proposed @ 2026-04-26
+  - accepted @ 2026-04-26
+  - integrated @ 2026-04-27 (emi-stack commit fe675b9 + follow-up MCP test files, pushed to origin/main)
+- scope:
+  - banxe-emi-stack: services/complaints/fos_escalation.py, fos_models.py — FOSEscalation BT-010, I-24/I-27 HITL L4, week-6 auto-flag
+  - banxe-emi-stack: services/fatca_crs/hmrc_reporter.py, hmrc_models.py — HMRCReporter FATCA/CRS, BT-012, I-02 blocked jurisdictions
+  - banxe-emi-stack: services/client_statements/ — StatementGenerator PDF/CSV/JSON, I-01 Decimal, BT-013, I-27 corrections
+  - banxe-emi-stack: services/customer_lifecycle/ — LifecycleEngine 8-state FSM, I-02 guard, DormancyConfig(90d), RetentionConfig(5yr FCA SYSC 9)
+  - banxe-emi-stack: api/routers/ (fos_escalation, hmrc_reporting, client_statements, customer_lifecycle) — 14 REST endpoints registered in api/main.py
+  - banxe-emi-stack: banxe_mcp/server.py — 8 new MCP tools (fos_prepare_case, fos_list_cases, hmrc_generate_report, hmrc_validate_report, statement_generate, statement_download, lifecycle_transition, lifecycle_list_dormant)
+  - banxe-emi-stack: tests/ — 150 new tests (4 service test files + 4 MCP tool test files)
+  - banxe-emi-stack: agents/passports/client_statements/PASSPORT.md, agents/passports/customer_lifecycle/PASSPORT.md
+  - banxe-emi-stack: ROADMAP.md — Phase 56 entries S41-A..S41-E
+- integration-rule: supplement-only feature delivery
+- anchors:
+  - INVARIANTS: I-01 (Decimal amounts — no float), I-02 (BLOCKED_JURISDICTIONS on HMRC/lifecycle), I-24 (append-only stores/logs), I-27 (HITL L4 dual sign-off), I-28 (quality gate)
+  - REGULATORY: FCA DISP (FOS 8-week rule, BT-010), HMRC FATCA (IRC §1471-1474), OECD CRS (MCAA), FCA SYSC 9 (5-year retention), FCA CASS 15
+  - HITL ROLES: COMPLAINTS_OFFICER + HEAD_OF_COMPLIANCE (FOS submit), CFO + MLRO (HMRC generate/submit), OPERATIONS_OFFICER (statement correction), COMPLIANCE_OFFICER (lifecycle suspend/reactivate), HEAD_OF_COMPLIANCE (lifecycle offboard)
+  - STUBS: BT-010 (FOS portal → P1), BT-012 (HMRC gateway → pending registration), BT-013 (email delivery → P1)
+- verification:
+  - triple-check: PASS (8495 tests green; 150 new tests across 8 files)
+  - emi-stack proof commit: fe675b9 (base Sprint 41 commit, pushed 2026-04-26)
+  - S5-19: CLOSED (FOS Escalation IL-FOS-01 delivered)
+  - S5-20: CLOSED (HMRC FATCA/CRS Annual Reporting IL-HMR-01 delivered)
+  - S17-07: DONE (Client Statement Service IL-CST-01 delivered)
+  - S17-09: DONE (Customer Lifecycle FSM IL-LCY-01 delivered)
+- deviations: mixed-scope — four IL scopes landed in one emi-stack commit; tolerated, all four anchored to the same proof SHA.
+- privileged-ops:
+  - git push origin main: EXECUTED in emi-stack (fe675b9 pushed 2026-04-26)
+  - git tag: NOT EXECUTED
+  - gh release: NOT EXECUTED
+- successor: Sprint 42
+- notes: Sprint 41 Phase 56 delivers FOS 8-week case prep (replacing BT-010 NotImplementedError), HMRC FATCA/CRS annual report with jurisdiction filtering, client statements in PDF/CSV/JSON with I-01 Decimal throughout, and 8-state customer lifecycle FSM with I-02 jurisdiction guard on onboarding. 14 REST endpoints, 8 MCP tools, 2 agent passports. Tests: 8345 → 8495 (+150).
