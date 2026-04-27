@@ -1,0 +1,19 @@
+{
+  "total": 1,
+  "by_status": {
+    "draft": 1,
+    "active": 0,
+    "finished": 0,
+    "rejected": 0
+  },
+  "experiments": [
+    {
+      "id": "exp-2026-04-tran-improve-velocity-checks-for-st",
+      "title": "Transaction Monitoring: Improve velocity checks for structuring detection",
+      "scope": "transaction_monitoring",
+      "status": "draft",
+      "updated_at": "2026-04-16T17:25:15.019134",
+      "has_pr": false
+    }
+  ]
+}

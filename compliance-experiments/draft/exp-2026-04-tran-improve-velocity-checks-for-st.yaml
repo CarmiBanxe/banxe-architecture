@@ -1,0 +1,22 @@
+id: exp-2026-04-tran-improve-velocity-checks-for-st
+title: 'Transaction Monitoring: Improve velocity checks for structuring detection'
+scope: transaction_monitoring
+status: draft
+hypothesis: 'By implementing changes related to ''Improve velocity checks for structuring
+  detection'', we expect to improve transaction monitoring performance metrics. Regulatory
+  basis: Regulatory context for: Improve velocity checks for structuring detection'
+kb_citations:
+- eba-gl-2021-02
+created_at: '2026-04-16T17:25:15.019126'
+updated_at: '2026-04-16T17:25:15.019134'
+created_by: compliance-officer
+metrics_baseline: {}
+metrics_target: {}
+metrics_actual: {}
+pr_url: null
+issue_url: null
+audit_entries: []
+tags:
+- transaction_monitoring
+rejection_reason: null
+steward_notes: null
