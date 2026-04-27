@@ -5,7 +5,7 @@
 - Owner: mmber
 - Source-of-truth repo: banxe-architecture
 - Linked code repo: banxe-emi-stack
-- Linked GitHub issue: <fill after issue creation>
+- Linked GitHub issue: CarmiBanxe/banxe-emi-stack#7
 - Created: 2026-04-27
 
 ## Context
