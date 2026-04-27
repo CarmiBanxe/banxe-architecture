@@ -1,1 +1,5 @@
 scripts/__pycache__/
+*.swp
+*.db
+*.log
+data/
