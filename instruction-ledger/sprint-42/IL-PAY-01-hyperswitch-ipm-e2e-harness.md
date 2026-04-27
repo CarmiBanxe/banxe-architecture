@@ -1,7 +1,7 @@
 # IL-PAY-01: Hyperswitch + Mastercard IPM End-to-End Harness
 
 - Sprint: 42
-- Status: PROPOSED
+- Status: DEFERRED_TO_SPRINT_43
 - Owner: mmber
 - Source-of-truth repo: banxe-architecture
 - Linked code repo: banxe-emi-stack

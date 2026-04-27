@@ -1,7 +1,7 @@
 # IL-COMP-01: Compliance Experiments Bootstrap
 
 - Sprint: 42
-- Status: PROPOSED
+- Status: DONE
 - Owner: mmber
 - Source-of-truth repo: banxe-architecture
 - Linked code repo: banxe-emi-stack
