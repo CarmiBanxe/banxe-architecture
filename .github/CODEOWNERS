@@ -1,0 +1,25 @@
+# CODEOWNERS — banxe-architecture
+# IL-PROT-01 (Sprint 42) | Effective: 2026-04-27
+#
+# All pull requests require review from the code owner of the
+# modified path. GitHub enforces this when "Require review from
+# CODEOWNERS" is enabled in branch protection settings.
+#
+# Syntax: <pattern> <@owner> [<@owner2> ...]
+# Patterns follow .gitignore rules; last matching pattern wins.
+
+# Default owner for everything not matched below
+*                                @mmber
+
+# Instruction Ledger — spec-first artefacts (Sprint 42+)
+/instruction-ledger/             @mmber
+
+# Architecture Decision Records (live in /decisions/)
+/decisions/                      @mmber
+
+# Compliance experiments registry
+/compliance-experiments/         @mmber
+
+# Claude Code configuration — policy files
+/.claude/                        @mmber
+/CLAUDE.md                       @mmber
