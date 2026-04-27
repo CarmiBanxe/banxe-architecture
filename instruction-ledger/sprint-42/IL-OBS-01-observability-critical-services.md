@@ -1,7 +1,7 @@
 # IL-OBS-01: Observability for Critical Services (complaints, fatca_crs, customer_lifecycle)
 
 - Sprint: 42
-- Status: PROPOSED
+- Status: DEFERRED_TO_SPRINT_43
 - Owner: mmber
 - Source-of-truth repo: banxe-architecture
 - Linked code repo: banxe-emi-stack

@@ -1,7 +1,7 @@
 # IL-SEC-01: Secrets and Access Posture Review
 
 - Sprint: 42
-- Status: PROPOSED
+- Status: DONE
 - Owner: mmber
 - Source-of-truth repo: banxe-architecture
 - Linked code repo: banxe-emi-stack

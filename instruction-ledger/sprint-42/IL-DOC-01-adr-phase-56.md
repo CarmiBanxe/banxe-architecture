@@ -1,7 +1,7 @@
 # IL-DOC-01: ADRs for Phase 56 (Sprint 41 IL-FOS-01, IL-HMR-01, IL-CST-01, IL-LCY-01)
 
 - Sprint: 42
-- Status: PROPOSED
+- Status: DONE
 - Owner: mmber
 - Source-of-truth repo: banxe-architecture
 - Linked code repo: banxe-emi-stack
