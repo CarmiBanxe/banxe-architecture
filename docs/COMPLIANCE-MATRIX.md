@@ -20,9 +20,9 @@
 | **S1** | Governance & SMF | 40% | 🔄 | P0 — FCA auth |
 | **S2** | Geniusto → замена | 100% | ✅ | Принято решение |
 | **S3** | Open-Source CBS | 30% | 🔄 | P0 — Jul 2026 |
-| **S4** | Payment Rails | **0%** | ❌ | **P0 КРИТИЧНО** |
+| **S4** | Payment Rails | **15%** | 🔄 | **P0 КРИТИЧНО** — IL-PAY-02 scaffold done |
 | **S5** | Compliance/AML/KYC | **65%** | 🔄 | P1 |
-| **S6** | Safeguarding Engine | **20%** | 🔄 | **P0 — 7 May 2026** |
+| **S6** | Safeguarding Engine | **35%** | 🔄 | **P0 — 7 May 2026** — IL-SAF-01 recon engine done |
 | **S7** | AI & HITL | **95%** | ✅ | P2 |
 | **S8** | Infrastructure/Data | 55% | 🔄 | P1 |
 | **S9** | UK EMI Readiness | **30–35%** | 🔄 | — |
@@ -120,7 +120,9 @@
 | S4-10 | SWIFT/GPI (international) | ❌ NOT_STARTED | — | — | Phase 2 |
 | S4-11 | Mifos Payment Hub EE (complex multi-rail) | ❌ NOT_STARTED | — | — | Phase 2+ |
 
-**Покрытие S4: 0/11 = 0%** | ❌ НАИБОЛЕЕ КРИТИЧЕСКИЙ GAP — EMI без payment rails не функционирует
+| S4-12 | Payment Processing Service (auth/capture/settle/refund lifecycle) | ✅ DONE | IL-PAY-02, PR #22, sha 86d0e4f, 49 tests | Claude Code | Sprint 44 |
+
+**Покрытие S4: 1/12 ≈ 15%** | 🔄 IL-PAY-02 delivers lifecycle scaffold; BaaS integrations still pending CEO
 
 ---
 
@@ -189,9 +191,10 @@
 | S6-12 | Monthly FCA RegData return (automation) | 🔄 IN_PROGRESS | regdata_return.py + MockFIN060Generator + StubRegDataClient, IL-028 | Claude Code | Live: FCA_REGDATA_API_KEY pending (CEO); FIN060 pipeline ready |
 | S6-13 | Annual safeguarding audit | ❌ NOT_STARTED | — | — | External auditor required |
 | S6-14 | CASS 10A resolution pack (48h retrieval) | ✅ DONE | resolution_pack.py — ZIP (manifest + positions.csv + payments + recon), 17 tests, IL-028 | Claude Code | — |
+| S6-15 | Safeguarding Recon Engine v2 (aggregate client-funds vs safeguarding, HITL) | ✅ DONE | IL-SAF-01, PR #24, sha cb49885, 34 tests, recon_engine.py | Claude Code | Sprint 44 |
 
-**Покрытие S6: 11/14 = 79%** | 🟡 ON TRACK — DEADLINE 7 MAY 2026 (~29 дней)
-**Оставшийся объём: S6-09 (CEO: банк-счёт), S6-10 (BaaS), S6-11 (n8n import CEO), S6-13 (external auditor)**
+**Покрытие S6: 12/15 ≈ 80%** | 🟡 ON TRACK — DEADLINE 7 MAY 2026 (~9 дней)
+**Оставшийся объём: S6-09 (CEO: банк-счёт), S6-10 (BaaS), S6-13 (external auditor)**
 
 ---
 
@@ -602,13 +605,15 @@ graph TD
 | Redis (velocity/cache) | ✅ :6379 |
 | RabbitMQ (Midaz events) | ✅ :3003/3004 |
 
-**Покрытие S16: 9 already deployed / 25 new components needed**
+**Покрытие S16: 9 already deployed + 1 GL service / 25 new components needed ≈ 15%**
 **P0 gap (7 May 2026): FA-01..FA-07**
+**Sprint 44: IL-FIN-01 — GLService double-entry bookkeeping via LedgerPort (PR #26, 34 tests)**
 
 ---
 
 *IL-008 | Сформировано: 2026-04-06 | Ruflo audit: docs/reviews/IL-008-review.md*
 *IL-009 S16 добавлен: 2026-04-06 | Research: docs/financial-analytics-research.md*
+*Sprint 44 update: 2026-04-28 | IL-PAY-02, IL-SAF-01, IL-FIN-01 merged*
 *IL-031 S17 добавлен: 2026-04-08 | Source: Banxe_v5.archimate ArchiMate analysis*
 
 ---
