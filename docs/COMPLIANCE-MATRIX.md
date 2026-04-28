@@ -17,11 +17,11 @@
 
 | Блок | Функция | Покрытие | Статус | Дедлайн |
 |------|---------|----------|--------|---------|
-| **S1** | Governance & SMF | 40% | 🔄 | P0 — FCA auth |
+| **S1** | Governance & SMF | **50%** | 🔄 | P0 — FCA auth — IL-GOV-01 SMCR done |
 | **S2** | Geniusto → замена | 100% | ✅ | Принято решение |
-| **S3** | Open-Source CBS | 30% | 🔄 | P0 — Jul 2026 |
+| **S3** | Open-Source CBS | **40%** | 🔄 | P0 — Jul 2026 — IL-CBS-01 GL integration done |
 | **S4** | Payment Rails | **15%** | 🔄 | **P0 КРИТИЧНО** — IL-PAY-02 scaffold done |
-| **S5** | Compliance/AML/KYC | **65%** | 🔄 | P1 |
+| **S5** | Compliance/AML/KYC | **75%** | 🔄 | P1 — IL-FRAUD-01/02 device FP + ATO done |
 | **S6** | Safeguarding Engine | **35%** | 🔄 | **P0 — 7 May 2026** — IL-SAF-01 recon engine done |
 | **S7** | AI & HITL | **95%** | ✅ | P2 |
 | **S8** | Infrastructure/Data | 55% | 🔄 | P1 |
@@ -614,6 +614,7 @@ graph TD
 *IL-008 | Сформировано: 2026-04-06 | Ruflo audit: docs/reviews/IL-008-review.md*
 *IL-009 S16 добавлен: 2026-04-06 | Research: docs/financial-analytics-research.md*
 *Sprint 44 update: 2026-04-28 | IL-PAY-02, IL-SAF-01, IL-FIN-01 merged*
+*Sprint 45 update: 2026-04-28 | IL-FRAUD-01, IL-FRAUD-02, IL-CBS-01, IL-GOV-01 merged — S1 50%, S3 40%, S5 75%*
 *IL-031 S17 добавлен: 2026-04-08 | Source: Banxe_v5.archimate ArchiMate analysis*
 
 ---
