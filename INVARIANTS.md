@@ -179,3 +179,21 @@ Claude Code ОБЯЗАН добавить запись при BLOCKED стату
 *PROPOSED — требует явного утверждения CEO перед переводом в обязательный статус.*
 Обоснование: деградация качества локальных моделей не должна приводить к снижению
 стандарта для FCA-regulated кода. Gate одинаков для Sonnet и qwen3-coder.
+
+---
+
+**I-32 — No Direct Cloud LLM Calls from EMI Services (ACCEPTED)**
+EMI-сервисы (banxe-emi-stack, banxe-compliance-api, banxe-dashboard, deep-search, drive_watcher и все будущие EMI-сервисы) НЕ ВПРАВЕ обращаться напрямую к внешним LLM-провайдерам (Claude, Gemini, Groq, OpenAI и т.п.).
+Все AI-вызовы идут через LiteLLM v2 router (`http://legion:4000/v1`, далее evo1) по утверждённым алиасам: `ai`, `ai-heavy`, `glm-air`, `reasoning`, `banxe-general`, `fast`, `coding`.
+Backing-модели — деталь реализации plane, не сервиса.
+Канон: `decisions/ADR-016-ai-plane-pii-aml-routing.md`.
+Enforcement: pre-commit hook + code review checklist в каждом EMI-репо.
+Severity: P1 — architecture invariant breach.
+
+**I-33 — PII/AML Deny-Paths Route Only via Local LiteLLM Aliases (ACCEPTED)**
+Контент по путям `compliance/cases/*`, `kyc/raw/*`, `secrets/*`, `.env*`, `**/*.pem`, `**/id_*` обрабатывается ИСКЛЮЧИТЕЛЬНО локальными алиасами LiteLLM (`ai`, `ai-heavy`, `glm-air`, `reasoning`).
+Передача такого контента во внешние LLM или незащищённые маршруты запрещена.
+Source of truth: `banxe-infra/ai-routing/policy.yaml`.
+Канон: `decisions/ADR-016-ai-plane-pii-aml-routing.md`.
+Enforcement: policy.yaml + pre-commit hook + review checklist + runtime guard в LiteLLM router.
+Severity: P0 — security incident (FCA CASS 15 + GDPR Art. 5 / Art. 32).
