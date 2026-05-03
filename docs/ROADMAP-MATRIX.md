@@ -69,6 +69,7 @@ J — Safeguarding Engine (CASS 15)
   └── D-recon (reconciliation engine)
   └── J-audit (ClickHouse audit trail)
   └── K-gabriel (FCA breach reporting workflow via n8n)
+  └── P3.4 — Keycloak IAM cutover (service-to-service auth; ADR-015 banxe-emi-stack, ADR-016)
 ```
 
 **Risk:** If J-engine is not deployed by 7 May 2026, Banxe cannot hold client funds and the FCA EMI authorisation is at risk of suspension.
@@ -81,6 +82,37 @@ J — Safeguarding Engine (CASS 15)
 - **D-gl**: Midaz (LerianStudio) selected as primary GL in Sprint 8. LedgerPort adapter in design phase.
 - **I-infra**: GMKtec EVO-X2 (128GB RAM, Ryzen AI MAX+ 395) operational. n8n, ClickHouse, OpenClaw, PII Proxy all running.
 - **J-engine**: Zero implementation. This is the single largest regulatory risk. Sprint 9 must begin this block immediately.
+- **P3.4 (IAM)**: Keycloak IAM cutover for EMI realm `banxe-emi` — IN_PROGRESS. ADR-022 (decision record) to follow in next PR. Deadline: 2026-05-07 (FCA CASS 15). Backout: revert to local IAM (Legion) per `banxe-emi-stack docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1`.
+
+---
+
+## Phase 3 — Delivery Phases (P3.x)
+
+> P3.x phase numbers refer to Phase 3 delivery sprints and are distinct from the P0–P3 priority scale used in the Full Delivery Matrix above.
+
+| Phase | Title | Owner | Status | Target Date | Depends On | Risk |
+|-------|-------|-------|--------|-------------|------------|------|
+| P3.4 | Keycloak IAM cutover (EMI realm) | Architecture WG / IAM lead | IN_PROGRESS | **2026-05-07** | banxe-emi-stack `docs/adr/ADR-015-auth-ports.md`; [ADR-016](../decisions/ADR-016-ai-plane-pii-aml-routing.md); banxe-emi-stack `docs/Keycloak-next-session-roadmap.md` | **P0** — FCA CASS 15 deadline |
+
+### P3.4 detail — Keycloak IAM cutover (EMI realm `banxe-emi`)
+
+**Deliverables**
+- [ ] ADR-022 (IAM cutover decision record) — next PR in banxe-architecture
+- [ ] Realm `banxe-emi` deployed on evo1 (:8180)
+- [ ] OIDC discovery URL registered and reachable from EMI services
+- [ ] Service-to-service tokens provisioned for: banxe-compliance-api, banxe-dashboard, deep-search, drive_watcher
+- [ ] Mappers, audit log, rotation policy configured
+- [ ] Backout procedure documented: revert to local IAM (Legion) per `Keycloak-next-session-roadmap.md`
+
+**Exit criteria**
+- [ ] All EMI services authenticate via Keycloak realm `banxe-emi` — no direct user/password in env
+- [ ] INVARIANTS.md extended with IAM invariant (to be proposed in ADR-022)
+- [ ] Pre-commit hook in banxe-emi-stack: block direct credentials in env files
+
+**References**
+- ADR-015 (Auth Ports — Keycloak): `banxe-emi-stack/docs/adr/ADR-015-auth-ports.md`
+- ADR-016 (AI plane / PII routing): [decisions/ADR-016-ai-plane-pii-aml-routing.md](../decisions/ADR-016-ai-plane-pii-aml-routing.md)
+- IAM cutover plan v0.1 (paper): `banxe-emi-stack/docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1`
 
 ---
 
