@@ -2515,3 +2515,14 @@
 - **Статус:** ✅ DONE (skeleton committed + pushed to ~/MetaClaw, smoke load_all() returned 8 keys).
 - **Anchors:** ADR-019 §6.3, ADR-020 §"Memory pull contract".
 - **Successor:** A.3.2 (FastAPI endpoint + ClickHouse schema), A.3.3 (real rule engines).
+
+---
+
+### INS-2026-05-03-A3.2-RUNTIME
+
+- **Источник:** operator (Mark), 2026-05-03 ~19:30 CEST
+- **Инструкция:** Guardian runtime slice — POST /audit + GET /health, FastAPI app, ClickHouse sync sink, DDL, tests. Minimal vertical slice, no auth/queue/abstraction.
+- **Шаги:** api/{__init__,models,main}.py, storage/{__init__,clickhouse}.py, sql/guardian_audit_events.sql DDL, tests/{test_api_models,test_audit_endpoint}.py, auditor.audit() deterministic entry point, pyproject test extras.
+- **Статус:** ✅ DONE — pytest 10/10 PASS in 0.22s; commit dbaadbf pushed to MetaClaw main.
+- **Anchors:** ADR-019 §6.3 (core engine outputs), ADR-019 §6.5 (audit log immutable + TTL 5y), ADR-020 (memory pull contract — verified by test_audit_returns_loaded_domains: 8 domains).
+- **Successor:** A.3.3 (real rule engines: replace 16 stubs with LLM-backbone calls — qwen3.5:35b for factory, llama3.3:70b for project; backbone via litellm:4000), A.4 (systemd units), A.5 (GitHub webhook).
