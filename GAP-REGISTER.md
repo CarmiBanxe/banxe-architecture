@@ -152,7 +152,7 @@
 - [ ] G-IAM-03: Service-to-service tokens provisioned for banxe-compliance-api, banxe-dashboard, deep-search, drive_watcher — NOT_STARTED (ADR-017 §2)
 - [ ] G-IAM-04: Realm mappers (service_id, environment, compliance_scope) + audit log retention ≥ 12 months — NOT_STARTED (ADR-017 §4; FCA CASS 15)
 - [ ] G-IAM-05: Rotation policy for client_secrets (90 days / on-incident) — NOT_STARTED (ADR-017 §5)
-- [ ] G-IAM-06: pre-commit hook + Gitleaks rule blocking direct credentials in EMI repos — NOT_STARTED (I-34 enforcement)
+- [x] G-IAM-06: pre-commit hook + Semgrep rule blocking direct credentials in EMI repos — **DONE 2026-05-03** (I-34 enforcement; banxe-emi-stack PR #41 `feat/iam-creds-guard` → squash `<D_MERGE_HASH>`; artefacts: `.semgrep/banxe-rules/iam-no-direct-creds.yml` + pre-commit hook `iam-no-direct-creds` + `docs/CONTRIBUTING.md §IAM Credentials Guard`)
 - [ ] G-IAM-07: Backout procedure verified — Legion local IAM `--user` units re-enable per `banxe-emi-stack/docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1` — NOT_STARTED
 - [ ] G-IAM-08: Decommission Legion local IAM after PASS + 7 days hold — BLOCKED_BY G-IAM-01..07 (ADR-017 §6 / Rollout T+11)
 
