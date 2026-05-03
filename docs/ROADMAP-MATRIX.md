@@ -1,8 +1,8 @@
 # Banxe EMI — Delivery Roadmap Matrix
 
-**Last Updated:** 2026-04-06
+**Last Updated:** 2026-05-03
 **Scope:** UK FCA-authorised EMI (Electronic Money Institution)
-**Format:** Block → Sub-block → Status tracking
+**Format:** Block → Sub-block → Status tracking; Phase 3 cluster snapshot per repo
 
 > Priority scale: P0 = regulatory blocker (hard deadline), P1 = core banking must-have, P2 = operational, P3 = backlog
 
@@ -81,3 +81,40 @@ J — Safeguarding Engine (CASS 15)
 - **D-gl**: Midaz (LerianStudio) selected as primary GL in Sprint 8. LedgerPort adapter in design phase.
 - **I-infra**: GMKtec EVO-X2 (128GB RAM, Ryzen AI MAX+ 395) operational. n8n, ClickHouse, OpenClaw, PII Proxy all running.
 - **J-engine**: Zero implementation. This is the single largest regulatory risk. Sprint 9 must begin this block immediately.
+
+---
+
+## Phase 3 Cluster Snapshot — per repo (2026-05-03)
+
+Captures the state achieved on 2026-05-03 across the MetaClaw P3 sprints and the
+banxe-infra ai-routing rollout. Cross-references ADR-031..ADR-034.
+
+| Repo | Sprint owner (P3.x) | Live AI route | ufw posture | FCA CASS 15 dependency | Last commit |
+|------|---------------------|---------------|-------------|------------------------|-------------|
+| MetaClaw | P3.7 (verify pass — Grafana DS + 4 Prom targets) | `ai`, `ai-heavy` (Aider/Continue per ADR-034) | n/a (orchestrator-only repo) | indirect — drives observability for safeguarding stack | `598d15f` 2026-05-03 |
+| banxe-infra | P3.2 (ai-routing finalize — `policy.yaml`) | binding artifact for `ai`, `ai-heavy`, `reasoning`, `glm-air`, `glm-4.5-air-distributed` | declares evo1/evo2/legion posture per ADR-033 | indirect — perimeter for safeguarding hosts | `2681a9a` 2026-04-12 |
+| banxe-payment-core | P3.x (payment rails — Hyperswitch/Modulr) | none (no LLM call in path) | hosted on safeguarding-adjacent box; ADR-033 applies | direct — payment events feed daily recon | `7166476` 2026-04-13 |
+| banxe-ui | P3.x (UI sync) | `ai` (dev-time codegen via Aider) | n/a | indirect — operator surface for safeguarding alerts | `cb7250a` 2026-04-12 |
+| banxe-emi-stack | P3.7 (AI-PLUMBING + dbt/Blnk/Frankfurter live) | `reasoning` (planning), `ai` (codegen) | n/a (workloads on evo cluster — ADR-033) | direct — pgAudit, Blnk recon, FIN060 | `fe26fcb` 2026-05-03 |
+| banxe-architecture | this PR (Phase 3 sync — 4 ADRs + matrix) | none (docs repo); meta-plane via Claude Code per ADR-031 | n/a | meta — defines the safeguarding architecture | `49b6bad` 2026-05-03 |
+| banxe-platform | P3.x (UI Skills) | `ai` (dev-time) | n/a | indirect — platform shell for FCA-facing apps | `4f0ce18` 2026-04-15 |
+| banxe-business-processes | P3.x (BPMN domain mapping) | none | n/a | direct — encodes CASS 15 daily-recon process | `e40af10` 2026-04-14 |
+| MiroFish | P3.x (research agent) | `ai-heavy` (research/synthesis) | n/a | indirect — feeds compliance research, no client funds | `178a68a` 2026-04-12 |
+| banxe-training-data | P3.x (training corpus) | none (datasets only) | n/a | indirect — training data; no live recon path | `12a13da` 2026-04-14 |
+| guiyon | P3.x (legal project, separate plane) | none — must not share `ai`/`ai-heavy`/`reasoning` context with Banxe (I-18, I-20) | n/a | none — out-of-scope for CASS 15 | `34f15a2` 2026-04-15 |
+| banxe-lexisnexis-distro | P3.x (legal distro packaging) | none | n/a | none — vendor distribution, not client-fund path | `4226525` 2026-04-12 |
+
+### How to read this table
+
+- **Live AI route** uses the alias names from ADR-034 (`ai`, `ai-heavy`, `reasoning`)
+  and ADR-032 (`glm-air`, `glm-4.5-air-distributed`). `none` = the repo does not call
+  any LLM in its runtime or build path.
+- **ufw posture** values resolve to ADR-033. `n/a` means the repo itself is not a
+  network-exposed surface (it is code, docs, or data); the runtime that hosts it still
+  inherits the ADR-033 posture for whichever evo node it runs on.
+- **FCA CASS 15 dependency** marks whether the repo participates in the safeguarding
+  daily-reconciliation chain. `direct` = appears in the recon path or in FIN060;
+  `indirect` = supports the recon path operationally; `meta` = defines the architecture;
+  `none` = out-of-scope.
+- **Last commit** is the short SHA + date of `git log -1` on each sister repo as of
+  2026-05-03 (read-only inspection; no modifications were made to other repos).
