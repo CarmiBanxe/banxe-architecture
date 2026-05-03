@@ -2504,3 +2504,14 @@
 - **Deviation:** push-target deviation from spec (`origin/main` → `origin/gaps/iam-progress-2026-05-03`); operator-approved
 - **Anchors:** ADR-019, ADR-020 (both ACCEPTED canonical)
 - **Successor:** Phase A.3 (Guardian impl) — depends on ADR-019 §6.3 spec
+
+---
+
+### INS-2026-05-03-A3.1-SKELETON
+
+- **Источник:** operator (Mark), 2026-05-03 ~19:15 CEST
+- **Инструкция:** create Guardian core skeleton (~/MetaClaw/guardian/) per ADR-019 §6.3 + ADR-020 §"Memory pull contract"; only skeleton (memory_loader + rules stubs + auditor stub) — без FastAPI/ClickHouse/systemd.
+- **Шаги:** mkdir layout, README, pyproject, memory_loader.py, rules/{factory,project}_rules.py stubs, core/auditor.py stub, test_memory_loader.py, smoke run.
+- **Статус:** ✅ DONE (skeleton committed + pushed to ~/MetaClaw, smoke load_all() returned 8 keys).
+- **Anchors:** ADR-019 §6.3, ADR-020 §"Memory pull contract".
+- **Successor:** A.3.2 (FastAPI endpoint + ClickHouse schema), A.3.3 (real rule engines).
