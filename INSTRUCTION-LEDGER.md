@@ -2594,3 +2594,21 @@
 - **Статус:** ✅ DONE — r7 v2 deployed, smoke confirmed end-to-end.
 - **Anchors:** ADR-019 §6.1 F7 (factory-baseline-locked), ADR-022 (bootstrap exception, formalised in code).
 - **Successor:** A.7 — раскат guardian.yml на 13 оставшихся репо CarmiBanxe (P4-Guardian-Rollout per banxe-cluster-phase4.md).
+
+---
+
+### INS-2026-05-04-A7-GUARDIAN-ROLLOUT
+
+- **Источник:** operator (Mark), 2026-05-04 ~01:00 CEST.
+- **Инструкция:** Phase A.7 — раскат guardian.yml на 13 оставшихся CarmiBanxe репо с factory/ai-onboarding PR; per-repo secrets (TS_AUTHKEY + 2 URLs); branch protection rules.
+- **Шаги:**
+  1. Target list (13 репо): banxe-architecture, banxe-business-processes, banxe-emi-stack, banxe-lexisnexis-distro, banxe-mirofish, banxe-platform, banxe-training-data, braslina, crypto-ops-monitor, developer-core, guiyon, obsidian-vault, vibe-coding.
+  2. Cherry-pick guardian.yml × 13: ВСЕ 13 PUSH success (commit message "feat(guardian-A.7): add guardian.yml workflow (Refs: ADR-022)").
+  3. Generated ~/factory/set-guardian-secrets.sh; v1 BUG (`gh secret set --body -` писал literal "-"), v2 stdin тоже не сработал, v3 `--body "$value"` LITERAL ARG (рабочий).
+  4. Tailscale auth key первый раз invalid → operator refreshed key in Tailscale admin console → re-set 39 secrets via v3 script.
+  5. Spot-check 3 репо (banxe-architecture, banxe-business-processes, banxe-emi-stack): Tailscale connect ✓, MagicDNS ✓ (banxe-NucBox-EVO-X2), POST /audit ✓, ClickHouse write ✓, Enforce step честно блокирует когда verdict=fail. Verdict pattern: `factory: 5 PASS / 2 WARN / 1 BLOCK` (ожидаемо — PR bodies не содержат canon+ADR-022 ref; PR-level metadata fix отдельная задача).
+  6. Branch protection: 12/13 PROTECTED (guiyon: 403 Upgrade-to-Pro — private repo на Free plan, deferred).
+- **Статус:** ✅ DONE on enforcing scope (12 of 13 + MetaClaw pilot = 13 of 14 repos enforcing). guiyon — DEFERRED to operator (upgrade plan or make public).
+- **Carryover:** PR-level metadata fix для 13 PR (canon markers + Refs: ADR-022 в body) — операционная работа, не блокирует A.7. После metadata fix factory verdict станет pass для каждого PR.
+- **Anchors:** ADR-019 (Guardian two-family), ADR-020 (Memory governance), ADR-022 (bootstrap exception, deployed in r7 v2 commit b71b166).
+- **Successor:** Phase A полностью closed после guiyon resolution + 13 PR metadata updates. Phase 4 P4-Guardian-Rollout sprint в banxe-cluster-phase4.md формально DONE.
