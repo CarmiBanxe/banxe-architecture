@@ -2537,3 +2537,32 @@
 - **Статус:** ✅ DONE — pytest 74/74 PASS in 0.25s; commit 763b307 pushed to MetaClaw main; live smoke confirmed real verdicts (factory 8/8 PASS on canonical prompt; project: P5 BLOCK + P6 WARN on float+payment-no-AML diff → fail aggregate).
 - **Anchors:** ADR-019 §6.1 (8 factory rules), ADR-019 §6.2 (8 project rules), ADR-020 (memory pull contract — exercised by every audit call).
 - **Successor:** A.4 (systemd units `banxe-guardian-{factory,project}.service` on evo1), A.5 (GitHub webhook + status checks). Optional A.3.4 (LLM enrichment overlay via qwen3.5:35b/llama3.3:70b on top of deterministic verdicts).
+
+---
+
+### INS-2026-05-03-A4-RUNTIME-UP
+
+- **Источник:** operator (Mark), 2026-05-03 ~22:30 CEST.
+- **Инструкция:** A.4 runtime bring-up Guardian на evo1: ClickHouse DDL apply + rsync code + editable install в compliance-env + 2 systemd units (factory:8195 + project:8196) + ufw allows + smoke /health.
+- **Шаги (atomic, по канону "one command at a time"):**
+  1. A.4.1 ClickHouse status check (active, ports 9000/8123/9004/9005).
+  2. A.4.2 DDL apply via ssh + clickhouse-client --multiquery.
+  3. A.4.3 verify DESCRIBE TABLE — 15 columns.
+  4. A.4.4 verify engine MergeTree, partition toYYYYMM, sorting key.
+  5. A.4.5 rsync ~/MetaClaw/guardian/ → evo1:/data/banxe/guardian/ (28 files).
+  6. A.4.6 pip install -e .[test] в compliance-env (editable).
+  7. A.4.7 pytest на evo1 — 74/74 PASS in 0.56s.
+  8. A.4.8 create /etc/systemd/system/banxe-guardian-factory.service (port 8195).
+  9. A.4.9 daemon-reload + status check (loaded/disabled/inactive).
+  10. A.4.10 enable --now → active.
+  11. A.4.11–A.4.13 diagnose ufw block (local 127.0.0.1 OK, LAN blocked).
+  12. A.4.14 ufw allow 8195 LAN+Tailscale+WSL.
+  13. A.4.15 LAN smoke /health → HTTP 200.
+  14. A.4.16 create /etc/systemd/system/banxe-guardian-project.service (port 8196).
+  15. A.4.17 daemon-reload + enable --now → active.
+  16. A.4.18 local /health 8196 → HTTP 200.
+  17. A.4.19 ufw allow 8196 LAN+Tailscale+WSL.
+  18. A.4.20 LAN smoke /health 8196 → HTTP 200.
+- **Статус:** ✅ DONE — оба Guardian unit'а active, /health отвечает с Legion на 8195 и 8196.
+- **Anchors:** ADR-019 §6.1 (factory unit), ADR-019 §6.2 (project unit), ADR-019 §6.5 (audit log ClickHouse table).
+- **Successor:** A.5 — CI integration (guardian.yml в banxe-repo-template, GitHub status checks, audit-write smoke с реальной POST /audit записью в ClickHouse).
