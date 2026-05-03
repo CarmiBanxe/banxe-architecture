@@ -2612,3 +2612,19 @@
 - **Carryover:** PR-level metadata fix для 13 PR (canon markers + Refs: ADR-022 в body) — операционная работа, не блокирует A.7. После metadata fix factory verdict станет pass для каждого PR.
 - **Anchors:** ADR-019 (Guardian two-family), ADR-020 (Memory governance), ADR-022 (bootstrap exception, deployed in r7 v2 commit b71b166).
 - **Successor:** Phase A полностью closed после guiyon resolution + 13 PR metadata updates. Phase 4 P4-Guardian-Rollout sprint в banxe-cluster-phase4.md формально DONE.
+
+---
+
+### INS-2026-05-04-PHASE-B
+
+- **Источник:** operator (Mark), 2026-05-04 ~01:30 CEST.
+- **Инструкция:** Phase B — создать ADR-018 (5-layer hybrid AI compute, canonical target, locked); дедупнуть §8 в HW-MODEL-UPGRADE-matrix.md (две идентичных секции от двойного push); дедупнуть §5 в INDEX.md (две идентичных секции); verify через Guardian dry_run; commit + push.
+- **Шаги (atomic, одна команда → результат → next):**
+  1. ADR-018 уже существует (68 lines, ACCEPTED canonical, создан operator 2026-05-03T18:34:15) — step 3 N/A, файл готов; продолжил с dedup части per CANON #4 BEST-ANSWER.
+  2. HW-MODEL-UPGRADE-matrix.md §8: 2 occurrences → truncate to line 117 → 1 occurrence (file 142 → 117 lines, -25).
+  3. INDEX.md §5: 2 occurrences → truncate to line 60 → 1 occurrence (file 63 → 60 lines, -3).
+  4. Guardian dry_run verify (factory:8195): result=pass, summary="factory: 8 PASS / 0 WARN / 0 BLOCK", storage_attempted=false.
+  5. MetaClaw commit d6f7e8c — `feat(phase-B): dedup §8 HW matrix + §5 INDEX (single canonical target section per file)`. Push success.
+- **Статус:** ✅ DONE — Phase B closed (ADR-018 canonical, дубли удалены, Guardian верифицировал).
+- **Anchors:** ADR-018 (canonical 5-layer target), ADR-019 (Guardian two-family — verifier), ADR-020 (memory governance — Guardian загрузил все 8 domains для аудита).
+- **Successor:** Phase 4 P4-Guardian-Rollout closing (guiyon Pro decision + 13 PR metadata refresh — операционная работа).
