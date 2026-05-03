@@ -2488,3 +2488,19 @@
   - gh release: NOT EXECUTED
 - successor: Sprint 42
 - notes: Sprint 41 Phase 56 delivers FOS 8-week case prep (replacing BT-010 NotImplementedError), HMRC FATCA/CRS annual report with jurisdiction filtering, client statements in PDF/CSV/JSON with I-01 Decimal throughout, and 8-state customer lifecycle FSM with I-02 jurisdiction guard on onboarding. 14 REST endpoints, 8 MCP tools, 2 agent passports. Tests: 8345 → 8495 (+150).
+
+---
+
+### INS-2026-05-03-A2-COMMIT-PATH
+
+- **Источник:** operator (Mark), 2026-05-03T19:08:02+02:00
+- **Инструкция:** commit ADR-019 (Guardian two-family) + ADR-020 (Memory governance) on branch `gaps/iam-progress-2026-05-03` instead of `main`, due to uncommitted operator WIP in GAP-REGISTER.md on the active branch.
+- **Шаги:**
+  1. `git add decisions/ADR-019-ai-guardian-two-family.md decisions/ADR-020-memory-governance.md`
+  2. `git commit -m "feat(guardian-A.2): ADR-019 Guardian two-family + ADR-020 Memory governance (canonical, locked)"` (BANXE Factory identity)
+  3. `git push origin gaps/iam-progress-2026-05-03`
+- **Статус:** ✅ DONE (committed and pushed; merge into main via natural branch merge when PR for `gaps/iam-progress-2026-05-03` is approved)
+- **Proof:** see commit hash in final report
+- **Deviation:** push-target deviation from spec (`origin/main` → `origin/gaps/iam-progress-2026-05-03`); operator-approved
+- **Anchors:** ADR-019, ADR-020 (both ACCEPTED canonical)
+- **Successor:** Phase A.3 (Guardian impl) — depends on ADR-019 §6.3 spec
