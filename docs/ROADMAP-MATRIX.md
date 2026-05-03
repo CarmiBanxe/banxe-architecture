@@ -120,6 +120,22 @@ J — Safeguarding Engine (CASS 15)
 
 > **`reasoning` alias status:** `reasoning` (qwen3:235b-a22b) is **planning only**; not in production compliance flow until **P3.2 PASS** is recorded in §AI Plane — Alias status below (per ADR-016 / ADR-034).
 
+## AI Plane — Alias status
+
+Source of truth: `banxe-infra/ai-routing/policy.yaml`. ADR authority: ADR-034 (routes), ADR-016 (PII/AML routing), ADR-031 (execution policy).
+
+| Alias | Backing model | Status | Production compliance allowed? | Notes |
+|-------|--------------|--------|-------------------------------|-------|
+| `ai` | qwen3.5:35b | **ACCEPTED** | Yes | Default Aider/Continue + compliance Q&A route |
+| `ai-heavy` | llama3.3:70b | **ACCEPTED** | Yes | Heavy codegen + AML screening |
+| `glm-air` / `glm-4.5-air-distributed` | GLM-4.5-Air-Q4_K_M (110.5B) | **ACCEPTED** | Yes | Distributed inference evo1↔evo2 (ADR-032); 32.52/21.47 tok/s benchmark |
+| `reasoning` | qwen3:235b-a22b | **PENDING_PASS** | **NO — planning only** | Not in production compliance flow until P3.2 PASS recorded here |
+| `banxe-general` | (router-defined) | **ACCEPTED** | Yes (non-PII) | General staff assistant |
+| `fast` | (router-defined) | **ACCEPTED** | Yes (non-PII) | Routing, classification, <200ms |
+| `coding` | (router-defined) | **ACCEPTED** | Yes | Code generation, PR review |
+
+**P3.2 PASS criteria for `reasoning`:** operator records `P3.2 PASS` in this table (row `reasoning` → ACCEPTED) after benchmark verification and CTIO sign-off. Until then, any service calling `reasoning` for AML screening, KYC, SAR filing, or FIN060 generation is in violation of ADR-034 §Notes and I-33.
+
 ## Phase 3 Cluster Snapshot — per repo (2026-05-03)
 
 Captures the state achieved on 2026-05-03 across the MetaClaw P3 sprints and the
