@@ -2583,3 +2583,14 @@
 - **Статус:** ✅ DONE — Phase A closed_on_pilot_scope (1 of 14 repos enforcing). Phase A overall outcome: PILOT_VALIDATED.
 - **Anchors:** ADR-019 (Guardian two-family), ADR-020 (Memory governance), ADR-022 (Guardian bootstrap baseline exception), ADR-019 §6.4 (Override mechanism — not used; ADR-022 is canonical resolution).
 - **Successor:** Phase 4 sprint P4-Guardian-Rollout (deferred 2026-05-04). Trigger: low-PR-flow window, ~45-60 минут operator time.
+
+---
+
+### INS-2026-05-04-A6-RULE-V2
+
+- **Источник:** operator (Mark), 2026-05-04 ~00:30 CEST.
+- **Инструкция:** r7 rule engine v2 — добавить ADR-022 bootstrap exception logic, чтобы Guardian распознавал ADR-022 ref + Guardian-only diff как валидное исключение F7 (без universal ADR-XXX bypass для произвольных diffs).
+- **Шаги:** add ADR_022_REF_RE + GUARDIAN_ONLY_PATHS + DIFF_PATH_RE constants; rewrite r7 (4-branch: bootstrap PASS / general ADR PASS / ADR-022+non-Guardian BLOCK / no-ADR BLOCK); add 4 tests; pytest 78/78 PASS; commit b71b166 в MetaClaw/main; rsync на evo1:/data/banxe/guardian/; operator restart обоих systemd units; health 200/200; smoke confirmed result=pass на Guardian-only diff с Refs: ADR-022.
+- **Статус:** ✅ DONE — r7 v2 deployed, smoke confirmed end-to-end.
+- **Anchors:** ADR-019 §6.1 F7 (factory-baseline-locked), ADR-022 (bootstrap exception, formalised in code).
+- **Successor:** A.7 — раскат guardian.yml на 13 оставшихся репо CarmiBanxe (P4-Guardian-Rollout per banxe-cluster-phase4.md).
