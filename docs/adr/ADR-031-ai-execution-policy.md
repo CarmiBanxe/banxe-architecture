@@ -5,11 +5,11 @@ status: ACCEPTED
 date: 2026-05-03
 supersedes: []
 related:
-  - ADR-013 (Midaz CBS Primary)
-  - ADR-014 (Composable Financial Stack)
-  - ADR-032 (GLM-4.5-Air Distributed Inference)
-  - ADR-033 (ufw Perimeter Posture)
-  - ADR-034 (Aider/Continue Routes)
+  - "../../decisions/ADR-013-midaz-cbs-primary.md (Midaz CBS Primary)"
+  - "../../decisions/ADR-014-composable-financial-stack.md (Composable Financial Stack)"
+  - "ADR-032-glm45-air-distributed.md (GLM-4.5-Air Distributed Inference)"
+  - "ADR-033-ufw-perimeter.md (ufw Perimeter Posture)"
+  - "ADR-034-aider-routes.md (Aider/Continue Routes)"
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
@@ -116,4 +116,6 @@ Negative:
 ## Invariants reinforced
 
 I-18 (no Banxe/GUIYON data crossing), I-20 (replaceable inference targets),
-I-27 (HITL gate for outbound action), I-28 (no implementation without IL entry).
+I-27 (HITL gate for outbound action), I-28 (no implementation without IL entry),
+I-32 (no direct cloud LLM calls from EMI services) — `INVARIANTS.md`,
+I-33 (PII/AML deny-paths route only via local aliases) — `INVARIANTS.md`.

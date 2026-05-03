@@ -5,9 +5,9 @@ status: ACCEPTED
 date: 2026-05-03
 supersedes: []
 related:
-  - ADR-031 (AI Execution Policy)
-  - ADR-032 (GLM-4.5-Air Distributed Inference)
-  - ADR-034 (Aider/Continue Routes)
+  - "ADR-031-ai-execution-policy.md (AI Execution Policy)"
+  - "ADR-032-glm45-air-distributed.md (GLM-4.5-Air Distributed Inference)"
+  - "ADR-034-aider-routes.md (Aider/Continue Routes)"
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
