@@ -2566,3 +2566,20 @@
 - **Статус:** ✅ DONE — оба Guardian unit'а active, /health отвечает с Legion на 8195 и 8196.
 - **Anchors:** ADR-019 §6.1 (factory unit), ADR-019 §6.2 (project unit), ADR-019 §6.5 (audit log ClickHouse table).
 - **Successor:** A.5 — CI integration (guardian.yml в banxe-repo-template, GitHub status checks, audit-write smoke с реальной POST /audit записью в ClickHouse).
+
+---
+
+### INS-2026-05-03-A5-CI-INTEGRATION-FINAL
+
+- **Источник:** operator (Mark), 2026-05-04 ~00:00 CEST.
+- **Инструкция:** Phase A close — pilot validation Guardian CI на MetaClaw#2 + carryover rollout 13 оставшихся репо в Phase 4 backlog.
+- **Шаги (atomic, по канону "one command at a time"):**
+  1. ADR-022 created (commit 6087574, banxe-architecture/main) — Guardian bootstrap baseline exception (one-time amendment to ADR-019 §6.1 F7).
+  2. PR#2 metadata updated via REST PATCH — title `[guardian-A.5][canon] ...` + body Guardian compliance section (canon, instruction_id, Refs: ADR-022, Sprint, Audit anchor).
+  3. Empty re-trigger commit 3022d7a pushed на factory/ai-onboarding.
+  4. Guardian run 25292381072 — completed/success: guardian-factory pass (8/8) + guardian-project pass (8/8). End-to-end chain validated.
+  5. Phase 4 backlog entry P4-Guardian-Rollout создан для оставшихся 13 репо.
+  6. Branch protection rule на MetaClaw main (Guardian status checks required).
+- **Статус:** ✅ DONE — Phase A closed_on_pilot_scope (1 of 14 repos enforcing). Phase A overall outcome: PILOT_VALIDATED.
+- **Anchors:** ADR-019 (Guardian two-family), ADR-020 (Memory governance), ADR-022 (Guardian bootstrap baseline exception), ADR-019 §6.4 (Override mechanism — not used; ADR-022 is canonical resolution).
+- **Successor:** Phase 4 sprint P4-Guardian-Rollout (deferred 2026-05-04). Trigger: low-PR-flow window, ~45-60 минут operator time.
