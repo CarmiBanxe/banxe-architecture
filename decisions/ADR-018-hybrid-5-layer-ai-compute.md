@@ -1,7 +1,7 @@
 # ADR-018: Hybrid 5-layer AI Compute Architecture (canonical target)
 
 **Status:** ACCEPTED (canon, locked)
-**Date:** 2026-05-03T18:29:18+02:00
+**Date:** 2026-05-03T18:34:15+02:00
 **Author:** Moriel Carmi
 **Supersedes:** none
 **Related:** ADR-016 (AI plane PII/AML routing), ADR-021 (banxe-emi-stack mirror), HW-MODEL-UPGRADE-matrix.md
