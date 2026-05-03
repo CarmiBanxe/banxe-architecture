@@ -137,6 +137,14 @@
 - [ ] Block J: Safeguarding accounts — IN_PROGRESS (org + ledger + GBP asset + 2 accounts created; reconciliation engine pending Sprint 9, deadline 7 May 2026)
 - [ ] D-recon: Reconciliation engine — NOT_STARTED (Sprint 9)
 
+### ADR-016 rollout — Phase 3 EMI sync, 2026-05-03
+
+- [x] G-AI-01: No unified AI entrypoint for EMI services — DONE (ADR-016 + I-32; LiteLLM v2 router http://legion:4000/v1 как единая точка входа)
+- [x] G-AI-02: Backing-model coupling in service code — DONE (ADR-016 alias contract: ai, ai-heavy, glm-air, reasoning, banxe-general, fast, coding)
+- [x] G-PII-01: Risk of PII leak to cloud LLM — DONE (I-33 + banxe-infra/ai-routing/policy.yaml deny-paths)
+- [x] G-PII-02: No enforcement on PII deny-paths — DONE (pre-commit hook + review checklist + LiteLLM runtime guard)
+- [x] G-MIG-01: Legion → evo1 migration without rollback contract — DONE (ADR-016 §5: dual-stack until verified PASS; Legion --user units сохраняются)
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
