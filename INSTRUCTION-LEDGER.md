@@ -2526,3 +2526,14 @@
 - **Статус:** ✅ DONE — pytest 10/10 PASS in 0.22s; commit dbaadbf pushed to MetaClaw main.
 - **Anchors:** ADR-019 §6.3 (core engine outputs), ADR-019 §6.5 (audit log immutable + TTL 5y), ADR-020 (memory pull contract — verified by test_audit_returns_loaded_domains: 8 domains).
 - **Successor:** A.3.3 (real rule engines: replace 16 stubs with LLM-backbone calls — qwen3.5:35b for factory, llama3.3:70b for project; backbone via litellm:4000), A.4 (systemd units), A.5 (GitHub webhook).
+
+---
+
+### INS-2026-05-03-A3.3-RULES
+
+- **Источник:** operator (Mark), 2026-05-03 ~21:30 CEST
+- **Инструкция:** implement deterministic logic for 16 rules (8 factory + 8 project) per ADR-019 §6.1/§6.2; no LLM in this sprint, LLM enrichment deferred to optional A.3.4.
+- **Шаги:** extend RuleResult with reasons/evidence/confidence + add AuditContext; rewrite factory_rules.py (8 real methods); rewrite project_rules.py (8 real methods); thread AuditContext through core/auditor.py; pass req.context from api/main.py; tests/test_{factory,project}_rules.py (64 cases); ruff format; smoke factory + project audits.
+- **Статус:** ✅ DONE — pytest 74/74 PASS in 0.25s; commit 763b307 pushed to MetaClaw main; live smoke confirmed real verdicts (factory 8/8 PASS on canonical prompt; project: P5 BLOCK + P6 WARN on float+payment-no-AML diff → fail aggregate).
+- **Anchors:** ADR-019 §6.1 (8 factory rules), ADR-019 §6.2 (8 project rules), ADR-020 (memory pull contract — exercised by every audit call).
+- **Successor:** A.4 (systemd units `banxe-guardian-{factory,project}.service` on evo1), A.5 (GitHub webhook + status checks). Optional A.3.4 (LLM enrichment overlay via qwen3.5:35b/llama3.3:70b on top of deterministic verdicts).
