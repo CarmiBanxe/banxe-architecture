@@ -5,9 +5,9 @@ status: ACCEPTED
 date: 2026-05-03
 supersedes: []
 related:
-  - ADR-031 (AI Execution Policy)
-  - ADR-033 (ufw Perimeter Posture)
-  - ADR-034 (Aider/Continue Routes)
+  - "ADR-031-ai-execution-policy.md (AI Execution Policy)"
+  - "ADR-033-ufw-perimeter.md (ufw Perimeter Posture)"
+  - "ADR-034-aider-routes.md (Aider/Continue Routes)"
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
@@ -72,13 +72,10 @@ its own environment file on legion. Rotation is manual and logged in the IL.
 
 ### Benchmark snapshot (2026-05-03)
 
-- Prompt evaluation: **32.52 tok/s**
-- Generation: **21.47 tok/s**
-- Workload: 50-token benchmark prompt, default sampling, RPC over USB4
-- Run via: LiteLLM v2 (`legion:4000`) → llama.cpp `glm-master` (evo1) ↔ RPC (evo2)
+Snapshot: `benchmarks/glm-master-2026-05-03.md`
 
-This snapshot is the baseline for regression detection. A drop below ~17 tok/s
-generation on the same workload triggers an investigation IL.
+GLM-Air distributed throughput MUST NOT regress below **~17 tok/s** end-to-end; lower values
+trigger rollback to single-host inference per §Failover order above.
 
 ## Consequences
 

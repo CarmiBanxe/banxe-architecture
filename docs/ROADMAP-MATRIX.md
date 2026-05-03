@@ -116,6 +116,10 @@ J — Safeguarding Engine (CASS 15)
 
 ---
 
+> **Note on P3.x vs priority scale:** Phase 3 delivery sprint numbers (P3.1, P3.2, …) are distinct from the P0–P3 priority scale used elsewhere in this matrix.
+
+> **`reasoning` alias status:** `reasoning` (qwen3:235b-a22b) is **planning only**; not in production compliance flow until **P3.2 PASS** is recorded in §AI Plane — Alias status below (per ADR-016 / ADR-034).
+
 ## Phase 3 Cluster Snapshot — per repo (2026-05-03)
 
 Captures the state achieved on 2026-05-03 across the MetaClaw P3 sprints and the
