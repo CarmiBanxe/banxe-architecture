@@ -197,3 +197,19 @@ Source of truth: `banxe-infra/ai-routing/policy.yaml`.
 Канон: `decisions/ADR-016-ai-plane-pii-aml-routing.md`.
 Enforcement: policy.yaml + pre-commit hook + review checklist + runtime guard в LiteLLM router.
 Severity: P0 — security incident (FCA CASS 15 + GDPR Art. 5 / Art. 32).
+
+---
+
+**I-34 — No Direct Credentials in EMI Service Configs (ACCEPTED)**
+EMI-сервисы (banxe-emi-stack, banxe-compliance-api, banxe-dashboard, deep-search, drive_watcher и все будущие EMI-сервисы) НЕ ВПРАВЕ хранить direct user/password или статические API-секреты в файлах окружения и конфигурации (`.env*`, `*.yaml`, `*.json`, `docker-compose*`).
+Любые credentials выдаются только через Keycloak realm `banxe-emi` (см. I-35) как короткоживущие OIDC-токены. Master-секреты (client_secret, операторские ключи) — operator-supplied env, никогда не коммитятся.
+Канон: `decisions/ADR-017-keycloak-iam-cutover.md`.
+Enforcement: pre-commit hook в каждом EMI-репо (запрет direct credentials в env/yaml/json), code review checklist, Gitleaks в CI.
+Severity: P0 — security incident (FCA CASS 15 + GDPR Art. 32).
+
+**I-35 — Keycloak Realm `banxe-emi` as Single IAM Issuer (ACCEPTED)**
+Все EMI-сервисы аутентифицируются и авторизуются ИСКЛЮЧИТЕЛЬНО через Keycloak realm `banxe-emi`, развёрнутый на evo1 (`http://evo1:8180/realms/banxe-emi/.well-known/openid-configuration`).
+Альтернативные IAM-источники (локальный Legion `--user` IAM, hardcoded JWT, статические API-ключи, сторонние OAuth-провайдеры) запрещены для production EMI-флоу. Legion local IAM сохраняется как rollback до подтверждённого PASS на evo1, после чего декомиссионируется (см. ADR-017 §6).
+Канон: `decisions/ADR-017-keycloak-iam-cutover.md`.
+Enforcement: code review checklist, Keycloak audit log (retention ≥ 12 месяцев), runtime guard в API gateway / service-mesh.
+Severity: P1 — architecture invariant breach. P0 если нарушение приводит к утечке клиентских данных (FCA CASS 15).
