@@ -2767,3 +2767,34 @@
 - **Status:** ✅ DONE on org docs cleanup; Q3_K_S finding документирован honestly.
 - **Anchors:** ADR-018 §"Required sprints" P4.3-Q235, MetaClaw commit 016dc26.
 - **Successor:** rest. Future window — possibly path (c) wait + monitor Ollama upstream releases, OR fresh f16 download (~470 GiB across USB4 — ~7 hours).
+
+---
+
+### IL-CANON-01 — Canon handoff 2026-05-04 (ADR-025 + G-CANON-01 design)
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet 2026-05-04 ~19:00 CEST.
+- **Дата:** 2026-05-04
+- **Инструкция:** Зафиксировать Agent Interaction Canon как ADR-025 + companion docs в `banxe-architecture`, открыть tracker G-CANON-01 на conversation-level canon guard.
+- **Шаги:**
+  1. Создать ветку `docs/canon-handoff-2026-05-04` от `main@6b5767e` → ✅
+  2. Добавить `decisions/ADR-025-agent-interaction-canon.md` (114 строк) → ✅
+  3. Добавить `docs/canon/AGENT-INTERACTION-CANON.md` (171 строка, 14 секций, living doc) → ✅
+  4. Добавить `docs/canon/violations-2026-05-04.md` (13 нарушений как test cases) → ✅
+  5. Добавить `docs/canon/conversation-guard-design.md` (G-CANON-01 design, MCP вариант A) → ✅
+  6. Зарегистрировать IL-CANON-01 + G-CANON-01 в этом ledger → ✅
+  7. Commit + push + PR в `main` → 🔄
+- **Статус:** 🔄 (commit + push + PR)
+- **Proof:** будет дополнен SHA коммита и URL PR после push.
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+#### G-CANON-01 — Conversation-Level Canon Guard
+
+- **Owner:** Architecture WG
+- **Target close:** 2026-05-31
+- **Design:** `docs/canon/conversation-guard-design.md`
+- **Linked ADR:** ADR-025
+- **Backstop:** Guardian-shim (bash-level, ~10% coverage) — `CarmiBanxe/banxe-emi-stack/infra/guardian-shim/`
+- **Test cases:** 13 violations из `docs/canon/violations-2026-05-04.md`
+- **Rollout:** audit (W1-2) → enforce known-bad (W4) → expand (post)
+- **Status:** DESIGN
