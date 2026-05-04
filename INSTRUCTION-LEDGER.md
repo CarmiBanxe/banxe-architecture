@@ -2723,3 +2723,25 @@
 - **Phase B (evo2 install + flip):** SKIPPED — no point installing ROCm 6.3 на evo2 если Phase A на evo1 не работает.
 - **Anchors:** ADR-018 §"Required sprints" item 4 (P4.2-ROCm "optional"), runbook docs/runbooks/p4.2-rocm-migration.md (commit e802745).
 - **Successor:** P4.3-Q235 RPC execution (proceeding next).
+
+---
+
+### INS-2026-05-04-P4.3-Q235-RPC-BLOCKED
+
+- **Источник:** operator (Mark) execution + Claude Code sequencing, 2026-05-04 ~13:55 CEST.
+- **Инструкция:** P4.3-Q235 RPC architecture — evo2 master:8082 + evo1 RPC worker:50053 для qwen3:235b-a22b Q4_K_M (133 GiB GGUF).
+- **Phase A (worker on evo1):** ✅ — `llama-rpc-worker-q235.service` active, LISTEN 10.0.0.1:50053, Vulkan0 GFX1151 detected.
+- **Phase B (master on evo2 with --rpc):** ❌ — `qwen3-235b-master.service` crash-loop NRestarts=5, OOM на evo2 iGPU 32 GiB при `--n-gpu-layers 999`. evo2 UMA split 32 iGPU / 96 CPU; даже если master отдаёт layers worker'у через RPC, master-side allocation для embeddings + KV cache + output projection всё равно превышает 32 GiB iGPU OR 96 GiB CPU при mmap touch.
+- **Status:** ❌ BLOCKED — qwen3:235b-a22b Q4_K_M (133 GiB) too large for current cluster config even with RPC split. Cleanup: orphan rpc-worker-q235 на evo1:50053 disabled+removed (no master to connect to).
+- **Three future paths documented:**
+  - **(a)** Retry с `--n-gpu-layers 0` (master pure CPU, all GPU work on RPC worker via Vulkan). Risk: same Vulkan UMA over-report trap (`available=152 GiB` virtual, kernel OOM at 32 GiB physical) — likely also fails.
+  - **(b)** Requantize qwen3:235b-a22b to Q3_K_S (~80 GiB) — fits both single-node CPU after UMA rebalance AND distributed RPC. Effort: ~4h GGUF conversion + re-test pipeline.
+  - **(c)** Wait Ollama MoE-aware loader — upstream issue tracked, может появиться в Ollama 0.24+ для proper MoE active-subset memory accounting (estimate Q4_K_M needs ~30 GiB resident vs 133 GiB total).
+- **Reasoning route:** ОСТАЁТСЯ на llama3.3:70b LB (no LiteLLM config change). 22 routes intact, evo1+evo2 ollama backends на Vulkan stable.
+- **Anchors:** ADR-018 §"Required sprints" item 2 (P4.3-Q235), runbook docs/runbooks/p4.3-q235-rpc-split.md (commit 64f6800).
+- **Sprint P4-SEQUENTIAL closure:**
+  - P4.2-ROCm: ❌ BLOCKED (HIP buffer alloc fail gfx1151)
+  - P4.3-Q235 RPC: ❌ BLOCKED (133 GiB too large for current cluster even split)
+  - HW matrix TOPS fix: ✅ DONE (commit 52f74a2)
+  - **Net outcome:** 1 of 3 sprints DONE; 2 BLOCKED with clear paths forward documented.
+- **Successor:** rest. Future window — try path (b) Q3_K_S requantize first (highest probability of success без upstream dependencies).
