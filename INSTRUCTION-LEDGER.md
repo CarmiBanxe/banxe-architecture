@@ -2702,3 +2702,24 @@
 - **Anchors:** ADR-018 §"Required sprints" items 2 (P4.3-Q235), 4 (P4.2-ROCm) + HW-MODEL-UPGRADE-matrix.md §1+§5+§8.
 - **Recommendation:** **P4.2-ROCm Phase A first** (evo1 only, env flip + restart, lowest-risk + fastest gain) — measure throughput delta. If positive → P4.2 Phase B (evo2 install + flip). После — P4.3-Q235 RPC execution. После — P4.4-NPU full sprint.
 - **Successor:** operator gate decision (P4.2 Phase A execution).
+
+---
+
+### INS-2026-05-04-P4.2-ROCM-BLOCKED
+
+- **Источник:** operator (Mark) execution + Claude Code diagnosis, 2026-05-04 ~13:30 CEST.
+- **Инструкция:** P4.2-ROCm Phase A — flip Ollama backend evo1 vulkan→rocm, benchmark vs baseline.
+- **Vulkan baseline (3 runs each):**
+  - llama3.3:70b: 4.50 / 4.50 / 4.49 tok/s (stable)
+  - qwen3.5:35b: 24.5 tok/s warm (cold run-1 omitted)
+- **ROCm execution:** operator OPERATOR_RUN sudo sed + restart. ollama detected `library=ROCm compute=gfx1151 total=216 GiB available=215.8 GiB`.
+- **Результат:** ❌ FAILED — `unable to allocate ROCm0 buffer` for ALL model sizes tested:
+  - llama3.3:70b (42 GB) — buffer alloc fail, runner panic, exit status 2
+  - qwen3.5:35b (23 GB) — request hang/timeout
+  - qwen3:4b (2.5 GB) — request hang/timeout
+  - Conclusion: HIP buffer allocation broken на gfx1151 + ollama 0.22.1 + ROCm 6.3.0 + UMA carveout 96 iGPU.
+- **Rollback:** operator OPERATOR_RUN — sed 's/=rocm/=vulkan/' + restart. Vulkan restored, `library=Vulkan gfx1151 total=216 GiB`. Smoke verify qwen3:4b: `done=true`, 6.7s cold load, http 200. Регрессий не выявлено.
+- **Status:** ❌ BLOCKED — defer to ROCm 7.0+ release (with proper gfx1151 UMA APU support) OR mainline kernel ≥6.13 with HSA driver fixes. Известная issue: Strix Halo + ROCm 6.3 HIP allocator не корректно учитывает UMA carveout, выдаёт 216 GiB (combined memory pool) но fails на любой allocate.
+- **Phase B (evo2 install + flip):** SKIPPED — no point installing ROCm 6.3 на evo2 если Phase A на evo1 не работает.
+- **Anchors:** ADR-018 §"Required sprints" item 4 (P4.2-ROCm "optional"), runbook docs/runbooks/p4.2-rocm-migration.md (commit e802745).
+- **Successor:** P4.3-Q235 RPC execution (proceeding next).
