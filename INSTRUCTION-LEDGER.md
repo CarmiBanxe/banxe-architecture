@@ -2628,3 +2628,12 @@
 - **Статус:** ✅ DONE — Phase B closed (ADR-018 canonical, дубли удалены, Guardian верифицировал).
 - **Anchors:** ADR-018 (canonical 5-layer target), ADR-019 (Guardian two-family — verifier), ADR-020 (memory governance — Guardian загрузил все 8 domains для аудита).
 - **Successor:** Phase 4 P4-Guardian-Rollout closing (guiyon Pro decision + 13 PR metadata refresh — операционная работа).
+
+---
+
+### INS-2026-05-04-CANON-9
+
+- **Источник:** operator (Mark), 2026-05-04 10:00 CEST.
+- **Инструкция (BINDING, PERMANENT):** В КАЖДОМ промте для Claude Code REPL ОБЯЗАТЕЛЬНО включать CANON_ABSOLUTE: ZERO QUESTIONS на безопасные ops; на ВСЕ неоднозначности Claude Code отвечает САМ из принципа лучшего решения; ASK operator ТОЛЬКО при реальном risk к production. Guardian проверяет это через F1-prompt-canon при каждом audit.
+- **Статус:** ACCEPTED permanent.
+- **Anchors:** ADR-019 F1, ADR-020 memory pull.
