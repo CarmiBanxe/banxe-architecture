@@ -213,3 +213,13 @@ Severity: P0 — security incident (FCA CASS 15 + GDPR Art. 32).
 Канон: `decisions/ADR-017-keycloak-iam-cutover.md`.
 Enforcement: code review checklist, Keycloak audit log (retention ≥ 12 месяцев), runtime guard в API gateway / service-mesh.
 Severity: P1 — architecture invariant breach. P0 если нарушение приводит к утечке клиентских данных (FCA CASS 15).
+
+**I-36 — Claude Code Bash Routes Through Guardian Shim (ACCEPTED)**
+Каждый вызов инструмента Bash в Claude Code ДОЛЖЕН проходить через `claude-bash-shim.sh` до исполнения.
+Шим перехватывает команду через нативный хук `PreToolUse` (Strategy-S1, `.claude/settings.json`), маскирует секреты (sed regex), отправляет POST `/audit` на Guardian `:8195` и применяет вердикт:
+`pass`/`warn`/`unknown` → proceed; `fail` + `GUARDIAN_MODE=enforce` → блокирует (exit 1).
+Guardian недоступен: fail-open в режиме `audit`, fail-closed в режиме `enforce`.
+Все вызовы логируются в `~/.claude/guardian-shim/audit.log` (JSON-lines).
+Канон: `decisions/ADR-024-guardian-bash-shim.md`.
+Enforcement: `.claude/settings.json` PreToolUse hook (banxe-emi-stack); ENFORCE rollout 2026-05-11 (compliance repos), 2026-05-18 (everywhere).
+Severity: P1 — security/governance gap if bypassed.

@@ -156,6 +156,21 @@
 - [ ] G-IAM-07: Backout procedure verified — Legion local IAM `--user` units re-enable per `banxe-emi-stack/docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1` — NOT_STARTED
 - [ ] G-IAM-08: Decommission Legion local IAM after PASS + 7 days hold — BLOCKED_BY G-IAM-01..07 (ADR-017 §6 / Rollout T+11)
 
+## Guardian Bash Shim — Gaps (ADR-024)
+
+- [ ] G-GUARD-01: Guardian rule coverage for scope `claude.bash` ≥ 90% — NOT_STARTED
+  Target: 2026-05-11. Current: 0% — scope unknown → all commands proceed unchecked.
+  ADR: `decisions/ADR-024-guardian-bash-shim.md`. Owner: evo1 team (Guardian rules registry).
+- [ ] G-GUARD-02: Switch banxe-emi-stack + vibe-coding to ENFORCE mode (`GUARDIAN_MODE=enforce`) — NOT_STARTED
+  Target: 2026-05-11. Depends on G-GUARD-01 (rule coverage). Guardian fail-closed enabled.
+  Action: `export GUARDIAN_MODE=enforce` in session + update `claude-bash-shim.env`.
+- [ ] G-GUARD-03: Guardian ClickHouse retention configured for 12 months (FCA-grade) — NOT_STARTED
+  Target: 2026-05-31. Audit trail canonical destination per G-GUARD-03 (I-08, FCA CASS 15).
+  Action: evo1 team to verify ClickHouse TTL for Guardian audit table.
+- [ ] G-GUARD-04: ENFORCE everywhere (all Claude Code sessions, all repos) — NOT_STARTED
+  Target: 2026-05-18. Depends on G-GUARD-01 + G-GUARD-02 verified clean.
+  Action: onboarding script to install shim + set enforce mode on all dev machines.
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
