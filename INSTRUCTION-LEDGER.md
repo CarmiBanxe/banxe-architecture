@@ -2652,3 +2652,16 @@
 - **LiteLLM `reasoning` route:** ОСТАЁТСЯ на llama3.3:70b (no config change в этом sprint per honest finding).
 - **Anchors:** ADR-018 (P4.3-evo2 + P4.3-Q235), runbook a971439.
 - **Successor:** P4.3-Q235 — llama.cpp RPC second master :8082 для qwen3:235b-a22b Q4_K_M GGUF (~3-4h sprint).
+
+---
+
+### INS-2026-05-04-P4.3-Q235-DEFER
+
+- **Источник:** operator (Mark), 2026-05-04 ~12:00 CEST.
+- **Инструкция:** Standalone CPU-only llama-server для qwen3:235b-a22b на evo2:8082 — fallback path после Ollama OOM.
+- **Результат:** ❌ FAILED — qwen3-235b-master.service crash-loop NRestarts=35, OOM at mmap 133 GiB > 96 GiB RAM (mmap не освобождает active MoE working set ниже физической памяти; +8 GiB swap headroom не закрывает 37 GiB разрыва).
+- **Ремедиация:** unit disabled (operator-side), GGUF blob preserved at /data/ollama-models/blobs/sha256-791d5d11998e006548d6b58c31756562ea61446ebc7d19686608402a797ecc82, background poller bic5n9h81 stopped.
+- **Pivot:** P4.3-Q235 теперь требует **RPC split** — master на evo2 + worker на evo1:50053 через USB4 (как glm-master но reversed direction). Это complex sprint (~3-4h), DEFERRED.
+- **Status:** ❌ DEFERRED — P4.3-Q235 RPC architecture is the only viable path для qwen3:235b на текущем cluster (96 GiB CPU per node ≠ 134 GiB single-node need).
+- **Anchors:** ADR-018 P4.3-Q235.
+- **Successor:** P4.4-NPU (next per ADR-018 §"Required sprints to reach 100%").
