@@ -2637,3 +2637,18 @@
 - **Инструкция (BINDING, PERMANENT):** В КАЖДОМ промте для Claude Code REPL ОБЯЗАТЕЛЬНО включать CANON_ABSOLUTE: ZERO QUESTIONS на безопасные ops; на ВСЕ неоднозначности Claude Code отвечает САМ из принципа лучшего решения; ASK operator ТОЛЬКО при реальном risk к production. Guardian проверяет это через F1-prompt-canon при каждом audit.
 - **Статус:** ACCEPTED permanent.
 - **Anchors:** ADR-019 F1, ADR-020 memory pull.
+
+---
+
+### INS-2026-05-04-P4.3-EVO2
+
+- **Источник:** operator (Mark), 2026-05-04 ~11:15 CEST.
+- **Инструкция:** evo2 BIOS UMA rebalance per ADR-018 P4.3-evo2 + post-reboot verify + qwen3:235b-a22b smoke + (conditional) LiteLLM reasoning route update.
+- **Шаги:** runbook docs/runbooks/p4.3-evo2-bios-uma-rebalance.md (commit a971439); operator выполнил BIOS edit + reboot.
+- **Результат BIOS rebalance:** ✅ DONE — `mem_info_vram_total = 32 GiB` (was 64), `MemTotal = 93 GiB visible / 96 GiB requested via 32+96 UMA split` (was 62), 3/3 systemd active (ollama+llama-rpc-worker+node-exporter), 2/2 docker (grafana+blackbox), iGPU=Radeon 8060S gfx1151 detected via Vulkan, ports 11434/50052/3000/9100/9115 LISTEN.
+- **Результат qwen3:235b-a22b-banxe smoke:** ❌ FAILED via Ollama. Ollama Vulkan loader pre-allocates FULL model size (132.9 GiB) даже для MoE Q4_K_M (active params 22B). С `num_gpu:0` (CPU-only) Ollama refused upfront: "model requires more system memory (132.9 GiB) than is available (99.8 GiB)". Без `num_gpu:0` Ollama Vulkan reports false `total=152 GiB available=151.8 GiB` для iGPU (UMA driver advertises shared memory pool) → пытается загрузить 132.1 GiB на iGPU → kernel OOM kill.
+- **Conclusion:** UMA rebalance был **необходим но не достаточен** для qwen3:235b unblock через Ollama. Требуется **P4.3-Q235** (llama.cpp RPC architecture per ADR-018, как glm-master) для proper distributed/streaming load.
+- **Статус:** ✅ DONE on BIOS rebalance scope. ❌ qwen3:235b unblock — DEFERRED to P4.3-Q235 (next sprint).
+- **LiteLLM `reasoning` route:** ОСТАЁТСЯ на llama3.3:70b (no config change в этом sprint per honest finding).
+- **Anchors:** ADR-018 (P4.3-evo2 + P4.3-Q235), runbook a971439.
+- **Successor:** P4.3-Q235 — llama.cpp RPC second master :8082 для qwen3:235b-a22b Q4_K_M GGUF (~3-4h sprint).
