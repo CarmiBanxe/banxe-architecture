@@ -2745,3 +2745,25 @@
   - HW matrix TOPS fix: ✅ DONE (commit 52f74a2)
   - **Net outcome:** 1 of 3 sprints DONE; 2 BLOCKED with clear paths forward documented.
 - **Successor:** rest. Future window — try path (b) Q3_K_S requantize first (highest probability of success без upstream dependencies).
+
+---
+
+### INS-2026-05-04-ORG-CLEANUP
+
+- **Источник:** operator (Mark), 2026-05-04 ~14:30 CEST.
+- **Инструкция:** обновить org docs (INDEX.md / HW-MODEL-UPGRADE-matrix.md / banxe-cluster-phase4.md) execution actuals по факту дня; verify через Guardian; commit + push.
+- **Шаги:**
+  1. `banxe-cluster-phase4.md` (56 → 108 lines): добавил §"Execution log (2026-05-04)" с 4 sprint sub-sections (P4.3-evo2 DONE, P4.3-Q235 4 attempts BLOCKED, P4.2-ROCm BLOCKED, P4.4-NPU PAUSED) + status summary table.
+  2. `HW-MODEL-UPGRADE-matrix.md §4`: row qwen3:235b-a22b → "REQUANTIZING to Q3_K_S, ETA 30-60 min" + 4-attempts blocker note.
+  3. `HW-MODEL-UPGRADE-matrix.md §5`: P4.2-ROCm → BLOCKED (HIP fail gfx1151+UMA), P4.3-evo2 → DONE, P4.4 → PAUSED, RPC pivot → BLOCKED.
+  4. Guardian dry_run verify factory:8195: result=pass, 8/8, storage_attempted=false.
+  5. Commit MetaClaw 016dc26 — `feat(org-cleanup): phase4 execution log + HW matrix actuals`. Pushed to main.
+- **Q3_K_S requantize finding (during step 7 progress check):** ❌ FAILED at element 3/1131. `llama_model_quantize: failed to quantize: requantizing from type q4_K is disabled`. llama.cpp не позволяет requantize from already-quantized GGUF; нужен f16/bf16 source (~470 GiB для 235B в f16). PID 46244 dead. **Path (b) Q3_K_S — также BLOCKED без re-download source weights.**
+- **Updated three future paths:**
+  - (a) `--n-gpu-layers 0` master + RPC GPU worker — likely same Vulkan UMA trap, low confidence
+  - (b) ~~Q3_K_S requantize from existing q4_K~~ ❌ FAILED — нужен fresh f16 download (~470 GiB) → de facto block из-за disk + bandwidth
+  - (c) Wait Ollama 0.24+ MoE-aware loader — outstanding upstream
+- **Net effect:** qwen3:235b-a22b unblock остаётся blocked для всех 3 первоначальных путей. Reasoning route на llama3.3:70b LB stays canonical.
+- **Status:** ✅ DONE on org docs cleanup; Q3_K_S finding документирован honestly.
+- **Anchors:** ADR-018 §"Required sprints" P4.3-Q235, MetaClaw commit 016dc26.
+- **Successor:** rest. Future window — possibly path (c) wait + monitor Ollama upstream releases, OR fresh f16 download (~470 GiB across USB4 — ~7 hours).
