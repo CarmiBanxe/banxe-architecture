@@ -2665,3 +2665,25 @@
 - **Status:** ❌ DEFERRED — P4.3-Q235 RPC architecture is the only viable path для qwen3:235b на текущем cluster (96 GiB CPU per node ≠ 134 GiB single-node need).
 - **Anchors:** ADR-018 P4.3-Q235.
 - **Successor:** P4.4-NPU (next per ADR-018 §"Required sprints to reach 100%").
+
+---
+
+### INS-2026-05-04-P4.4-NPU-DISCOVERY
+
+- **Источник:** Claude Code best-answer pivot (per CANON-9), 2026-05-04 ~12:15 CEST.
+- **Инструкция:** P4.3-Q235 standalone CPU FAILED → pivot к next ADR-018 sprint. Per §"Required sprints" order: P4.4-NPU.
+- **Шаги:** read-only NPU discovery on evo1+evo2. Hardware presence + amdxdna driver state + userspace stack gap.
+- **Findings:**
+  - **NPU hardware:** ✓ both nodes — evo1 PCI `c7:00.1` Strix Halo NPU, evo2 PCI `c6:00.1`. amdxdna kernel driver bound on both.
+  - **Device nodes:** ✓ `/dev/accel/accel0` (root:render 660) на обоих, render group includes prod users.
+  - **Userspace gap:** ❌ XRT (`xrt-smi`) не установлен; ❌ onnxruntime / onnxruntime-vitis-ai не установлены; ❌ Ryzen AI SDK не установлен.
+  - **Distro:** Ubuntu 24.04 noble (HWE); amdgpu-install present (AMD repo configured).
+  - **TOPS correction:** HW matrix указывал 252 TOPS aggregate — фактически ~50 TOPS per node × 2 = ~100 TOPS XDNA 2 aggregate (HW matrix conflated CPU+iGPU+NPU). Правка нужна в HW-MODEL-UPGRADE-matrix.md в отдельном sprint.
+- **Deliverable:** ~/MetaClaw/docs/runbooks/p4.4-npu-discovery-and-plan.md (162 lines, commit 156e10d) — 5-phase implementation plan (XRT install → onnxruntime EP → POC model → LiteLLM wiring → systemd unit) с risk catalog + decision gate.
+- **Status:** ✅ DONE on discovery scope; ⏸️ PAUSED on Phase A install (sudo + experimental SDK — needs operator decision gate).
+- **Decision gate (operator):**
+  1. 4-6h focused session budget — yes / defer?
+  2. Risk tolerance experimental Ryzen AI Linux SDK on prod nodes?
+  3. Order vs P4.2-ROCm: best-answer recommendation = **P4.2 first** (lower risk, immediate +30-50% throughput для existing models), затем P4.4.
+- **Anchors:** ADR-018 §"Required sprints" item 3 (P4.4-NPU).
+- **Successor:** P4.2-ROCm (per recommended order) OR P4.4 Phase A install (per operator override).
