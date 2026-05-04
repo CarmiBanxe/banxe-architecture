@@ -2687,3 +2687,18 @@
   3. Order vs P4.2-ROCm: best-answer recommendation = **P4.2 first** (lower risk, immediate +30-50% throughput для existing models), затем P4.4.
 - **Anchors:** ADR-018 §"Required sprints" item 3 (P4.4-NPU).
 - **Successor:** P4.2-ROCm (per recommended order) OR P4.4 Phase A install (per operator override).
+
+---
+
+### INS-2026-05-04-P4-SEQUENTIAL-DISCOVERY
+
+- **Источник:** operator (Mark), 2026-05-04 ~12:30 CEST.
+- **Инструкция:** sequential P4 discovery: P4.2-ROCm + P4.3-Q235 RPC + fix HW matrix TOPS.
+- **Шаги:**
+  - **P4.2-ROCm discovery:** evo1 — ROCm 6.3 full stack УЖЕ установлен (`/opt/rocm-6.3.0/`, hip-runtime-amd, libamdhip64.so.6, librocblas.so.4), gfx1151 detected by rocminfo, ollama 0.22.1 имеет bundled rocm runner. evo2 — ROCm minimal (2 пакета), ollama 0.22.1 same. Текущий backend: vulkan (override.conf). Migration = flip `OLLAMA_LLM_LIBRARY=vulkan` → `rocm` + (для evo2 only) `apt install hip-runtime-amd hipblas hipblaslt`. Runbook: docs/runbooks/p4.2-rocm-migration.md (commit e802745, 166 lines, 5 phases A-E + sequential rollback).
+  - **P4.3-Q235 RPC discovery:** USB4 link UP (0.642 ms RTT), evo1 rpc-server binary с Vulkan/gfx1151 ✓, port 50053 free, llama.cpp build готов на обоих. Combined CPU 30+93=123 GiB visible. Architecture: evo2 master:8082 + evo1 RPC worker:50053 (separate from glm-master worker on evo2:50052). Risk: MoE+RPC compatibility unverified в llama.cpp. Runbook: docs/runbooks/p4.3-q235-rpc-split.md (commit 64f6800, 210 lines, 5 phases + decision tree + rollback).
+  - **Fix TOPS:** HW-MODEL-UPGRADE-matrix.md — заменил "XDNA 2 — 126 TOPS" (×2) → "XDNA 2 NPU — 50 TOPS (system AI total ~126 TOPS incl. iGPU+CPU)"; "252 TOPS aggregate" (×2) → "~100 TOPS aggregate NPU (50 per node × 2)". Per AMD spec Ryzen AI Max+ 395: NPU alone = 50 TOPS, 126 = total system AI inc. iGPU+CPU. Commit 52f74a2.
+- **Статус:** ✅ DONE on discovery+fix scopes; ⏸️ PAUSED on P4.2 + P4.3-Q235 execution gates (sudo + prod restart on evo1/evo2).
+- **Anchors:** ADR-018 §"Required sprints" items 2 (P4.3-Q235), 4 (P4.2-ROCm) + HW-MODEL-UPGRADE-matrix.md §1+§5+§8.
+- **Recommendation:** **P4.2-ROCm Phase A first** (evo1 only, env flip + restart, lowest-risk + fastest gain) — measure throughput delta. If positive → P4.2 Phase B (evo2 install + flip). После — P4.3-Q235 RPC execution. После — P4.4-NPU full sprint.
+- **Successor:** operator gate decision (P4.2 Phase A execution).
