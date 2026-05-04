@@ -157,7 +157,7 @@
 - [x] G-IAM-06: pre-commit hook + Semgrep rule blocking direct credentials in EMI repos — **DONE 2026-05-03** (I-34 enforcement; banxe-emi-stack PR #41 `feat/iam-creds-guard` → squash `3ce0a01`; artefacts: `.semgrep/banxe-rules/iam-no-direct-creds.yml` + pre-commit hook `iam-no-direct-creds` + `docs/CONTRIBUTING.md §IAM Credentials Guard`)
 - [ ] G-IAM-07: Backout procedure verified — documented in RUNBOOK.md §GATE-D + §Backout — WAITING_FOR_GATE-A
 - [ ] G-IAM-08: Decommission Legion local IAM after PASS + 7 days hold — BLOCKED_BY G-IAM-01..07 (ADR-017 §6 / Rollout T+11)
-- [ ] G-IAM-09: Migrate keycloak-pg sidecar to shared managed Postgres — TECH_DEBT; target 2026-05-31 (ADR-017 impl note)
+- [ ] G-IAM-09: Migrate keycloak-pg sidecar to shared managed Postgres — TECH_DEBT (ADR-017 impl note; schedule TBD)
 
 ## Guardian Bash Shim — Gaps (ADR-024)
 
