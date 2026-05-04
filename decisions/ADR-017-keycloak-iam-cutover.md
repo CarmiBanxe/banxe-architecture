@@ -73,3 +73,36 @@ EMI стек выходит на FCA CASS 15 (deadline 2026-05-07). Текущи
 - T+3: pre-commit hook + review checklist в каждом EMI-репо.
 - T+4 (≤ 2026-05-07): подтверждённый PASS — все EMI-сервисы аутентифицируются через realm `banxe-emi`.
 - T+11: декомиссия Legion local IAM (`--user` units), запись в GAP-REGISTER.
+
+---
+
+## Implementation Note — 2026-05-04 (Strategy-A re-engaged)
+
+**Context**: P3.4 Keycloak deployment unblocked on second attempt via STRATEGY-A.
+
+### Strategies considered and rejected
+
+| Strategy | Description | Rejection reason |
+|----------|-------------|-----------------|
+| STRATEGY-B | KC on Legion (WSL2), served via Tailscale IP 100.101.218.26 | Legion WSL2 IP (172.22.56.223) not LAN-reachable from evo1; Tailscale IP also unreachable from evo1 host |
+| STRATEGY-C | Host-installed KC binary on evo1 | No root access; KC binary not installed on evo1 |
+
+### STRATEGY-A (selected)
+
+- **Postgres**: dedicated `keycloak-pg` sidecar (postgres:16-alpine, volume `keycloak_pg_data`) — no dependency on `banxe-marble-postgres`.
+- **Keycloak**: `docker compose` on evo1, port 8180. `kc.sh build` baked into Dockerfile at image build time (`--optimized` at runtime). Avoids Quarkus SIGKILL race under evo1 runtime load.
+- **Resources**: KC mem_limit=4g / memswap=8g; Postgres mem_limit=1g / memswap=2g.
+- **Realm**: imported via `--import-realm` flag from `./realms/banxe-emi-realm.json`.
+- **Secrets**: all via `~/.banxe/keycloak.env` (chmod 600, I-34 compliant).
+- **Artefacts**: `infra/keycloak-banxe-emi/Dockerfile` + `docker-compose.yml` + RUNBOOK.md §Strategy-A Activation Plan — banxe-emi-stack PR #54.
+
+### Quarkus SIGKILL status
+
+- Session-1 (2026-05-04 01:00 CEST): SIGKILL reproduced (evo1 load 35+).
+- Session-2 (2026-05-04 ~14:00 CEST): build EXIT=0 in 9.8s (22GB RAM available, same load).
+- **Assessment**: load-dependent, not systematic. Baking `kc.sh build` into Dockerfile at image build time (on a machine with headroom) eliminates the runtime race.
+
+### Status
+
+WAITING_FOR_GATE-A — awaiting operator signal `go GATE-A` to execute on evo1.
+G-IAM-01..07 artefacts ready. G-IAM-08 (end-to-end smoke) unblocked after GATE-A.

@@ -147,14 +147,17 @@
 
 ### ADR-017 rollout — P3.4 Keycloak IAM cutover, 2026-05-03 → 2026-05-07
 
-- [ ] G-IAM-01: Keycloak realm `banxe-emi` deployed on evo1 (:8180) — IN_PROGRESS (ADR-017 §3; depends on infra readiness on evo1)
-- [ ] G-IAM-02: OIDC discovery URL `http://evo1:8180/realms/banxe-emi/.well-known/openid-configuration` reachable from EMI services — IN_PROGRESS
+- [ ] G-IAM-01: Keycloak realm `banxe-emi` deployed on evo1 (:8180) — WAITING_FOR_GATE-A
+  Strategy-A re-engaged 2026-05-04; artefacts ready in banxe-emi-stack PR #54.
+  Awaiting operator `go GATE-A` to execute `docker compose build + up` on evo1.
+- [ ] G-IAM-02: OIDC discovery URL `http://evo1:8180/realms/banxe-emi/.well-known/openid-configuration` reachable from EMI services — WAITING_FOR_GATE-A
 - [ ] G-IAM-03: Service-to-service tokens provisioned for banxe-compliance-api, banxe-dashboard, deep-search, drive_watcher — NOT_STARTED (ADR-017 §2)
 - [ ] G-IAM-04: Realm mappers (service_id, environment, compliance_scope) + audit log retention ≥ 12 months — NOT_STARTED (ADR-017 §4; FCA CASS 15)
 - [ ] G-IAM-05: Rotation policy for client_secrets (90 days / on-incident) — NOT_STARTED (ADR-017 §5)
 - [x] G-IAM-06: pre-commit hook + Semgrep rule blocking direct credentials in EMI repos — **DONE 2026-05-03** (I-34 enforcement; banxe-emi-stack PR #41 `feat/iam-creds-guard` → squash `3ce0a01`; artefacts: `.semgrep/banxe-rules/iam-no-direct-creds.yml` + pre-commit hook `iam-no-direct-creds` + `docs/CONTRIBUTING.md §IAM Credentials Guard`)
-- [ ] G-IAM-07: Backout procedure verified — Legion local IAM `--user` units re-enable per `banxe-emi-stack/docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1` — NOT_STARTED
+- [ ] G-IAM-07: Backout procedure verified — documented in RUNBOOK.md §GATE-D + §Backout — WAITING_FOR_GATE-A
 - [ ] G-IAM-08: Decommission Legion local IAM after PASS + 7 days hold — BLOCKED_BY G-IAM-01..07 (ADR-017 §6 / Rollout T+11)
+- [ ] G-IAM-09: Migrate keycloak-pg sidecar to shared managed Postgres — TECH_DEBT; target 2026-05-31 (ADR-017 impl note)
 
 ## Guardian Bash Shim — Gaps (ADR-024)
 
