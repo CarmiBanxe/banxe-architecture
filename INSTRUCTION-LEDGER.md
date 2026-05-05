@@ -3001,3 +3001,22 @@
 - **Closes (on completion):** G-FACTORY-01, G-FACTORY-02, G-FACTORY-03.
 - **Anchors:** IL-AUDIT-01 (PRs #50, #52, #54, #55); A1/A3/A4 artefacts; IL-CANON-04.
 - **Reperential point:** main HEAD at 1115808 (after #55 merge) is the canonical "before" state.
+---
+
+### IL-CANON-OPERATOR-2026-05 — Operator canon amendment to reperential point
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC + CLOSE (canon fixation, immediately binding)
+- **Status:** BINDING
+- **Priority:** P0 (canon)
+- **Scope:** docs/canon/operator-canon-2026-05.md
+- **Amends:** IL-FACTORY-AUDIT-01 (PR #57); IL-PROJECT-AUDIT-01 (pending kickoff).
+- **Four principles fixed:**
+  1. Hardware-first: evo1 не должен задыхаться, factory-side ждёт.
+  2. evo1 as-is: разгрузка только через миграцию stateless сервисов.
+  3. evo2 maximum model without harm: текущий максимум = qwen3:235b Q3_K_S; fp16 (470 GB) требует PA-4 решения.
+  4. Factory-side (FA-1..FA-5) blocked-on-cluster (PA-1..PA-6 first, in re-ordered sequence).
+- **Re-ordered priority for IL-PROJECT-AUDIT-01:** PA-2 → PA-4 → PA-5 → PA-1 → PA-3 → PA-6.
+- **Binds:** Perplexity supervisor (must apply principles 1-4 + cite this doc in every sprint kickoff).
+- **Anchors:** IL-CANON-04, IL-AUDIT-01, IL-FACTORY-AUDIT-01, A1/A2/A3/A4 artefacts.
+- **Reperential point:** main @ 9f27f2c.
