@@ -5,7 +5,7 @@
 | Sprint ID | IL-FACTORY-AUDIT-01 |
 | Branch | sprint/factory-developer-audit-2026-05 |
 | Started | 2026-05-05 |
-| Status | OPEN — реперная точка зафиксирована, реализация начинается |
+| Status | BLOCKED-ON-CLUSTER per docs/canon/operator-canon-2026-05.md (Principle 4) — waits for IL-PROJECT-AUDIT-01 PA-2/PA-4/PA-5/PA-1 completion |
 | Owner | CEO (operator) + Perplexity supervisor + Claude Code |
 | Predecessor | IL-AUDIT-01 (PRs #50, #52, #54, #55) |
 | Successor | (TBD по результатам) |
@@ -70,9 +70,11 @@
 - IL-CANON-04 (best-decision rule)
 - ADR-018, ADR-019, ADR-026
 - MetaClaw org-cleanup/phase4-hw-matrix-roc-rpc @ 016dc26
+- docs/canon/operator-canon-2026-05.md (binding canon)
 
 ## Status history
 
 | Date | Status | Note |
 |---|---|---|
 | 2026-05-05 | OPEN | Sprint kickoff — реперная точка зафиксирована, ветка sprint/factory-developer-audit-2026-05 создана от main 1115808 |
+| 2026-05-05 | BLOCKED-ON-CLUSTER | Per Operator canon Principle 4 (factory-side waits for cluster stability). Sprint kickoff остаётся merged in main как заявка; реализация FA-1..FA-5 ждёт завершения PA-2/PA-4/PA-5/PA-1 в sibling sprint IL-PROJECT-AUDIT-01. |
