@@ -169,3 +169,58 @@ Guardian-shim (audit mode default, может быть переключён в e
 6. Ясный ли язык? §7.
 7. Между chunk'ами не жду подтверждения §1.
 8. Не печатаю секреты или их метаданные §8.
+9. Может ли это быть выполнено в Claude Code? Если да — адресую туда §15.
+
+---
+
+## §15. Claude-Code-First (CCF)
+
+> «работаем в клод коде; шелл — только по необходимости»
+> «безопасно, потому что клод код открыт ещё в двух терминалах в легионе» (Operator, 2026-05-05 16:00 CEST)
+
+**Принцип:** Все действия по умолчанию исполняются внутри Claude Code (или эквивалентного агентного IDE). Прямой shell используется только там, где Claude Code не может выполнить операцию сам (или где это явно дешевле/безопаснее по другим секциям канона).
+
+### Почему это безопасно
+
+- Claude Code открыт в двух дополнительных терминалах на Legion (mark-legion): второй и третий instance Claude Code обеспечивают out-of-band наблюдение и экстренное вмешательство, если основной поток ушёл в нежелательное состояние.
+- Claude Code применяет permission-prompts на opaque/destructive операции (write, exec неизвестных бинарей) — оператор всегда видит, что именно будет запущено.
+- Все bash-вызовы Claude Code проходят через Guardian-shim (ADR-024, scope `claude.bash`, agent.bash family per ADR-026): CB1 deny-path (§10), CB2 secret-leak (§8), CB3 frozen-sandbox (§6), CB4 dangerous-cmd. Прямой shell-ход оператора эту защиту обходит.
+- Conversation-guard (G-CANON-01, ADR-025) применяется к chat-output Claude Code, а не к терминальным сессиям оператора.
+
+### Адресация (взаимодействие с §2)
+
+- **«Для Claude Code (...)»** — default. Промт копируется в окно Claude Code; он сам исполняет (включая bash, file edits, gh CLI).
+- **«Для Legion (mark-legion shell):»** — fallback, выдаётся только при выполнении одного из критериев исключения ниже.
+
+### Когда разрешён прямой shell (исключения)
+
+Coordinator (Comet/operator) выдаёт промт «Для Legion shell» только если выполняется хотя бы одно из:
+
+1. **Out-of-tree probe.** Действие требуется на хосте, в репо или путях, к которым у текущего Claude Code instance нет доступа (например read-only inventory на evo1: `ssh evo1 'systemctl ...'`).
+2. **Permission ceiling.** Действие требует возможностей, которые Claude Code в текущей конфигурации не имеет: admin gh операции (`gh pr merge --admin`), работа с external sudo, передача файла через scp/rsync на другой хост, операции из user-shell (sudoers profile отличается).
+3. **Bootstrap / recovery.** Сам Claude Code сейчас недоступен (упал, не запущен, нет MCP), и нужно выполнить minimal-step, чтобы его поднять или продиагностировать.
+4. **Verification из независимой среды.** Шаг канона требует именно внешнего наблюдателя (например, проверить, что endpoint доступен из LAN, а не только локально на evo1).
+5. **Phase deadline pressure.** Когда explicit deadline делает round-trip через Claude Code дороже, чем direct shell — допускается обход с обязательным IL-record после.
+
+Любая команда вне этих 5 категорий, которая может быть выполнена в Claude Code, **должна** быть выдана как промт «Для Claude Code».
+
+### Запреты CCF
+
+- Запрещено дублировать одну и ту же операцию между Claude Code и Legion shell в одном ходе (нарушение §1 OCAT и §15 одновременно).
+- Запрещено выдавать «Для Legion shell» только потому, что так «быстрее набрать промт» — экономия времени оператора не входит в список из 5 исключений.
+- Запрещено копировать секреты, токены, выводы аудита и PII-содержащие данные через прямой shell, минуя Guardian-shim, даже если попадает под одно из исключений.
+
+### Cross-references
+
+- §1 OCAT — один ход = одна команда ИЛИ один промт; §15 уточняет, кому именно адресуется этот один ход.
+- §2 Адресат — обязательная разметка адресата каждого хода.
+- §6 Frozen sandbox — production-only repos.
+- §8 Secret-leak. §10 ADR-031 deny-paths.
+- ADR-024 Guardian-shim (bash-level enforcement).
+- ADR-025 Agent Interaction Canon (this document).
+- ADR-026 Guardian agent.bash family.
+- ADR-019 Two-family Guardian (extended → three-family).
+
+### Tracker
+
+G-CANON-15 (новый): cover §15 in conversation-judge prompts и в 13+ regression test cases (V-14: «команда выдана в shell, хотя могла быть в Claude Code» как expected `warn`).

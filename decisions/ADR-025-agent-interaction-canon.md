@@ -24,7 +24,7 @@
 
 Принять `docs/canon/AGENT-INTERACTION-CANON.md` как **canonical behavioral contract** для всех AI-агентов, работающих с banxe stack.
 
-Канон состоит из **14 секций** (см. companion doc):
+Канон состоит из **15 секций** (см. companion doc):
 1. OCAT (One-Command-At-a-Time)
 2. Адресат каждого хода
 3. Запрет на вопросы по безопасным командам
@@ -106,9 +106,27 @@ Tracking item: **G-CANON-01** (закрытие до 2026-05-31 target).
 
 ## References
 
-- Companion: `docs/canon/AGENT-INTERACTION-CANON.md` (full 14-section text).
+- Companion: `docs/canon/AGENT-INTERACTION-CANON.md` (full 15-section text).
 - Reference: `docs/canon/violations-2026-05-04.md` (13 violations as test cases).
 - Design: `docs/canon/conversation-guard-design.md` (G-CANON-01 architecture).
 - Source session: `CarmiBanxe/banxe-emi-stack` 2026-05-03 → 2026-05-04, main HEAD `ee4e0d7`.
 - Guardian-shim: `CarmiBanxe/banxe-emi-stack/infra/guardian-shim/`, commits `c6685c5` + `5ef4601`.
 - Tag witnessing the source session's success: `cass15-iam-cutover-2026-05-07`.
+
+## §15 Claude-Code-First (CCF) — Amendment 2026-05-05
+
+> Added via IL-CANON-04.
+
+**Принцип:** Все действия по умолчанию исполняются внутри Claude Code. Прямой shell используется только при выполнении одного из 5 исключений:
+
+1. Out-of-tree probe (хост/репо вне доступа текущего CC instance).
+2. Permission ceiling (admin gh ops, sudo, scp/rsync cross-host).
+3. Bootstrap / recovery (CC сам недоступен).
+4. Verification из независимой среды (external LAN probe).
+5. Phase deadline pressure (explicit deadline + IL-record обязателен после).
+
+**Адресация:** «Для Claude Code (...)» = default; «Для Legion shell» = fallback only.
+
+**Запреты:** нет дублирования CC+shell в одном ходе; нет shell «потому что быстрее набрать»; нет PII/secrets через shell минуя Guardian-shim.
+
+**Tracker:** G-CANON-15 (cover §15 in conversation-judge + V-14 test case).
