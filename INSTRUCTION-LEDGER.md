@@ -2884,6 +2884,41 @@
 - **Successor:** G-INFRA-01 (evo2 missing from .claude/rules/infrastructure.md + SERVICE-MAP) — отдельный шаг.
 - **Lesson:** organisational/canonical work (HW matrix, runbooks, ADR-018 cross-links) MUST land on a named branch before merge to main.
 
+---
+
+### IL-CANON-04 — G-CANON-01 Week 2 closed; §15 Claude-Code-First added
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** (a) Закрыть G-CANON-01 Week 2 — canon-judge wired to Ollama qwen3.5:35b, 13/13 live tests PASS; (b) Зафиксировать §15 Claude-Code-First (CCF) в каноне ADR-025 и living doc; открыть G-CANON-15.
+- **Шаги:**
+  1. PR CarmiBanxe/MetaClaw#3 squash-merged: judge.py wired (think=false, format=json, num_predict=512), 13 live tests via -m llm marker, pyproject markers registered.
+  2. 13/13 cases PASS, total 138.73s (avg 10.67s warm).
+  3. ADR-025 + AGENT-INTERACTION-CANON.md дополнены §15 CCF.
+  4. G-CANON-15 OPEN зарегистрирован.
+- **Статус:** ✅
+- **Proof:**
+  - MetaClaw PR #3 merged (commit 81679ef, ветка deleted).
+  - pytest run: 13 passed in 138.73s.
+  - banxe-architecture PR #<this> с §15 patch.
+- **Deviation:** нет.
+- **Blocker:** Week 3 (MCP hook integration в Claude Code config, audit mode) — следующий sprint.
+
+#### G-CANON-15 — NEW
+
+- Owner: Architecture WG.
+- Description: Cover §15 Claude-Code-First in conversation-judge prompts; add V-14 regression test ("команда выдана в shell, хотя могла быть в Claude Code" → expected warn).
+- Status: OPEN.
+- Linked: ADR-025 §15, ADR-024, ADR-026, G-CANON-01.
+
+#### G-CANON-01 — Status update
+
+- Week 2: ✅ DONE (13/13 live tests PASS).
+- Week 3: 🔄 IN-PROGRESS (MCP hook integration в Claude Code config, audit mode).
+- Week 4: ⏳ PENDING (enforce mode на known-bad patterns).
+
+---
+
 ## IL-CANON-05 — §3/§4 decision autonomy + §15 CCF expansion
 
 - **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
@@ -2905,4 +2940,3 @@
 - Description: Cover §3.1-§3.3 + §4.1-§4.4 в canon-judge prompt; добавить V-14..V-17 в test_canon_judge.py; rerun coverage gate (target 17/17 PASS).
 - Status: OPEN.
 - Linked: ADR-025 §3/§4/§15, G-CANON-01 Week 3.
-- Target close: pending scheduling.
