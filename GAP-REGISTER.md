@@ -352,11 +352,16 @@
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-018, INS-2026-05-04-P4.2-ROCM-BLOCKED.
   Priority: P1.
 
-- [ ] G-INFRA-03: RAM imbalance evo1=30 GiB vs evo2=93 GiB — OPEN
-  Discovered 2026-05-05 in IL-AUDIT-01 A3. evo1 (30 GiB) hosts 19 systemd + 13 docker containers (Midaz/Marble/Ballerine/Jube/Frankfurter/OpenClaw); already swapping (3.6 GiB swap used). evo2 (93 GiB) hosts 4 systemd + 2 docker (qwen3:235b master, RPC worker, observability) — 91 GiB headroom unused.
-  Action: PA-5 (plan stateless service migration evo1→evo2: Frankfurter + MiroFish first; do NOT migrate stateful CBS without ADR).
-  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, A2 baseline, INS-2026-05-04-ORG-CLEANUP.
-  Priority: P1.
+- [x] G-INFRA-03: RAM imbalance evo1↔evo2 — **EVALUATED 2026-05-05, NOT PURSUED** (Option D: ROI 74 MiB only; Frankfurter+MiroFish effectively-stateful via cross-host Postgres/LiteLLM dependencies; swap pressure root-caused separately in G-INFRA-04)
+  Investigation: docker stats shows frankfurter=41 MiB + mirofish=33 MiB (total 74 MiB / 30 GiB = 0.23%). Swap 3.6 GiB from OTHER services. Migration cost: cross-host Postgres reconfig + LiteLLM exposure + uploads sync. ROI negative.
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, A2 baseline, IL-PA-05-CLOSE.
+  Priority: P1 (closed as evaluated-not-pursued).
+
+- [ ] G-INFRA-04: evo1 swap pressure root cause (3.6 GiB swap used) — OPEN
+  Discovered during PA-5 investigation 2026-05-05. evo1 30 GiB RAM, 3.6 GiB swap. Frankfurter+MiroFish only 74 MiB combined — not the cause. Likely culprit: Midaz/Marble/Ballerine/Jube heavy containers or midaz-ledger restart-loop OOM (see G-OPS-03).
+  Action: identify top RSS consumers on evo1; correlate with swap usage; consider container memory limits or service consolidation.
+  Anchors: G-INFRA-03 (closed), G-OPS-03 (midaz-ledger restart), IL-PA-05-CLOSE.
+  Priority: P2.
 
 - [ ] G-OPS-03: midaz-ledger restart loop on evo1 — OPEN
   Discovered 2026-05-05 in IL-AUDIT-01 A2 (docker ps showed `midaz-ledger | Restarting (1) 53 seconds ago`). Primary CBS per ADR-013. Mongo + RabbitMQ healthy.
