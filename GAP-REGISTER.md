@@ -399,8 +399,13 @@
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, INS-2026-05-04-P4.3-Q235-BLOCKED, docs/canon/HW-MODEL-UPGRADE-matrix.md.
   Priority: P2 (closed).
 
-- [ ] G-CLUSTER-02: model duplication evo1↔evo2 — OPEN
-  Discovered 2026-05-05 in IL-AUDIT-01 A2. ~176 GB duplicated across both nodes (llama3.3:70b 42 GB, qwen3.5:35b 23 GB, qwen3-coder-next 51 GB, qwen3:30b-a3b 18 GB, glm-4.7-flash 18 GB, gpt-oss:20b 15 GB, qwen3:4b 2.5 GB, qwen3.5:latest 6.6 GB). Acceptable for HA / RPC parallelism but wasteful if always one-node-serves.
-  Action: PA-3 (decide canonical "primary serves" per model; document model placement matrix in HW-MODEL-UPGRADE-matrix.md §"Model placement").
-  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, A2 baseline.
+- [x] G-CLUSTER-02: model placement matrix documented — **DONE 2026-05-05** (canonical primary-serves per model decided; dedup execution tracked via G-CLUSTER-03)
+  Matrix: evo2 primary for heavy inference (70b, 35b, 30b-a3b, coder-next, glm-4.7, 235b); evo1 keeps small models (4b, 9.7b, 20b) + duplicates retained until G-CLUSTER-03 operator-confirmed cleanup.
+  Anchors: docs/canon/HW-MODEL-UPGRADE-matrix.md §"Model placement", A2 baseline.
+  Priority: P3 (closed — documentation complete).
+
+- [ ] G-CLUSTER-03: model dedup execution (evo1 cleanup ~134 GB) — OPEN
+  Per G-CLUSTER-02 matrix: evo1 retains qwen3:4b, qwen3.5:latest, gpt-oss:20b as primary; remainder (~134 GB: llama3.3:70b, qwen3.5:35b, qwen3-coder-next, qwen3:30b-a3b, glm-4.7-flash) should be removed from evo1 after operator per-model confirmation.
+  Action: per-model `ollama rm` on evo1 with operator go per §3.2.
+  Anchors: docs/canon/HW-MODEL-UPGRADE-matrix.md, G-CLUSTER-02 (closed).
   Priority: P3.
