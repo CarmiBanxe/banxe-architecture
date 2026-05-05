@@ -347,3 +347,50 @@
 | Policy provenance chain до ClickHouse | policy_scope в audit_trail — прямое доказательство FCA MLR 2017 |
 | scenario_registry.yaml I-1..I-10 | Machine-verifiable invariants — редкость на этом этапе. |
 | governance/change-classes.yaml (CLASS_B) | Защита от auto-rewriting SOUL.md — опережает FINOS AIGF рекомендации. |
+- [ ] G-INFRA-02: evo2 GPU userspace stack regression — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A3. rocminfo empty, vulkaninfo --summary shows only `llvmpipe` (CPU fallback). gfx1151 hardware present per BIOS UMA carveout (vram_total=32 GiB). Likely missing/broken amdgpu + mesa-vulkan-drivers + ROCm runtime after kernel 6.17.0-23 upgrade.
+  Action: PA-2 (verify packages on evo2; reinstall rocm-dev + mesa-vulkan-drivers; recheck vulkaninfo + rocminfo).
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-018, INS-2026-05-04-P4.2-ROCM-BLOCKED.
+  Priority: P1.
+
+- [ ] G-INFRA-03: RAM imbalance evo1=30 GiB vs evo2=93 GiB — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A3. evo1 (30 GiB) hosts 19 systemd + 13 docker containers (Midaz/Marble/Ballerine/Jube/Frankfurter/OpenClaw); already swapping (3.6 GiB swap used). evo2 (93 GiB) hosts 4 systemd + 2 docker (qwen3:235b master, RPC worker, observability) — 91 GiB headroom unused.
+  Action: PA-5 (plan stateless service migration evo1→evo2: Frankfurter + MiroFish first; do NOT migrate stateful CBS without ADR).
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, A2 baseline, INS-2026-05-04-ORG-CLEANUP.
+  Priority: P1.
+
+- [ ] G-OPS-03: midaz-ledger restart loop on evo1 — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A2 (docker ps showed `midaz-ledger | Restarting (1) 53 seconds ago`). Primary CBS per ADR-013. Mongo + RabbitMQ healthy.
+  Action: PA-1 (read midaz-ledger logs; check resource limits; check connectivity to mongodb + rabbitmq; check recent compose changes).
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-013, IL-001 Midaz healthcheck fix.
+  Priority: P0 (touches client-funds path, I-28 LedgerPort invariant).
+
+- [ ] G-FACTORY-01: Legion has no local model serving — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A1. Legion has llama.cpp built but no weights, no ollama. RTX 4070 Laptop (CUDA-capable, 8 GB VRAM) idle for inference. All routine coding-agent calls go either to cloud API or to evo1/evo2 via LiteLLM:4000.
+  Action: FA-1 (install ollama + qwen3:4b 2.5 GB on Legion; wire as `factory-fast` route in LiteLLM).
+  Anchors: docs/roadmap/audit-2026-05/A4-agents-orchestration-proposal.md.
+  Priority: P2.
+
+- [ ] G-FACTORY-02: Keycloak realm split-brain risk Legion vs evo1 — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A1. Legion listens on :8180 (Keycloak banxe-emi realm host-installed dev-file backend). evo1 also has :8180 reserved per ADR-016/017 with Postgres backend (IL-IAM-09 staging validated). Two Keycloak instances on same realm name = classic IAM split-brain risk.
+  Action: FA-4 (confirm canonical Keycloak per ADR-017; decommission Legion-side OR convert to read-only mirror; document in .claude/rules/infrastructure.md).
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-017, G-IAM-01..09.
+  Priority: P1.
+
+- [ ] G-FACTORY-03: Ruflo not detected on Legion — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A1. Briefed CLI fleet includes Ruflo; A1 PATH probe found no `ruflo` binary. Unclear whether tool is missing (gap) or renamed/integrated.
+  Action: FA-3 (search alternative names: ruff/ruflo-cli/ruflo-agent; install or reclassify).
+  Anchors: docs/roadmap/audit-2026-05/A1 inventory.
+  Priority: P3.
+
+- [ ] G-CLUSTER-01: qwen3:235b inference path under-utilised — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A2. qwen3:235b-a22b-fp16 (470 GB) downloaded 6h before audit but only Q3_K_S (5.1 tok/s, 142 GB) routed via LiteLLM. fp16 won't fit even on evo2 93 GiB RAM without RPC + further quantization.
+  Action: PA-4 (decide fp16 fate: keep / quantize-and-archive Q4_K_M or Q5_K_M / delete; document in HW-MODEL-UPGRADE-matrix.md).
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, INS-2026-05-04-P4.3-Q235-BLOCKED, INS-2026-05-05 reasoning-235b LIVE.
+  Priority: P2.
+
+- [ ] G-CLUSTER-02: model duplication evo1↔evo2 — OPEN
+  Discovered 2026-05-05 in IL-AUDIT-01 A2. ~176 GB duplicated across both nodes (llama3.3:70b 42 GB, qwen3.5:35b 23 GB, qwen3-coder-next 51 GB, qwen3:30b-a3b 18 GB, glm-4.7-flash 18 GB, gpt-oss:20b 15 GB, qwen3:4b 2.5 GB, qwen3.5:latest 6.6 GB). Acceptable for HA / RPC parallelism but wasteful if always one-node-serves.
+  Action: PA-3 (decide canonical "primary serves" per model; document model placement matrix in HW-MODEL-UPGRADE-matrix.md §"Model placement").
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, A2 baseline.
+  Priority: P3.
