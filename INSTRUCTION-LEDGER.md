@@ -2986,3 +2986,18 @@
   - ADR-027 — formalise factory↔project fork as canonical architecture decision (3 layers per A4)
 - **Anchors:** PRs #50, #52, #54; ADR-018, ADR-019, ADR-026; IL-CANON-04; MetaClaw 016dc26.
 - **Lesson learned:** sprint-level audit produces best results when split into baseline (read-only) → gap-analysis (analytical) → proposal (design) → closure (gap-register migration) per GSD phases, with each artefact in its own PR.
+---
+
+### IL-FACTORY-AUDIT-01 — Factory (developer) audit implementation sprint
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC (sprint kickoff)
+- **Status:** OPEN
+- **Priority:** P1 (factory-side reperential point + implementation backlog)
+- **Branch:** sprint/factory-developer-audit-2026-05
+- **Predecessor:** IL-AUDIT-01 (closed via IL-AUDIT-01-CLOSE)
+- **Scope:** docs/roadmap/sprint-factory-developer-audit-2026-05.md
+- **Backlog:** FA-1 ollama+qwen3:4b on Legion, FA-2 LiteLLM routes, FA-3 Ruflo identity, FA-4 Keycloak split-brain resolution, FA-5 agents.md chain matrix.
+- **Closes (on completion):** G-FACTORY-01, G-FACTORY-02, G-FACTORY-03.
+- **Anchors:** IL-AUDIT-01 (PRs #50, #52, #54, #55); A1/A3/A4 artefacts; IL-CANON-04.
+- **Reperential point:** main HEAD at 1115808 (after #55 merge) is the canonical "before" state.
