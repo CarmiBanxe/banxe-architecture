@@ -4,7 +4,7 @@ paths: ["docker/**", "infra/**", "scripts/**"]
 
 # Infrastructure Rules — BANXE AI BANK
 
-## ИНФРАСТРУКТУРА (GMKtec EVO-X2)
+## evo1 — GMKtec EVO-X2 (192.168.0.72)
 
 Источник истины: docs/SYSTEM-STATE.md (auto-updated */5 min)
 - PostgreSQL 17: :5432 — DBs: banxe_compliance, midaz_onboarding, midaz_transaction
@@ -20,7 +20,23 @@ paths: ["docker/**", "infra/**", "scripts/**"]
 
 ---
 
-## SERVICE-MAP — GMKtec (192.168.0.72)
+## evo2 — GMKtec EVO-X2 #2 (192.168.0.15) [G-INFRA-01]
+
+> **Status: TBD** — node active, not yet fully registered in canonical map. Full registration tracked in G-INFRA-01.
+> Anchors: ADR-018 (5-layer AI compute), ADR-032 (GLM-4.5-Air distributed), IL-AUDIT-01 A3.
+
+- Hardware: AMD Ryzen AI MAX+ 395 / 128 GiB LPDDR5X / Radeon 8060S 40 CU gfx1151
+- USB4 link to evo1: 10.0.0.2/30 ↔ evo1 10.0.0.1/30 (9.12 Gbit/s)
+- Key services (as of 2026-05-05):
+  - Ollama :11434 (qwen3:235b + 10 models)
+  - qwen3-235b-master :8082
+  - llama.cpp RPC worker :50052
+  - node_exporter :9100 (observability — G-OBS-01 pending)
+- GPU userspace: ROCm/amdgpu regression post kernel 6.17 — G-INFRA-02 (P1 open)
+
+---
+
+## SERVICE-MAP — evo1/GMKtec (192.168.0.72)
 
 > Полная карта: `SERVICE-MAP.md`. Здесь — snapshot для быстрой навигации.
 
