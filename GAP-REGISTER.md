@@ -218,6 +218,19 @@
 - [ ] G-OPS-02: Backup-restore CI smoke test (no silent rotation failure) — NEW 2026-05-05
   Add CI fixture (or scheduled job): take a pg_dump from `keycloak-pg`, restore into ephemeral Postgres, verify `banxe-emi` realm + 4 client_credentials grants survive. Run weekly. Owner: Architecture WG.
 
+## API Gateway / Ingress — Gaps (V-12 from HANDOFF-2026-05-04)
+
+- [ ] G-API-01: No rate limiting on `/auth/*` endpoints — NEW 2026-05-05
+  Source: V-12 LOW in HANDOFF-2026-05-04 (severity LOW per handoff but security-critical: brute-force / credential-stuffing / SCA-bypass risk on banxe-compliance-api auth surface). Affected: any HTTP entrypoint that proxies to Keycloak realm `banxe-emi` token endpoint, including `/auth/login`, `/auth/refresh`, `/auth/sca/*`, `/auth/token` and analogous routes in `api/routers/auth.py`.
+  Plan (3 steps):
+    1. **Audit** (read-only): grep all `/auth/*` route handlers in `banxe-emi-stack/api/routers/`, identify which lack rate-limit decorators / middleware. Confirm there is no upstream limiter (nginx / Traefik / Cloudflare). Output: `docs/canon/v-12-audit-2026-05-05.md`.
+    2. **Propose**: ADR-030 — Auth-surface rate-limit policy. Recommended baselines: `/auth/login` 5/min/IP, 20/hour/account; `/auth/refresh` 30/min/refresh-token-id; `/auth/sca/verify` 10/min/customer; `/auth/token` (Keycloak) 60/min/client_id. Choose enforcement layer (FastAPI `slowapi`, Traefik middleware, or Keycloak built-in `BruteForceProtector` already enabled in `banxe-emi-realm.json`).
+    3. **Fix**: implement chosen layer; emit `429 Too Many Requests` with `Retry-After`; log every limit hit to ClickHouse `audit_trail` (links with G-CASS-01); add tests covering each limit boundary; canonise via update to ADR-024/030.
+  Owner: Architecture WG / Security lead. Linked: `banxe-emi-realm.json` (bruteForceProtected=true at realm level — partial coverage), I-32..I-36, ADR-017.
+
+- [ ] G-API-02: Rate-limit coverage tests — NEW 2026-05-05
+  Add CI fixture that fires N+1 requests against each `/auth/*` endpoint above its declared limit, asserts exactly the (limit+1)th request returns 429 with `Retry-After` header, and verifies an audit_trail event is recorded. Owner: Architecture WG.
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
