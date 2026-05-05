@@ -3206,6 +3206,7 @@
 
 ---
 
+
 ### IL-PA-05-CLOSE — PA-5 G-INFRA-03 evaluated, not pursued (Option D)
 
 - **Источник:** Operator (Moriel Carmi), 2026-05-05.
@@ -3277,3 +3278,23 @@
 - PA-4 ✅ DONE.
 - PA-5 ✅ EVALUATED-NOT-PURSUED.
 - Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-1.
+
+---
+### IL-SEC-01 — Frankfurter Postgres password rotation (exposure 2026-05-05)
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC + DEPLOY
+- **Status:** OPEN
+- **Priority:** P1 (security hygiene)
+- **Trigger:** During PA-5a (2026-05-05 21:15 UTC), `docker inspect banxe-frankfurter` exposed plaintext DATABASE_URL containing the Postgres password (env var, no masking applied at source). Password printed to operator's terminal session and Perplexity supervisor's session log.
+- **Scope:** Even though the target Postgres DB does not currently exist on evo1 host (verified: no listener on :5432), the password value itself must be considered compromised and rotated before any future Frankfurter redeploy.
+- **Action plan:**
+  1. Generate new strong password (`openssl rand -base64 32`).
+  2. If/when Frankfurter is redeployed (per pa-05-frankfurter-decommission.md §"Rollback plan"): provision new Postgres frankfurter DB with new password.
+  3. Document in `.banxe/secrets-vault/` (or equivalent) — never commit to git.
+  4. Update Frankfurter env var via secret-injection mechanism (not `docker run -e` direct CLI).
+  5. Search shell history (`history`) and bash logs on Legion + evo1 for the old password string and scrub.
+- **Operator canon alignment:** general security hygiene; no specific principle violated, but follows global "never expose secrets" rule from session canon.
+- **Anchors:** PA-5a output, docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, IL-PA-05-CLOSE.
+- **Note:** old password value is NOT documented in this ledger entry (would itself be a leak). Operator has access to it via terminal scrollback / shell history; rotation key generation is the only forward action.
+
