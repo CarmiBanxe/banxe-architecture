@@ -179,6 +179,19 @@
     - Cron `*/15 * * * *` runs: `git pull --ff-only origin main && rsync -a --delete guardian/ /data/banxe/guardian/ && sudo systemctl restart banxe-guardian-factory`.
     - Replaces manual scp/rsync from MetaClaw checkout. CI-grade gate is still TBD (GH Actions push-trigger) — tracked as G-DEPLOY-02 (CI-driven deploy, optional follow-up).
 
+## CASS / Safeguarding audit-trail — Gaps (V-06 from HANDOFF-2026-05-04)
+
+- [ ] G-CASS-01: AuditTrail fail-open path leaves CASS reconciliation events un-recorded — NEW 2026-05-05
+  Source: V-06 HIGH in HANDOFF-2026-05-04. Components: `src/safeguarding/audit_trail.py` (banxe-emi-stack), `services/recon/reconciliation_engine{,_v2}.py`, `services/safeguarding-engine/app/services/reconciliation_service.py`. Risk: under ClickHouse outage, recon events succeed silently without persisting to immutable log. FCA CASS 15 expects unbroken audit chain.
+  Plan (3 steps):
+    1. **Audit** (read-only): query ClickHouse `audit_trail` for the last 30 days, compare event counts vs reconciliation_engine state-machine transitions. Identify gap windows. Output: `docs/ops/cass-audit-2026-05-05.md`.
+    2. **Propose**: ADR-027 — Audit-trail durability strategy. Options: (a) blocking append (fail-closed), (b) async queue with disk-backed buffer, (c) dual-write to ClickHouse + local SQLite ring-buffer.
+    3. **Fix**: implement chosen option, add tests covering ClickHouse-down scenarios, regenerate audit-trail for any identified gap window.
+  Owner: Architecture WG. Linked: I-08 (audit-trail invariant TBD), .claude/rules/cass15.md.
+
+- [ ] G-CASS-02: Audit-trail end-to-end coverage tests (no gaps detectable) — NEW 2026-05-05
+  Add CI check: pytest fixture that runs a full reconciliation cycle with ClickHouse connection killed mid-flight, asserts every recon event eventually persists OR returns 5xx (no silent success). Owner: Architecture WG.
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
