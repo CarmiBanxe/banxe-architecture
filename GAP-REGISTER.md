@@ -377,7 +377,8 @@
   Update 2026-05-05 (PA-1e): Root cause identified = three-fold config drift (1) postgres@16-main listens on 5433 not 5432, (2) listen_addresses=localhost only (no 172.22.0.1 docker bridge), (3) midaz DBs/role not provisioned. NOT an OOM or container defect. PA-1 runbook ready: docs/runbooks/pa-01-midaz-ledger-postgres-provisioning.md. Phase A-F gated on operator go (superseded by redis fix — retained as DR reference).
   Priority: P0 (closed).
 
-- [ ] G-FACTORY-01: Legion has no local model serving — OPEN
+- [~] G-FACTORY-01: Legion has no local model serving — runbook ready (FA-1, awaiting operator go) — OPEN
+  - 2026-05-06: runbook fa-01-legion-ollama-coder-install.md drafted; awaiting operator execution go
   Discovered 2026-05-05 in IL-AUDIT-01 A1. Legion has llama.cpp built but no weights, no ollama. RTX 4070 Laptop (CUDA-capable, 8 GB VRAM) idle for inference. All routine coding-agent calls go either to cloud API or to evo1/evo2 via LiteLLM:4000.
   Action: FA-1 (install ollama + qwen3:4b 2.5 GB on Legion; wire as `factory-fast` route in LiteLLM).
   Anchors: docs/roadmap/audit-2026-05/A4-agents-orchestration-proposal.md.
