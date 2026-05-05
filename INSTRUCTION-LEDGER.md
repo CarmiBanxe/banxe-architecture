@@ -3609,3 +3609,22 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - [x] Smoke test PASS (client_credentials grant, `expires_in=900`)
   - [x] Execution log committed to `docs/ops/phase-g-execution-2026-05-06.md`
   - [x] V-02 marked DONE in GAP-REGISTER (G-IAM-10) + ROADMAP.md Phase 4.7 table
+
+### IL-FA-02-DRAFT — FA-2 LiteLLM canonical aliases runbook ready
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC + DESIGN (ready for DEPLOY pending operator go)
+- **Status:** READY (not yet executed)
+- **Priority:** P3 (factory orchestration polish; non-blocking)
+- **Sprint:** IL-FACTORY-AUDIT-01 (PR #57)
+- **Predecessor:** FA-1 (PR #80, G-FACTORY-01 closed; factory-fast already live).
+- **Scope:** Add 4 canonical aliases (factory-mid, factory-heavy, factory-coder, project-reason) to LiteLLM config v2 alongside existing operational routes (qwen3-30b, ai-heavy, coding, reasoning-235b). Aliases match A4 orchestration proposal naming.
+- **Mapping:**
+  - factory-mid → ollama/qwen3:30b-a3b (evo1+evo2 LB)
+  - factory-heavy → ollama/llama3.3:70b (evo1+evo2 LB)
+  - factory-coder → ollama/qwen3-coder-next:q4_K_M (evo1)
+  - project-reason → openai/qwen3 @ evo2:8082 (standalone llama-server, qwen3:235b)
+- **Plan:** docs/runbooks/fa-02-litellm-canonical-aliases.md, Phase A-E.
+- **Closure criteria:** all 5 canonical aliases working via LiteLLM /v1/chat/completions; /v1/models lists all 5; no existing routes broken.
+- **Operator canon alignment:** Principle 4 unblocked (factory work resumed); A4 §"Factory plane orchestration" formalised.
+- **Anchors:** PR #57 (sprint), PR #80 (FA-1), docs/runbooks/fa-02-litellm-canonical-aliases.md, A4 proposal, docs/canon/operator-canon-2026-05.md.
