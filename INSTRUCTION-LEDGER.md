@@ -3203,3 +3203,77 @@
 - PA-2 ✅ DONE.
 - PA-4 ✅ DONE.
 - Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-5.
+
+---
+
+### IL-PA-05-CLOSE — PA-5 G-INFRA-03 evaluated, not pursued (Option D)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-5 (stateless service migration evo1→evo2) как evaluated-not-pursued.
+- **Шаги:**
+  1. docker inspect frankfurter: DATABASE_URL=postgres://...@172.17.0.1:5432 → effectively-stateful (cross-host Postgres dependency).
+  2. docker inspect mirofish: LLM_BASE_URL=http://localhost:4000 → depends on evo1 LiteLLM loopback; uploads volume bind.
+  3. docker stats: frankfurter=41 MiB, mirofish=33 MiB (total 74 MiB = 0.23% of 30 GiB).
+  4. evo1 swap 3.6 GiB from OTHER containers (not these two).
+  5. Migration cost: cross-host Postgres reconfig + LiteLLM 0.0.0.0 exposure + uploads rsync + consumer re-route.
+  6. **ROI negative**: 74 MiB saved vs full sub-sprint risk. Decision: not pursued.
+  7. Opened G-INFRA-04 for actual swap root cause investigation.
+- **Статус:** ✅ (evaluated, not pursued)
+- **Proof:**
+  - `docker stats --no-stream`: frankfurter 41MiB (0.13%), mirofish 33MiB (0.10%).
+  - `docker inspect` confirms Postgres@172.17.0.1 + LiteLLM@localhost:4000 dependencies.
+- **Deviation:** PA-5 acceptance was "migrate"; actual decision = "don't migrate" based on negative ROI. This is a valid deviation per §4.1 Best-Decision principle: sprint-doc cannot predict investigation outcomes.
+- **Blocker:** нет.
+
+#### G-INFRA-04 — NEW (swap pressure root cause)
+
+- Owner: Infrastructure.
+- Description: Identify top RSS consumers on evo1 causing 3.6 GiB swap; evaluate container memory limits or service consolidation.
+- Status: OPEN.
+- Priority: P2.
+- Linked: G-INFRA-03 (closed), G-OPS-03 (midaz-ledger restart loop — potentially OOM-related).
+- Anchors: IL-PA-05-CLOSE, A3-gap-analysis.md.
+
+#### Phase status update
+
+- PA-2 ✅ DONE.
+- PA-4 ✅ DONE.
+- PA-5 ✅ DONE (evaluated, not pursued).
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-1 (midaz-ledger restart loop diagnosis).
+
+---
+
+### IL-PA-05-CLOSE — PA-5 G-INFRA-03 evaluated, not pursued (Option D)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-5 (stateless service migration evo1→evo2) как Option D — evaluated, not pursued.
+- **Шаги:**
+  1. Inventory evo1 docker: banxe-frankfurter, mirofish.
+  2. Inspect: frankfurter DATABASE_URL=postgres://...@172.17.0.1:5432/frankfurter (Postgres на host evo1); mirofish LLM_BASE_URL=http://localhost:4000/v1 (LiteLLM loopback) + uploads volume.
+  3. Stats: frankfurter=41 MiB, mirofish=33 MiB → ROI = 74 MiB/30 GiB = 0.23%.
+  4. Conclusion: оба effectively-stateful через cross-host network deps; миграция требует Postgres reconfig + LiteLLM exposure + uploads sync. Стоимость >> выгоды.
+  5. Открыт G-INFRA-04 для actual swap root cause (3.6 GiB swap не от этих двух).
+- **Статус:** ✅ (evaluated, not pursued)
+- **Proof:**
+  - docker inspect: cross-host deps подтверждены.
+  - docker stats: 41+33 MiB.
+- **Deviation:** Sprint-doc предписывал миграцию как path closure; вместо этого закрываем PA-5 как «evaluated, not pursued» по Best-Decision Principle (§4.1) — миграция нерентабельна, swap решается G-INFRA-04.
+- **Blocker:** нет.
+
+#### G-INFRA-04 — NEW (evo1 swap root cause)
+
+- Owner: Infrastructure.
+- Description: evo1 RAM 30 GiB, swap usage 3.6 GiB. Frankfurter+MiroFish исключены (74 MiB). Likely heavy containers (Midaz, Marble, Ballerine, Jube) или midaz-ledger restart-loop OOM. Identify top RSS consumers + correlate with swap.
+- Status: OPEN.
+- Priority: P2.
+- Linked: G-INFRA-03 (closed), G-OPS-03 (midaz-ledger restart), IL-PA-05-CLOSE.
+- Target close: 2026-05-12.
+
+#### Phase status update
+
+- PA-2 ✅ DONE.
+- PA-4 ✅ DONE.
+- PA-5 ✅ EVALUATED-NOT-PURSUED.
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-1.
