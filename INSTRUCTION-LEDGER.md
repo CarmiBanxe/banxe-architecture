@@ -2883,3 +2883,37 @@
 - **Anchors:** MetaClaw 1df8b66..016dc26; ADR-018 (5-layer hybrid AI compute); INS-2026-05-04-ORG-CLEANUP / P4.3-EVO2 / P4.3-Q235 / P4.2-ROCM.
 - **Successor:** G-INFRA-01 (evo2 missing from .claude/rules/infrastructure.md + SERVICE-MAP) — отдельный шаг.
 - **Lesson:** organisational/canonical work (HW matrix, runbooks, ADR-018 cross-links) MUST land on a named branch before merge to main.
+
+---
+
+### IL-CANON-04 — G-CANON-01 Week 2 closed; §15 Claude-Code-First added
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** (a) Закрыть G-CANON-01 Week 2 — canon-judge wired to Ollama qwen3.5:35b, 13/13 live tests PASS; (b) Зафиксировать §15 Claude-Code-First (CCF) в каноне ADR-025 и living doc; открыть G-CANON-15.
+- **Шаги:**
+  1. PR CarmiBanxe/MetaClaw#3 squash-merged: judge.py wired (think=false, format=json, num_predict=512), 13 live tests via -m llm marker, pyproject markers registered.
+  2. 13/13 cases PASS, total 138.73s (avg 10.67s warm).
+  3. ADR-025 + AGENT-INTERACTION-CANON.md дополнены §15 CCF.
+  4. G-CANON-15 OPEN зарегистрирован.
+- **Статус:** ✅
+- **Proof:**
+  - MetaClaw PR #3 merged (commit 81679ef, ветка deleted).
+  - pytest run: 13 passed in 138.73s.
+  - banxe-architecture PR #<this> с §15 patch.
+- **Deviation:** нет.
+- **Blocker:** Week 3 (MCP hook integration в Claude Code config, audit mode) — следующий sprint.
+
+#### G-CANON-15 — NEW
+
+- Owner: Architecture WG.
+- Description: Cover §15 Claude-Code-First in conversation-judge prompts; add V-14 regression test ("команда выдана в shell, хотя могла быть в Claude Code" → expected warn).
+- Status: OPEN.
+- Linked: ADR-025 §15, ADR-024, ADR-026, G-CANON-01.
+- Target close: 2026-05-31.
+
+#### G-CANON-01 — Status update
+
+- Week 2: ✅ DONE (13/13 live tests PASS).
+- Week 3: 🔄 IN-PROGRESS (MCP hook integration в Claude Code config, audit mode).
+- Week 4: ⏳ PENDING (enforce mode на known-bad patterns).
