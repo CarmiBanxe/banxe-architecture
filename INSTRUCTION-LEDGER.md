@@ -2900,7 +2900,7 @@
 - **Proof:**
   - MetaClaw PR #3 merged (commit 81679ef).
   - pytest run: 13 passed in 138.73s.
-  - banxe-architecture PR с §15 patch.
+  - banxe-architecture PR #48 с §15 patch.
 - **Deviation:** нет.
 - **Blocker:** Week 3 (MCP hook integration в Claude Code config, audit mode) — следующий sprint.
 
