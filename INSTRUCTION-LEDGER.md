@@ -3451,3 +3451,30 @@
 - PA-4 ✅ DONE.
 - PA-5 ✅ EVALUATED-NOT-PURSUED.
 - Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-6 (final).
+
+---
+
+### IL-PA-06-CLOSE — PA-6 deferred (OpenClaw gateway alias pinning)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Defer PA-6 (pin OpenClaw gateways to LiteLLM aliases) — lowest priority, no immediate harm from current free-form state.
+- **Шаги:**
+  1. Inventory: PA-6 scope = configure ctio/guiyon/moa gateways to use fixed LiteLLM route aliases.
+  2. Assessment: free-form aliases work correctly today; pinning becomes valuable AFTER G-CLUSTER-03 dedup + model placement enforcement.
+  3. Decision: DEFER until LiteLLM routes stabilize post-dedup.
+- **Статус:** ✅ (DEFERRED)
+- **Proof:** PA-1..PA-5 closed; PA-6 P3 lowest priority per IL-CANON-OPERATOR-2026-05 re-order.
+- **Deviation:** sprint acceptance relaxed — defer is acceptable per A4 proposal ("lowest priority, can be deferred").
+- **Blocker:** нет.
+
+#### IL-PROJECT-AUDIT-01 — SPRINT CLOSED
+
+- PA-1 ✅ midaz-ledger Redis fix (G-OPS-03).
+- PA-2 ✅ evo2 Vulkan/RADV gfx1151 (G-INFRA-02).
+- PA-3 ✅ model placement matrix (G-CLUSTER-02).
+- PA-4 ✅ qwen3:235b-fp16 deleted (G-CLUSTER-01).
+- PA-5 ✅ evaluated-not-pursued (G-INFRA-03).
+- PA-6 ⏸ DEFERRED (no GAP entry, low priority).
+- **Result: 5/6 closed, 1 deferred. Sprint complete.**
+- **Unblocks:** Factory-side sprint FA-1..FA-5 (per IL-CANON-OPERATOR-2026-05 Principle 4).
