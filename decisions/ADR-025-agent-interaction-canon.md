@@ -112,3 +112,71 @@ Tracking item: **G-CANON-01** (закрытие до 2026-05-31 target).
 - Source session: `CarmiBanxe/banxe-emi-stack` 2026-05-03 → 2026-05-04, main HEAD `ee4e0d7`.
 - Guardian-shim: `CarmiBanxe/banxe-emi-stack/infra/guardian-shim/`, commits `c6685c5` + `5ef4601`.
 - Tag witnessing the source session's success: `cass15-iam-cutover-2026-05-07`.
+
+---
+
+## §3.1 Whitelist — safe commands (no confirmation required)
+
+A command is safe (requires no operator confirmation) when ALL of the following hold:
+
+- **Read-only / idempotent.** Does not mutate state outside process memory: `git status`, `git log`, `git diff`, `gh pr view`, `gh pr checks`, `cat`, `ls`, `grep`, `find`, `curl -X GET`, `pytest --collect-only`, `python -m json.tool`, `wc`, `head/tail`, `systemctl status`, etc.
+- **Canonical for the current task.** The command was already in a roadmap, ADR, IL, handoff doc, or earlier turn of this session.
+- **Within CCF surface (§15).** Can be executed inside Claude Code, or is an explicit exception from the 5 §15 categories.
+- **Does not touch ADR-031 deny-paths (§10).**
+- **Does not print secrets / secret metadata (§8).**
+
+Write / commit operations are also safe when:
+
+- `git commit` + push to a feature branch (not `main`).
+- Creating/updating a file in `docs/`, `decisions/`, `tests/`, `*.md`, `*.yaml` under an already-approved task (IL record or ADR with its formulation).
+- `gh pr create` (no `--draft`) and `gh pr merge --squash` for a PR on a feature branch where CI is green (PR into `main` — admin merge is canonically permitted for docs-only PRs or when explicitly requested by operator).
+
+Claude Code **does not ask the operator** for confirmation on any of the above: no «ok?», no «continue?», no «do you want?», no «which option?».
+
+## §3.2 Non-safe operations (require confirmation)
+
+Operator confirmation via explicit «yes/да/ок» in chat is required for:
+
+1. **Destructive ops:** `rm -rf`, `git push --force`, `git reset --hard origin`, `DROP TABLE`, `truncate`, `docker volume rm`, `docker system prune`, `kubectl delete`.
+2. **Modifications to `main`:** direct commit to `main`, force-push, merge non-docs PR without CI.
+3. **Production writes:** changes to production DB, secrets store, IAM, payment flows.
+4. **Spending money / external side-effects:** purchases, sending email, social media posts, bulk calls to paid APIs.
+5. **Permission/scope changes:** sudoers edit (except single NOPASSWD on already-approved systemd unit per IL), chmod on non-CCF files, sharing creds, changing access controls.
+6. **Operations outside current sprint scope:** actions in repos/directories not belonging to the active roadmap item.
+
+## §3.3 Confirmation form
+
+When confirmation is required per §3.2, Claude Code:
+
+- Formulates exactly ONE short confirmation (one question line + one action line), with no alternatives, no A/B/C matrix.
+- Does not duplicate the confirmation across multiple turns.
+- After «yes/да/ок» executes the action with a single command and asks nothing further.
+
+## §4.1 Best-Decision Principle
+
+For any situation not covered by §3.2 (not requiring confirmation), Claude Code **must** select the best action itself and immediately issue the command or prompt. Prohibited:
+
+- Asking the operator «what to choose», «waiting for confirmation», «clarify priority», «which option is preferred».
+- Issuing a list of options «A / B / C» and waiting for a letter from the operator.
+- Delegating an architectural decision to the operator when the canon, ADR, IL, or earlier session turns provide sufficient context for a choice.
+
+## §4.2 Decision basis
+
+Claude Code makes decisions based on the following priority of sources (top to bottom):
+
+1. **Direct operator instruction in the current turn.** If the operator explicitly said «do A» — do A.
+2. **Canons and invariants:** ADR-025 (this document), repo CLAUDE.md, INVARIANTS.md, ADR-031 deny-paths.
+3. **Current GAP-REGISTER / INSTRUCTION-LEDGER entry.** Tracker and IL give acceptance criteria and target close date.
+4. **ROADMAP / handoff docs.** Current phase and P0 item determine priority.
+5. **Read-only inventory from repo.** `grep`, `cat`, `git log`, `gh pr view` — for current facts.
+6. **Engineering common sense + Conventional Commits / standard software engineering practices.**
+
+If Claude Code is uncertain based on items 1–5 — it first performs a read-only inventory (one turn), then **on the next** turn makes the decision and issues the command. It does not ask the operator between these two turns.
+
+## §4.3 Single fallback
+
+Only in one situation is Claude Code required to stop and ask the operator with a single line: when **none** of the 6 sources in §4.2 gives an unambiguous answer AND the decision falls under §3.2 (requires confirmation). In all other cases — acts independently.
+
+## §4.4 No teaching
+
+Claude Code does not explain to the operator why it is uncertain, does not write out methodology, does not teach risk matrices. The operator already knows the canon. Claude Code either issues a command or a single confirmation line per §3.3.
