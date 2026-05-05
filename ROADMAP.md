@@ -88,6 +88,51 @@
 - [x] ARCHITECTURE-17-COMPLIANCE-AI-COPILOT.md
 - [ ] ARCHITECTURE-18-COMPLIANCE-KB.md (next)
 
+## Phase 4.5 — Compliance & IAM Cutover (COMPLETED 2026-05-04)
+
+- [x] FCA CASS 15 Safeguarding Engine — IL-001..011 (banxe-emi-stack Phase 1)
+- [x] AI Plane (LiteLLM v2 + 4 aliases) — ADR-016, INVARIANTS I-32/I-33
+- [x] Keycloak IAM cutover via STRATEGY-B (Legion host) — ADR-017, tag `cass15-iam-cutover-2026-05-07`, banxe-emi-stack PR #50
+- [x] Production Postgres backend validation (staging :8181) — G-IAM-09 closed, banxe-emi-stack PR #55
+- [x] Phase 57 IAM cutover ROADMAP entry — banxe-emi-stack PR #53
+
+## Phase 4.6 — Guardian conversation-level enforcement (COMPLETED 2026-05-05)
+
+- [x] Guardian factory + project deployed — ADR-019 + ADR-022, evo1 :8195 / :8196
+- [x] Bash shim (Strategy-S1 native PreToolUse hook) — ADR-024, banxe-emi-stack PR #48
+- [x] claude.bash scope rules CB1..CB4 — ADR-026, MetaClaw d122a61
+- [x] ENFORCE mode rolled out for banxe-emi-stack + banxe-architecture — G-GUARD-02 DONE
+- [x] Cron pull-deploy MetaClaw guardian/ → evo1 — G-DEPLOY-01 DONE
+- [x] Agent Interaction Canon (4-layer canon: auto-run / stop-barrier / best-decision / session-canon) — ADR-025
+- [x] §3/§4/§15 expansion: whitelist taxonomy, BDP, Claude-Code-First — IL-CANON-04, IL-CANON-05
+
+## Phase 4.7 — V-violations canon formalisation (COMPLETED 2026-05-05)
+
+13/13 violations from HANDOFF-2026-05-04 addressed in canonical GAP-REGISTER.md:
+
+| V-XX | Severity | Resolution |
+|------|----------|------------|
+| V-01 | CRITICAL | Guardian-shim enforce — G-GUARD-01..04 |
+| V-02 | HIGH | KC realm session-timeout hardening (Phase G live-apply pending) |
+| V-03 | HIGH | G-KYC-01/02 — KYC re-verification triggers |
+| V-04 | HIGH | G-IAM-06 verified DONE |
+| V-05 | HIGH | G-IAM-08 reconciled |
+| V-06 | HIGH | G-CASS-01/02 — audit-trail durability |
+| V-07 | MEDIUM | G-OPS-01/02 — Postgres backup rotation |
+| V-08 | MEDIUM | G-CI-01/02 — end-to-end smoke gate |
+| V-09 | MEDIUM | G-SEC-01/02 — secrets rotation (Vault placeholder) |
+| V-10 | MEDIUM | G-OBS-01/02 — KC alert routing reframed |
+| V-11 | MEDIUM | G-KYC-03/04 — SumSub webhook retry/DLQ |
+| V-12 | LOW | G-API-01/02 — auth rate limits |
+| V-13 | LOW | docs/ops STRATEGY-B archive |
+
+Pending implementation phase: ADR-027..034 + code/tests + deploy. See GAP-REGISTER.md.
+
+## Pending operator gates (live-ops)
+
+- **Phase F**: live switch dev-file → Postgres backend on production KC. RUNBOOK in `banxe-emi-stack/infra/keycloak-banxe-emi/RUNBOOK.md §G-IAM-09 Closure`. Trigger: operator says "go Phase F".
+- **Phase G**: live-apply session-timeout hardening per V-02. RUNBOOK in same file §Phase G. Trigger: "go Phase G".
+
 ## Phase 5: Advanced Features (PLANNED)
 - [ ] Multi-agent communication protocol
 - [ ] Real-time dashboard (ClickHouse + Superset)
@@ -175,5 +220,5 @@
 
 ---
 
-> Last Updated: 2026-04-12 | Maintained by: CarmiBanxe
-> Cross-repo: banxe-emi-stack (refactor/claude-ai-scaffold branch, 52 commits ahead)
+> Last Updated: 2026-05-05 | Maintained by: CarmiBanxe
+> Cross-repo state: banxe-emi-stack: main HEAD post-merge, all V-violations canonized; MetaClaw: guardian deployed pull-mode, claude.bash rules active
