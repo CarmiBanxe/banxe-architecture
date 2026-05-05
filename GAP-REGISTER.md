@@ -370,11 +370,11 @@
   Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE (где G-INFRA-03 closed как NOT PURSUED), docs/canon/operator-canon-2026-05.md.
   Priority: P2.
 
-- [ ] G-OPS-03: midaz-ledger restart loop on evo1 — OPEN
-  Discovered 2026-05-05 in IL-AUDIT-01 A2 (docker ps showed `midaz-ledger | Restarting (1) 53 seconds ago`). Primary CBS per ADR-013. Mongo + RabbitMQ healthy.
-  Action: PA-1 (read midaz-ledger logs; check resource limits; check connectivity to mongodb + rabbitmq; check recent compose changes).
-  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-013, IL-001 Midaz healthcheck fix.
-  Priority: P0 (touches client-funds path, I-28 LedgerPort invariant).
+- [x] G-OPS-03: midaz-ledger restart loop resolved — **DONE 2026-05-05** (existing redis-stack container stopped SIGTERM 4 days ago; midaz-ledger expected Redis on 172.22.0.1:6379 (host gateway midaz-network) per Variant 2 lightweight topology in docker-compose.midaz.yml)
+  Fix: `docker start redis` (recovery existing container redis/redis-stack:latest). Verify: midaz-ledger "Connected to Redis/Valkey in STANDALONE mode ✅".
+  Follow-up: G-OPS-05 — set restart policy=unless-stopped on redis container to prevent recurrence.
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-013, IL-001 Midaz healthcheck fix, IL-PA-01-CLOSE.
+  Priority: P0 (closed).
 
 - [ ] G-FACTORY-01: Legion has no local model serving — OPEN
   Discovered 2026-05-05 in IL-AUDIT-01 A1. Legion has llama.cpp built but no weights, no ollama. RTX 4070 Laptop (CUDA-capable, 8 GB VRAM) idle for inference. All routine coding-agent calls go either to cloud API or to evo1/evo2 via LiteLLM:4000.

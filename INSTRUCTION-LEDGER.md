@@ -3298,3 +3298,81 @@
 - **Anchors:** PA-5a output, docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, IL-PA-05-CLOSE.
 - **Note:** old password value is NOT documented in this ledger entry (would itself be a leak). Operator has access to it via terminal scrollback / shell history; rotation key generation is the only forward action.
 
+
+---
+
+### IL-PA-01-CLOSE — PA-1 G-OPS-03 closed (Redis restart)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-1 (midaz-ledger restart loop) — root cause + fix.
+- **Шаги:**
+  1. Logs: midaz-ledger fail-init "dial tcp 172.22.0.1:6379: i/o timeout" каждые ~60s.
+  2. Inventory: REDIS_HOST=172.22.0.1:6379 (midaz-network gateway = host evo1).
+  3. Host: ничего не слушает :6379, никаких redis/valkey контейнеров running.
+  4. docker-compose.midaz.yml header: "Variant 2 lightweight — Redis: existing redis-stack (:6379) — key prefix midaz:".
+  5. docker ps -a: "redis (redis/redis-stack:latest) Exited (143) 4 days ago" — clean SIGTERM.
+  6. Fix: `docker start redis` → Up 0.0.0.0:6379->6379/tcp.
+  7. Verify (90s wait): midaz-ledger Up 1m+, "Connected to Redis/Valkey in STANDALONE mode ✅".
+- **Статус:** ✅
+- **Proof:**
+  - docker ps redis: Up, ports 0.0.0.0:6379.
+  - midaz-ledger logs: connected, перешёл к Postgres init.
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+#### G-OPS-05 — NEW (redis restart policy)
+
+- Owner: Infrastructure.
+- Description: Existing redis container на evo1 не имеет restart policy = always/unless-stopped, поэтому после maintenance он не поднялся автоматически и блокировал midaz-ledger 4 дня. Fix: docker update --restart unless-stopped redis.
+- Status: OPEN.
+- Priority: P2.
+- Linked: G-OPS-03 (closed), ADR-013, IL-PA-01-CLOSE.
+- Target close: 2026-05-08.
+
+#### Phase status update
+
+- PA-1 ✅ DONE.
+- PA-2 ✅ DONE.
+- PA-4 ✅ DONE.
+- PA-5 ✅ EVALUATED-NOT-PURSUED.
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-3.
+
+---
+
+### IL-PA-01-CLOSE — PA-1 G-OPS-03 closed (Redis restart)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-1 (midaz-ledger restart loop) — root cause + fix.
+- **Шаги:**
+  1. Logs: midaz-ledger fail-init "dial tcp 172.22.0.1:6379: i/o timeout" каждые ~60s.
+  2. Inventory: REDIS_HOST=172.22.0.1:6379 (midaz-network gateway = host evo1).
+  3. Host: ничего не слушает :6379, никаких redis/valkey контейнеров не running.
+  4. docker-compose.midaz.yml header: "Variant 2 lightweight — Redis: existing redis-stack (:6379)".
+  5. docker ps -a: "redis (redis/redis-stack:latest) Exited (143) 4 days ago" — clean SIGTERM.
+  6. Fix: `docker start redis` → Up 0.0.0.0:6379->6379/tcp.
+  7. Verify (90s wait): midaz-ledger Up 1m+, "Connected to Redis/Valkey in STANDALONE mode ✅", proceeded to Postgres init.
+- **Статус:** ✅
+- **Proof:**
+  - docker ps redis: Up, ports 0.0.0.0:6379.
+  - midaz-ledger logs post-fix: STANDALONE mode connected.
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+#### G-OPS-05 — NEW (redis restart policy)
+
+- Owner: Infrastructure.
+- Description: Existing redis container на evo1 не имеет restart policy = always/unless-stopped, поэтому после maintenance он не поднялся автоматически и блокировал midaz-ledger 4 дня. Требуется: (a) `docker update --restart=unless-stopped redis`, или (b) systemd unit, или (c) docker compose с restart policy.
+- Status: OPEN.
+- Priority: P2.
+- Linked: G-OPS-03 (closed), ADR-013 midaz primary CBS, IL-PA-01-CLOSE.
+- Target close: 2026-05-08.
+
+#### Phase status update
+
+- PA-1 ✅ DONE.
+- PA-2 ✅ DONE.
+- PA-4 ✅ DONE.
+- PA-5 ✅ EVALUATED-NOT-PURSUED.
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-3.
