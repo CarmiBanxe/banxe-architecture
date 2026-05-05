@@ -255,6 +255,35 @@
 - [ ] G-CI-02: Required-check enforcement — NEW 2026-05-05
   After G-CI-01 implementation: switch GitHub branch-protection on `main` so that `smoke-gate` is a required status check (not just advisory). Audit existing required checks; document in `INSTRUCTION-LEDGER` IL-CI-01. Owner: Architecture WG.
 
+
+## Observability — Gaps (V-10 from HANDOFF-2026-05-04, reframed)
+
+> V-10 reads "Keycloak realm alerts not wired to PagerDuty". PagerDuty NOT deployed (not in stack).
+> Reframed as product-neutral: Keycloak audit events exist but reach no alert channel.
+
+- [ ] G-OBS-01: Keycloak audit events not wired to any alert channel — NEW 2026-05-05
+  **Source:** V-10 (HANDOFF-2026-05-04, MEDIUM).
+  **Components:** `infra/keycloak-banxe-emi/realms/banxe-emi-realm.json` (`eventsListeners = []`), n8n :5678, Telegram Bot.
+  **Risk:** `LOGIN_ERROR`, `CLIENT_LOGIN_ERROR`, `TOKEN_EXCHANGE_ERROR` events are captured by Keycloak internally but silently dropped — no ops team notification on auth anomalies.
+  **Current state:** `eventsEnabled=True`, 18 event types enabled, `adminEventsEnabled=True` — but `eventsListeners` is not set, so events are stored in KC DB only (default 0-day expiry).
+  **Plan:**
+    1. Audit — confirm `eventsListeners` empty in live realm: `GET /admin/realms/banxe-emi` → inspect `eventsListeners`.
+    2. ADR-033 — choose routing channel: (a) n8n webhook trigger → Telegram bot (lowest friction — n8n+Telegram already in stack for safeguarding alerts); (b) Keycloak SPI Event Listener → direct Slack webhook; (c) Prometheus Alertmanager + external on-call tool (heaviest, requires Prometheus deploy).
+    3. Fix — implement chosen option; set `eventsListeners` in realm-export; add KC event retention (≥90 days for audit trail).
+  **Owner:** Platform WG.
+  **Linked:** ADR-017 §GATE-D (realm provisioning), ADR-033 (to be opened), G-IAM-01, I-24.
+
+- [ ] G-OBS-02: Alert-coverage CI smoke test for Keycloak auth events — NEW 2026-05-05
+  **Source:** G-OBS-01 follow-on.
+  **Components:** `tests/integration/` or dedicated smoke fixture, Keycloak Admin API, alert channel endpoint.
+  **Risk:** Without a smoke test, alert routing regressions are invisible until a real auth incident goes unnoticed.
+  **Plan:**
+    1. CI fixture: POST synthetic `LOGIN_ERROR` event via Keycloak Admin API (`POST /admin/realms/banxe-emi/events`).
+    2. Assert event reaches alert channel within 60 s (poll endpoint / check Telegram bot / inspect n8n execution log).
+    3. Run in `quality-gate.yml` smoke job after KC health check.
+  **Owner:** Platform WG.
+  **Linked:** G-OBS-01, ADR-033, G-CI-01.
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
