@@ -423,3 +423,5 @@ GAP-012 (IDV), GAP-014 (EMI products), GAP-018 (FCA reporting),
 GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - [2026-04-17] 9c140ef — feat(payments): wire PaymentService+LedgerPort in DI, align router type hints — Phase 2 P0
 - [2026-04-19] 7816c87 — refactor(auth): add application service seam for thin router migration
+- [2026-05-03] 3adf76b — feat(infra): Keycloak realm banxe-emi — compose stack + realm export + runbook (pre-GATE-A; G-IAM-01..05,07 prep)
+- [2026-05-04] 76dd1e3 — feat(guardian-shim): claude-code pre-bash enforcer v0.1 + Strategy-S1 native hook (audit default)
