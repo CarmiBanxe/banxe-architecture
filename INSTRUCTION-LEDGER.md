@@ -2940,3 +2940,21 @@
 - Description: Cover §3.1-§3.3 + §4.1-§4.4 в canon-judge prompt; добавить V-14..V-17 в test_canon_judge.py; rerun coverage gate (target 17/17 PASS).
 - Status: OPEN.
 - Linked: ADR-025 §3/§4/§15, G-CANON-01 Week 3.
+
+---
+
+### IL-AUDIT-01 — Factory vs Project audit sprint (2026-05)
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC (in progress)
+- **Status:** OPEN
+- **Priority:** P1 (organisational hygiene + utilisation gap)
+- **Scope:** docs/roadmap/audit-2026-05-factory-vs-project.md
+- **Sub-artefacts:** A1 DONE, A2 DONE, A3/A4/A5 PENDING.
+- **Key findings (preliminary):**
+  - Legion: 23 GiB WSL RAM cap, RTX 4070 Laptop CUDA-ready, no ollama, llama.cpp built; CLIs: claude 2.1.128, aider 0.86.2, openclaw 2026.3.24, metaclaw, litellm, continue, cursor 2.6.20, codex-cli 0.106.0; Guardian-shim enforce/closed.
+  - evo1: 30 GiB RAM (tight), 2.8 TB SSD, gfx1151 ROCm+Vulkan ready; 19 active BANXE services, 13 docker; midaz-ledger restart loop (P0).
+  - evo2: 93 GiB RAM (3x evo1), 1.9 TB SSD, 870 GB models inc. qwen3:235b-a22b-fp16 470 GB; GPU/ROCm detection broken (llvmpipe fallback) — userspace stack regression.
+  - USB4 RPC mesh UP; qwen3-235b-master :8082, llama-rpc-worker :50052.
+- **Anchors:** ADR-018, IL-CANON-04, MetaClaw 016dc26.
+- **Successor candidates:** G-INFRA-02 evo2 GPU stack regression; G-INFRA-03 RAM imbalance evo1=30 vs evo2=93; G-OPS-03 midaz-ledger restart loop.
