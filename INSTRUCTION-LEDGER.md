@@ -2986,3 +2986,41 @@
   - ADR-027 — formalise factory↔project fork as canonical architecture decision (3 layers per A4)
 - **Anchors:** PRs #50, #52, #54; ADR-018, ADR-019, ADR-026; IL-CANON-04; MetaClaw 016dc26.
 - **Lesson learned:** sprint-level audit produces best results when split into baseline (read-only) → gap-analysis (analytical) → proposal (design) → closure (gap-register migration) per GSD phases, with each artefact in its own PR.
+
+---
+
+### IL-CANON-06 — G-CANON-01 Week 3 closed; G-CI-MAIN-DEBT opened
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть G-CANON-01 Week 3 (MCP server skeleton, audit mode); зарегистрировать pre-existing CI debt в metaclaw/skill_manager.py + tests/test_v03_live_tinker.py как G-CI-MAIN-DEBT.
+- **Шаги:**
+  1. PR CarmiBanxe/MetaClaw#4 squash-admin merged (CI failed на pre-existing tech debt, не от нашего diff).
+  2. 3/3 MCP smoke tests PASS (server creation + tool name + handlers).
+  3. mcp>=1.0 + pytest-asyncio>=0.23 добавлены в pyproject.toml.
+  4. Открыт G-CI-MAIN-DEBT.
+- **Статус:** ✅
+- **Proof:**
+  - MetaClaw PR #4 merged (commit d4a49a6 squashed).
+  - pytest local: 3 passed.
+  - ruff local: 3 files clean.
+- **Deviation:** admin-bypass CI допустим per §3.2 (PR — только новые файлы в guardian/src/canon_judge/mcp/, существующий код не тронут; CI failures pre-existing).
+- **Blocker:** G-CI-MAIN-DEBT нужно закрыть до Week 4 enforce mode.
+
+#### G-CANON-01 — Status update (Week 3 closed)
+
+- Week 1: ✅ skeleton + 13 xfail tests.
+- Week 2: ✅ canon-judge wired to Ollama qwen3.5:35b, 13/13 live PASS.
+- Week 3: ✅ MCP server skeleton (audit mode), 3/3 smoke PASS.
+- Week 4: 🔄 IN-PROGRESS (wire в Claude Code .claude/settings.json MCP config + collect audit data + tune prompts).
+- Target close: 2026-05-31.
+
+#### G-CI-MAIN-DEBT — NEW
+
+- Owner: Architecture WG / MetaClaw maintainer.
+- Description:
+  1. ruff F401: `import numpy as np` x2 + `from typing import List` в metaclaw/skill_manager.py — unused imports.
+  2. pytest collect error: tests/test_v03_live_tinker.py импортирует `tinker` модуль, отсутствующий в CI окружении. Fix: pytest skipif (importorskip) или вынести в optional [tinker] extras.
+- Status: OPEN.
+- Linked: blocks normal CI flow для всех future feature PR; G-CANON-01.
+- Target close: 2026-05-08.
