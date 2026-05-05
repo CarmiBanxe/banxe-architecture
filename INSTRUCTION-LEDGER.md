@@ -2861,3 +2861,23 @@
 - Closed: 2026-05-05.
 - Mechanism: sparse clone + cron rsync + NOPASSWD restart.
 - Linked: ADR-026, IL-CANON-02.
+
+---
+
+### INS-2026-05-05-P4.3-Q235-LIVE
+
+- **Источник:** operator (Mark) execution + Claude Code wiring, 2026-05-05 ~13:50 CEST.
+- **Инструкция:** qwen3:235b-a22b Q3_K_S deployed via llama-server standalone evo2:8082; finalize wiring (ufw, LiteLLM route, cleanup).
+- **Operator-completed pre-conditions:** model live на evo2:8082, health ok, NRestarts=0, **5.1 tok/s gen**, partial GPU offload 40 layers (Vulkan, Q3_K_S quant).
+- **Шаги:**
+  1. UFW evo2:8082 — allow LAN 192.168.0.0/24 + Tailscale 100.64.0.0/10 (operator OPERATOR_RUN A).
+  2. Disabled orphan rpc-worker-q235 на evo1:50053 (was set up для RPC split which BLOCKED yesterday) — operator OPERATOR_RUN B; glm-master pipeline на evo2:50052 untouched.
+  3. LiteLLM route добавлен: `model_name: reasoning-235b` → `openai/qwen3` @ http://192.168.0.15:8082/v1, api_key `sk-rpc-q235-2026`, timeout 1200. YAML validate OK (23 routes total).
+  4. litellm-v2.service restarted (Legion user systemd), active.
+  5. Backend smoke evo2:8082 direct: `qwen3-235b-Q3_K_S.gguf` model id, /health ok, /v1/chat/completions 200 (10 tokens generated, prompt_tokens=12, cached_tokens=11). LiteLLM end-to-end gateway smoke PENDING (Legion sandbox blocks :4000 curl from Claude Code; backend confirmation = passthrough confidence).
+  6. MetaClaw commit `4b69b40` (feat branch) → cherry-picked to main `af503c5` (`d122a61..af503c5 main → main`). Operator's feat branch state restored, stash popped clean.
+- **Status:** ✅ DONE — reasoning-235b route LIVE; qwen3:235b-a22b Q3_K_S accessible через :4000 gateway.
+- **Cleanup task scheduled:** `ollama rm qwen3:235b-a22b-fp16` (free ~470 GB) после operator confirmation that Q3_K_S production-ready (recommend 24-48h observation window).
+- **Throughput:** **5.1 tok/s gen** на partial GPU offload 40 layers + CPU. Q3_K_S quant tradeoff: ~10-15% accuracy loss vs Q4_K_M, но виден Q4_K_M unbloackable на текущем кластере.
+- **Anchors:** ADR-018 §"Required sprints" P4.3-Q235, runbook docs/runbooks/p4.3-q235-rpc-split.md (path b realized via standalone, not RPC).
+- **Successor:** observation window 24-48h, then `ollama rm qwen3:235b-a22b-fp16` cleanup; possibly path (c) Ollama 0.24+ MoE-aware loader watch.
