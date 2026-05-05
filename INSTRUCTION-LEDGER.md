@@ -2798,3 +2798,40 @@
 - **Test cases:** 13 violations из `docs/canon/violations-2026-05-04.md`
 - **Rollout:** audit (W1-2) → enforce known-bad (W4) → expand (post)
 - **Status:** DESIGN
+
+---
+
+### IL-CANON-02 — V-01 closure (G-GUARD-01 DONE)
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть V-01 (Guardian-shim усиление) — добавить scope `claude.bash` (agent.bash family) в Guardian factory как третью санкционированную семью per ADR-026.
+- **Шаги:**
+  1. Diagnose: 81/83 unknown verdicts из-за rejected scope claude.bash.
+  2. Root cause #1: Guardian factory rejects scope (auditor.py allowlist factory|project).
+  3. Root cause #2: corpus empty (clone /home/banxe/banxe-architecture отсутствовал на evo1).
+  4. Closed #2: clone repo + cron */15min pull (evo1).
+  5. Closed #1: ADR-026 ACCEPTED + auditor.py patch (third branch for claude.bash → ClaudeBashRules) + claude_bash_rules.py deployed via scp на evo1:/data/banxe/guardian/src/.
+  6. Verified positive: `git status -sb` → pass (4/4 PASS).
+  7. Verified negative: `rm -rf / --no-preserve-root` → fail (CB4-dangerous-cmd BLOCK).
+- **Статус:** ✅
+- **Proof:**
+  - PR #32 merged → main `598d7a4`.
+  - Verdict positive: request_id 49ce5f94-... (2026-05-05T09:04:09Z).
+  - Verdict negative: request_id 5ad925de-... (2026-05-05T09:08:49Z).
+  - Both written to ClickHouse guardian_audit_events.
+- **Deviation:** deploy на evo1 идёт через scp вручную (нет git checkout). Открыт follow-up C: pipeline deploy.
+- **Blocker:** нет.
+
+#### G-GUARD-01 — Status: DONE
+
+- Closed: 2026-05-05.
+- Source ADR: ADR-026.
+- Tests verified: positive + negative on production endpoint http://192.168.0.72:8195.
+
+#### G-DEPLOY-01 — NEW (follow-up C)
+
+- Owner: Architecture WG.
+- Description: Pipeline-deploy MetaClaw guardian/ → evo1 /data/banxe/guardian/ (replace manual scp).
+- Status: OPEN.
+- Linked: ADR-026, IL-CANON-02.
