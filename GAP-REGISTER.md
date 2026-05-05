@@ -347,9 +347,8 @@
 | Policy provenance chain до ClickHouse | policy_scope в audit_trail — прямое доказательство FCA MLR 2017 |
 | scenario_registry.yaml I-1..I-10 | Machine-verifiable invariants — редкость на этом этапе. |
 | governance/change-classes.yaml (CLASS_B) | Защита от auto-rewriting SOUL.md — опережает FINOS AIGF рекомендации. |
-- [ ] G-INFRA-02: evo2 GPU userspace stack regression — OPEN
-  Discovered 2026-05-05 in IL-AUDIT-01 A3. rocminfo empty, vulkaninfo --summary shows only `llvmpipe` (CPU fallback). gfx1151 hardware present per BIOS UMA carveout (vram_total=32 GiB). Likely missing/broken amdgpu + mesa-vulkan-drivers + ROCm runtime after kernel 6.17.0-23 upgrade.
-  Action: PA-2 (verify packages on evo2; reinstall rocm-dev + mesa-vulkan-drivers; recheck vulkaninfo + rocminfo).
+- [x] G-INFRA-02: evo2 GPU userspace stack — **DONE 2026-05-05** (Vulkan/RADV gfx1151 verified; ROCm not required for Ollama Vulkan backend; rocminfo/clinfo deferred to G-ROCM-01 if HIP path needed)
+  Root cause: user moriel-carmi not in render/video groups (mesa-vulkan-drivers 25.2.8 already installed correctly). Fix: `usermod -aG render,video moriel-carmi`. Verify: `vulkaninfo --summary` shows Radeon 8060S Graphics (RADV GFX1151), Vulkan 1.4.318.
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-018, INS-2026-05-04-P4.2-ROCM-BLOCKED.
   Priority: P1.
 

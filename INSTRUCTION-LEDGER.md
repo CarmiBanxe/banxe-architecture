@@ -3078,3 +3078,36 @@
 - **Effect:** takes effect on next Claude Code session start.
 - **Anchors:** ADR-027, IL-CANON-04, IL-CANON-OPERATOR-2026-05, `.claude/rules/approval-rules.md`, `.claude/rules/safety-rules.md`.
 - **Reperential point:** main @ 9d53979.
+
+---
+
+### IL-PA-02-CLOSE — PA-2 G-INFRA-02 closed (Vulkan scope)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-2 (evo2 GPU userspace) в Vulkan-only scope.
+- **Шаги:**
+  1. Discovered: vulkaninfo showed only llvmpipe (no GPU). Root cause: user moriel-carmi not in render/video groups.
+  2. Fix: `sudo usermod -aG render,video moriel-carmi` + new ssh session for group activation.
+  3. Verify: `vulkaninfo --summary` → Radeon 8060S Graphics (RADV GFX1151), Vulkan 1.4.318. ✅
+  4. ROCm (rocminfo/clinfo) deferred — not required for Ollama Vulkan backend (target workload qwen3:235b Q3_K_S).
+- **Статус:** ✅
+- **Proof:**
+  - `id moriel-carmi` includes render+video groups.
+  - `vulkaninfo --summary | grep deviceName` shows: `Radeon 8060S Graphics (RADV GFX1151)` driver=`radv`.
+- **Deviation:** acceptance criteria relaxed: rocminfo/clinfo deferred to G-ROCM-01. Rationale: per IL-CANON-OPERATOR-2026-05 principle #2 (evo2 as-is), ROCm не требуется для qwen3:235b Q3_K_S via Ollama Vulkan.
+- **Blocker:** нет.
+
+#### G-ROCM-01 — NEW (deferred from PA-2)
+
+- Owner: Infrastructure.
+- Description: Install ROCm runtime on evo2 (rocm-dev + rocminfo + clinfo) if HIP compute path needed for future models.
+- Status: DEFERRED.
+- Priority: P3.
+- Linked: G-INFRA-02 (closed), ADR-018.
+- Target close: when HIP-only model added to roadmap.
+
+#### Phase status update
+
+- PA-2 ✅ DONE.
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-4.
