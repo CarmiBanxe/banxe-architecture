@@ -3051,3 +3051,30 @@
 - Description: ruff F401 в metaclaw/skill_manager.py (numpy x2, typing.List); pytest collect error tests/test_v03_live_tinker.py (missing tinker dep).
 - Status: OPEN. Linked: blocks normal CI flow для всех future feature PR.
 - Target close: 2026-05-08.
+
+---
+
+### IL-SETTINGS-PERMISSIONS-2026-05 — Claude Code permissions reclassification
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC + DEPLOY (already applied to ~/.claude/settings.json by operator)
+- **Status:** ✅ DONE
+- **Priority:** P1 (governance hygiene; unblocks audit-series PR flow)
+- **Scope:** ~/.claude/settings.json on Legion (HOME-local, not in repo); ADR-027 documents the decision; this ledger entry records the application.
+- **Change applied:**
+  - Moved 4 rules from `permissions.ask` to `permissions.allow`: `Bash(git push *)`, `Bash(git -C * push *)`, `Bash(gh pr create *)`, `Bash(gh pr comment *)`.
+  - Retained in `permissions.ask`: `Bash(docker push *)`, `Bash(alembic upgrade *)`, `Bash(alembic downgrade *)`.
+  - Backup created: `~/.claude/settings.json.bak.20260505-<HHMMSS>`.
+- **Verification:**
+  - Operator verification command output (2026-05-05):
+    ```
+    ask= ['Bash(docker push *)', 'Bash(alembic upgrade *)', 'Bash(alembic downgrade *)']
+    allow_contains_git_push= True
+    allow_contains_git_c_push= True
+    allow_contains_pr_create= True
+    allow_contains_pr_comment= True
+    ```
+- **4-layer canon alignment:** matches `.claude/rules/approval-rules.md` whitelist (Layer 1) and `.claude/rules/safety-rules.md` stop-barrier (Layer 2); see ADR-027 §"4-layer canon mapping".
+- **Effect:** takes effect on next Claude Code session start.
+- **Anchors:** ADR-027, IL-CANON-04, IL-CANON-OPERATOR-2026-05, `.claude/rules/approval-rules.md`, `.claude/rules/safety-rules.md`.
+- **Reperential point:** main @ 9d53979.
