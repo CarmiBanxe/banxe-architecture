@@ -3454,6 +3454,7 @@
 
 ---
 
+
 ### IL-PA-06-CLOSE — PA-6 deferred (OpenClaw gateway alias pinning)
 
 - **Источник:** Operator (Moriel Carmi), 2026-05-05.
@@ -3478,3 +3479,28 @@
 - PA-6 ⏸ DEFERRED (no GAP entry, low priority).
 - **Result: 5/6 closed, 1 deferred. Sprint complete.**
 - **Unblocks:** Factory-side sprint FA-1..FA-5 (per IL-CANON-OPERATOR-2026-05 Principle 4).
+### IL-PA-01-DRAFT — PA-1 midaz-ledger Postgres provisioning runbook ready
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC + DESIGN (superseded — actual fix = docker start redis)
+- **Status:** ARCHIVED (runbook retained as DR reference)
+- **Priority:** P0 (ADR-013 LedgerPort invariant I-28)
+- **Sprint:** IL-PROJECT-AUDIT-01 (PR #58)
+- **Discovery (PA-1a..PA-1e, 2026-05-05 21:41-21:52 UTC):**
+  - midaz-ledger ExitCode=1 (silent exit), OOMKilled=false; not OOM, not network DNS, not dependency outage.
+  - Root cause (initially identified) = three-fold host postgres config drift, NOT a container defect:
+    (1) postgres@16-main listens on 5433, midaz expects 5432.
+    (2) listen_addresses=localhost only, docker bridge 172.22.0.1 excluded.
+    (3) midaz_onboarding, midaz_transaction DBs and midaz_app role do not exist.
+  - midaz-mongodb and midaz-rabbitmq are healthy; not contributors.
+  - 0 active consumers on midaz-ledger:8095 (container never started successfully).
+  - **Actual root cause (PA-1f):** redis container stopped (SIGTERM 4 days ago). Fix: `docker start redis`. See IL-PA-01-CLOSE.
+- **Plan (Variant A, host postgres reuse — analysed, not executed):** docs/runbooks/pa-01-midaz-ledger-postgres-provisioning.md, Phase A-F.
+  - Phase A: backup pg_dumpall → /data/banxe/midaz/backup-pre-pa-01-<timestamp>.sql.
+  - Phase B: CREATE ROLE midaz_app + CREATE DATABASE midaz_onboarding/midaz_transaction.
+  - Phase C: edit postgresql.conf listen_addresses + pg_hba.conf for docker bridge 172.22.0.0/16 + systemctl reload postgresql@16-main.
+  - Phase D: edit docker-compose.midaz.yml DB_ONBOARDING_PORT/DB_TRANSACTION_PORT "5432"→"5433".
+  - Phase E: restart midaz-ledger + verify logs/status/health.
+  - Phase F: smoke test curl /v1/organizations → 200.
+- **Outcome:** Variant A not executed. Actual fix = docker start redis (IL-PA-01-CLOSE). Runbook archived as DR/fresh-deploy reference.
+- **Anchors:** docs/runbooks/pa-01-midaz-ledger-postgres-provisioning.md, IL-PA-01-CLOSE, ADR-013, IL-PROJECT-AUDIT-01.

@@ -374,6 +374,7 @@
   Fix: `docker start redis` (recovery existing container redis/redis-stack:latest). Verify: midaz-ledger "Connected to Redis/Valkey in STANDALONE mode ✅".
   Follow-up: G-OPS-05 — set restart policy=unless-stopped on redis container to prevent recurrence.
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-013, IL-001 Midaz healthcheck fix, IL-PA-01-CLOSE.
+  Update 2026-05-05 (PA-1e): Root cause identified = three-fold config drift (1) postgres@16-main listens on 5433 not 5432, (2) listen_addresses=localhost only (no 172.22.0.1 docker bridge), (3) midaz DBs/role not provisioned. NOT an OOM or container defect. PA-1 runbook ready: docs/runbooks/pa-01-midaz-ledger-postgres-provisioning.md. Phase A-F gated on operator go (superseded by redis fix — retained as DR reference).
   Priority: P0 (closed).
 
 - [ ] G-FACTORY-01: Legion has no local model serving — OPEN
