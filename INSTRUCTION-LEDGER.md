@@ -2835,3 +2835,29 @@
 - Description: Pipeline-deploy MetaClaw guardian/ → evo1 /data/banxe/guardian/ (replace manual scp).
 - Status: OPEN.
 - Linked: ADR-026, IL-CANON-02.
+
+---
+
+### IL-CANON-03 — G-DEPLOY-01 closure (pipeline deploy automated)
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Автоматизировать deploy MetaClaw guardian/ → evo1 /data/banxe/guardian/ (replace manual scp).
+- **Шаги:**
+  1. Clone MetaClaw sparse (guardian/ only) → /home/banxe/MetaClaw-deploy/ на evo1 → ✅
+  2. Cron */15min: git pull + rsync --delete + sudo systemctl restart → ✅
+  3. Sudoers: /etc/sudoers.d/banxe-guardian NOPASSWD для restart → ✅
+  4. End-to-end verify: rsync 13 files + restart + /audit "cat .env" → result=fail (CB1+CB2 BLOCK) → ✅
+- **Статус:** ✅
+- **Proof:**
+  - crontab entry: `*/15 * * * * cd /home/banxe/MetaClaw-deploy && git pull ... && rsync ... && sudo systemctl restart ...`
+  - sudoers: `/etc/sudoers.d/banxe-guardian` (visudo -c PASS)
+  - negative test: `curl POST /audit "cat .env"` → result=fail, CB1-deny-path BLOCK + CB2-secret-leak BLOCK
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+#### G-DEPLOY-01 — Status: DONE
+
+- Closed: 2026-05-05.
+- Mechanism: sparse clone + cron rsync + NOPASSWD restart.
+- Linked: ADR-026, IL-CANON-02.
