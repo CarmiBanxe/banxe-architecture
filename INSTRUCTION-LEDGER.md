@@ -3054,6 +3054,26 @@
 
 ---
 
+### IL-PROJECT-AUDIT-01 — Project (cluster) audit implementation sprint
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** SPEC (sprint kickoff) → RE-ALIGNED per Operator canon
+- **Status:** OPEN
+- **Priority:** P0 (per operator canon — cluster stabilisation precedes all factory work)
+- **Branch:** sprint/project-cluster-audit-2026-05
+- **Predecessor:** IL-AUDIT-01 (closed) + IL-FACTORY-AUDIT-01 (open, BLOCKED-ON-CLUSTER until this sprint completes)
+- **Scope:** docs/roadmap/sprint-project-cluster-audit-2026-05.md
+- **Backlog (priority order per Operator canon — Three-action corrective proposal):**
+  1. PA-2 evo2 GPU userspace restore (rocm + mesa-vulkan-drivers)
+  2. PA-4 qwen3:235b-fp16 fate decision (keep / quantize / delete)
+  3. PA-5 stateless migration evo1→evo2 (Frankfurter + MiroFish first)
+  4. PA-1 midaz-ledger restart loop fix (on relieved evo1)
+  5. PA-3 model placement matrix
+  6. PA-6 OpenClaw gateways → LiteLLM aliases
+- **Closes (on completion):** G-OPS-03, G-INFRA-02, G-INFRA-03, G-CLUSTER-01, G-CLUSTER-02.
+- **Binding canon:** docs/canon/operator-canon-2026-05.md (Principles 1-4).
+- **Anchors:** IL-AUDIT-01 PRs (#50, #52, #54, #55); IL-FACTORY-AUDIT-01 PR #57; A2/A3/A4 artefacts; IL-CANON-04.
+- **Reperential point:** main HEAD at 9f27f2c (kickoff snapshot); realigned to main@f20d607.
 ### IL-SETTINGS-PERMISSIONS-2026-05 — Claude Code permissions reclassification
 
 - **Date:** 2026-05-05
