@@ -158,6 +158,8 @@
 - [ ] G-IAM-07: Backout procedure verified — documented in RUNBOOK.md §GATE-D + §Backout — WAITING_FOR_GATE-A
 - [x] G-IAM-08: Keycloak realm cutover via STRATEGY-B host migration to Legion — **DONE 2026-05-04** (banxe-emi-stack PR #50, tag `cass15-iam-cutover-2026-05-07`). Production KC `banxe-emi` UP on Legion `100.101.218.26:8180`. EMI mirror GAP-REGISTER row 54 already reflects this. Reconciles V-05 in HANDOFF-2026-05-04.
 - [ ] G-IAM-09: Migrate keycloak-pg sidecar to shared managed Postgres — TECH_DEBT (ADR-017 impl note; schedule TBD)
+- [x] G-IAM-10: KC realm `banxe-emi` session-timeout hardening (Phase G) — **DONE 2026-05-06** (V-02 closed, IL-PHASE-G-01)
+  Applied via Admin REST API (curl+JWT; kcadm.sh OOM on Legion). Pre-state captured, 4 fields updated: `offlineSessionMaxLifespanEnabled=true`, `offlineSessionMaxLifespan=5184000`, `refreshTokenMaxReuse=0`, `revokeRefreshToken=true`. Post-state verified, smoke PASS (`expires_in=900`, `refresh_expires_in=0` correct per RFC 6749 §4.4). Execution log: `docs/ops/phase-g-execution-2026-05-06.md`. Source: ADR-017 §5, ADR-030.
 
 ## Guardian Bash Shim — Gaps (ADR-024)
 
