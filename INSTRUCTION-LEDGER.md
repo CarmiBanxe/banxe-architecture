@@ -2861,3 +2861,25 @@
 - Closed: 2026-05-05.
 - Mechanism: sparse clone + cron rsync + NOPASSWD restart.
 - Linked: ADR-026, IL-CANON-02.
+---
+
+### IL-052 — phase4 org-cleanup branch recovery (post-mortem)
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** CLOSE
+- **Status:** ✅ DONE
+- **Priority:** P2 (no data loss; canonical naming gap)
+- **Trigger:** Operator reported "slipped factory branch" — perceived loss of org-cleanup phase4 working branch on Legion after evo1+evo2 model upgrade session.
+- **Diagnosis:**
+  1. No data loss. All phase4 commits live on MetaClaw/main: 46e400f (INDEX) → 1df8b66 (HW-MODEL-UPGRADE-matrix) → d6f7e8c (dedup) → a971439/156e10d/e802745/64f6800 (P4 runbooks) → 52f74a2 (TOPS fix) → 016dc26 (phase4 execution log + HW matrix actuals).
+  2. No named branch org-cleanup/phase4-* ever existed — phase4 developed directly on main; factory/ai-onboarding used only for Guardian CI rollout.
+  3. All ledger entries INS-2026-05-04-* (P4.3-EVO2, P4.3-Q235 BLOCKED, P4.2-ROCM BLOCKED, ORG-CLEANUP) intact in this file.
+- **Recovery action:**
+  1. Created org-cleanup/phase4-hw-matrix-roc-rpc from 1df8b66 on Legion.
+  2. Fast-forwarded to 016dc26 (last pure phase4 commit before G-CANON-01).
+  3. Pushed to origin/CarmiBanxe/MetaClaw with upstream tracking. 29 files / +2869 / -10 (HW matrix, INDEX, banxe-cluster-phase4, 4 P4 runbooks, Guardian skeleton + rules + tests + ClickHouse DDL).
+  4. Non-destructive: no force-push, no reset --hard, no clean.
+- **Root cause:** Naming gap — phase4 landed on main without dedicated branch pointer. When operator searched for "the branch", none existed. Subjective loss, not actual loss.
+- **Anchors:** MetaClaw 1df8b66..016dc26; ADR-018 (5-layer hybrid AI compute); INS-2026-05-04-ORG-CLEANUP / P4.3-EVO2 / P4.3-Q235 / P4.2-ROCM.
+- **Successor:** G-INFRA-01 (evo2 missing from .claude/rules/infrastructure.md + SERVICE-MAP) — отдельный шаг.
+- **Lesson:** organisational/canonical work (HW matrix, runbooks, ADR-018 cross-links) MUST land on a named branch before merge to main.
