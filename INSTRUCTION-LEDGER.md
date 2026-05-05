@@ -3504,3 +3504,33 @@
   - Phase F: smoke test curl /v1/organizations → 200.
 - **Outcome:** Variant A not executed. Actual fix = docker start redis (IL-PA-01-CLOSE). Runbook archived as DR/fresh-deploy reference.
 - **Anchors:** docs/runbooks/pa-01-midaz-ledger-postgres-provisioning.md, IL-PA-01-CLOSE, ADR-013, IL-PROJECT-AUDIT-01.
+
+### IL-FA-01-DRAFT — FA-1 Legion ollama + qwen2.5-coder:7b runbook
+
+| Field | Value |
+|---|---|
+| ID | IL-FA-01-DRAFT |
+| Sprint | IL-FACTORY-AUDIT-01 |
+| Gap closed | G-FACTORY-01 (Legion has no local model serving) |
+| Status | DRAFT — runbook written, awaiting operator execution go |
+| Date | 2026-05-06 |
+| Branch | docs/fa-01-legion-ollama-coder-runbook |
+| Artefact | docs/runbooks/fa-01-legion-ollama-coder-install.md |
+
+#### What was done
+
+Runbook `docs/runbooks/fa-01-legion-ollama-coder-install.md` created.
+Covers 6 phases (A pre-check → B ollama install → C model pull → D smoke test →
+E LiteLLM wiring → F editor config).
+
+Model selected: `qwen2.5-coder:7b-instruct-q4_K_M` (~4.4 GB) — fits RTX 4070
+8 GB VRAM fully in-VRAM. LiteLLM routes: `factory-fast` + `coder` on `:4000`.
+
+G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
+
+#### Closure criteria (not yet met — awaiting operator go)
+
+- [ ] `ollama list` on Legion shows `qwen2.5-coder:7b-instruct-q4_K_M`
+- [ ] LiteLLM routes `factory-fast` + `coder` return HTTP 200
+- [ ] G-FACTORY-01 → DONE in GAP-REGISTER.md
+- [ ] IL-FA-01-DRAFT → IL-FA-01-CLOSE with operator sign-off
