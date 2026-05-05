@@ -2883,3 +2883,26 @@
 - **Anchors:** MetaClaw 1df8b66..016dc26; ADR-018 (5-layer hybrid AI compute); INS-2026-05-04-ORG-CLEANUP / P4.3-EVO2 / P4.3-Q235 / P4.2-ROCM.
 - **Successor:** G-INFRA-01 (evo2 missing from .claude/rules/infrastructure.md + SERVICE-MAP) — отдельный шаг.
 - **Lesson:** organisational/canonical work (HW matrix, runbooks, ADR-018 cross-links) MUST land on a named branch before merge to main.
+
+## IL-CANON-05 — §3/§4 decision autonomy + §15 CCF expansion
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Расширить §3 и §4 канона ADR-025 чёткими whitelist/non-safe определениями и Best-Decision Principle; добавить V-14..V-17 regression cases.
+- **Шаги:**
+  1. §3 расширен: §3.1 whitelist, §3.2 non-safe, §3.3 confirmation form.
+  2. §4 расширен: §4.1 BDP, §4.2 decision basis (6 sources), §4.3 single fallback, §4.4 no teaching.
+  3. V-14..V-17 добавлены в `docs/canon/violations-2026-05-04.md`.
+  4. Открыт tracker G-CANON-AUTONOMY (cover в conversation-judge prompts + tests).
+- **Статус:** 🔄 в процессе (PR `docs/canon-decision-autonomy-section`)
+- **Proof:** будет дополнен SHA + URL PR после merge.
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+### G-CANON-AUTONOMY — NEW
+
+- Owner: Architecture WG.
+- Description: Cover §3.1-§3.3 + §4.1-§4.4 в canon-judge prompt; добавить V-14..V-17 в test_canon_judge.py; rerun coverage gate (target 17/17 PASS).
+- Status: OPEN.
+- Linked: ADR-025 §3/§4/§15, G-CANON-01 Week 3.
+- Target close: pending scheduling.
