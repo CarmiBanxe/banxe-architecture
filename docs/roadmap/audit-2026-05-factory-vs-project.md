@@ -4,7 +4,7 @@
 |---|---|
 | Sprint ID | IL-AUDIT-01 |
 | Started | 2026-05-05 |
-| Status | IN_PROGRESS (A1 DONE, A2 DONE, A3 PENDING) |
+| Status | DONE (all artefacts A1..A5 closed) |
 | Owner | CEO + Perplexity supervisor + Claude Code |
 | Phase (GSD) | SPEC -> DESIGN -> CLOSE per artefact |
 
@@ -21,9 +21,9 @@ Audit scope: model completeness, HW utilisation, service health tests, AI-agents
 |---|---|---|---|
 | A1 | SPEC | Legion baseline | DONE 2026-05-05 14:40Z |
 | A2 | SPEC | evo1+evo2 baseline | DONE 2026-05-05 14:54Z |
-| A3 | DESIGN | Gap-analysis | PENDING |
-| A4 | DESIGN | AI-agents fleet × fork orchestration | PENDING |
-| A5 | CLOSE | ADRs + IL closure + gap-register migration | PENDING |
+| A3 | DESIGN | Combined gap-analysis | DONE 2026-05-05 (PR #52) |
+| A4 | DESIGN | Proposal: AI-agents fleet x factory/project fork + orchestration plan | DONE 2026-05-05 (PR #54) |
+| A5 | CLOSE | ADR(s) + IL-AUDIT-01 closure + gap-register migration | DONE 2026-05-05 (this PR) |
 
 ## Sub-artefacts
 
@@ -51,3 +51,4 @@ Audit scope: model completeness, HW utilisation, service health tests, AI-agents
 | Date | Status | Note |
 |---|---|---|
 | 2026-05-05 | OPEN | Sprint kicked off, A1+A2 collected, A3 pending |
+| 2026-05-05 | DONE | All 5 artefacts closed; 8 gap-register entries opened (G-INFRA-02/03, G-OPS-03, G-FACTORY-01/02/03, G-CLUSTER-01/02); successor sprints FA + PA + ADR-027 deferred. |

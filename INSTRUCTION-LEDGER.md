@@ -2958,3 +2958,31 @@
   - USB4 RPC mesh UP; qwen3-235b-master :8082, llama-rpc-worker :50052.
 - **Anchors:** ADR-018, IL-CANON-04, MetaClaw 016dc26.
 - **Successor candidates:** G-INFRA-02 evo2 GPU stack regression; G-INFRA-03 RAM imbalance evo1=30 vs evo2=93; G-OPS-03 midaz-ledger restart loop.
+### IL-AUDIT-01-CLOSE — Factory vs Project audit sprint closure
+
+- **Date:** 2026-05-05
+- **Phase (GSD):** CLOSE
+- **Status:** ✅ DONE
+- **Priority:** P1
+- **Closes:** IL-AUDIT-01 (from sprint kickoff PR #50).
+- **Sub-artefacts delivered:**
+  - A1 — Legion baseline (PR #50 inline)
+  - A2 — evo1+evo2 cluster baseline (PR #50 inline)
+  - A3 — gap-analysis (PR #52, file `docs/roadmap/audit-2026-05/A3-gap-analysis.md`)
+  - A4 — agents fleet × factory/project fork orchestration (PR #54, file `docs/roadmap/audit-2026-05/A4-agents-orchestration-proposal.md`)
+  - A5 — this closure (current PR)
+- **New gap-register entries opened in A5:**
+  - G-INFRA-02 (P1) — evo2 GPU userspace regression
+  - G-INFRA-03 (P1) — RAM imbalance evo1=30 vs evo2=93
+  - G-OPS-03 (P0) — midaz-ledger restart loop
+  - G-FACTORY-01 (P2) — Legion no local model serving
+  - G-FACTORY-02 (P1) — Keycloak realm split-brain risk
+  - G-FACTORY-03 (P3) — Ruflo not detected
+  - G-CLUSTER-01 (P2) — qwen3:235b inference path under-utilised
+  - G-CLUSTER-02 (P3) — model duplication evo1↔evo2
+- **Pending follow-up sprints (out of scope of IL-AUDIT-01):**
+  - Sprint FA — execute FA-1..FA-5 (factory orchestration setup)
+  - Sprint PA — execute PA-1..PA-6 (project rebalance + GPU restore)
+  - ADR-027 — formalise factory↔project fork as canonical architecture decision (3 layers per A4)
+- **Anchors:** PRs #50, #52, #54; ADR-018, ADR-019, ADR-026; IL-CANON-04; MetaClaw 016dc26.
+- **Lesson learned:** sprint-level audit produces best results when split into baseline (read-only) → gap-analysis (analytical) → proposal (design) → closure (gap-register migration) per GSD phases, with each artefact in its own PR.
