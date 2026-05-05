@@ -156,7 +156,7 @@
 - [ ] G-IAM-05: Rotation policy for client_secrets (90 days / on-incident) — NOT_STARTED (ADR-017 §5)
 - [x] G-IAM-06: pre-commit hook + Semgrep rule blocking direct credentials in EMI repos — **DONE 2026-05-03** (I-34 enforcement; banxe-emi-stack PR #41 `feat/iam-creds-guard` → squash `3ce0a01`; artefacts: `.semgrep/banxe-rules/iam-no-direct-creds.yml` + pre-commit hook `iam-no-direct-creds` + `docs/CONTRIBUTING.md §IAM Credentials Guard`)
 - [ ] G-IAM-07: Backout procedure verified — documented in RUNBOOK.md §GATE-D + §Backout — WAITING_FOR_GATE-A
-- [ ] G-IAM-08: Decommission Legion local IAM after PASS + 7 days hold — BLOCKED_BY G-IAM-01..07 (ADR-017 §6 / Rollout T+11)
+- [x] G-IAM-08: Keycloak realm cutover via STRATEGY-B host migration to Legion — **DONE 2026-05-04** (banxe-emi-stack PR #50, tag `cass15-iam-cutover-2026-05-07`). Production KC `banxe-emi` UP on Legion `100.101.218.26:8180`. EMI mirror GAP-REGISTER row 54 already reflects this. Reconciles V-05 in HANDOFF-2026-05-04.
 - [ ] G-IAM-09: Migrate keycloak-pg sidecar to shared managed Postgres — TECH_DEBT (ADR-017 impl note; schedule TBD)
 
 ## Guardian Bash Shim — Gaps (ADR-024)
