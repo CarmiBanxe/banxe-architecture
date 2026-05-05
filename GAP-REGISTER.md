@@ -173,9 +173,11 @@
   Action: onboarding script to install shim + set enforce mode on all dev machines.
 
 
-- [ ] G-DEPLOY-01: Pipeline-deploy MetaClaw `guardian/` → evo1 `/data/banxe/guardian/` (replace manual `scp`/`rsync`) — NEW 2026-05-05
-  Source: IL-CANON-02 follow-up C. Manual deploy is fragile and bypasses CI gates.
-  Action: design CI job (e.g. GH Actions on MetaClaw push to main) that publishes guardian artefacts and pulls on evo1 via `systemctl --user` post-hook. Owner: Architecture WG.
+- [x] G-DEPLOY-01: Pipeline-deploy MetaClaw `guardian/` → evo1 `/data/banxe/guardian/` — **DONE 2026-05-05**
+  Implemented as evo1 cron pull-deploy (operator-side):
+    - Sparse-clone of MetaClaw on evo1: `/home/banxe/MetaClaw-deploy` (filter=blob:none, sparse-checkout=guardian).
+    - Cron `*/15 * * * *` runs: `git pull --ff-only origin main && rsync -a --delete guardian/ /data/banxe/guardian/ && sudo systemctl restart banxe-guardian-factory`.
+    - Replaces manual scp/rsync from MetaClaw checkout. CI-grade gate is still TBD (GH Actions push-trigger) — tracked as G-DEPLOY-02 (CI-driven deploy, optional follow-up).
 
 ## Что реализовано лучше стандарта
 
