@@ -3376,3 +3376,78 @@
 - PA-4 ✅ DONE.
 - PA-5 ✅ EVALUATED-NOT-PURSUED.
 - Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-3.
+
+---
+
+### IL-PA-03-CLOSE — PA-3 G-CLUSTER-02 closed (model placement matrix documented)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-3 (model placement matrix) — decision documented, execution deferred.
+- **Шаги:**
+  1. ollama list both nodes: 8 models duplicated (~176 GB each side).
+  2. Placement decision: evo2 = primary heavy inference (GPU gfx1151 + 93 GiB RAM); evo1 = small models (4b, 9.7b, 20b).
+  3. HW-MODEL-UPGRADE-matrix.md §"Model placement" created with full table.
+  4. G-CLUSTER-03 opened for actual dedup execution (requires per-model operator confirmation per §3.2).
+- **Статус:** ✅
+- **Proof:**
+  - docs/canon/HW-MODEL-UPGRADE-matrix.md contains placement table (10 models assigned).
+  - GAP-REGISTER G-CLUSTER-02 marked [x] DONE.
+- **Deviation:** PA-3 acceptance = "decide + document". Actual deletion deferred to G-CLUSTER-03 (separate operator confirmation required per §3.2 for destructive ops).
+- **Blocker:** нет.
+
+#### G-CLUSTER-03 — NEW (dedup execution)
+
+- Owner: Infrastructure.
+- Description: Remove heavy model duplicates from evo1 per placement matrix (~134-152 GB). Requires per-model operator confirmation.
+- Status: OPEN.
+- Priority: P3.
+- Linked: G-CLUSTER-02 (closed), HW-MODEL-UPGRADE-matrix.md.
+- Target close: operator-triggered (low priority, disk not constrained on evo1).
+
+#### Phase status update — IL-PROJECT-AUDIT-01 COMPLETE
+
+- PA-1 ✅ DONE (midaz-ledger Redis fix).
+- PA-2 ✅ DONE (evo2 Vulkan/RADV gfx1151).
+- PA-3 ✅ DONE (model placement matrix).
+- PA-4 ✅ DONE (qwen3:235b-fp16 deleted).
+- PA-5 ✅ EVALUATED-NOT-PURSUED (ROI negative).
+- PA-6: remaining (Pin OpenClaw gateways to LiteLLM model aliases) — lowest priority, can be deferred.
+- **IL-PROJECT-AUDIT-01 sprint: 5/6 closed, 1 deferred (PA-6 P3).**
+
+---
+
+### IL-PA-03-CLOSE — PA-3 G-CLUSTER-02 closed (matrix documented; dedup deferred)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-3 (model duplication evo1↔evo2) через documented matrix; actual dedup deferred к G-CLUSTER-03.
+- **Шаги:**
+  1. Inventory: 8 моделей дублированы evo1+evo2 (~176 GB на каждой стороне); qwen3:235b only on evo2.
+  2. Decision matrix добавлен в docs/canon/HW-MODEL-UPGRADE-matrix.md секция "Model placement matrix (PA-3, 2026-05-05)".
+  3. Canonical placement: evo2 primary heavy (70b, 35b, 30b-a3b, coder-next, glm-4.7, 235b); evo1 keeps small (4b, 9.7b, 20b).
+  4. Dedup execution отложен в G-CLUSTER-03 — каждая `ollama rm` требует подтверждения оператора (§3.2 destructive op).
+- **Статус:** ✅ (matrix documented; cleanup deferred)
+- **Proof:**
+  - HW-MODEL-UPGRADE-matrix.md содержит полную таблицу placement.
+  - GAP-REGISTER G-CLUSTER-02 marked DONE.
+- **Deviation:** acceptance criteria (just "matrix documented") выполнено полностью; actual disk savings отложены.
+- **Blocker:** нет.
+
+#### G-CLUSTER-03 — NEW (model dedup execution)
+
+- Owner: Infrastructure.
+- Description: Execute `ollama rm` для дубликатов на evo1 (30b-a3b, glm-4.7, qwen3.5:35b, llama3.3:70b, qwen3-coder-next) — потенциальная экономия ~134 GB. Каждая команда требует operator-confirmation per §3.2.
+- Status: OPEN.
+- Priority: P3.
+- Linked: G-CLUSTER-02 (closed), HW-MODEL-UPGRADE-matrix.md, IL-PA-03-CLOSE.
+- Target close: 2026-05-12.
+
+#### Phase status update
+
+- PA-1 ✅ DONE.
+- PA-2 ✅ DONE.
+- PA-3 ✅ DONE (matrix documented).
+- PA-4 ✅ DONE.
+- PA-5 ✅ EVALUATED-NOT-PURSUED.
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-6 (final).
