@@ -284,6 +284,59 @@
   **Owner:** Platform WG.
   **Linked:** G-OBS-01, ADR-033, G-CI-01.
 
+
+## KYC Webhook Reliability — Gaps (V-11 from HANDOFF-2026-05-04)
+
+> V-11: "SumSub webhook retry policy undefined" — MEDIUM.
+> Audit: inbound SumSub webhook handling exists (signature via x-payload-digest, audit-log I-24),
+> but no idempotency key tracking and no DLQ path for inbound SumSub events.
+> Existing webhook_orchestrator/dead_letter_queue.py covers outbound delivery only.
+
+- [ ] G-KYC-03: SumSub webhook retry / dead-letter handling not defined — NEW 2026-05-05
+  **Source:** V-11 (HANDOFF-2026-05-04, MEDIUM).
+  **Components:**
+    - `services/webhooks/webhook_router.py` — inbound SumSub handler (HMAC-SHA1 sig, audit-log); no idempotency key.
+    - `services/webhook_orchestrator/dead_letter_queue.py` — DLQ exists but wired to outbound delivery only.
+    - `services/webhook_orchestrator/delivery_engine.py` — exponential backoff retry for outbound; not wired to inbound SumSub path.
+    - `api/routers/kyc.py` — no retry or DLQ routing for SumSub events.
+    - `.env.example` — SUMSUB_WEBHOOK_SECRET not yet registered as env template entry.
+  **Risk:**
+    If our endpoint returns 5xx, SumSub retries on its schedule (vendor-side). We have no idempotent
+    guard: repeated delivery of the same applicant event may cause duplicate KYC FSM transitions or
+    be silently dropped, causing silent state-machine drift. FCA MLR 2017 Reg.28 requires complete
+    and auditable CDD records — a missed or duplicated KYC decision event is a compliance gap.
+  **Plan:**
+    1. Audit: trace full inbound path — `webhook_router.py` → KYC FSM trigger → state write.
+       Confirm: (a) which field carries idempotency (applicantId + type + createDate?),
+       (b) whether duplicate delivery causes double FSM transition,
+       (c) what HTTP status is returned on handler error.
+    2. Propose ADR-034 — Webhook reliability strategy (KYC inbound). Options:
+         (a) Idempotency key store (Redis/Postgres) + always 200 OK + background processing
+             (most robust — decouples SumSub retry from our processing latency).
+         (b) Inline retry via tenacity on downstream calls only + idempotency check at entry
+             (simpler, in-process, suits low-volume).
+         (c) Route failed SumSub events to existing webhook_orchestrator DLQ + reprocessor worker
+             (reuses existing infra, adds inbound routing to DLQ).
+    3. Fix: implement chosen option; add SUMSUB_WEBHOOK_SECRET to .env.example;
+       cover 5xx delivery / replay / out-of-order event scenarios in tests (G-KYC-04).
+  **Owner:** Platform WG.
+  **Linked:** ADR-034 (to be opened), ADR-LCY-01, G-KYC-01 (FSM PENDING trigger),
+              G-KYC-02 (re-verification triggers), FCA MLR 2017 Reg.28.
+
+- [ ] G-KYC-04: Webhook signature verification + idempotency-key coverage tests — NEW 2026-05-05
+  **Source:** G-KYC-03 follow-on.
+  **Components:** `tests/test_webhook_router.py`, `tests/test_webhook_audit.py`, `services/webhooks/webhook_router.py`.
+  **Risk:** Existing tests cover happy-path signature check; no tests for:
+    replay attack (same event delivered twice), out-of-order delivery (REJECTED before COMPLETED),
+    5xx response triggering SumSub retry, and missing/wrong x-payload-digest header.
+  **Plan:**
+    1. Add parametrised test: duplicate event → assert idempotent (single FSM transition).
+    2. Add test: out-of-order delivery (REJECTED after already COMPLETED) → assert no state regression.
+    3. Add test: invalid signature → assert 401 + audit-log entry (no FSM transition).
+    4. Add test: handler error path → assert correct HTTP status returned to SumSub.
+  **Owner:** Platform WG.
+  **Linked:** G-KYC-03, ADR-034, .claude/rules/cass15.md, FCA MLR 2017 Reg.28.
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
