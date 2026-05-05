@@ -3020,3 +3020,34 @@
 - **Binds:** Perplexity supervisor (must apply principles 1-4 + cite this doc in every sprint kickoff).
 - **Anchors:** IL-CANON-04, IL-AUDIT-01, IL-FACTORY-AUDIT-01, A1/A2/A3/A4 artefacts.
 - **Reperential point:** main @ 9f27f2c.
+
+---
+
+### IL-CANON-06 — G-CANON-01 Week 3 closed; G-CI-MAIN-DEBT opened
+
+- **Источник:** Operator (Moriel Carmi), сессия Comet+Claude 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть G-CANON-01 Week 3 (MCP server skeleton, audit mode); зарегистрировать pre-existing CI debt в metaclaw/skill_manager.py + tests/test_v03_live_tinker.py как G-CI-MAIN-DEBT.
+- **Шаги:**
+  1. PR CarmiBanxe/MetaClaw#4 squash-admin merged (CI failed на pre-existing tech debt).
+  2. 3/3 MCP smoke tests PASS (server creation + tool name + handlers).
+  3. mcp>=1.0 + pytest-asyncio>=0.23 добавлены в pyproject.toml.
+  4. Открыт G-CI-MAIN-DEBT.
+- **Статус:** ✅
+- **Proof:** MetaClaw PR #4 merged (commit d4a49a6 squashed); pytest local 3 passed; ruff local clean.
+- **Deviation:** admin-bypass CI допустим per §3.2 (только новые файлы в guardian/src/canon_judge/mcp/).
+- **Blocker (per IL-CANON-OPERATOR-2026-05):** Week 4 (Factory-side FA-*) BLOCKED on cluster PA-1..PA-6.
+
+#### G-CANON-01 — Status update
+
+- Week 1 ✅ skeleton + 13 xfail.
+- Week 2 ✅ Ollama qwen3.5:35b, 13/13 live PASS.
+- Week 3 ✅ MCP server skeleton (audit), 3/3 smoke PASS.
+- Week 4 ⏸ BLOCKED-ON-CLUSTER per IL-CANON-OPERATOR-2026-05 (PA-1..PA-6 first).
+
+#### G-CI-MAIN-DEBT — NEW
+
+- Owner: MetaClaw maintainer.
+- Description: ruff F401 в metaclaw/skill_manager.py (numpy x2, typing.List); pytest collect error tests/test_v03_live_tinker.py (missing tinker dep).
+- Status: OPEN. Linked: blocks normal CI flow для всех future feature PR.
+- Target close: 2026-05-08.
