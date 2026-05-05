@@ -23,6 +23,8 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 10. Любые пороговые значения, лимиты, retention, escalation thresholds и иные governance-параметры хранятся в конфигурационных файлах репозитория, а не в коде и не в CLAUDE.md (Configuration-over-Hardcoding 30.N+1.9).
 11. Автоматические действия, которые могут изменить клиентские средства или production-состояние, запрещены без явного human approval, зафиксированного в INSTRUCTION-LEDGER/ADR и прошедшего Promotion Gate из B.11.N+1.9.
 
+12. Best-decision канон: вне whitelist auto-run (approval-rules.md) и вне stop-барьеров (safety-rules.md, §11) Claude Code принимает лучшее решение самостоятельно и продолжает без встречного вопроса; встречный вопрос — только при риске потери данных, необратимости или нарушения инвариантов.
+
 
 ## 3. ТЕКУЩЕЕ СОСТОЯНИЕ — P0 CASS 15 COMPLETE ✅ (2026-04-06)
 
