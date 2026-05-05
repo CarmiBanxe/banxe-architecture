@@ -3131,3 +3131,75 @@
 
 - PA-2 ✅ DONE.
 - Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-4.
+
+---
+
+### IL-PA-04-CLOSE — PA-4 G-CLUSTER-01 closed (Option C: delete fp16)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-4 (qwen3:235b-fp16 fate) выбором Option C — delete fp16 now; canonical max остаётся Q3_K_S.
+- **Шаги:**
+  1. Inventory: fp16 470 GB on disk, RAM evo2 = 93 GiB → fp16 inference невозможен.
+  2. Q3_K_S 142 GB работает 5.1 tok/s, sanctioned per IL-CANON-OPERATOR-2026-05 principle #3.
+  3. ssh evo2 `ollama rm qwen3:235b-a22b-fp16` — освободило 470 GB.
+  4. df на evo2 verify: disk usage dropped 49% → 25% (free 1.4T).
+  5. HW-MODEL-UPGRADE-matrix.md создан.
+  6. G-MODEL-UPGRADE открыт как deferred follow-up.
+- **Статус:** ✅
+- **Proof:**
+  - `ollama list | grep 235b` post-delete: только qwen3:235b-a22b + qwen3:235b-a22b-banxe (без fp16).
+  - df / на evo2: 428G used / 1.4T free (25%).
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+#### G-MODEL-UPGRADE — NEW (deferred follow-up)
+
+- Owner: Architecture WG.
+- Description: Когда RAM evo2 будет расширен > 93 GiB OR RPC/multi-host inference будет wired — переоценить требование к qwen3:235b quality (Q4_K_M / Q5_K_M / fp16 re-download).
+- Status: DEFERRED.
+- Priority: P3.
+- Linked: G-CLUSTER-01 (closed), ADR-018, IL-CANON-OPERATOR-2026-05 principle #3.
+- Trigger: hardware upgrade event OR explicit operator quality complaint.
+
+#### Phase status update
+
+- PA-2 ✅ DONE.
+- PA-4 ✅ DONE (this entry).
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-5.
+
+---
+
+### IL-PA-04-CLOSE — PA-4 G-CLUSTER-01 closed (Option C: delete fp16)
+
+- **Источник:** Operator (Moriel Carmi), 2026-05-05.
+- **Дата:** 2026-05-05
+- **Инструкция:** Закрыть PA-4 (qwen3:235b-fp16 fate) — Option C: delete fp16 now.
+- **Шаги:**
+  1. Inventory: fp16 470 GB on disk, RAM evo2 = 93 GiB → fp16 inference невозможен.
+  2. Q3_K_S 142 GB работает 5.1 tok/s, sanctioned per IL-CANON-OPERATOR-2026-05 principle #3.
+  3. ssh evo2 `ollama rm qwen3:235b-a22b-fp16` — освободило ~470 GB.
+  4. df на evo2: использование диска 49%→25%.
+  5. HW-MODEL-UPGRADE-matrix.md создан/обновлён.
+  6. G-MODEL-UPGRADE открыт как deferred follow-up.
+- **Статус:** ✅
+- **Proof:**
+  - `ollama list | grep 235b` post-delete: только qwen3:235b-a22b и qwen3:235b-a22b-banxe (без fp16).
+  - df / на evo2: ~25% used post-delete.
+- **Deviation:** нет.
+- **Blocker:** нет.
+
+#### G-MODEL-UPGRADE — NEW (deferred follow-up)
+
+- Owner: Architecture WG.
+- Description: Когда RAM evo2 будет расширен > 93 GiB OR RPC/multi-host inference будет wired — переоценить требование к qwen3:235b quality (Q4_K_M / Q5_K_M / fp16 re-download).
+- Status: DEFERRED.
+- Priority: P3.
+- Linked: G-CLUSTER-01 (closed), ADR-018, IL-CANON-OPERATOR-2026-05 principle #3.
+- Trigger: hardware upgrade event OR explicit operator quality complaint.
+
+#### Phase status update
+
+- PA-2 ✅ DONE.
+- PA-4 ✅ DONE.
+- Per IL-CANON-OPERATOR-2026-05 re-ordered queue: next = PA-5.
