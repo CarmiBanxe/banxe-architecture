@@ -382,11 +382,10 @@
   Anchors: docs/roadmap/audit-2026-05/A1 inventory.
   Priority: P3.
 
-- [ ] G-CLUSTER-01: qwen3:235b inference path under-utilised — OPEN
-  Discovered 2026-05-05 in IL-AUDIT-01 A2. qwen3:235b-a22b-fp16 (470 GB) downloaded 6h before audit but only Q3_K_S (5.1 tok/s, 142 GB) routed via LiteLLM. fp16 won't fit even on evo2 93 GiB RAM without RPC + further quantization.
-  Action: PA-4 (decide fp16 fate: keep / quantize-and-archive Q4_K_M or Q5_K_M / delete; document in HW-MODEL-UPGRADE-matrix.md).
-  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, INS-2026-05-04-P4.3-Q235-BLOCKED, INS-2026-05-05 reasoning-235b LIVE.
-  Priority: P2.
+- [x] G-CLUSTER-01: qwen3:235b-fp16 fate decided — **DONE 2026-05-05** (Option C: deleted fp16 470GB; canonical max остаётся Q3_K_S 142GB per IL-CANON-OPERATOR-2026-05 principle #3; future quality upgrade tracked via G-MODEL-UPGRADE)
+  Root cause: fp16 470 GB won't fit 93 GiB RAM evo2; Q3_K_S (5.1 tok/s, 142 GB) sanctioned as canonical max. `ollama rm qwen3:235b-a22b-fp16` freed ~470 GB (disk 49%→25%).
+  Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, INS-2026-05-04-P4.3-Q235-BLOCKED, docs/canon/HW-MODEL-UPGRADE-matrix.md.
+  Priority: P2 (closed).
 
 - [ ] G-CLUSTER-02: model duplication evo1↔evo2 — OPEN
   Discovered 2026-05-05 in IL-AUDIT-01 A2. ~176 GB duplicated across both nodes (llama3.3:70b 42 GB, qwen3.5:35b 23 GB, qwen3-coder-next 51 GB, qwen3:30b-a3b 18 GB, glm-4.7-flash 18 GB, gpt-oss:20b 15 GB, qwen3:4b 2.5 GB, qwen3.5:latest 6.6 GB). Acceptable for HA / RPC parallelism but wasteful if always one-node-serves.
