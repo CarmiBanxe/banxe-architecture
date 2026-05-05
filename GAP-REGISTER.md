@@ -231,6 +231,30 @@
 - [ ] G-API-02: Rate-limit coverage tests — NEW 2026-05-05
   Add CI fixture that fires N+1 requests against each `/auth/*` endpoint above its declared limit, asserts exactly the (limit+1)th request returns 429 with `Retry-After` header, and verifies an audit_trail event is recorded. Owner: Architecture WG.
 
+## Infrastructure / Cluster Visibility — Gaps (IL-052 successor)
+
+- [ ] G-INFRA-01: evo2 node missing from `.claude/rules/infrastructure.md` + `SERVICE-MAP.md` — NEW 2026-05-05
+  Source: IL-052 post-mortem (phase4 org-cleanup branch recovery). Root cause: evo2 (EVO-X2 #2, 192.168.0.15) was added to the cluster in v2.1 and upgraded in P4.3-EVO2 (BIOS UMA rebalance), but neither the canonical infrastructure rule file nor the service map was updated to reflect it as a named cluster node.
+  Risk: agents and operators navigating architecture docs see only evo1 (192.168.0.72). Confusion about which node runs which service (Ollama, llama.cpp RPC worker :50052, Prometheus/Grafana stack) leads to mis-directed operational commands — repeat of IL-052 subjective-loss pattern.
+  Plan (3 steps):
+    1. **Audit** (read-only): confirm evo2 current state — `ssh banxe@192.168.0.15 "hostname && ip a | grep '192.168' && sudo systemctl is-active ollama"`. Cross-reference with `MetaClaw/docs/roadmap/HW-MODEL-UPGRADE-matrix.md` (authoritative HW spec) and `docs/inventory/banxe-cluster-inventory.md`.
+    2. **Update** `.claude/rules/infrastructure.md`: rename current header from "GMKtec EVO-X2" to "evo1 — GMKtec EVO-X2 (192.168.0.72)"; add sibling section "evo2 — GMKtec EVO-X2 #2 (192.168.0.15)" with hostname `banxe-NucBox-EVO-X2-2` (Tailscale: `banxe-nucbox-evo-x2-2`), specs (Ryzen AI MAX+ 395 / 128 GiB LPDDR5X / Radeon 8060S 40 CU gfx1151), services (Ollama :11434 key `sk-banxe-evo2-local-2026`, llama.cpp RPC :50052, Prometheus :9090, Grafana :3000, Blackbox :9115, node_exporter :9100). Mirror equivalent rows in `SERVICE-MAP.md` header + service table.
+    3. **Verify**: `grep -n "evo2\|192.168.0.15" .claude/rules/infrastructure.md SERVICE-MAP.md` returns non-empty from both files. Commit `docs(infra): G-INFRA-01 — add evo2 node to infrastructure.md + SERVICE-MAP [G-INFRA-01]`.
+  Owner: Architecture WG. Linked: ADR-018 (5-layer hybrid AI compute), IL-052, INS-2026-05-04-P4.3-EVO2, `MetaClaw/docs/roadmap/HW-MODEL-UPGRADE-matrix.md`.
+
+## CI / Deploy Pipeline — Gaps (V-08 from HANDOFF-2026-05-04)
+
+- [ ] G-CI-01: No end-to-end smoke gate before merge / auto-deploy — NEW 2026-05-05
+  Source: V-08 MEDIUM in HANDOFF-2026-05-04. Existing CI gates in `banxe-emi-stack/.github/workflows/`: `quality-gate.yml`, `lint-python.yml`, `lint-frontend.yml`, `alembic-check.yml`, `claude-*.yml` — all unit/lint level. Missing: a smoke job that exercises a real boot-and-call path (KC token grant via realm `banxe-emi`, ClickHouse audit append, reconciler tick, safeguarding endpoint, Guardian /audit) before a PR can merge into main. Risk: regressions only caught post-merge; production-state change without smoke evidence violates IL-CANON-04 §best-decision (cannot pick "best" without smoke signal).
+  Plan (3 steps):
+    1. **Audit** (read-only): inventory existing workflows + their job-level dependencies; identify minimal smoke surface (5-7 endpoints) that proves "system boots and answers". Output: `docs/canon/v-08-audit-2026-05-05.md`.
+    2. **Propose**: ADR-031 — CI smoke-gate policy. Define: which workflow file (`smoke-gate.yml`), trigger (PR opened + push to main), env (ephemeral docker compose with KC + Postgres + ClickHouse + Guardian-mock), required-status check on `main` branch protection, time budget (≤ 7 min), rollback signal.
+    3. **Fix**: implement `smoke-gate.yml`, add to branch-protection required checks, document in `docs/ops/`. Subsumes G-OPS-02 (backup-restore smoke) and aligns with G-DEPLOY-02 (CI-driven deploy).
+  Owner: Architecture WG / DevOps lead. Linked: `quality-gate.yml`, G-DEPLOY-02, G-OPS-02, IL-CANON-04.
+
+- [ ] G-CI-02: Required-check enforcement — NEW 2026-05-05
+  After G-CI-01 implementation: switch GitHub branch-protection on `main` so that `smoke-gate` is a required status check (not just advisory). Audit existing required checks; document in `INSTRUCTION-LEDGER` IL-CI-01. Owner: Architecture WG.
+
 ## Что реализовано лучше стандарта
 
 | Преимущество | Почему это важно |
