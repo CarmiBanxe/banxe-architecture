@@ -3534,3 +3534,53 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - [ ] LiteLLM routes `factory-fast` + `coder` return HTTP 200
 - [ ] G-FACTORY-01 → DONE in GAP-REGISTER.md
 - [ ] IL-FA-01-DRAFT → IL-FA-01-CLOSE with operator sign-off
+
+### IL-FA-01-CLOSE — FA-1 Legion ollama + qwen2.5-coder:7b LIVE
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** CLOSE
+- **Status:** ✅ DONE
+- **Priority:** P2
+- **Sprint:** IL-FACTORY-AUDIT-01 (PR #57)
+- **Closes:** G-FACTORY-01 (Legion has no local model serving).
+- **Action executed (Phases B+C+D+E with multiple recovery iterations):**
+  - Phase B: ollama 0.23.1 installed on Legion via official curl install.sh; systemd unit `ollama.service` created (User=ollama).
+  - Phase C: qwen2.5-coder:7b-instruct-q4_K_M (4.7 GB Q4_K_M, ID dae161e27b0e) pulled to /usr/share/ollama/.ollama/models on Legion local.
+  - Phase D: smoke test inference confirmed; `ollama ps` shows 100% GPU on RTX 4070; VRAM 5533 MiB used / 2416 MiB free.
+  - Phase E: factory-fast route added to /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (litellm-lan-gateway service); model_name=factory-fast → ollama/qwen2.5-coder:7b-instruct-q4_K_M @ 127.0.0.1:11434 (Legion local), api_key=sk-banxe-legion-local-2026, timeout=60.
+  - Smoke test via LiteLLM :4000 → HTTP 200, content="OK", prompt_tokens=38, completion_tokens=2.
+- **Recovery iterations during execution (4 fixes total — see lessons learned below):**
+  - E-recovery: killed 2 orphan litellm processes (pid 944613 May03 + pid 1792777 May05) to free :4000 for systemd-managed instance.
+  - E-fix2: `sudo mkdir -p /usr/share/ollama/.ollama && sudo chown -R ollama:ollama /usr/share/ollama` — fixed permission denied for ollama systemd user (install.sh did not set ownership on Ubuntu 24.04 WSL2).
+  - E-fix3 (mistake): `sudo rm -rf /usr/share/ollama/.ollama/models` was destructive and unnecessary; nothing was lost because model was actually on evo1, not Legion (see E-fix6).
+  - E-fix4: re-pull qwen2.5-coder — but still failed because of underlying root cause in next item.
+  - E-fix5 (root cause found): shell env had `OLLAMA_HOST=http://192.168.0.72:11434` (evo1) — all prior `ollama pull` calls were sending models TO evo1, not Legion.
+  - E-fix6 (final): unset OLLAMA_HOST in subshell, ollama pull went to 127.0.0.1:11434 (Legion local), model saved correctly, factory-fast working.
+- **Verification (final 2026-05-06 ~01:35 CEST):**
+  - `curl http://127.0.0.1:11434/api/tags` shows qwen2.5-coder:7b on Legion local (was empty before fix6).
+  - `ollama list` (after `unset OLLAMA_HOST`) shows model on Legion (was showing evo1 list before).
+  - `nvidia-smi` shows 5533 MiB / 8188 MiB used on RTX 4070 with model loaded.
+  - LiteLLM /v1/chat/completions for factory-fast → 200 OK with content="OK".
+- **Operator canon alignment:** Principle 1 (Hardware-first) satisfied — cluster stable, factory plane now has working model serving. Principle 3 analogue (max model without harm) — qwen2.5-coder:7b fully fits RTX 4070 8 GB VRAM, no CPU offload.
+- **Anchors:** PR #57 (sprint kickoff), PR #75 (predecessor closure), PR #77 (FA-1 runbook), docs/runbooks/fa-01-legion-ollama-coder-install.md, docs/canon/operator-canon-2026-05.md.
+- **Reperential point:** main HEAD at start of FA-1 work was 71fe56b; closure PR will set new reperential point.
+
+### IL-FACTORY-02 — Shell env hygiene: OLLAMA_HOST canonical scope
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC (lesson learned, post-incident)
+- **Status:** OPEN
+- **Priority:** P2 (factory hygiene; preventive)
+- **Trigger:** During FA-1 execution (IL-FA-01-CLOSE), shell env `OLLAMA_HOST=http://192.168.0.72:11434` (evo1 LAN) silently redirected all `ollama pull` and `ollama list` commands from operator's local terminal to evo1 cluster node. This caused 4 wasted pull cycles + ~20 min debug time + one `sudo rm -rf` operation that I (Perplexity supervisor) issued without verifying the actual location of the model.
+- **Scope:** Shell environment hygiene rule for Legion (and any factory-plane host) when running ollama-related commands.
+- **Proposed canon addition:**
+  - When running ollama install / pull / list / serve on a factory host, FIRST verify `env | grep OLLAMA` returns either empty OR the host's own loopback address.
+  - If `OLLAMA_HOST` is set to a remote address, either: (a) explicitly `unset OLLAMA_HOST` for the subshell, OR (b) use full URL flag where supported.
+  - Document the OLLAMA_HOST=evo1 default in `.claude/rules/infrastructure.md` so future agents know it's intentional for cluster-wide ollama access.
+- **Action plan:**
+  1. Update `.claude/rules/infrastructure.md` with section "Shell env defaults on Legion" documenting `OLLAMA_HOST=evo1` and when to override.
+  2. Add to FA-1 runbook a Phase A.0 prerequisite check for `OLLAMA_HOST` env value.
+  3. (Optional) Add safeguard in pre-bash Guardian shim to warn when OLLAMA_HOST is remote and `ollama install/pull` is invoked.
+- **Lesson learned:** read-only Phase A pre-check missed env vars. Future Phase A pre-checks for any factory install MUST include `env | grep -E '^(OLLAMA|HF|TRANSFORMERS|CUDA|HSA)'` to surface implicit redirections.
+- **Anchors:** IL-FA-01-CLOSE, docs/canon/operator-canon-2026-05.md, .claude/rules/infrastructure.md (TBD update), .bashrc.
+- **Note:** old OLLAMA_HOST value documented here is NOT a secret (LAN IP, no auth in URL); not a security gap, just hygiene gap.
