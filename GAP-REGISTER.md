@@ -161,18 +161,21 @@
 
 ## Guardian Bash Shim — Gaps (ADR-024)
 
-- [ ] G-GUARD-01: Guardian rule coverage for scope `claude.bash` ≥ 90% — NOT_STARTED
-  Target: 2026-05-11. Current: 0% — scope unknown → all commands proceed unchecked.
-  ADR: `decisions/ADR-024-guardian-bash-shim.md`. Owner: evo1 team (Guardian rules registry).
-- [ ] G-GUARD-02: Switch banxe-emi-stack + vibe-coding to ENFORCE mode (`GUARDIAN_MODE=enforce`) — NOT_STARTED
-  Target: 2026-05-11. Depends on G-GUARD-01 (rule coverage). Guardian fail-closed enabled.
-  Action: `export GUARDIAN_MODE=enforce` in session + update `claude-bash-shim.env`.
+- [x] G-GUARD-01: Guardian rule coverage for scope `claude.bash` ≥ 4 base rules (CB1..CB4) — **DONE 2026-05-05**
+  Closed via ADR-026 (Guardian third family) + MetaClaw `d122a61 feat(guardian): add scope claude.bash with ADR-025 canon ruleset [V-01]`. Deployed to evo1 `/data/banxe/guardian/` (PR #32 → main `c321b40`). Verified positive (`git status -sb` → pass) + negative (`rm -rf / --no-preserve-root` → fail CB4). See INSTRUCTION-LEDGER §IL-CANON-02. Follow-up: G-GUARD-01-EXT (rule coverage to 90% over time, separate work item).
+- [x] G-GUARD-02: Switch banxe-emi-stack + vibe-coding to ENFORCE mode (`GUARDIAN_MODE=enforce`) — **DONE 2026-05-05**
+  banxe-emi-stack PR #57 (`feat/guardian-enforce-2026-05-05`) flipped `claude-bash-shim.env` defaults audit→enforce, open→closed. Operator `~/.bashrc` updated symmetrically. Live smoke 4/4 expected outcomes (1 pass, 3 BLOCK on CB1/CB2/CB4). New interactive sessions inherit enforce automatically.
 - [ ] G-GUARD-03: Guardian ClickHouse retention configured for 12 months (FCA-grade) — NOT_STARTED
   Target: 2026-05-31. Audit trail canonical destination per G-GUARD-03 (I-08, FCA CASS 15).
   Action: evo1 team to verify ClickHouse TTL for Guardian audit table.
 - [ ] G-GUARD-04: ENFORCE everywhere (all Claude Code sessions, all repos) — NOT_STARTED
   Target: 2026-05-18. Depends on G-GUARD-01 + G-GUARD-02 verified clean.
   Action: onboarding script to install shim + set enforce mode on all dev machines.
+
+
+- [ ] G-DEPLOY-01: Pipeline-deploy MetaClaw `guardian/` → evo1 `/data/banxe/guardian/` (replace manual `scp`/`rsync`) — NEW 2026-05-05
+  Source: IL-CANON-02 follow-up C. Manual deploy is fragile and bypasses CI gates.
+  Action: design CI job (e.g. GH Actions on MetaClaw push to main) that publishes guardian artefacts and pulls on evo1 via `systemctl --user` post-hook. Owner: Architecture WG.
 
 ## Что реализовано лучше стандарта
 
