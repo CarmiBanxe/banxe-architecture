@@ -372,6 +372,11 @@
   Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE (где G-INFRA-03 closed как NOT PURSUED), docs/canon/operator-canon-2026-05.md.
   Priority: P2.
 
+- [ ] G-OPS-05: evo1 keycloak.service restart-loop (zombie) — OPEN 2026-05-06
+  Discovered FA-4a (IL-FACTORY-AUDIT-01). evo1 has `keycloak.service` in `activating auto-restart` state. Two docker containers `keycloak` and `test-iam` exited (137) 5 days ago. NO :8180 listener on evo1. ADR-017 + G-IAM-08 (DONE 2026-05-04) made Legion the canonical authority — evo1 keycloak deployment is now legacy.
+  Action: decommission analogous to G-OPS-04 frankfurter pattern — `docker compose down` on `/data/banxe/banxe-emi-stack/infra/keycloak-banxe-emi/docker-compose.yml`, disable systemd `keycloak.service`, remove containers. Runbook deferred (separate operator-gated execution).
+  Anchors: ADR-017, G-IAM-08, FA-4a discovery, docs/canon/operator-canon-2026-05.md (Principle 1 — evo1 not choke).
+  Priority: P3 (zombie tolerable; restart-loop CPU cost minimal compared to frankfurter).
 - [x] G-OPS-03: midaz-ledger restart loop resolved — **DONE 2026-05-05** (existing redis-stack container stopped SIGTERM 4 days ago; midaz-ledger expected Redis on 172.22.0.1:6379 (host gateway midaz-network) per Variant 2 lightweight topology in docker-compose.midaz.yml)
   Fix: `docker start redis` (recovery existing container redis/redis-stack:latest). Verify: midaz-ledger "Connected to Redis/Valkey in STANDALONE mode ✅".
   Follow-up: G-OPS-05 — set restart policy=unless-stopped on redis container to prevent recurrence.
@@ -386,7 +391,7 @@
   Anchors: docs/roadmap/audit-2026-05/A4-agents-orchestration-proposal.md.
   Priority: P2.
 
-- [ ] G-FACTORY-02: Keycloak realm split-brain risk Legion vs evo1 — OPEN
+- [x] G-FACTORY-02: Keycloak realm split-brain (resolved) — DONE 2026-05-06 (FA-4a discovery: no actual split-brain. ADR-017 + G-IAM-08 cutover 2026-05-04 made Legion canonical authority `100.101.218.26:8180` for `banxe-emi` realm. evo1 :8180 NOT listening; evo1 keycloak.service in restart-loop but NO consumer references. A3 risk assessment was based on pre-cutover state. Successor zombie issues split out: G-OPS-05 (evo1 keycloak restart-loop) + G-FACTORY-04 (Legion 2x keycloak Java orphan).)
   Discovered 2026-05-05 in IL-AUDIT-01 A1. Legion listens on :8180 (Keycloak banxe-emi realm host-installed dev-file backend). evo1 also has :8180 reserved per ADR-016/017 with Postgres backend (IL-IAM-09 staging validated). Two Keycloak instances on same realm name = classic IAM split-brain risk.
   Action: FA-4 (confirm canonical Keycloak per ADR-017; decommission Legion-side OR convert to read-only mirror; document in .claude/rules/infrastructure.md).
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-017, G-IAM-01..09.
@@ -394,6 +399,11 @@
 
 - [x] G-FACTORY-03: Ruflo identity reclassified — DONE 2026-05-06 (FA-3 discovery: Ruflo is internal Banxe Review Agent / Claude Code subagent for regulatory boundary enforcement, not a PATH binary; documented in .claude/rules/agents.md + agent passports + IL-008 review reports; not "missing", just misclassified in A1 baseline which checked only PATH) — OPEN
   Update 2026-05-06 (FA-3): IL-008 review report at docs/reviews/IL-008-review.md confirms operational use; pipeline mandate per .claude/rules/agents.md (request → ARL → Ruflo → target agent → response for payment/compliance/kyc). Lesson: A1 inventory missed canonical agent fleet by checking only `command -v`, not `.claude/agents/` + `.claude/rules/agents.md`.
+- [ ] G-FACTORY-04: Legion has 2 keycloak Java processes on :8180 (potential orphan) — OPEN 2026-05-06
+  Discovered FA-4a. Legion runs two Quarkus Keycloak Java processes (pid 3221994 + pid 3354617), both started `May04`, both with identical `--http-port=8180` flags. docker-proxy binds :8180 to one of them. One is likely orphan from a previous restart that didn't kill old process before new started.
+  Action: identify which pid is the live one (linked to docker container), gracefully stop the other. Read-only verification first (`ps`, `docker inspect`, `lsof :8180`).
+  Anchors: FA-4a discovery, G-IAM-08 (cutover artefact), Legion-side keycloak install dirs `/home/mmber/keycloak-banxe-emi-legion`, `/home/mmber/keycloak-banxe-emi-pg-test`.
+  Priority: P3 (Quarkus consumes ~750 MB RAM each → ~1.5 GB total used; second process is wasted RAM but not breaking anything).
 - [x] G-FACTORY-CHAIN: agents.md chain matrix not formalised — DONE 2026-05-06 (FA-5: agent-chain × GSD-phase matrix added to .claude/rules/agents.md with 6 canonical chains A-F; Ruflo placement formalised per FA-3 reclassification; agent-to-LiteLLM-route mapping included per FA-2)
   Anchors: PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), .claude/rules/agents.md, A4 proposal.
   Priority: P3 (closed).
