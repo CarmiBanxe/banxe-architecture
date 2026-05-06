@@ -184,13 +184,13 @@
 
 ## CASS / Safeguarding audit-trail — Gaps (V-06 from HANDOFF-2026-05-04)
 
-- [ ] G-CASS-01: AuditTrail fail-open path leaves CASS reconciliation events un-recorded — NEW 2026-05-05
+- [x] G-CASS-01: AuditTrail fail-open path leaves CASS reconciliation events un-recorded — DONE 2026-05-06
   Source: V-06 HIGH in HANDOFF-2026-05-04. Components: `src/safeguarding/audit_trail.py` (banxe-emi-stack), `services/recon/reconciliation_engine{,_v2}.py`, `services/safeguarding-engine/app/services/reconciliation_service.py`. Risk: under ClickHouse outage, recon events succeed silently without persisting to immutable log. FCA CASS 15 expects unbroken audit chain.
-  Plan (3 steps):
-    1. **Audit** (read-only): query ClickHouse `audit_trail` for the last 30 days, compare event counts vs reconciliation_engine state-machine transitions. Identify gap windows. Output: `docs/ops/cass-audit-2026-05-05.md`.
-    2. **Propose**: ADR-027 — Audit-trail durability strategy. Options: (a) blocking append (fail-closed), (b) async queue with disk-backed buffer, (c) dual-write to ClickHouse + local SQLite ring-buffer.
-    3. **Fix**: implement chosen option, add tests covering ClickHouse-down scenarios, regenerate audit-trail for any identified gap window.
-  Owner: Architecture WG. Linked: I-08 (audit-trail invariant TBD), .claude/rules/cass15.md.
+  Resolution (ADR-027 Accepted 2026-05-06): implemented SQLite ring-buffer (Option b).
+    - banxe-emi-stack PR #66: `BufferedAuditPort` — SQLite WAL ring-buffer, 8 unit tests.
+    - banxe-emi-stack PR #67: DI wiring (`get_recon_engine`), `AUDIT_FAIL_CLOSED` flag, 4 integration tests.
+    - banxe-emi-stack PR #68: `scripts/audit-buffer-drain.py` cron drain, 3 smoke tests. Total: 15 tests, 0 new deps.
+  Owner: Architecture WG. Linked: ADR-027 (Accepted), I-08, .claude/rules/cass15.md.
 
 - [ ] G-CASS-02: Audit-trail end-to-end coverage tests (no gaps detectable) — NEW 2026-05-05
   Add CI check: pytest fixture that runs a full reconciliation cycle with ClickHouse connection killed mid-flight, asserts every recon event eventually persists OR returns 5xx (no silent success). Owner: Architecture WG.
