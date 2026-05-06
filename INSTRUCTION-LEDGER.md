@@ -3792,3 +3792,91 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Anchors:** PR #57 (sprint), PR #80 (FA-1), PR #88 (FA-2), PR #87 (settings.json), docs/canon/operator-canon-2026-05.md, ADR-026, ADR-027.
 - **Reperential point:** main HEAD at canon hygiene closure = 42db00c.
 - **Closes IL-FACTORY-02** (was P2 OPEN) — folded into broader process-hygiene canon.
+
+### IL-OPS-G-OPS-04-2026-05-06 — G-OPS-04 Frankfurter docker zombie decommissioned (evo1)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** CLOSE (operator-executed decommission)
+- **Status:** CLOSED
+- **Priority:** P2 → resolved
+- **Context:** G-OPS-04 banxe-frankfurter container on evo1 in zombie restart-loop (6051 restarts). Discovered PA-5a-extended (IL-PROJECT-AUDIT-01). Container image `hakanensari/frankfurter:latest`; DATABASE_URL pointed to `172.17.0.1:5432` (host gateway) where Postgres does NOT listen; Memory 25 MiB idle; 0 TCP connections on :8181; 0 consumers. Runbook: `docs/runbooks/pa-05-frankfurter-decommission.md`.
+- **What was done (operator-executed on evo1):**
+  - `docker stop banxe-frankfurter` — container SIGTERM → stopped cleanly.
+  - `docker rm banxe-frankfurter` — container removed from docker ps.
+  - `docker ps --filter name=frankfurter` — confirmed 0 results (container absent).
+  - `docker ps` before/after captured in runbook artifact (docs/runbooks/pa-05-frankfurter-decommission.md §"Execution log").
+- **Result:** Restart-loop CPU churn on evo1 eliminated. evo1 RSS freed ~25 MiB. Operator canon Principle 1 ("evo1 не должен задыхаться") satisfied.
+- **Rollback:** Documented in `docs/runbooks/pa-05-frankfurter-decommission.md §"Rollback plan"` — requires new Postgres frankfurter DB + rotated password per IL-SEC-01. Not expected to be needed (0 consumers confirmed).
+- **Closes:** G-OPS-04 (was OPEN P2 2026-05-05).
+- **Anchors:** docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE, IL-PROJECT-AUDIT-01, docs/canon/operator-canon-2026-05.md (Principle 1).
+- **Reperential point:** main HEAD at G-OPS-04 closure = e35e5b0.
+
+### IL-OPS-G-OPS-05-OBSERVED-2026-05-06 — G-OPS-05 keycloak.service (evo1) current state observed healthy
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (state check; not a decommission execution)
+- **Status:** MONITOR (not CLOSED — decommission still required per ADR-017 + G-IAM-08)
+- **Priority:** P3 (unchanged)
+- **Context:** G-OPS-05 was opened 2026-05-06 (FA-4a) with assessment "evo1 keycloak.service in `activating auto-restart` state, two docker containers exited (137), NO :8180 listener". Subsequent operator observation on 2026-05-06 shows a different state.
+- **What was checked:**
+  - `systemctl status keycloak.service` → `active (running)`, uptime ~3h, `db-url=jdbc:postgresql://127.0.0.1:15433/keycloak`
+  - `ss -tlnp | grep :8180` → java pid=705370 listening on `*:8180`
+- **Result:** No restart-loop at observation time. Service is running and port is bound. Original gap assessment ("zombie restart-loop") does not match current state — likely the service recovered between FA-4a observation and this check.
+- **Reclassification:** Gap status updated from "zombie/restart-loop" to "MONITOR only". evo1 keycloak.service is still a legacy deployment (ADR-017 + G-IAM-08 made Legion canonical), so decommission is still the correct long-term action — just not urgent (no CPU churn, no restart-loop).
+- **Decommission:** Still required per ADR-017 + G-IAM-08 when operator schedules it. Runbook pattern: analogous to G-OPS-04 frankfurter (docker compose down + disable systemd unit). No urgency gate now that restart-loop is absent.
+- **Anchors:** docs/canon/operator-canon-2026-05.md, G-OPS-05 entry in GAP-REGISTER.md, keycloak.service systemd unit on evo1, ADR-017, G-IAM-08, FA-4a discovery (IL-FA-04-CLOSE PR #85).
+- **Reperential point:** main HEAD at observation = 9f2a06d.
+
+### IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06 — G-FACTORY-04 Legion :8180 Java processes — current state observed (no orphans found)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (state check; not an execution)
+- **Status:** MONITOR (not CLOSED — periodic verification still required)
+- **Priority:** P3 (unchanged)
+- **Context:** G-FACTORY-04 was opened 2026-05-06 (FA-4a) with description "Legion has 2 keycloak Java processes on :8180 (potential orphan)" — pid 3221994 + pid 3354617 both with `--http-port=8180`. Subsequent operator verification on Legion 2026-05-06 shows a different state.
+- **What was checked (Legion, 2026-05-06):**
+  - `ps aux | grep -E "keycloak-26.2.5|QuarkusEntryPoint start --optimized --http-port=8180" | grep -v grep` → **0 processes** (no Java Keycloak processes running).
+  - `ss -tlnp | grep :8180` → `LISTEN 0.0.0.0:8180` and `[::]:8180` WITHOUT users field (port bound but no direct process attribution from ss).
+  - `sudo lsof -i :8180` → `docker-proxy` PID 3979260/3979267 under root, type TCP `*:8180` (LISTEN). No Java process listed.
+- **Result:** At observation time, no direct Java Keycloak processes on :8180 on Legion. Port :8180 is bound by docker-proxy only (expected for containerised Keycloak). Original FA-4a observation of 2 orphan Java processes does not match current state — pids 3221994/3354617 may have been cleaned up between FA-4a (2026-05-04) and this check (2026-05-06).
+- **Reclassification:** G-FACTORY-04 reclassified from "2 orphan Java procs (urgent verify)" to MONITOR/VERIFY: periodically check for unexpected Java Keycloak processes outside the canonical container; no immediate kill action required. Containerised Keycloak on Legion is the expected canonical state (ADR-017 + G-IAM-08).
+- **Anchors:** G-FACTORY-04 in GAP-REGISTER.md, IL-OPS-G-OPS-05-OBSERVED-2026-05-06, ADR-017, G-IAM-08, FA-4a discovery (IL-FA-04-CLOSE PR #85).
+- **Reperential point:** main HEAD at observation = 793e322.
+
+### IL-SEC-01-2026-05-06 — Frankfurter Postgres password exposed in PA-5a logs — banned from reuse (security canon)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC (security canon — immediately binding)
+- **Status:** BINDING
+- **Priority:** P1
+- **Context:** During PA-5a (2026-05-05), `docker inspect banxe-frankfurter` on evo1 revealed `DATABASE_URL` containing a Postgres password in operator session logs. Even though the Frankfurter Postgres database does not currently exist (and was never provisioned in production), the password value is now considered permanently compromised — it appeared in logs accessible to any operator with shell history or session replay access.
+- **Decision:**
+  - The exposed Frankfurter Postgres password is **PERMANENTLY BANNED** from reuse.
+  - Any future Frankfurter Postgres provisioning MUST:
+    1. Generate a new random password (minimum 32 chars, `openssl rand -base64 32` or equivalent).
+    2. Store it only in the canonical secrets backend / env mapping (never in `docker inspect`-readable `ENV` fields if avoidable; use Docker secrets or external secret manager).
+    3. **Never reuse** the old value from PA-5a logs.
+  - This ban is permanent and requires no further operator action until a new Frankfurter DB is provisioned.
+- **Operational impact:**
+  - **Current state:** No Frankfurter DB exists → no live credentials to rotate. Risk is contained.
+  - **Future state:** First provisioning step for any Frankfurter DB MUST include password generation + reference to IL-SEC-01-2026-05-06 as compliance evidence.
+- **Anchors:** docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, PA-5a logs (2026-05-05), docs/canon/operator-canon-2026-05.md (security-first).
+- **Reperential point:** main HEAD at IL-SEC-01 canon = e9c2f26.
+
+
+### IL-CANON-RUFLO-2026-05-06 — Ruflo Review Agent canonical placement in orchestration
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** DESIGN (agent orchestration canon — binding architecture decision)
+- **Status:** BINDING
+- **Priority:** P1
+- **Context:** Prior to this entry, Ruflo's mandatory placement in the ARL pipeline was documented in `.claude/rules/agents.md` (BUG-005) and `agents.md` FA-5 matrix, but `docs/canon/factory-project-stack-2026-05.md` did not include Ruflo as an explicit canon section. PR #98 (IL-CANON-STACK-2026-05-06) defined factory/project stack roles; PR #99 added the Ruflo section to that document. This IL entry closes the canon loop.
+- **What was canonised:**
+  - **Ruflo is NOT a PATH binary.** It is invoked exclusively through the ARL pipeline (`request → ARL → Ruflo → target agent → response`).
+  - **Mandatory placement** for all request types: `payment`, `compliance`, `kyc`, `aml`, `emi`, `fca`. Skipping Ruflo = potential FCA violation.
+  - **Factory dev-agents** must consult Ruflo for any regulated surface before finalising any code, schema, or config change.
+  - **Project-side gateways** (gateway-moa, gateway-guiyon, gateway-ctio) must delegate to Ruflo and log the result in the canonical audit chain (G-01 ExplanationBundle, G-02 trail).
+  - **Regulatory coverage:** Ruflo enforces invariants I-01..I-07 on every intercepted request. It is the pre-filter; `mlro_agent` remains the decision-maker for SAR-level escalations.
+  - **Improvement path:** changes to Ruflo's scope or placement MUST go through ADR + IL entry. No ad-hoc edits to `agents.md`, `swarm.yaml`, or `factory-project-stack-2026-05.md` without a corresponding IL.
+- **Anchors:** PR #98 (IL-CANON-STACK-2026-05-06, `docs/canon/factory-project-stack-2026-05.md`), PR #99 (Ruflo section in same file, merged to main HEAD `24e106c`), `.claude/rules/agents.md` BUG-005 + FA-5 matrix, `agents/compliance/swarm.yaml`, `services/arl/`.
+- **Reperential point:** main HEAD at IL-CANON-RUFLO canon = 24e106c.

@@ -1,6 +1,6 @@
 # ADR-027 — Audit-Trail Durability Strategy
 
-**Status:** Proposed (2026-05-05)
+**Status:** Accepted (2026-05-06)
 **Author:** Architecture WG
 **Closes:** G-CASS-01 (canonical), V-06 (HANDOFF-2026-05-04)
 **Linked:** ADR-016 (AI-plane PII/AML routing), INVARIANTS I-32/I-33, IL-CANON-05, MASTER-PLAN Track A1
@@ -201,5 +201,16 @@ Rationale:
 
 ## Decision
 
-**Pending** — operator acceptance required after review of the Recommendation.
-Implementation begins only after operator confirms chosen option and phasing.
+**Accepted (2026-05-06)** — Option (b) implemented as specified in the phased plan above.
+
+---
+
+## Implementation (2026-05-06)
+
+Implemented in banxe-emi-stack:
+
+- Step 1 (PR #66): `src/safeguarding/buffered_audit_port.py` — BufferedAuditPort (SQLite ring-buffer), 8 unit tests.
+- Step 2 (PR #67): `api/deps.py` wiring (`get_buffered_audit_port` + `get_recon_engine`), `AUDIT_FAIL_CLOSED` flag in `AuditTrail.log()`, 4 integration tests.
+- Step 3 (PR #68): `scripts/audit-buffer-drain.py` drain cron script, 3 smoke tests.
+
+Total: 15 tests, 0 new dependencies (stdlib sqlite3).
