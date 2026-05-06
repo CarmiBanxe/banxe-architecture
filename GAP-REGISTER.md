@@ -366,7 +366,7 @@
   Anchors: G-INFRA-03 (closed), G-OPS-03 (midaz-ledger restart), IL-PA-05-CLOSE.
   Priority: P2.
 
-- [ ] G-OPS-04: banxe-frankfurter zombie restart-loop on evo1 (6051 restarts, no consumers, unreachable DB) — OPEN 2026-05-05
+- [x] G-OPS-04: banxe-frankfurter zombie restart-loop on evo1 — CLOSED 2026-05-06 → IL-OPS-G-OPS-04-2026-05-06
   Discovered in PA-5a-extended (IL-PROJECT-AUDIT-01). Container `banxe-frankfurter` (image `hakanensari/frankfurter:latest`) на evo1 имеет RestartCount=6051; Memory=25 MiB; CPU=0% idle между крашами; DATABASE_URL направлен на `172.17.0.1:5432` (host gateway), но host Postgres НЕ слушает на :5432 (verified via ss -tlnp). 0 TCP connections на :8181; 0 proxy/ingress/code refs. Zombie state нарушает Operator canon Principle 1 ("evo1 не должен задыхаться") через restart-loop CPU churn.
   Action: decommission via runbook `docs/runbooks/pa-05-frankfurter-decommission.md` (steps gated on operator go).
   Rollback: documented in runbook §"Rollback plan" — requires new Postgres frankfurter DB with rotated password per IL-SEC-01.

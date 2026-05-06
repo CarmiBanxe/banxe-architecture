@@ -3792,3 +3792,21 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Anchors:** PR #57 (sprint), PR #80 (FA-1), PR #88 (FA-2), PR #87 (settings.json), docs/canon/operator-canon-2026-05.md, ADR-026, ADR-027.
 - **Reperential point:** main HEAD at canon hygiene closure = 42db00c.
 - **Closes IL-FACTORY-02** (was P2 OPEN) — folded into broader process-hygiene canon.
+
+### IL-OPS-G-OPS-04-2026-05-06 — G-OPS-04 Frankfurter docker zombie decommissioned (evo1)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** CLOSE (operator-executed decommission)
+- **Status:** CLOSED
+- **Priority:** P2 → resolved
+- **Context:** G-OPS-04 banxe-frankfurter container on evo1 in zombie restart-loop (6051 restarts). Discovered PA-5a-extended (IL-PROJECT-AUDIT-01). Container image `hakanensari/frankfurter:latest`; DATABASE_URL pointed to `172.17.0.1:5432` (host gateway) where Postgres does NOT listen; Memory 25 MiB idle; 0 TCP connections on :8181; 0 consumers. Runbook: `docs/runbooks/pa-05-frankfurter-decommission.md`.
+- **What was done (operator-executed on evo1):**
+  - `docker stop banxe-frankfurter` — container SIGTERM → stopped cleanly.
+  - `docker rm banxe-frankfurter` — container removed from docker ps.
+  - `docker ps --filter name=frankfurter` — confirmed 0 results (container absent).
+  - `docker ps` before/after captured in runbook artifact (docs/runbooks/pa-05-frankfurter-decommission.md §"Execution log").
+- **Result:** Restart-loop CPU churn on evo1 eliminated. evo1 RSS freed ~25 MiB. Operator canon Principle 1 ("evo1 не должен задыхаться") satisfied.
+- **Rollback:** Documented in `docs/runbooks/pa-05-frankfurter-decommission.md §"Rollback plan"` — requires new Postgres frankfurter DB + rotated password per IL-SEC-01. Not expected to be needed (0 consumers confirmed).
+- **Closes:** G-OPS-04 (was OPEN P2 2026-05-05).
+- **Anchors:** docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE, IL-PROJECT-AUDIT-01, docs/canon/operator-canon-2026-05.md (Principle 1).
+- **Reperential point:** main HEAD at G-OPS-04 closure = e35e5b0.
