@@ -523,7 +523,7 @@
   rocminfo missing; qwen3:235b confirmed CPU-only. Phase B (ROCm+Mesa install) required.
   See IL-OPS-G-INFRA-EVO2-PHASE-A-2026-05-06.
 
-- [ ] G-INFRA-EVO2-RAM-VISIBILITY: evo2 OS sees ~93.9 GiB instead of physical 128 GB — OPEN 2026-05-06
+- [x] G-INFRA-EVO2-RAM-VISIBILITY: evo2 OS sees ~93.9 GiB instead of physical 128 GB — CLOSED-PENDING-OPERATOR 2026-05-07
   evo2 physical HW: 128 GB RAM (8 × 16 GB DDR5, confirmed by dmidecode + lshw). `/proc/meminfo` reports
   ~93.9 GiB; `lsmem` shows 96G online. ~34 GB appears BIOS-reserved (likely UMA Frame Buffer or Memory Remap,
   similar pattern to evo1 G-INFRA-EVO1-RAM-VISIBILITY but smaller magnitude — ~73% vs ~25% visible on evo1).
@@ -534,6 +534,9 @@
   Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
   IL-OPS-G-INFRA-EVO2-PHASE-A-2026-05-06, G-INFRA-EVO1-RAM-VISIBILITY, docs/runbooks/fa-evo1-bios-uma-audit.md.
   Priority: P2 (OS sees ~94 GiB; sufficient for current workloads; lower urgency than P1 GPU stack fix).
+  Update 2026-05-07: BIOS verified physically — UMA Frame buffer Size already [2G]; free -h now 123Gi; lsmem 126G online. PASS (verify-only, no BIOS change applied).
+  Closing IL: IL-OPS-G-INFRA-EVO2-RAM-VISIBILITY-VERIFIED-2026-05-07.
+  Verified-on: 2026-05-07 00:45 CEST (pending operator-confirmation from Mark).
 - [x] G-CANON-HW-BASELINE: canonical HW baseline was implicit / missing from canon docs — CLOSED 2026-05-06
   Prior to this entry, factory/project stack canon (docs/canon/factory-project-stack-2026-05.md)
   did not record physical HW specs. Decisions about model selection, service placement, and

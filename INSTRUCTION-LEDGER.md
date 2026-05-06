@@ -4085,3 +4085,46 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Phase A: `IL-OPS-G-INFRA-EVO1-PHASE-A-2026-05-06`
   - Canon: `docs/canon/factory-project-stack-2026-05.md` (HW Baseline)
 - **Referential point:** main HEAD at bbb10fcf2c632aa9c25c0efdb633104d48d716ab.
+
+
+### IL-OPS-G-INFRA-EVO2-RAM-VISIBILITY-VERIFIED-2026-05-07 — evo2 BIOS state verify: UMA already 2G; free -h 123GiB; G-INFRA-EVO2-RAM-VISIBILITY CLOSED-PENDING-OPERATOR
+
+- **Date:** 2026-05-07 00:45 CEST
+- **Phase (GSD):** VERIFY — evo2 BIOS state checked physically + live shell; acceptance criteria met without applying any BIOS change in this session
+- **Status:** PASS (verify-only)
+- **Priority:** P2
+- **Operator-confirmation:** PENDING (gap closure requires explicit operator-confirmation on merge; this IL records the verify result only)
+- **Context:** evo2 (banxe-NucBox-EVO-X2-2, AMD Strix Halo, identical platform to evo1). HANDOFF §5 baseline recorded OS-visible ~93.9 GiB at physical 128 GB (BIOS/UMA mismatch, smaller magnitude than evo1). Pre-flight live shell on 2026-05-07 00:35 CEST showed evo2 already reporting 123 GiB / 126 G online — UMA already set to a small value. Physical BIOS inspection confirmed: `iGPU Configuration = UMA_SPECIFIED`, `UMA Frame buffer Size = [2G]` — same values to which evo1 was uplifted in IL-OPS-G-INFRA-EVO1-PHASE-C-EXECUTED-2026-05-07.
+- **BIOS state observed (no change applied):**
+  - Aptio Setup AMI v2.22.1295
+  - Path: Advanced → GFX Configuration
+  - `iGPU Configuration`: `UMA_SPECIFIED`
+  - `UMA Frame buffer Size`: `[2G]`
+  - `Memory Configuration`: `Maximum Memory Data Clock Speed = Auto` (other configurable params absent in this OEM BIOS, identical to evo1)
+  - Method: Save & Exit (no logical changes; full POST-cycle with memory training completed)
+- **Verify (live shell, 2026-05-07 00:45 CEST, via SSH from Legion):**
+  - prior boot_id: `eb475dbb-ccd4-4fb2-aeac-f5aae5c0a3f8`
+  - new boot_id: `9968a84b-5b58-474d-89e2-877232dace1e` — reboot confirmed
+  - `uptime -s` → `2026-05-07 00:44:27`
+  - `free -h` total: **123Gi**
+  - `lsmem --summary` Total online memory: **126G**
+  - `/proc/meminfo` MemTotal: **129461988 kB ≈ 123.5 GiB**
+  - Memory block size: **2G** (consistent with evo1 post-uplift)
+  - Kernel: **6.17.0-23-generic** (unchanged in this session)
+  - Services active: ollama, docker, tailscaled
+  - Arithmetic check: 128 GB physical − 2 GB UMA = 126 GiB online ✅
+- **Pass criteria (HANDOFF §8 Step 2):**
+  - [x] `free -h` total ≥ 110 GiB → **123 GiB** ✅
+  - [x] `lsmem` online ≈ 128 GiB → **126 GiB** ✅
+  - [x] OS boots without anomalies; SSH responds ✅
+- **Closes (pending operator-confirmation):** `G-INFRA-EVO2-RAM-VISIBILITY` → CLOSED-PENDING-OPERATOR
+- **Side observations / discrepancies vs HANDOFF §5:**
+  - HANDOFF §5 recorded evo2 OS-visible as ~93.9 GiB (Phase A baseline, 2026-05-06). By the time of this pre-flight (2026-05-07 00:35 CEST), evo2 already reports 123 GiB. This means the BIOS UMA was already at 2G before this session — possibly set in an untracked session or the kernel accounting changed. Recorded as observation without attribution.
+  - Process implication: HANDOFF §5 baseline for evo2 RAM should be updated in a future canon-update (not in this IL).
+- **Anchors:**
+  - HANDOFF: `docs/sessions/HANDOFF-2026-05-06-canon-stack-bios-uplift.md` §8 Step 2
+  - Runbook: `docs/runbooks/fa-evo1-bios-uma-audit.md` Phase C (used as template for evo2)
+  - Phase A: `IL-OPS-G-INFRA-EVO2-PHASE-A-2026-05-06`
+  - Sister IL: `IL-OPS-G-INFRA-EVO1-PHASE-C-EXECUTED-2026-05-07` (PR #122)
+  - Canon: `docs/canon/factory-project-stack-2026-05.md` (HW Baseline)
+- **Referential point:** main HEAD at bbb10fcf2c632aa9c25c0efdb633104d48d716ab.
