@@ -3628,3 +3628,26 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Closure criteria:** all 5 canonical aliases working via LiteLLM /v1/chat/completions; /v1/models lists all 5; no existing routes broken.
 - **Operator canon alignment:** Principle 4 unblocked (factory work resumed); A4 §"Factory plane orchestration" formalised.
 - **Anchors:** PR #57 (sprint), PR #80 (FA-1), docs/runbooks/fa-02-litellm-canonical-aliases.md, A4 proposal, docs/canon/operator-canon-2026-05.md.
+
+### IL-FA-03-CLOSE — FA-3 Ruflo identity reclassified
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC + CLOSE (discovery only, no execution needed)
+- **Status:** ✅ DONE
+- **Priority:** P3 (factory hygiene; reclassification, not gap-of-substance)
+- **Sprint:** IL-FACTORY-AUDIT-01 (PR #57)
+- **Closes:** G-FACTORY-03 (Ruflo not detected on Legion).
+- **Discovery summary:**
+  - PATH search (ruflo / Ruflo / ruflo-cli / ruflo-agent / etc.): NO binary found.
+  - pipx / pip / npm / cargo / snap / flatpak: NO package found.
+  - Filesystem grep: 30+ references in `.claude/rules/agents.md`, `CLAUDE.md`, IL-008 review report, banxe-emi-stack worktree `infra/ruflo/queen-agent-context.md`, backup folder `.sync-backup-20260406/ruflo/start-ruflo.sh`.
+- **Reclassification:**
+  - Ruflo is NOT a standalone CLI tool.
+  - Ruflo IS the internal Banxe **Review Agent** — a Claude Code subagent / role in the agent fleet.
+  - Canonical role: regulatory boundary enforcer (per `.claude/rules/agents.md` + agent passports). Mandatory middleware in pipeline `request → ARL → Ruflo → target agent → response` for payment/compliance/kyc requests. Checks I-01..I-07 invariants per request. Pre-filter before mlro_agent (decision maker).
+  - Operational evidence: `docs/reviews/IL-008-review.md` exists as Ruflo Review Report by Ruflo Review Agent. Listed in CLAUDE.md S7/S9-S15 agent matrix as `Ruflo (review)`.
+- **Lesson learned:** A1 Legion baseline inventory checked only `command -v <name>` for AI agent CLIs. This missed canonical agent fleet documented in `.claude/rules/agents.md` and `.claude/agents/`. Future factory baselines must include both PATH binaries AND `.claude/agents/` directory contents AND `.claude/rules/agents.md` agent matrix.
+- **Action follow-up:** FA-5 (agents.md chain matrix) MUST explicitly include Ruflo as existing subagent in the canonical chain — not as a missing tool to be installed.
+- **Operator canon alignment:** no canon principle changed; pure clarification that Ruflo is in-fleet, not on-PATH.
+- **Anchors:** PR #57 (sprint), `.claude/rules/agents.md`, `CLAUDE.md` §S7/S9-S15 agent matrix, `docs/reviews/IL-008-review.md`, A1 Legion baseline (PR #50).
+- **Reperential point:** main HEAD at FA-3 closure = abbd56c.
