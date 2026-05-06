@@ -448,3 +448,39 @@
   Action: per-model `ollama rm` on evo1 with operator go per §3.2.
   Anchors: docs/canon/HW-MODEL-UPGRADE-matrix.md, G-CLUSTER-02 (closed).
   Priority: P3.
+
+## HW Baseline Gaps — 2026-05-06
+<!-- Added: IL-CANON-HW-BASELINE-2026-05-06 | Branch: docs/runbook-g-factory-wsl2-ram-cap-2026-05-06 -->
+
+- [ ] G-FACTORY-WSL2-RAM-CAP: Legion WSL2 exposes ~23 GiB instead of physical 64 GB RAM — OPEN 2026-05-06
+  Legion physical HW: 64 GB RAM, 4+ TB SSD, NVIDIA RTX 4070 Laptop (8 GB VRAM). WSL2 .wslconfig not
+  configured; default cap leaves ~23 GiB visible to Linux, severely constraining coding model selection
+  and Ollama blob cache capacity.
+  Action: set `memory=56GB` (or close) in C:\Users\<user>\.wslconfig; restart WSL2; verify `free -h`
+  shows 50+ GiB; re-evaluate coding model beyond 7B-class (e.g. Qwen2.5-Coder-32B or similar).
+  Use 4+ TB SSD as Ollama blob cache (OLLAMA_MODELS env to SSD path).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
+  IL-CANON-STACK-2026-05-06.
+  Priority: P2 (blocks optimal factory-layer model; not blocking operations today).
+  Runbook: docs/runbooks/fa-wsl2-ram-cap-and-ollama-cache.md
+
+- [ ] G-INFRA-EVO1-RAM-VISIBILITY: evo1 OS sees only ~30 GiB of 128 GB physical RAM — OPEN 2026-05-06
+  evo1 physical: 128 GB RAM. UMA (iGPU unified memory) reservation in BIOS may be consuming 32+ GiB;
+  Linux sees ~30 GiB via `free -h`. AMD Strix Halo iGPU default UMA frame buffer is 64 GB (or even more).
+  Action: audit BIOS UMA reservation setting; reduce from 64 GB to ≤8 GB if possible while preserving
+  iGPU Vulkan/ROCm performance; verify with `free -h` after reboot.
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06.
+  Priority: P1 (evo1 is primary factory-mid/heavy host; RAM bottleneck directly limits max model size).
+
+- [ ] G-INFRA-EVO2-GPU-STACK: evo2 AMD GPU not confirmed working under ROCm/Vulkan — OPEN 2026-05-06
+  evo2 physical: 128 GB RAM, 1.9 TB SSD, AMD GPU (unified). GPU-offloaded inference not yet validated.
+  Current baseline assumes CPU-only mode on evo2 (qwen3:235b CPU).
+  Action: install ROCm or Vulkan-capable runtime on evo2; test with `ollama run qwen3:8b` GPU-offload;
+  confirm `project-reason` route can use GPU; update canon if GPU confirmed.
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06.
+  Priority: P1 (evo2 GPU = unlock for project-reason heavy models; currently unused capacity).
+
+- [x] G-CANON-HW-BASELINE: Physical HW specs not recorded in any canon file — CLOSED 2026-05-06
+  Resolved by IL-CANON-HW-BASELINE-2026-05-06: added §"HW Baseline" to
+  docs/canon/factory-project-stack-2026-05.md. Binding: physical HW is source of truth,
+  not OS-visible metrics.
