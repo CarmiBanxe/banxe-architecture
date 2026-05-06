@@ -233,3 +233,21 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 Базовый тег: `checkpoint-2026-05-06-adr027-accepted`. Новый тег после merge: `checkpoint-2026-05-06-progress-snapshot`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md](docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md)
+
+
+---
+
+## Checkpoint registry
+
+Реестр опорных точек прогресса EMI BANXE AI BANK. Каждая запись — аннотированный git-tag в `banxe-architecture` + ссылка на соответствующий handoff/snapshot. Реестр append-only: предыдущие записи не редактируются.
+
+| Дата (CEST) | Тег | Коммит | Тип | Документ |
+|---|---|---|---|---|
+| 2026-05-06 | `checkpoint-2026-05-06-adr027-accepted` | 1fa9ddf | HANDOFF | docs/sessions/HANDOFF-2026-05-06-adr027-accepted.md |
+| 2026-05-06 | `checkpoint-2026-05-06-progress-snapshot` | 24ad91a | SNAPSHOT | docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md |
+
+Протокол наращивания (append-only):
+1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
+2. Блок добавляется новым подразделом ниже (или новой строкой в реестр), без правки уже существующих разделов.
+3. После merge — оператор ставит новый аннотированный тег `checkpoint-YYYY-MM-DD-<slug>` на коммит этого PR и пушит его в `origin`.
+4. Базовая точка resume для будущих сессий — последний тег из реестра.
