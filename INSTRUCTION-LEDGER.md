@@ -3994,3 +3994,21 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Closes:** nothing; `G-INFRA-EVO2-GPU-STACK` and `G-INFRA-EVO2-RAM-VISIBILITY` remain OPEN.
 - **Anchors:** `docs/runbooks/fa-evo2-gpu-stack.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline), `IL-CANON-HW-BASELINE-2026-05-06`, `G-INFRA-EVO2-GPU-STACK`, `G-INFRA-EVO2-RAM-VISIBILITY`.
 - **Referential point:** main HEAD at 437385d.
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-06 — parallel-session leakage between Claude Code sessions — binding process-hygiene canon
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC + CLOSE (canon process lesson, binding)
+- **Status:** BINDING
+- **Priority:** P2 (process hygiene; preventive)
+- **Context:** During Phase A work for evo1/Legion/evo2 IL observations (2026-05-06), a Claude Code session created local branch `docs/il-ops-g-infra-evo1-phase-a-2026-05-06` (commit `e0ccaa6`) with canon edits to INSTRUCTION-LEDGER.md and GAP-REGISTER.md, but did not push the branch or open a PR. The session ended without stashing. A subsequent session then executed `git checkout main` without first checking `git status`, which preserved the untracked working-tree edits on `main`. A Python-patch script for PR #115 (legion+evo2 Phase A) appended new IL entries on top of the already-present evo1 content → PR #115 committed three IL entries (evo1 + legion + evo2) instead of the two it was scoped for. Final content in main is correct, but the process broke the `parallel-session-isolation` and `destructive verify-step` canon.
+- **Lesson learned (binding for all future Claude Code sessions and Perplexity supervisor):**
+  1. Before `git checkout <any-branch>`, ALWAYS run `git status`. If canon files (INSTRUCTION-LEDGER.md, GAP-REGISTER.md, docs/canon/*, docs/runbooks/*) appear as modified or untracked, do NOT switch branches without an explicit `git stash` or a local commit in the current branch.
+  2. If a branch is created locally and receives canon edits, it MUST be either pushed + PR opened, or explicitly documented and deleted within the SAME session. Dangling local branches with canon edits are forbidden.
+  3. On discovery of cross-session leakage (canon files appear in a foreign PR without explicit scope), the supervisor must record an IL-CANON-PROCESS-INCIDENT entry and must NOT mark the triggering task closed without explicit operator confirmation.
+  4. Rules 1–3 extend canon IL-CANON-PROCESS-HYGIENE-2026-05-06; all three rules are mandatory for Claude Code and the Perplexity supervisor.
+- **Operator/Perplexity scope:** Supervisor MUST reference this entry when creating new branches to prevent parallel-session leakage. Specifically: verify `git status` is clean before `git checkout`; verify staged set matches exactly the scoped files before every `git commit`.
+- **Closes:** nothing (process lesson, not a gap).
+- **Anchors:** PR #115 (commit `6d183d7`), IL-CANON-PROCESS-HYGIENE-2026-05-06, `.claude/rules/parallel-session-isolation.md`, `.claude/rules/safety-rules.md`, `docs/canon/factory-project-stack-2026-05.md`.
+- **Referential point:** main HEAD at 6d183d7366954bd677a6fc5be33c45375a49aa1b.
+
