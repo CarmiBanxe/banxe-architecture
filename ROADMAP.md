@@ -247,6 +247,7 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-06 | `checkpoint-2026-05-06-progress-snapshot` | 24ad91a | SNAPSHOT | docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md |
 | 2026-05-06 | `checkpoint-2026-05-06-sber-oss-emi-block` | будет проставлен оператором после merge PR | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-claude-finance-agents-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md |
+| 2026-05-06 | `checkpoint-2026-05-06-defi-stack-binance-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
@@ -290,3 +291,23 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 Тег после merge: `checkpoint-2026-05-06-claude-finance-agents-block`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md](docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md)
+
+---
+
+## Roadmap Block 2026-05-06 — Composable DeFi Stack vs Binance Dealer Program (BANXE perimeter assessment)
+
+Оценка Composable DeFi Stack (LI.FI / 0x / Rubic / dYdX v4 / Injective / GMX v2 / StakeKit / Hummingbot / Enso / OpenDAX / HollaEx) как структурной альтернативы программе Binance Dealer/white-label для EMI BANXE AI BANK — строго в EMI-периметре.
+
+**In-scope (текущий EMI):** non-custodial swap UI (LI.FI / 0x / Rubic + AML pre-trade screening), EMT-stablecoins under MiCA Title III, Travel Rule execution (Sumsub / Notabene), internal Hummingbot analytics (liquidity intelligence, no autonomous execution), OpenDAX/HollaEx white-label (partial — UI shell only, custody remains external).
+
+**Out-of-scope (CASP / инвестиционные услуги / кредитование):** dYdX v4 / Injective / GMX v2 (margin/leverage/perps — MiFID II/MiCA CASP required), StakeKit / yield protocols (guaranteed/staking yield — investment product), custodial DeFi, safeguarding pool funds in DeFi smart contracts.
+
+Регуляторное правило: BANXE выступает исключительно как non-custodial routing UI; клиент подписывает транзакции собственным кошельком; BANXE проводит AML pre-trade screening существующим `services/aml` pipeline. Прямая отправка EU/EEA PII через DeFi-шлюзы без approved AI-plane запрещена. Pending invariant: I-39.
+
+Резерв ADR: ADR-045..050.
+
+Базовая опора: `checkpoint-2026-05-06-claude-finance-agents-block`.
+
+Тег после merge: `checkpoint-2026-05-06-defi-stack-binance-replacement-block`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md](docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md)
