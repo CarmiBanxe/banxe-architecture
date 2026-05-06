@@ -462,7 +462,25 @@
   Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06.
   Priority: P2 (blocks optimal factory-layer model; not blocking operations today).
   Runbook: docs/runbooks/fa-wsl2-ram-cap-and-ollama-cache.md
+  Update 2026-05-06: Phase A executed; WSL2 cap confirmed (~23.5 GiB of physical 64 GB);
+  /mnt/d 3.7 TB SSD available (307 GB used); no local Ollama models on Legion;
+  OLLAMA_HOST→evo1 (192.168.0.72:11434); RTX 4070 8 GB VRAM idle.
+  See IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06.
 
+## G-FACTORY-OLLAMA-OFFLOAD
+<!-- Added: docs/il-ops-phase-a-legion-evo2-2026-05-06 | IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06 -->
+
+- [ ] G-FACTORY-OLLAMA-OFFLOAD: Legion has no local Ollama model; RTX 4070 8 GB VRAM idle; all inference routed to evo1 over LAN — OPEN 2026-05-06
+  Legion physical HW: RTX 4070 Laptop 8 GB VRAM, 4+ TB SSD. Currently OLLAMA_HOST=http://192.168.0.72:11434
+  (evo1). No coding model runs locally on Legion. RTX 4070 8 GB VRAM is sufficient for a 7B–13B coding
+  model (e.g. Qwen2.5-Coder-7B Q8 or 13B Q4). Local GPU inference would reduce LAN latency and remove
+  evo1 dependency for Legion-side coding tasks.
+  Action: after G-FACTORY-WSL2-RAM-CAP resolved (memory=56GB), install a coding model on Legion via Ollama
+  (OLLAMA_MODELS pointing to /mnt/d); configure CUDA for RTX 4070; verify GPU offload in Ollama logs;
+  add model routing in LiteLLM config to prefer local GPU for coding tasks.
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
+  IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06, G-FACTORY-WSL2-RAM-CAP.
+  Priority: P2 (not blocking operations; evo1 handles inference adequately; activates after WSL2 fix).
 ## HW Baseline Gaps — 2026-05-06
 <!-- Added: docs/canon-hw-baseline-2026-05-06-v2 | IL-CANON-HW-BASELINE-2026-05-06 -->
 
@@ -497,7 +515,22 @@
   G-CLUSTER-01, G-CLUSTER-03, docs/canon/HW-MODEL-UPGRADE-matrix.md.
   Priority: P1 (project reasoning layer running suboptimally; blocks re-evaluation of heavy model).
   Runbook: docs/runbooks/fa-evo2-gpu-stack.md
+  Update 2026-05-06: Phase A executed; AMD GPU [1002:1586] detected in PCIe bus;
+  Vulkan 1.3.275 instance OK but zero hardware devices (software/CPU fallback only);
+  rocminfo missing; qwen3:235b confirmed CPU-only. Phase B (ROCm+Mesa install) required.
+  See IL-OPS-G-INFRA-EVO2-PHASE-A-2026-05-06.
 
+- [ ] G-INFRA-EVO2-RAM-VISIBILITY: evo2 OS sees ~93.9 GiB instead of physical 128 GB — OPEN 2026-05-06
+  evo2 physical HW: 128 GB RAM (8 × 16 GB DDR5, confirmed by dmidecode + lshw). `/proc/meminfo` reports
+  ~93.9 GiB; `lsmem` shows 96G online. ~34 GB appears BIOS-reserved (likely UMA Frame Buffer or Memory Remap,
+  similar pattern to evo1 G-INFRA-EVO1-RAM-VISIBILITY but smaller magnitude — ~73% vs ~25% visible on evo1).
+  Can be addressed in the same BIOS session as GPU stack fix (G-INFRA-EVO2-GPU-STACK Phase C/D).
+  Action: after GPU stack Phase C/D, inspect BIOS for UMA Frame Buffer Size and Memory Remap settings;
+  follow fa-evo1-bios-uma-audit.md Phase C pattern for evo2. Verify `free -h` ≥ 110 GiB.
+  Related: G-INFRA-EVO1-RAM-VISIBILITY (same BIOS/UMA pattern; evo1 is P1 due to larger visibility gap).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
+  IL-OPS-G-INFRA-EVO2-PHASE-A-2026-05-06, G-INFRA-EVO1-RAM-VISIBILITY, docs/runbooks/fa-evo1-bios-uma-audit.md.
+  Priority: P2 (OS sees ~94 GiB; sufficient for current workloads; lower urgency than P1 GPU stack fix).
 - [x] G-CANON-HW-BASELINE: canonical HW baseline was implicit / missing from canon docs — CLOSED 2026-05-06
   Prior to this entry, factory/project stack canon (docs/canon/factory-project-stack-2026-05.md)
   did not record physical HW specs. Decisions about model selection, service placement, and

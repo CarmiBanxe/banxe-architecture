@@ -3943,3 +3943,54 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Closes:** nothing; `G-INFRA-EVO1-RAM-VISIBILITY` remains OPEN until Phase C/D.
 - **Anchors:** `docs/runbooks/fa-evo1-bios-uma-audit.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline), `IL-CANON-HW-BASELINE-2026-05-06`, `G-INFRA-EVO1-RAM-VISIBILITY`, `G-INFRA-04`.
 - **Referential point:** main HEAD at 81449d6323138fb610d9d1dc2b626c244a6e824b.
+
+### IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06 — Legion Phase A: WSL2 caps at ~23.5 GiB, SSD 3.7 TB, Ollama offloaded to evo1, RTX 4070 idle
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (Phase A — live shell audit on Legion)
+- **Status:** OBSERVED — gaps OPEN; no operator action yet
+- **Priority:** P2
+- **Context:** G-FACTORY-WSL2-RAM-CAP and G-FACTORY-OLLAMA-OFFLOAD (new). HW baseline canon (IL-CANON-HW-BASELINE-2026-05-06) declares Legion physical = 64 GB RAM / 4+ TB SSD / RTX 4070 8 GB VRAM. Phase A read-only audit executed on Legion to confirm current OS-visible state.
+- **What was checked on Legion (2026-05-06):**
+  - `/proc/meminfo` → MemTotal: 24607908 kB (~23.5 GiB); confirms WSL2 default cap; physical 64 GB not visible.
+  - `df -h /mnt/d` → 3.7 TB SSD, ~307 GB used (8%); available as Ollama blob store.
+  - Local Ollama models → none on Legion; model directory empty.
+  - `echo $OLLAMA_HOST` → `http://192.168.0.72:11434` (pointing to evo1); Legion does not run Ollama locally.
+  - `nvidia-smi` → RTX 4070 Laptop 8 GB VRAM; GPU-Util 0%; no compute processes; GPU completely idle.
+  - `systemctl --user status litellm-v2.service` → active on :4000 (canonical per IL-FACTORY-LITELLM-DUPLICATE closure).
+- **Result / interpretation:**
+  - WSL2 caps Linux to ~23.5 GiB of physical 64 GB — G-FACTORY-WSL2-RAM-CAP confirmed unresolved.
+  - RTX 4070 8 GB VRAM is completely idle; no local coding model deployed; all Ollama inference routed to evo1.
+  - 3.7 TB SSD (mostly empty) is available as Ollama blob cache once WSL2 memory is raised.
+  - Opens new gap G-FACTORY-OLLAMA-OFFLOAD (P2): Legion not self-hosting a coding model; RTX 4070 idle.
+- **Operator/Perplexity scope:** After `.wslconfig memory=56GB` + WSL2 restart (G-FACTORY-WSL2-RAM-CAP), Legion can host a local coding model on RTX 4070. SSD blob path is ready. Until then, all Legion LLM calls route to evo1 over LAN.
+- **Closes:** nothing; `G-FACTORY-WSL2-RAM-CAP` and `G-FACTORY-OLLAMA-OFFLOAD` remain OPEN.
+- **Anchors:** `docs/runbooks/fa-wsl2-ram-cap-and-ollama-cache.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline), `IL-CANON-HW-BASELINE-2026-05-06`, `G-FACTORY-WSL2-RAM-CAP`, `G-FACTORY-OLLAMA-OFFLOAD`.
+- **Referential point:** main HEAD at 437385d.
+
+### IL-OPS-G-INFRA-EVO2-PHASE-A-2026-05-06 — evo2 Phase A: physical 128 GB confirmed, OS sees ~93.9 GiB, Vulkan no hardware devices, rocminfo missing
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (Phase A — live shell audit on evo2)
+- **Status:** OBSERVED — gaps OPEN; no operator action yet
+- **Priority:** P1 (GPU stack) / P2 (RAM visibility)
+- **Context:** G-INFRA-EVO2-GPU-STACK (P1, Vulkan/ROCm broken) and G-INFRA-EVO2-RAM-VISIBILITY (new, P2). HW baseline canon declares evo2 = 128 GB physical / 1.9 TB SSD / AMD GPU. Phase A read-only audit executed on evo2.
+- **What was checked on evo2 (2026-05-06):**
+  - `/proc/meminfo` → MemTotal: 98496248 kB (~93.9 GiB); `lsmem --summary` → Total online memory: 96G.
+  - `sudo dmidecode -t 17` → 8 × 16 GB, Micron DDR5 8000–8532 MT/s, all channels populated → 128 GB physical.
+  - `sudo lshw -short -C memory` → `/0/11 memory 128GiB System Memory` + 8 × 16 GiB modules confirmed.
+  - `lspci -nn | grep -iE 'vga|3d|display'` → AMD device [1002:1586] present in PCIe bus.
+  - `vulkaninfo --summary` → Vulkan 1.3.275 instance OK; **zero hardware devices** listed (software/CPU fallback only).
+  - `rocminfo` → command not found; ROCm not installed.
+  - `ollama list` → 10 models present (including qwen3:235b Q3_K_S).
+- **Result / interpretation:**
+  - Physical capacity 128 GB confirmed; all 8 channels populated; no missing or failed DIMMs.
+  - OS sees ~93.9 GiB (~73% of physical) → BIOS/UMA mismatch (smaller magnitude than evo1). Opens G-INFRA-EVO2-RAM-VISIBILITY (P2).
+  - AMD GPU [1002:1586] present in PCIe bus; no hardware Vulkan adapter; ROCm absent → G-INFRA-EVO2-GPU-STACK confirmed; qwen3:235b runs CPU-only.
+- **Decision:**
+  - G-INFRA-EVO2-GPU-STACK: proceed to Phase B of `fa-evo2-gpu-stack.md` (Mesa + ROCm install; configure HSA_OVERRIDE_GFX_VERSION for [1002:1586] / RDNA).
+  - G-INFRA-EVO2-RAM-VISIBILITY: new P2 gap; can be addressed after GPU stack fix (same BIOS session); follow fa-evo1-bios-uma-audit.md pattern.
+- **Operator/Perplexity scope:** evo2 has physical 128 GB but OS sees 93.9 GiB; AMD GPU is present but software-only; qwen3:235b inference is entirely CPU-bound. GPU stack fix (P1) is the priority; RAM visibility (P2) can follow.
+- **Closes:** nothing; `G-INFRA-EVO2-GPU-STACK` and `G-INFRA-EVO2-RAM-VISIBILITY` remain OPEN.
+- **Anchors:** `docs/runbooks/fa-evo2-gpu-stack.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline), `IL-CANON-HW-BASELINE-2026-05-06`, `G-INFRA-EVO2-GPU-STACK`, `G-INFRA-EVO2-RAM-VISIBILITY`.
+- **Referential point:** main HEAD at 437385d.
