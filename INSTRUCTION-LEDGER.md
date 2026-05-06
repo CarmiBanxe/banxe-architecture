@@ -3899,3 +3899,21 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Closes:** G-FACTORY-LITELLM-DUPLICATE (P2 OPEN → CLOSED).
 - **Anchors:** `docs/canon/factory-project-stack-2026-05.md`, IL-FA-02-EXEC, `.bashrc` lines 137-138, `/etc/systemd/system/litellm-lan-gateway.service` (disabled), `~/.config/systemd/user/litellm-v2.service` (canonical).
 - **Reperential point:** main HEAD at 48148ad.
+
+### IL-CANON-HW-BASELINE-2026-05-06 — Canonical HW baseline for Legion/evo1/evo2 — physical hardware as source of truth
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC + CLOSE (canon fixation)
+- **Status:** BINDING
+- **Priority:** P1
+- **Context:** Operator confirmed that previous decisions on model selection and service placement were driven by OS-visible metrics (WSL2 ~23 GiB on Legion, `free -h` ~30 GiB on evo1, ~93 GiB on evo2) rather than physical hardware. Physical baseline: Legion 64 GB / 4+ TB SSD / NVIDIA RTX 4070 Laptop 8 GB VRAM; evo1 128 GB / large SSD; evo2 128 GB / 1.9 TB SSD / AMD GPU. This violates the HW-first canon (Principle 1 of operator-canon-2026-05.md).
+- **What is canonised:**
+  - HW baseline table added to `docs/canon/factory-project-stack-2026-05.md` (§"HW Baseline").
+  - **Binding decision rule:** all future model selection, service placement, and capacity plans MUST cite the physical HW baseline and explicitly note any current OS-visible deviation (WSL2 cap, BIOS/UMA mismatch, broken GPU stack).
+  - Three gaps opened in GAP-REGISTER.md (G-FACTORY-WSL2-RAM-CAP was separately added via PR #109):
+    * `G-INFRA-EVO1-RAM-VISIBILITY` (P1) — evo1 OS sees ~30 GiB vs physical 128 GB; BIOS/UMA audit required; blocks migration decisions until resolved.
+    * `G-INFRA-EVO2-GPU-STACK` (P1) — evo2 GPU stack inactive; qwen3:235b on CPU only; fix ROCm/Vulkan then re-select model.
+    * `G-CANON-HW-BASELINE` (P2) — closed; this IL entry is the mitigation artefact.
+- **Operator/Perplexity scope:** when answering efficiency and capacity questions, the supervisor MUST reference the physical HW baseline (not only OS metrics). Live shell data must be interpreted in the context of this baseline (e.g. evo1 `free -h 30 GiB` is a BIOS mismatch, not the real capacity).
+- **Anchors:** `docs/canon/factory-project-stack-2026-05.md` (§"HW Baseline"), IL-CANON-STACK-2026-05-06, IL-CANON-RUFLO-2026-05-06, G-INFRA-EVO1-RAM-VISIBILITY, G-INFRA-EVO2-GPU-STACK, G-CANON-HW-BASELINE, G-FACTORY-WSL2-RAM-CAP (PR #109), docs/canon/operator-canon-2026-05.md.
+- **Referential point:** main HEAD at 37d753c187eaffb8144bdfb09b7f25f00f002175.
