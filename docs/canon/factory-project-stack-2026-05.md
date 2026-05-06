@@ -56,3 +56,31 @@
 - Upgrade canon:
   - Improvements to Ruflo prompts, guardrails or rule sets MUST be tracked as ADR + IL entries, never as ad-hoc edits.
   - Operator and Perplexity supervision MUST treat Ruflo as a first-class agent in Legion (factory) and evo1/evo2 (project) orchestration.
+
+## HW Baseline (canonical hardware; OS readings are NOT authoritative)
+
+- **Legion (Developer Factory Layer)**
+  - Physical: 64 GB RAM, 4+ TB SSD, NVIDIA RTX 4070 Laptop (8 GB VRAM).
+  - Constraint: WSL2 currently exposes ~23 GiB to Linux; coding model selection MUST
+    be driven by physical 64 GB + 8 GB VRAM, not by WSL2-visible memory.
+  - Canonical action: raise WSL2 memory cap (e.g. `memory=56GB` in `.wslconfig`),
+    use SSD as model/blob cache, host a larger coding model than 7B-class.
+
+- **evo1 (Infrastructure / Services Layer)**
+  - Physical: 128 GB RAM, large SSD.
+  - Constraint: `free -h` currently reports ~30 GiB; this is a BIOS/UMA/firmware mismatch,
+    NOT a real physical limit. All capacity planning MUST treat 128 GB as authoritative.
+  - Canonical action: full hardware audit (BIOS/UEFI, dmidecode, DIMM slots,
+    UMA Frame Buffer / Memory Remap) and reconcile OS-visible RAM with physical 128 GB
+    before further service/model rebalancing.
+
+- **evo2 (Heavy Model / Project Reasoning Layer)**
+  - Physical: 128 GB RAM, 1.9 TB SSD, AMD GPU.
+  - Constraint: `free -h` reports ~93 GiB (UMA/firmware), and GPU stack (ROCm/Vulkan)
+    is not functional → qwen3:235b currently runs on CPU only.
+  - Canonical action: restore GPU stack (ROCm/Vulkan/drivers), then re-select the
+    maximum feasible model under full 128 GB + GPU-offload, not under CPU-only 93 GiB.
+
+- **Decision rule (binding):** any model selection, service placement, or capacity
+  plan MUST cite the physical HW baseline above and explicitly note any current
+  OS-visible deviation (WSL2 cap, BIOS/UMA mismatch, broken GPU stack).
