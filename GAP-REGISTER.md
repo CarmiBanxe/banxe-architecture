@@ -410,11 +410,12 @@
   Priority: P2 (operational hygiene; not blocking; wastes ~5s per system-level restart attempt).
 - [x] G-FACTORY-03: Ruflo identity reclassified — DONE 2026-05-06 (FA-3 discovery: Ruflo is internal Banxe Review Agent / Claude Code subagent for regulatory boundary enforcement, not a PATH binary; documented in .claude/rules/agents.md + agent passports + IL-008 review reports; not "missing", just misclassified in A1 baseline which checked only PATH) — OPEN
   Update 2026-05-06 (FA-3): IL-008 review report at docs/reviews/IL-008-review.md confirms operational use; pipeline mandate per .claude/rules/agents.md (request → ARL → Ruflo → target agent → response for payment/compliance/kyc). Lesson: A1 inventory missed canonical agent fleet by checking only `command -v`, not `.claude/agents/` + `.claude/rules/agents.md`.
-- [ ] G-FACTORY-04: Legion has 2 keycloak Java processes on :8180 (potential orphan) — OPEN 2026-05-06
-  Discovered FA-4a. Legion runs two Quarkus Keycloak Java processes (pid 3221994 + pid 3354617), both started `May04`, both with identical `--http-port=8180` flags. docker-proxy binds :8180 to one of them. One is likely orphan from a previous restart that didn't kill old process before new started.
+- [ ] G-FACTORY-04: Legion :8180 keycloak Java processes — MONITOR/VERIFY 2026-05-06
+  Initial FA-4a observation suggested 2 keycloak Java processes on :8180 (pid 3221994 + pid 3354617). As of 2026-05-06 verification on Legion: `ps aux | grep keycloak` → 0 Java processes; `ss -tlnp | grep :8180` → LISTEN without users field; `sudo lsof -i :8180` → docker-proxy (PID 3979260/3979267, root). Gap reclassified to MONITOR/VERIFY: watch for future orphan Java processes and validate container Keycloak configuration.
   Action: identify which pid is the live one (linked to docker container), gracefully stop the other. Read-only verification first (`ps`, `docker inspect`, `lsof :8180`).
   Anchors: FA-4a discovery, G-IAM-08 (cutover artefact), Legion-side keycloak install dirs `/home/mmber/keycloak-banxe-emi-legion`, `/home/mmber/keycloak-banxe-emi-pg-test`.
   Priority: P3 (Quarkus consumes ~750 MB RAM each → ~1.5 GB total used; second process is wasted RAM but not breaking anything).
+  Update 2026-05-06: No Java Keycloak processes found on Legion :8180; only docker-proxy. Original "2 orphan Java procs" not confirmed. See IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06.
 - [x] G-FACTORY-CHAIN: agents.md chain matrix not formalised — DONE 2026-05-06 (FA-5: agent-chain × GSD-phase matrix added to .claude/rules/agents.md with 6 canonical chains A-F; Ruflo placement formalised per FA-3 reclassification; agent-to-LiteLLM-route mapping included per FA-2)
   Anchors: PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), .claude/rules/agents.md, A4 proposal.
   Priority: P3 (closed).
