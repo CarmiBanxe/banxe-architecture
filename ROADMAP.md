@@ -249,6 +249,7 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-06 | `checkpoint-2026-05-06-claude-finance-agents-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-defi-stack-binance-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-dac8-tax-reporting-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md |
+| 2026-05-06 | `checkpoint-2026-05-06-oss-sumsub-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
@@ -331,3 +332,25 @@ Pending invariants: I-40 (RFI ownership + customer notification), I-41 (60-day k
 Тег после merge: `checkpoint-2026-05-06-dac8-tax-reporting-block`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md](docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md)
+
+---
+
+## Roadmap Block 2026-05-06 — Open-Source Sumsub Replacement Stack (KYC/KYB/AML/Travel-Rule)
+
+Инвентаризация open-source-инструментов как замены / дополнения Sumsub по 10 функциональным слоям (KYC/KYB orchestration, OCR/document verification, biometrics/liveness/NFC, AML screening, transaction monitoring, fraud detection, KYB, identity/SCA/PSD2, bank account verification, Travel Rule VASP) с фильтром EMI BANXE и каноническим ownership.
+
+**In-scope (YES):** Ballerine (MIT), EasyOCR/Tesseract/Doubango (Apache), DeepFace/NFCPassportReader (MIT), Yente/OpenSanctions/Moov Watchman (MIT/Apache), Marble (Apache), Ory Kratos/Hydra (Apache), KYB + public registries.
+
+**PARTIAL/AGPL-flag:** Jube (AGPL-3.0, изолированный сервис + legal-review-required), FaceOnLive/Faceplugin (commercial SDK, DPA + Art. 9 DPIA).
+
+**INTERNAL-ONLY:** kyc-analyst (adverse media, compliance officer tool).
+
+**RESERVE:** TRP + Walt.id + opencred (Travel Rule / VC, CASP/MiCA perimeter, ADR-061).
+
+Canonical ownership: KYC/AML Operations (MLRO) — process owner; Customer Operations — data ingestion; Engineering — деплой OSS-стека. Pending invariants: I-42 (EU residency self-hosted), I-43 (Jube AGPL isolation), I-44 (biometrics DPIA Art. 9). Резерв ADR: ADR-056..062.
+
+Базовая опора: `checkpoint-2026-05-06-dac8-tax-reporting-block`.
+
+Тег после merge: `checkpoint-2026-05-06-oss-sumsub-replacement-block`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md](docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md)
