@@ -245,9 +245,27 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 |---|---|---|---|---|
 | 2026-05-06 | `checkpoint-2026-05-06-adr027-accepted` | 1fa9ddf | HANDOFF | docs/sessions/HANDOFF-2026-05-06-adr027-accepted.md |
 | 2026-05-06 | `checkpoint-2026-05-06-progress-snapshot` | 24ad91a | SNAPSHOT | docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md |
+| 2026-05-06 | `checkpoint-2026-05-06-sber-oss-emi-block` | будет проставлен оператором после merge PR | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
 2. Блок добавляется новым подразделом ниже (или новой строкой в реестр), без правки уже существующих разделов.
 3. После merge — оператор ставит новый аннотированный тег `checkpoint-YYYY-MM-DD-<slug>` на коммит этого PR и пушит его в `origin`.
 4. Базовая точка resume для будущих сессий — последний тег из реестра.
+
+
+---
+
+## Roadmap Block 2026-05-06 — Sber OSS for EMI BANXE
+
+Инвентаризация и план интеграции Open Source-экосистемы Сбера (GigaChain + Sberbank AI Lab) в EMI BANXE AI BANK в EMI-периметре (без кредитования; AML/fraud/KYC/SAR/MiCA-фокус; GDPR-ограничение для GigaChat API).
+
+Применения: AML transaction monitoring, fraud detection, KYC onboarding, customer support, SAR autogeneration, crypto/MiCA monitoring, drop-in OpenAI → GigaChat через gpt2giga.
+
+Регуляторное правило: персональные данные EU/EEA-клиентов BANXE не отправляются в публичный GigaChat API.
+
+Базовая опора: `checkpoint-2026-05-06-progress-snapshot`.
+
+Тег после merge: `checkpoint-2026-05-06-sber-oss-emi-block`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md](docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md)
