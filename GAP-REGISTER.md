@@ -448,3 +448,17 @@
   Action: per-model `ollama rm` on evo1 with operator go per §3.2.
   Anchors: docs/canon/HW-MODEL-UPGRADE-matrix.md, G-CLUSTER-02 (closed).
   Priority: P3.
+
+## G-FACTORY-WSL2-RAM-CAP
+<!-- Added: docs/runbook-g-factory-wsl2-ram-cap-2026-05-06-v2 | IL-CANON-HW-BASELINE-2026-05-06 -->
+
+- [ ] G-FACTORY-WSL2-RAM-CAP: Legion WSL2 exposes ~23 GiB instead of physical 64 GB RAM — OPEN 2026-05-06
+  Legion physical HW: 64 GB RAM, 4+ TB SSD, NVIDIA RTX 4070 Laptop (8 GB VRAM). WSL2 .wslconfig not
+  configured; default cap leaves ~23 GiB visible to Linux, severely constraining coding model selection
+  and Ollama blob cache capacity.
+  Action: set `memory=56GB` in C:\Users\<user>\.wslconfig; restart WSL2; verify `free -h` shows 50+ GiB;
+  re-evaluate coding model beyond 7B-class (e.g. Qwen2.5-Coder-32B or similar).
+  Use 4+ TB SSD as Ollama blob cache (OLLAMA_MODELS env to SSD path).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06.
+  Priority: P2 (blocks optimal factory-layer model; not blocking operations today).
+  Runbook: docs/runbooks/fa-wsl2-ram-cap-and-ollama-cache.md
