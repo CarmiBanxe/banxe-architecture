@@ -484,7 +484,7 @@
 ## HW Baseline Gaps — 2026-05-06
 <!-- Added: docs/canon-hw-baseline-2026-05-06-v2 | IL-CANON-HW-BASELINE-2026-05-06 -->
 
-- [ ] G-INFRA-EVO1-RAM-VISIBILITY: evo1 OS sees ~30 GiB instead of physical 128 GB — OPEN 2026-05-06
+- [~] G-INFRA-EVO1-RAM-VISIBILITY: evo1 OS sees ~30 GiB instead of physical 128 GB — CLOSED-PENDING-OPERATOR 2026-05-07
   evo1 physical HW: 128 GB RAM, large SSD. `free -h` reports ~30 GiB — a BIOS/UMA/firmware
   mismatch, not a real physical limit. This gap blocks honest capacity planning for evo1
   (services, small models, Keycloak, Postgres). All decisions about "evo1 is under pressure,
@@ -500,6 +500,9 @@
   Update 2026-05-06: Phase A executed; physical 128 GB confirmed (8 × 16 GB, DDR5 8000 MT/s);
   OS sees ~31.9 GiB → BIOS/UMA mismatch; Phase C (BIOS audit) required.
   See IL-OPS-G-INFRA-EVO1-PHASE-A-2026-05-06.
+  Update 2026-05-07: Phase C executed; UMA Frame Buffer 32G→2G; free -h now 123Gi; lsmem 126G online. PASS.
+  Closing IL: IL-OPS-G-INFRA-EVO1-PHASE-C-EXECUTED-2026-05-07.
+  Closed-on: 2026-05-07 00:13 CEST (pending operator-confirmation from Mark).
 
 - [ ] G-INFRA-EVO2-GPU-STACK: evo2 GPU stack (ROCm/Vulkan) inactive — qwen3:235b runs CPU-only — OPEN 2026-05-06
   evo2 physical HW: 128 GB RAM, 1.9 TB SSD, AMD GPU. `vulkaninfo` shows llvmpipe software

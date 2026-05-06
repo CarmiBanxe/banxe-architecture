@@ -4042,3 +4042,46 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Anchors:** IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06, G-FACTORY-WSL2-RAM-CAP, G-FACTORY-OLLAMA-OFFLOAD, `docs/runbooks/fa-wsl2-ram-cap-and-ollama-cache.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline).
 - **Referential point:** main HEAD at bbb10fc.
 
+
+### IL-OPS-G-INFRA-EVO1-PHASE-C-EXECUTED-2026-05-07 — evo1 BIOS Phase C: UMA Frame Buffer 32G→2G; free -h 30GiB→123GiB; G-INFRA-EVO1-RAM-VISIBILITY CLOSED-PENDING-OPERATOR
+
+- **Date:** 2026-05-07 00:13 CEST
+- **Phase (GSD):** EXECUTED — evo1 BIOS Phase C uplift applied and verified
+- **Status:** PASS
+- **Priority:** P1
+- **Operator-confirmation:** PENDING (gap closure requires explicit operator-confirmation from Mark; this IL records the change and verify result only; `G-INFRA-EVO1-RAM-VISIBILITY` CLOSED marker is set only after operator confirms)
+- **Context:** evo1 (banxe-NucBox-EVO-X2, AMD Strix Halo). Prior to uplift: `free -h total = 30 GiB`, `lsmem online = 31.9 GiB`, caused by BIOS `UMA Frame Buffer Size = 32G` under `iGPU Configuration = UMA_SPECIFIED`.
+- **Change applied (BIOS — Aptio Setup AMI v2.22.1295):**
+  - Path: Advanced → GFX Configuration → UMA Frame Buffer Size
+  - Prior value: `[32G]`
+  - New value: `[2G]`
+  - `iGPU Configuration` remained `UMA_SPECIFIED` (unchanged)
+  - `Memory Configuration` → only setting present: `Maximum Memory Data Clock Speed = Auto` (unchanged). Above 4G Decoding / Memory Remap absent as configurable options in this BIOS revision (likely firmware-wired).
+  - Method: Save & Exit (F10 → Yes); full POST-cycle completed; memory training passed.
+- **Verify (live shell, 2026-05-07 00:13 CEST, via SSH from Legion):**
+  - prior boot_id: `c72b0ab3-1a5d-492c-ab65-e8d051b70937`
+  - new boot_id: `428e2a81-10f0-44cd-91cf-fb9318f9a90a` — reboot confirmed
+  - `uptime -s` → `2026-05-07 00:12:15`
+  - `free -h` total: **123Gi** (was 30Gi)
+  - `free -h` available: **110Gi**
+  - `lsmem --summary` Total online memory: **126G** (was 31.9G)
+  - `/proc/meminfo` MemTotal: **129461992 kB ≈ 123.5 GiB**
+  - Memory block size: **2G** (was 128M — expected increase when address space expands)
+  - Kernel: **6.17.0-23-generic** (was 6.17.0-22-generic; auto-upgraded via unattended-upgrade, applied on reboot — side effect, not BIOS-related)
+  - Arithmetic check: 128 GB physical − 2 GB UMA = 126 GiB online ✅
+- **Pass criteria (HANDOFF §8, fa-evo1-bios-uma-audit.md Phase D):**
+  - [x] `free -h` total ≥ 110 GiB → **123 GiB** ✅
+  - [x] `lsmem` online ≈ 128 GiB → **126 GiB** ✅
+  - [x] OS boots without anomalies; SSH responds ✅
+  - [x] All DIMMs present (indirect: MemTotal consistent with 128 GB − 2 GB UMA) ✅
+- **Closes (pending operator-confirmation):** `G-INFRA-EVO1-RAM-VISIBILITY` → CLOSED-PENDING-OPERATOR
+- **Side observations (for separate IL entries):**
+  - Load avg `16.68 / 4.32 / 1.46` at 1-minute mark post-reboot; 4 users logged in. Startup spike + unknown background load. Requires separate OBSERVE IL at first opportunity.
+  - Kernel auto-upgrade 6.17.0-22 → 6.17.0-23 applied on reboot via unattended-upgrade. Recorded as observation only; no action required.
+  - `Memory Configuration` in this BIOS contains only `Maximum Memory Data Clock Speed`; Above 4G Decoding / Memory Remap absent as configurable items (likely firmware-wired for this NucBox revision).
+- **Anchors:**
+  - HANDOFF: `docs/sessions/HANDOFF-2026-05-06-canon-stack-bios-uplift.md` §8 Step 1
+  - Runbook: `docs/runbooks/fa-evo1-bios-uma-audit.md` Phase C
+  - Phase A: `IL-OPS-G-INFRA-EVO1-PHASE-A-2026-05-06`
+  - Canon: `docs/canon/factory-project-stack-2026-05.md` (HW Baseline)
+- **Referential point:** main HEAD at bbb10fcf2c632aa9c25c0efdb633104d48d716ab.
