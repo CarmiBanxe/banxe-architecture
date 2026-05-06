@@ -3584,3 +3584,28 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Lesson learned:** read-only Phase A pre-check missed env vars. Future Phase A pre-checks for any factory install MUST include `env | grep -E '^(OLLAMA|HF|TRANSFORMERS|CUDA|HSA)'` to surface implicit redirections.
 - **Anchors:** IL-FA-01-CLOSE, docs/canon/operator-canon-2026-05.md, .claude/rules/infrastructure.md (TBD update), .bashrc.
 - **Note:** old OLLAMA_HOST value documented here is NOT a secret (LAN IP, no auth in URL); not a security gap, just hygiene gap.
+
+---
+
+### IL-PHASE-G-01 — Phase G: KC realm session-timeout hardening APPLIED
+
+- **Date:** 2026-05-06
+- **Sprint:** Sprint 4 Track B (live-ops)
+- **Gap closed:** V-02 (HANDOFF-2026-05-04) → G-IAM-10
+- **Status:** DONE 2026-05-06
+- **Artefact:** `docs/ops/phase-g-execution-2026-05-06.md`
+- **Steps executed:**
+  1. Pre-flight: KC reachable at `http://100.101.218.26:8180` (Legion, Tailscale). Admin token obtained via `admin-cli` client credentials from `/home/mmber/.banxe/keycloak.env`.
+  2. Pre-state captured: `offlineSessionMaxLifespanEnabled=false`, `offlineSessionMaxLifespan=5184000`, `refreshTokenMaxReuse=0`, `revokeRefreshToken=false`.
+  3. Applied 4 `PUT /admin/realms/banxe-emi` calls via Admin REST API (kcadm.sh OOM-killed exit 137 on Legion; curl+JWT used instead — identical behaviour, canonical interface).
+  4. Post-state verified: all 4 fields at target. `offlineSessionMaxLifespanEnabled=true`, `revokeRefreshToken=true` changed; other two were already at target.
+  5. Smoke: `client_credentials` grant → `expires_in=900`, `refresh_expires_in=0` ✅ (correct per RFC 6749 §4.4).
+- **Proof:** HTTP 204 responses (all 4 PUT calls). Post-state JSON matches ADR-030 target. Smoke PASS documented in execution log.
+- **Closure criteria:**
+  - [x] KC realm `banxe-emi` `offlineSessionMaxLifespanEnabled` = true
+  - [x] KC realm `banxe-emi` `offlineSessionMaxLifespan` = 5184000 (60 days)
+  - [x] KC realm `banxe-emi` `refreshTokenMaxReuse` = 0
+  - [x] KC realm `banxe-emi` `revokeRefreshToken` = true
+  - [x] Smoke test PASS (client_credentials grant, `expires_in=900`)
+  - [x] Execution log committed to `docs/ops/phase-g-execution-2026-05-06.md`
+  - [x] V-02 marked DONE in GAP-REGISTER (G-IAM-10) + ROADMAP.md Phase 4.7 table
