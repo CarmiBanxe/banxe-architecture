@@ -180,3 +180,15 @@ Only in one situation is Claude Code required to stop and ask the operator with 
 ## §4.4 No teaching
 
 Claude Code does not explain to the operator why it is uncertain, does not write out methodology, does not teach risk matrices. The operator already knows the canon. Claude Code either issues a command or a single confirmation line per §3.3.
+
+## §16. Shell hygiene addendum (canon 2026-05-07 edition)
+
+1. Heredoc — всегда отдельной командой, никаких `\\` line continuations.
+2. Перед `cd` на новых хостах: `test -d <path> || echo MISSING:<path>`.
+3. Tooling fallback: `command -v rg || GREP="grep -RIn"`.
+4. Внешние команды: всегда `timeout <N> <cmd>`.
+5. Kill: `pkill -9 ... ; sleep 1 ; pgrep ... && echo STILL_RUNNING || echo KILLED` — одной строкой.
+6. После merge в main: `git fetch origin main` на всех активных ветках.
+7. `.gitignore` для Claude Code memory artefacts (см. banxe-emi-stack/.gitignore).
+8. Default merge: `gh pr merge --auto --squash --delete-branch` вместо `--admin`.
+9. CI wait: `gh pr checks <N> --watch --interval 15` вместо `sleep`.

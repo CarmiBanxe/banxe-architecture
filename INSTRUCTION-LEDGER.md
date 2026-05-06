@@ -3826,3 +3826,19 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Decommission:** Still required per ADR-017 + G-IAM-08 when operator schedules it. Runbook pattern: analogous to G-OPS-04 frankfurter (docker compose down + disable systemd unit). No urgency gate now that restart-loop is absent.
 - **Anchors:** docs/canon/operator-canon-2026-05.md, G-OPS-05 entry in GAP-REGISTER.md, keycloak.service systemd unit on evo1, ADR-017, G-IAM-08, FA-4a discovery (IL-FA-04-CLOSE PR #85).
 - **Reperential point:** main HEAD at observation = 9f2a06d.
+
+### IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06 — G-FACTORY-04 Legion :8180 Java processes — current state observed (no orphans found)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (state check; not an execution)
+- **Status:** MONITOR (not CLOSED — periodic verification still required)
+- **Priority:** P3 (unchanged)
+- **Context:** G-FACTORY-04 was opened 2026-05-06 (FA-4a) with description "Legion has 2 keycloak Java processes on :8180 (potential orphan)" — pid 3221994 + pid 3354617 both with `--http-port=8180`. Subsequent operator verification on Legion 2026-05-06 shows a different state.
+- **What was checked (Legion, 2026-05-06):**
+  - `ps aux | grep -E "keycloak-26.2.5|QuarkusEntryPoint start --optimized --http-port=8180" | grep -v grep` → **0 processes** (no Java Keycloak processes running).
+  - `ss -tlnp | grep :8180` → `LISTEN 0.0.0.0:8180` and `[::]:8180` WITHOUT users field (port bound but no direct process attribution from ss).
+  - `sudo lsof -i :8180` → `docker-proxy` PID 3979260/3979267 under root, type TCP `*:8180` (LISTEN). No Java process listed.
+- **Result:** At observation time, no direct Java Keycloak processes on :8180 on Legion. Port :8180 is bound by docker-proxy only (expected for containerised Keycloak). Original FA-4a observation of 2 orphan Java processes does not match current state — pids 3221994/3354617 may have been cleaned up between FA-4a (2026-05-04) and this check (2026-05-06).
+- **Reclassification:** G-FACTORY-04 reclassified from "2 orphan Java procs (urgent verify)" to MONITOR/VERIFY: periodically check for unexpected Java Keycloak processes outside the canonical container; no immediate kill action required. Containerised Keycloak on Legion is the expected canonical state (ADR-017 + G-IAM-08).
+- **Anchors:** G-FACTORY-04 in GAP-REGISTER.md, IL-OPS-G-OPS-05-OBSERVED-2026-05-06, ADR-017, G-IAM-08, FA-4a discovery (IL-FA-04-CLOSE PR #85).
+- **Reperential point:** main HEAD at observation = 793e322.
