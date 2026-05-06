@@ -3862,3 +3862,21 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - **Future state:** First provisioning step for any Frankfurter DB MUST include password generation + reference to IL-SEC-01-2026-05-06 as compliance evidence.
 - **Anchors:** docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, PA-5a logs (2026-05-05), docs/canon/operator-canon-2026-05.md (security-first).
 - **Reperential point:** main HEAD at IL-SEC-01 canon = e9c2f26.
+
+
+### IL-CANON-RUFLO-2026-05-06 — Ruflo Review Agent canonical placement in orchestration
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** DESIGN (agent orchestration canon — binding architecture decision)
+- **Status:** BINDING
+- **Priority:** P1
+- **Context:** Prior to this entry, Ruflo's mandatory placement in the ARL pipeline was documented in `.claude/rules/agents.md` (BUG-005) and `agents.md` FA-5 matrix, but `docs/canon/factory-project-stack-2026-05.md` did not include Ruflo as an explicit canon section. PR #98 (IL-CANON-STACK-2026-05-06) defined factory/project stack roles; PR #99 added the Ruflo section to that document. This IL entry closes the canon loop.
+- **What was canonised:**
+  - **Ruflo is NOT a PATH binary.** It is invoked exclusively through the ARL pipeline (`request → ARL → Ruflo → target agent → response`).
+  - **Mandatory placement** for all request types: `payment`, `compliance`, `kyc`, `aml`, `emi`, `fca`. Skipping Ruflo = potential FCA violation.
+  - **Factory dev-agents** must consult Ruflo for any regulated surface before finalising any code, schema, or config change.
+  - **Project-side gateways** (gateway-moa, gateway-guiyon, gateway-ctio) must delegate to Ruflo and log the result in the canonical audit chain (G-01 ExplanationBundle, G-02 trail).
+  - **Regulatory coverage:** Ruflo enforces invariants I-01..I-07 on every intercepted request. It is the pre-filter; `mlro_agent` remains the decision-maker for SAR-level escalations.
+  - **Improvement path:** changes to Ruflo's scope or placement MUST go through ADR + IL entry. No ad-hoc edits to `agents.md`, `swarm.yaml`, or `factory-project-stack-2026-05.md` without a corresponding IL.
+- **Anchors:** PR #98 (IL-CANON-STACK-2026-05-06, `docs/canon/factory-project-stack-2026-05.md`), PR #99 (Ruflo section in same file, merged to main HEAD `24e106c`), `.claude/rules/agents.md` BUG-005 + FA-5 matrix, `agents/compliance/swarm.yaml`, `services/arl/`.
+- **Reperential point:** main HEAD at IL-CANON-RUFLO canon = 24e106c.
