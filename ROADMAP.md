@@ -130,7 +130,7 @@ Pending implementation phase: ADR-027..034 + code/tests + deploy. See GAP-REGIST
 
 ## Pending operator gates (live-ops)
 
-- **Phase F**: live switch dev-file → Postgres backend on production KC. RUNBOOK in `banxe-emi-stack/infra/keycloak-banxe-emi/RUNBOOK.md §G-IAM-09 Closure`. Trigger: operator says "go Phase F".
+- ~~**Phase F**: live switch dev-file → Postgres backend on production KC.~~ **APPLIED 2026-05-06** — G-IAM-09 DONE, see IL-PHASE-F-01 + `docs/ops/phase-f-execution-2026-05-06.md`. Downtime: 2 min 44 sec. Smoke: 4/4 PASS.
 - ~~**Phase G**: live-apply session-timeout hardening per V-02.~~ **APPLIED 2026-05-06** — V-02 DONE, see G-IAM-10 + IL-PHASE-G-01 + `docs/ops/phase-g-execution-2026-05-06.md`.
 
 ## Phase 5: Advanced Features (PLANNED)
