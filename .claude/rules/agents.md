@@ -155,3 +155,68 @@ P3 (Year 2+): FinGPT, OpenBB, Apache Camel, Mojaloop, Beancount
 - [ ] safeguarding-agent deployed and running on GMKtec (BUG-008)
 
 > BUG-001: MetaClo = dev-time gate, mlro_agent = runtime — never mix (see compliance.md)
+
+---
+
+## Agent-chain × GSD-phase matrix (FA-5)
+
+> Added 2026-05-06 per FA-5 of IL-FACTORY-AUDIT-01. Formalises canonical chains tying each agent role to GSD (Generative Spec-first Development) phase. Includes Ruflo (Review Agent, internal subagent per FA-3 reclassification).
+
+### Phase mapping
+
+| GSD phase | Primary agent | Co-agents | Gate / output |
+|---|---|---|---|
+| **SPEC** | Rapid Spec Builder (RSB) | CMS (Context Memory Sync) for repo context | IL-XXX entry created in INSTRUCTION-LEDGER.md |
+| **DESIGN** | API Contract Guardian (ACG) | Clean Architecture Enforcer (CAE) for ADR-grade decisions; OpenClaw gateway-ctio for cross-cutting concerns | ADR draft OR design doc in docs/runbooks/ |
+| **IMPLEMENT** | Auto Refactor Pro (ARP) for safe-zone work; OpenClaw gateway-guiyon for autonomous coding | Error Handling Standardizer (EHS); CAE for invariant checks | code commits passing pre-commit hooks |
+| **TEST** | Smart Test Generator (STG) | Performance Scanner (PS); Dependency Optimizer (DO) | pytest pass + ruff clean + semgrep clean |
+| **REVIEW** | **Ruflo (Review Agent)** for payment/compliance/kyc; standard PR review otherwise | OpenClaw soul-guard for canon enforcement | review report in docs/reviews/IL-XXX-review.md; PR approved |
+| **DEPLOY** | OpenClaw gateway-moa (Mixture-of-Agents) for prod ops; per-service deploy runbooks | HITL dashboard for operator approval; guiyon-dispatcher for task routing | service active + smoke test 200 |
+| **CLOSE** | CMS (Context Memory Sync) updates ledger | compliance_canon_agent for audit trail | IL-XXX block CLOSE entry; gap moves to DONE |
+
+### Canonical chains
+
+| Chain | Sequence | Use case |
+|---|---|---|
+| A. Safe refactor (no compliance touch) | CMS → ARP → CAE → STG → gate | small refactors in green-zone code |
+| B. Compliance change | RSB → ACG → **Ruflo (mandatory)** → ARP → STG → mlro_agent → gate | any change touching payment/compliance/kyc per .claude/rules/compliance.md |
+| C. Architecture decision | RSB → ACG → CAE → OpenClaw gateway-ctio → ADR draft → review by Ruflo (if compliance-adjacent) | new ADR or revision |
+| D. Deploy (factory side) | implement → STG → review → factory-fast (Legion) for hot edits → factory-coder (evo1) for heavy refactors → DEPLOY phase agents | Legion-side software deliveries |
+| E. Deploy (project side) | RSB → ACG → ARP → STG → **Ruflo** → MLRO approval (HITL) → OpenClaw gateway-moa → smoke test | production EMI BANXE AI BANK changes |
+| F. Reasoning task (heavy) | route via LiteLLM `reasoning-235b` (evo2 qwen3:235b) → analysis → Ruflo regulatory check → mlro_agent decision (if needed) | compliance review, MLRO escalation, fraud explanation |
+
+### Pipeline canon (regulatory)
+
+For any request of type `payment`, `compliance`, or `kyc`:
+
+```
+client → ARL (agent routing layer) → Ruflo (regulatory check, I-01..I-07) → target agent → response
+```
+
+Per `.claude/rules/agents.md` original section: **Ruflo is mandatory middleware** for these request types. Skipping Ruflo = potential FCA violation. Test of readiness: send payment request with `AGENT_ROUTING_ENABLED=true` — Ruflo MUST intercept.
+
+### Agent-to-LiteLLM-route mapping
+
+For agent execution that needs LLM inference, use canonical LiteLLM aliases (per FA-2 runbook):
+
+| Agent role | LiteLLM route | Hardware |
+|---|---|---|
+| RSB / ACG / CAE / EHS / STG / DO / PS (factory work) | `factory-mid` or `factory-heavy` | Strix Halo iGPU on evo1+evo2 |
+| ARP (light refactor) | `factory-fast` | Legion RTX 4070 |
+| ARP (heavy refactor) | `factory-coder` | Strix Halo iGPU on evo1 |
+| Ruflo (review, regulatory) | `factory-heavy` for normal review; `project-reason` for high-stakes compliance | Strix Halo OR evo2 235b |
+| compliance_canon_agent | `project-reason` | evo2 qwen3:235b |
+| OpenClaw gateway-ctio | `factory-heavy` | Strix Halo iGPU |
+| OpenClaw gateway-guiyon | `factory-coder` for code; `factory-fast` for routine | Strix Halo iGPU + Legion |
+| OpenClaw gateway-moa | `project-reason` (Mixture-of-Agents heavy) | evo2 |
+| HITL dashboard | n/a (UI only, no inference) | — |
+
+### Anchors
+
+- `.claude/rules/agents.md` original sections (preserved above this matrix)
+- `.claude/rules/compliance.md` (I-01..I-07 invariants)
+- A4 orchestration proposal (PR #54, IL-AUDIT-01) §"Factory plane" and §"Project plane"
+- IL-FA-01-CLOSE (PR #80) — factory-fast LiteLLM route on Legion
+- IL-FA-02-DRAFT (PR #81) — factory-mid/heavy/coder + project-reason aliases
+- IL-FA-03-CLOSE (PR #83) — Ruflo reclassified as in-fleet Review Agent
+- docs/canon/operator-canon-2026-05.md — Principle 1 (HW-first), Principle 4 (factory unblocked)

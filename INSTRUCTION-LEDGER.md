@@ -3651,3 +3651,23 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Operator canon alignment:** no canon principle changed; pure clarification that Ruflo is in-fleet, not on-PATH.
 - **Anchors:** PR #57 (sprint), `.claude/rules/agents.md`, `CLAUDE.md` §S7/S9-S15 agent matrix, `docs/reviews/IL-008-review.md`, A1 Legion baseline (PR #50).
 - **Reperential point:** main HEAD at FA-3 closure = abbd56c.
+
+### IL-FA-05-CLOSE — FA-5 agents.md chain matrix formalised
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** DESIGN + CLOSE
+- **Status:** ✅ DONE
+- **Priority:** P3 (factory hygiene; documentation-only)
+- **Sprint:** IL-FACTORY-AUDIT-01 (PR #57)
+- **Closes:** G-FACTORY-CHAIN (newly opened+closed in same PR — agents.md chain matrix formalisation per A4).
+- **Action:** Added new section `## Agent-chain × GSD-phase matrix (FA-5)` to `.claude/rules/agents.md`. Section includes:
+  - Phase mapping (SPEC/DESIGN/IMPLEMENT/TEST/REVIEW/DEPLOY/CLOSE) → primary agent + co-agents + gate.
+  - 6 canonical chains (A safe refactor, B compliance change, C architecture decision, D factory deploy, E project deploy, F reasoning task).
+  - Pipeline canon for regulatory requests (payment/compliance/kyc) restating Ruflo mandatory middleware position.
+  - Agent-to-LiteLLM-route mapping (which agent uses which alias from FA-2 canonical: factory-fast / factory-mid / factory-heavy / factory-coder / project-reason).
+- **Ruflo placement (per FA-3 IL-FA-03-CLOSE reclassification):**
+  - REVIEW phase primary agent for payment/compliance/kyc.
+  - Mandatory middleware in chain B and chain E.
+  - Reasoning route: factory-heavy for normal, project-reason for high-stakes.
+- **Anchors:** PR #57 (sprint kickoff), PR #80 (FA-1 factory-fast), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), `.claude/rules/agents.md` original sections, A4 orchestration proposal, docs/canon/operator-canon-2026-05.md, ADR-018, ADR-019.
+- **Reperential point:** main HEAD at FA-5 closure = b1db8b4.

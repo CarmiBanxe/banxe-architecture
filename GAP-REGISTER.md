@@ -394,6 +394,9 @@
 
 - [x] G-FACTORY-03: Ruflo identity reclassified — DONE 2026-05-06 (FA-3 discovery: Ruflo is internal Banxe Review Agent / Claude Code subagent for regulatory boundary enforcement, not a PATH binary; documented in .claude/rules/agents.md + agent passports + IL-008 review reports; not "missing", just misclassified in A1 baseline which checked only PATH) — OPEN
   Update 2026-05-06 (FA-3): IL-008 review report at docs/reviews/IL-008-review.md confirms operational use; pipeline mandate per .claude/rules/agents.md (request → ARL → Ruflo → target agent → response for payment/compliance/kyc). Lesson: A1 inventory missed canonical agent fleet by checking only `command -v`, not `.claude/agents/` + `.claude/rules/agents.md`.
+- [x] G-FACTORY-CHAIN: agents.md chain matrix not formalised — DONE 2026-05-06 (FA-5: agent-chain × GSD-phase matrix added to .claude/rules/agents.md with 6 canonical chains A-F; Ruflo placement formalised per FA-3 reclassification; agent-to-LiteLLM-route mapping included per FA-2)
+  Anchors: PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), .claude/rules/agents.md, A4 proposal.
+  Priority: P3 (closed).
   Discovered 2026-05-05 in IL-AUDIT-01 A1. Briefed CLI fleet includes Ruflo; A1 PATH probe found no `ruflo` binary. Unclear whether tool is missing (gap) or renamed/integrated.
   Action: FA-3 (search alternative names: ruff/ruflo-cli/ruflo-agent; install or reclassify).
   Anchors: docs/roadmap/audit-2026-05/A1 inventory.
