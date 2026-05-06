@@ -248,6 +248,7 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-06 | `checkpoint-2026-05-06-sber-oss-emi-block` | будет проставлен оператором после merge PR | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-claude-finance-agents-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-defi-stack-binance-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md |
+| 2026-05-06 | `checkpoint-2026-05-06-dac8-tax-reporting-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
@@ -311,3 +312,22 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 Тег после merge: `checkpoint-2026-05-06-defi-stack-binance-replacement-block`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md](docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md)
+
+---
+
+## Roadmap Block 2026-05-06 — DAC8 EMI Compliance (Tax Reporting + Customer Notification + 60-day Kill Switch)
+
+Канонизация обязательств BANXE по Council Directive (EU) 2023/2226 (DAC8) с 1 января 2026: ежегодная XML CARF отчётность в национальный налоговый орган страны регистрации, GDPR-обязательное уведомление клиентов о передаче данных, 60-дневная процедура self-certification → блокировка reportable transactions (Annex VI, Section V(A)(2)).
+
+**Ownership matrix:**
+- RFI Owner: Tax Reporting & Regulatory Reporting Function (Compliance & Reporting, под MLRO / Head of Compliance) — владеет XML CARF выгрузкой и отправкой; артефакты: `services/reporting/*`, FIN060 pipeline, ADR-027.
+- Data Ingestion Co-owner: Customer Operations (KYC/Onboarding/CS) — self-certification, GDPR-уведомление, 60-day reminders; артефакты: `services/kyc/*`, `services/customer_lifecycle/*`, `services/notifications/*`.
+- Поддержка: Legal & Privacy (DPO) — GDPR Privacy Policy + lawful basis; MLRO/AML — AMLR Art. 33 пересечение; Engineering — Tax-Reporting Service + FSM (future ADR-045..049).
+
+Pending invariants: I-40 (RFI ownership + customer notification), I-41 (60-day kill-switch mandatory). Резерв ADR: ADR-045..049.
+
+Базовая опора: `checkpoint-2026-05-06-defi-stack-binance-replacement-block`.
+
+Тег после merge: `checkpoint-2026-05-06-dac8-tax-reporting-block`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md](docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md)
