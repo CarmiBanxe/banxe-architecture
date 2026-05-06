@@ -121,3 +121,39 @@ paths: ["docker/**", "infra/**", "scripts/**"]
 | High-perf ledger | TigerBeetle | >10k TPS |
 | Data lineage | OpenMetadata | Q4 2026 |
 | AI finance | FinGPT / OpenBB | Q4 2026 |
+
+---
+
+## Keycloak canonical IAM (FA-4)
+
+> Added 2026-05-06 per FA-4 of IL-FACTORY-AUDIT-01.
+
+### Authority
+
+| Component | Canonical location | Notes |
+|---|---|---|
+| Keycloak realm `banxe-emi` | **Legion** `100.101.218.26:8180` | Production. Quarkus 26.2.5. Postgres backend in docker bridge 172.23.0.3. Per ADR-017 + G-IAM-08 cutover 2026-05-04. |
+| Keycloak admin URL | `http://100.101.218.26:8180/realms/banxe-emi` | Use Tailscale hostname or LAN as appropriate. |
+| evo1 :8180 | **NOT used** (legacy, deprecated) | Pre-cutover deployment exists in `/data/banxe/banxe-emi-stack/infra/keycloak-banxe-emi/`. systemd `keycloak.service` in restart-loop (G-OPS-05); decommission deferred. Do NOT route new EMI services here. |
+
+### Service config canon
+
+All EMI services (`banxe-compliance-api`, `banxe-dashboard`, `deep-search`, `drive_watcher`, future) MUST set:
+
+```
+KEYCLOAK_URL=http://100.101.218.26:8180
+KEYCLOAK_REALM=banxe-emi
+IAM_ADAPTER=keycloak
+```
+
+The legacy form `KEYCLOAK_URL=http://localhost:8180` (interpreted differently on Legion vs evo1) is deprecated. Only use explicit Legion address for clarity.
+
+### Anchors
+
+- ADR-017 (Keycloak IAM Cutover) — Accepted 2026-05-03
+- G-IAM-08 — DONE 2026-05-04 (cutover via STRATEGY-B host migration)
+- G-IAM-10 — DONE 2026-05-06 (session-timeout hardening Phase G)
+- IL-FA-04-CLOSE — this entry
+- G-OPS-05 (evo1 keycloak zombie) — open follow-up
+- G-FACTORY-04 (Legion 2x Java) — open follow-up
+- docs/canon/operator-canon-2026-05.md

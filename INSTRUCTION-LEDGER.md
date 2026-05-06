@@ -3671,3 +3671,31 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Reasoning route: factory-heavy for normal, project-reason for high-stakes.
 - **Anchors:** PR #57 (sprint kickoff), PR #80 (FA-1 factory-fast), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), `.claude/rules/agents.md` original sections, A4 orchestration proposal, docs/canon/operator-canon-2026-05.md, ADR-018, ADR-019.
 - **Reperential point:** main HEAD at FA-5 closure = b1db8b4.
+
+### IL-FA-04-CLOSE — FA-4 Keycloak split-brain reconciled (no actual split)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC + CLOSE (discovery only)
+- **Status:** ✅ DONE
+- **Priority:** P1 (was; now reclassified as resolved)
+- **Sprint:** IL-FACTORY-AUDIT-01 (PR #57)
+- **Closes:** G-FACTORY-02 (Keycloak realm split-brain risk — resolved, no actual split).
+- **Discovery summary (FA-4a, 2026-05-06 ~02:22 CEST):**
+  - Legion :8180 → LISTENING. 2 Quarkus Keycloak Java processes (pid 3221994 + pid 3354617, both since May04). docker-proxy binds :8180 to root. Postgres backend in docker bridge 172.23.0.3.
+  - evo1 :8180 → NOT listening.
+  - evo1 has `keycloak.service` in `activating auto-restart` state + 2 dead docker containers (Exited 137, 5 days ago).
+  - All EMI service configs reference Legion `100.101.218.26:8180` (canonical post-G-IAM-08 cutover) OR `evo1:8180` (legacy comments only).
+  - ADR-017 (Accepted 2026-05-03) + G-IAM-08 (DONE 2026-05-04) explicitly cutover Keycloak to Legion via STRATEGY-B host migration. Tag `cass15-iam-cutover-2026-05-07`.
+- **Reclassification:**
+  - A3 gap-analysis (2026-05-05) flagged G-FACTORY-02 as P1 split-brain risk. That assessment was based on PRE-cutover state described in early session canon.
+  - Actual reality: cutover happened 2026-05-04 (one day BEFORE A3 analysis). A3 missed it because the gap-analysis was based on A1/A2 baseline data which itself was collected without checking ADR-017 status.
+  - There is NO active split-brain. There IS a zombie evo1 deployment (G-OPS-05 — separate gap).
+- **Consequence: 2 new gaps opened (split out from A3 G-FACTORY-02):**
+  - **G-OPS-05** (P3) — evo1 keycloak.service restart-loop, zombie deployment from pre-cutover state. Decommission runbook deferred.
+  - **G-FACTORY-04** (P3) — Legion has 2 Keycloak Java processes (~1.5 GB RAM total), one likely orphan. Investigation deferred.
+- **Lessons learned:**
+  1. A3 gap-analysis must check ADR status of any architectural assertion, not only baseline observation. A3 should have flagged: «G-FACTORY-02 needs ADR-017 reconciliation before triage».
+  2. FA-4 demonstrates pattern: discovery → reconciliation, not all "split-brain" risks are actual splits. Best-decision is sometimes to verify and document that the risk is already resolved.
+- **Operator canon alignment:** Principle 2 («evo1 as-is») fully satisfied — no changes to evo1 in FA-4 closure (zombies tolerated as G-OPS-05 follow-up). Principle 4 (factory unblocked) — IL-FACTORY-AUDIT-01 sprint can proceed.
+- **Anchors:** PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2), PR #83 (FA-3), PR #84 (FA-5), ADR-017, G-IAM-08 (DONE in EMI mirror), `.claude/rules/agents.md`, docs/canon/operator-canon-2026-05.md, A3 gap-analysis (PR #52, retroactively corrected).
+- **Reperential point:** main HEAD at FA-4 closure = 0d33a12.
