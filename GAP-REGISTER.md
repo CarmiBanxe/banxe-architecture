@@ -448,3 +448,55 @@
   Action: per-model `ollama rm` on evo1 with operator go per §3.2.
   Anchors: docs/canon/HW-MODEL-UPGRADE-matrix.md, G-CLUSTER-02 (closed).
   Priority: P3.
+
+---
+
+## HW Baseline Gaps — 2026-05-06
+
+- [ ] G-FACTORY-WSL2-RAM-CAP: Legion WSL2 exposes ~23 GiB instead of physical 64 GB RAM — OPEN 2026-05-06
+  Legion physical HW: 64 GB RAM, 4+ TB SSD, NVIDIA RTX 4070 Laptop (8 GB VRAM). WSL2 .wslconfig not
+  configured; default cap leaves ~23 GiB visible to Linux, severely constraining coding model selection
+  and Ollama blob cache capacity.
+  Action: set `memory=56GB` (or close) in C:\Users\<user>\.wslconfig; restart WSL2; verify `free -h`
+  shows 50+ GiB; re-evaluate coding model beyond 7B-class (e.g. Qwen2.5-Coder-32B or similar).
+  Use 4+ TB SSD as Ollama blob cache (OLLAMA_MODELS env to SSD path).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
+  IL-CANON-STACK-2026-05-06.
+  Priority: P2 (blocks optimal factory-layer model; not blocking operations today).
+
+- [ ] G-INFRA-EVO1-RAM-VISIBILITY: evo1 OS sees ~30 GiB instead of physical 128 GB — OPEN 2026-05-06
+  evo1 physical HW: 128 GB RAM, large SSD. `free -h` reports ~30 GiB — a BIOS/UMA/firmware
+  mismatch, not a real physical limit. This gap blocks honest capacity planning for evo1
+  (services, small models, Keycloak, Postgres). All decisions about "evo1 is under pressure,
+  migrate to evo2" MUST be suspended or marked pre-audit until this gap is resolved.
+  Action: run `sudo dmidecode -t memory`, check BIOS/UEFI for UMA Frame Buffer Size and
+  Memory Remap settings; enable Memory Remap if supported; verify `free -h` approaches
+  ~128 GiB after BIOS change + reboot.
+  Related: G-INFRA-04 (evo1 swap pressure — may be partially explained by this mismatch).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
+  G-INFRA-04.
+  Priority: P1 (distorts all evo1 capacity decisions; pre-audit block on migration decisions).
+
+- [ ] G-INFRA-EVO2-GPU-STACK: evo2 GPU stack (ROCm/Vulkan) inactive — qwen3:235b runs CPU-only — OPEN 2026-05-06
+  evo2 physical HW: 128 GB RAM, 1.9 TB SSD, AMD GPU. `vulkaninfo` shows llvmpipe software
+  renderer only; `rocminfo` not verified functional. qwen3:235b Q3_K_S (142 GB) currently
+  runs CPU-only at ~5 tok/s. GPU-offload would significantly improve throughput and unlock
+  larger quant or longer context.
+  Action: identify AMD GPU model; install correct ROCm version for GPU arch; verify
+  `rocminfo` lists the GPU; verify `vulkaninfo` shows hardware Vulkan adapter;
+  reconfigure Ollama with ROCm backend (HSA_OVERRIDE_GFX_VERSION if needed);
+  re-select maximum feasible model under full 128 GB + GPU-offload.
+  Related: G-CLUSTER-01 (fp16 deleted because GPU stack was broken; may reopen after fix).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
+  G-CLUSTER-01, G-CLUSTER-03, docs/canon/HW-MODEL-UPGRADE-matrix.md.
+  Priority: P1 (project reasoning layer running suboptimally; blocks re-evaluation of heavy model).
+
+- [x] G-CANON-HW-BASELINE: canonical HW baseline was implicit / missing from canon docs — CLOSED 2026-05-06
+  Prior to this entry, factory/project stack canon (docs/canon/factory-project-stack-2026-05.md)
+  did not record physical HW specs. Decisions about model selection, service placement, and
+  capacity were implicitly based on OS-visible metrics (WSL2 ~23 GiB, free -h ~30 GiB evo1,
+  ~93 GiB evo2) rather than physical hardware.
+  Mitigated by: adding "## HW Baseline" section to docs/canon/factory-project-stack-2026-05.md
+  and recording IL-CANON-HW-BASELINE-2026-05-06 (BINDING, P1).
+  Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06.
+  Priority: P2 (closed — canon applied).
