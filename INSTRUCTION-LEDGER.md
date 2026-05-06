@@ -3880,3 +3880,22 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - **Improvement path:** changes to Ruflo's scope or placement MUST go through ADR + IL entry. No ad-hoc edits to `agents.md`, `swarm.yaml`, or `factory-project-stack-2026-05.md` without a corresponding IL.
 - **Anchors:** PR #98 (IL-CANON-STACK-2026-05-06, `docs/canon/factory-project-stack-2026-05.md`), PR #99 (Ruflo section in same file, merged to main HEAD `24e106c`), `.claude/rules/agents.md` BUG-005 + FA-5 matrix, `agents/compliance/swarm.yaml`, `services/arl/`.
 - **Reperential point:** main HEAD at IL-CANON-RUFLO canon = 24e106c.
+
+### IL-OPS-G-FACTORY-LITELLM-DUPLICATE-2026-05-06 — Legion LiteLLM duplicate systemd units resolved — canonical gateway is litellm-v2.service
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** CLOSE
+- **Status:** CLOSED
+- **Priority:** P2 → resolved
+- **Context:** On Legion, two systemd units were both targeting LiteLLM on :4000 — user-level `~/.config/systemd/user/litellm-v2.service` and system-level `/etc/systemd/system/litellm-lan-gateway.service`. Both had `ExecStart` pointing to the same config (`litellm-config.v2.yaml --port 4000 --host 0.0.0.0`). user-level won the SO_REUSEPORT race (started earlier 01:17:50 on 2026-05-06); system-level failed bind, uvicorn fell back to random ephemeral port (e.g., :12734, :17861) — wasting ~5s per restart attempt and creating orphan listener. Discovered during FA-2 execute (IL-FA-02-EXEC).
+- **What was done on Legion (2026-05-06):**
+  - `sudo systemctl disable --now litellm-lan-gateway.service` — service stopped and symlink in `/etc/systemd/system/multi-user.target.wants/` removed.
+  - `ss -tlnp | grep :4000` → only python pid=4052653 (user-level `litellm-v2.service`). No orphan listener.
+  - `.bashrc` lines 137-138 updated to reference canonical `litellm-v2.service` instead of generic `litellm.service`.
+- **Result:**
+  - One canonical LiteLLM gateway on :4000 = user-level `litellm-v2.service` (Legion, `~/.config/systemd/user/`).
+  - No system-level orphan listener or wasted bind attempts.
+  - Consistent with Factory/Project Stack Canon (Legion = factory; single unified LLM gateway per IL-CANON-STACK-2026-05-06).
+- **Closes:** G-FACTORY-LITELLM-DUPLICATE (P2 OPEN → CLOSED).
+- **Anchors:** `docs/canon/factory-project-stack-2026-05.md`, IL-FA-02-EXEC, `.bashrc` lines 137-138, `/etc/systemd/system/litellm-lan-gateway.service` (disabled), `~/.config/systemd/user/litellm-v2.service` (canonical).
+- **Reperential point:** main HEAD at 48148ad.
