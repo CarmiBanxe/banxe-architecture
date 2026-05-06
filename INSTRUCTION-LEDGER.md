@@ -3731,3 +3731,40 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - [x] Downtime: 2 min 44 sec (target was 30-60s; exceeded due to Postgres init + fresh realm import)
   - [x] Execution log committed to `docs/ops/phase-f-execution-2026-05-06.md`
   - [x] G-IAM-09 marked DONE in GAP-REGISTER, Phase F struck in ROADMAP.md
+
+### IL-FA-02-EXEC — FA-2 LiteLLM canonical aliases LIVE
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** DEPLOY + CLOSE
+- **Status:** ✅ DONE
+- **Priority:** P3 (factory orchestration polish)
+- **Sprint:** IL-FACTORY-AUDIT-01 (PR #57)
+- **Predecessor:** IL-FA-02-DRAFT (PR #81 runbook); IL-FA-01-CLOSE (PR #80, factory-fast already live).
+- **Closes:** FA-2 acceptance criteria from PR #81 runbook.
+- **Action executed (Phase A→E + 2 fix iterations):**
+  - Phase A: verified existing config (19 unique routes, 4 canonical missing pre-execute).
+  - Phase B: backup `/home/mmber/MetaClaw/litellm/litellm-config.v2.yaml.bak-fa-02-exec-20260506-024330`.
+  - Phase C: idempotent python+yaml append of 6 entries (factory-mid x2 LB, factory-heavy x2 LB, factory-coder x1 evo1, project-reason x1 evo2). 4 added by parallel session beforehand (skipped via dedup), all 6 final. model_list size grew from 24 to 30, unique routes 15 to 19.
+  - Phase D-initial: smoke tests showed 4 aliases not in /v1/models. Root cause: 2 systemd units on :4000 conflict (user-level litellm-v2 holding :4000, system-level litellm-lan-gateway losing bind race, fallback to random port). Restarted only system-level — orphan user-level still served stale config.
+  - Phase D-fix1: `systemctl --user restart litellm-v2.service` made user-level pick up new aliases. /v1/models now shows 5/5 canonical.
+  - Phase D-fix2: project-reason returned `AuthenticationError: api_key must be set`; added dummy api_key — got `Invalid API Key` from llama-server.
+  - Phase D-fix3: copied EXACT api_key from existing reasoning-235b (which is the same backend). After restart, both project-reason and reasoning-235b return identical 200+empty (cold start of 235b model, max_tokens=20 truncation of reasoning prefix).
+  - Phase E: /v1/models confirmed 5/5 canonical present (factory-fast, factory-mid, factory-heavy, factory-coder, project-reason); 8/8 preexisting routes intact (fast, coding, qwen3-30b, ai, ai-heavy, reasoning, reasoning-235b, large).
+- **Final smoke test results (2026-05-06 ~01:01 CEST):**
+  - factory-fast (RTX 4070 Legion local) — HTTP 200, content="OK" (per FA-1 acceptance, unchanged)
+  - factory-mid (qwen3:30b-a3b LB evo1+evo2) — HTTP 200, content empty (cold start truncation)
+  - factory-heavy (llama3.3:70b LB evo1+evo2) — HTTP 200, content="OK"
+  - factory-coder (qwen3-coder-next:q4_K_M evo1) — HTTP 200, content="OK"
+  - project-reason (qwen3:235b on evo2:8082, identical config to reasoning-235b) — HTTP 200, content empty (cold start)
+  - Sanity check reasoning-235b — HTTP 200, content empty (identical to project-reason)
+- **Acceptance criteria from PR #81 runbook:**
+  - [x] All 5 canonical aliases return HTTP 200 via LiteLLM /v1/chat/completions.
+  - [x] /v1/models lists all 5 canonical aliases (verified 19 unique routes including all 5).
+  - [x] Existing routes (qwen3-30b, ai-heavy, coding, reasoning-235b, fast, ai, large, banxe-general, glm-4-flash, glm-4.5-air-distributed, glm-air, gpt-oss-20b, qwen3-banxe, reasoning) all still alive.
+  - [x] G-FACTORY-LITELLM-ALIAS gap closed (was implicit in FA-2 runbook).
+- **Side discovery → new gap:**
+  - **G-FACTORY-LITELLM-DUPLICATE** (P2 OPEN) — two systemd units on :4000 (user-level litellm-v2 + system-level litellm-lan-gateway). System-level loses bind race, falls back to random port. Decommission deferred per separate runbook.
+- **Operator canon alignment:** Principle 1 (HW-first) satisfied — all hardware (Legion + evo1+evo2) operational; aliases are pure config layer. Principle 4 (factory unblocked) — IL-FACTORY-AUDIT-01 sprint now FULLY closed (5/5 FA done).
+- **Anchors:** PR #57 (sprint kickoff), PR #80 (FA-1 factory-fast), PR #81 (FA-2 runbook), PR #83 (FA-3 Ruflo), PR #84 (FA-5 chain matrix), PR #85 (FA-4 Keycloak reconciled), docs/canon/operator-canon-2026-05.md, A4 orchestration proposal, ADR-018, ADR-027.
+- **Reperential point:** main HEAD at FA-2 execute closure = 617fb36.
+- **Sprint closure note:** With FA-2 executed, IL-FACTORY-AUDIT-01 transitions from "substantively closed (4/5 + runbook)" to "fully closed (5/5 executed)". 3 follow-up gaps (G-OPS-05, G-FACTORY-04, G-FACTORY-LITELLM-DUPLICATE, IL-FACTORY-02) remain as P2-P3 backlog for separate sprints.

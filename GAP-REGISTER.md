@@ -398,6 +398,15 @@
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, ADR-017, G-IAM-01..09.
   Priority: P1.
 
+- [ ] G-FACTORY-LITELLM-DUPLICATE: two systemd units on :4000 (user-level litellm-v2.service vs system-level litellm-lan-gateway.service) — OPEN 2026-05-06
+  Discovered FA-2 execute (IL-FA-02-EXEC). Both units enabled+active, both ExecStart pointing to same config /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml --port 4000 --host 0.0.0.0. user-level wins SO_REUSEPORT race (started earlier May06 01:17:50); system-level fails bind, uvicorn falls back to random port (e.g., :12734, :17861). Functionally LiteLLM works because user-level is canonical owner of :4000, but every restart of system-level wastes ~5s + spawns orphan listener.
+  Action options:
+    (a) Disable system-level litellm-lan-gateway.service permanently (`sudo systemctl disable --now litellm-lan-gateway`); user-level remains canonical. Update .bashrc comment block at line 137-138 to mention litellm-v2.service instead of generic litellm.service.
+    (b) Disable user-level litellm-v2.service; rely on system-level. Risk: user-level was the working one for last 1+ hour, more proven.
+    (c) Keep both, change one to a different port (e.g., :4001 for system as fallback). Useful for HA but adds complexity.
+  Recommendation: (a) — minimal change, user-level already proven working with FA-2 aliases.
+  Anchors: FA-2 execute (IL-FA-02-EXEC), .bashrc lines 137-138, /etc/systemd/system/litellm-lan-gateway.service, ~/.config/systemd/user/litellm-v2.service.
+  Priority: P2 (operational hygiene; not blocking; wastes ~5s per system-level restart attempt).
 - [x] G-FACTORY-03: Ruflo identity reclassified — DONE 2026-05-06 (FA-3 discovery: Ruflo is internal Banxe Review Agent / Claude Code subagent for regulatory boundary enforcement, not a PATH binary; documented in .claude/rules/agents.md + agent passports + IL-008 review reports; not "missing", just misclassified in A1 baseline which checked only PATH) — OPEN
   Update 2026-05-06 (FA-3): IL-008 review report at docs/reviews/IL-008-review.md confirms operational use; pipeline mandate per .claude/rules/agents.md (request → ARL → Ruflo → target agent → response for payment/compliance/kyc). Lesson: A1 inventory missed canonical agent fleet by checking only `command -v`, not `.claude/agents/` + `.claude/rules/agents.md`.
 - [ ] G-FACTORY-04: Legion has 2 keycloak Java processes on :8180 (potential orphan) — OPEN 2026-05-06
