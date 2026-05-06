@@ -3699,3 +3699,35 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Operator canon alignment:** Principle 2 («evo1 as-is») fully satisfied — no changes to evo1 in FA-4 closure (zombies tolerated as G-OPS-05 follow-up). Principle 4 (factory unblocked) — IL-FACTORY-AUDIT-01 sprint can proceed.
 - **Anchors:** PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2), PR #83 (FA-3), PR #84 (FA-5), ADR-017, G-IAM-08 (DONE in EMI mirror), `.claude/rules/agents.md`, docs/canon/operator-canon-2026-05.md, A3 gap-analysis (PR #52, retroactively corrected).
 - **Reperential point:** main HEAD at FA-4 closure = 0d33a12.
+
+---
+
+### IL-PHASE-F-01 — Phase F: KC realm banxe-emi switched to Postgres backend APPLIED
+
+- **Date:** 2026-05-06
+- **Sprint:** Sprint 4 Track B (live-ops)
+- **Gap closed:** G-IAM-09 (ADR-017 §G-IAM-09 closure)
+- **Status:** DONE 2026-05-06
+- **Artefact:** `docs/ops/phase-f-execution-2026-05-06.md`
+- **Steps executed:**
+  1. Pre-flight: all env vars present (KC_DB_USER, KC_DB_PASSWORD, KC_DB_NAME, KC_BOOT_ADMIN, KC_BOOT_ADMIN_PASSWORD, KC_CLIENT_SECRET_* ×4). Production KC confirmed dev-file (H2) via `docker inspect KC_DB=dev-file` + logs `jdbc-h2`. Pre-state captured via kcadm (realm info + 4 clients).
+  2. `docker compose --env-file /tmp/kc-phase-f.env down` — [2026-05-06T00:32:25Z] KC stopped. Downtime window open.
+  3. `cp banxe-emi-stack/infra/keycloak-banxe-emi/docker-compose.yml ~/keycloak-banxe-emi-legion/` — Postgres canonical compose deployed.
+  4. `docker compose --env-file /tmp/kc-phase-f.env up -d` — [2026-05-06T00:34:37Z] Postgres sidecar + KC started.
+  5. Wait healthy — [2026-05-06T00:37:09Z] KC logs `KC-SERVICES0032: Import finished successfully`, `started in 11.298s`. Downtime window closed. **Downtime: 2 min 44 sec.**
+  6. sslRequired=none confirmed from realm JSON — no patch required.
+  7. `provision-clients.sh` — 4/4 clients provisioned (drive_watcher, banxe-compliance-api, deep-search, banxe-dashboard).
+  8. Phase G re-apply: realm JSON predated Phase G → re-applied 4 fields via kcadm (offlineSessionMaxLifespanEnabled=true, offlineSessionMaxLifespan=5184000, refreshTokenMaxReuse=0, revokeRefreshToken=true).
+  9. Smoke: 4/4 client_credentials grants → `expires_in=900`, `refresh_expires_in=0` ✅
+- **Proof:** `jdbc-postgresql` in KC Installed features (confirms Postgres backend). 4/4 smoke PASS. kcadm provision exit=0.
+- **Follow-up:** Realm JSON (`banxe-emi-realm.json`) must be exported from running KC and committed to include Phase G settings, to prevent re-apply requirement on next KC restart.
+- **Closure criteria:**
+  - [x] KC realm `banxe-emi` running with KC_DB=postgres (Postgres sidecar keycloak-banxe-emi-pg)
+  - [x] Fresh Postgres volume `keycloak_pg_data` created
+  - [x] Realm `banxe-emi` imported from JSON ✅
+  - [x] 4 clients provisioned with secrets from keycloak.env
+  - [x] Phase G settings re-applied (revokeRefreshToken=true, offlineSessionMaxLifespanEnabled=true)
+  - [x] Smoke: 4/4 client_credentials → `expires_in=900`, `refresh_expires_in=0` ✅
+  - [x] Downtime: 2 min 44 sec (target was 30-60s; exceeded due to Postgres init + fresh realm import)
+  - [x] Execution log committed to `docs/ops/phase-f-execution-2026-05-06.md`
+  - [x] G-IAM-09 marked DONE in GAP-REGISTER, Phase F struck in ROADMAP.md
