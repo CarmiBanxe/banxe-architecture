@@ -373,6 +373,11 @@
   Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE (где G-INFRA-03 closed как NOT PURSUED), docs/canon/operator-canon-2026-05.md.
   Priority: P2.
 
+- [x] IL-SEC-01: Frankfurter Postgres password exposed in PA-5a logs (2026-05-05) — CLOSED (canon applied, no live secrets)
+  During PA-5a (2026-05-05) `docker inspect banxe-frankfurter` on evo1 revealed DATABASE_URL with Postgres password in operator logs → password considered permanently compromised. Mitigated by canon IL-SEC-01-2026-05-06: old password banned from reuse; any future Frankfurter DB provisioning MUST generate new random credentials. Current state: no Frankfurter DB exists → no live secrets to rotate.
+  Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, PA-5a logs (2026-05-05), IL-SEC-01-2026-05-06 in INSTRUCTION-LEDGER.md.
+  Priority: P1 (security canon applied; effectively closed pending future DB provisioning).
+
 - [ ] G-OPS-05: evo1 keycloak.service restart-loop (zombie) — OPEN 2026-05-06
   Discovered FA-4a (IL-FACTORY-AUDIT-01). evo1 has `keycloak.service` in `activating auto-restart` state. Two docker containers `keycloak` and `test-iam` exited (137) 5 days ago. NO :8180 listener on evo1. ADR-017 + G-IAM-08 (DONE 2026-05-04) made Legion the canonical authority — evo1 keycloak deployment is now legacy.
   Action: decommission analogous to G-OPS-04 frankfurter pattern — `docker compose down` on `/data/banxe/banxe-emi-stack/infra/keycloak-banxe-emi/docker-compose.yml`, disable systemd `keycloak.service`, remove containers. Runbook deferred (separate operator-gated execution).

@@ -3842,3 +3842,23 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Reclassification:** G-FACTORY-04 reclassified from "2 orphan Java procs (urgent verify)" to MONITOR/VERIFY: periodically check for unexpected Java Keycloak processes outside the canonical container; no immediate kill action required. Containerised Keycloak on Legion is the expected canonical state (ADR-017 + G-IAM-08).
 - **Anchors:** G-FACTORY-04 in GAP-REGISTER.md, IL-OPS-G-OPS-05-OBSERVED-2026-05-06, ADR-017, G-IAM-08, FA-4a discovery (IL-FA-04-CLOSE PR #85).
 - **Reperential point:** main HEAD at observation = 793e322.
+
+### IL-SEC-01-2026-05-06 — Frankfurter Postgres password exposed in PA-5a logs — banned from reuse (security canon)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC (security canon — immediately binding)
+- **Status:** BINDING
+- **Priority:** P1
+- **Context:** During PA-5a (2026-05-05), `docker inspect banxe-frankfurter` on evo1 revealed `DATABASE_URL` containing a Postgres password in operator session logs. Even though the Frankfurter Postgres database does not currently exist (and was never provisioned in production), the password value is now considered permanently compromised — it appeared in logs accessible to any operator with shell history or session replay access.
+- **Decision:**
+  - The exposed Frankfurter Postgres password is **PERMANENTLY BANNED** from reuse.
+  - Any future Frankfurter Postgres provisioning MUST:
+    1. Generate a new random password (minimum 32 chars, `openssl rand -base64 32` or equivalent).
+    2. Store it only in the canonical secrets backend / env mapping (never in `docker inspect`-readable `ENV` fields if avoidable; use Docker secrets or external secret manager).
+    3. **Never reuse** the old value from PA-5a logs.
+  - This ban is permanent and requires no further operator action until a new Frankfurter DB is provisioned.
+- **Operational impact:**
+  - **Current state:** No Frankfurter DB exists → no live credentials to rotate. Risk is contained.
+  - **Future state:** First provisioning step for any Frankfurter DB MUST include password generation + reference to IL-SEC-01-2026-05-06 as compliance evidence.
+- **Anchors:** docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, PA-5a logs (2026-05-05), docs/canon/operator-canon-2026-05.md (security-first).
+- **Reperential point:** main HEAD at IL-SEC-01 canon = e9c2f26.
