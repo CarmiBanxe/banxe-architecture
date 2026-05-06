@@ -4012,3 +4012,33 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Anchors:** PR #115 (commit `6d183d7`), IL-CANON-PROCESS-HYGIENE-2026-05-06, `.claude/rules/parallel-session-isolation.md`, `.claude/rules/safety-rules.md`, `docs/canon/factory-project-stack-2026-05.md`.
 - **Referential point:** main HEAD at 6d183d7366954bd677a6fc5be33c45375a49aa1b.
 
+### IL-OBSERVE-LEGION-RECONFIRM-2026-05-06 — Legion reconfirmation audit (19:55 CEST): GPU-Util 26% no-process anomaly, local Ollama active but OLLAMA_HOST→evo1, pciutils absent
+
+- **Date:** 2026-05-06 19:55 CEST
+- **Phase (GSD):** OBSERVE (Phase A reconfirmation — live shell re-audit on Legion WSL2)
+- **Status:** OBSERVED — 3 discrepancies noted; no operator action; all existing gaps remain OPEN
+- **Priority:** P2 (informational; confirming prior Phase A; no new gap opened)
+- **Context:** Second live audit of Legion WSL2 environment, same day as Phase A (IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06). Executed at 19:55 CEST (~4 hours after Phase A) to reconfirm state before BIOS uplift planning. Three discrepancies vs Phase A observed.
+- **What was checked on Legion WSL2 (2026-05-06 19:55 CEST):**
+  - `uname -r` → `6.6.87.2-microsoft-standard-WSL2`; kernel unchanged since Phase A.
+  - `uptime` → 4d18h; system has been up since 2026-05-01 or 2026-05-02.
+  - `free -h` → total 23Gi / used 5.6Gi / free 17Gi; RAM cap unchanged (G-FACTORY-WSL2-RAM-CAP still OPEN).
+  - `df -h /dev/sdd` → 1007G total, 11% used; SSD available as Ollama blob store (same as Phase A).
+  - `lspci` → **command not found**; `pciutils` package absent in this WSL2 image (new observation; not present at Phase A nor noted there).
+  - `nvidia-smi` → RTX 4070 Laptop 8 GB VRAM; **GPU-Util 26%**; 715 MiB / 8188 MiB VRAM in use; **no processes listed** in the compute processes table.
+  - `ss -tlnp | grep ':4000'` → python LiteLLM listening on :4000; litellm-v2.service active for ~16 h.
+  - `ss -tlnp | grep ':11434'` → listener present on :11434; `systemctl --user status ollama.service` → active (running) for ~18 h.
+  - `echo $OLLAMA_HOST` → `http://192.168.0.72:11434` (evo1); Legion local Ollama service active but traffic still routed to evo1.
+- **Discrepancies vs Phase A (IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06):**
+  1. **GPU-Util 26% with zero listed processes** — Phase A showed GPU-Util 0%. Current reading shows 26% VRAM + utilisation with no nvidia-smi process entry. Possible causes: background CUDA context from a detached process, driver telemetry, or WSL2 CUDA runtime overhead. Not attributable to Ollama (no local models; OLLAMA_HOST→evo1). Does not open a new gap; operator should check `fuser /dev/nvidiactl` or `sudo lsof /dev/nvidia*` if suspicious.
+  2. **Local `ollama.service` active (18 h) but `OLLAMA_HOST` still points to evo1** — Phase A showed `ollama.service` inactive/not started. A local Ollama instance is now running but no local models are served (model dir still empty per Phase A; OLLAMA_HOST overrides routing). G-FACTORY-OLLAMA-OFFLOAD (RTX 4070 idle, no coding model) remains OPEN and is the correct tracking vehicle for this; no new gap required.
+  3. **`pciutils` absent in WSL2** — `lspci` unavailable; PCIe enumeration inside WSL2 is limited anyway (GPU appears via `/dev/nvidia*`, not PCIe bus). Informational only.
+- **Result / interpretation:**
+  - No new gap opened. All three discrepancies are informational or already tracked under G-FACTORY-OLLAMA-OFFLOAD.
+  - RAM cap (G-FACTORY-WSL2-RAM-CAP) confirmed still unresolved at 23 GiB.
+  - GPU-Util 26% with no compute processes is anomalous; does not block BIOS uplift planning but should be noted for operator review.
+  - Local Ollama running without local models is benign but confirms G-FACTORY-OLLAMA-OFFLOAD is still unresolved: RTX 4070 is not doing useful work.
+- **Closes:** nothing; G-FACTORY-WSL2-RAM-CAP, G-FACTORY-OLLAMA-OFFLOAD remain OPEN.
+- **Anchors:** IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06, G-FACTORY-WSL2-RAM-CAP, G-FACTORY-OLLAMA-OFFLOAD, `docs/runbooks/fa-wsl2-ram-cap-and-ollama-cache.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline).
+- **Referential point:** main HEAD at bbb10fc.
+
