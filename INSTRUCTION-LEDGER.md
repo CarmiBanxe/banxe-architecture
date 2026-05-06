@@ -3917,3 +3917,29 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Operator/Perplexity scope:** when answering efficiency and capacity questions, the supervisor MUST reference the physical HW baseline (not only OS metrics). Live shell data must be interpreted in the context of this baseline (e.g. evo1 `free -h 30 GiB` is a BIOS mismatch, not the real capacity).
 - **Anchors:** `docs/canon/factory-project-stack-2026-05.md` (§"HW Baseline"), IL-CANON-STACK-2026-05-06, IL-CANON-RUFLO-2026-05-06, G-INFRA-EVO1-RAM-VISIBILITY, G-INFRA-EVO2-GPU-STACK, G-CANON-HW-BASELINE, G-FACTORY-WSL2-RAM-CAP (PR #109), docs/canon/operator-canon-2026-05.md.
 - **Referential point:** main HEAD at 37d753c187eaffb8144bdfb09b7f25f00f002175.
+
+### IL-OPS-G-INFRA-EVO1-PHASE-A-2026-05-06 — evo1 Phase A audit: physical 128 GB confirmed, OS sees ~32 GiB — BIOS/UMA mismatch
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (Phase A of fa-evo1-bios-uma-audit runbook executed)
+- **Status:** OBSERVED — gap remains OPEN; awaiting Phase C (BIOS audit)
+- **Priority:** P1 (unchanged)
+- **Context:** G-INFRA-EVO1-RAM-VISIBILITY: HW baseline canon (PR #111) declares evo1 = 128 GB physical, while Linux (`free -h` / `/proc/meminfo` / `lsmem`) consistently reported ~30 GiB. Phase A of runbook `fa-evo1-bios-uma-audit.md` executed in read-only mode on evo1 via `ssh -t evo1 + sudo`.
+- **What was checked on evo1 (2026-05-06):**
+  - `sudo dmidecode -t 17` → 8 × 16 GB, Samsung DDR5 8000 MT/s, channels P0 CHANNEL A..H → 128 GB total.
+  - `sudo lshw -short -C memory` → `/0/11 memory 128GiB System Memory` + 8 × 16GiB Synchronous Unbuffered (Unregistered) 8000 MHz.
+  - `/proc/meminfo` → MemTotal: 32489392 kB.
+  - `lsmem --summary` → Total online memory 31.9G; offline 0B.
+  - `free -h` → 30 GiB total / 11 GiB used / 18 GiB buff/cache; swap 1.5 GiB used of 8 GiB.
+  - Artifacts: `~/banxe-audit/evo1-bios-2026-05-06/` on evo1 (NOT committed to repo).
+- **Result / interpretation (Phase B):**
+  - Physical capacity 128 GB confirmed independently by DMI and lshw; all 8 channels populated with 16 GB modules; no missing or failed DIMMs.
+  - OS-visible capacity ≈ 31.9 GiB (~25% of physical) → BIOS / UMA / Memory Remap mismatch, not a hardware defect.
+- **Decision:**
+  - Do NOT perform any DIMM upgrades or replacements.
+  - Proceed to Phase C of runbook `fa-evo1-bios-uma-audit.md` (BIOS audit via reboot: UMA Frame Buffer Size, Memory Remap / Above 4G Decoding, Memory Frequency).
+  - Any "evo1 is under pressure → migrate to evo2" decisions are suspended until Phase C/D are complete and OS-visible RAM ≈ 128 GiB is confirmed.
+- **Operator/Perplexity scope:** Supervisor must account for the fact that `free -h ~30 GiB` on evo1 is a BIOS artefact; physical baseline = 128 GB. No capacity planning or service migration decisions should treat 30 GiB as the real ceiling.
+- **Closes:** nothing; `G-INFRA-EVO1-RAM-VISIBILITY` remains OPEN until Phase C/D.
+- **Anchors:** `docs/runbooks/fa-evo1-bios-uma-audit.md`, `docs/canon/factory-project-stack-2026-05.md` (§ HW Baseline), `IL-CANON-HW-BASELINE-2026-05-06`, `G-INFRA-EVO1-RAM-VISIBILITY`, `G-INFRA-04`.
+- **Referential point:** main HEAD at 81449d6323138fb610d9d1dc2b626c244a6e824b.

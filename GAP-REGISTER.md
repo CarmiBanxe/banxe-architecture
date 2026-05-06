@@ -479,6 +479,9 @@
   G-INFRA-04.
   Priority: P1 (distorts all evo1 capacity decisions; pre-audit block on migration decisions).
   Runbook: docs/runbooks/fa-evo1-bios-uma-audit.md
+  Update 2026-05-06: Phase A executed; physical 128 GB confirmed (8 × 16 GB, DDR5 8000 MT/s);
+  OS sees ~31.9 GiB → BIOS/UMA mismatch; Phase C (BIOS audit) required.
+  See IL-OPS-G-INFRA-EVO1-PHASE-A-2026-05-06.
 
 - [ ] G-INFRA-EVO2-GPU-STACK: evo2 GPU stack (ROCm/Vulkan) inactive — qwen3:235b runs CPU-only — OPEN 2026-05-06
   evo2 physical HW: 128 GB RAM, 1.9 TB SSD, AMD GPU. `vulkaninfo` shows llvmpipe software
