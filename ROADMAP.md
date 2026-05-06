@@ -220,5 +220,16 @@ Pending implementation phase: ADR-027..034 + code/tests + deploy. See GAP-REGIST
 
 ---
 
-> Last Updated: 2026-05-05 | Maintained by: CarmiBanxe
+> Last Updated: 2026-05-06 | Maintained by: CarmiBanxe
 > Cross-repo state: banxe-emi-stack: main HEAD post-merge, all V-violations canonized; MetaClaw: guardian deployed pull-mode, claude.bash rules active
+
+---
+
+## Snapshot 2026-05-06 — Progress Checkpoint
+
+Состояние на 2026-05-06 10:00 CEST. ADR-027 (audit-trail durability) Accepted и закрыт.
+ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 2 (PR #70) открыты.
+Следующий шаг: ADR-028 Step 3 (cron/CI smoke), затем Step 4 (flip Accepted + G-KYC-01/02 close).
+Базовый тег: `checkpoint-2026-05-06-adr027-accepted`. Новый тег после merge: `checkpoint-2026-05-06-progress-snapshot`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md](docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md)
