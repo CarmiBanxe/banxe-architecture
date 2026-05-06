@@ -246,6 +246,7 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-06 | `checkpoint-2026-05-06-adr027-accepted` | 1fa9ddf | HANDOFF | docs/sessions/HANDOFF-2026-05-06-adr027-accepted.md |
 | 2026-05-06 | `checkpoint-2026-05-06-progress-snapshot` | 24ad91a | SNAPSHOT | docs/sessions/SNAPSHOT-2026-05-06-progress-checkpoint.md |
 | 2026-05-06 | `checkpoint-2026-05-06-sber-oss-emi-block` | будет проставлен оператором после merge PR | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md |
+| 2026-05-06 | `checkpoint-2026-05-06-claude-finance-agents-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
@@ -269,3 +270,23 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 Тег после merge: `checkpoint-2026-05-06-sber-oss-emi-block`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md](docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md)
+
+---
+
+## Roadmap Block 2026-05-06 — Anthropic Claude Finance Agents (EMI applicability)
+
+Оценка готовых Anthropic Claude agent templates для финансовых команд (pitch book, valuation review, month-end close, credit memo, KYC, reconciliation, fund accounting) с точки зрения применимости в EMI BANXE AI BANK — строго в EMI-периметре.
+
+**In-scope (текущий EMI):** KYC agent, Reconciliation agent, Month-end close (partial — только собственный P&L и FIN060).
+
+**Out-of-scope (кредитование / инвестиционные услуги / M&A):** credit memo, pitch book, valuation review, fund accounting — резерв при расширении лицензии.
+
+Регуляторное правило: все вызовы к Claude Finance Agents только через approved AI-plane (LiteLLM v2 / Bedrock-EU с DPA); прямая отправка EU/EEA PII в Anthropic API запрещена. Pending invariant: I-38.
+
+Резерв ADR: ADR-041..044.
+
+Базовая опора: `checkpoint-2026-05-06-sber-oss-emi-block`.
+
+Тег после merge: `checkpoint-2026-05-06-claude-finance-agents-block`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md](docs/sessions/SNAPSHOT-2026-05-06-claude-finance-agents-block.md)
