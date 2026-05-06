@@ -478,6 +478,7 @@
   Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
   G-INFRA-04.
   Priority: P1 (distorts all evo1 capacity decisions; pre-audit block on migration decisions).
+  Runbook: docs/runbooks/fa-evo1-bios-uma-audit.md
 
 - [ ] G-INFRA-EVO2-GPU-STACK: evo2 GPU stack (ROCm/Vulkan) inactive — qwen3:235b runs CPU-only — OPEN 2026-05-06
   evo2 physical HW: 128 GB RAM, 1.9 TB SSD, AMD GPU. `vulkaninfo` shows llvmpipe software
@@ -492,6 +493,7 @@
   Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06,
   G-CLUSTER-01, G-CLUSTER-03, docs/canon/HW-MODEL-UPGRADE-matrix.md.
   Priority: P1 (project reasoning layer running suboptimally; blocks re-evaluation of heavy model).
+  Runbook: docs/runbooks/fa-evo2-gpu-stack.md
 
 - [x] G-CANON-HW-BASELINE: canonical HW baseline was implicit / missing from canon docs — CLOSED 2026-05-06
   Prior to this entry, factory/project stack canon (docs/canon/factory-project-stack-2026-05.md)
