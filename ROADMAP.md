@@ -113,7 +113,7 @@
 | V-XX | Severity | Resolution |
 |------|----------|------------|
 | V-01 | CRITICAL | Guardian-shim enforce — G-GUARD-01..04 |
-| V-02 | HIGH | KC realm session-timeout hardening (Phase G live-apply pending) |
+| V-02 | HIGH | KC realm session-timeout hardening — **DONE 2026-05-06** (G-IAM-10, IL-PHASE-G-01) |
 | V-03 | HIGH | G-KYC-01/02 — KYC re-verification triggers |
 | V-04 | HIGH | G-IAM-06 verified DONE |
 | V-05 | HIGH | G-IAM-08 reconciled |
@@ -131,7 +131,7 @@ Pending implementation phase: ADR-027..034 + code/tests + deploy. See GAP-REGIST
 ## Pending operator gates (live-ops)
 
 - **Phase F**: live switch dev-file → Postgres backend on production KC. RUNBOOK in `banxe-emi-stack/infra/keycloak-banxe-emi/RUNBOOK.md §G-IAM-09 Closure`. Trigger: operator says "go Phase F".
-- **Phase G**: live-apply session-timeout hardening per V-02. RUNBOOK in same file §Phase G. Trigger: "go Phase G".
+- ~~**Phase G**: live-apply session-timeout hardening per V-02.~~ **APPLIED 2026-05-06** — V-02 DONE, see G-IAM-10 + IL-PHASE-G-01 + `docs/ops/phase-g-execution-2026-05-06.md`.
 
 ## Phase 5: Advanced Features (PLANNED)
 - [ ] Multi-agent communication protocol
