@@ -3810,3 +3810,19 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Closes:** G-OPS-04 (was OPEN P2 2026-05-05).
 - **Anchors:** docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE, IL-PROJECT-AUDIT-01, docs/canon/operator-canon-2026-05.md (Principle 1).
 - **Reperential point:** main HEAD at G-OPS-04 closure = e35e5b0.
+
+### IL-OPS-G-OPS-05-OBSERVED-2026-05-06 — G-OPS-05 keycloak.service (evo1) current state observed healthy
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** OBSERVE (state check; not a decommission execution)
+- **Status:** MONITOR (not CLOSED — decommission still required per ADR-017 + G-IAM-08)
+- **Priority:** P3 (unchanged)
+- **Context:** G-OPS-05 was opened 2026-05-06 (FA-4a) with assessment "evo1 keycloak.service in `activating auto-restart` state, two docker containers exited (137), NO :8180 listener". Subsequent operator observation on 2026-05-06 shows a different state.
+- **What was checked:**
+  - `systemctl status keycloak.service` → `active (running)`, uptime ~3h, `db-url=jdbc:postgresql://127.0.0.1:15433/keycloak`
+  - `ss -tlnp | grep :8180` → java pid=705370 listening on `*:8180`
+- **Result:** No restart-loop at observation time. Service is running and port is bound. Original gap assessment ("zombie restart-loop") does not match current state — likely the service recovered between FA-4a observation and this check.
+- **Reclassification:** Gap status updated from "zombie/restart-loop" to "MONITOR only". evo1 keycloak.service is still a legacy deployment (ADR-017 + G-IAM-08 made Legion canonical), so decommission is still the correct long-term action — just not urgent (no CPU churn, no restart-loop).
+- **Decommission:** Still required per ADR-017 + G-IAM-08 when operator schedules it. Runbook pattern: analogous to G-OPS-04 frankfurter (docker compose down + disable systemd unit). No urgency gate now that restart-loop is absent.
+- **Anchors:** docs/canon/operator-canon-2026-05.md, G-OPS-05 entry in GAP-REGISTER.md, keycloak.service systemd unit on evo1, ADR-017, G-IAM-08, FA-4a discovery (IL-FA-04-CLOSE PR #85).
+- **Reperential point:** main HEAD at observation = 9f2a06d.

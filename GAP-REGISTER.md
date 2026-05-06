@@ -378,6 +378,7 @@
   Action: decommission analogous to G-OPS-04 frankfurter pattern — `docker compose down` on `/data/banxe/banxe-emi-stack/infra/keycloak-banxe-emi/docker-compose.yml`, disable systemd `keycloak.service`, remove containers. Runbook deferred (separate operator-gated execution).
   Anchors: ADR-017, G-IAM-08, FA-4a discovery, docs/canon/operator-canon-2026-05.md (Principle 1 — evo1 not choke).
   Priority: P3 (zombie tolerable; restart-loop CPU cost minimal compared to frankfurter).
+  Update 2026-05-06: keycloak.service observed HEALTHY on evo1 — active (running), port :8180 listening (java pid=705370), db-url=jdbc:postgresql://127.0.0.1:15433/keycloak, uptime ~3h. No restart-loop at observation time. Gap reclassified to MONITOR; decommission deferred. See IL-OPS-G-OPS-05-OBSERVED-2026-05-06.
 - [x] G-OPS-03: midaz-ledger restart loop resolved — **DONE 2026-05-05** (existing redis-stack container stopped SIGTERM 4 days ago; midaz-ledger expected Redis on 172.22.0.1:6379 (host gateway midaz-network) per Variant 2 lightweight topology in docker-compose.midaz.yml)
   Fix: `docker start redis` (recovery existing container redis/redis-stack:latest). Verify: midaz-ledger "Connected to Redis/Valkey in STANDALONE mode ✅".
   Follow-up: G-OPS-05 — set restart policy=unless-stopped on redis container to prevent recurrence.
