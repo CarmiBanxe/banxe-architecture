@@ -40,3 +40,19 @@
 
 - This stack layout (Legion = factory; evo1 = infra; evo2 = heavy model) is the canonical baseline
   for Perplexity supervision and all future sessions.
+
+
+## Ruflo Review Agent in Orchestration
+
+- Ruflo is the internal Banxe Review Agent / Claude Code subagent for regulatory boundary enforcement (payment, compliance, KYC, AML, EMI/FCA scope).
+- Ruflo is NOT a PATH binary; it is invoked as part of the canonical agent pipeline: request -> ARL -> Ruflo -> target agent -> response.
+- Mandatory placement:
+  - All payment, compliance, KYC and high-risk fintech actions MUST pass through Ruflo before reaching execution agents.
+  - Factory-side dev agents (Claude Code, Aider, Cursor, Continue, MetaClaw) MUST consult Ruflo for any change that touches regulated surfaces (Midaz ledger, KYC flows, Watchman/Yente/Jube logic, OpenClaw policies).
+  - Project-side gateways (OpenClaw factory/project, Guardian factory:8195, Guardian project:8196) MUST delegate regulatory review decisions to Ruflo and log the result.
+- Logging and audit:
+  - Every Ruflo decision is captured via the canonical audit chain (Guardian -> INSTRUCTION-LEDGER references / decision events).
+  - Ruflo verdicts feed into ExplanationBundle / DecisionEvent records (G-01, G-02 canon).
+- Upgrade canon:
+  - Improvements to Ruflo prompts, guardrails or rule sets MUST be tracked as ADR + IL entries, never as ad-hoc edits.
+  - Operator and Perplexity supervision MUST treat Ruflo as a first-class agent in Legion (factory) and evo1/evo2 (project) orchestration.
