@@ -3768,3 +3768,27 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - **Anchors:** PR #57 (sprint kickoff), PR #80 (FA-1 factory-fast), PR #81 (FA-2 runbook), PR #83 (FA-3 Ruflo), PR #84 (FA-5 chain matrix), PR #85 (FA-4 Keycloak reconciled), docs/canon/operator-canon-2026-05.md, A4 orchestration proposal, ADR-018, ADR-027.
 - **Reperential point:** main HEAD at FA-2 execute closure = 617fb36.
 - **Sprint closure note:** With FA-2 executed, IL-FACTORY-AUDIT-01 transitions from "substantively closed (4/5 + runbook)" to "fully closed (5/5 executed)". 3 follow-up gaps (G-OPS-05, G-FACTORY-04, G-FACTORY-LITELLM-DUPLICATE, IL-FACTORY-02) remain as P2-P3 backlog for separate sprints.
+
+### IL-CANON-PROCESS-HYGIENE-2026-05-06 — Process canon updates (3 gaps closed)
+
+- **Date:** 2026-05-06
+- **Phase (GSD):** SPEC + CLOSE (canon fixation, immediately binding)
+- **Status:** BINDING
+- **Priority:** P2 (process hygiene; preventive)
+- **Closes (process gaps from IL-FACTORY-AUDIT-01 closure review):**
+  - **IL-FACTORY-02** (was OPEN P2): OLLAMA_HOST hygiene → expanded to canonical Parallel Session Isolation rules (`.claude/rules/parallel-session-isolation.md`).
+  - **No-canon-rule for destructive ops** → formalised as `## Destructive operation verify-step` in `.claude/rules/safety-rules.md`.
+  - **A1/A3 incomplete pre-check pattern** → covered by Rule 1+2 of parallel-session-isolation canon (verify branch before stage, verify staged set before commit).
+- **Files added/edited:**
+  - `.claude/rules/safety-rules.md` — appended `## Destructive operation verify-step (canon)` section (rule + pattern + forbidden patterns + scope).
+  - `.claude/rules/parallel-session-isolation.md` — new file with 6 canonical rules.
+- **Lesson learned sources:**
+  - IL-052 (PR #42) — original branch leak.
+  - IL-FA-01-CLOSE (PR #80) — OLLAMA_HOST silent redirect to evo1, 4 wasted pull cycles, one near-miss `sudo rm -rf` based on wrong assumption.
+  - IL-FA-02-EXEC (PR #88) — 2 systemd LiteLLM units stale-config orphan.
+  - 4 incidents of branch-switching mid-operation by Spec-First Auditor + parallel sessions.
+- **Operator canon alignment:** consistent with Principle 4 (factory canon over operator's session) + IL-CANON-04 best-decision (when in doubt about target, verify; when unclear about side-effect, STOP).
+- **Application:** rules apply to Perplexity supervisor + Claude Code + Guardian-shim claude.bash scope.
+- **Anchors:** PR #57 (sprint), PR #80 (FA-1), PR #88 (FA-2), PR #87 (settings.json), docs/canon/operator-canon-2026-05.md, ADR-026, ADR-027.
+- **Reperential point:** main HEAD at canon hygiene closure = 42db00c.
+- **Closes IL-FACTORY-02** (was P2 OPEN) — folded into broader process-hygiene canon.
