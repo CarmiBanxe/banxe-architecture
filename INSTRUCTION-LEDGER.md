@@ -4658,3 +4658,63 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Session: incident/security-evo1-xmrig-2026-05-07 branch, post d090e0a
 - Referential point: branch incident/security-evo1-xmrig-2026-05-07,
   predecessor commit 25d813e.
+
+
+### IL-OPS-G-SECURITY-EVO1-XMRIG-CONTAINMENT-EXECUTED-2026-05-07
+
+- Date: 2026-05-07
+- Type: IL-OPS (operational state-changing action, network-layer only)
+- Phase (GSD): SECURITY-INCIDENT-CONTAINMENT
+- Status: EXECUTED — containment active, awaiting A16-b forensic preservation
+  before A16-d cleanup
+- Priority: P0
+- Operator-confirmation: GIVEN (operator instructed "сделай выбор по канону и
+  роадмап", supervisor selected A16-a per binding decision rule from
+  IL-OBSERVED-CLASSIFIED stating "Network containment is preferred first
+  mitigation, safe vs watchdog")
+- Source: ssh -tt evo1 + sudo bash via base64-encoded heredoc
+- Action executed:
+    iptables -I OUTPUT 1 -d 136.243.75.233 -j DROP \
+        -m comment --comment "BANXE-IL-CANON-INCIDENT-2026-05-07-EVO1-XMRIG-CONTAINMENT"
+- Pre-state (verbatim):
+  - ESTABLISHED: 192.168.0.72:56910 → 136.243.75.233:8029 (PID 2127, fd=15)
+  - OUTPUT chain top: ufw-before-logging-output (target 1) only stock ufw chains
+  - PID 2127 %CPU = 2925, PID 2111 sh free_proc.sh active
+- Post-state (verbatim):
+  - DROP rule at OUTPUT position 1 with BANXE comment marker
+  - ss still shows ESTAB socket (zombie, will EPIPE on next write); conntrack
+    entry for 136.243.75.233 cleared
+  - PID 2127 still running %CPU 2925, PID 2111 still active (untouched)
+  - Watchdog journal continues normal operation (May 07 06:09, 07:04 entries)
+- Effect:
+  - Mining shares to attacker pool: BLOCKED at network layer.
+  - Economic value to attacker on this node: ZERO from this point.
+  - XMRig CPU consumption: continues locally (no remediation yet, by design).
+  - Watchdog behavior: unchanged, no risk to legitimate workloads (no >200%
+    CPU processes other than XMRig itself on evo1 at audit time).
+- Reversibility:
+    sudo iptables -D OUTPUT -d 136.243.75.233 -j DROP \
+        -m comment --comment BANXE-IL-CANON-INCIDENT-2026-05-07-EVO1-XMRIG-CONTAINMENT
+  Rollback time: <1 second.
+- Persistence note: rule is kernel-runtime only, NOT persisted to
+  /etc/iptables/rules.v4. Reboot evo1 BEFORE A16-d cleanup will remove
+  containment and re-expose pool connection. Therefore: no reboot until
+  cleanup complete.
+- Decision rule for next steps (binding):
+  - A16-b (forensic preservation) is now SAFE to proceed without containment risk.
+  - A16-d cleanup MUST happen before any reboot.
+  - If situation requires reboot before cleanup (emergency), persist iptables
+    rule first via:
+        iptables-save > /etc/iptables/rules.v4 (after audit of full ruleset)
+    OR add to ufw if ufw is the canonical firewall manager on evo1.
+- Linked GAPs:
+  - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0, mitigation status updated to "containment active")
+  - G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN (P0, unaffected, watchdog still running)
+- Anchors:
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED
+  - GAP: G-SECURITY-EVO1-XMRIG-CRYPTOMINER
+  - Session: incident/security-evo1-xmrig-2026-05-07
+- Referential point: branch incident/security-evo1-xmrig-2026-05-07,
+  predecessor commit 54b9bbc.
