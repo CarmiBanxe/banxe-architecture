@@ -4380,3 +4380,93 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Original commit (на docs/privacy-customer-right-v2-base-2026-05-07): 768dd10
   - Additional unique commit on old branch: f4ba6e2 (not deleted, operator-decision pending)
 - Referential point: main HEAD = 260e957 (post cherry-pick).
+
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED
+
+- Date: 2026-05-07
+- Phase (GSD): SECURITY-INCIDENT (P0, active malware identified, project layer compromise)
+- Status: OPEN — classification complete, remediation pending operator-confirmation
+- Priority: P0
+- Operator-confirmation: PENDING для всех destructive шагов
+- Source: live-shell sudo read-only audit evo1 (ssh -tt + sudo bash -s):
+  readlink -f /proc/2127/exe; sha256sum binary + unit file; sed-masked .config.json read;
+  ss -ltnpu / ss -tnp filtered by pid=2127; lsof -p 2127; dpkg -S; file
+- Evidence (hard, dословно):
+  Binary: /usr/local/bin/systemd
+    SHA256: baca0922a6ce82f250d15c7b71a209f0ba60274ff7e9654338900020a36de6c4
+    Size: 3149464 bytes, Owner: root:root, Mode: 755, Mtime: Apr 23 07:05
+    Type: ELF 64-bit LSB executable, x86-64, statically linked, no section header
+    BuildID[sha1]: c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
+    Packed: UPX (lsof shows /memfd:upx). Not owned by any dpkg package.
+  Unit file: /etc/systemd/system/systemd.service
+    SHA256: a7e0975fbd52853cd757ce4e09a42de1402ec967ad187794d6d6bd88aa026b24
+    Size: 259 bytes, Mtime: Apr 23 07:05
+    UnitFileState=enabled, ExecStart=systemd -c .config.json, User=root,
+    Restart=always, RestartSec=30, LimitNOFILE=8192, LimitNPROC=8192
+  Config: /usr/local/bin/.config.json (XMRig schema)
+    Mtime: Apr 23 07:05. Sections: randomx, cpu (32 threads, all cores),
+    pools (single, tls=true), donate-level=1.
+    Algorithms: cn, cn-heavy, cn-lite, cn-pico, cn/upx2, ghostrider, rx, rx/wow, argon2.
+    Log file: .bench.log (6.9 MB).
+  C2/pool endpoint:
+    ESTABLISHED tcp 192.168.0.72:44496 → 136.243.75.233:8029
+    PTR: static.233.75.243.136.clients.your-server.de
+    ASN: AS24940 Hetzner Online GmbH (DE). TLS encryption per config (tls=true).
+  Process: PID 2127, root, 38 threads, ~2911% CPU, started 2026-05-07 01:03:48 CEST.
+    Binary install date: Apr 23 07:05 (mtime on binary, unit, config — all identical).
+- IoC list (for sweep on evo2 + Legion):
+  - sha256_binary: baca0922a6ce82f250d15c7b71a209f0ba60274ff7e9654338900020a36de6c4
+  - sha256_unit:   a7e0975fbd52853cd757ce4e09a42de1402ec967ad187794d6d6bd88aa026b24
+  - path_binary:   /usr/local/bin/systemd
+  - path_unit:     /etc/systemd/system/systemd.service
+  - path_config:   /usr/local/bin/.config.json
+  - path_log:      /usr/local/bin/.bench.log
+  - pool_ip:       136.243.75.233
+  - pool_port:     8029
+  - pool_ptr:      static.233.75.243.136.clients.your-server.de
+  - buildid:       c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
+  - masquerade:    process "systemd", unit "systemd.service", description "System Proxy Service"
+- Compliance considerations (binding to evaluate, not to execute without operator):
+  - GDPR Art. 33: 72h notification window starts when controller becomes aware of
+    personal data breach. "Aware" = high probability of compromise. Classification at
+    this IL entry may start timer. Discovery timestamp: 2026-05-07 11:21 CEST.
+    Operator-decision required: whether to treat as personal data breach (exfiltration
+    not confirmed but full host compromise assumed given root access).
+  - FCA SUP 15: material incident notification for EMI license. Cryptominer alone may
+    not be "material" but root compromise of project-layer node hosting customer-data
+    services (ClickHouse, Guardian, OpenClaw, compliance-api) likely qualifies.
+  - Internal: unauthorized root binary = full host compromise assumption. All credentials
+    on evo1 (SSH keys, API keys, database passwords, Tailscale auth) must be considered
+    potentially compromised.
+- Decision rule (binding для следующих шагов сессии):
+  - Read-only IoC sweep evo2 + Legion ОБЯЗАТЕЛЕН до любого destructive шага на evo1
+    (scope of compromise first, cleanup second).
+  - Полный compromise audit evo1 (authorized_keys, cron, profile.d, SSH log analysis
+    since 2026-04-22) ОБЯЗАТЕЛЕН до stop/disable mining unit — artifacts first.
+  - Network blackhole evo1 → 136.243.75.233 допустим как contained first mitigation,
+    ТОЛЬКО по operator-confirmation:
+    sudo iptables -I OUTPUT -d 136.243.75.233 -j DROP (host-level),
+    или Tailscale/router-level isolation — operator chooses.
+  - НЕ выполнять без operator-confirmation:
+    systemctl stop/disable/mask systemd.service,
+    rm /etc/systemd/system/systemd.service,
+    rm /usr/local/bin/{systemd,.config.json,.bench.log},
+    chattr +i, kill -9 PID 2127, reboot, dd over disk.
+  - Forensic preservation обязательна: перед любым cleanup — copy artifacts
+    (binary, unit, config, log) в read-only artifact bundle с sha256 manifest.
+- Derived GAPs opened:
+  - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0, OPEN) — main tracker
+  - G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN) — evo2 sweep
+  - G-SECURITY-LEGION-IOC-SWEEP-PENDING (P1, OPEN) — Legion sweep
+  - G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (P0, OPEN) — full forensic audit
+  - G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION (P0, OPEN) — regulatory assessment
+- Linked GAP:
+  - G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1 → escalated to P0 via this entry)
+  - G-INFRA-EVO1-LOAD-AVG-35 (root cause confirmed = XMRig miner)
+- Anchors:
+  - Canon: docs/canon/factory-project-stack-2026-05.md §1, §1.bis
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON
+  - GAP: G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
+  - Session: post checkpoint-2026-05-07-r1-r2-r3-complete
+- Referential point: main HEAD = 00822b567376c299b87ce8a6d71d1990f8c78a03.
