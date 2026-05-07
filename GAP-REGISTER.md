@@ -663,16 +663,35 @@
     - pool_ptr:      static.233.75.243.136.clients.your-server.de
     - buildid:       c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
     - masquerade:    process "systemd", unit "systemd.service", description "System Proxy Service"
+    - sha256_observed_unit:  53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0
+    - sha256_freeproc_sh:    5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4
+    - path_observed_unit:    /etc/systemd/system/observed.service
+    - path_freeproc_sh:      /usr/local/bin/free_proc.sh
+    - watchdog_pattern:      "ps | awk '$2>200 && !/systemd/' | xargs kill -9"
+    - install_event_unified: /usr/local/bin/{systemd, .config.json, free_proc.sh} +
+                             /etc/systemd/system/{systemd, observed}.service all
+                             mtime 2026-04-23 07:05 (single deployment script)
     **Compliance flags:**
     - GDPR: potential personal data exposure (project layer hosts BANXE customer-data services)
     - FCA: potential incident-reporting obligation (EMI license)
     - Internal: unauthorized root binary, full host compromise must be assumed
     **Decision rule:** read-only IoC sweep evo2+Legion BEFORE any destructive action on evo1.
     Full compromise audit evo1 BEFORE stop/disable/cleanup. Forensic artifact preservation mandatory.
+    **Cleanup ordering (binding, awaiting operator-confirmation):**
+    1. systemctl stop observed.service
+    2. systemctl stop systemd.service
+    3. systemctl disable observed.service systemd.service
+    4. systemctl mask observed.service systemd.service
+    5. forensic artifact bundle creation (sha256 manifest)
+    6. file removal /usr/local/bin/{systemd,.config.json,free_proc.sh,.bench.log}
+       and /etc/systemd/system/{systemd,observed}.service
+    Network containment (iptables OUTPUT DROP 136.243.75.233 OR Tailscale isolation)
+    is preferred first mitigation, safe vs watchdog.
     **Supersedes:** G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1).
     Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED,
     G-INFRA-EVO1-LOAD-AVG-35, G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
 
 - [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN, 2026-05-07)
@@ -746,8 +765,20 @@
     Decision rule: read-only classification (cat unit, sha256, classify ExecStart binary)
     REQUIRED before any destructive action on XMRig systemd.service.
     Linked: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING.
-    Closing IL: TBD (after classification + operator-confirmation).
-    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+    **2026-05-07 IDENTIFIED:** classification complete. Unit is XMRig watchdog +
+    anti-competitor + masquerade enforcer. Implementation: shell loop killing any
+    process with %CPU > 200 EXCEPT args matching "systemd" (which is XMRig's own
+    masquerade name). SHA256 unit: 53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0.
+    SHA256 script: 5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4.
+    Sibling cluster: /usr/local/bin/{systemd, .config.json, free_proc.sh} all mtime
+    2026-04-23 07:05 (single install event by same threat actor).
+    Operational implication: cleanup ordering MUST be observed.service first, then
+    systemd.service, otherwise watchdog kills legitimate heavy workloads after
+    XMRig stops.
+    Status: stays OPEN until operator-confirmed remediation.
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED.
 
 - [ ] G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0, OPEN, 2026-05-07)
     Non-canon users with /bin/bash login shell on evo1 (per /etc/passwd live audit):

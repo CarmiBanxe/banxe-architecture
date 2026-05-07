@@ -4580,3 +4580,81 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Session: incident/security-evo1-xmrig-2026-05-07 branch, post a285282
 - Referential point: branch incident/security-evo1-xmrig-2026-05-07,
   predecessor commit a285282.
+
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED
+
+- Date: 2026-05-07
+- Phase (GSD): SECURITY-INCIDENT (P0, observed.service classification complete)
+- Status: OPEN — classification complete, remediation pending operator-confirmation
+- Priority: P0
+- Operator-confirmation: PENDING для всех destructive шагов
+- Source: live-shell sudo read-only audit evo1 (ssh -tt + sudo bash -s):
+  cat /etc/systemd/system/observed.service; sha256sum observed.service;
+  cat /usr/local/bin/free_proc.sh; sha256sum free_proc.sh;
+  readlink -f /proc/2111/exe; file /usr/bin/dash; dpkg -S /usr/bin/dash;
+  sha256sum /usr/bin/dash; ls -la /proc/2111/{exe,cwd};
+  cat /proc/2111/{status,cgroup}; ss -tnp | grep pid=2111;
+  lsof -p 2111; ls -la /proc/2111/fd/;
+  journalctl -u observed.service --no-pager -n 30
+- Evidence (hard, дословно):
+  Unit file: /etc/systemd/system/observed.service
+    SHA256: 53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0
+    Size: 226 bytes, Mtime: Apr 23 07:05
+    UnitFileState=enabled, Description="System Observer Service"
+    ExecStart=/bin/sh free_proc.sh, WorkingDirectory=/usr/local/bin
+    User=root, Group=root, Restart=always, RestartSec=30
+    WantedBy=multi-user.target
+  Script: /usr/local/bin/free_proc.sh
+    SHA256: 5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4
+    Size: 130 bytes, Mode: 755, Owner: root:root, Mtime: Apr 23 07:05
+    Content (verbatim):
+      # !/bin/bash
+      while true; do
+          ps -eo pid,pcpu,args | awk '$2 > 200 && !/systemd/ {print $1}' | xargs -r kill -9
+          sleep 2
+      done
+  Process: PID 2111, /bin/sh free_proc.sh, root, 1 thread
+    exe -> /usr/bin/dash (legitimate system shell, dpkg-owned)
+    cwd -> /usr/local/bin
+    cgroup: /system.slice/observed.service
+    No listening sockets, no established connections, no child processes at audit time.
+  Behavior:
+    - Loops every 2 seconds.
+    - Kills any process with %CPU > 200, EXCLUDING args matching "systemd".
+    - Dual purpose: (a) protects own XMRig (argv "systemd -c .config.json")
+      from CPU-threshold-based response; (b) kills rival miners/heavy workloads.
+    - Active since 2026-05-07 01:03:48 CEST; journal shows continuous operation
+      across previous boots (May 04, 05, 06).
+  Sibling cluster /usr/local/bin (all mtime 2026-04-23 07:05):
+    free_proc.sh (130 bytes), .config.json (6018 bytes), systemd (3149464 bytes)
+  Network: NO outbound traffic from observed.service.
+- Operational implication (binding):
+  - Stopping XMRig systemd.service alone: Restart=always defeated by
+    systemctl stop+disable+mask, BUT observed.service continues killing
+    legitimate workloads >200% CPU until also stopped+disabled+masked.
+  - Correct cleanup ordering (when operator confirms):
+    1. systemctl stop observed.service
+    2. systemctl stop systemd.service
+    3. systemctl disable observed.service systemd.service
+    4. systemctl mask observed.service systemd.service
+    5. forensic artifact preservation
+    6. file removal
+  - Network containment (iptables OUTPUT DROP to 136.243.75.233 OR Tailscale
+    isolation) safe vs watchdog (kills by %CPU, not by network state) —
+    remains preferred first mitigation.
+- Decision rule (дополняет IL-EVO1-XMRIG-IDENTIFIED + IL-EVO1-COMPROMISE-AUDIT):
+  - All previous decision rules from predecessor ILs remain binding.
+  - Cleanup ordering above is BINDING — observed.service must stop BEFORE
+    systemd.service to avoid watchdog killing legitimate restored workloads.
+- Linked GAPs:
+  - G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN (P0, updated with classification)
+  - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0, IoC list + cleanup ordering updated)
+- Anchors:
+  - Canon: docs/canon/factory-project-stack-2026-05.md §1, §1.bis
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT
+  - GAP: G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN, G-SECURITY-EVO1-XMRIG-CRYPTOMINER
+  - Session: incident/security-evo1-xmrig-2026-05-07 branch, post d090e0a
+- Referential point: branch incident/security-evo1-xmrig-2026-05-07,
+  predecessor commit 25d813e.
