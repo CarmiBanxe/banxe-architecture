@@ -4340,3 +4340,43 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - GAP: G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE, G-INFRA-EVO1-LOAD-AVG-35
   - Session: post checkpoint-2026-05-07-r1-r2-r3-complete (tag on 6d56ff5)
 - Referential point: main HEAD = 6d56ff5cf4ee7d1cd5aa09048062932e9610906a.
+
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-07-BRANCH-LEAKAGE
+
+- Date: 2026-05-07
+- Phase (GSD): PROCESS-INCIDENT (parallel-session-leakage, recurring)
+- Status: CLOSED — corrected via cherry-pick to main
+- Priority: P2
+- Operator-confirmation: implicit via canon §3 (recurring pattern fix)
+- Source: Claude Code session post checkpoint-2026-05-07-r1-r2-r3-complete
+- Evidence:
+  - До задачи A4 worktree был на main (READY: branch=main, HEAD=6d56ff5)
+  - После применения правок GAP-REGISTER.md + INSTRUCTION-LEDGER.md
+    git зафиксировал commit 768dd10 на pre-existing branch
+    docs/privacy-customer-right-v2-base-2026-05-07
+  - Branch-switch произошёл без явной команды checkout в задаче A4
+  - Это нарушение канона §3 ("не переключать ветку при modified canon-файлах
+    без stash/коммита; висящие локальные ветки с canon-правками запрещены")
+- Pattern: recurring parallel-session-leakage от orphan worktree state
+  (см. также IL-CANON-PROCESS-INCIDENT-2026-05-06,
+  -2026-05-07-PROTECTION-WINDOW, MEMORY.md leakage в PR #126)
+- Remediation:
+  - cherry-pick 768dd10 → main as 260e957
+  - branch docs/privacy-customer-right-v2-base-2026-05-07 NOT deleted:
+    contains additional unique commit f4ba6e2 (docs/privacy customer rights v2
+    base spec dependency) — requires separate operator-decision
+  - MEMORY.md preserved as unstaged evidence через stash/pop
+- Linked GAP:
+  - G-PROCESS-MEMORY-MD-LEAKAGE (P2, OPEN, recurring pattern)
+- Decision rule (binding):
+  - В начале каждой Claude Code сессии первым шагом — `git status -sb`
+    и `git rev-parse --abbrev-ref HEAD`, до любых правок canon-файлов.
+  - Если HEAD не на main и есть незакоммиченные canon-правки — stash
+    или explicit branch decision до продолжения.
+- Anchors:
+  - Canon: §3 (parallel-session-isolation)
+  - Commit (на main): 260e957 (cherry-pick of 768dd10)
+  - Original commit (на docs/privacy-customer-right-v2-base-2026-05-07): 768dd10
+  - Additional unique commit on old branch: f4ba6e2 (not deleted, operator-decision pending)
+- Referential point: main HEAD = 260e957 (post cherry-pick).
