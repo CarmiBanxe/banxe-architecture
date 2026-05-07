@@ -4128,3 +4128,36 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Sister IL: `IL-OPS-G-INFRA-EVO1-PHASE-C-EXECUTED-2026-05-07` (PR #122)
   - Canon: `docs/canon/factory-project-stack-2026-05.md` (HW Baseline)
 - **Referential point:** main HEAD at bbb10fcf2c632aa9c25c0efdb633104d48d716ab.
+
+
+### IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07
+
+- Date: 2026-05-07 02:00 CEST
+- Phase (GSD): CANON-EXTENSION (binding)
+- Status: RECORDED — pending operator-confirmation on merge
+- Priority: P1 (binding canon)
+- Operator-confirmation: PENDING. Финальный CLOSED по merge PR.
+- Context: Operator (Mark) уточнил архитектуру layer'ов в сессии
+  2026-05-07 02:00 CEST: Legion = factory, evo1+evo2 = единый project
+  layer, агенты не должны скакать между layer'ами кроме как через
+  LiteLLM gateway.
+- Что добавлено в канон:
+  - Раздел §1.bis в docs/canon/factory-project-stack-2026-05.md
+  - Принцип factory ↔ project разделения, размещение моделей и агентов
+- Live-shell evidence (2026-05-07 02:00 CEST audit):
+  - Legion: 23 GiB visible / WSL2 cap 24GB / RTX 4070 idle / qwen2.5-coder:7b
+  - evo1: 123 GiB visible / RADV GFX1151 / 9 моделей / Guardian:8195/8196 /
+    OpenClaw / ClickHouse / LiteLLM:4000(local) duplicate
+  - evo2: 123 GiB visible / RADV GFX1151 / 10 моделей включая qwen3:235b /
+    llama-server:8082 для qwen3:235b
+- Closes: ничего напрямую (canon-extension).
+- Opens (новые gap'ы для GAP-REGISTER):
+  - G-CANON-AGENT-PLACEMENT-MIGRATION (P1)
+  - G-FACTORY-LITELLM-DUPLICATE-REGRESSION (P1)
+- Anchors:
+  - Canon: docs/canon/factory-project-stack-2026-05.md §1, §1.bis (new)
+  - HANDOFF: docs/sessions/HANDOFF-2026-05-06-canon-stack-bios-uplift.md §1, §8
+  - HANDOFF pause: docs/sessions/HANDOFF-2026-05-07-pause-bios-pass-gpu-pending.md
+  - Sister IL: IL-CANON-STACK-2026-05-06, IL-CANON-HW-BASELINE-2026-05-06,
+    IL-CANON-RUFLO-2026-05-06
+- Referential point: main HEAD = bbb10fcf2c632aa9c25c0efdb633104d48d716ab.

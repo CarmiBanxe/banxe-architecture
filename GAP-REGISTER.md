@@ -546,3 +546,19 @@
   and recording IL-CANON-HW-BASELINE-2026-05-06 (BINDING, P1).
   Anchors: docs/canon/factory-project-stack-2026-05.md §"HW Baseline", IL-CANON-HW-BASELINE-2026-05-06.
   Priority: P2 (closed — canon applied).
+
+
+- [ ] G-CANON-AGENT-PLACEMENT-MIGRATION (P1, OPEN, 2026-05-07)
+    Текущая агентская топология не соответствует §1.bis (factory↔project
+    layers). Требуется audit OpenClaw/Guardian configs на Legion, evo1,
+    evo2 и миграция cross-layer агентов в правильные layer'ы.
+    Closing IL: TBD.
+    Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07,
+    docs/canon/factory-project-stack-2026-05.md §1.bis.
+
+- [ ] G-FACTORY-LITELLM-DUPLICATE-REGRESSION (P1, OPEN, 2026-05-07)
+    На evo1 обнаружен второй LiteLLM listener на 127.0.0.1:4000
+    (live audit 2026-05-07 02:00 CEST). Нарушает «один канонический
+    gateway» (canon §2). PR #104 (G-FACTORY-LITELLM-DUPLICATE CLOSED) был
+    merged 2026-05-06; регрессия. Closing IL: TBD.
+    Anchors: PR #104, IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07.
