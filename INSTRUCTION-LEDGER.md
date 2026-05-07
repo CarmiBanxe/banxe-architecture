@@ -4470,3 +4470,113 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - GAP: G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
   - Session: post checkpoint-2026-05-07-r1-r2-r3-complete
 - Referential point: main HEAD = 00822b567376c299b87ce8a6d71d1990f8c78a03.
+
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT
+
+- Date: 2026-05-07
+- Phase (GSD): SECURITY-INCIDENT (P0, full compromise audit, project layer node evo1)
+- Status: OPEN — audit complete, 7 derived GAPs opened, remediation pending operator-confirmation
+- Priority: P0
+- Operator-confirmation: PENDING для всех destructive шагов
+- Source: live-shell sudo read-only compromise audit evo1 via ssh -tt + base64-encoded
+  bash heredoc + sudo bash. Audit script covered:
+  /etc/passwd, /etc/shadow (masked), /etc/sudoers.d/, last/lastlog,
+  authorized_keys for ALL users, /root/.bash_history,
+  /etc/profile.d/, /root/.{bashrc,profile}, /etc/ld.so.preload,
+  systemd list-unit-files --state=enabled,
+  /etc/systemd/system/* mtime since 2026-04-22,
+  /etc/crontab, /etc/cron.{d,hourly,daily,...}, /var/spool/cron/crontabs/*,
+  /tmp, /var/tmp, /dev/shm fresh files since 2026-04-22,
+  iptables -L, nft list ruleset,
+  /etc/ssh/sshd_config + sshd_config.d/,
+  journalctl _COMM=sshd since 2026-04-22 (Accepted/Failed/Invalid),
+  /var/log/auth.log{,.1,.2,.2.gz} grep '2026-04-2[2-4]',
+  ps -eo for root processes PPid=1.
+- Hard evidence findings (binding):
+  1. Sudoers backdoor: /etc/sudoers.d/ctio = "ctio ALL=(ALL) NOPASSWD: ALL"
+     (mtime Mar 28 20:04). NOPASSWD root for user ctio.
+  2. Suspicious systemd unit: /etc/systemd/system/observed.service
+     (mtime Apr 23 07:05 — same minute as XMRig systemd.service, size 226 bytes).
+     Content not yet inspected — pending classification step.
+  3. Non-canon users with login shell: alex (UID 1004), ctio (UID 1002),
+     user (UID 1001). User alex cross-layer key match with
+     /home/mmber/.ssh/authorized_keys on Legion.
+  4. /root/.ssh/authorized_keys (mtime Mar 28 12:49) contains:
+     - ssh-rsa egor.kopylov@egit-MacBook-Air.local (non-canon)
+     - ssh-ed25519 mmber@mark-legion (operator key)
+  5. /etc/ssh/sshd_config.d/10-legion.conf:
+     PermitRootLogin yes / PasswordAuthentication yes — currently active.
+  6. /var/log/auth.log.2.gz (2026-04-22) shows external bruteforce:
+     146.190.83.66 (DigitalOcean), 138.124.181.144 — multiple
+     "Failed password for root" + "Failed password for invalid user mysql".
+  7. lastlog: root pts/0 192.168.0.75 Apr 28 23:34:28 — successful root
+     SSH session from Legion-LAN IP within compromise window
+     (XMRig install Apr 23 07:05).
+  8. banxe crontab: */15 git pull origin main + rsync guardian +
+     sudo systemctl restart banxe-guardian-factory. Unsigned auto-pull
+     supply-chain risk + explains rapid propagation of external git operations.
+  9. /home/ctio/.bash_history mtime Apr 1 02:18, size 0 (cleared).
+  10. /etc/ld.so.preload absent (no LD_PRELOAD rootkit).
+  11. iptables / nftables — no malicious blackhole or DNAT rules; only
+      stock ufw + docker MASQUERADE.
+  12. /etc/profile.d/ — only stock OS scripts, no shell injection.
+- Decision rule (binding, дополняет IL-EVO1-XMRIG-IDENTIFIED):
+  - Read-only classification of /etc/systemd/system/observed.service
+    REQUIRED before any destructive action on /etc/systemd/system/systemd.service
+    (XMRig). Use same approach as for systemd.service classification.
+  - Network containment of evo1 (host iptables OUTPUT drop to 136.243.75.233,
+    or Tailscale isolation, or LAN firewall rule) is now PREFERRED first
+    mitigation BEFORE local cleanup, to immediately stop ongoing crypto-pool
+    communication. Still requires operator-confirmation.
+  - Forensic preservation MANDATORY before destructive remediation:
+    full read of /usr/local/bin/{systemd,.config.json,.bench.log},
+    /etc/systemd/system/{systemd,observed}.service,
+    /etc/sudoers.d/ctio, /root/.ssh/authorized_keys,
+    /home/ctio/, /home/alex/, /home/user/ (listings + key files),
+    /var/log/auth.log* (full copy, not just grep),
+    /etc/ssh/sshd_config + sshd_config.d/.
+    Save into a read-only artifact bundle on Legion factory layer with
+    sha256 manifest before ANY rm/userdel/disable on evo1.
+  - НЕ выполнять без явного operator-confirmation:
+    * systemctl stop/disable/mask systemd.service либо observed.service
+    * rm /etc/systemd/system/{systemd,observed}.service
+    * rm /usr/local/bin/{systemd,.config.json,.bench.log}
+    * rm /etc/sudoers.d/ctio
+    * userdel/usermod -L для alex, ctio, user
+    * любое редактирование /root/.ssh/authorized_keys или /home/*/.ssh/authorized_keys
+    * любое редактирование /etc/ssh/sshd_config*
+    * kill -9 PID 2127, reboot evo1, dd over disk
+    * iptables/nft rule changes (даже OUTPUT DROP к pool IP) до operator-confirmation
+- Compliance escalation (binding to evaluate, not to execute):
+  - GDPR Art. 33: 72h notification window. Effective discovery moves from
+    2026-05-07 11:21 CEST (initial XMRig classification) to 2026-04-22
+    (root-login-open evidence in auth.log.2.gz). Operator-decision required
+    on regulatory window calculation and scope of personal-data exposure.
+  - FCA SUP 15: material incident notification. Project-layer node hosting
+    customer-data services (ClickHouse, Guardian, OpenClaw, banxe-api,
+    banxe-compliance-api) under root-level compromise for ≥2 weeks
+    likely qualifies as material. Operator-decision required.
+  - Internal: full credential rotation policy on evo1 must be assumed
+    once remediation begins (SSH host keys, SSH user keys, API keys,
+    database passwords, Tailscale auth keys, sudo passwords).
+- Derived GAPs opened by this IL:
+  - G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0, OPEN)
+  - G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN (P0, OPEN)
+  - G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0, OPEN)
+  - G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN (P0, OPEN)
+  - G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0, OPEN)
+  - G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION (P1, OPEN)
+  - G-SECURITY-EVO1-CRON-PULL-UNSIGNED (P2, OPEN)
+- Linked GAPs (escalated/updated by this IL):
+  - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0) — root cause vector now identified
+  - G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (P0) — audit complete, parent tracker
+  - G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION (P0) — discovery date escalated to 2026-04-22
+- Anchors:
+  - Canon: docs/canon/factory-project-stack-2026-05.md §1, §1.bis
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED
+  - Predecessor IL: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON
+  - GAP parent: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING
+  - Session: incident/security-evo1-xmrig-2026-05-07 branch, post a285282
+- Referential point: branch incident/security-evo1-xmrig-2026-05-07,
+  predecessor commit a285282.
