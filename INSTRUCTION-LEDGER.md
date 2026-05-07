@@ -4249,3 +4249,37 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - HANDOFF: docs/sessions/HANDOFF-2026-05-06-canon-stack-bios-uplift.md §8 Шаг 4
   - Sister IL: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07
 - Referential point: main HEAD = 213a57050c1199bf257df8d5e42ffcbaaa7bb1c5.
+
+
+### IL-OBSERVE-R3-AGENT-AUDIT-2026-05-07
+
+- Date: 2026-05-07 04:00 CEST
+- Phase (GSD): OBSERVE — agent placement audit per §1.bis
+- Status: RECORDED (no operator-action; observation-only)
+- Priority: P2 (informational)
+- Operator-confirmation: PENDING merge
+- Context: После R1+R2 execution (PR-A) проведён аудит agent placement
+  на трёх машинах для проверки соответствия §1.bis canon.
+- Findings:
+  Legion (factory):
+    - Claude Code в ~/banxe-emi-stack (factory work) — PASS
+    - LiteLLM v2 + Ollama + factory-coder — PASS
+  evo1 (project):
+    - OpenClaw ctio/guiyon/moa использует OLLAMA_API_KEY=ollama-local
+      (прямой ollama:11434, минуя Legion LiteLLM gateway) — FAIL §1.bis p.3
+    - banxe-api (uvicorn :8085) с /data/banxe/.env OLLAMA_URL=http://127.0.0.1:11434 — FAIL p.3
+    - Guardian factory/project — PASS (только ClickHouse, без LLM)
+    - compliance-api (:8194) endpoint неверифицирован
+  evo2 (project/heavy):
+    - llama-server qwen3:235b на :8082 — PASS (это backend project-reason)
+- Соответствие §1.bis:
+  - Layer placement (factory=Legion, project=evo1+evo2): ✅ корректно
+  - Cross-layer работа только через LiteLLM (§1.bis p.3): ❌ нарушено
+    project-agents'ами на evo1
+- Opens (через GAP-REGISTER):
+  - G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY (P1) — закрепить
+- Refs:
+  - HANDOFF: docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md (this PR)
+- Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07,
+  IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07
+- Referential point: HEAD on docs/audit-r3-roadmap-fixes-2026-05-07.

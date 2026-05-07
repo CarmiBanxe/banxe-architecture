@@ -581,7 +581,9 @@
 - [ ] G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY (P1, OPEN, 2026-05-07)
     Project-агенты на evo1 (OpenClaw ctio/guiyon/moa, banxe-api с OLLAMA_URL=http://127.0.0.1:11434) ходят напрямую в local Ollama, минуя Legion LiteLLM gateway. Нарушение §1.bis п.3 «единственный шов — LiteLLM gateway». Требуется миграция endpoint'ов на http://100.101.218.26:4000 с правильным master_key.
     Closing IL: TBD.
-    Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07, IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+    Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07,
+    IL-OBSERVE-R3-AGENT-AUDIT-2026-05-07,
+    docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md.
 
 - [ ] G-INFRA-EVO1-PORT-4000-COLLISION (P3, OPEN, 2026-05-07)
     На evo1 порт 4000 (TCP, 127.0.0.1) занят Google IDX preview / Firebase emulator (HTML «Copyright 2020 Google LLC»). Не блокер сейчас, но мешает развернуть real LiteLLM на evo1 если потребуется.
@@ -590,3 +592,28 @@
 - [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07)
     Постоянный load avg ~35 на evo1 (3 пользователя). Источник heavy CPU не идентифицирован в текущих аудитах. Нужно отдельное расследование (top -c, htop, iotop).
     Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+
+- [ ] G-CI-WORKFLOWS-FAILING (P2, OPEN, 2026-05-07)
+    .github/workflows/ci.yml fails 0s + docs.yml fails 17s on every push to main / PR.
+    Likely: gitleaks-action triggers on 8 historical leaks in repo; mkdocs build --strict
+    on broken docs. Не блокирует merge (branch protection требует только guardian-*),
+    но шумит и скрывает реальные fail'ы.
+    Closing IL: TBD.
+    Anchors: IL-OBSERVE-R3-AGENT-AUDIT-2026-05-07,
+    docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md §6.
+
+- [ ] G-SECURITY-HISTORICAL-LEAKS (P1, OPEN, 2026-05-07)
+    gitleaks v8.30.1 detect reports 8 leaks in 469-commit git history.
+    Open credentials (tokens/keys/passwords) in repo history.
+    Requires: rotation каждого leaked credential + filter-repo cleanup
+    + force-push (security-focused session).
+    Closing IL: TBD.
+    Anchors: docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md §6.
+
+- [ ] G-FACTORY-GITIGNORE-INCOMPLETE (P3, OPEN, 2026-05-07)
+    .gitignore не исключает .claude/settings.local.json, CLAUDE.local.md.
+    Risk: accidental commit of personal overrides per §1.bis.
+    Action: add lines к .gitignore.
+    Closing IL: TBD.
+    Anchors: docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md §6.
+
