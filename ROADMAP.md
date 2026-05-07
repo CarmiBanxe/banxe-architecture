@@ -251,6 +251,10 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-06 | `checkpoint-2026-05-06-dac8-tax-reporting-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-oss-sumsub-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-owner-control-agent-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md |
+| 2026-05-07 | `checkpoint-2026-05-07-canon-extended` | ed66ab2 | CHECKPOINT (parallel session) | docs/sessions/ (canon-extended branch) |
+| 2026-05-07 | `checkpoint-2026-05-07-r1-r2-r3-complete` | 6d56ff5 | CHECKPOINT (parallel session) | docs/sessions/ (R1-R2-R3 fixes roadmap) |
+| 2026-05-07 | `checkpoint-2026-05-07-customer-privacy-right-v2-base` | 00822b5 | ROADMAP BLOCK | docs/privacy/customer-privacy-right-v2.md |
+| 2026-05-07 | `checkpoint-2026-05-07-ghost-mode-spec` | 97fc7c6 | FEATURE SPEC | docs/privacy/ghost-mode-spec.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.

@@ -589,10 +589,11 @@
     На evo1 порт 4000 (TCP, 127.0.0.1) занят Google IDX preview / Firebase emulator (HTML «Copyright 2020 Google LLC»). Не блокер сейчас, но мешает развернуть real LiteLLM на evo1 если потребуется.
     Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
 
-- [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07 — effective P1 until G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE classified)
+- [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07 — ROOT-CAUSE-IDENTIFIED: XMRig cryptominer)
     Постоянный load avg ~35 на evo1 (3 пользователя). Источник heavy CPU не идентифицирован в текущих аудитах. Нужно отдельное расследование (top -c, htop, iotop).
     **2026-05-07 escalation:** root cause identified as unknown daemon /etc/systemd/system/systemd.service (PID 2127, ≈2911% CPU, 38 threads). Effective priority escalated to P1 until daemon classified. See G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
-    Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON.
+    **2026-05-07 ROOT-CAUSE-IDENTIFIED:** daemon classified as XMRig-compatible RandomX/Monero CPU miner. See G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0). Awaiting remediation.
+    Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
 
 - [ ] G-CI-WORKFLOWS-FAILING (P2, OPEN, 2026-05-07)
     .github/workflows/ci.yml fails 0s + docs.yml fails 17s on every push to main / PR.
@@ -618,22 +619,92 @@
     Closing IL: TBD.
     Anchors: docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md §6.
 
-- [ ] G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1, OPEN, 2026-05-07)
-    Unknown root daemon masquerading as systemd on evo1:
-    /etc/systemd/system/systemd.service (enabled), Description="System Proxy Service",
-    ExecStart="systemd -c .config.json", WorkingDirectory=/usr/local/bin,
-    User=root, Group=root, Restart=always, RestartSec=30,
-    LimitNOFILE=8192, LimitNPROC=8192, WantedBy=multi-user.target.
-    Process: PID 2127, PPid=1, Uid/Gid=0/0, State=S (sleeping), threads=38,
-    cgroup=/system.slice/systemd.service. /proc/2127/exe и /proc/2127/cwd:
-    Permission denied для непривилегированного пользователя.
-    Started: Thu 2026-05-07 01:03:48 CEST (соответствует uptime ≈10:17 на момент аудита).
-    Effect: load average ≈35, %CPU ≈2911% (≈29 ядер постоянной нагрузки).
-    Не описан в canon §1/§1.bis. Не описан в GAP-REGISTER или IL до этой записи.
-    Decision rule: read-only sudo investigation only, no destructive actions until
-    operator-confirmation. Блокирует любые destructive шаги на evo1.
-    Escalates G-INFRA-EVO1-LOAD-AVG-35 (P2 → effective P1).
-    Closing IL: TBD (requires operator-confirmation after classification).
+- [ ] G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1, ESCALATED → P0 via G-SECURITY-EVO1-XMRIG-CRYPTOMINER, 2026-05-07)
+    **ESCALATED:** daemon classified as XMRig-compatible cryptominer. See G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0) for full evidence and remediation plan.
+    Original discovery: unknown root daemon masquerading as systemd on evo1.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
-    G-INFRA-EVO1-LOAD-AVG-35.
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+    G-SECURITY-EVO1-XMRIG-CRYPTOMINER.
+
+- [ ] G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0, OPEN — IDENTIFIED, 2026-05-07)
+    **Active malware on project-layer node evo1.** XMRig-compatible RandomX/Monero CPU miner
+    masquerading as systemd. GDPR/FCA-relevant compromise of project layer node hosting
+    BANXE customer-data services.
+    **Hard evidence:**
+    - Binary: /usr/local/bin/systemd
+      SHA256: baca0922a6ce82f250d15c7b71a209f0ba60274ff7e9654338900020a36de6c4
+      Size: 3149464 bytes, Owner: root:root, Mode: 755, Mtime: Apr 23 07:05
+      Type: ELF 64-bit LSB executable, x86-64, statically linked, no section header
+      BuildID[sha1]: c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
+      Packed: UPX (lsof shows /memfd:upx). Not owned by any dpkg package.
+    - Unit file: /etc/systemd/system/systemd.service
+      SHA256: a7e0975fbd52853cd757ce4e09a42de1402ec967ad187794d6d6bd88aa026b24
+      Size: 259 bytes, Mtime: Apr 23 07:05
+      UnitFileState=enabled, ExecStart=systemd -c .config.json, User=root,
+      Restart=always, RestartSec=30, LimitNOFILE=8192, LimitNPROC=8192
+    - Config: /usr/local/bin/.config.json (XMRig schema)
+      Mtime: Apr 23 07:05. Sections: randomx, cpu (32 threads), pools (single, tls=true),
+      donate-level=1. Algorithms: cn, cn-heavy, cn-lite, cn-pico, cn/upx2, ghostrider,
+      rx, rx/wow, argon2. Log file: .bench.log (6.9 MB).
+    - C2/pool: ESTABLISHED tcp 192.168.0.72:44496 → 136.243.75.233:8029
+      PTR: static.233.75.243.136.clients.your-server.de
+      ASN: AS24940 Hetzner Online GmbH (DE). TLS encryption per config.
+    - Process: PID 2127, root, 38 threads, ~2911% CPU, started 2026-05-07 01:03:48 CEST.
+      Binary install date: Apr 23 07:05 (mtime).
+    **IoC list (for sweep on evo2 + Legion):**
+    - sha256_binary: baca0922a6ce82f250d15c7b71a209f0ba60274ff7e9654338900020a36de6c4
+    - sha256_unit:   a7e0975fbd52853cd757ce4e09a42de1402ec967ad187794d6d6bd88aa026b24
+    - path_binary:   /usr/local/bin/systemd
+    - path_unit:     /etc/systemd/system/systemd.service
+    - path_config:   /usr/local/bin/.config.json
+    - path_log:      /usr/local/bin/.bench.log
+    - pool_ip:       136.243.75.233
+    - pool_port:     8029
+    - pool_ptr:      static.233.75.243.136.clients.your-server.de
+    - buildid:       c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
+    - masquerade:    process "systemd", unit "systemd.service", description "System Proxy Service"
+    **Compliance flags:**
+    - GDPR: potential personal data exposure (project layer hosts BANXE customer-data services)
+    - FCA: potential incident-reporting obligation (EMI license)
+    - Internal: unauthorized root binary, full host compromise must be assumed
+    **Decision rule:** read-only IoC sweep evo2+Legion BEFORE any destructive action on evo1.
+    Full compromise audit evo1 BEFORE stop/disable/cleanup. Forensic artifact preservation mandatory.
+    **Supersedes:** G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1).
+    Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+    G-INFRA-EVO1-LOAD-AVG-35, G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
+
+- [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN, 2026-05-07)
+    Read-only IoC sweep evo2 required for XMRig IoC signatures (sha256, paths, pool IP,
+    BuildID, masquerade patterns). Same threat actor may have compromised evo2 via same
+    vector. No destructive actions until sweep complete.
+    Closing IL: TBD.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+
+- [ ] G-SECURITY-LEGION-IOC-SWEEP-PENDING (P1, OPEN, 2026-05-07)
+    Read-only IoC sweep Legion (factory layer) required for XMRig IoC signatures.
+    Lower probability (WSL2, different access vector) but factory-layer compromise
+    would affect all downstream trust. No destructive actions until sweep complete.
+    Closing IL: TBD.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+
+- [ ] G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (P0, OPEN, 2026-05-07)
+    Full compromise audit evo1 required BEFORE any cleanup/remediation:
+    authorized_keys, /etc/{passwd,shadow}, sudoers, cron/timer enumeration,
+    last/lastlog, .bash_history, profile.d/, other masqueraded systemd units,
+    SSH logs since 2026-04-22 (binary mtime minus 1 day).
+    Forensic artifact preservation mandatory before any destructive action.
+    Closing IL: TBD.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+
+- [ ] G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION (P0, OPEN, 2026-05-07)
+    Assessment required: FCA incident reporting obligation for EMI license
+    (SUP 15 material incident notification) and GDPR Art. 33 (72h notification
+    window for personal data breach). Timer potentially started at discovery
+    2026-05-07 11:21 CEST. Operator-decision required: whether discovery of
+    cryptominer on project-layer node constitutes a reportable breach
+    (personal data exfiltration not confirmed but full host compromise assumed).
+    Closing IL: TBD.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
 
