@@ -4192,3 +4192,60 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07
   - docs/canon/factory-project-stack-2026-05.md §1.bis
 - Referential point: main HEAD = bbb10fcf2c632aa9c25c0efdb633104d48d716ab.
+
+
+### IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07
+
+- Date: 2026-05-07 04:00 CEST
+- Phase (GSD): EXECUTED — R1 (Legion factory) + R2 (LiteLLM §1.bis routes)
+- Status: PASS (live-shell verified)
+- Priority: P1
+- Operator-confirmation: PRE-APPROVED per "роад мап... до 100% не переспрашивая" 2026-05-07 02:30 CEST
+- Context: Выполнение Roadmap R1+R2 после canon-extension §1.bis (PR #124).
+
+- **R1 — Legion factory layer:**
+  - WSL2 cap 24 GB → 56 GB (.wslconfig memory=56GB; free -h total = 54 GiB after WSL --shutdown).
+  - /etc/wsl.conf written with [boot] systemd=true + [automount] options="metadata,uid=1000,gid=1000,umask=022,fmask=011".
+  - /mnt/d mounted with metadata; chown/chmod work on NTFS now.
+  - Ollama drop-in /etc/systemd/system/ollama.service.d/override.conf created with:
+    OLLAMA_HOST=127.0.0.1:11434, OLLAMA_MODELS=/mnt/d/ollama-models,
+    OLLAMA_FLASH_ATTENTION=1, OLLAMA_KEEP_ALIVE=10m, OLLAMA_NUM_PARALLEL=1,
+    OLLAMA_API_KEY=sk-banxe-legion-factory-2026.
+  - ~/.bashrc: export OLLAMA_HOST=http://192.168.0.72:11434 commented out.
+  - /mnt/d/ollama-models created, owned by ollama:ollama, populated via rsync from /usr/share/ollama/.ollama/models (4.4 GB existing blobs).
+  - Imported Qwen2.5-Coder-14B-Instruct-Q4_K_M.gguf as `qwen2.5-coder:14b-banxe-factory` (9.0 GB Ollama package, num_ctx=16384, temperature=0.1, system prompt for BANXE factory).
+  - Smoke test: 32 tokens / 3.61 sec eval, 8.86 t/s, GPU 49%/51% CPU/GPU split, 22/49 layers offloaded, 6.6 GiB / 8.2 GiB VRAM, 26% util.
+
+- **R2 — LiteLLM v2 routes per §1.bis:**
+  - Backed up litellm-config.v2.yaml.
+  - Patched factory-fast: model ollama/qwen2.5-coder:7b-instruct-q4_K_M → ollama/qwen2.5-coder:14b-banxe-factory, timeout 60→120, api_base=http://127.0.0.1:11434.
+  - Added project-mid: 3 entries (evo1 qwen3.5:35b, evo2 qwen3.5:35b, evo1 qwen3-coder-next:q4_K_M).
+  - 33 model_list entries, 20 unique model_names. §1.bis core routes present: factory-fast, factory-mid, factory-heavy, factory-coder, project-mid, project-reason.
+  - Service restart OK; smoke test factory-fast through gateway: «Docker is a platform...» 28 tokens, 4s wall, ollama ps confirms 14b-banxe-factory in memory.
+
+- **Pass criteria (R1+R2):**
+  - [x] Legion free -h ≥ 50 GiB (54 GiB)
+  - [x] /mnt/d mounted with metadata
+  - [x] Local Ollama on 127.0.0.1:11434
+  - [x] factory-coder model imported and loaded
+  - [x] GPU offload working (CUDA, 22/49 layers)
+  - [x] LiteLLM v2 routes §1.bis present
+  - [x] factory-fast smoke test via gateway PASS
+
+- **Closes (pending operator-confirmation on merge):**
+  - G-FACTORY-WSL2-RAM-CAP (P2) → CLOSED-PENDING-OPERATOR
+  - G-FACTORY-OLLAMA-HOST-WRONG (P1) → CLOSED-PENDING-OPERATOR
+  - G-FACTORY-OLLAMA-CACHE-MISSING (P2) → CLOSED-PENDING-OPERATOR
+  - G-FACTORY-OLLAMA-OFFLOAD (P2) → CLOSED-PENDING-OPERATOR
+  - G-FACTORY-LITELLM-DUPLICATE-REGRESSION (P1) → CLOSED-FALSE-POSITIVE (на evo1:4000 был Google IDX, не LiteLLM; реально один canonical LiteLLM на Legion).
+
+- **Opens (новые gap'ы для будущей сессии):**
+  - G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY (P1) — project-agents (OpenClaw ctio/guiyon/moa, banxe-api, compliance-api) на evo1 ходят напрямую в local Ollama, минуя Legion LiteLLM gateway, что нарушает §1.bis пункт 3 «единственный шов через LiteLLM». Guardian factory/project не используют LLM — только ClickHouse, не нарушение.
+  - G-INFRA-EVO1-PORT-4000-COLLISION (P3) — evo1:4000 занят Google IDX preview (не LiteLLM duplicate); может блокировать будущие сервисы.
+  - G-INFRA-EVO1-LOAD-AVG-35 (P2) — load avg ~35 на evo1 без видимого источника heavy CPU; нужно отдельное расследование.
+
+- **Anchors:**
+  - Canon: docs/canon/factory-project-stack-2026-05.md §1.bis (PR #124)
+  - HANDOFF: docs/sessions/HANDOFF-2026-05-06-canon-stack-bios-uplift.md §8 Шаг 4
+  - Sister IL: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07
+- Referential point: main HEAD = 213a57050c1199bf257df8d5e42ffcbaaa7bb1c5.

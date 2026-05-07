@@ -452,7 +452,7 @@
 ## G-FACTORY-WSL2-RAM-CAP
 <!-- Added: docs/runbook-g-factory-wsl2-ram-cap-2026-05-06-v2 | IL-CANON-HW-BASELINE-2026-05-06 -->
 
-- [ ] G-FACTORY-WSL2-RAM-CAP: Legion WSL2 exposes ~23 GiB instead of physical 64 GB RAM — OPEN 2026-05-06
+- [x] G-FACTORY-WSL2-RAM-CAP: Legion WSL2 exposes ~23 GiB instead of physical 64 GB RAM — CLOSED-PENDING-OPERATOR 2026-05-07
   Legion physical HW: 64 GB RAM, 4+ TB SSD, NVIDIA RTX 4070 Laptop (8 GB VRAM). WSL2 .wslconfig not
   configured; default cap leaves ~23 GiB visible to Linux, severely constraining coding model selection
   and Ollama blob cache capacity.
@@ -470,7 +470,7 @@
 ## G-FACTORY-OLLAMA-OFFLOAD
 <!-- Added: docs/il-ops-phase-a-legion-evo2-2026-05-06 | IL-OPS-G-FACTORY-LEGION-PHASE-A-2026-05-06 -->
 
-- [ ] G-FACTORY-OLLAMA-OFFLOAD: Legion has no local Ollama model; RTX 4070 8 GB VRAM idle; all inference routed to evo1 over LAN — OPEN 2026-05-06
+- [x] G-FACTORY-OLLAMA-OFFLOAD: Legion has no local Ollama model; RTX 4070 8 GB VRAM idle; all inference routed to evo1 over LAN — CLOSED-PENDING-OPERATOR 2026-05-07
   Legion physical HW: RTX 4070 Laptop 8 GB VRAM, 4+ TB SSD. Currently OLLAMA_HOST=http://192.168.0.72:11434
   (evo1). No coding model runs locally on Legion. RTX 4070 8 GB VRAM is sufficient for a 7B–13B coding
   model (e.g. Qwen2.5-Coder-7B Q8 or 13B Q4). Local GPU inference would reduce LAN latency and remove
@@ -556,11 +556,12 @@
     Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07,
     docs/canon/factory-project-stack-2026-05.md §1.bis.
 
-- [ ] G-FACTORY-LITELLM-DUPLICATE-REGRESSION (P1, OPEN, 2026-05-07)
+- [x] G-FACTORY-LITELLM-DUPLICATE-REGRESSION (P1, CLOSED-FALSE-POSITIVE, 2026-05-07)
     На evo1 обнаружен второй LiteLLM listener на 127.0.0.1:4000
     (live audit 2026-05-07 02:00 CEST). Нарушает «один канонический
     gateway» (canon §2). PR #104 (G-FACTORY-LITELLM-DUPLICATE CLOSED) был
-    merged 2026-05-06; регрессия. Closing IL: TBD.
+    merged 2026-05-06; регрессия. **CLOSED-FALSE-POSITIVE 2026-05-07:** на evo1:4000 был Google IDX preview, не LiteLLM; реально один canonical LiteLLM на Legion.
+    Closing IL: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
     Anchors: PR #104, IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07.
 
 
@@ -568,3 +569,24 @@
     Branch protection на main требует guardian-factory + guardian-project status checks от GitHub App id 15368. Guardian services здоровы на evo1:8195/8196, но GitHub webhook delivery не настроена — нет webhook'ов в репо, check_runs total_count=0. Требуется: GitHub App credentials, публичный HTTPS endpoint (через cloudflared / nginx), webhook handler в Guardian с check_run posting back. До исправления: branch protection bypass window per IL-CANON-PROCESS-INCIDENT-2026-05-07-PROTECTION-WINDOW.
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-PROTECTION-WINDOW, PR #121/#122/#123/#124.
+
+- [x] G-FACTORY-OLLAMA-HOST-WRONG (P1, CLOSED-PENDING-OPERATOR 2026-05-07)
+    Legion .bashrc had export OLLAMA_HOST=http://192.168.0.72:11434 (LAN unreachable from WSL2 historical). Cleaned via sed; ollama drop-in now sets OLLAMA_HOST=127.0.0.1:11434 systemwide.
+    Closing IL: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+
+- [x] G-FACTORY-OLLAMA-CACHE-MISSING (P2, CLOSED-PENDING-OPERATOR 2026-05-07)
+    OLLAMA_MODELS unset; /mnt/d unused. Now: ollama drop-in sets OLLAMA_MODELS=/mnt/d/ollama-models, /etc/wsl.conf has metadata mount option, blobs migrated.
+    Closing IL: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+
+- [ ] G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY (P1, OPEN, 2026-05-07)
+    Project-агенты на evo1 (OpenClaw ctio/guiyon/moa, banxe-api с OLLAMA_URL=http://127.0.0.1:11434) ходят напрямую в local Ollama, минуя Legion LiteLLM gateway. Нарушение §1.bis п.3 «единственный шов — LiteLLM gateway». Требуется миграция endpoint'ов на http://100.101.218.26:4000 с правильным master_key.
+    Closing IL: TBD.
+    Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07, IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+
+- [ ] G-INFRA-EVO1-PORT-4000-COLLISION (P3, OPEN, 2026-05-07)
+    На evo1 порт 4000 (TCP, 127.0.0.1) занят Google IDX preview / Firebase emulator (HTML «Copyright 2020 Google LLC»). Не блокер сейчас, но мешает развернуть real LiteLLM на evo1 если потребуется.
+    Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+
+- [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07)
+    Постоянный load avg ~35 на evo1 (3 пользователя). Источник heavy CPU не идентифицирован в текущих аудитах. Нужно отдельное расследование (top -c, htop, iotop).
+    Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
