@@ -589,9 +589,10 @@
     На evo1 порт 4000 (TCP, 127.0.0.1) занят Google IDX preview / Firebase emulator (HTML «Copyright 2020 Google LLC»). Не блокер сейчас, но мешает развернуть real LiteLLM на evo1 если потребуется.
     Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
 
-- [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07)
+- [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07 — effective P1 until G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE classified)
     Постоянный load avg ~35 на evo1 (3 пользователя). Источник heavy CPU не идентифицирован в текущих аудитах. Нужно отдельное расследование (top -c, htop, iotop).
-    Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
+    **2026-05-07 escalation:** root cause identified as unknown daemon /etc/systemd/system/systemd.service (PID 2127, ≈2911% CPU, 38 threads). Effective priority escalated to P1 until daemon classified. See G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
+    Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON.
 
 - [ ] G-CI-WORKFLOWS-FAILING (P2, OPEN, 2026-05-07)
     .github/workflows/ci.yml fails 0s + docs.yml fails 17s on every push to main / PR.
@@ -616,4 +617,23 @@
     Action: add lines к .gitignore.
     Closing IL: TBD.
     Anchors: docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md §6.
+
+- [ ] G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1, OPEN, 2026-05-07)
+    Unknown root daemon masquerading as systemd on evo1:
+    /etc/systemd/system/systemd.service (enabled), Description="System Proxy Service",
+    ExecStart="systemd -c .config.json", WorkingDirectory=/usr/local/bin,
+    User=root, Group=root, Restart=always, RestartSec=30,
+    LimitNOFILE=8192, LimitNPROC=8192, WantedBy=multi-user.target.
+    Process: PID 2127, PPid=1, Uid/Gid=0/0, State=S (sleeping), threads=38,
+    cgroup=/system.slice/systemd.service. /proc/2127/exe и /proc/2127/cwd:
+    Permission denied для непривилегированного пользователя.
+    Started: Thu 2026-05-07 01:03:48 CEST (соответствует uptime ≈10:17 на момент аудита).
+    Effect: load average ≈35, %CPU ≈2911% (≈29 ядер постоянной нагрузки).
+    Не описан в canon §1/§1.bis. Не описан в GAP-REGISTER или IL до этой записи.
+    Decision rule: read-only sudo investigation only, no destructive actions until
+    operator-confirmation. Блокирует любые destructive шаги на evo1.
+    Escalates G-INFRA-EVO1-LOAD-AVG-35 (P2 → effective P1).
+    Closing IL: TBD (requires operator-confirmation after classification).
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
+    G-INFRA-EVO1-LOAD-AVG-35.
 
