@@ -4283,3 +4283,60 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Anchors: IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07,
   IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07
 - Referential point: HEAD on docs/audit-r3-roadmap-fixes-2026-05-07.
+
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON
+
+- Date: 2026-05-07
+- Phase (GSD): PROCESS-INCIDENT (security observation, binding decision rule)
+- Status: OPEN — awaiting operator-confirmation for classification and remediation
+- Priority: P1
+- Operator-confirmation: PENDING (no destructive action until Mark confirms on evo1)
+- Source: live-shell audit evo1 (ssh evo1), 2026-05-07 ~11:21 CEST.
+  Commands executed:
+  - ps -eo pid,ppid,cmd,pcpu,pmem,stat --sort=-pcpu | head -40
+  - cat /proc/2127/cmdline; cat /proc/2127/status; cat /proc/2127/cgroup
+  - systemctl show systemd.service
+  - cat /etc/systemd/system/systemd.service
+  - ls -l /proc/2127/exe; ls -l /proc/2127/cwd
+  - ls /proc/2127/task | wc -l
+- Evidence (дословно):
+  Unit file: /etc/systemd/system/systemd.service
+    - UnitFileState=enabled
+    - Description="System Proxy Service"
+    - After=network.target
+    - ExecStart=systemd -c .config.json
+    - WorkingDirectory=/usr/local/bin
+    - User=root, Group=root
+    - Restart=always, RestartSec=30
+    - LimitNOFILE=8192, LimitNPROC=8192
+    - WantedBy=multi-user.target
+  Process: PID 2127, PPid=1, Uid/Gid=0/0, State=S (sleeping), threads=38
+    - cgroup: /system.slice/systemd.service
+    - /proc/2127/exe и /proc/2127/cwd: Permission denied для непривилегированного пользователя
+  Timing: Started Thu 2026-05-07 01:03:48 CEST (соответствует uptime ≈10:17 на момент аудита)
+  Effect: load average ≈35 (1/5/15 min), %CPU в ps ≈2911% (≈29 ядер постоянной нагрузки)
+  Canon absence: в docs/canon/factory-project-stack-2026-05.md §1, §1.bis этот сервис НЕ описан
+    как часть BANXE EMI project layer. В GAP-REGISTER.md и INSTRUCTION-LEDGER.md
+    упоминаний этого unit'а не было до данной записи.
+- Decision rule (binding для следующих шагов сессии):
+  - До operator-confirmation от Mark на evo1 НЕ выполняются:
+    systemctl stop/disable/mask, kill, rm, mv бинаря, изменение unit-файла,
+    перезагрузка узла.
+  - Допустимы только read-only sudo-расследования:
+    sha256sum /usr/local/bin/systemd,
+    sudo readlink /proc/2127/exe,
+    sudo readlink /proc/2127/cwd,
+    sudo cat .config.json (с маскированием секретов в IL),
+    sudo ss -ltnpu | grep 2127,
+    sudo lsof -p 2127.
+  - Любые network-блокировки (iptables/nftables/firewalld) на evo1 —
+    только по явному operator-confirmation.
+- Linked GAP:
+  - G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1, OPEN)
+  - G-INFRA-EVO1-LOAD-AVG-35 (escalated P2 → effective P1 until daemon classified)
+- Anchors:
+  - Canon: docs/canon/factory-project-stack-2026-05.md §1, §1.bis
+  - GAP: G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE, G-INFRA-EVO1-LOAD-AVG-35
+  - Session: post checkpoint-2026-05-07-r1-r2-r3-complete (tag on 6d56ff5)
+- Referential point: main HEAD = 6d56ff5cf4ee7d1cd5aa09048062932e9610906a.
