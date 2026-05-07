@@ -158,3 +158,19 @@ MLRO consultation (если запрос затрагивает AML/SAR data —
 > ADR-резерв Ghost Mode: ADR-074, ADR-075, ADR-076.
 >
 > Ghost Mode не включён в данный документ и не реализован в данном PR.
+
+---
+
+## 10. Ghost Mode — Privacy Tech Stack (ссылка)
+
+Детальная спецификация Ghost Mode зафиксирована отдельным feature-spec документом в той же ветке.
+
+- **Документ:** `docs/privacy/ghost-mode-spec.md`
+- **Ветка:** `feature/ghost-mode-privacy-stack`
+- **Контур:** только BANXE Self-Custody (out-of-scope EMI)
+- **ADR-резерв:** 074 (stealth + silent + VC), 075 (payjoin + privacy score + per-KYC limit), 076 (RAILGUN — PENDING LEGAL REVIEW)
+- **Pending invariants:** I-54, I-55, I-56, I-57, I-58
+- **Блокирующие milestones:** FCA CP26/13 (UK, ~09.2026), TFR Art. 37 (EU, 2026-06-30), ACPR (FR, отдельная юр-консультация)
+- **Статус:** FEATURE SPEC / PLANNED — реализация после legal/regulatory gates
+
+Ghost Mode не реализуется на EMI-стороне как клиентская фича; на стыке EMI ↔ Self-Custody действует полный AML EMI (CDD, sanctions screening, Travel Rule, DAC8, blockchain analytics).
