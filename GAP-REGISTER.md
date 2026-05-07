@@ -663,16 +663,35 @@
     - pool_ptr:      static.233.75.243.136.clients.your-server.de
     - buildid:       c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
     - masquerade:    process "systemd", unit "systemd.service", description "System Proxy Service"
+    - sha256_observed_unit:  53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0
+    - sha256_freeproc_sh:    5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4
+    - path_observed_unit:    /etc/systemd/system/observed.service
+    - path_freeproc_sh:      /usr/local/bin/free_proc.sh
+    - watchdog_pattern:      "ps | awk '$2>200 && !/systemd/' | xargs kill -9"
+    - install_event_unified: /usr/local/bin/{systemd, .config.json, free_proc.sh} +
+                             /etc/systemd/system/{systemd, observed}.service all
+                             mtime 2026-04-23 07:05 (single deployment script)
     **Compliance flags:**
     - GDPR: potential personal data exposure (project layer hosts BANXE customer-data services)
     - FCA: potential incident-reporting obligation (EMI license)
     - Internal: unauthorized root binary, full host compromise must be assumed
     **Decision rule:** read-only IoC sweep evo2+Legion BEFORE any destructive action on evo1.
     Full compromise audit evo1 BEFORE stop/disable/cleanup. Forensic artifact preservation mandatory.
+    **Cleanup ordering (binding, awaiting operator-confirmation):**
+    1. systemctl stop observed.service
+    2. systemctl stop systemd.service
+    3. systemctl disable observed.service systemd.service
+    4. systemctl mask observed.service systemd.service
+    5. forensic artifact bundle creation (sha256 manifest)
+    6. file removal /usr/local/bin/{systemd,.config.json,free_proc.sh,.bench.log}
+       and /etc/systemd/system/{systemd,observed}.service
+    Network containment (iptables OUTPUT DROP 136.243.75.233 OR Tailscale isolation)
+    is preferred first mitigation, safe vs watchdog.
     **Supersedes:** G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1).
     Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED,
     G-INFRA-EVO1-LOAD-AVG-35, G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
 
 - [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN, 2026-05-07)
@@ -695,8 +714,20 @@
     last/lastlog, .bash_history, profile.d/, other masqueraded systemd units,
     SSH logs since 2026-04-22 (binary mtime minus 1 day).
     Forensic artifact preservation mandatory before any destructive action.
+    **2026-05-07 results:** read-only audit complete via ssh -tt evo1 sudo bash. Findings:
+    - 1 confirmed XMRig (G-SECURITY-EVO1-XMRIG-CRYPTOMINER, P0)
+    - 1 sudoers backdoor (G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR, P0)
+    - 1 unknown systemd unit at same mtime (G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN, P0)
+    - 3 unauthorized/non-canon users (G-SECURITY-EVO1-UNAUTHORIZED-USERS, P0)
+    - sshd public root login still open (G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN, P0)
+    - root authorized_keys with non-canon identity (G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT, P0)
+    - cross-layer key contamination (G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION, P1)
+    - unsigned cron auto-pull supply-chain risk (G-SECURITY-EVO1-CRON-PULL-UNSIGNED, P2)
+    Status: GAP remains OPEN as parent tracker; closes when all 7 derived GAPs are CLOSED.
+    No destructive action taken — fully read-only. Forensic evidence preserved in IL.
     Closing IL: TBD.
-    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
 
 - [ ] G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION (P0, OPEN, 2026-05-07)
     Assessment required: FCA incident reporting obligation for EMI license
@@ -705,6 +736,145 @@
     2026-05-07 11:21 CEST. Operator-decision required: whether discovery of
     cryptominer on project-layer node constitutes a reportable breach
     (personal data exfiltration not confirmed but full host compromise assumed).
+    **2026-05-07 escalation:** compromise audit evo1 confirms public root SSH was
+    open during Apr 22 (auth.log.2.gz evidence: external bruteforce from
+    146.190.83.66 + 138.124.181.144), with successful root login Apr 28 23:34
+    from 192.168.0.75. GDPR Art. 33 72h notification timer effective discovery
+    moves from 2026-05-07 11:21 (XMRig classification) to 2026-04-22
+    (root-login-open-to-internet evidence in logs). Operator-decision required
+    on regulatory window calculation and notification scope.
+    Linked: G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN, G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+    G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING, G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR.
     Closing IL: TBD.
-    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0, OPEN, 2026-05-07)
+    Backdoor sudoers entry on evo1: /etc/sudoers.d/ctio = "ctio ALL=(ALL) NOPASSWD: ALL".
+    User ctio (UID 1002) has unrestricted root without password. mtime: Mar 28 20:04 (older
+    than XMRig install Apr 23). Classic privilege escalation persistence.
+    Decision rule: NO destructive action until operator-confirmation; preserve as forensic evidence.
+    Linked: G-SECURITY-EVO1-XMRIG-CRYPTOMINER (likely escalation vector for XMRig install).
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN (P0, OPEN, 2026-05-07)
+    Suspicious systemd unit /etc/systemd/system/observed.service created Apr 23 07:05 — exact
+    same mtime as XMRig systemd.service. Size 226 bytes. Likely second persistence unit by same
+    threat actor (potential XMRig watchdog or restart guardian).
+    Decision rule: read-only classification (cat unit, sha256, classify ExecStart binary)
+    REQUIRED before any destructive action on XMRig systemd.service.
+    Linked: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING.
+    **2026-05-07 IDENTIFIED:** classification complete. Unit is XMRig watchdog +
+    anti-competitor + masquerade enforcer. Implementation: shell loop killing any
+    process with %CPU > 200 EXCEPT args matching "systemd" (which is XMRig's own
+    masquerade name). SHA256 unit: 53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0.
+    SHA256 script: 5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4.
+    Sibling cluster: /usr/local/bin/{systemd, .config.json, free_proc.sh} all mtime
+    2026-04-23 07:05 (single install event by same threat actor).
+    Operational implication: cleanup ordering MUST be observed.service first, then
+    systemd.service, otherwise watchdog kills legitimate heavy workloads after
+    XMRig stops.
+    Status: stays OPEN until operator-confirmed remediation.
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT,
+    IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED.
+
+- [ ] G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0, OPEN, 2026-05-07)
+    Non-canon users with /bin/bash login shell on evo1 (per /etc/passwd live audit):
+    - alex:x:1004:1004:,,,:/home/alex:/bin/bash — NOT in canon BANXE EMI roster.
+      Cross-host SSH key correlation: matching public key
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDmlUN8...  alex@MacBook-Pro-Alex.local"
+      also present in /home/banxe/.ssh/authorized_keys on evo1 AND in
+      /home/mmber/.ssh/authorized_keys on Legion (factory layer).
+      This makes alex a potential pivot identity between factory and project layers.
+    - ctio:x:1002:1002::/home/ctio:/bin/bash — has NOPASSWD ALL sudo backdoor
+      (see G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR). /home/ctio/.bash_history
+      mtime Apr 1 02:18, size 0 (history cleared).
+    - user:x:1001:1001::/home/user — generic name, no canon-justification.
+    - Additional unknown identity in /root/.ssh/authorized_keys:
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCfZ9LYz8Ly... egor.kopylov@egit-MacBook-Air.local"
+      (mtime Mar 28 12:49). Direct root SSH from outside identity.
+    Decision rule: NO destructive action (userdel, lock, key removal) until operator-confirmation.
+    Forensic preservation of /home/{alex,ctio,user}, /root/.ssh/authorized_keys mandatory
+    before any change. Operator must classify each identity (legitimate teammate vs unauthorized).
+    Linked GAPs:
+      - G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0)
+      - G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION (P1)
+      - G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0)
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN (P0, OPEN, 2026-05-07)
+    /etc/ssh/sshd_config.d/10-legion.conf currently active with:
+      PermitRootLogin yes
+      PasswordAuthentication yes
+    Live evidence in /var/log/auth.log.2.gz (Apr 22): public bruteforce attempts
+    succeeded Failed-password loops from 146.190.83.66 (DigitalOcean) and
+    138.124.181.144. lastlog confirms successful root SSH login from 192.168.0.75
+    on Apr 28 23:34:28. Root login mechanism is the most likely vector for
+    XMRig install (Apr 23 07:05).
+    Currently sshd_config.d/10-legion.conf still permits this; узел остаётся
+    уязвим к bruteforce пока конфиг не закрыт.
+    Decision rule: NO destructive action until operator-confirmation. Recommended
+    remediation (NOT executed): set PermitRootLogin no + PasswordAuthentication no
+    in sshd_config.d/10-legion.conf, then systemctl reload sshd. Do not delete
+    /root/.ssh/authorized_keys yet — it is forensic evidence.
+    Linked GAPs:
+      - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
+      - G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0)
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0, OPEN, 2026-05-07)
+    /root/.ssh/authorized_keys on evo1 (mtime Mar 28 12:49, 690 bytes) contains
+    multiple SSH public keys for direct root login:
+      - ssh-rsa egor.kopylov@egit-MacBook-Air.local — non-canon identity
+      - ssh-ed25519 mmber@mark-legion — operator key (legitimate)
+      - one truncated/empty entry (line 1)
+    Combined with G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN, these keys grant direct
+    root access from external endpoints.
+    Decision rule: NO destructive removal until operator confirms which keys are
+    canon. Forensic preservation (sha256 manifest) mandatory.
+    Linked GAPs:
+      - G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN (P0)
+      - G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0)
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION (P1, OPEN, 2026-05-07)
+    Same RSA public key alex@MacBook-Pro-Alex.local present in:
+      - /home/mmber/.ssh/authorized_keys on Legion (factory layer)
+      - /home/banxe/.ssh/authorized_keys on evo1 (project layer)
+      - User alex (UID 1004) on evo1 with /bin/bash login shell
+    Cross-layer presence violates canon §1.bis principle of factory↔project layer
+    isolation. Either alex is a known teammate with legitimate access (pending
+    operator-classification) or this is a pivot identity used by attacker between
+    layers.
+    Decision rule: operator must classify alex identity. NO destructive removal
+    until classification + operator-confirmation. If unauthorized — coordinate
+    revocation simultaneously across both layers.
+    Linked GAPs:
+      - G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0)
+      - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-EVO1-CRON-PULL-UNSIGNED (P2, OPEN, 2026-05-07)
+    Cron entries on evo1 auto-execute pulled code without signature verification:
+      - banxe crontab: */15 git pull --ff-only origin main + rsync guardian + sudo systemctl restart banxe-guardian-factory
+      - root crontab: bash /data/vibe-coding/memory-autosync-watcher.sh
+      - root crontab: bash /data/vibe-coding/ctio-watcher.sh
+      - root crontab: bash /usr/local/bin/watchdog-watcher.sh
+    Supply-chain risk: malicious commit to origin/main → automatic execution.
+    Also explains how external git reset to origin/main observed in operator
+    session 2026-05-07 12:56 propagated rapidly (separate from XMRig but related
+    to G-PROCESS-MEMORY-MD-LEAKAGE / parallel-session-leakage chain).
+    Decision rule: NO destructive change until operator decides on signed-commit
+    enforcement and/or replacing auto-pull with explicit deploy gate.
+    Linked GAPs:
+      - G-PROCESS-MEMORY-MD-LEAKAGE (P2)
+      - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
 
