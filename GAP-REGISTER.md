@@ -677,6 +677,16 @@
     - Internal: unauthorized root binary, full host compromise must be assumed
     **Decision rule:** read-only IoC sweep evo2+Legion BEFORE any destructive action on evo1.
     Full compromise audit evo1 BEFORE stop/disable/cleanup. Forensic artifact preservation mandatory.
+    **Containment status (2026-05-07, A16-a executed):**
+    Network containment APPLIED via host iptables on evo1.
+    Rule: iptables -I OUTPUT 1 -d 136.243.75.233 -j DROP
+          -m comment --comment "BANXE-IL-CANON-INCIDENT-2026-05-07-EVO1-XMRIG-CONTAINMENT"
+    State: rule active, counter at install pkts=0/bytes=0; conntrack entry for
+    pool IP cleared by kernel. XMRig PID 2127 and watchdog PID 2111 still running
+    (not touched). Mining shares cannot reach pool. Persistence: RUNTIME-ONLY,
+    will be removed on reboot — must transition to A16-d cleanup before any reboot.
+    Rollback: single iptables -D command (documented in IL-OPS-EVO1-CONTAINMENT).
+    Forensic impact: ZERO.
     **Cleanup ordering (binding, awaiting operator-confirmation):**
     1. systemctl stop observed.service
     2. systemctl stop systemd.service
