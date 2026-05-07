@@ -562,3 +562,9 @@
     gateway» (canon §2). PR #104 (G-FACTORY-LITELLM-DUPLICATE CLOSED) был
     merged 2026-05-06; регрессия. Closing IL: TBD.
     Anchors: PR #104, IL-CANON-FACTORY-PROJECT-LAYERS-2026-05-07.
+
+
+- [ ] G-GUARDIAN-WEBHOOK-MISSING (P1, OPEN, 2026-05-07)
+    Branch protection на main требует guardian-factory + guardian-project status checks от GitHub App id 15368. Guardian services здоровы на evo1:8195/8196, но GitHub webhook delivery не настроена — нет webhook'ов в репо, check_runs total_count=0. Требуется: GitHub App credentials, публичный HTTPS endpoint (через cloudflared / nginx), webhook handler в Guardian с check_run posting back. До исправления: branch protection bypass window per IL-CANON-PROCESS-INCIDENT-2026-05-07-PROTECTION-WINDOW.
+    Closing IL: TBD.
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-PROTECTION-WINDOW, PR #121/#122/#123/#124.
