@@ -250,6 +250,7 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-06 | `checkpoint-2026-05-06-defi-stack-binance-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-dac8-tax-reporting-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md |
 | 2026-05-06 | `checkpoint-2026-05-06-oss-sumsub-replacement-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md |
+| 2026-05-06 | `checkpoint-2026-05-06-owner-control-agent-block` | _будет проставлен оператором после merge PR_ | ROADMAP BLOCK | docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
@@ -354,3 +355,25 @@ Canonical ownership: KYC/AML Operations (MLRO) — process owner; Customer Opera
 Тег после merge: `checkpoint-2026-05-06-oss-sumsub-replacement-block`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md](docs/sessions/SNAPSHOT-2026-05-06-oss-sumsub-replacement-block.md)
+
+## Roadmap Block 2026-05-06 — Owner Control Agent 1.0 (KPI/Compliance Pulse for BANXE.COM Holding)
+
+Канонизация плана Owner Control Agent 1.0 — внешнего наблюдательного KPI/compliance pulse-агента для собственника BANXE.COM (холдинг) над TOMPAY LTD (FCA EMI) и NEURONEXT (CASP/VASP под MiCA). Агент не является каналом FCA-reporting и не замещает решения MLRO. Observer-only: нет write-доступа к клиентским системам.
+
+**Источники данных (7 Google Sheets + Apps Script):** TompayDailyFiat (11 столбцов, A..K), SafeguardingRecon (14 столбцов, A..N), FCAReportingCalendar (7 столбцов, A..G), FraudAndAML (10 столбцов, A..J), ComplaintsSupport (10 столбцов, A..J), OpRiskIncidents (8 столбцов, A..H), NeuronextDailyCrypto (10 столбцов, A..J). Apps Script `collectDataForClaude()` — триггер 06:00–07:00 UTC, агрегирует последние 7 дней + MTD, записывает в лист ClaudeInput (ячейка A1).
+
+**Non-PII контракт ClaudeInput:** только агрегированные KPI, счётчики, итоги, severity-флаги; запрещены имена/IBAN/адреса/паспорта/MRZ/биометрия/транзакционные PII/SAR-нарративы.
+
+**Одобренный AI-plane:** Claude.ai с DPA или EU-managed Claude / Bedrock-EU. Личные аккаунты без DPA для продакшн-данных запрещены.
+
+**KPI-пороги (11 KPI):** Safeguarding Shortfall — нулевая толерантность (красный > £0); Transaction Failure Rate — зелёный < 2%, жёлтый 2–5%, красный > 5%; Fraud Rate — зелёный < 0.1%, жёлтый 0.1–0.5%, красный > 0.5%; SAR Pipeline — жёлтый > 0 незакрытых > 48ч, красный > 0 просроченных > 5 дней; FCA Calendar — красный: просроченный дедлайн; Complaints Response Rate — зелёный ≥ 95%, жёлтый 85–95%, красный < 85%; Op Risk P1 Incidents — зелёный = 0 открытых, жёлтый 1–2, красный ≥ 3; Crypto PnL Variance — жёлтый > 5% от прогноза; VASP Travel Rule Compliance — зелёный = 100%; Liquidity Buffer — зелёный ≥ 110% target, красный < 100%; Regulatory Capital — зелёный ≥ 120% trigger.
+
+**Ownership matrix:** Данные-owner — MLRO (SafeguardingRecon, FraudAndAML), CFO (TompayDailyFiat, NeuronextDailyCrypto), CCO (FCAReportingCalendar, ComplaintsSupport, OpRiskIncidents); Агент-owner — CEO/Собственник (потребитель), Engineering (деплой Apps Script + Claude Project).
+
+Canonical ownership: CEO/Собственник — agent consumer; MLRO — compliance data owner; CFO — financial data owner; Engineering — Apps Script + Claude Project. Pending invariants: I-45 (non-PII контракт ClaudeInput), I-46 (одобренный AI-plane), I-47 (observer-only граница). Резерв ADR: ADR-063..069.
+
+Базовая опора: `checkpoint-2026-05-06-oss-sumsub-replacement-block`.
+
+Тег после merge: `checkpoint-2026-05-06-owner-control-agent-block`.
+
+→ Подробности: [docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md](docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md)
