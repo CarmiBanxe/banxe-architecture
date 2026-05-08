@@ -249,3 +249,39 @@ PR #131 содержал registry append + P0 incident material в одном sq
 - Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
 
 **Next: operator-acknowledge for Phase 1 (Forensic Preservation evo1) + MLRO/DPO acknowledge for Phase 3 (Compliance Assessment).**
+
+---
+
+### 2026-05-08 — IoC EXPANSION + PHASE 1 FORENSIC CHAIN (Steps 1e/2/3)
+
+**Phase 1 partial complete. IoC master-source expanded. Re-sweep required.**
+
+- **IoC expansion** (2 new artefacts from Phase 1 Step 3 analysis):
+  - `/etc/systemd/system/observed.service` — watchdog/respawn unit (SHA256 53d664a4eecf..., mtime 2026-04-23 07:05:54).
+  - `/usr/local/bin/free_proc.sh` — competing-miner killer script (SHA256 5cae515b56e5..., mtime 2026-04-23 07:05:51).
+  - Both in same mtime-transaction as XMRig binary/unit (delta ≈ seconds).
+  - **Impact:** prior IoC sweep (Phase 2) was against incomplete list → supplemental re-sweep evo2+Legion required.
+- **Phase 1 — Forensic Preservation (Steps 1e+2+3 of ~7):**
+  - Step 1e: proc snapshot PID 2127 (601 lines, SHA256 7adfbe1e...) — off-host Legion.
+  - Step 2: integrity verification 13 checks (204 lines, SHA256 196524233bea...) — off-host Legion.
+  - Step 3: auth/journal/cron enumeration 13 checks (1342 lines, SHA256 74d71a45...) — off-host Legion.
+  - Step 3 analysis: automated (SHA256 5ccca1fd...) — off-host Legion.
+  - Steps 4–7 pending operator.
+- **Containment verification:** XMRig .bench.log confirms 0.00/0.00/0.00 H/s since DROP. Pre-containment max: 16004.8 H/s. Containment effective.
+- **Files-changed-after-compromise flags:**
+  - /etc/passwd + /etc/shadow: mtime 2026-05-03 (10 days post-compromise) — Phase 5 audit required.
+  - /home/banxe/.ssh/authorized_keys: mtime 2026-05-01, 6 keys — Phase 5 audit required.
+  - /root/.ssh/authorized_keys: mtime 2026-03-28, 4 keys — pre-compromise but audit required.
+- **Boot anomaly:** 3 reboots 2026-05-07 00:05–01:03. XMRig started 01:03:48 (1 sec after boot).
+- New IL records: `IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC`, `IL-INCIDENT-2026-05-08-PHASE1-FORENSIC-CHAIN-PRESERVED`, `IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED`, `IL-INCIDENT-2026-05-08-CONTAINMENT-EFFECTIVENESS-VERIFIED`.
+- New gaps: `G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC` (P1), `G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC` (P1).
+- Phase table update:
+  - Phase 0: ✅ Complete
+  - Phase 1: 🔶 Partial (Steps 1e+2+3 done, Steps 4–7 pending)
+  - Phase 2: ⚠️ Re-sweep required (2 new IoC not in original checklist)
+  - Phase 3: ⏳ Assessment framework created (PR #133), awaiting MLRO + DPO
+  - Phase 4: ✅ Applied + verified effective
+  - Phase 5–9: ⏳ Awaiting remaining Phase 1
+- Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
+
+**Next: Phase 1 Steps 4–7 (operator) + supplemental re-sweep evo2/Legion for observed.service + free_proc.sh.**
