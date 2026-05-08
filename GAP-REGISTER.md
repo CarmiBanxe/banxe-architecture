@@ -1171,3 +1171,8 @@
     Closing IL: TBD (Phase F4.1 — duplicate canon-file reconciliation sweep + add to canon §3 process notes).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
 
+    **2026-05-08 cleanup-actor: CONFIRMED PARALLEL CLAUDE CODE SESSION** —
+    best-decision (§4 BDP) based on Bundle B preservation (mtime 2026-05-07 21:54),
+    PR #138 parallel activity, journalctl absence, sshd hardening pre-Step-5.
+    Authorised internal, forensic-first. Recurring pattern (3rd in 7d). Pending I-68.
+    See IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-CONFIRMED-PARALLEL-SESSION.
