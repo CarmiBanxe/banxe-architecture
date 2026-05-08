@@ -255,6 +255,7 @@ ADR-028 (KYC re-verification triggers) в работе: Step 1 (PR #69) и Step 
 | 2026-05-07 | `checkpoint-2026-05-07-r1-r2-r3-complete` | 6d56ff5 | CHECKPOINT (parallel session) | docs/sessions/ (R1-R2-R3 fixes roadmap) |
 | 2026-05-07 | `checkpoint-2026-05-07-customer-privacy-right-v2-base` | 00822b5 | ROADMAP BLOCK | docs/privacy/customer-privacy-right-v2.md |
 | 2026-05-07 | `checkpoint-2026-05-07-ghost-mode-spec` | 97fc7c6 | FEATURE SPEC | docs/privacy/ghost-mode-spec.md |
+| 2026-05-08 | `checkpoint-2026-05-08-incident-monitor-state-transition` | d087169 | INCIDENT STATE TRANSITION | docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md |
 
 Протокол наращивания (append-only):
 1. Каждый новый блок прогресса = отдельный PR в `banxe-architecture`, отдельная ветка, один коммит.
