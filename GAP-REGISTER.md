@@ -747,7 +747,14 @@
     See IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE,
     IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION,
     IL-INCIDENT-2026-05-08-BUNDLE-B-CHAIN-INTACT.
-    Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
+    **2026-05-08 status: RESOLVED-PENDING-MLRO-ACK** — containment + remediation +
+    post-cleanup verification complete. Awaiting MLRO/DPO compliance assessment
+    finalisation for GDPR Art. 33 / FCA SUP 15 / AMLR. Vector NOT determined
+    (worst-case assumption applies). Cleanup-actor PENDING operator confirmation.
+    See IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE,
+    IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-NOT-IDENTIFIED,
+    IL-INCIDENT-2026-05-08-VECTOR-NOT-DETERMINED-LOGS-ROTATED.
+    Closing IL: TBD (requires MLRO/DPO compliance assessment + operator confirmation).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED,
@@ -795,6 +802,10 @@
     - unsigned cron auto-pull supply-chain risk (G-SECURITY-EVO1-CRON-PULL-UNSIGNED, P2)
     Status: GAP remains OPEN as parent tracker; closes when all 7 derived GAPs are CLOSED.
     No destructive action taken — fully read-only. Forensic evidence preserved in IL.
+    **2026-05-08 status: COMPLETE — POST-CLEANUP VERIFIED** — Phase 5 post-cleanup
+    audit confirmed cleanup completeness (6/6 XMRig artefacts removed, 0 rogue
+    users/keys/units/cron/sudoers, sshd hardened, Bundle B intact). Vector NOT
+    determined (logs rotated). See IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.

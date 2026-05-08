@@ -5117,3 +5117,96 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
   IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION,
   IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE
+
+### IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 5 (Post-cleanup compromise audit evo1) COMPLETE
+- Status: COMPLETE — all 6 XMRig paths REMOVED, 0 rogue users, 0 empty passwords,
+  0 NOPASSWD:ALL backdoors, 0 malicious systemd units in window, sshd hardened,
+  cron/timers all legitimate, Bundle B intact with SHA256 manifest
+- Priority: P0
+- Forensic artefacts (SHA256 chain-of-custody):
+  - step05-post-cleanup-audit.txt — SHA256 07c5a2ff3fc1095e8f58897c79a32767c23637657521047ffb659c9717c02bcb
+    (677 lines / 83 698 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase5/post-cleanup-audit-2026-05-08T11-07-45Z/
+  - step05-analysis.txt — on Legion off-host
+    Path: ~/banxe-incident-2026-05-07/phase5/step05-analysis-2026-05-08T11-11-47Z/
+- Audit scope (16 sections): XMRig artefact paths (6/6 removed), systemd units
+  mtime window, process enumeration, user audit (passwd/shadow/groups), sudoers.d,
+  SSH config + authorized_keys, cron + systemd timers, iptables state, journalctl
+  cleanup-window 09:30-12:00, recent files 24h, SUID, tmp audit, Bundle B
+  inventory, listening sockets, load avg
+- Key findings:
+  - All 6 XMRig artefacts confirmed REMOVED
+  - 0 rogue users, 0 empty passwords, 0 NOPASSWD:ALL backdoors
+  - sshd hardened: port 2222, PermitRootLogin no, PasswordAuthentication no,
+    PubkeyAuthentication yes, MaxAuthTries 6, Match Address 192.168.0.75
+  - All cron jobs + systemd timers = legitimate
+  - All listening sockets = legitimate
+  - Bundle B intact with full MANIFEST.sha256
+  - CPU load ≈0.5 (normalised)
+  - iptables containment rules still active
+- Closing IL: TBD
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING,
+  IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE,
+  IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION
+
+### IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-NOT-IDENTIFIED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 5 finding: cleanup-actor identification failed
+- Status: PENDING-OPERATOR-CONFIRMATION
+- Priority: P0 (chain-of-custody)
+- Source: journalctl 09:30-12:00 window shows only legitimate cron:
+  midaz-healthcheck, ctio-action-analyzer, watchdog-watcher, ollama runner.
+  0 systemctl stop|disable|mask events. 0 rm/unlink events.
+- Hypothesis: cleanup performed via ssh session outside 09:30-12:00 window
+  (between Step 3 09:27 and 09:30, or earlier), or via channel not captured
+  in journalctl, or journal was rotated
+- Action required: operator confirmation — was cleanup your manual action,
+  a parallel Claude Code session, or other automation?
+- Closing IL: closes on operator confirmation
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION
+
+### IL-INCIDENT-2026-05-08-VECTOR-NOT-DETERMINED-LOGS-ROTATED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 1+5 finding: vector entry NOT determinable
+- Status: VECTOR-LOST
+- Priority: P0 (compliance impact)
+- Source: auth.log/syslog Apr 22-23 entries = 0 (rotated out of retention —
+  auth.log.4.gz contains May data, not April; logrotate weekly + 4-week retention,
+  23 April beyond window). journalctl Apr 22-23 = 2 entries, insufficient.
+  Bash history root rotated.
+- Compliance impact: MLRO/DPO must assume worst-case full host compromise per
+  legal best practice for GDPR Art. 33 assessment. Vector cannot be narrowed
+  post-hoc; all data categories on evo1 during 14-day window are in-scope.
+- Closing IL: informational, closes with incident RESOLVED
+- Anchors: G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION,
+  G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING
+
+### IL-INCIDENT-2026-05-08-PHASE5-POSITIVE-FINDINGS
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 5 positive (hardening) findings
+- Status: VERIFIED
+- Priority: informational
+- SSH config hardened: port 2222, PermitRootLogin no, PasswordAuthentication no,
+  PubkeyAuthentication yes, MaxAuthTries 6, Match Address 192.168.0.75
+  AllowUsers banxe + key-only (sshd_config mtime 2026-05-08 11:41)
+- SSH keys baseline:
+  - /root/.ssh/authorized_keys: md5 ea78faf2cfc3d8703d3390993fbd2e89 (3 keys,
+    mtime 2026-05-08 13:04 — operator-action immediately before Step 5)
+  - /home/banxe/.ssh/authorized_keys: md5 c9c4aa3bc2474f3ab3be371ae882fc4c
+    (6 keys, mtime 2026-05-01 13:12 — pre-discovery)
+- sudoers.d clean: only banxe-guardian (narrowly scoped:
+  banxe ALL=(root) NOPASSWD: /bin/systemctl restart banxe-guardian-factory)
+- Bundle B /tmp/banxe_forensic_254683/ intact (MANIFEST.sha256, 16 files)
+- iptables containment static: 12438 + 8921 pkts, no reconnect attempts
+- PID 2127 confirmed GONE
+- Closing IL: informational, closes with incident RESOLVED
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE
