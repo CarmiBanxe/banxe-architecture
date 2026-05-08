@@ -142,3 +142,35 @@
    - Не отменяет HW Baseline §4 и Ruflo §3.
    - Шаг 4 HANDOFF-2026-05-06 = factory layer; Шаг 5 = project layer +
      cross-layer LiteLLM.
+
+## Dual-Use Feature / Agent Canon
+
+Any new feature, stack component, workflow, CRM/support/compliance tool, or AI agent
+MUST be evaluated in both Factory and Project planes by default.
+
+### Principle
+
+Features and agents are **dual-purpose by default:**
+
+| Plane | Scope |
+|---|---|
+| **Factory** (Legion) | Development, orchestration, audit, coding, review, planning, supervision |
+| **Project** (evo1 + evo2) | Product, runtime, business, compliance, operations, customer workflows |
+
+### Rules (binding)
+
+1. **Default = dual-use.** Every assessment, recommendation, decomposition, ownership
+   mapping, and roadmap placement assumes that a feature or agent serves both Factory
+   and Project unless explicitly restricted.
+
+2. **Single-plane restriction must be explicit.** If a feature or agent is
+   Factory-only or Project-only, this must be stated in the relevant ADR, spec,
+   or canon entry with rationale. Absence of restriction = dual-use.
+
+3. **Perplexity supervision and future sessions** must apply this canon
+   automatically when analysing stack components, proposing features, or
+   evaluating agents. The permanent fork between Factory and Project is
+   always the first-order decomposition axis.
+
+4. **Applies to all domains:** infrastructure, AI/LLM, compliance/AML/KYC,
+   privacy, DeFi, CRM, support, monitoring, observability, security tooling.
