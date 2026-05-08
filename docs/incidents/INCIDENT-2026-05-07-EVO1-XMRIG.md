@@ -430,3 +430,70 @@ Audit 2026-05-08 ~19:22 CEST from Legion, 18-section scope. Forensic SHA256: ste
 **GDPR Art. 33 deadline:** ≈ 2026-05-10 11:21 CEST (~38h).
 
 **Next: operator state-transition decision + Phase 6 credentials rotation + MLRO/DPO/Legal formal sign-off.**
+
+---
+
+### 2026-05-08 22:05 CEST — STATE TRANSITION P0 → MONITOR (Option A)
+
+**Operator decision (incident commander):** transition from P0 to MONITOR state.
+
+**Rationale (7 arguments):**
+1. All 7 technical phases complete (0/1/2/3/4/5/7) or operator-side parallel-safe (6).
+2. Containment stable 30+ hours, 0 reconnect attempts.
+3. Compliance evidence chain complete (12 forensic SHA256 + 8 incident PRs on main).
+4. Phase 6 credentials rotation parallel-safe in MONITOR state.
+5. Roadmap unfreeze under `I-59` restores productive workflow.
+6. If MLRO/DPO sign-off says "notify" — downgrade via single follow-up PR.
+7. MONITOR state allows accumulation of new roadmap blocks via standard procedure.
+
+**Phase final table:**
+- Phase 0 — Incident declaration: ✅
+- Phase 1 — Forensic preservation: ✅
+- Phase 2 — IoC sweep evo2 + Legion: ✅ CLEAN
+- Phase 3 — Compliance assessment framework: ✅ operator-ack
+- Phase 4 — Network containment: ✅ APPLIED static
+- Phase 5 — Post-cleanup compromise audit: ✅ COMPLETE verified
+- Phase 6 — Credentials rotation: ⏳ operator-side, parallel-safe
+- Phase 7 — AML/KYC integrity check: ✅ VERIFIED CLEAN
+- Phase 8 — Remediation: ✅ ~80% via parallel-session, verified Phase 5
+
+**Incident state: MONITOR (P1, downgraded from P0).**
+
+**MONITOR monitoring requirements:**
+- iptables containment counters reviewed every 12h
+- banxe-* services state checked daily
+- No new XMRig markers in process / docker / systemd
+- Audit-trail (ClickHouse ADR-027) integrity preserved
+- Sanctions screening (Watchman :8084) operational
+- Re-sweep evo2/Legion every 24h with current IoC list
+
+**Roadmap unfreeze under I-59:**
+- Standard OCAT/CCF roadmap-block procedure RESTORED
+- Ghost Mode acceptance (ADR-074/075/076) may proceed
+- New roadmap blocks may be added via standard procedure
+- ADR diapason next available: ADR-077..080
+
+**Restrictions remaining under MONITOR:**
+- No destructive ops on evo1 without incident commander approval
+- Containment iptables rules stay until MONITOR → RESOLVED
+- Bundle B preservation continues until RESOLVED + 30-day retention
+- I-68 (single-session incident command) takes effect immediately
+
+**Observation window:**
+- Start: 2026-05-08 22:05 CEST
+- Min end: 2026-05-09 22:05 CEST (24h)
+- Max end: 2026-05-10 22:05 CEST (48h)
+- GDPR Art. 33 deadline: 2026-05-10 11:21 CEST (within window)
+
+**Pending external (NOT blocking MONITOR):**
+- MLRO formal sign-off on FCA SUP 15
+- DPO formal sign-off on GDPR Art. 33/34
+- CCO formal sign-off on AMLR/AMLD6
+- Legal review of evidence chain
+- Phase 6 credentials rotation completion
+- 24-48h observation window completion
+- Operator decision on MONITOR → RESOLVED
+
+**New IL:** `IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR`, `IL-INCIDENT-2026-05-08-ROADMAP-UNFREEZE-MONITOR-STATE`.
+
+**Tag after merge:** `checkpoint-2026-05-08-incident-monitor-state-transition`.

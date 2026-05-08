@@ -381,3 +381,16 @@ Canonical ownership: CEO/Собственник — agent consumer; MLRO — com
 Тег после merge: `checkpoint-2026-05-06-owner-control-agent-block`.
 
 → Подробности: [docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md](docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md)
+
+## Incident State Transition 2026-05-08 — MONITOR (P0 → P1)
+
+Incident `INCIDENT-2026-05-07-EVO1-XMRIG` transitioned from P0 to MONITOR state on 2026-05-08 22:05 CEST after all 7 technical phases complete + AML/KYC integrity verified + containment stable 30+ hours. Roadmap unfreeze under `I-59` active. Standard OCAT/CCF roadmap-block accumulation procedure restored.
+
+- Incident document: `docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md`
+- State: MONITOR (P1, downgraded from P0)
+- Observation window: 2026-05-08 22:05 CEST .. 2026-05-09/10 22:05 CEST
+- Pending external: MLRO/DPO/CCO/Legal formal sign-off (parallel-safe)
+- Pending operator-side: Phase 6 credentials rotation (parallel-safe)
+- Roadmap restrictions remaining: no destructive ops on evo1; containment iptables stay; Bundle B preservation continues
+
+Tag after merge: `checkpoint-2026-05-08-incident-monitor-state-transition`.

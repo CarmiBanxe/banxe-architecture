@@ -765,6 +765,12 @@
     READY-FOR-MONITOR-DECISION by incident commander after Phase 6 init + 24-48h
     observation. See IL-INCIDENT-2026-05-08-PHASE7-AML-KYC-INTEGRITY-VERIFIED-CLEAN
     + IL-INCIDENT-2026-05-08-INCIDENT-READY-FOR-MONITOR-RECOMMENDATION.
+    **2026-05-08 22:05 CEST status: STATE TRANSITION P0 → P1 MONITOR** (operator
+    decision Option A) — incident commander signed off after complete technical
+    phases (0/1/2/3/4/5/7) + AML/KYC integrity verified + containment stable 30+h.
+    Observation window 24-48h starts now. Roadmap unfreeze under I-59 active.
+    MLRO/DPO/Legal external sign-off pending (parallel-safe).
+    See IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR.
 
 - [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
     Read-only IoC sweep evo2 required for XMRig IoC signatures (sha256, paths, pool IP,
@@ -843,6 +849,10 @@
     remaining. Final notification decision (Art. 33/34/SUP 15/AMLR) PENDING
     formal MLRO/DPO/CCO/Legal sign-off.
     See IL-INCIDENT-2026-05-07-COMPLIANCE-ASSESSMENT-ACK.
+    **2026-05-08 22:05 CEST status: INCIDENT-IN-MONITOR** — evidence chain ready
+    for external sign-off; incident transitioned to MONITOR (Option A); MLRO/DPO/
+    CCO/Legal may sign-off at any time within GDPR Art. 33 window (~37h remaining).
+    See IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR.
 
 
 - [ ] G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0, OPEN, 2026-05-07)
