@@ -5210,3 +5210,73 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Closing IL: informational, closes with incident RESOLVED
 - Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
   IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE
+
+### IL-INCIDENT-2026-05-07-COMPLIANCE-ASSESSMENT-ACK
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 3 (Compliance Assessment) ACKNOWLEDGED
+  by incident commander, pending MLRO/DPO/Legal formal sign-off
+- Status: OPERATOR-ACK-RECORDED, MLRO/DPO/LEGAL-FORMAL-ACK-PENDING
+- Priority: P0 (compliance evidence trail)
+- Decision rule: best-decision §4 BDP — operator-acknowledged receipt recorded
+  in IL before GDPR Art. 33 deadline (~2026-05-10 11:21 CEST)
+- Compliance timeline (factual):
+  - 2026-05-07 11:21 CEST — incident discovery
+  - 2026-05-07 ~14:00 — incident document (PR #132)
+  - 2026-05-07 ~17:00 — compliance assessment framework (PR #133)
+  - 2026-05-08 02:00 — containment APPLIED (PR #134)
+  - 2026-05-08 ~10:58 — Phase 2 re-sweep CLEAN (PR #136)
+  - 2026-05-08 ~11:59 — malware removed (PR #137 + PR #140)
+  - 2026-05-08 ~13:08 — Phase 5 post-cleanup COMPLETE (PR #139)
+  - 2026-05-08 ~19:00 — operator-ack evidence chain (this entry)
+  - 2026-05-10 11:21 — GDPR Art. 33 deadline (~40h from ack)
+- Compliance-assessment framework: docs/incidents/COMPLIANCE-ASSESSMENT-2026-05-07-EVO1-XMRIG.md
+  (353 lines, PR #133). Includes GDPR Art. 33/34, FCA SUP 15, AMLR/AMLD6
+  frameworks, roles matrix, decision boxes (unfilled — operator/MLRO/DPO decision)
+- Evidence chain PR list on main:
+  PR #132 — incident declaration + roadmap paused
+  PR #133 — compliance assessment framework
+  PR #134 — containment + Phase 2 sweep CLEAN + Livebox limitation
+  PR #135 — IoC expansion + Phase 1 forensic chain Steps 1e/2/3
+  PR #136 — Phase 2 re-sweep CLEAN (extended IoC) — scope localised to evo1
+  PR #137 — malware removed + Step 4 fs-audit + mmber1234 false-alarm + Bundle B intact
+  PR #139 — Phase 5 post-cleanup verified + RESOLVED-PENDING-MLRO-ACK
+  PR #140 — cleanup-actor confirmed parallel session (OPEN, not yet merged)
+- Forensic SHA256 chain (off-host on Legion):
+  Step 1e: 7adfbe1e389029831a5427b6cd6ae45263592645d28217dd0a38f1e12150cb37
+  Step 2: 196524233bea13fafbb17d4c5eab69cb3fbd27f6ec230500d684be3c4d7640f5
+  Step 3: 74d71a450078e5d0f079363926018f14813498eff1297f5634836cff93119a2a
+  Step 3 analysis: 5ccca1fd177b16f374f5e06e0a244cf50c167c1510c2e6719d9277169137186f
+  Step 4: a8718dbeef31f8a2280234a0ef010a656625de23163f548f8a4f24c325c0a24c
+  Step 4 analysis: dd418f0595b536422ae7c99f92abd41209e0f437825c5f55f5f15bf32d9c9820
+  Step 4b: 3ae092c03b5fb1a9ff1e7f9e4424cf15b1033c157d3546cab68b8a0aedc7f463
+  Phase 2 evo2: ad434350c6f5badc5d1f77ef6d72bb815076bf6d7b54897c080bc2042aebddd5
+  Phase 2 Legion: eb0d4a68ca87ad1d0ff62e6d302d64bc048328018e2699a69993600ee3dcf647
+  Phase 5: 07c5a2ff3fc1095e8f58897c79a32767c23637657521047ffb659c9717c02bcb
+  Bundle B: dfd6c9b5... (.tar.gz on Legion)
+- SLA tracking:
+  T+12h (MLRO/DPO ack): expired 2026-05-07 23:21 → ~21h overdue at this entry
+  T+24h (compliance review meeting): expired 2026-05-08 11:21 → ~7.5h overdue
+  GDPR Art. 33 (72h): ~40h remaining
+  FCA SUP 15: internal target ~T+72h aligned with GDPR
+- Compliance posture summary:
+  Containment: APPLIED, static (8921 pkts blocked, 0 reconnect)
+  Forensic: COMPLETE (11 SHA256 + Bundle B MANIFEST)
+  Scope: LOCALISED to evo1 (evo2/Legion CLEAN)
+  Remediation: ~80% (parallel-session cleanup, Phase 5 verified)
+  Vector: NOT determined (logs rotated)
+  Cleanup-actor: parallel Claude Code session (authorised internal)
+  Data exfiltration: NOT confirmed (XMRig = miner, not data-stealer)
+  Hardening: sshd port 2222 key-only, iptables static, sudoers narrow
+- Pending formal actions (not blocking this IL, follow-up):
+  - MLRO sign-off FCA SUP 15 decision
+  - DPO sign-off GDPR Art. 33/34 decision
+  - CCO sign-off AMLR/AMLD6 pipeline integrity
+  - Legal review evidence chain + DPA obligations
+  - Customer Operations notification draft IF Art. 34 = notify
+  - Replace <MLRO>/<DPO>/<CCO>/<Legal> placeholders (operator-side)
+- Closing IL: TBD — after formal MLRO/DPO/Legal sign-off
+- Anchors: G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION,
+  G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE,
+  IL-INCIDENT-2026-05-08-VECTOR-NOT-DETERMINED-LOGS-ROTATED

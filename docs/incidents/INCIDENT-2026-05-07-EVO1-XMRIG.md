@@ -383,3 +383,19 @@ Audit performed 2026-05-08 ~13:08 CEST from Legion via ssh against evo1, 16-sect
 - Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
 
 **Next: Phase 6 (credentials rotation) + Phase 7 (AML/KYC integrity) + MLRO/DPO Phase 3 acknowledge + operator confirmation of cleanup-actor.**
+
+---
+
+### 2026-05-08 — MLRO/DPO ACK — EVIDENCE CHAIN COMPLETE
+
+**Incident commander acknowledged compliance-assessment framework + full evidence chain.**
+
+- **Compliance-assessment framework:** `docs/incidents/COMPLIANCE-ASSESSMENT-2026-05-07-EVO1-XMRIG.md` (PR #133) — all checklists ready, decision boxes unfilled (operator/MLRO/DPO decision).
+- **Evidence chain:** PR #132–#137, #139, #140 on main. 11 forensic SHA256 off-host on Legion. Bundle B MANIFEST.sha256.
+- **SLA tracking:** T+12h MLRO/DPO ack overdue ~21h; T+24h compliance review overdue ~7.5h; GDPR Art. 33 ~40h remaining (deadline ≈ 2026-05-10 11:21 CEST).
+- **Compliance posture:** containment APPLIED, forensic COMPLETE, scope localised evo1, remediation ~80%, vector NOT determined (logs rotated), cleanup-actor = parallel session (authorised), data exfiltration NOT confirmed (XMRig = miner), sshd hardened.
+- **Pending formal:** MLRO sign-off (FCA SUP 15), DPO sign-off (GDPR Art. 33/34), CCO sign-off (AMLR), Legal review, Customer Ops notification draft (if Art. 34 = notify).
+- Phase table: Phases 0–5 ✅, Phase 6 ⏳ (credentials rotation), Phase 7 ⏳ (AML/KYC integrity), Phase 8 🔶 (~80%), Phase 9 ⏳.
+- GDPR Art. 33 deadline: ≈ 2026-05-10 11:21 CEST.
+
+**Next: formal MLRO/DPO/Legal sign-off on Art. 33/34 + SUP 15 + AMLR decisions + Phase 6 credentials rotation.**
