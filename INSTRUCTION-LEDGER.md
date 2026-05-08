@@ -4803,3 +4803,145 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Anchors: G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER,
   G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
   IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL
+
+### IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 1 analysis output → IoC master-source expansion
+- Status: OPEN — newly identified persistence artefacts, must be included in remediation
+- Priority: P0 (incident itself)
+- Source: Phase 1 Step 3 analysis on Legion off-host bundle
+  (SHA256 5ccca1fd177b16f374f5e06e0a244cf50c167c1510c2e6719d9277169137186f)
+- New IoC artefacts:
+  - /etc/systemd/system/observed.service: 226 bytes, owner root:root, mode 644,
+    mtime 2026-04-23 07:05:54.782730454 +0200. Created in same transaction as
+    systemd.service (mtime delta ≈14 ms). Suspected role: watchdog / respawn unit.
+  - /usr/local/bin/free_proc.sh: 130 bytes, owner root:root, mode 755 (executable),
+    mtime 2026-04-23 07:05:51.926843600 +0200. Created 4 seconds before unit files.
+    Suspected role: process-killer (terminates competing miners on compromised host).
+  - Pre-existing forensic bundle on evo1: /tmp/banxe_forensic_254683/ directory
+    containing preserved copies of binaries, units, configs, mtime preserved
+    (created by parallel session before our Phase 1).
+- Verification: artefacts cross-confirmed via Bundle B
+  ~/banxe-incident-2026-05-07/banxe_forensic_254683.tar.gz (SHA256 dfd6c9b5...).
+- Behavioural insight (containment evidence): XMRig PID 2127 logs show miner speed
+  10s/60s/15m 0.00 0.00 0.00 H/s continuously since containment applied.
+  Pre-containment max recorded: 16004.8 H/s. Containment confirmed effective:
+  zero hashing throughput post-iptables-DROP.
+- Boot timeline anomaly: 3 reboots between 2026-05-07 00:05 and 01:03 CEST
+  (boots -2, -1, 0). XMRig PID 2127 started 2026-05-07 01:03:48 CEST (1 second
+  after current boot). Vector hypothesis: dormant-since-Apr-23 OR
+  active-but-restarted-Apr-22 — to be determined in Phase 5.
+- Files-changed-after-compromise observed:
+  - /etc/passwd mtime 2026-05-03 05:36:54 (10 days post-compromise) — must be
+    audited in Phase 5 for unauthorized user-mod.
+  - /etc/shadow mtime 2026-05-03 05:36:54 (same transaction) — content NOT dumped
+    per security canon, mtime-only flag.
+  - /home/banxe/.ssh/authorized_keys mtime 2026-05-01 13:12:06
+    (md5 c9c4aa3bc2474f3ab3be371ae882fc4c, 6 keys) — must be audited against
+    known-good baseline in Phase 5.
+  - /root/.ssh/authorized_keys mtime 2026-03-28 12:49:26
+    (md5 ace20bb1f2943a26178476d3aa630f1d, 4 keys) — pre-compromise mtime,
+    but full audit required.
+- Impact on prior IoC sweep:
+  IoC sweep evo2/Legion (IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN)
+  was executed against the ORIGINAL IoC list which did NOT include observed.service
+  and free_proc.sh. A supplemental re-sweep for these two artefacts is required.
+  See G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC and
+  G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC (new gaps).
+- Closing IL: TBD (after Phase 5 compromise audit + Phase 8 remediation)
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING,
+  IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
+  IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL
+
+### IL-INCIDENT-2026-05-08-PHASE1-FORENSIC-CHAIN-PRESERVED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 1 (Forensic Preservation evo1)
+  PARTIAL COMPLETE (Steps 1e+2+3 of ~5–7 planned)
+- Status: PARTIAL COMPLETE — three forensic snapshots preserved off-host on Legion,
+  chain-of-custody verified via SHA256
+- Priority: P0
+- Phase 1 trial-and-error timeline:
+  - Step 1 (initial, 2026-05-08 02:27 CEST): failed — heredoc copy-paste corruption
+  - Step 1b (02:34): failed — same heredoc issue
+  - Step 1c (02:50): failed — Connection refused :22. Diagnosis: ssh canon for evo1
+    is :2222, command used default :22
+  - Step 1c-DIAG (02:35): identified :2222 as canonical port via Tailscale +
+    ~/.ssh/config Host evo1 entry
+  - Step 1d (09:01): failed — Too many authentication failures. Diagnosis:
+    ssh-agent loaded multiple keys, server MaxAuthTries exceeded.
+    Fix: IdentitiesOnly=yes + ~/.ssh/config alias evo1
+  - Step 1d (second run, 09:01): failed — sudo: a terminal is required to read
+    the password. Diagnosis: ssh without -tt cannot pass interactive sudo prompt
+  - Step 1e (09:09): SUCCESS — -tt -p banxe-sudo-prompt flow. 601 lines,
+    57 245 bytes
+  - Step 2 (09:21): SUCCESS — integrity verification (13 checks). 204 lines,
+    13 763 bytes
+  - Step 3 (09:27): SUCCESS — auth/journal/cron enumeration (13 checks).
+    1342 lines, 159 455 bytes
+  - Step 3 analysis (09:35): SUCCESS — automated analysis of Step 3 output.
+    37 634 bytes
+- Forensic bundle SHA256 chain-of-custody:
+  - Step 1e: 7adfbe1e389029831a5427b6cd6ae45263592645d28217dd0a38f1e12150cb37
+    (601 lines, 57 245 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase1/step01e-proc-pid2127-2026-05-08T07-06-11Z/
+  - Step 2: 196524233bea13fafbb17d4c5eab69cb3fbd27f6ec230500d684be3c4d7640f5
+    (204 lines, 13 763 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase1/step02-integrity-verify-2026-05-08T07-17-20Z/
+  - Step 3: 74d71a450078e5d0f079363926018f14813498eff1297f5634836cff93119a2a
+    (1342 lines, 159 455 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase1/step03-auth-journal-cron-2026-05-08T07-26-31Z/
+  - Step 3 analysis: 5ccca1fd177b16f374f5e06e0a244cf50c167c1510c2e6719d9277169137186f
+    (37 634 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase1/step03-analysis-2026-05-08T07-35-32Z/
+  - Bundle B (parallel session): ~/banxe-incident-2026-05-07/banxe_forensic_254683.tar.gz
+    SHA256: dfd6c9b5...
+  All bundles on Legion (off-host). No data on evo1 modified or removed.
+- Remaining Phase 1 steps (not yet executed):
+  - Step 4: network state (ss -tlnp, iptables -L -n -v, conntrack, /proc/net/tcp)
+  - Step 5: dpkg integrity (debsums), SUID/SGID enumeration
+  - Step 6: timeline correlation (mtime/ctime cross-reference for compromise window)
+  - Step 7: full memory dump (if operator decides, requires reboot planning)
+- Closing IL: TBD (after remaining steps + Phase 5)
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING,
+  IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC
+
+### IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — supplemental Phase 2 (IoC re-sweep)
+- Status: OPEN — re-sweep required for newly identified IoC artefacts
+- Priority: P1
+- Context: Phase 1 Step 3 analysis identified 2 new persistence artefacts
+  (observed.service, free_proc.sh) not in original IoC sweep checklist.
+  Prior sweep (IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN) was
+  against incomplete IoC list. Supplemental re-sweep evo2 + Legion required
+  for these 2 artefacts + their SHA256.
+- Re-sweep IoC (supplemental, append to master-source):
+  - SHA256 observed.service: 53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0
+  - SHA256 free_proc.sh: 5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4
+  - path: /etc/systemd/system/observed.service
+  - path: /usr/local/bin/free_proc.sh
+  - pattern: shell script killing processes with CPU >200% (competing miner elimination)
+- Closing IL: TBD (after re-sweep complete)
+- Anchors: G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC,
+  G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC,
+  IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
+  IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN
+
+### IL-INCIDENT-2026-05-08-CONTAINMENT-EFFECTIVENESS-VERIFIED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 4 verification
+- Status: VERIFIED — containment confirmed effective via miner throughput metrics
+- Priority: P0
+- Evidence: XMRig .bench.log shows continuous 0.00/0.00/0.00 H/s after
+  iptables-persistent DROP applied. Pre-containment max: 16004.8 H/s.
+  Hit counters continue incrementing (XMRig retrying SYN to blocked pool).
+  No alternative C2/pool connections observed in Step 3 network analysis.
+- Closing IL: informational, closes with incident RESOLVED
+- Anchors: IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL,
+  G-SECURITY-EVO1-XMRIG-CRYPTOMINER

@@ -708,6 +708,24 @@
     + Phase 6 credentials rotation + Phase 8 remediation complete.
     See IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL,
     IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN.
+    **2026-05-08 IoC expansion:** Phase 1 Step 3 analysis identified 2 additional
+    persistence artefacts in same mtime-transaction (2026-04-23 07:05):
+    - /etc/systemd/system/observed.service (SHA256 53d664a4eecf..., 226 bytes,
+      watchdog/respawn unit)
+    - /usr/local/bin/free_proc.sh (SHA256 5cae515b56e5..., 130 bytes, executable,
+      competing-miner killer script)
+    These were already in cleanup ordering but not in original IoC sweep checklist.
+    Supplemental re-sweep evo2+Legion required: G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC,
+    G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC.
+    **2026-05-08 containment verification:** XMRig .bench.log confirms 0.00/0.00/0.00 H/s
+    continuously since iptables-persistent DROP. Pre-containment max: 16004.8 H/s.
+    Containment effective.
+    **2026-05-08 forensic chain:** Phase 1 Steps 1e+2+3 complete (off-host on Legion).
+    SHA256 chain: Step 1e 7adfbe1e..., Step 2 196524233bea..., Step 3 74d71a45...,
+    Step 3 analysis 5ccca1fd.... Steps 4–7 pending operator.
+    See IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
+    IL-INCIDENT-2026-05-08-PHASE1-FORENSIC-CHAIN-PRESERVED,
+    IL-INCIDENT-2026-05-08-CONTAINMENT-EFFECTIVENESS-VERIFIED.
     Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
@@ -929,4 +947,27 @@
     Closing IL: TBD (secondary router deployment).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION,
     IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL.
+
+- [ ] G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN, 2026-05-08)
+    Supplemental IoC re-sweep evo2 required for 2 newly identified artefacts
+    from Phase 1 Step 3 analysis (not in original sweep checklist):
+    - /etc/systemd/system/observed.service
+      SHA256: 53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0
+    - /usr/local/bin/free_proc.sh
+      SHA256: 5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4
+    Original sweep (IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN) was
+    CLEAN but against incomplete IoC list. Read-only. No destructive actions.
+    Closing IL: TBD.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+    IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
+    IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED.
+
+- [ ] G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN, 2026-05-08)
+    Supplemental IoC re-sweep Legion required for 2 newly identified artefacts
+    (same as G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC).
+    Read-only. No destructive actions.
+    Closing IL: TBD.
+    Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+    IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
+    IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED.
 
