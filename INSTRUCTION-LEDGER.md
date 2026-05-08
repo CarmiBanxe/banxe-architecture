@@ -4718,3 +4718,88 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Session: incident/security-evo1-xmrig-2026-05-07
 - Referential point: branch incident/security-evo1-xmrig-2026-05-07,
   predecessor commit 54b9bbc.
+
+### IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 4 (Network Containment) APPLIED with host-level fallback
+- Status: APPLIED — exfiltration blocked, forensic state preserved
+- Priority: P0 (incident itself remains OPEN)
+- Source: operator confirmation 2026-05-08 02:00 CEST
+- Decision rule used: §I-31 compliance-first overrides «not on the suspected host» preference
+  when perimeter-level filtering is infeasible (see IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION)
+- Implementation evidence:
+  - iptables-persistent 1.0.20 installed on evo1
+  - DROP rules persisted in /etc/iptables/rules.v4:
+    - 136.243.75.233/32 (original XMRig pool, master-source)
+    - 136.243.0.0/16 (Hetzner AS24940 main range — DNS-rotation safe)
+    - 78.46.0.0/15 (Hetzner secondary)
+    - 88.198.0.0/16 (Hetzner secondary)
+  - netfilter-persistent enabled+active, reboot survival OK
+  - Hit counters at 02:00 CEST: /32 ≈ 8921 pkts / 660 KB; /16 ≈ 100 pkts / 6 KB
+  - XMRig PID 2127 in continuous SYN-SENT loop, no successful pool connection
+- Forensic chain preserved (literal):
+  - No process kill, no file removal, no sshd_config edit, no user mod
+  - Bundle: ~/banxe-incident-2026-05-07/banxe_forensic_254683.tar.gz on Legion (off-host)
+  - Bundle sha256: dfd6c9b5...
+  - Chain-of-custody verified
+- Rule type rationale: DROP not REJECT (no ICMP-back, no malware-alert race)
+- Closing IL: TBD — depends on Phase 1 forensic preservation, Phase 5 compromise audit,
+  Phase 6 credentials rotation, Phase 8 remediation
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER,
+  IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION,
+  INCIDENT-2026-05-07-EVO1-XMRIG.md (status update)
+
+### IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 2 (IoC Sweep evo2 + Legion) COMPLETE
+- Status: COMPLETE — both nodes CLEAN of XMRig IoC at sweep time
+- Priority: P1 (sweep gaps), supporting this IL
+- Sweep targets (per master-source G-SECURITY-EVO1-XMRIG-CRYPTOMINER):
+  - SHA256 baca0922a6ce82f250d15c7b71a209f0ba60274ff7e9654338900020a36de6c4 (binary)
+  - SHA256 a7e0975fbd52853cd757ce4e09a42de1402ec967ad187794d6d6bd88aa026b24 (unit file)
+  - paths /usr/local/bin/systemd, /etc/systemd/system/systemd.service,
+    /usr/local/bin/.config.json, /usr/local/bin/.bench.log
+  - pool IP 136.243.75.233:8029 (active connections, conntrack)
+  - BuildID c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
+  - masquerade patterns: process name systemd, unit systemd.service,
+    description «System Proxy Service»
+- Result evo2: NO MATCH — no binary, no unit, no config, no active connection
+  to pool, no BuildID match, no masquerade unit
+- Result Legion: NO MATCH — same checklist clean
+- Implication: compromise scope localised to evo1 at sweep time. Lateral movement
+  evo1→evo2 / evo1→Legion not confirmed. Vector likely direct compromise of evo1,
+  not factory-layer compromise.
+- Caveat: «clean at sweep time» ≠ «not compromised by other vectors». Phase 5
+  compromise audit evo1 still required to identify intrusion vector and determine
+  whether dormant payloads exist on evo2/Legion.
+- Closing IL: TBD (gap closure after Phase 5 + reasonable observation window)
+- Anchors: G-SECURITY-EVO2-IOC-SWEEP-PENDING, G-SECURITY-LEGION-IOC-SWEEP-PENDING,
+  G-SECURITY-EVO1-XMRIG-CRYPTOMINER, G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): CANON — binding precedent
+- Status: BINDING
+- Priority: P2
+- Context: Orange Livebox UI does not support outbound destination filtering.
+  Standard firmware exposes only 4 preset firewall levels (Faible/Moyen/Élevé/Personnalisé)
+  + incoming NAT/PAT/IPv6 forwarding + incoming whitelist. No custom outbound rules,
+  no static-route blackhole, no destination-IP blocking via UI.
+- Decision: при отсутствии perimeter-level outbound filtering на default ISP CPE —
+  host-level iptables на managed node является принимаемым principal containment
+  механизмом, при условии:
+  1. DROP, не REJECT (минимизация malware-alert race)
+  2. Forensic chain preserved (no kill/rm/edit/usermod)
+  3. Documented deviation в IL/Gap
+  4. Roadmap-обязательство deploy secondary downstream router
+     (pfSense/OPNsense/Mikrotik) для perimeter-level enforcement в будущем
+- Pending invariant proposal (без правки INVARIANTS.md):
+  I-67 — When perimeter router lacks outbound destination filtering, host-level
+  iptables on managed node is an accepted principal containment with documented
+  deviation + secondary-router roadmap.
+- Anchors: G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER,
+  G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL

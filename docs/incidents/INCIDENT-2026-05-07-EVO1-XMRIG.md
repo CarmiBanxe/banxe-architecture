@@ -214,3 +214,38 @@ PR #131 содержал registry append + P0 incident material в одном sq
 - Compliance timers started: GDPR Art. 33 (deadline ≈ 2026-05-10 11:21 CEST), FCA SUP 15 (assessment), AMLR (assessment).
 
 **Awaiting operator-acknowledge to enter Phase 1 (Forensic Preservation evo1).**
+
+---
+
+### 2026-05-08 — CONTAINMENT APPLIED + IoC SWEEP CLEAN (Phase 2 + Phase 4)
+
+**Phase 2 complete. Phase 4 applied.**
+
+- **Phase 4 — Network Containment APPLIED** (host-level fallback):
+  - iptables-persistent on evo1: DROP rules for 136.243.75.233/32 + Hetzner ranges (136.243.0.0/16, 78.46.0.0/15, 88.198.0.0/16).
+  - netfilter-persistent enabled+active, reboot survival OK.
+  - Hit counters at 02:00 CEST: /32 ≈ 8921 pkts / 660 KB.
+  - XMRig PID 2127 in SYN-SENT loop, no successful pool connection. Exfiltration blocked.
+  - Forensic chain preserved: no kill, no rm, no sshd_config edit, no user mod.
+  - Bundle: `~/banxe-incident-2026-05-07/banxe_forensic_254683.tar.gz` on Legion (off-host), sha256 `dfd6c9b5...`, chain-of-custody verified.
+  - Accepted deviation: host-level containment (not perimeter) due to Orange Livebox UI limitation (G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER, P2). See IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION.
+- **Phase 2 — IoC Sweep evo2 + Legion COMPLETE:**
+  - evo2: CLEAN (all 7 IoC criteria no-match).
+  - Legion: CLEAN (all 7 IoC criteria no-match).
+  - Compromise scope localised to evo1 at sweep time.
+  - Lateral movement evo1→evo2 / evo1→Legion not confirmed.
+  - Caveat: «clean at sweep time» ≠ «not compromised by other vectors».
+- Phase table update:
+  - Phase 0: ✅ Complete
+  - Phase 1: ⏳ Awaiting operator (forensic preservation evo1 — read-only)
+  - Phase 2: ✅ Complete (evo2 + Legion clean)
+  - Phase 3: ⏳ Assessment framework created (PR #133), awaiting MLRO + DPO
+  - Phase 4: ✅ Applied (host-level, accepted deviation)
+  - Phase 5–9: ⏳ Awaiting Phase 1
+- New IL records: `IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL`, `IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN`, `IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION`.
+- New gap: `G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER` (P2, OPEN).
+- Gap status updates: `G-SECURITY-EVO1-XMRIG-CRYPTOMINER` → CONTAINED; `G-SECURITY-EVO2-IOC-SWEEP-PENDING` → RESOLVED-PENDING-OBSERVATION; `G-SECURITY-LEGION-IOC-SWEEP-PENDING` → RESOLVED-PENDING-OBSERVATION.
+- Pending invariant: I-67 (host-level iptables as accepted containment with secondary-router roadmap).
+- Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
+
+**Next: operator-acknowledge for Phase 1 (Forensic Preservation evo1) + MLRO/DPO acknowledge for Phase 3 (Compliance Assessment).**
