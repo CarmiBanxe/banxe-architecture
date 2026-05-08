@@ -322,3 +322,33 @@ Re-sweep performed 2026-05-08 ~10:58 CEST from Legion against evo2 (via ssh) and
 - Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
 
 **Next: Phase 1 Steps 4–7 (operator) + MLRO/DPO acknowledge for Phase 3 (Compliance Assessment).**
+
+---
+
+### 2026-05-08 — MALWARE REMOVED (external action) + PHASE 1 STEP 4 FS-AUDIT COMPLETE
+
+**Critical state-change: malware fully removed by external action.**
+
+- **Malware removal:** PID 2127 GONE, `systemd.service` + `observed.service` = `Unit could not be found`, CPU load ≈1.2 (normalised). All malicious files absent. Removal occurred between Step 3 (09:27 CEST) and Step 4 (~11:59 CEST). Actor: external (parallel session / operator / automation) — to be confirmed.
+- **Forensic chain intact:** Bundle B on evo1 (`/tmp/banxe_forensic_254683/`) confirmed present + Legion off-host copy (SHA256 `dfd6c9b5...`). No forensic evidence lost.
+- **Phase 1 Step 4 (Filesystem-Wide Audit):** 16-section audit complete. No additional malicious artefacts. LD_PRELOAD rootkit excluded. SUID-window clean. dpkg -V: no system-binary tampering.
+- **mmber1234 false-alarm:** `/etc/default/ufw` standard config, NOT a credential. No rotation required for this specific finding.
+- **Vector NOT determined:** auth.log/syslog Apr 22-23 rotated out of retention window. Root-cause analysis incomplete.
+- **Compliance note:** malware removal does NOT eliminate GDPR Art. 33 / FCA SUP 15 assessment obligation — the 14-day compromise window must still be assessed for personal data access.
+- Forensic artefacts: Step 4 SHA256 `a8718dbe...`, Step 4 analysis `dd418f05...`, Step 4b `3ae092c0...`.
+- New IL records: `IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE`, `IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION`, `IL-INCIDENT-2026-05-08-MMBER1234-FALSE-ALARM-CLEARED`, `IL-INCIDENT-2026-05-08-BUNDLE-B-CHAIN-INTACT`.
+- Gap status: `G-SECURITY-EVO1-XMRIG-CRYPTOMINER` → CONTAINED-MALWARE-REMOVED.
+- Phase table update:
+  - Phase 0: ✅ Complete
+  - Phase 1: 🔶 Steps 1e+2+3+4+4b done; Steps 5–7 pending (dpkg integrity, timeline correlation, memory dump)
+  - Phase 2: ✅ Complete (all sweeps CLEAN)
+  - Phase 3: ⏳ Assessment framework created (PR #133), awaiting MLRO + DPO
+  - Phase 4: ✅ Applied + verified (containment rules still active on evo1)
+  - Phase 5: ⏳ Post-cleanup compromise audit (vector reconstruction limited by log rotation)
+  - Phase 6: ⏳ Credentials rotation (mandatory despite malware removal)
+  - Phase 7: ⏳ AML/KYC integrity verification
+  - Phase 8: 🔶 Partial (malware removed externally; hardening pending)
+  - Phase 9: ⏳ Post-incident review
+- Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
+
+**Next: Phase 5 (post-cleanup audit, vector reconstruction with limited logs) + Phase 6 (credentials rotation) + MLRO/DPO Phase 3 acknowledge.**
