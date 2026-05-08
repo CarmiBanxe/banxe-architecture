@@ -948,7 +948,7 @@
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION,
     IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL.
 
-- [ ] G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN, 2026-05-08)
+- [ ] G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-08)
     Supplemental IoC re-sweep evo2 required for 2 newly identified artefacts
     from Phase 1 Step 3 analysis (not in original sweep checklist):
     - /etc/systemd/system/observed.service
@@ -957,15 +957,28 @@
       SHA256: 5cae515b56e50ee8fd4fa86b46eedf1e1713badc9fafb287f826876b2cc475d4
     Original sweep (IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN) was
     CLEAN but against incomplete IoC list. Read-only. No destructive actions.
+    **2026-05-08 status: RESOLVED-PENDING-OBSERVATION** — extended IoC re-sweep
+    evo2 CLEAN (Path PASS / Unit PASS / Network PASS). Forensic artefact:
+    evo2-resweep.txt SHA256 ad434350c6f5badc5d1f77ef6d72bb815076bf6d7b54897c080bc2042aebddd5.
+    Compromise scope formally localised to evo1. Gap remains OPEN until Phase 5
+    compromise audit evo1 confirms vector + reasonable observation window passes
+    (24-48h re-sweep cadence recommended).
+    See IL-INCIDENT-2026-05-08-PHASE2-RESWEEP-COMPLETE.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
     IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
     IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED.
 
-- [ ] G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN, 2026-05-08)
+- [ ] G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-08)
     Supplemental IoC re-sweep Legion required for 2 newly identified artefacts
     (same as G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC).
     Read-only. No destructive actions.
+    **2026-05-08 status: RESOLVED-PENDING-OBSERVATION** — extended IoC re-sweep
+    Legion CLEAN (Path PASS / Unit PASS / Network PASS). Forensic artefact:
+    legion-resweep.txt SHA256 eb0d4a68ca87ad1d0ff62e6d302d64bc048328018e2699a69993600ee3dcf647.
+    Compromise scope formally localised to evo1. Gap remains OPEN until Phase 5
+    compromise audit evo1 confirms vector + reasonable observation window passes.
+    See IL-INCIDENT-2026-05-08-PHASE2-RESWEEP-COMPLETE.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
     IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,

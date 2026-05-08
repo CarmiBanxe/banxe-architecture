@@ -4945,3 +4945,53 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Closing IL: informational, closes with incident RESOLVED
 - Anchors: IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL,
   G-SECURITY-EVO1-XMRIG-CRYPTOMINER
+
+### IL-INCIDENT-2026-05-08-PHASE2-RESWEEP-COMPLETE
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 2 (IoC Re-sweep evo2 + Legion with
+  extended IoC list) COMPLETE
+- Status: COMPLETE — both nodes CLEAN against expanded IoC list at re-sweep time
+- Priority: P1 (re-sweep gaps), supporting P0 incident
+- Source: Phase 2 re-sweep performed 2026-05-08 ~10:58 CEST from Legion against
+  evo2 (via ssh) and Legion (local)
+- Forensic artefacts (SHA256 chain-of-custody):
+  - evo2-resweep.txt — SHA256 ad434350c6f5badc5d1f77ef6d72bb815076bf6d7b54897c080bc2042aebddd5
+    (95 lines / 5270 bytes)
+  - legion-resweep.txt — SHA256 eb0d4a68ca87ad1d0ff62e6d302d64bc048328018e2699a69993600ee3dcf647
+    (91 lines / 4508 bytes)
+  - Bundle: ~/banxe-incident-2026-05-07/phase2/resweep-evo2-legion-2026-05-08T08-58-03Z/
+- Extended IoC list applied (master-source G-SECURITY-EVO1-XMRIG-CRYPTOMINER):
+  - [binary_systemd] SHA256 baca0922... → /usr/local/bin/systemd
+  - [unit_systemd] SHA256 a7e0975f... → /etc/systemd/system/systemd.service
+  - [unit_observed] (NEW) /etc/systemd/system/observed.service (226 bytes)
+  - [script_freeproc] (NEW) /usr/local/bin/free_proc.sh (130 bytes, exec)
+  - [config_xmrig] /usr/local/bin/.config.json
+  - [log_xmrig] /usr/local/bin/.bench.log
+  - [pool_ip] 136.243.75.233:8029 (Hetzner DE)
+  - [buildid_systemd] c746d5445679e29ea09a8ae5bdc7fbbbf3720c44
+  - [masquerade_unit] process name systemd, unit systemd.service,
+    description System Proxy Service
+  - Hetzner ranges (broader): 136.243.0.0/16, 78.46.0.0/15, 88.198.0.0/16
+- Verdict matrix:
+  | Host   | Path-based | Unit-based | Network-based |
+  |--------|-----------|-----------|--------------|
+  | evo2   | PASS      | PASS      | PASS         |
+  | Legion | PASS      | PASS      | PASS         |
+- Implication: compromise scope formally localised to evo1 at re-sweep time.
+  Lateral movement evo1→evo2 / evo1→Legion not confirmed against expanded IoC
+  list. Vector likely direct compromise of evo1, not factory-layer compromise.
+- Caveat: «clean against known IoC at re-sweep time» ≠ «not compromised by other
+  vectors / dormant payloads with different SHA256 / different paths». Reasonable
+  observation window has not yet passed; recommended re-sweep cadence: every
+  24-48h until incident RESOLVED. Phase 5 compromise audit evo1 still required.
+- Compliance impact: this finding narrows the scope of GDPR Art. 33
+  personal-data-breach assessment to evo1 services only (not the full BANXE infra).
+  MLRO/DPO assessment may use this evidence to scope notification narrowly.
+- Closing IL: TBD (gap closure after Phase 5 + reasonable observation window)
+- Anchors: G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC,
+  G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC,
+  G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING,
+  IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
+  IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN
