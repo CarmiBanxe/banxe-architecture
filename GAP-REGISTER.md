@@ -698,23 +698,44 @@
     Network containment (iptables OUTPUT DROP 136.243.75.233 OR Tailscale isolation)
     is preferred first mitigation, safe vs watchdog.
     **Supersedes:** G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1).
+    **2026-05-08 status: CONTAINED** — exfiltration blocked via host-level
+    iptables-persistent on evo1 (136.243.75.233/32 + Hetzner ranges /16+/15).
+    XMRig PID 2127 in SYN-SENT loop; forensic chain preserved (no kill/rm).
+    Hit counters: /32 ≈ 8921 pkts / 660 KB. Forensic bundle on Legion (off-host),
+    sha256 dfd6c9b5..., chain-of-custody verified. IoC sweep evo2+Legion: CLEAN
+    (all 7 IoC criteria no-match, compromise scope localised to evo1 at sweep time).
+    Gap remains OPEN until Phase 1 forensic preservation + Phase 5 compromise audit
+    + Phase 6 credentials rotation + Phase 8 remediation complete.
+    See IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL,
+    IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN.
     Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED,
     G-INFRA-EVO1-LOAD-AVG-35, G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
 
-- [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN, 2026-05-07)
+- [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
     Read-only IoC sweep evo2 required for XMRig IoC signatures (sha256, paths, pool IP,
     BuildID, masquerade patterns). Same threat actor may have compromised evo2 via same
     vector. No destructive actions until sweep complete.
+    **2026-05-08 status: RESOLVED-PENDING-OBSERVATION** — IoC sweep evo2 clean
+    (all 7 IoC criteria no-match: no binary, no unit, no config, no active connection
+    to pool, no BuildID match, no masquerade unit). Compromise scope localised to evo1
+    at sweep time. Gap remains OPEN until Phase 5 compromise audit evo1 confirms
+    intrusion vector + reasonable observation window passes.
+    See IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
 
-- [ ] G-SECURITY-LEGION-IOC-SWEEP-PENDING (P1, OPEN, 2026-05-07)
+- [ ] G-SECURITY-LEGION-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
     Read-only IoC sweep Legion (factory layer) required for XMRig IoC signatures.
     Lower probability (WSL2, different access vector) but factory-layer compromise
     would affect all downstream trust. No destructive actions until sweep complete.
+    **2026-05-08 status: RESOLVED-PENDING-OBSERVATION** — IoC sweep Legion clean
+    (all 7 IoC criteria no-match). Factory-layer compromise not confirmed.
+    Gap remains OPEN until Phase 5 compromise audit evo1 confirms intrusion vector
+    + reasonable observation window passes.
+    See IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
 
@@ -887,4 +908,25 @@
       - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+
+- [ ] G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER (P2, OPEN, 2026-05-08)
+    Orange Livebox UI does not support outbound destination filtering.
+    Standard firmware exposes only 4 preset firewall levels
+    (Faible/Moyen/Élevé/Personnalisé) + incoming NAT/PAT/IPv6 forwarding
+    + incoming whitelist. No custom outbound rules, no static-route blackhole,
+    no destination-IP blocking via UI.
+    Impact: perimeter-level network containment impossible on default ISP CPE;
+    host-level iptables is the only available containment mechanism.
+    Accepted deviation: host-level iptables on managed node as principal
+    containment (see IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION).
+    Roadmap: deploy secondary downstream router (pfSense/OPNsense/Mikrotik)
+    for perimeter-level outbound enforcement.
+    Pending invariant: I-67 — host-level iptables accepted principal containment
+    with documented deviation + secondary-router roadmap when perimeter router
+    lacks outbound destination filtering.
+    Linked GAPs:
+      - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
+    Closing IL: TBD (secondary router deployment).
+    Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION,
+    IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL.
 
