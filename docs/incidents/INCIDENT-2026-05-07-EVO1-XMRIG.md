@@ -352,3 +352,34 @@ Re-sweep performed 2026-05-08 ~10:58 CEST from Legion against evo2 (via ssh) and
 - Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
 
 **Next: Phase 5 (post-cleanup audit, vector reconstruction with limited logs) + Phase 6 (credentials rotation) + MLRO/DPO Phase 3 acknowledge.**
+
+---
+
+### 2026-05-08 — PHASE 5 POST-CLEANUP VERIFICATION COMPLETE
+
+**Phase 5 (Post-cleanup compromise audit evo1) COMPLETE.**
+
+Audit performed 2026-05-08 ~13:08 CEST from Legion via ssh against evo1, 16-section comprehensive scope.
+
+- **Cleanup verified complete:** all 6 XMRig artefacts REMOVED, 0 rogue users, 0 empty passwords, 0 NOPASSWD:ALL backdoors, 0 malicious systemd units in mtime window, cron/timers all legitimate, listening sockets all legitimate.
+- **sshd hardened:** port 2222, PermitRootLogin no, PasswordAuthentication no, key-only, Match Address 192.168.0.75.
+- **Bundle B intact:** `/tmp/banxe_forensic_254683/` with full MANIFEST.sha256 (16 files).
+- **Cleanup-actor NOT identified:** journalctl 09:30-12:00 shows only legitimate cron. Awaiting operator confirmation.
+- **Vector NOT determined:** auth.log/syslog Apr 22-23 rotated out. MLRO/DPO must assume worst-case full host compromise for GDPR Art. 33 assessment.
+- **Forensic artefacts:** Step 5 SHA256 `07c5a2ff...` (677 lines / 83 698 bytes), Step 5 analysis on Legion.
+- New IL records: `IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE`, `IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-NOT-IDENTIFIED`, `IL-INCIDENT-2026-05-08-VECTOR-NOT-DETERMINED-LOGS-ROTATED`, `IL-INCIDENT-2026-05-08-PHASE5-POSITIVE-FINDINGS`.
+- Gap status updates: `G-SECURITY-EVO1-XMRIG-CRYPTOMINER` → RESOLVED-PENDING-MLRO-ACK; `G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING` → COMPLETE (post-cleanup verified).
+- Phase table update:
+  - Phase 0: ✅ Complete
+  - Phase 1: ✅ Complete (Steps 1e+2+3+4+4b)
+  - Phase 2: ✅ Complete (all sweeps + re-sweep CLEAN)
+  - Phase 3: ⏳ Assessment framework created (PR #133), awaiting MLRO + DPO
+  - Phase 4: ✅ Applied + verified (containment rules still active)
+  - Phase 5: ✅ Complete (post-cleanup verified, vector lost, cleanup-actor pending)
+  - Phase 6: ⏳ Credentials rotation (mandatory)
+  - Phase 7: ⏳ AML/KYC integrity verification
+  - Phase 8: 🔶 Malware removed + hardened; iptables containment rules to be reviewed
+  - Phase 9: ⏳ Post-incident review
+- Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
+
+**Next: Phase 6 (credentials rotation) + Phase 7 (AML/KYC integrity) + MLRO/DPO Phase 3 acknowledge + operator confirmation of cleanup-actor.**
