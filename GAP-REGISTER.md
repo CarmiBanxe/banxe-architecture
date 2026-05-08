@@ -759,6 +759,12 @@
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED,
     G-INFRA-EVO1-LOAD-AVG-35, G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
+    **2026-05-08 status: AML/KYC INTEGRITY VERIFIED CLEAN** — Phase 7 confirmed
+    AML/KYC pipeline integrity preserved: 0 banxe-* unit tampering, 0 config
+    tampering, ClickHouse/Watchman/Marble operational, sanctions screening intact.
+    READY-FOR-MONITOR-DECISION by incident commander after Phase 6 init + 24-48h
+    observation. See IL-INCIDENT-2026-05-08-PHASE7-AML-KYC-INTEGRITY-VERIFIED-CLEAN
+    + IL-INCIDENT-2026-05-08-INCIDENT-READY-FOR-MONITOR-RECOMMENDATION.
 
 - [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
     Read-only IoC sweep evo2 required for XMRig IoC signatures (sha256, paths, pool IP,

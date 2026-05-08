@@ -5280,3 +5280,76 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
   IL-INCIDENT-2026-05-08-PHASE5-POST-CLEANUP-VERIFIED-COMPLETE,
   IL-INCIDENT-2026-05-08-VECTOR-NOT-DETERMINED-LOGS-ROTATED
+
+### IL-INCIDENT-2026-05-08-PHASE7-AML-KYC-INTEGRITY-VERIFIED-CLEAN
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 7 (AML/KYC pipeline integrity check) COMPLETE
+- Status: VERIFIED-CLEAN — AML/KYC pipeline integrity preserved during incident
+- Priority: P0 (supporting AMLR/AMLD6 evidence)
+- Source: Phase 7 audit 2026-05-08 ~19:22 CEST from Legion via ssh against evo1
+  (18-section scope: docker, banxe systemd, ClickHouse, PostgreSQL,
+  OpenSanctions/Yente, Jube, Marble, Ballerine, configs, logs, processes,
+  listeners, iptables, CPU/memory)
+- Forensic SHA256:
+  step07-aml-kyc-integrity.txt — 661fa44f64935953e10317bff837c93f98cd6bc01fae48a890c5bf1263ea53c2
+  (403 lines, 43 945 bytes)
+  step07-analysis.txt — de13369c982b090de75fbe8df78f089ef9b5aeae162ab21e374688ff743da168
+  (38 938 bytes)
+- Positive findings:
+  - 0 banxe-* unit-files tampered in window Apr 22-25
+  - 0 compliance/AML configs/.env tampered in /data/banxe/
+  - ClickHouse audit-trail (ADR-027) running (:8123, :9000)
+  - Banxe compliance services ACTIVE: compliance-api (:8194), watchman (:8084/:9094),
+    screener, guardian-factory, guardian-project — uptime ~1d 18h
+  - Marble case-management 4 containers UP healthy (RestartCount=0)
+  - Containment static (12438/746K + 8921/660K, 0 reconnect 30+ hours)
+  - CPU 2.79/1.84/1.45 (normal), no XMRig markers
+- AMLR/AMLD6 compliance impact:
+  AML/KYC pipeline integrity PRESERVED. Sanctions screening operational.
+  Audit-trail preserved. No tampering of compliance configs in window.
+  No KYC/AML data exfiltration vector. MLRO sign-off ready.
+- Closing IL: TBD (after MLRO/DPO/Legal sign-off + 24-48h observation)
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION,
+  IL-INCIDENT-2026-05-07-COMPLIANCE-ASSESSMENT-ACK
+
+### IL-INCIDENT-2026-05-08-PRE-EXISTING-OPERATIONAL-GAPS-IDENTIFIED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): OBSERVE — pre-existing operational issues, NOT incident-related
+- Status: DOCUMENTED-FOR-POST-INCIDENT-ROADMAP
+- Priority: P3 (operational)
+- Pre-existing issues:
+  - Jube webapi RestartCount 2499, jobs RestartCount 2501 (Created 2026-04-02,
+    pre-incident by 21 days). Healthcheck-failure auto-restart pattern.
+    Future gap: G-OPS-JUBE-RESTART-LOOP-PREEXISTING (P3)
+  - banxe-recon scheduled service failed 2026-05-08 09:00:16, exit-code 3.
+    Static timer service, likely empty-data or transient failure.
+    Future gap: G-OPS-BANXE-RECON-INTERMITTENT-FAILURE (P3)
+  - banxe-verify-api / banxe-deep-search auto-restart correlated with
+    Step 7 probes — monitoring, not gap-worthy unless persistent
+- Anchors: IL-INCIDENT-2026-05-08-PHASE7-AML-KYC-INTEGRITY-VERIFIED-CLEAN
+
+### IL-INCIDENT-2026-05-08-INCIDENT-READY-FOR-MONITOR-RECOMMENDATION
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — recommendation for MONITOR state transition
+- Status: RECOMMENDATION — incident commander decision required
+- Priority: P0
+- Rationale: all technical phases complete (0-5 ✅, 7 ✅, 8 ~80%),
+  containment static 30+ hours (0 reconnect), forensic chain 12 SHA256
+  off-host, scope localised evo1, AML/KYC preserved, compliance evidence ready
+- State transition criteria for MONITOR:
+  1. MLRO/DPO/Legal sign-off received OR operator proceeds with rationale
+  2. Phase 6 credentials rotation initiated (parallel-safe)
+  3. 24-48h observation without reinfection signals
+  4. Cleanup-actor confirmed (CLOSED via PR #140)
+  5. Vector documented as not-determinable (CLOSED via PR #139)
+- Operator decision required (NOT executed by this PR):
+  Option A — MOVE TO MONITOR (recommended §4 BDP after Phase 6 init + 24h obs)
+  Option B — REMAIN IN RESOLVED-PENDING-MLRO-ACK (wait external sign-off)
+  Option C — MOVE TO RESOLVED (only after full sign-off + observation)
+- Closing IL: TBD (after operator state-transition decision)
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION

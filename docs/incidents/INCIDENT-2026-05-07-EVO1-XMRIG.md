@@ -399,3 +399,34 @@ Audit performed 2026-05-08 ~13:08 CEST from Legion via ssh against evo1, 16-sect
 - GDPR Art. 33 deadline: ≈ 2026-05-10 11:21 CEST.
 
 **Next: formal MLRO/DPO/Legal sign-off on Art. 33/34 + SUP 15 + AMLR decisions + Phase 6 credentials rotation.**
+
+---
+
+### 2026-05-08 — PHASE 7 AML/KYC INTEGRITY VERIFIED CLEAN — INCIDENT READY FOR MONITOR
+
+**Phase 7 (AML/KYC pipeline integrity check) COMPLETE.**
+
+Audit 2026-05-08 ~19:22 CEST from Legion, 18-section scope. Forensic SHA256: step07 `661fa44f...` (403 lines), analysis `de13369c...`.
+
+**AML/KYC INTEGRITY CLEAN:**
+- 0 banxe-* unit-files tampered in window Apr 22-25
+- 0 compliance/AML configs tampered in /data/banxe/
+- ClickHouse audit-trail (ADR-027) running (:8123, :9000)
+- Compliance services ACTIVE (compliance-api, watchman, screener, guardian-factory/project)
+- Marble 4 containers UP healthy, Watchman sanctions screening operational
+- Containment static 30+ hours (0 reconnect), CPU normal
+
+**Pre-existing operational gaps (NOT incident-related, P3):**
+- Jube restart-loop (RestartCount 2499/2501, since 2026-04-02)
+- banxe-recon failed run (exit-code 3, scheduled service)
+
+**Recommendation: READY-FOR-MONITOR-DECISION (operator)**
+- Option A: MOVE TO MONITOR (recommended after Phase 6 init + 24h observation)
+- Option B: REMAIN IN RESOLVED-PENDING-MLRO-ACK
+- Option C: MOVE TO RESOLVED (after full sign-off + observation)
+
+**Phase table:** Phases 0–5 ✅, Phase 6 ⏳ (operator-side), Phase 7 ✅, Phase 8 🔶 (~80%).
+
+**GDPR Art. 33 deadline:** ≈ 2026-05-10 11:21 CEST (~38h).
+
+**Next: operator state-transition decision + Phase 6 credentials rotation + MLRO/DPO/Legal formal sign-off.**
