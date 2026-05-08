@@ -223,3 +223,31 @@ Guardian недоступен: fail-open в режиме `audit`, fail-closed в
 Канон: `decisions/ADR-024-guardian-bash-shim.md`.
 Enforcement: `.claude/settings.json` PreToolUse hook (banxe-emi-stack); ENFORCE rollout 2026-05-11 (compliance repos), 2026-05-18 (everywhere).
 Severity: P1 — security/governance gap if bypassed.
+
+---
+
+**I-37 — Factory↔Project Layer Binding (PROPOSED)**
+Двухуровневая AI-инфраструктура (bootstrap canon v3 §0.1, §1.bis) immutable:
+factory layer = Legion (производство BANXE EMI banking platform); project layer
+= evo1 + evo2 unified (операционная работа банка как live financial institution).
+Factory-агенты НЕ ходят на project-узлы. Project-агенты НЕ ходят на Legion.
+Cross-layer вызовы — ИСКЛЮЧИТЕЛЬНО через LiteLLM v2 gateway
+(http://legion:4000/v1, master_key=sk-banxe-llm-gateway-2026) с canonical routes:
+factory-fast / factory-mid / factory-heavy / factory-coder / project-mid /
+project-heavy / project-reason. Регулируемые маршруты (project layer regulated)
+обязаны проходить через Ruflo proxy chain (request → ARL → Ruflo → target → response).
+Канон: bootstrap canon v3 §0.1 + §0.5 + §1.bis + §10 Phase F1.
+Источники истины: /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config),
+IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (factual baseline).
+Связь с существующими invariants: I-32 (no direct cloud LLM calls from EMI),
+I-33 (PII/AML deny-paths via local aliases), I-35 (Keycloak realm banxe-emi as
+single IAM issuer), I-36 (Claude Code Bash through Guardian shim).
+Severity: P0 — architecture invariant breach + §0.5 distribution discipline violation.
+Enforcement: factory overseer agent (Phase F2.4), Ruflo deployment (Phase F1),
+LiteLLM systemd unit + routes reconciliation (Phase F3.1 + F3.2),
+guardian-factory + guardian-project services (already running on evo1:8195/8196).
+*PROPOSED — требует явного утверждения CEO перед переводом в обязательный статус.*
+Обоснование: без явного binding факторий-агенты могут уходить на проектные узлы
+с regulated данными в обход Ruflo, нарушая §0.5 + I-32/I-33; project-агенты
+могут вызывать factory-модели для production задач, нарушая FCA SUP layer
+separation для regulated EMI операций.
