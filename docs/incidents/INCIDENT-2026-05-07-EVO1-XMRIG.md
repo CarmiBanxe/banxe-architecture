@@ -285,3 +285,40 @@ PR #131 содержал registry append + P0 incident material в одном sq
 - Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
 
 **Next: Phase 1 Steps 4–7 (operator) + supplemental re-sweep evo2/Legion for observed.service + free_proc.sh.**
+
+---
+
+### 2026-05-08 — PHASE 2 RE-SWEEP COMPLETE — SCOPE LOCALISED TO EVO1
+
+**Phase 2 (IoC Re-sweep evo2 + Legion with extended IoC list) COMPLETE.**
+
+Re-sweep performed 2026-05-08 ~10:58 CEST from Legion against evo2 (via ssh) and Legion (local), against expanded IoC master-source (including newly identified `observed.service` watchdog and `free_proc.sh` process-killer).
+
+**Verdict matrix:**
+
+| Host | Path-based | Unit-based | Network-based |
+|---|---|---|---|
+| evo2 | PASS | PASS | PASS |
+| Legion | PASS | PASS | PASS |
+
+**Forensic artefacts (off-host, Legion):**
+- `evo2-resweep.txt` — SHA256 `ad434350c6f5...` (95 lines / 5270 bytes)
+- `legion-resweep.txt` — SHA256 `eb0d4a68ca87...` (91 lines / 4508 bytes)
+- Bundle: `~/banxe-incident-2026-05-07/phase2/resweep-evo2-legion-2026-05-08T08-58-03Z/`
+
+**Scope finding:** compromise formally localised to evo1 at re-sweep time. Lateral movement evo1→evo2 / evo1→Legion not confirmed against expanded IoC list. This narrows the GDPR Art. 33 personal-data-breach assessment scope to evo1 services only.
+
+**Caveat:** «clean against known IoC at re-sweep time» ≠ «not compromised by other vectors». Recommended re-sweep cadence: 24-48h until incident RESOLVED. Phase 5 compromise audit evo1 still required to identify intrusion vector.
+
+- Gap status updates: `G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC` → RESOLVED-PENDING-OBSERVATION; `G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC` → RESOLVED-PENDING-OBSERVATION.
+- New IL: `IL-INCIDENT-2026-05-08-PHASE2-RESWEEP-COMPLETE`.
+- Phase table update:
+  - Phase 0: ✅ Complete
+  - Phase 1: 🔶 Partial (Steps 1e+2+3 done, Steps 4–7 pending)
+  - Phase 2: ✅ Complete (original sweep + re-sweep with extended IoC — all CLEAN)
+  - Phase 3: ⏳ Assessment framework created (PR #133), awaiting MLRO + DPO
+  - Phase 4: ✅ Applied + verified effective
+  - Phase 5–9: ⏳ Awaiting remaining Phase 1
+- Compliance timers still active: GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST.
+
+**Next: Phase 1 Steps 4–7 (operator) + MLRO/DPO acknowledge for Phase 3 (Compliance Assessment).**
