@@ -726,6 +726,27 @@
     See IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
     IL-INCIDENT-2026-05-08-PHASE1-FORENSIC-CHAIN-PRESERVED,
     IL-INCIDENT-2026-05-08-CONTAINMENT-EFFECTIVENESS-VERIFIED.
+    **2026-05-08 status: CONTAINED-MALWARE-REMOVED** — malware fully removed
+    by external action between Step 3 (09:27 CEST) and Step 4 (~11:59 CEST).
+    PID 2127 GONE, systemd.service + observed.service = Unit could not be found,
+    CPU load ≈1.2 (normalised). Exact actor: external (parallel session / operator /
+    automation) — to be confirmed by operator.
+    Forensic chain intact: Bundle B on evo1 (/tmp/banxe_forensic_254683/) confirmed
+    present + Bundle B .tar.gz on Legion off-host (SHA256 dfd6c9b5...).
+    Phase 1 Step 4 fs-audit: no additional malicious artefacts; LD_PRELOAD clean;
+    SUID-window clean; dpkg -V no system-binary tampering.
+    Step 4 forensic: SHA256 a8718dbe... (494 lines), analysis dd418f05... (34K),
+    Step 4b: SHA256 3ae092c0... (136 lines).
+    mmber1234 dpkg -V false-alarm: /etc/default/ufw standard config, NOT a credential.
+    INTRUSION VECTOR NOT DETERMINED — auth.log/syslog Apr 22-23 rotated out of
+    retention window. Root-cause analysis incomplete.
+    Gap remains OPEN until: Phase 5 post-cleanup audit, Phase 6 credentials rotation,
+    Phase 7 AML/KYC integrity verification, Phase 8 hardening, Phase 9 review.
+    GDPR Art. 33 / FCA SUP 15 assessment still required (malware removal does not
+    eliminate obligation to assess 14-day compromise window).
+    See IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE,
+    IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION,
+    IL-INCIDENT-2026-05-08-BUNDLE-B-CHAIN-INTACT.
     Closing IL: TBD (requires operator-confirmed remediation + compliance assessment).
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,

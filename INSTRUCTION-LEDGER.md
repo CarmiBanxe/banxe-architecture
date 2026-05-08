@@ -4995,3 +4995,125 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING,
   IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
   IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN
+
+### IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Phase 1 Step 4 (Filesystem-Wide Audit) COMPLETE
+- Status: COMPLETE — full filesystem audit performed; no additional malicious
+  artefacts beyond known IoC; LD_PRELOAD rootkit excluded; SUID-window clean
+- Priority: P0
+- Forensic artefacts (SHA256 chain-of-custody):
+  - step04-fs-audit-evo1.txt — SHA256 a8718dbeef31f8a2280234a0ef010a656625de23163f548f8a4f24c325c0a24c
+    (494 lines / 32 392 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase1/step04-fs-audit-evo1-2026-05-08T09-56-34Z/
+  - step04-analysis.txt — SHA256 dd418f0595b536422ae7c99f92abd41209e0f437825c5f55f5f15bf32d9c9820
+    (34 198 bytes)
+    Path: ~/banxe-incident-2026-05-07/phase1/step04-analysis-2026-05-08T10-06-18Z/
+- Audit scope (16 sections): dpkg -V, SUID full + window, FS files Apr 22-25 mtime,
+  world-writable, auth.log focused, syslog focused, journalctl broader,
+  web/docker/keycloak logs, bash history, /tmp/banxe_forensic_254683 inventory,
+  cron/atjobs, /etc/ld.so.preload, hidden directories, PID liveness, iptables
+- Key findings:
+  - dpkg -V: 6 minor config-file mismatches (pam.d/xrdp-sesman, xrdp/startwm.sh,
+    default/ufw, default/apport, logrotate.timer, pci.ids) + 39 missing python
+    jinja2/jsonpatch packages. No system-binary tampering.
+  - SUID files in mtime window Apr 22-25: 0 (no privilege-escalation persistence)
+  - FS files in mtime window: 100 entries — all legitimate (snapd, firmware-updater,
+    midaz mongodb, jdk21 install, guiyon-orchestrator)
+  - World-writable: 30 entries — all legitimate (ruflo node_modules, Docker overlays)
+  - auth.log Apr 22-23: 0 entries (rotated out of retention window)
+  - syslog Apr 22-23: 0 entries (same rotation)
+  - journalctl Apr 22-23: 2 entries only (insufficient for vector reconstruction)
+  - /etc/ld.so.preload: absent — clean (no LD_PRELOAD rootkit)
+  - Hidden directories: 30 entries — all legitimate
+  - Bundle B /tmp/banxe_forensic_254683/ confirmed intact on evo1
+    (MANIFEST.sha256 + 9 subdirs, mtime 2026-05-07 21:54)
+  - PID 2127: GONE at Step 4 time (state-change between Step 3 09:27 and Step 4 ~11:59)
+  - iptables counters: rule 5 (136.243.0.0/16) 12438 pkts / 746K,
+    rule 6 (136.243.75.233) 8921 pkts / 660K
+- Closing IL: TBD
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING,
+  IL-INCIDENT-2026-05-08-PHASE1-FORENSIC-CHAIN-PRESERVED
+
+### IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — Critical state-change: malware removed
+  externally between Phase 1 Step 3 (2026-05-08 09:27 CEST) and
+  Phase 1 Step 4 (2026-05-08 ~11:59 CEST)
+- Status: STATE-CHANGE-OBSERVED — malware fully removed by external action,
+  not by current incident-canon session
+- Priority: P0 (incident state)
+- Source: Phase 1 Step 4b current-state check
+  (SHA256 3ae092c03b5fb1a9ff1e7f9e4424cf15b1033c157d3546cab68b8a0aedc7f463,
+  136 lines / 6958 bytes)
+  Path: ~/banxe-incident-2026-05-07/phase1/step04b-current-state-2026-05-08T10-15-58Z/
+- Findings:
+  - PID 2127: GONE (no process running from malicious binary)
+  - systemctl status systemd.service: Unit could not be found
+  - systemctl status observed.service: Unit could not be found
+  - No process matching XMRig markers (systemd -c, free_proc, xmrig,
+    miner, randomx) — only legitimate tracker-miner-fs-3 (GNOME indexer)
+  - CPU load normalised: load avg ≈1.2 (vs malware-era ≈35)
+  - Malicious files (/usr/local/bin/systemd, /usr/local/bin/.config.json,
+    /usr/local/bin/free_proc.sh, /usr/local/bin/.bench.log,
+    /etc/systemd/system/systemd.service, /etc/systemd/system/observed.service)
+    — all absent (removed between Step 3 and Step 4)
+- Actor: external action (parallel Claude Code session, operator manual, or
+  other automation). NOT this incident-canon session. Exact actor to be
+  confirmed by operator.
+- Forensic impact: forensic chain preserved through Bundle B
+  (/tmp/banxe_forensic_254683/ on evo1, confirmed intact at Step 4 time,
+  + .tar.gz copy on Legion off-host SHA256 dfd6c9b5...). Phase 1 Steps 1e+2+3
+  snapshots also on Legion off-host. No forensic evidence lost.
+- Compliance impact: malware removed → immediate threat eliminated. However:
+  - Intrusion vector NOT determined (auth.log/syslog Apr 22-23 rotated out)
+  - Root-cause analysis incomplete (Phase 5 still required)
+  - Credentials NOT yet rotated (Phase 6 pending)
+  - AML/KYC integrity NOT yet verified (Phase 7 pending)
+  - GDPR Art. 33 / FCA SUP 15 assessment still required (malware removal
+    does not eliminate the obligation to assess whether personal data was
+    accessed during the 14-day compromise window)
+- Closing IL: TBD (closes with incident RESOLVED after remaining phases)
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE,
+  IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL
+
+### IL-INCIDENT-2026-05-08-MMBER1234-FALSE-ALARM-CLEARED
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — false-alarm clearance
+- Status: CLEARED — mmber1234 string from dpkg -V output is NOT a password
+- Priority: informational
+- Context: dpkg -V Step 4 output showed /etc/default/ufw modified (5 md5sum
+  mismatch). The string "mmber1234" appeared in analysis context. Investigation:
+  /etc/default/ufw content is standard UFW configuration (DEFAULT_INPUT_POLICY,
+  DEFAULT_OUTPUT_POLICY, etc.). The "mmber1234" reference is a false-alarm —
+  not a credential, not a password, not PII.
+- Action: no credential rotation required for this specific finding.
+  Full credential rotation (Phase 6) still required for other reasons
+  (compromise window, SSH keys, GitHub PATs, etc.).
+- Closing IL: closed (false-alarm)
+- Anchors: IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE
+
+### IL-INCIDENT-2026-05-08-BUNDLE-B-CHAIN-INTACT
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — forensic chain verification
+- Status: VERIFIED — Bundle B intact on evo1 and Legion off-host copy
+- Priority: P0 (forensic chain integrity)
+- Bundle B on evo1: /tmp/banxe_forensic_254683/
+  - Confirmed present at Step 4 time with MANIFEST.sha256 + 9 subdirectories
+    (binaries, configs, iptables, journals, logs, sshd, sudoers, units, users)
+  - Mtime: 2026-05-07 21:54 (created by parallel session before our Phase 1)
+- Bundle B on Legion (off-host): ~/banxe-incident-2026-05-07/banxe_forensic_254683.tar.gz
+  SHA256: dfd6c9b5...
+- Chain-of-custody: two independent copies (evo1 filesystem + Legion off-host
+  archive). Even after malware removal on evo1, Bundle B preserves original
+  malicious artefacts for regulatory/forensic evidence.
+- Closing IL: informational, closes with incident RESOLVED
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION,
+  IL-INCIDENT-2026-05-08-PHASE1-STEP4-FS-AUDIT-COMPLETE
