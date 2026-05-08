@@ -5559,3 +5559,91 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - MISSING: no factory overseer agent canon or deployment (§0.4) — covered by Phase F2.4 + new GAP G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED
   - PATH-DRIFT: ROADMAP.md references org/role files without `docs/` prefix; files actually located under `docs/` — fold into G-FACTORY-DOCUMENTATION-PATH-DRIFT
   - DUPLICATE: two GAP-REGISTER.md files exist (repo root + `docs/`) — root declared canonical here, fold into G-FACTORY-CANON-FILES
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-09-CANON-PR-146-BYPASS-WINDOW
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — branch protection bypass-window incident documentation
+- Status: BINDING — mandatory documentation per canon §3 + §4 after each canon-PR bypass execution
+- Priority: P1 (process canon)
+- Scope: documents §4 bypass-window execution for PR #146 (Sprint S1 closure) and prospectively covers the bypass that will be required to merge THIS incident IL itself (i.e., the PR containing this IL entry), breaking the infinite-recursion concern. Future bypass-windows for canon-PRs blocked solely by G-GUARDIAN-WEBHOOK-MISSING are covered by this canon-prescribed pattern until G-GUARDIAN-WEBHOOK-MISSING is resolved (Phase F2.4 / F4 scope) — at which point the bypass procedure terminates and bypass IL entries cease being required.
+
+- Trigger: G-GUARDIAN-WEBHOOK-MISSING (P1) — required status checks contexts ['guardian-factory', 'guardian-project'] cannot be delivered to GitHub branch protection because Guardian webhook delivery is not configured. Guardian apps run on evo1:8195/8196 (verified active in IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09) but no GitHub webhook target configured to receive their verdicts.
+- Canon-prescribed path: §4 bypass-window — snapshot contexts → PATCH contexts=[] → merge → PATCH restore → IL-CANON-PROCESS-INCIDENT (this entry).
+
+- PR #146 bypass-window timeline (CEST):
+  1. 23:13 — PR #146 created from canon/section-0-fixation-2026-05-09 (commit 06b5541)
+  2. 23:15 — gh pr update-branch 146 → merge commit 1167063 created (resolves BEHIND state)
+  3. ~23:21 — STEP 1 snapshot recorded contexts ['guardian-factory', 'guardian-project']
+  4. ~23:21 — STEP 2 PATCH contexts=[] applied successfully
+  5. ~23:22 — STEP 3 CodeRabbit poll returned SUCCESS on first attempt
+  6. ~23:22 — STEP 4 PR state CLEAN, mergeable
+  7. 23:22:05 — STEP 5 gh pr merge 146 --squash succeeded; merge commit 633bb6a on main
+  8. ~23:22 — STEP 6 verified MERGED state; mergedAt 2026-05-08T23:22:05Z
+  9. ~23:22 — STEP 7 trap EXIT handler should have restored contexts but did not fire (silent failure, see IL-CANON-PROCESS-LEARNING-TRAP-FAILURE-2026-05-09)
+  10. ~23:25 — Manual verify+restore step detected contexts=[] still in effect; PATCH applied; contexts restored to ['guardian-factory', 'guardian-project']
+  11. ~23:25 — Post-restore verification confirmed contexts ['guardian-factory', 'guardian-project'] + strict=true + Guardian app_id 15368 bound to both checks
+
+- Window of exposure: ~3 minutes (23:22 to 23:25 CEST) during which main branch had required_status_checks.contexts=[] in effect, allowing potentially-unchecked merges. Risk assessment: LOW — only one operator had push access during the window, no concurrent PR activity, no third-party push attempts. Window logged for transparency per canon §3 destructive verify-step discipline.
+
+- Bypass scope:
+  - Strict=true preserved throughout (PR head-up-to-date enforcement remained active).
+  - enforce_admins=False preserved (admin bypass capability unchanged).
+  - required_pull_request_reviews=None preserved.
+  - Only contexts list was zeroed and restored. No other branch protection settings modified.
+
+- This IL prospectively covers the second bypass-window required to merge IL-CANON-PROCESS-INCIDENT-2026-05-09-CANON-PR-146-BYPASS-WINDOW itself (i.e., the PR containing this IL entry), breaking the infinite-recursion concern. Future bypass-windows for canon-PRs blocked solely by G-GUARDIAN-WEBHOOK-MISSING are covered by this canon-prescribed pattern until G-GUARDIAN-WEBHOOK-MISSING is resolved (Phase F2.4 / F4 scope) — at which point the bypass procedure terminates and bypass IL entries cease being required.
+
+- Closing IL: TBD (G-GUARDIAN-WEBHOOK-MISSING resolution + canon §4 update declaring webhook delivery operational).
+- Anchors:
+  - bootstrap canon v3 §3 (parallel-session-isolation + destructive verify-step), §4 (branch protection main + bypass procedure)
+  - I-59 (roadmap-block procedure under MONITOR state)
+  - I-68 (single-session incident command)
+  - G-GUARDIAN-WEBHOOK-MISSING (open trigger gap, P1 effective elevation)
+  - PR #146 (https://github.com/CarmiBanxe/banxe-architecture/pull/146)
+  - Sprint S1 commit 633bb6a + tag checkpoint-2026-05-09-canon-section-0-fixation
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09
+
+### IL-CANON-PROCESS-LEARNING-TRAP-FAILURE-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — process learning per canon §13 (cumulative learnings binding for future actions)
+- Status: BINDING — replaces trap-based fail-safe pattern with explicit verify+restore-if-needed pattern in canon §27 cheat sheet for future bypass-window executions
+- Priority: P2 (process canon update)
+- Scope: documents the silent failure of bash `trap restore_contexts EXIT` pattern during PR #146 bypass-window and updates canon §27 recovery commands cheat sheet to require explicit verify+restore-if-needed as the binding pattern.
+
+- Failure mode observed:
+  Bash trap function `restore_contexts() { ... }` was defined with backslash-newline line continuations inside the gh api PATCH command. After the bypass-window script completed (set -u, no errors), the EXIT trap should have fired and restored contexts. It did not produce any output and contexts remained `[]` until manually detected and restored ~3 minutes later via a separate single-step verify+restore command.
+
+- Root cause analysis (probable):
+  - Pasted multi-line shell block via terminal (WSL2 bash) introduced subtle quoting/continuation issues in the trap function body
+  - `\\` escaping in the heredoc/argument list interacted poorly with `set -u` and silent function-definition errors
+  - trap registered but function-body execution failed silently at exit time without raising visible error
+  - Net effect: fail-safe pattern provided false sense of security without actually executing on EXIT
+
+- Binding canon §27 update (effective immediately):
+  Replace any trap-based fail-safe restoration of branch protection settings with an explicit two-step pattern:
+    Step A: execute bypass + merge
+    Step B: separate single-command verify-and-restore-if-needed using server-side state (gh api ... --jq for current contexts; PATCH only if mismatch detected; verify post-restore)
+  This pattern was used as the manual recovery in PR #146 incident and worked correctly. It avoids reliance on shell-language-specific trap mechanics and works identically across bash/zsh/dash/tcsh and across remote SSH execution paths.
+
+- Canon §13 process learnings update (append):
+  - Bash `trap ... EXIT` pattern in pasted multi-line shell blocks via SSH/WSL terminal is unreliable — function-body line continuations can silently break trap execution. Use explicit verify+restore-if-needed two-step pattern for any security-sensitive fail-safe instead.
+  - Branch protection restoration after bypass MUST be verified via independent server-side query (not reliant on script-internal state) immediately after bypass closure.
+  - Any bypass-window execution MUST conclude with explicit `gh api ... | jq .required_status_checks.contexts` verification step that compares against pre-bypass snapshot.
+
+- Future bypass-window template (binding for future canon-PR bypasses, effective 2026-05-09):
+  1. Capture snapshot via independent gh api read
+  2. PATCH contexts=[]
+  3. Verify contexts=[] applied
+  4. Wait for non-required checks to settle (e.g., CodeRabbit polling)
+  5. Merge PR
+  6. Verify merge state
+  7. ALWAYS run separate single-command verify+restore-if-needed (do not rely on trap or in-script restoration alone)
+  8. Verify post-restore state matches snapshot
+  9. Append IL-CANON-PROCESS-INCIDENT-<date>-<scope>-BYPASS-WINDOW
+
+- Closing IL: TBD (canon §27 cheat sheet update reflected in PR + this learning IL merged).
+- Anchors:
+  - bootstrap canon v3 §13 (process learnings cumulative), §27 (recovery commands cheat sheet)
+  - IL-CANON-PROCESS-INCIDENT-2026-05-09-CANON-PR-146-BYPASS-WINDOW
