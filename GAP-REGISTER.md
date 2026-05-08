@@ -829,6 +829,15 @@
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+    **2026-05-08 status: OPERATOR-ACK-EVIDENCE-CHAIN-COMPLETE** —
+    MLRO/DPO/LEGAL-FORMAL-ACK-PENDING. Incident commander acknowledged
+    compliance-assessment framework + full evidence chain (PR #132-#137,
+    #139, #140; 11 forensic SHA256). T+12h MLRO/DPO ack SLA overdue ~21h,
+    T+24h compliance review SLA overdue ~7.5h. GDPR Art. 33 deadline ~40h
+    remaining. Final notification decision (Art. 33/34/SUP 15/AMLR) PENDING
+    formal MLRO/DPO/CCO/Legal sign-off.
+    See IL-INCIDENT-2026-05-07-COMPLIANCE-ASSESSMENT-ACK.
+
 
 - [ ] G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0, OPEN, 2026-05-07)
     Backdoor sudoers entry on evo1: /etc/sudoers.d/ctio = "ctio ALL=(ALL) NOPASSWD: ALL".
