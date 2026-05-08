@@ -1041,3 +1041,133 @@
     IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
     IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED.
 
+- [ ] G-FACTORY-RUFLO-NOT-DEPLOYED (P0, OPEN, 2026-05-09)
+    Ruflo regulated-routes proxy NOT deployed on Legion factory infrastructure.
+    Required by canon §1.bis for project-layer regulated routes
+    (request → ARL → Ruflo → target agent → response). Without Ruflo,
+    project-mid / project-heavy / project-reason cannot service regulated
+    AML/KYC/MLRO requests in compliance with §0.5 distribution discipline.
+    Regulatory blocker for Phase F1 + sandbox 100% completion.
+    Closing IL: TBD (Phase F1 — Ruflo deployment + LiteLLM proxy chain wiring + end-to-end regulated request verify).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.5 + §1.bis + §10 Phase F1.
+
+- [ ] G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0, OPEN, 2026-05-09)
+    Existing project (banxe-emi-stack 27 services + banxe-architecture canon docs)
+    requires §0.2 hierarchy compliance audit. Mapping required:
+    each existing AI agent / service / role → §0.2 Level 1..5 placement,
+    deviations identified, reconciliation plan per deviation.
+    Sandbox→Production transition (§0.3) blocked until audit + reconciliation complete.
+    Existing JOB-DESCRIPTIONS.md / ORG-STRUCTURE.md / DEPARTMENT-MAP.md /
+    RELATIONSHIP-TREE.md provide >70% framework foundation per audit
+    IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, residual gaps to be
+    enumerated in Sprint S2.
+    Closing IL: TBD (Sprint S2 — project §0 audit completes with per-deviation GAPs).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.2 + §0.3 + §11 Sprint S2.
+
+- [ ] G-FACTORY-EVO2-SSH-ACCESS-LOST (P1, CLOSED-POST-UPDATE, 2026-05-09)
+    Original state: evo2 SSH access lost (carryover from V-XMRIG track §22 Phase F2.1).
+    2026-05-09 status: CLOSED — operator-applied evo2 power-on + kernel update
+    (kernel 6.17.0-23-generic, fresh boot uptime 10 min, boot_id
+    23320028-9093-4406-8b4f-7b09d15a35c4) restored SSH access.
+    Verification: ssh banxe@evo2 'uname -a; free -h; uptime' returned successfully
+    at 2026-05-09 00:47 CEST during IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+    Closing IL: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+    Anchors: bootstrap canon §22 Phase F2.1, §9 V-XMRIG carryover.
+
+- [ ] G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, OPEN, 2026-05-09)
+    4 canonical Claude subagents (controller, inspector-agent, openclo-moa,
+    safeguarding-agent) NOT deployed in ~/.claude/agents/ on Legion.
+    Factory audit 2026-05-08 confirmed empty; current audit confirms unchanged.
+    Root cause for parallel-session-leakage episodes 6 + 7 per
+    IL-CANON-PROCESS-INCIDENT-2026-05-08-PARALLEL-REPO-LEAKAGE +
+    IL-CANON-PROCESS-INCIDENT-2026-05-08-CONCURRENT-CC-BRANCH-SWITCH —
+    absent controller/inspector subagents leave session isolation
+    enforcement to manual operator discipline only.
+    Closing IL: TBD (Phase F2.3 — deploy 4 subagents + verify session isolation behavior).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §5 + §10 Phase F2.3.
+
+- [ ] G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED (P1, OPEN, 2026-05-09)
+    Factory overseer AI agent (per §0.4) NOT deployed.
+    Required functions: continuous monitoring §0.1+§0.2+§0.3 compliance,
+    alert on canon deviations, block features that deviate from §0 hierarchy,
+    track 100% completion progress (KPI: % of §0.2 roles implemented).
+    Without overseer, §0 compliance enforcement is manual only — high drift risk
+    during S2-S12 implementation phases.
+    Closing IL: TBD (Phase F2.4 — overseer agent deployment + KPI dashboard wiring).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.4 + §10 Phase F2.4.
+
+- [ ] G-FACTORY-LITELLM-NO-SYSTEMD-SERVICE-UNIT (P2, OPEN, 2026-05-09)
+    LiteLLM v2 gateway runs as bare pipx-managed Python process
+    (PID 71814, uptime 1d18h at audit) without /etc/systemd/system/litellm-v2.service
+    unit. No automatic restart on failure, no boot-time start, no resource limits.
+    Risk: factory layer LLM gateway availability tied to single user-session lifetime.
+    Closing IL: TBD (Phase F3.1 — create litellm-v2.service systemd unit, User/WorkingDirectory/ExecStart per current invocation, enable + verify restart).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §10 Phase F3.1.
+
+- [ ] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT (P2, OPEN, 2026-05-09)
+    LiteLLM v2 gateway exposes 20 routes vs 7 canonical (§1.bis).
+    14 extra routes per audit 2026-05-09: banxe-general, qwen3-30b, qwen3-banxe,
+    fast, glm-4-flash, coding, gpt-oss-20b, large, glm-4.5-air-distributed,
+    glm-air, ai, ai-heavy, reasoning, reasoning-235b.
+    Decision required per route: legitimate legacy alias / undocumented addition / remove.
+    Either canon §1.bis updates to include reconciled aliases, or routes are removed
+    from gateway config (/home/mmber/MetaClaw/litellm/litellm-config.v2.yaml).
+    Closing IL: TBD (Phase F3.2 — per-route reconciliation decision + canon-or-config update).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §5 + §10 Phase F3.2.
+
+- [ ] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING (P2, OPEN, 2026-05-09)
+    Canonical project-heavy LiteLLM route (per §1.bis) NOT registered in current
+    LiteLLM v2 config. Audit 2026-05-09 confirmed only 6 of 7 canonical routes
+    present (project-heavy MISSING). §1.bis says "preserve if registered" —
+    factually not registered. Decision required: register project-heavy backed by
+    appropriate evo1/evo2 model (candidate: llama3.3:70b on evo2 ollama or
+    qwen3.5:35b) OR formally remove project-heavy from §1.bis canonical list.
+    Closing IL: TBD (Phase F3.2 — project-heavy register-or-remove decision).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §1.bis.
+
+- [ ] G-FACTORY-LITELLM-LEGACY-V1-RUNNING-PARALLEL (P2, OPEN, 2026-05-09)
+    Legion runs second LiteLLM instance PID 339 on 127.0.0.1:8080
+    (config /home/mmber/litellm-config.yaml, uptime 1d18h) parallel to
+    canonical v2 gateway PID 71814 on 0.0.0.0:4000.
+    Two additional config files exist on disk: /home/mmber/litellm-config.yaml,
+    /home/mmber/litellm_config.yaml, /home/mmber/banxe/MetaClaw/litellm/litellm-config.v2.yaml,
+    /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml — 4 configs total.
+    Risk: undocumented routing path, divergent route behavior, security surface.
+    Closing IL: TBD (Phase F3.2 — verify legacy :8080 instance purpose; either deprecate or document as canonical secondary; consolidate to single config source-of-truth).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+
+- [ ] G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2, OPEN, 2026-05-09)
+    GLM-4.5-Air 105B distributed inference architecture (glm-master.service on evo1
+    + llama-rpc-worker.service on evo2 USB4 link 10.0.0.2:50052 Vulkan backend)
+    is operational but NOT documented in canon §1.bis routes nor in
+    PROMPT-CANON-PROJECT.md two-contour description.
+    Concept-level conflict potential: distributed inference spans factory↔project
+    layer boundary if glm-master serves cross-layer requests — needs verification
+    against §0.5 distribution discipline.
+    Closing IL: TBD (Phase F4.1 — canon documentation of distributed inference topology + layer-binding verification).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.5 + §1.bis.
+
+- [ ] G-FACTORY-SPEC-FIRST-AUDITOR-NOT-DEPLOYED-AT-CANON-PATH (P2, OPEN, 2026-05-09)
+    Spec-First Auditor v2 working in pre-commit hook but source NOT deployed at
+    canon-prescribed path ~/developer/spec-first/audit/spec_first_auditor.py.
+    Audit 2026-05-08 confirmed canon path empty.
+    Closing IL: TBD (Phase F3.3 — relocate auditor source to canon path or update §5 canon to factual path).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §5 + §10 Phase F3.3.
+
+- [ ] G-FACTORY-DOCUMENTATION-PATH-DRIFT (P3, OPEN, 2026-05-09)
+    ROADMAP.md Phase 3 references org/role canon files without `docs/` prefix
+    (IL-080 JOB-DESCRIPTIONS.md, IL-082 RELATIONSHIP-TREE.md, etc).
+    Files factually located under `docs/`. Minor consistency issue — links
+    function via filesystem search but canonical path declarations diverge.
+    Closing IL: TBD (Phase F4.1 — ROADMAP.md path normalization sweep).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+
+- [ ] G-FACTORY-CANON-FILES-DUPLICATION (P3, OPEN, 2026-05-09)
+    Two GAP-REGISTER.md files exist: /home/mmber/banxe-architecture/GAP-REGISTER.md
+    (repo root) + /home/mmber/banxe-architecture/docs/GAP-REGISTER.md.
+    Source-of-truth ambiguity. This IL declares root /GAP-REGISTER.md canonical.
+    docs/GAP-REGISTER.md to be reviewed for divergent entries and either deprecated
+    or content migrated.
+    Closing IL: TBD (Phase F4.1 — duplicate canon-file reconciliation sweep + add to canon §3 process notes).
+    Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+

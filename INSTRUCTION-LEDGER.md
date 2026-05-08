@@ -5423,3 +5423,139 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - I-68 (single-session incident command) takes effect immediately
 - Anchors: IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR,
   IL-INCIDENT-2026-05-08-PARALLEL-SESSION-PATTERN-RECURRING, I-59, I-68
+
+### IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Section §0 fixation + factory restoration baseline audit
+- Status: BINDING — Section §0 (bootstrap v3) accepted as immutable canon
+- Priority: P0 (regulatory + architectural foundation)
+- Scope: fixates Section §0 (two-layer factory/project + 5-tier hierarchy + sandbox→production gate + factory overseer + distribution discipline) into repository canon and records baseline audit findings vs existing canon documents.
+
+- Section §0 acceptance:
+  - §0.1 Two-layer AI infrastructure (factory=Legion, project=evo1+evo2 unified) — IMMUTABLE
+  - §0.2 Five-tier hierarchy (operators / low management / heads+duplicates / CEO human-only / MLRO independent) — IMMUTABLE
+  - §0.3 Sandbox→Production roadmap (current stage SANDBOX, real customer data BLOCKED until 100% completion) — IMMUTABLE
+  - §0.4 Factory overseer agent (continuous §0 compliance monitoring) — to be deployed in Phase F2.4
+  - §0.5 Distribution discipline (factory/project layer binding, cross-layer ONLY via LiteLLM gateway + Ruflo for regulated) — IMMUTABLE
+
+- Baseline audit findings vs existing canon (read-only inspection 2026-05-09):
+  - ALIGNED: PROMPT-CANON-PROJECT.md §1 documents factory/project two-contour split (banxe-architecture vs banxe-emi-stack) — concept matches §0.1
+  - ALIGNED: JOB-DESCRIPTIONS.md §1.1 declares CEO (SMF1) "AI Agent: None (human-only tier)" — matches §0.2 Level 4
+  - ALIGNED: ORG-STRUCTURE.md + JOB-DESCRIPTIONS.md document AI agents + human doubles pattern — matches §0.2 Level 3 framework
+  - ALIGNED: DEPARTMENT-MAP.md documents AI agents per department (10 departments) — matches §0.2 Level 1/2
+  - ALIGNED: I-32 + I-33 (INVARIANTS.md) restrict EMI services to local LiteLLM aliases for PII/AML paths — partial coverage of §0.5 distribution discipline
+  - PARTIAL: ORG-STRUCTURE.md §2.3 declares MLRO SMF17 "independent reporting line CEO + Board" (SM&CR sense). §0.2 Level 5 requires AI MLRO autonomous agent NOT subordinate to CEO + human MLRO co-sign. Existing canon has human MLRO + AI subagents (AML Analyst, Sanctions Screening) but NO autonomous AI MLRO agent. Reconciliation pending Phase F5.5
+  - MISSING: no canon document defines sandbox→production transition gate (§0.3) — gap created G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING
+  - MISSING: no factory overseer agent canon or deployment (§0.4) — covered by Phase F2.4 + new GAP G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED
+  - PATH-DRIFT: ROADMAP.md references org/role files without `docs/` prefix (IL-080/082/083); files actually located under `docs/` — minor canon consistency issue, fold into G-FACTORY-DOCUMENTATION-PATH-DRIFT
+  - DUPLICATE: two GAP-REGISTER.md files exist (repo root + `docs/`) — source-of-truth ambiguity; root declared canonical here, fold into G-FACTORY-CANON-FILES-DUPLICATION
+  - SM&CR mapping (SMF1/SMF2/SMF4/SMF5/SMF17/SMF24) stronger than §0.2 generic Level 3 designation — §0.2 terminology to be reconciled with SM&CR roles in Phase F5.3 implementation, no conflict
+
+- Factory restoration baseline (Legion factory layer state per audit 2026-05-08/09):
+  - factory routes (factory-fast, factory-mid, factory-heavy, factory-coder) on LiteLLM v2 gateway 0.0.0.0:4000 OPERATIONAL but bare-python (no systemd unit) — GAP G-FACTORY-LITELLM-NO-SYSTEMD-SERVICE-UNIT
+  - LiteLLM 20 routes vs 7 canonical (13 extra) — GAP G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT
+  - Spec-First Auditor v2 working in pre-commit hook but NOT deployed at canon-prescribed path ~/developer/spec-first/audit/spec_first_auditor.py — GAPs G-FACTORY-SPEC-FIRST-AUDITOR-NOT-DEPLOYED-AT-CANON-PATH + G-FACTORY-SPEC-FIRST-AUDITOR-PATH-DRIFT-FROM-CANON
+  - 4 canonical subagents (controller, inspector-agent, openclo-moa, safeguarding-agent) NOT deployed in ~/.claude/agents/ — GAP G-FACTORY-CLAUDE-SUBAGENTS-MISSING (root cause of parallel-session-leakage episodes 6/7)
+  - Ruflo NOT deployed on Legion infrastructure — regulatory blocker for project layer regulated routes — GAP G-FACTORY-RUFLO-NOT-DEPLOYED
+  - Factory overseer agent (§0.4) NOT deployed — GAP G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED
+
+- Project layer baseline:
+  - evo2 SSH access lost (Phase F2.1 recovery pending) — GAP G-FACTORY-EVO2-SSH-ACCESS-LOST
+  - llama-server qwen3-235b on evo2:8082 (project-reason backend) operational per §2 baseline — verification pending after SSH restore
+  - 27 EMI services in banxe-emi-stack — Sprint S2 will map to §0.2 levels
+  - existing canon documents (JOB-DESCRIPTIONS.md, ORG-STRUCTURE.md, DEPARTMENT-MAP.md, RELATIONSHIP-TREE.md) provide >70% of §0.2 framework — Sprint S2 audit to identify residual gaps and create per-deviation GAPs
+
+- Roadmap link:
+  - new ROADMAP.md block "Roadmap Block 2026-05-09 — Factory Restoration F0–F7 + §0 Section Fixation" added in same commit
+  - Phases F0..F7 mapped to Sprints S1..S12 per bootstrap v3 §10/§11
+  - Annotated checkpoint tag `checkpoint-2026-05-09-canon-section-0-fixation` to be applied AFTER PR merge (per I-59 procedure)
+
+- Process notes:
+  - Worktree-isolated work in /home/mmber/banxe-architecture-canon-section-0 per canon §28 (worktree isolation MANDATORY for long-running canon work)
+  - MEMORY.md NOT modified per canon §3 + §24 (do-not-touch in incident/canon worktrees)
+  - Single commit one-branch one-PR per I-59 roadmap-block procedure restored under MONITOR state
+  - V-XMRIG track preserved untouched in /home/mmber/banxe-architecture-v-xmrig at HEAD c44b1ab — independent canon track per CP1/CP4 reconciliation pending operator decision
+
+- Closing IL: TBD (Sprint S5 — factory restoration F4 documentation reconciliation completes)
+- Anchors:
+  - bootstrap canon v3 §0..§30 (operator-supplied, 2026-05-09)
+  - I-32, I-33 (INVARIANTS.md, AI plane PII/AML routing baseline for §0.5)
+  - I-37 (NEW, this commit, factory↔project layer binding immutable)
+  - I-59 (roadmap-block procedure under MONITOR state)
+  - I-68 (single-session incident command)
+  - PROMPT-CANON-PROJECT.md §1 (existing two-contour concept)
+  - JOB-DESCRIPTIONS.md, ORG-STRUCTURE.md, DEPARTMENT-MAP.md, RELATIONSHIP-TREE.md (existing §0.2 framework foundation)
+  - IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR (P0→MONITOR transition enabling roadmap accumulation)
+  - IL-INCIDENT-2026-05-08-ROADMAP-UNFREEZE-MONITOR-STATE (roadmap accumulation procedure restored)
+
+### IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Section §0 fixation + factory/project layer baseline audit (post-evo2-update)
+- Status: BINDING — Section §0 (bootstrap v3) accepted as immutable canon
+- Priority: P0 (regulatory + architectural foundation)
+- Scope: fixates Section §0 from operator-supplied bootstrap v3 (factory↔project two-layer + 5-tier hierarchy + sandbox→production gate + factory overseer + distribution discipline) into repository canon, and records full machines+AI-models baseline audit performed 2026-05-09 00:47 CEST after evo2 power-on + kernel update.
+
+- Section §0 acceptance:
+  - §0.1 Two-layer AI infrastructure (factory=Legion, project=evo1+evo2 unified) — IMMUTABLE
+  - §0.2 Five-tier hierarchy (operators / low management / heads+duplicates / CEO human-only / MLRO independent) — IMMUTABLE
+  - §0.3 Sandbox→Production gate (current SANDBOX, real customer data BLOCKED until 100% completion) — IMMUTABLE
+  - §0.4 Factory overseer agent (continuous §0 compliance monitoring) — to be deployed in Phase F2.4
+  - §0.5 Distribution discipline (cross-layer ONLY via LiteLLM gateway + Ruflo for regulated) — IMMUTABLE
+
+- Hardware baseline post-audit 2026-05-09 00:47 CEST:
+  - Legion: WSL2 kernel 6.6.87.2-microsoft-standard-WSL2, 54Gi RAM visible (cap 56Gi per §2), RTX 4070 Laptop 8188 MiB (28% util / 556 MiB used at audit), root /dev/sdd 1007G (98G used 11%), /mnt/d 3.7T (275G used 8%), uptime 1d18h
+  - evo1: kernel 6.17.0-23-generic Ubuntu, 123Gi RAM visible (matches §2), uptime 1d23h44m, NOT rebooted
+  - evo2: kernel 6.17.0-23-generic Ubuntu (post-operator-update, matches evo1), 123Gi RAM, uptime 10 min, fresh boot, boot_id 23320028-9093-4406-8b4f-7b09d15a35c4, AMD Strix Halo iGPU Device 1586 confirmed
+
+- AI inference services baseline:
+  - Legion: ollama.service (2 models: qwen2.5-coder:14b-banxe-factory ✓ factory-coder backend, qwen2.5-coder:7b-instruct-q4_K_M)
+  - Legion: LiteLLM v2 gateway PID 71814 on 0.0.0.0:4000 (canonical, config /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml)
+  - Legion: LiteLLM legacy PID 339 on 127.0.0.1:8080 running 1d18h (config /home/mmber/litellm-config.yaml) — NEW finding, undocumented parallel instance
+  - evo1: ollama.service (9 models: qwen2.5-coder:7b, llama3.3:70b, qwen3.5:35b, qwen3:4b, qwen3:30b-a3b, qwen3.5:latest, qwen3-coder-next:q4_K_M, gpt-oss-derestricted:20b, glm-4.7-flash-abliterated)
+  - evo1: glm-master.service (GLM-4.5-Air 105B distributed inference, USB4 RPC link to evo2 Vulkan) — NEW finding, not in §1.bis canonical routes
+  - evo1: guiyon-dispatcher.service (GUIYON Task Dispatcher monitoring + Ollama execution) — NEW finding
+  - evo1: banxe-watchman.service on :8084 (Sanctions OFAC/UN/EU/UK/OFSI screening)
+  - evo1: keycloak.service 26.2.5 (matches I-35 SSoT IAM realm banxe-emi)
+  - evo1: banxe-guardian-factory.service + banxe-guardian-project.service active (uvicorn :8195/:8196) — confirms §4 services running, webhook delivery still missing per G-GUARDIAN-WEBHOOK-MISSING
+  - evo1: LiteLLM forward on 127.0.0.1:4000 (project-side gateway access)
+  - evo2: ollama.service (10 models: qwen3:235b-a22b-banxe ✓ project-reason ollama backend, qwen3:235b-a22b, llama3.3:70b, qwen3.5:35b, qwen3:4b, qwen3:30b-a3b, qwen3.5:latest, qwen3-coder-next, gpt-oss-derestricted, glm-4.7-flash-abliterated)
+  - evo2: qwen3-235b-master.service llama-server on 0.0.0.0:8082 (qwen3-235b-Q3_K_S.gguf, 235.1B params, 101.4 GB, ADR-018 P4.3-Q235) — health 200 OK, project-reason backend confirmed
+  - evo2: llama-rpc-worker.service (RPC :50052 Vulkan, paired with glm-master on evo1)
+
+- LiteLLM v2 canonical routes verification (Bearer sk-banxe-llm-gateway-2026 against http://127.0.0.1:4000/v1/models):
+  - factory-fast ✓ present
+  - factory-mid ✓ present
+  - factory-heavy ✓ present
+  - factory-coder ✓ present
+  - project-mid ✓ present
+  - project-reason ✓ present
+  - project-heavy ✗ MISSING (canon §1.bis allowed "preserve if registered"; factual: not registered)
+  - 14 extra routes (drift): banxe-general, qwen3-30b, qwen3-banxe, fast, glm-4-flash, coding, gpt-oss-20b, large, glm-4.5-air-distributed, glm-air, ai, ai-heavy, reasoning, reasoning-235b — Phase F3.2 reconciliation
+
+- Tailscale topology baseline:
+  - mark-legion 100.101.218.26 online ✓
+  - banxe-NucBox-EVO-X2 (evo1) 100.68.102.48 online ✓ (lastSeen 2026-05-08 10:03)
+  - banxe-nucbox-evo-x2-2 (evo2) 100.99.208.21 online ✓
+  - Tailscale ping fails (Terminated, ACL/SSH-policy related per status banner) but hostname-based SSH works → SSH path uses /etc/hosts or DNS, not MagicDNS — confirms G-NETWORK-MAGICDNS-MISSING (P2)
+  - Tailscale SSH ACL warning surfaced: "access controls don't allow anyone to access this device" — operator review pending
+
+- Status updates vs canon §9/§12/§22 (post-audit):
+  - G-FACTORY-EVO2-SSH-ACCESS-LOST (P1) → STATUS-CHANGE-CANDIDATE: CLOSED-POST-UPDATE-2026-05-09 (operator-applied evo2 update + reboot restored SSH access; factual SSH probe banxe@evo2 ✓ + uname/free/uptime returned)
+  - Phase F2.1 (evo2 SSH recovery) → UNBLOCKED-AND-VERIFIED
+  - Phase F2.2 (verify llama-server qwen3-235b on evo2:8082) → VERIFIED-HEALTHY this audit (status:ok + qwen3-235b-Q3_K_S.gguf 235.1B params loaded)
+  - INFRA evo2 boot_id 23320028-9093-4406-8b4f-7b09d15a35c4 supersedes prior boot_id 428e2a81 in §2 baseline — canon §2 update required in Phase F4.1
+
+- Baseline audit findings vs existing canon (read-only inspection):
+  - ALIGNED: PROMPT-CANON-PROJECT.md §1 documents factory/project two-contour split (concept matches §0.1)
+  - ALIGNED: JOB-DESCRIPTIONS.md §1.1 declares CEO (SMF1) "AI Agent: None (human-only tier)" — matches §0.2 Level 4
+  - ALIGNED: ORG-STRUCTURE.md + JOB-DESCRIPTIONS.md document AI agents + human doubles pattern — matches §0.2 Level 3 framework
+  - ALIGNED: DEPARTMENT-MAP.md documents AI agents per department (10 departments) — matches §0.2 Level 1/2
+  - ALIGNED: I-32 + I-33 (INVARIANTS.md) restrict EMI services to local LiteLLM aliases for PII/AML paths — partial coverage of §0.5
+  - ALIGNED: I-35 (Keycloak realm banxe-emi single IAM issuer) — verified factually running on evo1
+  - PARTIAL: ORG-STRUCTURE.md §2.3 declares MLRO SMF17 "independent reporting line CEO + Board" (SM&CR sense). §0.2 Level 5 requires AI MLRO autonomous agent NOT subordinate to CEO + human MLRO co-sign. Existing canon has human MLRO + AI subagents (AML Analyst, Sanctions Screening) but NO autonomous AI MLRO agent — reconciliation pending Phase F5.5
+  - MISSING: no canon document defines sandbox→production transition gate (§0.3) — gap created G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING
+  - MISSING: no factory overseer agent canon or deployment (§0.4) — covered by Phase F2.4 + new GAP G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED
+  - PATH-DRIFT: ROADMAP.md references org/role files without `docs/` prefix; files actually located under `docs/` — fold into G-FACTORY-DOCUMENTATION-PATH-DRIFT
+  - DUPLICATE: two GAP-REGISTER.md files exist (repo root + `docs/`) — root declared canonical here, fold into G-FACTORY-CANON-FILES

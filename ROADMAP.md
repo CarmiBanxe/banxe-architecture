@@ -394,3 +394,67 @@ Incident `INCIDENT-2026-05-07-EVO1-XMRIG` transitioned from P0 to MONITOR state 
 - Roadmap restrictions remaining: no destructive ops on evo1; containment iptables stay; Bundle B preservation continues
 
 Tag after merge: `checkpoint-2026-05-08-incident-monitor-state-transition`.
+
+## Roadmap Block 2026-05-09 — Factory Restoration F0–F7 + §0 Section Fixation
+
+> Block opened under I-59 (roadmap-block procedure restored under MONITOR state).
+> Procedure: one branch → one commit → one PR → annotated checkpoint tag after merge.
+> Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon v3 §0..§30, I-37 (PROPOSED).
+
+### Section §0 fixation (immutable canon)
+- §0.1 Two-layer AI infrastructure: factory=Legion, project=evo1+evo2 unified
+- §0.2 Five-tier hierarchy: operators / low management / heads+duplicates / CEO human-only / MLRO independent
+- §0.3 Sandbox→Production gate: real customer data BLOCKED until 100% sandbox completion
+- §0.4 Factory overseer agent: continuous §0 compliance monitoring (Phase F2.4)
+- §0.5 Distribution discipline: cross-layer ONLY via LiteLLM gateway + Ruflo for regulated
+
+### Phase F0 — Canon §0 fixation + project audit (CURRENT)
+- [x] §0 accepted as immutable canon (this commit)
+- [x] Factory layer baseline audit (machines + AI models + LiteLLM routes)
+- [x] Post-evo2-update verification (kernel 6.17.0-23, llama-server :8082 healthy)
+- [x] G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0) created
+- [ ] Sprint S2 — existing project §0.2 audit + per-deviation GAPs
+
+### Phase F1 — P0 regulatory unblock (Sprint S3)
+- [ ] Deploy Ruflo on Legion factory infrastructure
+- [ ] Wire LiteLLM project-mid / project-heavy / project-reason via Ruflo proxy chain
+- [ ] Verify regulated request flow: client → LiteLLM → ARL → Ruflo → llama-server → response
+- [ ] Closes G-FACTORY-RUFLO-NOT-DEPLOYED
+
+### Phase F2 — P1 operational restoration (Sprint S3)
+- [x] F2.1 evo2 SSH access restored (operator update 2026-05-09)
+- [x] F2.2 llama-server qwen3-235b on evo2:8082 verified healthy
+- [ ] F2.3 Deploy 4 canonical Claude subagents to ~/.claude/agents/ (controller, inspector-agent, openclo-moa, safeguarding-agent)
+- [ ] F2.4 Deploy factory overseer agent for §0 compliance monitoring + 100% completion KPI
+- [ ] F2.5 Update Perplexity supervisor canon with §0 awareness
+
+### Phase F3 — P2 hardening (Sprint S4)
+- [ ] F3.1 Create /etc/systemd/system/litellm-v2.service unit
+- [ ] F3.2 Reconcile 20 LiteLLM routes vs 7 canonical (14 extra route decisions + project-heavy register-or-remove)
+- [ ] F3.3 Relocate or canon-update Spec-First Auditor v2 path
+
+### Phase F4 — P3 documentation (Sprint S5)
+- [ ] F4.1 Sync canon §1/§1.bis with factual state; document distributed inference (glm-master + llama-rpc-worker)
+- [ ] F4.2 ROADMAP.md trackable F0–F7 milestones (this block opens F0)
+- [ ] F4.3 Sweep canon-file duplicates (root vs docs/ GAP-REGISTER.md)
+
+### Phase F5 — §0.2 hierarchy implementation (Sprints S6–S10)
+- [ ] F5.1 Level 1 AI agents (operators)
+- [ ] F5.2 Level 2 AI agents (team leads)
+- [ ] F5.3 Level 3 Heads + human duplicate framework
+- [ ] F5.4 Level 4 CEO governance interface
+- [ ] F5.5 Level 5 AI MLRO independent agent (NOT subordinate to CEO; Ruflo MANDATORY)
+
+### Phase F6 — Sandbox 100% completion (Sprint S11)
+- [ ] FCA sandbox audit pass / GDPR Art.32 / AMLR-AMLD6 readiness review
+
+### Phase F7 — Production transition (Sprint S12)
+- [ ] Multi-party sign-off (Operator + MLRO + Legal + Compliance) → real customer data migration → live operations
+
+### Pending tags (post-merge per canon §21)
+- checkpoint-2026-05-09-canon-section-0-fixation (after this PR merge)
+- checkpoint-2026-05-XX-factory-restoration-F1-complete (after Sprint S3)
+- checkpoint-2026-05-XX-factory-100-percent-restored (after Sprint S5)
+- checkpoint-2026-05-XX-section-0-implementation-complete (after Sprint S10)
+- checkpoint-2026-05-XX-sandbox-100-percent-complete (after Sprint S11)
+- checkpoint-2026-05-XX-production-transition-ready (after Sprint S12)
