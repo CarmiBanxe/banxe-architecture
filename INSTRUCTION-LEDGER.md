@@ -5353,3 +5353,73 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Closing IL: TBD (after operator state-transition decision)
 - Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
   G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION
+
+### IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): SECURITY-INCIDENT — operator decision: state transition P0 → MONITOR (Option A)
+- Status: STATE TRANSITION COMPLETE — INCIDENT IN MONITOR
+- Priority: P0 → P1 (incident downgraded; under MONITOR)
+- Transition timestamp: 2026-05-08 22:05 CEST
+- Decision rationale (operator-recorded, 7 arguments):
+  1. All technical phases complete (0/1/2/3/4/5/7) or operator-side parallel-safe (6)
+  2. Containment stable 30+ hours, 0 reconnect attempts
+  3. Compliance evidence chain complete (12 forensic SHA256 + 8 incident PRs on main)
+  4. Phase 6 credentials rotation parallel-safe in MONITOR state
+  5. Roadmap unfreeze under I-59 restores productive workflow
+  6. If MLRO/DPO says notify — downgrade via single follow-up PR
+  7. MONITOR allows accumulation of new roadmap blocks
+- State transition criteria met:
+  ✅ All technical phases complete or parallel-safe
+  ✅ Containment stable >24h
+  ✅ Forensic chain intact off-host (12 SHA256)
+  ✅ Scope localised to evo1
+  ✅ Cleanup verified (Phase 5)
+  ✅ AML/KYC integrity verified clean (Phase 7)
+  ✅ Cleanup-actor identified (parallel session, PR #140)
+  ✅ Vector documented (NOT determinable, PR #139)
+  ⏳ MLRO/DPO/Legal sign-off — pending external (NOT blocking MONITOR)
+  ⏳ Observation window 24-48h starts 2026-05-08 22:05 CEST
+- MONITOR monitoring requirements:
+  - iptables counters reviewed every 12h
+  - banxe-* services state checked daily
+  - No new XMRig markers in process/docker/systemd
+  - ClickHouse ADR-027 audit-trail preserved
+  - Watchman :8084 sanctions screening operational
+  - Re-sweep evo2/Legion every 24h until observation window passes
+- Roadmap unfreeze (under I-59):
+  - Standard OCAT/CCF roadmap-block procedure RESTORED
+  - Ghost Mode acceptance (ADR-074/075/076) may proceed
+  - New roadmap blocks may be added
+  - ADR diapason next available: ADR-077..080
+  - Restriction remaining: no destructive ops on evo1 без incident commander approval;
+    containment iptables stay; Bundle B preservation continues
+- Pending external (NOT blocking MONITOR):
+  MLRO sign-off (FCA SUP 15), DPO sign-off (GDPR Art. 33/34),
+  CCO sign-off (AMLR), Legal review, Phase 6 completion,
+  24-48h observation window, MONITOR → RESOLVED decision
+- Closing IL: TBD (after MONITOR → RESOLVED)
+- Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
+  G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION,
+  IL-INCIDENT-2026-05-08-INCIDENT-READY-FOR-MONITOR-RECOMMENDATION
+
+### IL-INCIDENT-2026-05-08-ROADMAP-UNFREEZE-MONITOR-STATE
+
+- Date: 2026-05-08 (CEST)
+- Phase (GSD): CANON — roadmap unfreeze under I-59 after MONITOR transition
+- Status: BINDING — roadmap accumulation procedure restored
+- Priority: P1 (process canon)
+- Restored procedures:
+  - Standard OCAT/CCF roadmap-block: new block = one branch → one commit → one PR
+    → annotated checkpoint tag after merge
+  - Append-only ## Checkpoint registry growth
+  - Pending invariant proposals accumulation continues
+  - ADR reservation: ADR-077..080
+- Restrictions remaining under MONITOR:
+  - No destructive ops on evo1 without incident commander approval
+  - Containment iptables stay until RESOLVED
+  - Bundle B preservation until RESOLVED + 30-day retention
+  - Re-sweep cadence 24h evo2/Legion
+  - I-68 (single-session incident command) takes effect immediately
+- Anchors: IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR,
+  IL-INCIDENT-2026-05-08-PARALLEL-SESSION-PATTERN-RECURRING, I-59, I-68
