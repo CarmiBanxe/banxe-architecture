@@ -276,3 +276,13 @@ ClickHouse: safeguarding_events      → append-only audit (I-08, I-24)
 ---
 
 *Append slot для следующего блока → [`SNAPSHOT-2026-05-06-<next-block>.md`]*
+
+## ADR Reservation Update (2026-05-09 canon-hygiene)
+
+Первичный резерв `ADR-045..050`, зафиксированный в этом snapshot-документе, **переразмещён** в диапазон `ADR-050..055` для устранения collision с DAC8-блоком (`docs/sessions/SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md`, PR #114, который зарезервировал `ADR-045..049` первым по дате регистрации 2026-05-06).
+
+**Новый резерв этого блока — `ADR-050..055`** (six ADR slots для всех future architectural decisions Composable DeFi Stack, in scope EMI / out-of-scope CASP/MiFID разделения, integration policies).
+
+Старые резервационные пометки (`045..050`) в теле этого документа считаются устаревшими и читаются с учётом этой fix-секции. Тело документа не редактируется по append-only канону §10.
+
+Reference: PR от 2026-05-09 (canon-hygiene, ADR collision fix), branch `docs/canon-hygiene-2026-05-09-adr-numbers-collision-fix`.

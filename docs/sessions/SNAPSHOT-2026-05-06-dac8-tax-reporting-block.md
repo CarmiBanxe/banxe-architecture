@@ -246,3 +246,11 @@ Day >60  : escalate to MLRO/AML for AMLR Art. 33 CDD review
 | Tax-Reporting Service (banxe-emi-stack) | Prototype: XML CARF schema, outbox, submit endpoint | ADR-045 accepted |
 | Customer Lifecycle FSM extension | `DAC8_OVERDUE` state, `DAC8_SELF_CERT_OVERDUE` event type | ADR-047 accepted |
 | Pending legal review | ADR-045..049 нумерация, T&C и Privacy Policy формулировки | Operator / legal sign-off |
+
+## ADR Reservation Resolution (2026-05-09 canon-hygiene)
+
+ADR-номеров collision между этим блоком (`ADR-045..049`) и Composable DeFi Stack блоком (`ADR-045..050`) разрешена canon-hygiene PR от 2026-05-09: за DAC8-блоком сохраняется первичный резерв `ADR-045..049` (по дате регистрации 2026-05-06, PR #114). DeFi-блок сдвинут на новый диапазон `ADR-050..055` через append-секцию в `docs/sessions/SNAPSHOT-2026-05-06-defi-stack-binance-replacement-block.md`.
+
+Оба резерва остаются документными: ADR-файлов с этими номерами в `decisions/` пока не создано. Любая будущая активация ADR из этих диапазонов должна следовать обновлённому резерву.
+
+Reference: PR от 2026-05-09 (canon-hygiene, ADR collision fix), branch `docs/canon-hygiene-2026-05-09-adr-numbers-collision-fix`.
