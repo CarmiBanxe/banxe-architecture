@@ -218,3 +218,23 @@ ssh gmktec "free -h && ollama list"
 
 *Документ подготовлен: Claude Code | IL-018 PROPOSED | 2026-04-07*
 *Источники: Anthropic Privacy Policy, Claude Code docs, Ollama model registry*
+
+## Distributed Inference Topology (added Sprint S5 F4 2026-05-09)
+
+> Anchor: IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09
+> Closes G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2)
+
+The BANXE LiteLLM v2 gateway routes `large`, `glm-air`, `glm-4.5-air-distributed` are backed by a **distributed inference topology** spanning evo1 + evo2 nodes via USB4 high-speed link with Vulkan compute backend.
+
+### Components
+- **glm-master.service** on evo1 (`192.168.0.72:8081/v1`) — orchestrator process serving GLM-4.5-Air 105B model (Q4_K_M quantization, gguf format `GLM-4.5-Air-Q4_K_M-00001-of-00002.gguf`).
+- **llama-rpc-worker.service** on evo2 (`10.0.0.2:50052` over USB4 link) — RPC worker handling distributed shards via Vulkan compute backend.
+- **api_key**: `sk-rpc-glm47-2026` (gateway-to-master).
+- **Timeout**: 600s (large model inference).
+
+### Sprint S4 F3.2 classification
+- Route `large` → **project-heavy resolution candidate** per §1.bis (closes G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING upon promotion).
+- Routes `glm-air` and `glm-4.5-air-distributed` → DUPLICATE-ALIASES (recommend REMOVE per Sprint S4 F3.2 reconciliation).
+
+### Layer assignment
+- Per bootstrap canon v3 §1.bis: glm-master.service runs on evo1 (project layer node) but serves both project-heavy intent AND factory-heavy fallbacks. Operator decision pending in F3.2 phase 2 (cross-layer reconciliation).

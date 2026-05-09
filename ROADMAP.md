@@ -13,8 +13,8 @@
 - [x] reviews/ folder
 
 ## Phase 2: Core Architecture Documents (COMPLETED)
-- [x] ORG-STRUCTURE.md — Organizational structure
-- [x] DEPARTMENT-MAP.md — 10 departments with AI agents
+- [x] docs/ORG-STRUCTURE.md — Organizational structure
+- [x] docs/DEPARTMENT-MAP.md — 10 departments with AI agents
 - [x] COMPLIANCE-FRAMEWORK.md — FCA compliance framework
 - [x] BANXE-CLAUDE-PROMPT.md — Master Claude prompt
 - [x] BANXE-HEADER-SYSTEM.md — Header system documentation
@@ -27,9 +27,9 @@
 
 ## Phase 3: Extended Documentation (COMPLETED)
 - [x] CRYPTO-BLOCK.md — Crypto operations: Neuronext + TomPay (IL-070)
-- [x] JOB-DESCRIPTIONS.md — AI agents & human doubles, 32 roles (IL-080)
+- [x] docs/JOB-DESCRIPTIONS.md — AI agents & human doubles, 32 roles (IL-080)
 - [x] FEATURE-REGISTRY.md — 30 features with purpose, value & KPIs (IL-081)
-- [x] RELATIONSHIP-TREE.md — Org relationships, agent interactions, escalation (IL-082)
+- [x] docs/RELATIONSHIP-TREE.md — Org relationships, agent interactions, escalation (IL-082)
 - [x] ROADMAP.md — Architecture repo phases & inventory (IL-083)
 
 ## Phase 3.5: Developer Documentation Pipeline (COMPLETED)
@@ -168,13 +168,13 @@ Pending implementation phase: ADR-027..034 + code/tests + deploy. See GAP-REGIST
 
 | Document | Status | Commit |
 |----------|--------|--------|
-| ORG-STRUCTURE.md | Complete | Initial |
-| DEPARTMENT-MAP.md | Complete | Updated 10 depts |
+| docs/ORG-STRUCTURE.md | Complete | Initial |
+| docs/DEPARTMENT-MAP.md | Complete | Updated 10 depts |
 | COMPLIANCE-FRAMEWORK.md | Complete | Initial |
 | CRYPTO-BLOCK.md | Complete | IL-070 |
-| JOB-DESCRIPTIONS.md | Complete | IL-080 |
+| docs/JOB-DESCRIPTIONS.md | Complete | IL-080 |
 | FEATURE-REGISTRY.md | Complete | IL-081 |
-| RELATIONSHIP-TREE.md | Complete | IL-082 |
+| docs/RELATIONSHIP-TREE.md | Complete | IL-082 |
 | DEV-DOCUMENTATION-GUIDE.md | Complete | IL-085 |
 | CHANGELOG-POLICY.md | Complete | IL-087 |
 | BANXE-CLAUDE-PROMPT.md | Complete | Initial |
@@ -561,4 +561,29 @@ Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 
 ### Pending tags (canon §21 — sprint progress, NO tag applied)
 - Sprint S4 = progress consolidation, not milestone per §21; no checkpoint tag applied.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Phase F1 unblocks + deploys).
+
+## Roadmap Block 2026-05-09 — Sprint S5 F4 Documentation Reconciliation (autonomous)
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress per §21).
+> Anchors: IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
+
+### Sprint S5 F4 autonomous closures
+- [x] **G-FACTORY-DOCUMENTATION-PATH-DRIFT** (P3) → CLOSED — 8 path references fixed in ROADMAP.md (docs/ prefix added)
+- [x] **G-FACTORY-CANON-FILES-DUPLICATION** (P3) → CLOSED-RECLASSIFIED — namespace clarification headers added to both GAP-REGISTER.md files; distinct purposes documented (architecture canon vs operational EMI)
+- [x] **G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON** (P2) → CLOSED — distributed inference topology documented in docs/LOCAL-CLOUD-ROUTING.md
+
+### Sprint S5 F4 deferred (operator-blocked)
+- [ ] **G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP** (P3): per-service classification for 84 services — operator decision required per service
+- [ ] **F3.1 LiteLLM systemd unit**: operator design spec required (User/WorkingDirectory/ExecStart)
+- [ ] **F3.3 Spec-First Auditor relocation**: operator decision required (relocate to canon path OR canon update §5)
+- [ ] **F4.1 bootstrap canon v3 §1/§1.bis update**: bootstrap is operator-supplied immutable artifact, cannot be edited from repo
+
+### Sprint S5 status
+- 3 GAPs autonomously closed (1 P2 + 2 P3).
+- 4 sub-tasks deferred (operator-blocked).
+- Sprint S5 = partial closure — autonomous documentation hygiene complete, operator-blocked tasks remain for dedicated future sprints.
+
+### Pending tags (canon §21 — sprint progress, NO tag applied)
+- Sprint S5 = progress consolidation, not milestone per §21; no checkpoint tag applied.
 - Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Phase F1 unblocks + deploys).

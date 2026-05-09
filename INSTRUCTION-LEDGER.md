@@ -6108,3 +6108,39 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - I-32, I-33 (PII/AML routing — relevant for project routes via Ruflo, indirect)
   - I-37 PROPOSED (factory↔project layer binding — directly affected by cross-layer findings)
   - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config source-of-truth)
+
+### IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S5 Phase F4 documentation reconciliation
+- Status: BINDING — autonomous F4 sub-tasks completed; operator-blocked sub-tasks deferred to dedicated sprints
+- Priority: P3 (documentation hygiene)
+- Scope: closes/partial-closes 3 documentation hygiene GAPs autonomously (path drift, namespace clarification, distributed inference canon coverage); defers operator-blocked sub-tasks (84 services classification, F3.1 systemd unit, F3.3 Spec-First Auditor relocation, F4.1 §1/§1.bis bootstrap canon update — bootstrap is operator-supplied immutable per canon acceptance).
+
+- F4 sub-task status:
+  - F4.1 (canon §1/§1.bis sync): bootstrap canon v3 is operator-supplied immutable per acceptance — repo-internal canon docs synced instead (see this commit: ROADMAP path drift + distributed inference doc + GAP-REGISTER namespace clarification).
+  - F4.2 (ROADMAP F0–F7 trackable milestones): substantially complete from Sprint S1 commit 633bb6a + Sprint S3+S4 progress blocks; remains living document.
+  - F4.3 (G-FACTORY-* GAPs reconciliation): all G-FACTORY-* GAPs created Sprint S1; status updates applied Sprint S3 (SUBAGENTS-MISSING [/]PARTIAL) + Sprint S4 (ROUTES-VS-CANON-DRIFT [/]CLASSIFIED-PENDING-OPERATOR + PROJECT-HEAVY [/]RESOLUTION-CANDIDATE-IDENTIFIED).
+
+- Autonomous changes this commit:
+  1. ROADMAP.md path drift fix (8 references): docs/ prefix added to ORG-STRUCTURE.md / DEPARTMENT-MAP.md / JOB-DESCRIPTIONS.md / RELATIONSHIP-TREE.md references in Phase 2/3 inventory + Document Inventory table.
+  2. GAP-REGISTER.md namespace clarification: header notices added to BOTH root GAP-REGISTER.md (architecture canon GAPs) and docs/GAP-REGISTER.md (operational EMI sprint GAPs) clarifying distinct purposes. Reclassifies G-FACTORY-CANON-FILES-DUPLICATION from "duplicate" to "two distinct artifacts coexisting".
+  3. docs/LOCAL-CLOUD-ROUTING.md: appended Distributed Inference Topology section documenting glm-master.service + llama-rpc-worker.service via USB4 + Vulkan, route `large` as project-heavy candidate, layer-assignment concerns per §1.bis. Closes G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON.
+
+- Status updates:
+  - G-FACTORY-DOCUMENTATION-PATH-DRIFT (P3, OPEN) → CLOSED — 8 path references fixed in ROADMAP.md.
+  - G-FACTORY-CANON-FILES-DUPLICATION (P3, OPEN) → CLOSED-RECLASSIFIED — files coexist with distinct purposes (architecture vs operational EMI), namespace clarification headers added to both.
+  - G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2, OPEN) → CLOSED — distributed inference topology now documented in docs/LOCAL-CLOUD-ROUTING.md.
+
+- Deferred sub-tasks (operator-blocked, NOT in this commit):
+  - G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3): per-service classification (legitimate-but-undocumented / scaffold / experimental / orphaned) for 84 services — operator decision per service.
+  - F3.1 LiteLLM systemd unit: operator design spec required (User/WorkingDirectory/ExecStart).
+  - F3.3 Spec-First Auditor relocation: operator decision required (relocate vs canon update).
+  - F4.1 bootstrap canon v3 §1/§1.bis update: bootstrap is operator-supplied immutable artifact, cannot be edited from repo.
+
+- Closing IL: TBD (Sprint S5 closure after operator-blocked deferred sub-tasks resolved).
+- Anchors:
+  - bootstrap canon v3 §1, §1.bis, §10 Phase F4, §11 Sprint S5
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-DOCUMENTATION-PATH-DRIFT + G-FACTORY-CANON-FILES-DUPLICATION + G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON)
+  - IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (route `large` → project-heavy candidate referenced in distributed inference doc)
+  - I-32, I-33, I-37 PROPOSED, I-59, I-68

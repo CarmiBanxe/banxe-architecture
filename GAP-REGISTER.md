@@ -1,4 +1,7 @@
 # GAP-REGISTER.md — Реестр архитектурных | 12-Factor Factor III | DONE |пробелов BANXE
+> **Scope:** Architecture-level canon GAPs (G-FACTORY-*, G-PROJECT-*, G-SECURITY-*, G-COMPLIANCE-*, G-INFRA-*, G-CI-*, etc).
+> **Counterpart:** `docs/GAP-REGISTER.md` tracks **operational EMI sprint** GAPs (GAP-001..NNN, FCA Authorisation Blockers, Sprint Assignment).
+> **Per Sprint S5 F4 reconciliation 2026-05-09:** Two GAP-REGISTER.md files coexist with distinct purposes. Не duplicate. See IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
 
 **Версия аудита:** v7 (2026-04-05) — ALL SPRINTS COMPLETE, 22/22 addressed (G-09 DEFERRED), 663 tests
 **Следующий пересмотр:** 2026-07-01 (до EU AI Act дедлайна 2026-08-02)
@@ -1145,7 +1148,7 @@
     Closing IL: TBD (Phase F3.2 — verify legacy :8080 instance purpose; either deprecate or document as canonical secondary; consolidate to single config source-of-truth).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
 
-- [ ] G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2, OPEN, 2026-05-09)
+- [x] G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2, CLOSED, 2026-05-09)
     GLM-4.5-Air 105B distributed inference architecture (glm-master.service on evo1
     + llama-rpc-worker.service on evo2 USB4 link 10.0.0.2:50052 Vulkan backend)
     is operational but NOT documented in canon §1.bis routes nor in
@@ -1155,6 +1158,8 @@
     against §0.5 distribution discipline.
     Closing IL: TBD (Phase F4.1 — canon documentation of distributed inference topology + layer-binding verification).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.5 + §1.bis.
+    Closing 2026-05-09 22:30 CEST (Sprint S5 F4 autonomous): distributed inference topology now documented в docs/LOCAL-CLOUD-ROUTING.md (glm-master.service evo1:8081 + llama-rpc-worker.service evo2:50052 via USB4 + Vulkan; route `large` → project-heavy candidate; layer-assignment concerns per §1.bis).
+    See IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
 
 - [ ] G-FACTORY-SPEC-FIRST-AUDITOR-NOT-DEPLOYED-AT-CANON-PATH (P2, OPEN, 2026-05-09)
     Spec-First Auditor v2 working in pre-commit hook but source NOT deployed at
@@ -1163,15 +1168,16 @@
     Closing IL: TBD (Phase F3.3 — relocate auditor source to canon path or update §5 canon to factual path).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §5 + §10 Phase F3.3.
 
-- [ ] G-FACTORY-DOCUMENTATION-PATH-DRIFT (P3, OPEN, 2026-05-09)
+- [x] G-FACTORY-DOCUMENTATION-PATH-DRIFT (P3, CLOSED, 2026-05-09)
     ROADMAP.md Phase 3 references org/role canon files without `docs/` prefix
     (IL-080 JOB-DESCRIPTIONS.md, IL-082 RELATIONSHIP-TREE.md, etc).
     Files factually located under `docs/`. Minor consistency issue — links
     function via filesystem search but canonical path declarations diverge.
     Closing IL: TBD (Phase F4.1 — ROADMAP.md path normalization sweep).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+    Closing 2026-05-09 22:30 CEST (Sprint S5 F4 autonomous): 8 path references fixed in ROADMAP.md (docs/ prefix added to ORG-STRUCTURE.md / DEPARTMENT-MAP.md / JOB-DESCRIPTIONS.md / RELATIONSHIP-TREE.md in Phase 2/3 inventory + Document Inventory table). See IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
 
-- [ ] G-FACTORY-CANON-FILES-DUPLICATION (P3, OPEN, 2026-05-09)
+- [x] G-FACTORY-CANON-FILES-DUPLICATION (P3, CLOSED-RECLASSIFIED, 2026-05-09)
     Two GAP-REGISTER.md files exist: /home/mmber/banxe-architecture/GAP-REGISTER.md
     (repo root) + /home/mmber/banxe-architecture/docs/GAP-REGISTER.md.
     Source-of-truth ambiguity. This IL declares root /GAP-REGISTER.md canonical.
@@ -1179,6 +1185,8 @@
     or content migrated.
     Closing IL: TBD (Phase F4.1 — duplicate canon-file reconciliation sweep + add to canon §3 process notes).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+    Closing 2026-05-09 22:30 CEST (Sprint S5 F4 autonomous): files coexist with distinct purposes — root GAP-REGISTER.md = architecture canon GAPs (G-FACTORY-*, G-PROJECT-*, etc); docs/GAP-REGISTER.md = operational EMI sprint GAPs (GAP-001..NNN format).
+    Namespace clarification headers added to BOTH files. Reclassified from "duplicate" to "two distinct artifacts". See IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
 
     **2026-05-08 cleanup-actor: CONFIRMED PARALLEL CLAUDE CODE SESSION** —
     best-decision (§4 BDP) based on Bundle B preservation (mtime 2026-05-07 21:54),
