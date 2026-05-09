@@ -497,3 +497,9 @@ Audit 2026-05-08 ~19:22 CEST from Legion, 18-section scope. Forensic SHA256: ste
 **New IL:** `IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR`, `IL-INCIDENT-2026-05-08-ROADMAP-UNFREEZE-MONITOR-STATE`.
 
 **Tag after merge:** `checkpoint-2026-05-08-incident-monitor-state-transition`.
+### 2026-05-08 — CLEANUP-ACTOR CONFIRMED — PARALLEL CLAUDE CODE SESSION
+**Best-decision (§4 BDP) classification. Actor: parallel Claude Code session (3rd session-leakage in 7 days).**
+- Evidence: Bundle B mtime 2026-05-07 21:54, PR #138 parallel activity, journalctl absence, sshd hardening pre-Step-5, operator no recall, external actor excluded
+- Compliance: authorised internal action, forensic-first procedure followed
+- Pending invariant: I-68 (single-session incident command). Future ADR-077 reserved.
+**Next: Phase 6 (credentials rotation) + Phase 7 (AML/KYC integrity) + MLRO/DPO acknowledge.**

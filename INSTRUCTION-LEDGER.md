@@ -5647,3 +5647,30 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Anchors:
   - bootstrap canon v3 §13 (process learnings cumulative), §27 (recovery commands cheat sheet)
   - IL-CANON-PROCESS-INCIDENT-2026-05-09-CANON-PR-146-BYPASS-WINDOW
+### IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-CONFIRMED-PARALLEL-SESSION
+- Phase (GSD): SECURITY-INCIDENT — Cleanup-actor identification CLOSED via
+  best-decision (§4 BDP) in absence of direct operator recall
+- Status: CONFIRMED — cleanup-actor = PARALLEL CLAUDE CODE SESSION
+- Priority: P0 (MLRO/DPO Art. 33 evidence)
+- Evidence: Bundle B mtime 2026-05-07 21:54 (forensic-first by parallel session),
+  PR #138 parallel activity 2026-05-08T12:10Z, journalctl 09:30-12:00 = 0 stop/rm,
+  sshd hardening mtime 13:04, operator no recall, external actor excluded
+- Third session-leakage instance in 7 days (precedents:
+  IL-CANON-PROCESS-INCIDENT-2026-05-06, IL-CANON-PROCESS-INCIDENT-2026-05-07-BRANCH-LEAKAGE PR #129)
+- Compliance: authorised internal action, NOT external compromise,
+  forensic-first procedure followed
+- Pending invariant I-68: single-session incident command for P0/P1
+- Closes: IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-NOT-IDENTIFIED (PR #139)
+  IL-INCIDENT-2026-05-08-MALWARE-REMOVED-EXTERNAL-ACTION,
+  IL-CANON-PROCESS-INCIDENT-2026-05-07-BRANCH-LEAKAGE
+### IL-INCIDENT-2026-05-08-PARALLEL-SESSION-PATTERN-RECURRING
+- Phase (GSD): CANON — recurring pattern recognition (binding precedent)
+- Status: BINDING
+- Pattern: parallel Claude Code sessions during incident response perform critical
+  actions without visibility to incident-canal commander, creating evidence gaps
+- Instances (3 in 7 days): (1) IL-CANON-PROCESS-INCIDENT-2026-05-06,
+  (2) IL-CANON-PROCESS-INCIDENT-2026-05-07-BRANCH-LEAKAGE PR #129,
+  (3) this instance (P0 cleanup-actor ambiguity)
+- Mitigation: I-68 pending, ADR-077 reserved (post-RESOLVED)
+- Anchors: IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-CONFIRMED-PARALLEL-SESSION,
+  G-SECURITY-EVO1-XMRIG-CRYPTOMINER
