@@ -5902,3 +5902,28 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - bootstrap canon v3 §13 (process learnings cumulative), §27 (recovery commands cheat sheet)
   - IL-CANON-PROCESS-INCIDENT-2026-05-09-PR-149-RACE-CONFLICT-PATTERN (companion incident IL — this commit)
   - IL-CANON-PROCESS-LEARNING-TRAP-FAILURE-2026-05-09 (predecessor learning IL, partially superseded for high-activity windows)
+
+### IL-INCIDENT-2026-05-09-STATE-TRANSITION-MONITOR-TO-RESOLVED
+
+- Date: 2026-05-09 (CEST).
+- Phase (GSD): SECURITY-INCIDENT — FINAL: state transition MONITOR → RESOLVED.
+- Status: RESOLVED — incident formally closed after 24h observation window PASS.
+- Priority: P1 → P2 (observation-only, no active response required).
+- Observation 24h check: 2026-05-09 21:22 CEST. SHA256 `e64d0c35f3e0972181636b3376ece492d7f4ef6044a934d2b25a9028f1a2e517`. All 6 checks PASS:
+  - XMRig process markers: CLEAN (only tracker-miner-fs-3, legitimate GNOME indexer)
+  - Artefact paths (6): ALL REMOVED
+  - iptables containment: STATIC (Rule 5: 12438/746K, Rule 6: 8921/660K — unchanged 43+h since 2026-05-08 02:00)
+  - CPU load: 2.14/1.49/1.29 (normal)
+  - Hetzner connections: ZERO
+  - systemd.service + observed.service: inactive/inactive
+- False-positive note: quick-verdict grep matched `tracker-miner-fs-3` (GNOME indexer); manual review confirmed no XMRig.
+- Incident timeline summary: discovery 2026-05-07 11:21 CEST → MONITOR 2026-05-08 22:05 → observation 24h check PASS 2026-05-09 21:22 → RESOLVED 2026-05-09 ~21:30.
+- Total incident duration: ~58 hours discovery-to-resolved.
+- Containment iptables rules: recommended KEEP as defence-in-depth for 30 days; operator may remove via explicit decision after 2026-06-08.
+- Post-RESOLVED actions (operator-side, not blocking):
+  - MLRO/DPO/CCO/Legal formal sign-off (GDPR Art. 33 deadline ≈ 2026-05-10 11:21 CEST, ~14h remaining).
+  - Phase 6 credentials rotation (GitHub PATs / Apps Script / Telegram / Claude Project / .env).
+  - Optional 48h check (2026-05-10 22:05 CEST) for extended confidence.
+  - Bundle B `/tmp/banxe_forensic_254683/` on evo1 retain 30 days (until ~2026-06-07), then operator may delete.
+- Closing IL: CLOSED — this is the final IL entry for this incident.
+- Anchors: all prior incident IL records + observation check SHA256 + G-SECURITY-EVO1-XMRIG-CRYPTOMINER (RESOLVED).

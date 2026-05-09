@@ -503,3 +503,28 @@ Audit 2026-05-08 ~19:22 CEST from Legion, 18-section scope. Forensic SHA256: ste
 - Compliance: authorised internal action, forensic-first procedure followed
 - Pending invariant: I-68 (single-session incident command). Future ADR-077 reserved.
 **Next: Phase 6 (credentials rotation) + Phase 7 (AML/KYC integrity) + MLRO/DPO acknowledge.**
+
+### 2026-05-09 — RESOLVED — observation 24h PASS
+
+**INCIDENT FORMALLY CLOSED.**
+
+Observation 24h check performed 2026-05-09 21:22 CEST — ALL 6 checks PASS:
+1. XMRig process markers: CLEAN (only tracker-miner-fs-3, legitimate GNOME indexer)
+2. Artefact paths (6): ALL REMOVED
+3. iptables containment: STATIC (Rule 5: 12438/746K, Rule 6: 8921/660K — unchanged 43+h)
+4. CPU load: 2.14/1.49/1.29 (normal)
+5. Hetzner connections: ZERO
+6. systemd.service + observed.service: inactive/inactive
+
+Observation check SHA256: `e64d0c35f3e0972181636b3376ece492d7f4ef6044a934d2b25a9028f1a2e517`
+
+**Incident state: RESOLVED (P2, observation-only)**
+Total incident duration: ~58 hours (discovery 2026-05-07 11:21 → RESOLVED 2026-05-09 ~21:30)
+
+Post-RESOLVED:
+- Containment iptables: KEEP 30 days (until ~2026-06-08) as defence-in-depth
+- Bundle B: retain on evo1 30 days, then operator may delete
+- MLRO/DPO/Legal sign-off: pending (~14h to GDPR Art. 33 deadline)
+- Phase 6 credentials rotation: pending (parallel-safe)
+
+**Tag after merge:** `checkpoint-2026-05-09-incident-resolved`

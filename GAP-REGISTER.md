@@ -1226,3 +1226,6 @@
     Required action: per-service classification (legitimate-but-undocumented / scaffold / experimental / orphaned) + ROADMAP.md sync to factual state OR cleanup of orphaned directories.
     Closing IL: TBD (Phase F4.1 — ROADMAP.md service inventory sync sweep).
     Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §10 Phase F4.1.
+
+- [x] G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0→P1→P2, **RESOLVED**, 2026-05-09)
+    2026-05-09 21:30 CEST status: RESOLVED — observation 24h PASS (all 6 checks clean, containment static 43+h, zero reinfection). Incident formally closed. Containment iptables rules recommended KEEP 30 days as defence-in-depth. See IL-INCIDENT-2026-05-09-STATE-TRANSITION-MONITOR-TO-RESOLVED.

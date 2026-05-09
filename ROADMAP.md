@@ -492,3 +492,11 @@ Tag after merge: `checkpoint-2026-05-08-incident-monitor-state-transition`.
 ### Pending tags (canon §21 — process audit, NO tag applied for S2)
 - Sprint S2 = process audit, not milestone per §21; no checkpoint tag applied.
 - Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Sprint S3).
+
+## Incident RESOLVED 2026-05-09 — INCIDENT-2026-05-07-EVO1-XMRIG
+
+P0 → MONITOR → RESOLVED. 24h observation PASS. Containment static 43+h. Zero reinfection. AML/KYC integrity preserved. ~58 hours total incident duration.
+
+Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
+
+→ Full incident document: [docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md](docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md)
