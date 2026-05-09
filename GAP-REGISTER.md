@@ -1076,7 +1076,7 @@
     Closing IL: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
     Anchors: bootstrap canon §22 Phase F2.1, §9 V-XMRIG carryover.
 
-- [ ] G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, OPEN, 2026-05-09)
+- [/] G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, PARTIAL, 2026-05-09)
     4 canonical Claude subagents (controller, inspector-agent, openclo-moa,
     safeguarding-agent) NOT deployed in ~/.claude/agents/ on Legion.
     Factory audit 2026-05-08 confirmed empty; current audit confirms unchanged.
@@ -1087,6 +1087,8 @@
     enforcement to manual operator discipline only.
     Closing IL: TBD (Phase F2.3 — deploy 4 subagents + verify session isolation behavior).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §5 + §10 Phase F2.3.
+    Status update 2026-05-09 21:21 CEST: 3 of 4 canonical subagents deployed (controller, inspector-agent, safeguarding-agent). openclo-moa.md authoring pending — sub-GAP G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING (P2) opened.
+    See IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09 for deployment evidence (sha256 verified).
 
 - [ ] G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED (P1, OPEN, 2026-05-09)
     Factory overseer AI agent (per §0.4) NOT deployed.
@@ -1226,3 +1228,19 @@
     Required action: per-service classification (legitimate-but-undocumented / scaffold / experimental / orphaned) + ROADMAP.md sync to factual state OR cleanup of orphaned directories.
     Closing IL: TBD (Phase F4.1 — ROADMAP.md service inventory sync sweep).
     Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §10 Phase F4.1.
+
+- [ ] G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING (P2, OPEN, 2026-05-09)
+    Sub-GAP of G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, PARTIAL after this IL).
+    openclo-moa.md (mixture-of-agents subagent for project layer, per bootstrap canon v3 §5)
+    NOT FOUND filesystem-wide on Legion (find -name "openclo-moa*" returned 0 results).
+    3 of 4 canonical subagents (controller, inspector-agent, safeguarding-agent) deployed
+    to ~/.claude/agents/ in Sprint S3 F2.3 partial; openclo-moa requires authoring per
+    operator/design spec.
+    Bootstrap canon §5 spec available: "mixture-of-agents для project layer" — high-level only,
+    requires operator-supplied design (interaction model, project-layer routing rules,
+    Ruflo MANDATORY chain integration, ARL handshake, response aggregation).
+    Project-layer mixture-of-agents fallback: direct LiteLLM project-mid/heavy/reason
+    routing per §1.bis until openclo-moa authored.
+    Closing IL: TBD (openclo-moa authored + deployed in ~/.claude/agents/ + verified).
+    Anchors: IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09,
+    bootstrap canon v3 §5 + §10 Phase F2.3, parent G-FACTORY-CLAUDE-SUBAGENTS-MISSING.
