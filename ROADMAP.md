@@ -460,3 +460,35 @@ Tag after merge: `checkpoint-2026-05-08-incident-monitor-state-transition`.
 - checkpoint-2026-05-XX-section-0-implementation-complete (after Sprint S10)
 - checkpoint-2026-05-XX-sandbox-100-percent-complete (after Sprint S11)
 - checkpoint-2026-05-XX-production-transition-ready (after Sprint S12)
+
+## Roadmap Block 2026-05-09 — Sprint S2 Project §0.2 Compliance Audit
+
+> Block opened under I-59 (roadmap-block procedure restored under MONITOR state).
+> Procedure: one branch → one commit → one PR → annotated tag NOT applied (process audit, not milestone per canon §21).
+> Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 + §10 Phase F0/F5 + §11 Sprint S2..S10, I-37 (PROPOSED).
+
+### Sprint S2 closure (Phase F0 final)
+- [x] Existing project (54 AI agents + 84 services + SM&CR framework) audited vs §0.2 Levels 1..5
+- [x] Existing autonomy framework (L1/L2/L3/L4 + GREEN/AMBER/RED + 17 HITL gates) catalogued
+- [x] Per-Level mapping established (Level 4 ALIGNED, Levels 1+2+3+5 PARTIAL/CONFLICT)
+- [x] G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0 from Sprint S1) → CLOSED
+- [x] 5 per-deviation GAPs opened (1 P0 Level 5 + 3 P1 Levels 1+2+3 + 1 P3 services drift)
+
+### Phase F5 readiness (post-S2)
+- [ ] F5.1 (Sprint S6) Level 1 operators — governance choice required: Option A reformulate §0.2 Level 1 OR Option B remove human doubles OR Hybrid (operator decides) — G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION
+- [ ] F5.2 (Sprint S7) Level 2 team leads — same governance choice — G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION
+- [ ] F5.3 (Sprint S8) Level 3 SMF Heads + sub-Heads — deploy AI duplicates for SMF C-suite + formalise sub-Heads AI partner pattern — G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING
+- [ ] F5.4 (Sprint S9) Level 4 CEO governance dashboard
+- [ ] F5.5 (Sprint S10) Level 5 autonomous AI MLRO agent + Ruflo MANDATORY routing + HITL Gates §6 update for AML decisions — G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING
+
+### Critical governance decision points (operator-only)
+1. Levels 1+2 fundamental conflict: §0.2 declares "100% AI без duplicate" but ALL existing L1/L2 agents have human doubles per Agent Summary Registry. Three resolution paths in GAP descriptions.
+2. Level 5 AI MLRO co-sign with CEO: HITL Gates §6 require "MLRO + CEO" for SAR retraction / Sanctions reversal / PEP onboarding. §0.2 says AI MLRO NOT subordinate to CEO. Resolution requires HITL Gates §6 amendment + legal review.
+
+### Sandbox→Production gate (§0.3)
+- All §0.2 Levels deployed in sandbox: BLOCKED (Levels 1+2 governance + Level 5 AI MLRO + Level 3 SMF AI duplicates all pending Sprint S6..S10).
+- Real customer data migration: BLOCKED until Sprint S11 (sandbox 100% verification per Phase F6).
+
+### Pending tags (canon §21 — process audit, NO tag applied for S2)
+- Sprint S2 = process audit, not milestone per §21; no checkpoint tag applied.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Sprint S3).
