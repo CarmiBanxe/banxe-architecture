@@ -50,3 +50,29 @@ _TODO_
 ## Next action
 
 Derive exact path counts for the first priority candidate from `BANXE-RAR-LISTING-2026-05-06.txt` and append the first classification block here.
+
+---
+
+## Classification block 1 — `banxe/banxe-shared-libs`
+
+**Files:** 2481 (verified: `grep -c '^banxe/banxe-shared-libs/' BANXE-RAR-LISTING-2026-05-06.txt`)
+**Stack:** TypeScript monorepo (package.json + packages/)
+**Top-level packages:** abs-common, bank-common, common, core, graphql, rabbit-mq
+
+### Per-package classification
+
+| Package | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `packages/bank-common` | **REWRITE-reference** | `services/payment/payment_port.py` + `services/ledger/ledger_port.py` (domain DTO alignment only) | Banking-domain DTOs/types — extract semantics, not code (TS → Python rewrite already covered by FROZEN ports) |
+| `packages/abs-common` | **REWRITE-reference** | `services/payment/legacy/legacy_abs_payment_adapter.py` (already exists) | ABS payment domain — already mirrored in legacy adapter; use only for cross-check of state machine / fields |
+| `packages/common` | **REJECT** | — | Generic TS utils — EMI has Python-native equivalents |
+| `packages/core` | **REJECT** | — | Generic TS core — out of EMI Python scope |
+| `packages/graphql` | **REJECT** | — | EMI uses REST/FastAPI; no GraphQL surface in canon roadmap |
+| `packages/rabbit-mq` | **REJECT** | — | EMI event bus already implemented (`services/events/event_bus.py`); no TS adapter port |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (2 packages: bank-common, abs-common) + REJECT (4 packages: common, core, graphql, rabbit-mq).
+- **No code import** into EMI; only domain semantics cross-checked against existing FROZEN ports (`PaymentRailPort`, `LedgerPort`, `CryptoLedgerPort`).
+- **No new EMI files** required from this fragment in Sprint 10.
+
