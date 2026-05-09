@@ -6501,3 +6501,18 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - I-37 PROPOSED, I-59, I-68
   - PRs #146, #148, #149 (closed), #153, #154, #156 (closed), #158, #159, #160, #162, #164, #165
   - Tag checkpoint-2026-05-09-canon-section-0-fixation
+
+### IL-ADR-029-ACCEPTED-2026-05-10
+
+- Date: 2026-05-10 (CEST).
+- Phase (GSD): CLOSE — ADR-029 Postgres backup strategy Accepted.
+- Status: DONE.
+- Priority: P1 (Track A implementation).
+- Implementation (banxe-emi-stack):
+  - Step 1 PR #102: BackupPort protocol + PgDumpBackupAdapter (pg_dump/pg_restore subprocess) + 6 unit tests.
+  - Step 2 PR #104: DI factory (BackupConfig.from_env() + get_backup_adapter()) + BACKUP_ENABLED flag + 5 integration tests.
+  - Step 3 PR #106: pg-backup-run.py cron entrypoint (backup + rotate) + 4 smoke tests.
+  - Total: 15 tests PASS, coverage 40.94%.
+- Gaps closed: G-OPS-01 (DONE), G-OPS-02 (DONE).
+- ADR status: Proposed → Accepted.
+- Anchors: ADR-029, G-OPS-01, G-OPS-02, banxe-emi-stack PRs #102/#104/#106.

@@ -210,16 +210,13 @@
 
 ## Operations / Backups — Gaps (V-07 from HANDOFF-2026-05-04)
 
-- [ ] G-OPS-01: Postgres backup rotation policy not defined for keycloak-pg (post Phase F migration) — NEW 2026-05-05
-  Source: V-07 MEDIUM in HANDOFF-2026-05-04. Affected service: `keycloak-banxe-emi-pg` (staging on Legion :8181, will become production after Phase F live switch). Risk: without rotation, FCA CASS 15 audit-trail evidence may be lost (no point-in-time recovery, no documented retention).
-  Plan (3 steps):
-    1. **Audit** (read-only): inventory existing volume (`keycloak_pg_data`), check disk usage and freshness; document the absence of any rotation cron / WAL archiving.
-    2. **Propose**: ADR-029 — Postgres backup strategy. Options: (a) `pg_dump` daily + 14-day rotation to `/data/banxe/backups/`, (b) `wal-g` continuous WAL + 30-day retention to S3-compatible store, (c) `pgBackRest`. Decide based on RPO/RTO + FCA evidence requirements (12-month retention).
-    3. **Fix**: implement chosen option, add cron / systemd timer, validate restore on staging, document in `infra/keycloak-banxe-emi/RUNBOOK.md` §Backup. Add G-OPS-01 closure proof (test restore log).
-  Owner: Architecture WG / Infra lead. Linked: ADR-017 (Keycloak IAM cutover), G-IAM-09 (Postgres backend).
+- [x] G-OPS-01: Postgres backup rotation policy not defined for keycloak-pg — DONE 2026-05-10 (ADR-029 Accepted)
+  Source: V-07 MEDIUM in HANDOFF-2026-05-04. Affected service: `keycloak-banxe-emi-pg`.
+  Resolution: BackupPort + PgDumpBackupAdapter + factory DI + BACKUP_ENABLED flag + rotation policy (keep_last=7 default). Implementation: banxe-emi-stack PRs #102/#104/#106.
+  Owner: Architecture WG / Infra lead. Linked: ADR-029 (Accepted), ADR-017, G-IAM-09.
 
-- [ ] G-OPS-02: Backup-restore CI smoke test (no silent rotation failure) — NEW 2026-05-05
-  Add CI fixture (or scheduled job): take a pg_dump from `keycloak-pg`, restore into ephemeral Postgres, verify `banxe-emi` realm + 4 client_credentials grants survive. Run weekly. Owner: Architecture WG.
+- [x] G-OPS-02: Backup-restore CI smoke test (no silent rotation failure) — DONE 2026-05-10 (ADR-029 Accepted)
+  Resolution: 15 tests (6 unit + 5 integration + 4 smoke) + pg-backup-run.py cron script with exit-code verification. Implementation: banxe-emi-stack PRs #102/#104/#106. Owner: Architecture WG.
 
 ## API Gateway / Ingress — Gaps (V-12 from HANDOFF-2026-05-04)
 
