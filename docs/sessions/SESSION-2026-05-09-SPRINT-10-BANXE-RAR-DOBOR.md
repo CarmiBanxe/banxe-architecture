@@ -1,0 +1,248 @@
+# Session Canon: 2026-05-09 — Sprint 10 BANXE.RAR Dobor
+
+**Status:** ACTIVE
+**Date:** 2026-05-09
+**Operator:** Moriel Carmi
+**Repo:** CarmiBanxe/banxe-architecture
+**Source listing:** docs/inventories/BANXE-RAR-LISTING-2026-05-06.txt (100488 files)
+**Category map:** docs/inventories/BANXE-RAR-CATEGORY-MAP-2026-05-06.md
+
+---
+
+## Scope (Sprint 10)
+
+Goal: classify **deferred** BANXE.RAR fragments (≈58439 files) into PASS / REWRITE / REJECT relative to EMI BANXE AI BANK.
+
+Priority candidates (per Phase 3 notes and EMI roadmap):
+
+- `banxe/banxe-shared-libs` — DTOs, error maps, utilities
+- `internal_dev/support-services` — internal tools
+- `internal_dev/trigger-system-services` — event triggers / cron
+- `internal_dev/fintech-services` — fintech utilities
+- `banxe-digital/v-accounting` — accounting / AML hooks
+- `banxe-digital/crypto-exchange-api` — exchange API
+- `banxe/banxe-uikit` — UI components
+- `consul-configs/*` — config-only
+- `neuron/*` — separate ecosystem, EMI relevance TBC
+
+---
+
+## Classification legend
+
+- **PASS:** Domain logic / models / mappings worth porting into EMI stack behind existing ports/adapters.
+- **REWRITE:** Legacy implementation discarded; only domain idea / flow kept, re-implemented natively in EMI.
+- **REJECT:** Out of EMI scope, obsolete, or UI-only / infra-only.
+
+Each fragment entry MUST include:
+- BANXE.RAR path prefix
+- Files count (from listing)
+- Proposed classification (PASS / REWRITE / REJECT)
+- If PASS/REWRITE: intended EMI boundary (module + port)
+
+---
+
+## Candidates — initial classification (Draft)
+
+_TODO_
+
+---
+
+## Next action
+
+Derive exact path counts for the first priority candidate from `BANXE-RAR-LISTING-2026-05-06.txt` and append the first classification block here.
+
+---
+
+## Classification block 1 — `banxe/banxe-shared-libs`
+
+**Files:** 2481 (verified: `grep -c '^banxe/banxe-shared-libs/' BANXE-RAR-LISTING-2026-05-06.txt`)
+**Stack:** TypeScript monorepo (package.json + packages/)
+**Top-level packages:** abs-common, bank-common, common, core, graphql, rabbit-mq
+
+### Per-package classification
+
+| Package | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `packages/bank-common` | **REWRITE-reference** | `services/payment/payment_port.py` + `services/ledger/ledger_port.py` (domain DTO alignment only) | Banking-domain DTOs/types — extract semantics, not code (TS → Python rewrite already covered by FROZEN ports) |
+| `packages/abs-common` | **REWRITE-reference** | `services/payment/legacy/legacy_abs_payment_adapter.py` (already exists) | ABS payment domain — already mirrored in legacy adapter; use only for cross-check of state machine / fields |
+| `packages/common` | **REJECT** | — | Generic TS utils — EMI has Python-native equivalents |
+| `packages/core` | **REJECT** | — | Generic TS core — out of EMI Python scope |
+| `packages/graphql` | **REJECT** | — | EMI uses REST/FastAPI; no GraphQL surface in canon roadmap |
+| `packages/rabbit-mq` | **REJECT** | — | EMI event bus already implemented (`services/events/event_bus.py`); no TS adapter port |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (2 packages: bank-common, abs-common) + REJECT (4 packages: common, core, graphql, rabbit-mq).
+- **No code import** into EMI; only domain semantics cross-checked against existing FROZEN ports (`PaymentRailPort`, `LedgerPort`, `CryptoLedgerPort`).
+- **No new EMI files** required from this fragment in Sprint 10.
+
+
+---
+
+## Classification block 2 — `banxe-digital/v-accounting`
+
+**Files:** 785 (verified: `grep -c '^banxe-digital/v-accounting/' BANXE-RAR-LISTING-2026-05-06.txt`)
+**Stack:** NestJS / TypeScript + GraphQL + TypeORM + RabbitMQ
+**Top-level src modules:** account, address, amplitude, app, app-config, auth, balance, config, crypto-exchange-api, documentation, dust-transfer, file, income, migrations, notification, order, payment-account, pro-wallet, project, rabbitmq, rabbitmq-publisher, report, shared, transaction, user
+
+### Per-module classification
+
+| Module | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `src/account` | **REWRITE-reference** | `services/ledger/ledger_port.py` + `services/ledger/midaz_adapter.py` | Account domain — cross-check semantics against Midaz GL accounts |
+| `src/balance` | **REWRITE-reference** | `services/ledger/*` + `services/recon/recon_port.py` | Balance projection — cross-check against LedgerPort + recon engine |
+| `src/transaction` | **REWRITE-reference** | `services/ledger/midaz_adapter.py` (TransactionRecord) + `services/payment/payment_port.py` | Transaction domain — semantics already mirrored in FROZEN ports |
+| `src/payment-account` | **REWRITE-reference** | `services/payment/payment_port.py` | Payment account aggregation — cross-check only |
+| `src/income` | **REWRITE-reference** | `services/recon/*` + `services/safeguarding-engine/*` | Income recognition — cross-check vs safeguarding/recon flows |
+| `src/report` | **REWRITE-reference** | `services/client_statements/statement_generator.py` + `services/recon/*` | Reporting domain — semantics for statements/recon outputs |
+| `src/order` | **REWRITE-reference** | `services/payment/*` (order→payment intent mapping) | Order→payment mapping — cross-check only |
+| `src/dust-transfer` | **REJECT** | — | Crypto-exchange micro-flow — out of EMI core scope |
+| `src/pro-wallet` | **REJECT** | — | Product-level wallet feature — out of EMI core scope |
+| `src/crypto-exchange-api` | **REJECT (duplicate)** | — | Already covered by separate repo `banxe-digital/crypto-exchange-api` (Wave E) |
+| `src/auth` | **REJECT** | — | Auth already closed by Wave A (`services/auth/*`) |
+| `src/notification` | **REJECT** | — | EMI uses dedicated channels (OTP/email adapters Sprint 6) |
+| `src/rabbitmq`, `src/rabbitmq-publisher` | **REJECT** | — | EMI event bus already implemented (`services/events/event_bus.py`) |
+| `src/file`, `src/address`, `src/amplitude`, `src/app`, `src/app-config`, `src/config`, `src/documentation`, `src/migrations`, `src/project`, `src/shared`, `src/user` | **REJECT** | — | Generic infra/UI/config — Python-native equivalents in EMI |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (7 modules: account, balance, transaction, payment-account, income, report, order) + REJECT (rest, including crypto-exchange-api as duplicate of Wave E source).
+- **No code import** into EMI; only domain semantics cross-checked against existing FROZEN ports (`LedgerPort`, `PaymentRailPort`, `recon_port`, safeguarding flows).
+- **No new EMI files** required from this fragment in Sprint 10.
+
+
+---
+
+## Classification block 3 — `internal_dev/*`
+
+**Total files:** 5639 (finthech-services 580 + support-services 2819 + trigger-system-services 2240)
+
+### `internal_dev/finthech-services` (580 files)
+
+| Submodule | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `auto-acquiring` | **REWRITE-reference** | `services/payment/*` (acquiring flows, future) | Acquiring automation semantics — cross-check only |
+| `auto-reconciliation` | **REWRITE-reference** | `services/recon/*` (recon engine + midaz_reconciliation) | Auto-recon flow — semantics for daily recon pipeline |
+| `crypto-admin-panel` | **REJECT** | — | Admin UI — out of EMI core scope |
+| `document-import` | **REWRITE-reference** | `services/kyc/*` (document ingestion) | Document import flow — cross-check vs SumSub adapter |
+| `fin-monitoring` | **REWRITE-reference** | `services/safeguarding-engine/*` + `services/recon/*` | Financial monitoring — cross-check safeguarding/recon alerts |
+
+### `internal_dev/support-services` (2819 files)
+
+| Submodule | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `clarification-forms` | **REWRITE-reference** | `services/compliance/*` (legacy adapters) | Compliance clarification flow — semantics only |
+| `edd-forms` | **REWRITE-reference** | `services/compliance/legacy/legacy_sumsub_adapter.py` (I-04 EDD) | EDD form domain — cross-check threshold + state machine |
+| `jira-scrapper` | **REJECT** | — | Ops tooling — out of EMI scope |
+| `sendgrid-webhook` | **REJECT** | — | EMI has dedicated `SendGridOtpAdapter` (Sprint 6) |
+
+### `internal_dev/trigger-system-services` (2240 files)
+
+| Submodule | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `triggers` | **REWRITE-reference** | `services/events/event_bus.py` + cron jobs | Event triggers — cross-check semantics |
+| `services` | **REWRITE-reference** | `services/events/*` | Trigger service runners — cross-check |
+| `control` | **REJECT** | — | Admin/control plane UI |
+| `dev-tools` | **REJECT** | — | Internal dev tooling |
+| `frontend` | **REJECT** | — | UI — out of EMI scope |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (8 submodules across 3 repos) + REJECT (6 submodules).
+- **No code import** into EMI; only domain semantics for recon, safeguarding, KYC document flows, EDD, and event triggers.
+- **No new EMI files** required from this fragment in Sprint 10.
+
+
+---
+
+## Classification block 4 — `banxe-digital/crypto-exchange-api`
+
+**Files:** 665 (verified: `grep -c '^banxe-digital/crypto-exchange-api/' BANXE-RAR-LISTING-2026-05-06.txt`)
+**Stack:** NestJS / TypeScript + GraphQL + TypeORM
+**Top-level src modules:** account, address, auto-convert, balance, binance, binance-kyc, coins, config, crypto-api, dust-transfer, local-crypto-exchange, market, migrations, operation, order, rabbitmq-publisher, shared, trade, transaction, validations
+
+### Per-module classification
+
+| Module | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `src/account` | **REWRITE-reference** | `services/ledger/crypto_ledger_port.py` + `services/ledger/production/midaz_crypto_adapter.py` | Crypto account semantics — cross-check vs FROZEN port |
+| `src/balance` | **REWRITE-reference** | `services/ledger/crypto_ledger_port.py` (get_balance) | Balance projection — semantics only |
+| `src/transaction` | **REWRITE-reference** | `services/ledger/crypto_ledger_port.py` (create_tx) + MidazCryptoAdapter | Crypto transaction domain — cross-check |
+| `src/address` | **REWRITE-reference** | `services/ledger/crypto_ledger_port.py` (create_wallet_address) | Wallet address domain — semantics only |
+| `src/crypto-api` | **REWRITE-reference** | `services/ledger/legacy/legacy_crypto_*` adapters | Crypto API surface — already mirrored in EMI legacy adapters |
+| `src/auto-convert` | **REJECT** | — | Exchange auto-convert — out of EMI scope (not an exchange) |
+| `src/market` | **REJECT** | — | Market data / order book — out of EMI scope |
+| `src/trade` | **REJECT** | — | Trading engine — out of EMI scope |
+| `src/order` | **REJECT** | — | Exchange order book — out of EMI scope |
+| `src/dust-transfer` | **REJECT** | — | Exchange micro-flow — out of EMI scope |
+| `src/local-crypto-exchange` | **REJECT** | — | Exchange-specific — out of EMI scope |
+| `src/binance`, `src/binance-kyc` | **REJECT** | — | Binance-specific integrations — out of EMI scope |
+| `src/coins` | **REJECT** | — | Coin catalog — out of EMI core scope |
+| `src/operation` | **REJECT** | — | Exchange operation aggregation — out of EMI scope |
+| `src/config`, `src/migrations`, `src/rabbitmq-publisher`, `src/shared`, `src/validations` | **REJECT** | — | Generic infra — Python-native equivalents in EMI |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (5 modules: account, balance, transaction, address, crypto-api) + REJECT (rest, exchange-specific).
+- **No code import** into EMI; only crypto-domain semantics cross-checked against FROZEN CryptoLedgerPort + MidazCryptoAdapter (Sprint 9).
+- **No new EMI files** required. EMI is an EMI / payment institution, not a crypto exchange — exchange modules explicitly out of scope.
+
+
+---
+
+## Classification block 5 — `banxe/banxe-uikit`, `consul-configs/*`, `neuron/*`
+
+### `banxe/banxe-uikit`
+
+- **Files:** 680 (verified)
+- **Stack:** UI component library (frontend)
+- **Classification:** **REJECT**
+- **Rationale:** Out of EMI backend scope. EMI stack is Python/FastAPI services + ports/adapters; UI components do not map to any FROZEN port.
+
+### `consul-configs/*`
+
+- **Files:** 408 (verified)
+- **Stack:** Consul KV configuration (3 envs)
+- **Classification:** **REJECT**
+- **Rationale:** Operational config inventory only. EMI uses `.env` + `services/config/*`; Consul is not part of EMI deployment canon. May be referenced operationally for env-var keys, but not imported as code.
+
+### `neuron/*`
+
+- **Files:** 16233 (verified)
+- **Stack:** Mixed legacy ecosystem (auth, blockchain, exchange, gambling, UI) — already partially classified in Phase 3 category map (most subrepos marked "likely REJECT").
+- **Classification:** **REJECT** (blanket)
+- **Rationale:** Separate ecosystem (Neuron exchange) outside EMI BANXE AI BANK scope. Phase 3 category map already pre-flagged neuron-* subrepos as REJECT across Waves A, C, D, E. No EMI-adjacent backend fragments justify sub-split in Sprint 10.
+
+### Net decision
+
+- **Overall:** REJECT for all 3 candidates (17321 files total).
+- **No code import**, no REWRITE-reference. EMI ports/adapters fully covered without any neuron / uikit / consul fragment.
+
+
+---
+
+## Sprint 10 — Summary
+
+**Date closed:** 2026-05-09
+**PR:** #157 (CarmiBanxe/banxe-architecture)
+**Total fragments classified:** 9 priority candidates across 5 classification blocks
+
+### Aggregate result
+
+| Outcome | Count | Files |
+|---|---:|---:|
+| PASS (direct import) | 0 | 0 |
+| REWRITE-reference (semantics cross-check only) | 22 modules | ~6500 (subset of 4 repos) |
+| REJECT | rest | ~17900 |
+
+### Canon outcome
+
+- **EMI BANXE AI BANK stack remains primary** across all 9 candidates.
+- **BANXE.RAR contributes zero direct code import** in Sprint 10; only domain semantics cross-checks against FROZEN ports (`PaymentRailPort`, `LedgerPort`, `CryptoLedgerPort`, `KYCWorkflowPort`, `OtpDeliveryPort`).
+- **No new EMI files** generated in `banxe-emi-stack` from Sprint 10.
+- All Sprint 6–9 production adapters (Twilio/SendGrid OTP, SumSub HTTP, Modulr SEPA, Midaz crypto) remain canonical.
+
+### Status
+
+**Sprint 10 — CLOSED** (pending PR #157 merge).
+

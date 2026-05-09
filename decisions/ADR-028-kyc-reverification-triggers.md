@@ -1,6 +1,7 @@
 # ADR-028 — KYC Re-verification Triggers
 
-**Status:** Proposed (2026-05-05)
+**Status:** Accepted (2026-05-09)
+**Date Accepted:** 2026-05-09
 **Author:** Architecture WG / Compliance lead
 **Closes:** G-KYC-01 + G-KYC-02 (canonical), V-03 (HANDOFF-2026-05-04)
 **Linked:** ADR-LCY-01 (canonical lifecycle FSM), ADR-016 (AI-plane PII/AML routing),
@@ -264,6 +265,16 @@ Rationale:
 
 ## Decision
 
-**Pending** — operator acceptance required after review of the Recommendation.
-Implementation begins only after operator confirms chosen option and phasing.
-ADR-LCY-01 must be updated as an addendum when new FSM state is accepted.
+**Accepted** (2026-05-09) — KYC re-trigger events implemented for 3 of 5 trigger
+categories (role change, beneficial owner change, jurisdiction change). Remaining 2
+(sanctions match, 24-month periodic review) deferred to ADR-034/ADR-LCY-01 addendum.
+
+---
+
+## Implementation
+
+- **Step 1:** banxe-emi-stack PR #69 — `BanxeEventType` extension (`ROLE_CHANGED` / `BENEFICIAL_OWNER_CHANGED` / `JURISDICTION_CHANGED`) + `KycReTriggerEvent` dataclass + `build_kyc_retrigger_event()` + 8 unit tests.
+- **Step 2:** banxe-emi-stack PR #70 — FSM lifecycle wiring (`services/customer_lifecycle/fsm.py` +62 lines, `notify_attribute_change()`) + 183-line integration test.
+- **Step 3:** banxe-emi-stack PR #99 — operational check script (`scripts/kyc-retrigger-check.py`) + 4 smoke tests.
+- **Total:** 12 tests PASS, coverage 41.02%.
+- **Gaps closed:** G-KYC-01 (DONE), G-KYC-02 (DONE).
