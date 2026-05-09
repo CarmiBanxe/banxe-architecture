@@ -611,3 +611,24 @@ Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 
 ### Pending tags
 - Sprint S4 = sprint progress, not milestone per §21; no tag.
+
+## Roadmap Block 2026-05-09 — Sprint S4 F3.2 Phase 3 Prep (caller migration inventory)
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress per §21).
+> Anchors: IL-OPS-SPRINT-S4-F3-2-PHASE3-PREP-CALLER-MIGRATION-INVENTORY-2026-05-09.
+
+### Phase 3 prep — caller migration inventory complete
+- [x] All 9 DUPLICATE-ALIASES caller-inventoried across banxe-emi-stack + MetaClaw + banxe-architecture
+- [x] False-positive analysis applied (coding + ai aliases — no actual model_name callers)
+- [x] Risk classification refined: 4 zero-caller + 2 low-risk + 3 medium-risk (all in dev tooling, NONE в EMI production)
+- [x] Migration script template authored (yq config edits + sed caller migration + LiteLLM restart + verification round-trip)
+
+### Phase 3 implementation — BLOCKED on operator approval matrix from Phase 2
+- [ ] Operator approval: Proposals A/B/C + Decisions D1/D2/D3/D4
+- [ ] Execute migration script (LiteLLM config edit + dev tooling migration + LiteLLM restart)
+- [ ] Verification round-trip (curl 7 canonical → 200; curl 9 removed → 404)
+- [ ] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT closure
+- [ ] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING closure (если Proposal B executed)
+
+### Pending tags
+- Sprint S4 = sprint progress, NO tag.
