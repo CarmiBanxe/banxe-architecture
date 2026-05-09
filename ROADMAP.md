@@ -705,3 +705,61 @@ All canon authoring + diagnostic + caller inventory + script template + proposal
 
 ### Genuine absolute autonomous progression terminus
 All pathways exhausted per канон §6+§7 ENHANCED v3. Resume requires operator inputs.
+
+## Roadmap Block 2026-05-10 — Perplexity Management Improvement Plan ACCEPTED + Phase 5 kickoff
+
+> Block opened under I-59. One branch / one commit / one PR / annotated tag `checkpoint-2026-05-10-perplexity-management-plan-accepted` after merge.
+> Anchors: IL-OPS-PERPLEXITY-MANAGEMENT-IMPROVEMENT-PLAN-ACCEPTED-2026-05-10, PR #168 (be2ab59), tag checkpoint-2026-05-10-canon-unified-accepted.
+
+### Layer 0
+- [x] PR #168 ACCEPTED (be2ab59 + tag) — DONE 2026-05-09T23:38:46Z
+- [x] Plan IL acceptance — DONE this commit
+- [ ] Local-only repos rescue (banxe + banxe-ai-infrastructure) — operator-led P0
+- [ ] Mirror backfill 8 PRs Sprint 6-10
+
+### Layer 1 — amendment-30.O
+- [ ] T2 Canon Synthesis Drafter / T3 Cross-Repo Coordinator / T4 Compliance Advisor / T5 Decision Triage / T6 Privileged Operator (gated)
+
+### Phase 5 — Autonomous
+- [ ] 5.1 Track A close
+- [ ] 5.2 Track G close
+- [ ] 5.3 Mirror backfill (#94, #96, #97, #98, #100, #101, #105, #157)
+- [ ] 5.4 Local-only repos rescue (operator-led)
+
+### Phase 6 — Operator-blocked
+- [ ] Track B / D / E / F / H / I + §0.2 Levels 1+2 + L3+L4+L5 designs + FA-3 Ruflo + openclo-moa + Factory overseer + MLRO appointment + Safeguarding engine
+
+### Phase 7 — Crypto Block
+- [ ] ADR-036 FATF Travel Rule + CryptoCompliancePort + Wave E process extraction + Neuronext + TomPay + Crypto AML
+
+### Phase 8 — Multi-agent Comms
+- [ ] Multi-agent comms + Real-time dashboard + Telegram bot + FCA Section 4 + MI report
+
+### Phase 9 — QA + Production Ready
+- [ ] E2E + payment regression + compliance playbooks + AI benchmarks + load testing + Track I cutover + DR/failover + monitoring + docs audit + go-live checklist
+
+### Phase 10 — FCA Submission + Go-Live
+- [ ] SMF + Internal Audit + Board + RegData FIN-RPT + safeguarding evidence + MLRO report + AML policy + business plan + multi-party sign-off + customer data migration + live operations
+
+### Pending tags (canon §21)
+- checkpoint-2026-05-10-perplexity-management-plan-accepted (after this PR merge)
+- checkpoint-2026-05-XX-phase5-step3-mirror-backfill-complete
+- checkpoint-2026-05-XX-amendment-30-O-accepted
+- checkpoint-2026-05-XX-track-A-G-closed
+- checkpoint-2026-05-XX-mlro-appointed
+- checkpoint-2026-05-XX-safeguarding-engine-complete
+- checkpoint-2026-05-XX-phase6-complete
+- checkpoint-2026-05-XX-phase7-crypto-complete
+- checkpoint-2026-05-XX-phase8-comms-complete
+- checkpoint-2026-05-XX-phase9-production-ready
+- checkpoint-2026-05-XX-fca-emi-submitted
+- checkpoint-2026-05-XX-go-live (FINAL)
+
+### CORE PRINCIPLE (per PR #168 binding)
+NEW EMI stack главный, BANXE.RAR = только источник процессов (НЕ кода). Sprint 10 dobor confirmed.
+
+### Two-loop sync (binding)
+emi-stack IL → architecture IL mirror. Pre-commit hook on both repos enforce.
+
+### Working as factory under unified canon
+amendment-B.11.N+2: Claude Code executor + Mark pool owner + Perplexity coordinator. ADR-025 Session Rules 1..7. Race-mitigation pattern validated 10×.
