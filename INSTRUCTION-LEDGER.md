@@ -6158,3 +6158,81 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-DOCUMENTATION-PATH-DRIFT + G-FACTORY-CANON-FILES-DUPLICATION + G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON)
   - IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (route `large` → project-heavy candidate referenced in distributed inference doc)
   - I-32, I-33, I-37 PROPOSED, I-59, I-68
+
+### IL-OPS-SPRINT-S4-F3-2-PHASE2-PROPOSAL-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S4 Phase F3.2 phase 2 operator decision proposal
+- Status: BINDING — proposal authored, operator approval required for execution
+- Priority: P2 (factory hardening — LiteLLM gateway cleanup)
+- Scope: prepares per-route execution plan based on Sprint S4 F3.2 phase 1 diagnostic (IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09); proposes bulk REMOVE for 9 DUPLICATE-ALIASES + project-heavy promotion strategy + per-item decisions for remaining 5 routes. NO config edits in this commit — proposal only.
+
+- Recommended actions (autonomous-safe, low-risk):
+
+  PROPOSAL A — Bulk REMOVE 9 DUPLICATE-ALIASES (recommend operator pre-approval):
+  Edit /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml — remove following model_list entries:
+    - banxe-general (2 entries: evo1 + evo2 backends) → callers migrate to factory-mid
+    - qwen3-30b (2 entries: evo1 + evo2) → callers migrate to factory-mid
+    - qwen3-banxe (1 entry: evo1) → callers migrate to factory-mid
+    - glm-4-flash (1 entry: evo1) → callers migrate to fast (if fast preserved) OR remove if fast also removed
+    - coding (1 entry: evo1) → callers migrate to factory-coder
+    - glm-4.5-air-distributed (1 entry: evo1:8081) → callers migrate to large (or project-heavy after promotion)
+    - glm-air (1 entry: evo1:8081) → callers migrate to large (or project-heavy after promotion)
+    - ai (2 entries: evo1 + evo2) → callers migrate to project-mid
+    - reasoning-235b (1 entry: evo2:8082) → callers migrate to project-reason
+  Total: 12 model_list entries removed (9 unique aliases × variable backend duplicates).
+  Risk: LOW. All 9 aliases have canonical equivalents; callers detected via grep on EMI services should be migrated в parallel commit.
+
+  PROPOSAL B — `large` → `project-heavy` promotion (recommend operator approval):
+  Option B1 (rename): edit litellm-config.v2.yaml — rename `model_name: large` to `model_name: project-heavy` (preserve backend openai/glm-4.5-air @ evo1:8081 RPC). Single edit. Risk: LOW.
+  Option B2 (alias): add new model_list entry `project-heavy` with same backend as `large`, keep `large` as legacy alias temporarily. Risk: LOWEST (no caller migration needed). Recommend B2 for staged migration.
+  Closes G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING upon execution.
+
+  PROPOSAL C — Cross-layer reconciliation (operator decision required):
+  factory-mid + factory-heavy + factory-coder configured against evo1+evo2 ollama (project layer nodes). Per §1.bis strict reading, factory routes должны ходить на Legion. Three resolution paths:
+  - C1 (canon update §1.bis): amend §1.bis to allow factory-routes-on-project-nodes for loadbalancing — preserves existing config.
+  - C2 (Legion model expansion): import qwen3:30b-a3b + llama3.3:70b + qwen3-coder-next в Legion ollama, redirect factory-mid/heavy/coder to Legion 127.0.0.1:11434 — requires ~150GB Legion disk for 3 models, current /mnt/d has 3.4T free per IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 — ample room.
+  - C3 (hybrid): factory-fast on Legion (current state), factory-mid/heavy/coder allowed on project nodes per amended §1.bis loadbalancing clause.
+  Operator decision required.
+
+- Per-item decisions (operator-only):
+
+  DECISION D1 — `fast` route (glm-4.7-flash-abliterated, UNIQUE backend):
+    Option D1a: PROMOTE as `factory-fast-alt` or `project-fast` canonical alias (requires §1.bis amendment to add 8th canonical route).
+    Option D1b: REMOVE — callers must migrate to factory-fast (qwen2.5-coder:14b, different model class).
+    Recommendation: D1b REMOVE if no critical use case identified, simpler config.
+
+  DECISION D2 — `gpt-oss-20b` route (gurubot/gpt-oss-derestricted:20b, UNIQUE):
+    Option D2a: KEEP с documentation in canon (gpt-oss family use case description).
+    Option D2b: REMOVE if no documented use case.
+    Recommendation: D2b REMOVE unless operator confirms ongoing dependency.
+
+  DECISION D3 — `ai-heavy` route (factory-heavy backend, project-side alias, CROSS-LAYER):
+    Option D3a: REMOVE per §1.bis strict.
+    Option D3b: §1.bis amendment to permit factory-heavy aliasing на project layer.
+    Recommendation: D3a REMOVE per §1.bis strict reading.
+
+  DECISION D4 — `reasoning` route (composite chain qwen3:235b + llama3.3:70b fallback, OVERLAP + CROSS-LAYER):
+    Option D4a: REMOVE per §1.bis strict + composite chain antipattern.
+    Option D4b: keep with documented composite-chain semantics.
+    Recommendation: D4a REMOVE — overlaps project-reason + factory-heavy без unique semantic value.
+
+- Execution sequence proposal (post-operator-approval):
+  1. Operator approval matrix recorded (Decisions A/B/C/D1/D2/D3/D4).
+  2. Edit litellm-config.v2.yaml per approved matrix (single atomic edit).
+  3. Reload LiteLLM v2 process (kill PID 71814 + restart pipx-managed via existing invocation).
+  4. Verify all canonical 7 routes return 200 on /v1/models; verify removed routes return 404.
+  5. Update G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT → CLOSED (or PARTIAL if some operator decisions deferred).
+  6. Update G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING → CLOSED (if Proposal B executed).
+
+- Sandbox→Production gate (§0.3):
+  - Routes drift status: PROPOSAL-AUTHORED-PENDING-OPERATOR (was CLASSIFIED-PENDING-OPERATOR after Sprint S4 F3.2 phase 1).
+  - Phase F3.2 phase 2 implementation pending operator decision matrix.
+
+- Closing IL: TBD (Phase F3.2 phase 3 implementation completion + verification round-trip).
+- Anchors:
+  - bootstrap canon v3 §0.5, §1.bis, §10 Phase F3.2, §11 Sprint S4
+  - IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (phase 1 diagnostic — predecessor)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (creates G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT + G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING)
+  - I-32, I-33, I-37 PROPOSED, I-59, I-68
+  - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config source-of-truth — edit target)
