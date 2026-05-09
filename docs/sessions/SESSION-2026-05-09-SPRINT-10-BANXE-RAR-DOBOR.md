@@ -76,3 +76,37 @@ Derive exact path counts for the first priority candidate from `BANXE-RAR-LISTIN
 - **No code import** into EMI; only domain semantics cross-checked against existing FROZEN ports (`PaymentRailPort`, `LedgerPort`, `CryptoLedgerPort`).
 - **No new EMI files** required from this fragment in Sprint 10.
 
+
+---
+
+## Classification block 2 — `banxe-digital/v-accounting`
+
+**Files:** 785 (verified: `grep -c '^banxe-digital/v-accounting/' BANXE-RAR-LISTING-2026-05-06.txt`)
+**Stack:** NestJS / TypeScript + GraphQL + TypeORM + RabbitMQ
+**Top-level src modules:** account, address, amplitude, app, app-config, auth, balance, config, crypto-exchange-api, documentation, dust-transfer, file, income, migrations, notification, order, payment-account, pro-wallet, project, rabbitmq, rabbitmq-publisher, report, shared, transaction, user
+
+### Per-module classification
+
+| Module | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `src/account` | **REWRITE-reference** | `services/ledger/ledger_port.py` + `services/ledger/midaz_adapter.py` | Account domain — cross-check semantics against Midaz GL accounts |
+| `src/balance` | **REWRITE-reference** | `services/ledger/*` + `services/recon/recon_port.py` | Balance projection — cross-check against LedgerPort + recon engine |
+| `src/transaction` | **REWRITE-reference** | `services/ledger/midaz_adapter.py` (TransactionRecord) + `services/payment/payment_port.py` | Transaction domain — semantics already mirrored in FROZEN ports |
+| `src/payment-account` | **REWRITE-reference** | `services/payment/payment_port.py` | Payment account aggregation — cross-check only |
+| `src/income` | **REWRITE-reference** | `services/recon/*` + `services/safeguarding-engine/*` | Income recognition — cross-check vs safeguarding/recon flows |
+| `src/report` | **REWRITE-reference** | `services/client_statements/statement_generator.py` + `services/recon/*` | Reporting domain — semantics for statements/recon outputs |
+| `src/order` | **REWRITE-reference** | `services/payment/*` (order→payment intent mapping) | Order→payment mapping — cross-check only |
+| `src/dust-transfer` | **REJECT** | — | Crypto-exchange micro-flow — out of EMI core scope |
+| `src/pro-wallet` | **REJECT** | — | Product-level wallet feature — out of EMI core scope |
+| `src/crypto-exchange-api` | **REJECT (duplicate)** | — | Already covered by separate repo `banxe-digital/crypto-exchange-api` (Wave E) |
+| `src/auth` | **REJECT** | — | Auth already closed by Wave A (`services/auth/*`) |
+| `src/notification` | **REJECT** | — | EMI uses dedicated channels (OTP/email adapters Sprint 6) |
+| `src/rabbitmq`, `src/rabbitmq-publisher` | **REJECT** | — | EMI event bus already implemented (`services/events/event_bus.py`) |
+| `src/file`, `src/address`, `src/amplitude`, `src/app`, `src/app-config`, `src/config`, `src/documentation`, `src/migrations`, `src/project`, `src/shared`, `src/user` | **REJECT** | — | Generic infra/UI/config — Python-native equivalents in EMI |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (7 modules: account, balance, transaction, payment-account, income, report, order) + REJECT (rest, including crypto-exchange-api as duplicate of Wave E source).
+- **No code import** into EMI; only domain semantics cross-checked against existing FROZEN ports (`LedgerPort`, `PaymentRailPort`, `recon_port`, safeguarding flows).
+- **No new EMI files** required from this fragment in Sprint 10.
+
