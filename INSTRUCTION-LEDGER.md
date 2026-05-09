@@ -5674,3 +5674,30 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Mitigation: I-68 pending, ADR-077 reserved (post-RESOLVED)
 - Anchors: IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-CONFIRMED-PARALLEL-SESSION,
   G-SECURITY-EVO1-XMRIG-CRYPTOMINER
+
+### IL-CANON-PROCESS-INCIDENT-2026-05-09-PERPLEXITY-MISTAKEN-STASH-DROP-RECOVERED
+
+- Date: 2026-05-09 (CEST).
+- Phase (GSD): CANON — self-error acknowledgment + recovery (Perplexity supervisor mistake).
+- Status: ACKNOWLEDGED-RECOVERED — error self-detected and corrected within 2 minutes.
+- Priority: P2 (process hygiene; not P0/P1 because incident evidence chain not affected).
+- Decision rule used: §10 IL append-only honesty principle — explicit documentation of supervisor error strengthens audit trail integrity.
+- Timeline:
+  - 2026-05-09 19:02 CEST — Perplexity supervisor issued `git stash drop stash@{0}` based on incorrect assumption that `stash@{0}` = `pre-rebase-pr140-20260509-184648` (protective stash from PR #140 rebase).
+  - Actual `stash@{0}` at drop time was `stash-status-branch-2026-05-06-pre-roadmap` (operator-side stash from 2026-05-06, unrelated to PR #140).
+  - Pre-rebase-pr140 stash had been automatically cleaned earlier in the session (likely after `git rebase --abort` + retry chain).
+  - Supervisor did not re-verify stash@{0} identity before drop command — direct cause of error.
+  - 2026-05-09 19:03 CEST — supervisor self-detected error in post-drop output: stash list before drop showed `stash-status-branch-2026-05-06-pre-roadmap` as `stash@{0}`, not `pre-rebase-pr140`.
+  - 2026-05-09 19:04 CEST — recovery initiated via `git stash store -m "RECOVERED: ..." 4a8c90bceea4e5012d7644ada6b0f2d5e604fc5b`. Content fully restored.
+- Recovered content (factual, from `git stash show stash@{0} --stat` post-recovery):
+  - GAP-REGISTER.md: 25 lines changed (+/- mix; reflects 2026-05-06 transition state where G-CASS-01 closed, G-OPS-04 closed, G-OPS-05/G-FACTORY-04 reclassified, IL-SEC-01 added).
+  - MEMORY.md: 6 lines added (commit-history entries for BufferedAuditPort + ADR-027 steps 1-3 + ADR-028 steps 1-2).
+  - decisions/ADR-027-audit-trail-durability.md: 17 lines changed (likely Accepted-state transition).
+- Compliance impact: NONE on incident `INCIDENT-2026-05-07-EVO1-XMRIG`. Mistaken drop was on operator-side stash from 2026-05-06, not on incident forensic chain. All 12 forensic SHA256 bundles on Legion intact. All 14 incident PRs on main intact. Recovery fully obverted the action.
+- Lesson learned (binding for future):
+  - Before `git stash drop stash@{N}`, supervisor MUST `git stash list` AND `git stash show stash@{N} --stat` AND grep stash message for expected slug — not just assume slot index from prior memory.
+  - In long shell-command sessions where stash slots can be auto-reorganised by other operations (rebase, abort, retry), stash@{0} identity changes silently.
+- Pending invariant proposal (without modifying INVARIANTS.md):
+  `I-69 — Stash operations defensive: `git stash drop` MUST be preceded by explicit identity verification of target stash slot (list + show --stat + grep slug). Single-step drop based on slot index is canon-violation.`
+- Closing IL: TBD (no operator action required; recovery complete).
+- Anchors: stash@{0} content (RECOVERED), `git stash store` recovery operation, prior canon-incident IL records (BRANCH-LEAKAGE, EVO1-XMRIG, LIVEBOX-LIMITATION, CLEANUP-ACTOR-CONFIRMED).
