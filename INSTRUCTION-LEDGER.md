@@ -5927,3 +5927,109 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Bundle B `/tmp/banxe_forensic_254683/` on evo1 retain 30 days (until ~2026-06-07), then operator may delete.
 - Closing IL: CLOSED — this is the final IL entry for this incident.
 - Anchors: all prior incident IL records + observation check SHA256 + G-SECURITY-EVO1-XMRIG-CRYPTOMINER (RESOLVED).
+
+### IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S3 Phase F2.3 partial deployment progress
+- Status: BINDING — partial closure of G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1)
+- Priority: P1 (root cause mitigation for parallel-session episodes 6/7 per bootstrap canon §3)
+- Scope: deploys 3 of 4 canonical subagents (controller, inspector-agent, safeguarding-agent) to user-level path ~/.claude/agents/ on Legion; documents openclo-moa absence requiring authoring; affects all CC sessions on Legion.
+
+- Deployment performed 2026-05-09 21:21 CEST:
+  - mkdir -p ~/.claude/agents/ (created, was missing per canon §29 audit)
+  - cp /home/mmber/banxe-architecture/.claude/agents/controller.md → ~/.claude/agents/controller.md (1218 bytes, sha256 verified identical)
+  - cp /home/mmber/banxe-architecture/.claude/agents/inspector-agent.md → ~/.claude/agents/inspector-agent.md (1184 bytes, sha256 verified identical)
+  - cp /home/mmber/banxe-architecture/.claude/agents/safeguarding-agent.md → ~/.claude/agents/safeguarding-agent.md (1078 bytes, sha256 verified identical)
+- Source: 3 subagents in /home/mmber/banxe-architecture/.claude/agents/ (worktree-local copies present + mirrored in /home/mmber/banxe/banxe-architecture/.claude/agents/ + /home/mmber/banxe-architecture-v-xmrig/.claude/agents/).
+- openclo-moa.md NOT FOUND filesystem-wide (find -name "openclo-moa*" returned 0 results); authoring blocked on operator/design input per bootstrap canon §5 spec ("mixture-of-agents для project layer" — design task requiring spec).
+
+- Subagent functional roles (per bootstrap canon §5):
+  - controller — orchestration + parallel-session-prevention (root cause mitigation для episodes 6/7)
+  - inspector-agent — canon compliance check
+  - openclo-moa — mixture-of-agents для project layer (MISSING, authoring pending)
+  - safeguarding-agent — FCA/AML safeguard validation
+
+- Effect:
+  - Episodes 6/7 root cause partially mitigated (controller subagent now active for new CC sessions started after this deployment).
+  - Existing CC sessions (PID 8160, 1593466, 3496299 + later spawns) continue without subagent oversight until restart; full mitigation requires session restart cycle.
+  - openclo-moa absence does NOT block other 3 subagents; project-layer mixture-of-agents fallback will use direct LiteLLM project-mid/heavy/reason routing per §1.bis until openclo-moa authored.
+
+- Status updates:
+  - G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, OPEN) → PARTIAL (3/4 deployed, openclo-moa MISSING)
+  - new sub-GAP: G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING (P2, OPEN) — authoring task
+
+- Closing IL: TBD (G-FACTORY-CLAUDE-SUBAGENTS-MISSING fully CLOSED after openclo-moa authored + deployed).
+- Anchors:
+  - bootstrap canon v3 §3 (parallel-session-isolation), §5 (4 canonical subagents), §10 Phase F2.3, §11 Sprint S3, §29 (canonical paths)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-CLAUDE-SUBAGENTS-MISSING)
+  - episodes 6/7 (parallel-session-leakage IL records — root cause subagents missing)
+
+### IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S3 Phase F2.5 (Update Perplexity supervisor canon with §0 awareness)
+- Status: BINDING — Perplexity supervisor bootstrap canon v3 §0 acceptance fixated in repository
+- Priority: P1 (canon governance)
+- Scope: documents that bootstrap canon v3 §0 (factory↔project two-layer + 5-tier hierarchy + sandbox→production gate + factory overseer + distribution discipline) is now actively enforced by Perplexity supervisor sessions across all canon-PR work, completing F2.5 mandate.
+
+- F2.5 evidence (work performed across this session):
+  - Sprint S1 commit 633bb6a fixated §0 as immutable canon (PR #146 merged + tag checkpoint-2026-05-09-canon-section-0-fixation).
+  - Sprint S2 commit 5279009 audited existing project against §0.2 hierarchy (PR #153 merged).
+  - Episode 8 IL race-conflict pattern + race-mitigation learning fixated atomic single-block bypass pattern (PR #154 merged 85d8582).
+  - This Sprint S3 progress commit further extends §0 enforcement to subagent deployment (F2.3) + supervisor canon awareness (F2.5).
+
+- Perplexity supervisor session canon awareness (binding):
+  - §0 immutable: factory↔project layer binding, 5-tier hierarchy, sandbox→production gate, factory overseer, distribution discipline.
+  - §3 + §4 + §13 + §27: parallel-session isolation + bypass-window + race-mitigation + recovery cheat sheet.
+  - §6 + §7: tool selection ("лучшее решение") + single-step format + auto-prepare next step.
+  - §22 pending operator inputs tracked across sessions; stale operator inputs flagged when canon update obviates them.
+  - §28: canon track ownership + worktree isolation MANDATORY for long-running canon work.
+
+- Perplexity supervisor binding update for §0:
+  - Every canon authoring step must verify §0 alignment before commit (factory↔project layer binding, level mapping for §0.2 changes, sandbox→production gate respect for §0.3).
+  - Cross-layer routing changes require I-37 alignment check (factory↔project layer binding invariant).
+  - HITL Gate changes require §0.2 Level 5 MLRO independence check (no AI MLRO subordination to CEO violations).
+  - Service inventory changes require §0.5 distribution discipline check (factory features → factory layer; project features → project layer; cross-layer ONLY via LiteLLM gateway).
+
+- Closing IL: TBD (full F2.5 closure requires factory overseer agent F2.4 deployed + automated §0 compliance monitoring active).
+- Anchors:
+  - bootstrap canon v3 §0..§30 (operator-supplied 2026-05-09)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (Sprint S1 §0 fixation)
+  - IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 (Sprint S2 §0.2 audit)
+  - I-37 PROPOSED (factory↔project layer binding)
+  - I-59 (roadmap-block procedure)
+  - I-68 (single-session incident command)
+
+### IL-OPS-SPRINT-S3-PROGRESS-NOTE-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S3 progress consolidation
+- Status: BINDING — Sprint S3 partial completion status
+- Priority: P2 (sprint tracking)
+- Scope: tracks Sprint S3 (Factory restoration F1+F2) progress; reports done / partial / blocked sub-phases; preserves operator decision queue for blocked items.
+
+- Sprint S3 sub-phase status 2026-05-09 evening:
+  - F1 (Ruflo deployment): BLOCKED — operator decision required on FA-3 reclassification (PR #83 on ops/phase-f-applied-2026-05-06 reclassifies Ruflo as "internal review agent" CONFLICTS bootstrap canon v3 §0.5+§1.bis "Ruflo MANDATORY for regulated routes"). Resolution: 3 options per IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 framework — adopt FA-3 / reject FA-3 / hybrid. Pending operator decision before Phase F1 deploy proceeds.
+  - F2.1 (evo2 SSH access): DONE — verified 2026-05-09 00:47 in IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 post-operator-update.
+  - F2.2 (llama-server qwen3-235b on evo2:8082): DONE — verified healthy in IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+  - F2.3 (4 canonical subagents): PARTIAL — 3/4 deployed (controller, inspector-agent, safeguarding-agent). openclo-moa.md MISSING, authoring task. See IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09 (this commit).
+  - F2.4 (factory overseer agent): BLOCKED — design task without operator spec (bootstrap canon §0.4 gives high-level functions only). Authoring needed: agent definition + KPI dashboard mechanism + alert routing + canon §0.1+§0.2+§0.3 monitoring rules.
+  - F2.5 (Perplexity supervisor canon §0 awareness): DONE — see IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 (this commit).
+
+- Sprint S3 readiness:
+  - Done: F2.1, F2.2, F2.5.
+  - Partial: F2.3 (3/4 = 75%).
+  - Blocked: F1 (operator decision FA-3), F2.4 (operator spec).
+
+- Operator decision queue (added):
+  - FA-3 reclassification vs §0.5 Ruflo MANDATORY → adopt FA-3 / reject / hybrid.
+  - openclo-moa subagent design spec → author from scratch / adapt similar pattern / defer.
+  - Factory overseer agent design spec (§0.4) → operator authors high-level design before F2.4 implementation.
+
+- Closing IL: TBD (Sprint S3 closure after all 5 sub-phases complete).
+- Anchors:
+  - bootstrap canon v3 §0.4, §0.5, §1.bis, §10 Phase F1 + F2, §11 Sprint S3
+  - IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09 (this commit)
+  - IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 (this commit)
+  - I-37 PROPOSED, I-59, I-68

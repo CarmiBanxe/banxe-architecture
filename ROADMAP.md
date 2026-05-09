@@ -500,3 +500,31 @@ P0 → MONITOR → RESOLVED. 24h observation PASS. Containment static 43+h. Zero
 Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 
 → Full incident document: [docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md](docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md)
+
+## Roadmap Block 2026-05-09 — Sprint S3 F2 Progress (Phase F1 BLOCKED + F2 partial)
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress, not milestone per §21).
+> Anchors: IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09, IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09, IL-OPS-SPRINT-S3-PROGRESS-NOTE-2026-05-09.
+
+### Sprint S3 sub-phase status
+- [ ] F1 (Ruflo deployment) — **BLOCKED** on operator decision: FA-3 reclassification (PR #83 ops/phase-f-applied-2026-05-06) reclassifies Ruflo as "internal review agent" CONFLICTS bootstrap canon v3 §0.5 + §1.bis "Ruflo MANDATORY for regulated routes". Resolution: adopt FA-3 / reject FA-3 / hybrid.
+- [x] F2.1 (evo2 SSH access) — DONE 2026-05-09 00:47 (verified post-operator-update; G-FACTORY-EVO2-SSH-ACCESS-LOST CLOSED in Sprint S1 audit IL).
+- [x] F2.2 (llama-server qwen3-235b on evo2:8082) — DONE 2026-05-09 00:47 (verified healthy in Sprint S1 audit IL).
+- [/] F2.3 (4 canonical subagents) — PARTIAL 75% (3/4 deployed: controller + inspector-agent + safeguarding-agent in ~/.claude/agents/; openclo-moa MISSING, sub-GAP G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING P2 opened).
+- [ ] F2.4 (factory overseer agent §0.4) — **BLOCKED** on operator design spec (canon §0.4 high-level only; need agent definition + KPI dashboard mechanism + alert routing + §0.1+§0.2+§0.3 monitoring rules).
+- [x] F2.5 (Perplexity supervisor canon §0 awareness) — DONE this commit (IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 fixates Perplexity supervisor session canon awareness binding for §0 immutable).
+
+### Operator decision queue (3 blocking items)
+1. **FA-3 vs §0.5 Ruflo reconciliation** — choose adopt / reject / hybrid path before F1 deploy proceeds.
+2. **openclo-moa subagent design spec** — author from scratch / adapt similar pattern (controller+inspector-agent hybrid?) / defer to later sprint.
+3. **Factory overseer agent design spec (§0.4)** — operator authors high-level design before F2.4 implementation.
+
+### Sprint S3 partial closure (post-this-commit)
+- 3 of 5 sub-phases DONE (F2.1 + F2.2 + F2.5).
+- 1 of 5 sub-phases PARTIAL (F2.3 = 75%).
+- 2 of 5 sub-phases BLOCKED on operator (F1 + F2.4).
+- Sprint S3 cannot fully close (G-FACTORY-CLAUDE-SUBAGENTS-MISSING remains PARTIAL until openclo-moa authored; G-FACTORY-RUFLO-NOT-DEPLOYED P0 remains OPEN until FA-3 reconciliation).
+
+### Pending tags (canon §21 — sprint progress, NO tag applied)
+- Sprint S3 = progress consolidation, not milestone per §21; no checkpoint tag applied for partial state.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after F1 unblocks + deploys; gates Sprint S3 closure).
