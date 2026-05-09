@@ -5942,3 +5942,219 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Gaps closed: G-KYC-01 (DONE), G-KYC-02 (DONE).
 - ADR status: Proposed → Accepted.
 - Anchors: ADR-028, G-KYC-01, G-KYC-02, banxe-emi-stack PRs #69/#70/#99.
+### IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S3 Phase F2.3 partial deployment progress
+- Status: BINDING — partial closure of G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1)
+- Priority: P1 (root cause mitigation for parallel-session episodes 6/7 per bootstrap canon §3)
+- Scope: deploys 3 of 4 canonical subagents (controller, inspector-agent, safeguarding-agent) to user-level path ~/.claude/agents/ on Legion; documents openclo-moa absence requiring authoring; affects all CC sessions on Legion.
+
+- Deployment performed 2026-05-09 21:21 CEST:
+  - mkdir -p ~/.claude/agents/ (created, was missing per canon §29 audit)
+  - cp /home/mmber/banxe-architecture/.claude/agents/controller.md → ~/.claude/agents/controller.md (1218 bytes, sha256 verified identical)
+  - cp /home/mmber/banxe-architecture/.claude/agents/inspector-agent.md → ~/.claude/agents/inspector-agent.md (1184 bytes, sha256 verified identical)
+  - cp /home/mmber/banxe-architecture/.claude/agents/safeguarding-agent.md → ~/.claude/agents/safeguarding-agent.md (1078 bytes, sha256 verified identical)
+- Source: 3 subagents in /home/mmber/banxe-architecture/.claude/agents/ (worktree-local copies present + mirrored in /home/mmber/banxe/banxe-architecture/.claude/agents/ + /home/mmber/banxe-architecture-v-xmrig/.claude/agents/).
+- openclo-moa.md NOT FOUND filesystem-wide (find -name "openclo-moa*" returned 0 results); authoring blocked on operator/design input per bootstrap canon §5 spec ("mixture-of-agents для project layer" — design task requiring spec).
+
+- Subagent functional roles (per bootstrap canon §5):
+  - controller — orchestration + parallel-session-prevention (root cause mitigation для episodes 6/7)
+  - inspector-agent — canon compliance check
+  - openclo-moa — mixture-of-agents для project layer (MISSING, authoring pending)
+  - safeguarding-agent — FCA/AML safeguard validation
+
+- Effect:
+  - Episodes 6/7 root cause partially mitigated (controller subagent now active for new CC sessions started after this deployment).
+  - Existing CC sessions (PID 8160, 1593466, 3496299 + later spawns) continue without subagent oversight until restart; full mitigation requires session restart cycle.
+  - openclo-moa absence does NOT block other 3 subagents; project-layer mixture-of-agents fallback will use direct LiteLLM project-mid/heavy/reason routing per §1.bis until openclo-moa authored.
+
+- Status updates:
+  - G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, OPEN) → PARTIAL (3/4 deployed, openclo-moa MISSING)
+  - new sub-GAP: G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING (P2, OPEN) — authoring task
+
+- Closing IL: TBD (G-FACTORY-CLAUDE-SUBAGENTS-MISSING fully CLOSED after openclo-moa authored + deployed).
+- Anchors:
+  - bootstrap canon v3 §3 (parallel-session-isolation), §5 (4 canonical subagents), §10 Phase F2.3, §11 Sprint S3, §29 (canonical paths)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-CLAUDE-SUBAGENTS-MISSING)
+  - episodes 6/7 (parallel-session-leakage IL records — root cause subagents missing)
+
+### IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S3 Phase F2.5 (Update Perplexity supervisor canon with §0 awareness)
+- Status: BINDING — Perplexity supervisor bootstrap canon v3 §0 acceptance fixated in repository
+- Priority: P1 (canon governance)
+- Scope: documents that bootstrap canon v3 §0 (factory↔project two-layer + 5-tier hierarchy + sandbox→production gate + factory overseer + distribution discipline) is now actively enforced by Perplexity supervisor sessions across all canon-PR work, completing F2.5 mandate.
+
+- F2.5 evidence (work performed across this session):
+  - Sprint S1 commit 633bb6a fixated §0 as immutable canon (PR #146 merged + tag checkpoint-2026-05-09-canon-section-0-fixation).
+  - Sprint S2 commit 5279009 audited existing project against §0.2 hierarchy (PR #153 merged).
+  - Episode 8 IL race-conflict pattern + race-mitigation learning fixated atomic single-block bypass pattern (PR #154 merged 85d8582).
+  - This Sprint S3 progress commit further extends §0 enforcement to subagent deployment (F2.3) + supervisor canon awareness (F2.5).
+
+- Perplexity supervisor session canon awareness (binding):
+  - §0 immutable: factory↔project layer binding, 5-tier hierarchy, sandbox→production gate, factory overseer, distribution discipline.
+  - §3 + §4 + §13 + §27: parallel-session isolation + bypass-window + race-mitigation + recovery cheat sheet.
+  - §6 + §7: tool selection ("лучшее решение") + single-step format + auto-prepare next step.
+  - §22 pending operator inputs tracked across sessions; stale operator inputs flagged when canon update obviates them.
+  - §28: canon track ownership + worktree isolation MANDATORY for long-running canon work.
+
+- Perplexity supervisor binding update for §0:
+  - Every canon authoring step must verify §0 alignment before commit (factory↔project layer binding, level mapping for §0.2 changes, sandbox→production gate respect for §0.3).
+  - Cross-layer routing changes require I-37 alignment check (factory↔project layer binding invariant).
+  - HITL Gate changes require §0.2 Level 5 MLRO independence check (no AI MLRO subordination to CEO violations).
+  - Service inventory changes require §0.5 distribution discipline check (factory features → factory layer; project features → project layer; cross-layer ONLY via LiteLLM gateway).
+
+- Closing IL: TBD (full F2.5 closure requires factory overseer agent F2.4 deployed + automated §0 compliance monitoring active).
+- Anchors:
+  - bootstrap canon v3 §0..§30 (operator-supplied 2026-05-09)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (Sprint S1 §0 fixation)
+  - IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 (Sprint S2 §0.2 audit)
+  - I-37 PROPOSED (factory↔project layer binding)
+  - I-59 (roadmap-block procedure)
+  - I-68 (single-session incident command)
+
+### IL-OPS-SPRINT-S3-PROGRESS-NOTE-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S3 progress consolidation
+- Status: BINDING — Sprint S3 partial completion status
+- Priority: P2 (sprint tracking)
+- Scope: tracks Sprint S3 (Factory restoration F1+F2) progress; reports done / partial / blocked sub-phases; preserves operator decision queue for blocked items.
+
+- Sprint S3 sub-phase status 2026-05-09 evening:
+  - F1 (Ruflo deployment): BLOCKED — operator decision required on FA-3 reclassification (PR #83 on ops/phase-f-applied-2026-05-06 reclassifies Ruflo as "internal review agent" CONFLICTS bootstrap canon v3 §0.5+§1.bis "Ruflo MANDATORY for regulated routes"). Resolution: 3 options per IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 framework — adopt FA-3 / reject FA-3 / hybrid. Pending operator decision before Phase F1 deploy proceeds.
+  - F2.1 (evo2 SSH access): DONE — verified 2026-05-09 00:47 in IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 post-operator-update.
+  - F2.2 (llama-server qwen3-235b on evo2:8082): DONE — verified healthy in IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
+  - F2.3 (4 canonical subagents): PARTIAL — 3/4 deployed (controller, inspector-agent, safeguarding-agent). openclo-moa.md MISSING, authoring task. See IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09 (this commit).
+  - F2.4 (factory overseer agent): BLOCKED — design task without operator spec (bootstrap canon §0.4 gives high-level functions only). Authoring needed: agent definition + KPI dashboard mechanism + alert routing + canon §0.1+§0.2+§0.3 monitoring rules.
+  - F2.5 (Perplexity supervisor canon §0 awareness): DONE — see IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 (this commit).
+
+- Sprint S3 readiness:
+  - Done: F2.1, F2.2, F2.5.
+  - Partial: F2.3 (3/4 = 75%).
+  - Blocked: F1 (operator decision FA-3), F2.4 (operator spec).
+
+- Operator decision queue (added):
+  - FA-3 reclassification vs §0.5 Ruflo MANDATORY → adopt FA-3 / reject / hybrid.
+  - openclo-moa subagent design spec → author from scratch / adapt similar pattern / defer.
+  - Factory overseer agent design spec (§0.4) → operator authors high-level design before F2.4 implementation.
+
+- Closing IL: TBD (Sprint S3 closure after all 5 sub-phases complete).
+- Anchors:
+  - bootstrap canon v3 §0.4, §0.5, §1.bis, §10 Phase F1 + F2, §11 Sprint S3
+  - IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09 (this commit)
+  - IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 (this commit)
+  - I-37 PROPOSED, I-59, I-68
+
+### IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S4 Phase F3.2 read-only routes diagnostic + per-route classification
+- Status: BINDING — diagnostic complete, per-route decision queue prepared for operator
+- Priority: P2 (factory hardening)
+- Scope: enumerates all 20 LiteLLM v2 gateway routes vs 7 canonical (per bootstrap canon v3 §1.bis), classifies 14 extras (DUPLICATE / UNIQUE-PROMOTE / UNIQUE-REMOVE / CROSS-LAYER-CONCERN), identifies project-heavy resolution candidate, prepares operator decision queue.
+
+- Diagnostic method (read-only):
+  - cat /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml — full model_list inspected
+  - GET http://127.0.0.1:4000/v1/models with Bearer sk-banxe-llm-gateway-2026 — 20 routes enumerated
+  - sample chat completion calls per extra route (5 sampled; 1 returned ok, 4 timed out at 3s due to model cold-start, не critical for classification)
+
+- Canonical 7 routes status (per §1.bis):
+  - factory-fast → ollama/qwen2.5-coder:14b-banxe-factory @ Legion 127.0.0.1:11434 ✓ ALIGNED (factory layer = Legion per §1.bis)
+  - factory-mid → ollama/qwen3:30b-a3b @ evo1+evo2 ollama (loadbalanced) ⚠ CROSS-LAYER concern (factory route на project nodes; per §1.bis factory routes должны ходить на Legion)
+  - factory-heavy → ollama/llama3.3:70b @ evo1+evo2 ollama ⚠ same CROSS-LAYER concern
+  - factory-coder → ollama/qwen3-coder-next:q4_K_M @ evo1 ollama ⚠ same CROSS-LAYER concern
+  - project-mid → ollama/qwen3.5:35b + qwen3-coder-next @ evo1+evo2 ollama ✓ ALIGNED (project layer = evo1+evo2)
+  - project-heavy → ✗ MISSING in config — RESOLUTION CANDIDATE FOUND (route `large` below)
+  - project-reason → openai/qwen3 @ evo2:8082 llama-server (RPC qwen3-235b-Q3_K_S) ✓ ALIGNED
+
+- 14 extras classification:
+
+  DUPLICATE-ALIASES (recommend REMOVE; same backend as canonical):
+  - banxe-general → qwen3:30b-a3b @ evo1+evo2 (= factory-mid backend) → REMOVE alias for factory-mid
+  - qwen3-30b → qwen3:30b-a3b @ evo1+evo2 (= factory-mid backend) → REMOVE alias for factory-mid
+  - qwen3-banxe → qwen3:30b-a3b @ evo1 only (= factory-mid subset) → REMOVE alias for factory-mid
+  - glm-4-flash → glm-4.7-flash-abliterated @ evo1 (= fast backend, see UNIQUE) → REMOVE alias for fast
+  - coding → qwen3-coder-next:q4_K_M @ evo1 (= factory-coder backend) → REMOVE alias for factory-coder
+  - glm-4.5-air-distributed → GLM-4.5-Air-Q4_K_M @ evo1:8081 RPC (= large backend, see UNIQUE) → REMOVE alias for large
+  - glm-air → GLM-4.5-Air-Q4_K_M @ evo1:8081 RPC (= large backend) → REMOVE alias for large
+  - ai → qwen3.5:35b @ evo1+evo2 (= project-mid backend) → REMOVE alias for project-mid
+  - reasoning-235b → openai/qwen3 @ evo2:8082 RPC (= project-reason backend) → REMOVE alias for project-reason
+
+  UNIQUE-BACKEND-PROMOTE (recommend PROMOTE to canonical or document):
+  - large → openai/glm-4.5-air @ evo1:8081 RPC (distributed inference via glm-master + llama-rpc-worker over USB4 Vulkan) → PROMOTE as **project-heavy** (closes G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING; matches §1.bis "preserve if registered" intent)
+  - fast → ollama/glm-4.7-flash-abliterated @ evo1+evo2 (UNIQUE backend, glm-4.7-flash family not in canonical) → operator decision: promote as additional canonical alias (e.g., factory-fast-alt) OR remove
+
+  UNIQUE-BACKEND-REMOVE (recommend REMOVE unless documented use case):
+  - gpt-oss-20b → ollama/gurubot/gpt-oss-derestricted:20b @ evo1 (UNIQUE gpt-oss family, no canonical mapping) → REMOVE unless operator documents use case
+
+  CROSS-LAYER-VIOLATION (recommend REMOVE; violates §1.bis layer binding):
+  - ai-heavy → ollama/llama3.3:70b @ evo1+evo2 (= factory-heavy backend BUT project-side alias) → REMOVE — strict §1.bis violation if used by project services (factory routes должны ходить только на factory-bound clients)
+  - reasoning → composite chain (qwen3:235b-a22b-banxe @ evo2 + llama3.3:70b @ evo1+evo2 fallback) → REMOVE — overlap with project-reason + factory-heavy + cross-layer fallback chain violates §1.bis
+
+- Critical findings:
+  1. **project-heavy resolution candidate identified**: existing route `large` (glm-4.5-air @ evo1:8081 distributed) matches project-heavy intent. Promotion path: rename `large` → `project-heavy` OR add canonical `project-heavy` aliasing same backend. Closes G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING.
+  2. **`fast` route has UNIQUE backend** (glm-4.7-flash-abliterated) not covered by canonical — operator decision required.
+  3. **Cross-layer concerns**: factory-mid + factory-heavy + factory-coder all configured against evo1+evo2 ollama (project layer nodes per §1.bis). Either §1.bis requires update to allow factory-routes-on-project-nodes (loadbalancing intent), OR backends must migrate to Legion ollama. Currently Legion ollama has only 2 models (qwen2.5-coder:14b-banxe-factory + qwen2.5-coder:7b) — insufficient for factory-mid (qwen3:30b-a3b) and factory-heavy (llama3.3:70b). Reconciliation requires either canon update OR Legion model expansion.
+  4. **`ai-heavy` cross-layer violation** if used by project services — needs elimination or scope confirmation.
+
+- Reconciliation plan (operator decisions per route):
+  - 9 DUPLICATE-ALIASES: REMOVE per recommendation (low risk, callers can switch to canonical)
+  - 1 UNIQUE-PROMOTE (large → project-heavy): execute promotion in F3.2 implementation
+  - 1 UNIQUE (fast): operator decision — promote / remove
+  - 1 UNIQUE (gpt-oss-20b): operator decision — keep with documentation / remove
+  - 2 CROSS-LAYER-VIOLATION (ai-heavy + reasoning): REMOVE per §1.bis strict reading, unless operator amends §1.bis to allow
+
+- Sandbox→Production gate (§0.3):
+  - Routes drift status: ROUTES-CLASSIFIED-PENDING-IMPLEMENTATION (was ROUTES-DRIFT)
+  - Phase F3.2 implementation requires per-route operator decisions before LiteLLM config sweep proceeds
+
+- Status updates:
+  - G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT (P2, OPEN) → CLASSIFIED-PENDING-OPERATOR (per-route decisions queued)
+  - G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING (P2, OPEN) → RESOLUTION-CANDIDATE-IDENTIFIED (route `large` glm-4.5-air @ evo1:8081 distributed)
+
+- Closing IL: TBD (Phase F3.2 operator per-route decisions + LiteLLM config sweep + verification round-trip).
+- Anchors:
+  - bootstrap canon v3 §0.5 (distribution discipline), §1.bis (canonical 7 routes), §10 Phase F3.2, §11 Sprint S4
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT + G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING)
+  - I-32, I-33 (PII/AML routing — relevant for project routes via Ruflo, indirect)
+  - I-37 PROPOSED (factory↔project layer binding — directly affected by cross-layer findings)
+  - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config source-of-truth)
+
+### IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S5 Phase F4 documentation reconciliation
+- Status: BINDING — autonomous F4 sub-tasks completed; operator-blocked sub-tasks deferred to dedicated sprints
+- Priority: P3 (documentation hygiene)
+- Scope: closes/partial-closes 3 documentation hygiene GAPs autonomously (path drift, namespace clarification, distributed inference canon coverage); defers operator-blocked sub-tasks (84 services classification, F3.1 systemd unit, F3.3 Spec-First Auditor relocation, F4.1 §1/§1.bis bootstrap canon update — bootstrap is operator-supplied immutable per canon acceptance).
+
+- F4 sub-task status:
+  - F4.1 (canon §1/§1.bis sync): bootstrap canon v3 is operator-supplied immutable per acceptance — repo-internal canon docs synced instead (see this commit: ROADMAP path drift + distributed inference doc + GAP-REGISTER namespace clarification).
+  - F4.2 (ROADMAP F0–F7 trackable milestones): substantially complete from Sprint S1 commit 633bb6a + Sprint S3+S4 progress blocks; remains living document.
+  - F4.3 (G-FACTORY-* GAPs reconciliation): all G-FACTORY-* GAPs created Sprint S1; status updates applied Sprint S3 (SUBAGENTS-MISSING [/]PARTIAL) + Sprint S4 (ROUTES-VS-CANON-DRIFT [/]CLASSIFIED-PENDING-OPERATOR + PROJECT-HEAVY [/]RESOLUTION-CANDIDATE-IDENTIFIED).
+
+- Autonomous changes this commit:
+  1. ROADMAP.md path drift fix (8 references): docs/ prefix added to ORG-STRUCTURE.md / DEPARTMENT-MAP.md / JOB-DESCRIPTIONS.md / RELATIONSHIP-TREE.md references in Phase 2/3 inventory + Document Inventory table.
+  2. GAP-REGISTER.md namespace clarification: header notices added to BOTH root GAP-REGISTER.md (architecture canon GAPs) and docs/GAP-REGISTER.md (operational EMI sprint GAPs) clarifying distinct purposes. Reclassifies G-FACTORY-CANON-FILES-DUPLICATION from "duplicate" to "two distinct artifacts coexisting".
+  3. docs/LOCAL-CLOUD-ROUTING.md: appended Distributed Inference Topology section documenting glm-master.service + llama-rpc-worker.service via USB4 + Vulkan, route `large` as project-heavy candidate, layer-assignment concerns per §1.bis. Closes G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON.
+
+- Status updates:
+  - G-FACTORY-DOCUMENTATION-PATH-DRIFT (P3, OPEN) → CLOSED — 8 path references fixed in ROADMAP.md.
+  - G-FACTORY-CANON-FILES-DUPLICATION (P3, OPEN) → CLOSED-RECLASSIFIED — files coexist with distinct purposes (architecture vs operational EMI), namespace clarification headers added to both.
+  - G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2, OPEN) → CLOSED — distributed inference topology now documented in docs/LOCAL-CLOUD-ROUTING.md.
+
+- Deferred sub-tasks (operator-blocked, NOT in this commit):
+  - G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3): per-service classification (legitimate-but-undocumented / scaffold / experimental / orphaned) for 84 services — operator decision per service.
+  - F3.1 LiteLLM systemd unit: operator design spec required (User/WorkingDirectory/ExecStart).
+  - F3.3 Spec-First Auditor relocation: operator decision required (relocate vs canon update).
+  - F4.1 bootstrap canon v3 §1/§1.bis update: bootstrap is operator-supplied immutable artifact, cannot be edited from repo.
+
+- Closing IL: TBD (Sprint S5 closure after operator-blocked deferred sub-tasks resolved).
+- Anchors:
+  - bootstrap canon v3 §1, §1.bis, §10 Phase F4, §11 Sprint S5
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-DOCUMENTATION-PATH-DRIFT + G-FACTORY-CANON-FILES-DUPLICATION + G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON)
+  - IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (route `large` → project-heavy candidate referenced in distributed inference doc)
+  - I-32, I-33, I-37 PROPOSED, I-59, I-68

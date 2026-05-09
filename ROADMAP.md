@@ -13,8 +13,8 @@
 - [x] reviews/ folder
 
 ## Phase 2: Core Architecture Documents (COMPLETED)
-- [x] ORG-STRUCTURE.md — Organizational structure
-- [x] DEPARTMENT-MAP.md — 10 departments with AI agents
+- [x] docs/ORG-STRUCTURE.md — Organizational structure
+- [x] docs/DEPARTMENT-MAP.md — 10 departments with AI agents
 - [x] COMPLIANCE-FRAMEWORK.md — FCA compliance framework
 - [x] BANXE-CLAUDE-PROMPT.md — Master Claude prompt
 - [x] BANXE-HEADER-SYSTEM.md — Header system documentation
@@ -27,9 +27,9 @@
 
 ## Phase 3: Extended Documentation (COMPLETED)
 - [x] CRYPTO-BLOCK.md — Crypto operations: Neuronext + TomPay (IL-070)
-- [x] JOB-DESCRIPTIONS.md — AI agents & human doubles, 32 roles (IL-080)
+- [x] docs/JOB-DESCRIPTIONS.md — AI agents & human doubles, 32 roles (IL-080)
 - [x] FEATURE-REGISTRY.md — 30 features with purpose, value & KPIs (IL-081)
-- [x] RELATIONSHIP-TREE.md — Org relationships, agent interactions, escalation (IL-082)
+- [x] docs/RELATIONSHIP-TREE.md — Org relationships, agent interactions, escalation (IL-082)
 - [x] ROADMAP.md — Architecture repo phases & inventory (IL-083)
 
 ## Phase 3.5: Developer Documentation Pipeline (COMPLETED)
@@ -168,13 +168,13 @@ Pending implementation phase: ADR-027..034 + code/tests + deploy. See GAP-REGIST
 
 | Document | Status | Commit |
 |----------|--------|--------|
-| ORG-STRUCTURE.md | Complete | Initial |
-| DEPARTMENT-MAP.md | Complete | Updated 10 depts |
+| docs/ORG-STRUCTURE.md | Complete | Initial |
+| docs/DEPARTMENT-MAP.md | Complete | Updated 10 depts |
 | COMPLIANCE-FRAMEWORK.md | Complete | Initial |
 | CRYPTO-BLOCK.md | Complete | IL-070 |
-| JOB-DESCRIPTIONS.md | Complete | IL-080 |
+| docs/JOB-DESCRIPTIONS.md | Complete | IL-080 |
 | FEATURE-REGISTRY.md | Complete | IL-081 |
-| RELATIONSHIP-TREE.md | Complete | IL-082 |
+| docs/RELATIONSHIP-TREE.md | Complete | IL-082 |
 | DEV-DOCUMENTATION-GUIDE.md | Complete | IL-085 |
 | CHANGELOG-POLICY.md | Complete | IL-087 |
 | BANXE-CLAUDE-PROMPT.md | Complete | Initial |
@@ -500,3 +500,90 @@ P0 → MONITOR → RESOLVED. 24h observation PASS. Containment static 43+h. Zero
 Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 
 → Full incident document: [docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md](docs/incidents/INCIDENT-2026-05-07-EVO1-XMRIG.md)
+
+## Roadmap Block 2026-05-09 — Sprint S3 F2 Progress (Phase F1 BLOCKED + F2 partial)
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress, not milestone per §21).
+> Anchors: IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09, IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09, IL-OPS-SPRINT-S3-PROGRESS-NOTE-2026-05-09.
+
+### Sprint S3 sub-phase status
+- [ ] F1 (Ruflo deployment) — **BLOCKED** on operator decision: FA-3 reclassification (PR #83 ops/phase-f-applied-2026-05-06) reclassifies Ruflo as "internal review agent" CONFLICTS bootstrap canon v3 §0.5 + §1.bis "Ruflo MANDATORY for regulated routes". Resolution: adopt FA-3 / reject FA-3 / hybrid.
+- [x] F2.1 (evo2 SSH access) — DONE 2026-05-09 00:47 (verified post-operator-update; G-FACTORY-EVO2-SSH-ACCESS-LOST CLOSED in Sprint S1 audit IL).
+- [x] F2.2 (llama-server qwen3-235b on evo2:8082) — DONE 2026-05-09 00:47 (verified healthy in Sprint S1 audit IL).
+- [/] F2.3 (4 canonical subagents) — PARTIAL 75% (3/4 deployed: controller + inspector-agent + safeguarding-agent in ~/.claude/agents/; openclo-moa MISSING, sub-GAP G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING P2 opened).
+- [ ] F2.4 (factory overseer agent §0.4) — **BLOCKED** on operator design spec (canon §0.4 high-level only; need agent definition + KPI dashboard mechanism + alert routing + §0.1+§0.2+§0.3 monitoring rules).
+- [x] F2.5 (Perplexity supervisor canon §0 awareness) — DONE this commit (IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 fixates Perplexity supervisor session canon awareness binding for §0 immutable).
+
+### Operator decision queue (3 blocking items)
+1. **FA-3 vs §0.5 Ruflo reconciliation** — choose adopt / reject / hybrid path before F1 deploy proceeds.
+2. **openclo-moa subagent design spec** — author from scratch / adapt similar pattern (controller+inspector-agent hybrid?) / defer to later sprint.
+3. **Factory overseer agent design spec (§0.4)** — operator authors high-level design before F2.4 implementation.
+
+### Sprint S3 partial closure (post-this-commit)
+- 3 of 5 sub-phases DONE (F2.1 + F2.2 + F2.5).
+- 1 of 5 sub-phases PARTIAL (F2.3 = 75%).
+- 2 of 5 sub-phases BLOCKED on operator (F1 + F2.4).
+- Sprint S3 cannot fully close (G-FACTORY-CLAUDE-SUBAGENTS-MISSING remains PARTIAL until openclo-moa authored; G-FACTORY-RUFLO-NOT-DEPLOYED P0 remains OPEN until FA-3 reconciliation).
+
+### Pending tags (canon §21 — sprint progress, NO tag applied)
+- Sprint S3 = progress consolidation, not milestone per §21; no checkpoint tag applied for partial state.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after F1 unblocks + deploys; gates Sprint S3 closure).
+
+## Roadmap Block 2026-05-09 — Sprint S4 F3.2 LiteLLM Routes Reconciliation Diagnostic
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress per §21).
+> Anchors: IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09.
+
+### Sprint S4 F3.2 phase 1 (diagnostic) — DONE
+- [x] All 20 LiteLLM routes enumerated from gateway + config (litellm-config.v2.yaml inspected)
+- [x] 14 extras classified (9 DUPLICATE / 1 UNIQUE-PROMOTE / 2 UNIQUE-DECISION / 2 CROSS-LAYER-VIOLATION)
+- [x] project-heavy resolution candidate identified (route `large` glm-4.5-air distributed inference)
+- [x] Cross-layer concerns documented (factory-mid/heavy/coder backed on evo1+evo2 ollama = project-layer nodes per §1.bis)
+
+### Sprint S4 F3.2 phase 2 (operator decisions) — PENDING
+- [ ] 9 DUPLICATE-ALIASES removal — operator pre-approve bulk REMOVE (low risk; callers can switch to canonical names)
+- [ ] `large` → `project-heavy` promotion strategy — rename / alias / new entry
+- [ ] `fast` (glm-4.7-flash-abliterated) — promote as canonical / remove
+- [ ] `gpt-oss-20b` (gurubot/gpt-oss-derestricted:20b) — keep with documentation / remove
+- [ ] `ai-heavy` + `reasoning` cross-layer — REMOVE per §1.bis strict OR §1.bis amendment to allow cross-layer
+- [ ] Cross-layer concern (factory-mid/heavy/coder on evo1+evo2 ollama) — §1.bis canon update OR Legion model expansion strategy
+
+### Sprint S4 F3.2 phase 3 (implementation) — BLOCKED on phase 2
+- [ ] LiteLLM config sweep per operator decisions (edit /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml)
+- [ ] Restart LiteLLM v2 process (graceful pipx-managed restart)
+- [ ] Verification round-trip (curl all canonical 7 routes post-cleanup)
+- [ ] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT closure
+- [ ] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING closure
+
+### Sprint S4 remaining sub-phases
+- [ ] F3.1 (LiteLLM systemd unit) — operator design spec required (User/WorkingDirectory/ExecStart per current bare pipx invocation)
+- [ ] F3.3 (Spec-First Auditor relocation) — operator decision: relocate to canon path ~/developer/spec-first/audit/ OR canon update §5 to factual path
+
+### Pending tags (canon §21 — sprint progress, NO tag applied)
+- Sprint S4 = progress consolidation, not milestone per §21; no checkpoint tag applied.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Phase F1 unblocks + deploys).
+
+## Roadmap Block 2026-05-09 — Sprint S5 F4 Documentation Reconciliation (autonomous)
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress per §21).
+> Anchors: IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
+
+### Sprint S5 F4 autonomous closures
+- [x] **G-FACTORY-DOCUMENTATION-PATH-DRIFT** (P3) → CLOSED — 8 path references fixed in ROADMAP.md (docs/ prefix added)
+- [x] **G-FACTORY-CANON-FILES-DUPLICATION** (P3) → CLOSED-RECLASSIFIED — namespace clarification headers added to both GAP-REGISTER.md files; distinct purposes documented (architecture canon vs operational EMI)
+- [x] **G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON** (P2) → CLOSED — distributed inference topology documented in docs/LOCAL-CLOUD-ROUTING.md
+
+### Sprint S5 F4 deferred (operator-blocked)
+- [ ] **G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP** (P3): per-service classification for 84 services — operator decision required per service
+- [ ] **F3.1 LiteLLM systemd unit**: operator design spec required (User/WorkingDirectory/ExecStart)
+- [ ] **F3.3 Spec-First Auditor relocation**: operator decision required (relocate to canon path OR canon update §5)
+- [ ] **F4.1 bootstrap canon v3 §1/§1.bis update**: bootstrap is operator-supplied immutable artifact, cannot be edited from repo
+
+### Sprint S5 status
+- 3 GAPs autonomously closed (1 P2 + 2 P3).
+- 4 sub-tasks deferred (operator-blocked).
+- Sprint S5 = partial closure — autonomous documentation hygiene complete, operator-blocked tasks remain for dedicated future sprints.
+
+### Pending tags (canon §21 — sprint progress, NO tag applied)
+- Sprint S5 = progress consolidation, not milestone per §21; no checkpoint tag applied.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Phase F1 unblocks + deploys).

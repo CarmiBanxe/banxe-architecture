@@ -1,4 +1,7 @@
 # BANXE EMI — Gap Register & Sprint Assignment
+> **Scope:** Operational EMI sprint GAPs (GAP-NNN format) tracking FCA Authorisation Blockers, Sprint Assignment, GapTrackerAgent enforcement.
+> **Counterpart:** Repository root `GAP-REGISTER.md` tracks **architecture-level canon** GAPs (G-FACTORY-*, G-PROJECT-*, G-SECURITY-*, etc).
+> **Per Sprint S5 F4 reconciliation 2026-05-09:** Two GAP-REGISTER.md files coexist with distinct purposes. Не duplicate. See IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
 
 > **Status:** MANDATORY — enforced by GapTrackerAgent
 > **Last Audit:** 2026-04-13
