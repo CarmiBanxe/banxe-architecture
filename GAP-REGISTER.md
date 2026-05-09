@@ -1051,7 +1051,7 @@
     Closing IL: TBD (Phase F1 — Ruflo deployment + LiteLLM proxy chain wiring + end-to-end regulated request verify).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.5 + §1.bis + §10 Phase F1.
 
-- [ ] G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0, OPEN, 2026-05-09)
+- [x] G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0, CLOSED, 2026-05-09)
     Existing project (banxe-emi-stack 27 services + banxe-architecture canon docs)
     requires §0.2 hierarchy compliance audit. Mapping required:
     each existing AI agent / service / role → §0.2 Level 1..5 placement,
@@ -1063,6 +1063,8 @@
     enumerated in Sprint S2.
     Closing IL: TBD (Sprint S2 — project §0 audit completes with per-deviation GAPs).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §0.2 + §0.3 + §11 Sprint S2.
+    Closing IL: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 (Sprint S2 audit completed; 5 per-deviation GAPs opened: G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING (P0), G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING (P1), G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION (P1), G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION (P1), G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3)).
+    Closure verified: 2026-05-09 (CEST).
 
 - [ ] G-FACTORY-EVO2-SSH-ACCESS-LOST (P1, CLOSED-POST-UPDATE, 2026-05-09)
     Original state: evo2 SSH access lost (carryover from V-XMRIG track §22 Phase F2.1).
@@ -1176,3 +1178,51 @@
     PR #138 parallel activity, journalctl absence, sshd hardening pre-Step-5.
     Authorised internal, forensic-first. Recurring pattern (3rd in 7d). Pending I-68.
     See IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-CONFIRMED-PARALLEL-SESSION.
+
+- [ ] G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING (P0, OPEN, 2026-05-09)
+    Bootstrap canon v3 §0.2 Level 5 requires autonomous AI MLRO agent
+    NOT subordinate to CEO, with sign-authority for SAR / sanctions / AML decisions;
+    human MLRO co-sign / override only on legal-regulatory edge cases.
+    Existing pattern: human MLRO Sarah Mitchell SMF17 + AI subagents
+    (AML-Analyst-v1, KYC-Specialist-v2, SanctionsScreeningAgent,
+    ComplianceOfficerAgent, ChainAnalysisAgent, CryptoAMLAgent,
+    CryptoSanctionsAgent, TravelRuleAgent) feeding decisions to human MLRO.
+    HITL Decision Gates §6 require "MLRO + CEO" co-sign for
+    SAR retraction / Sanctions reversal / PEP onboarding — violates §0.2
+    "AI MLRO NOT subordinate to CEO" if interpreted strictly.
+    Independence verified: MLRO function declared independent from CFO + reports to Board (ORG-STRUCTURE §7.1).
+    Closing IL: TBD (Phase F5.5 — autonomous AI MLRO agent deployment with sign-authority + Ruflo MANDATORY routing + HITL Gates §6 update for AML decisions).
+    Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 5 + §10 Phase F5.5 + §11 Sprint S10.
+
+- [ ] G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING (P1, OPEN, 2026-05-09)
+    Bootstrap canon v3 §0.2 Level 3 requires each Head of Department = AI agent + human duplicate; AI makes operational decisions, human override authority.
+    Existing pattern (SMF C-suite Heads): CRO / CFO David Goldstein / COO TBC / CTO Oleg @p314pm — all human only, no documented AI duplicate.
+    Existing pattern (sub-Heads): Head of Treasury Marcus Webb (with PaymentRouterAgent partner), Head of FP&A (with Budget+Forecast+Variance+Scenario agents), Head of Reg Reporting (with FCA Data + Reg Data Quality + FCA Return Generator + Resolution Pack agents), Head of Customer Support Tom Nakamura (with CustomerLifecycleAgent + TicketRoutingAgent + CustomerSupportAgent + EscalationAgent partners) — close to §0.2 pattern but not formalised.
+    Closing IL: TBD (Phase F5.3 — deploy AI duplicates for SMF C-suite Heads + formalise sub-Heads AI partner pattern as §0.2 Level 3 + audit log of overrides).
+    Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 3 + §10 Phase F5.3 + §11 Sprint S8.
+
+- [ ] G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION (P1, OPEN, 2026-05-09)
+    Bootstrap canon v3 §0.2 Level 2 requires тимлиды / supervisors / department leads = 100% AI без human duplicate.
+    Existing pattern: ALL Level-2-candidate AI agents (ComplianceOfficerAgent, EscalationAgent, ComplaintTriageAgent, CampaignAgent, ContentAgent, AML-Analyst-v1, KYC-Specialist-v2, LedgerAgent, ReconciliationAgent) HAVE human doubles per JOB-DESCRIPTIONS Agent Summary Registry.
+    Fundamental governance choice required (operator-only):
+      Option A: reformulate §0.2 Level 2 to allow human doubles (preserves existing FCA-aligned framework, weakens §0.2 immutability claim);
+      Option B: reform existing framework to remove human doubles for Level 2 agents (preserves §0.2 immutability, requires JOB-DESCRIPTIONS + DEPARTMENT-MAP rewrite + FCA review);
+      Hybrid: Level 2 flexible (duplicate optional).
+    Closing IL: TBD (Phase F5.2 — operator decides Option A/B/Hybrid; canon §0.2 amended OR existing framework rewritten accordingly).
+    Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 2 + §10 Phase F5.2 + §11 Sprint S7.
+
+- [ ] G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION (P1, OPEN, 2026-05-09)
+    Bootstrap canon v3 §0.2 Level 1 requires front-line operations = 100% AI без human duplicate.
+    Existing pattern: ALL Level-1-candidate AI agents HAVE human doubles per JOB-DESCRIPTIONS Agent Summary Registry. Level-1 candidates: NotificationAgent, OnboardingNurtureAgent, AnalyticsAgent, FeedbackAnalyticsAgent, LeadScoringAgent + 22 Finance agents (GL Close, AP/AR, Expense Anomaly, IFRS, Consolidation, Tax Compliance, Beancount Export, Budget, Forecast, Variance Analysis, Scenario, Cash Position, Liquidity Forecast, FX Exposure, Covenant Monitor, FCA Data Extraction, Reg Data Quality, FCA Return Generator, Resolution Pack, Finance BI, Data Pipeline, Data Quality Gate) — all with Financial Controller / Head of FP&A / Head of Reg Reporting / Head of Treasury / Head of Finance Systems doubles.
+    Same governance choice as Level 2 (Option A reformulate §0.2, Option B reform framework, Hybrid).
+    Closing IL: TBD (Phase F5.1 — operator decides; canon §0.2 amended OR existing framework rewritten).
+    Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 1 + §10 Phase F5.1 + §11 Sprint S6.
+
+- [ ] G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3, OPEN, 2026-05-09)
+    ROADMAP.md Phase 4 lists 27 implemented services in banxe-emi-stack;
+    factual ls -1d /home/mmber/banxe-emi-stack/services/*/ shows 84 service directories.
+    Drift: +57 undocumented service directories.
+    Audit Sprint S2 2026-05-09 confirmed factual count.
+    Required action: per-service classification (legitimate-but-undocumented / scaffold / experimental / orphaned) + ROADMAP.md sync to factual state OR cleanup of orphaned directories.
+    Closing IL: TBD (Phase F4.1 — ROADMAP.md service inventory sync sweep).
+    Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §10 Phase F4.1.

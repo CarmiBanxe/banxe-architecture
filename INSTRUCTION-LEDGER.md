@@ -5717,3 +5717,86 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Compliance impact: NONE на incident `INCIDENT-2026-05-07-EVO1-XMRIG`. Все 5 канон-incident IL-records уникальны и нет duplicates среди них. Duplicate в FACTORY-LAYER-AUDIT-BASELINE — operational hygiene issue, не security/compliance issue.
 - Closing IL: TBD (gap closure после implementation `I-70` check во всех future sessions).
 - Anchors: PR #146 (Sprint S1 Section §0 fixation), prior canon-incident IL-records (5 instances), `I-68` (single-session incident command), `I-69` (stash defensive operations).
+
+### IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S2 (project §0.2 hierarchy compliance audit)
+- Status: BINDING — closes G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0 from Sprint S1)
+- Priority: P0 (regulatory + architectural foundation; gates Sprint S3 Phase F1+F2)
+- Scope: maps existing AI agents / services / SMF holders / Trust Zones / Autonomy levels to §0.2 Levels 1..5; identifies deviations vs §0 canon; defines reconciliation plan; opens 6 per-deviation GAPs.
+
+- Audit method:
+  - Read-only inspection of canon docs: docs/JOB-DESCRIPTIONS.md (32-agent Summary Registry §8 + role detail sections), docs/ORG-STRUCTURE.md (8 functional blocks + 17 HITL gates §6 + 22 Finance AI agents §7.3), docs/DEPARTMENT-MAP.md (10 departments + Trust Zones + Autonomy framework §3), docs/RELATIONSHIP-TREE.md (7 sections org communication map)
+  - Read-only inventory of /home/mmber/banxe-emi-stack/services/ (84 service directories)
+  - Cross-reference with bootstrap canon v3 §0.2 (5-tier hierarchy)
+  - No modification of source canon docs in this audit
+
+- Existing autonomy framework (pre-§0):
+  - 4-level autonomy: L1 Auto / L2 Review / L3 MLRO / L4 Board (DEPARTMENT-MAP §3)
+  - 3 trust zones: GREEN / AMBER / RED (DEPARTMENT-MAP §3)
+  - 17 HITL Decision Gates (ORG-STRUCTURE §6)
+  - SM&CR 6 SMF holders (SMF1 CEO, SMF2 CFO, SMF4 CRO, SMF5 Internal Audit, SMF17 MLRO, SMF24 COO, SMF26 CTO)
+  - MLRO function declared independent from CFO + reports to Board (ORG-STRUCTURE §7.1 box)
+
+- Existing AI agent inventory (54 total):
+  - 32 AI agents in JOB-DESCRIPTIONS Agent Summary Registry §8 (8 ACTIVE + 24 PROPOSED): AML-Analyst-v1, KYC-Specialist-v2, SanctionsScreeningAgent, ComplianceOfficerAgent, FraudScoringAgent, PaymentRouterAgent, SafeguardingAgent, CustomerLifecycleAgent, LedgerAgent, ReconciliationAgent, ReportingAgent, SecurityAgent, NotificationAgent, TicketRoutingAgent, CustomerSupportAgent, EscalationAgent, ComplaintTriageAgent, FeedbackAnalyticsAgent, CampaignAgent, LeadScoringAgent, ContentAgent, OnboardingNurtureAgent, AnalyticsAgent, CryptoKYCAgent, ChainAnalysisAgent, TravelRuleAgent, CryptoAMLAgent, LiquidityAgent, RateEngineAgent, WalletSecurityAgent, CryptoSanctionsAgent, ProWalletAgent
+  - 22 Finance AI agents in ORG-STRUCTURE §7.3 OSS Mapping: GL Close, IFRS, AP/AR, Expense Anomaly, Consolidation, Tax Compliance, Beancount Export, Budget, Forecast, Variance Analysis, Scenario, Cash Position, Liquidity Forecast, FX Exposure, Covenant Monitor, FCA Data Extraction, Reg Data Quality, FCA Return Generator, Resolution Pack, Finance BI, Data Pipeline, Data Quality Gate
+
+- §0.2 Level mapping (existing → bootstrap canon v3):
+
+  Level 4 (CEO human only) — bootstrap canon §0.2 says CEO принимает финальные решения кроме Compliance.
+    Mapping: CEO SMF1 Moriel Carmi, JOB-DESCRIPTIONS §1.1 declares "AI Agent: None (human-only tier)".
+    Status: ALIGNED — no deviation.
+
+  Level 5 (Compliance — AI MLRO autonomous + human MLRO co-sign) — bootstrap canon §0.2/§0.3:
+    AI MLRO autonomous, NOT subordinate to CEO; human MLRO co-sign / override only on legal/regulatory edge cases.
+    Mapping: human MLRO Sarah Mitchell SMF17 + AI subagents (AML-Analyst-v1, KYC-Specialist-v2, SanctionsScreeningAgent, ComplianceOfficerAgent, ChainAnalysisAgent, CryptoAMLAgent, CryptoSanctionsAgent, TravelRuleAgent).
+    Independence verified: MLRO function "independent from CFO — reports to Board" (ORG-STRUCTURE §7.1).
+    Conflict 1: NO autonomous single AI MLRO agent with sign-authority for SAR / sanctions decisions; existing pattern is human MLRO + AI subagents feeding decisions.
+    Conflict 2: HITL Decision Gates §6 require "MLRO + CEO" co-sign for SAR retraction / Sanctions reversal / PEP onboarding — §0.2 says AI MLRO NOT subordinate to CEO; existing co-sign pattern violates this if interpreted strictly.
+    Status: PARTIAL — GAP G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING (P0).
+
+  Level 3 (Heads of Department — AI agent + human duplicate) — bootstrap canon §0.2:
+    Each Head = AI agent + human duplicate; AI makes operational decisions, human override authority.
+    Mapping (SMF C-suite): CRO / CFO David Goldstein / COO TBC / CTO Oleg @p314pm — all human only, no documented AI duplicate.
+    Mapping (sub-Heads): Head of Treasury Marcus Webb (with PaymentRouterAgent partner), Head of FP&A (with Budget+Forecast+Variance+Scenario agents), Head of Reg Reporting (with FCA Data + Reg Data Quality + FCA Return Generator + Resolution Pack agents), Head of Customer Support Tom Nakamura (with CustomerLifecycleAgent + TicketRoutingAgent + CustomerSupportAgent + EscalationAgent partners).
+    Status: PARTIAL — sub-Heads have AI agent partners (close to §0.2 pattern); SMF C-suite Heads lack AI duplicate; GAP G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING (P1).
+
+  Level 2 (Low management — 100% AI without duplicate) — bootstrap canon §0.2:
+    Тимлиды / supervisors / department leads = 100% AI без human duplicate.
+    Mapping candidates: ComplianceOfficerAgent, EscalationAgent (Head of Support double), ComplaintTriageAgent (COO double), CampaignAgent (Head of Marketing double), ContentAgent (MLRO double for promos), AML-Analyst-v1 (Compliance Officer double), KYC-Specialist-v2 (Compliance Officer double), LedgerAgent (Financial Controller double), ReconciliationAgent (Financial Controller double).
+    Conflict: §0.2 Level 2 requires "100% AI без duplicate"; ALL Level-2-candidate agents in existing canon HAVE human doubles per JOB-DESCRIPTIONS Agent Summary Registry.
+    Status: FUNDAMENTAL CONFLICT — GAP G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION (P1) — either §0.2 reformulate to allow Level 2 human doubles, or existing framework reform to remove human doubles for Level 2 agents (governance choice for operator).
+
+  Level 1 (Operators — 100% AI without duplicate) — bootstrap canon §0.2:
+    Front-line operations = 100% AI без human duplicate.
+    Mapping candidates: NotificationAgent, OnboardingNurtureAgent, AnalyticsAgent, FeedbackAnalyticsAgent, LeadScoringAgent (L1 in existing autonomy).
+    Plus 22 Finance Level-1 candidates: GL Close, AP/AR, Expense Anomaly, IFRS, Consolidation, Tax Compliance, Beancount Export, Budget, Forecast, Variance Analysis, Scenario, Cash Position, Liquidity Forecast, FX Exposure, Covenant Monitor, FCA Data Extraction, Reg Data Quality, FCA Return Generator, Resolution Pack, Finance BI, Data Pipeline, Data Quality Gate.
+    Conflict: same as Level 2 — §0.2 Level 1 says "100% AI без duplicate" but ALL existing L1 agents HAVE human doubles per Agent Summary Registry (Financial Controller for Finance agents, Head of Marketing for marketing, etc).
+    Status: FUNDAMENTAL CONFLICT — GAP G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION (P1) — same governance choice as Level 2.
+
+- Drift findings (separate from §0.2 mapping):
+  - SERVICE COUNT DRIFT: ROADMAP.md Phase 4 lists 27 implemented services in banxe-emi-stack; factual ls -1d shows 84 service directories. Drift +57 services. GAP G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3).
+  - JOB-DESCRIPTIONS section header count uses `### N.M` form for sub-roles (23 such headers) plus a 32-row Agent Summary Registry table at §8 — counts are complementary, NOT in conflict; ROADMAP IL-080 declared "32 roles" matches Agent Summary Registry.
+  - 54 total AI agents documented (32 in JOB-DESCRIPTIONS + 22 Finance in ORG-STRUCTURE §7.3) — Finance agents not duplicated in JOB-DESCRIPTIONS Summary Registry; complementary inventories. No drift.
+
+- Reconciliation plan:
+  - GOVERNANCE DECISION REQUIRED (operator-only): Levels 1 + 2 fundamental conflict — choice between (A) reformulate §0.2 to allow Level 1/2 human doubles (preserves existing FCA-aligned framework, weakens §0.2 immutability claim), or (B) reform existing framework to remove L1/L2 human doubles (preserves §0.2 immutability, requires JOB-DESCRIPTIONS + DEPARTMENT-MAP rewrite + FCA review). Hybrid possible: Level 1 strict (no duplicate), Level 2 flexible (duplicate optional).
+  - Level 5 AI MLRO autonomous: Phase F5.5 deploys autonomous AI MLRO agent with sign-authority; HITL Gates §6 update required to remove "MLRO + CEO" co-sign for AML decisions (preserves §0.2 independence); legal review pending.
+  - Level 3 SMF Heads: Phase F5.3 deploys AI duplicates for CRO / CFO / COO / CTO; sub-Heads (Head of Treasury / FP&A / Reg Reporting / Customer Support) already have AI partners — formalise as §0.2 Level 3 pattern.
+  - Service count drift: Phase F4.1 ROADMAP sync to factual 84 services + identify legitimate-vs-undocumented services.
+
+- Sandbox→Production gate (§0.3):
+  - All §0.2 Levels deployed in sandbox: BLOCKED (Levels 1+2 conflict + Level 5 AI MLRO + Level 3 SMF AI duplicates pending).
+  - Real customer data migration: BLOCKED until Sprint S6..S10 (§0.2 implementation) + Sprint S11 (sandbox 100% verification).
+
+- Closing this IL: closes G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0 from Sprint S1, IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09) — audit performed and per-deviation GAPs created; reconciliation phase opens via Phase F5 (Sprints S6..S10).
+- Closing IL: TBD (Sprint S10 — §0.2 hierarchy implementation completes per Phase F5).
+- Anchors:
+  - bootstrap canon v3 §0.2 (5-tier hierarchy), §0.3 (sandbox→production gate), §10 Phase F5, §11 Sprint S2/S6..S10
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (creates G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING closed by this IL)
+  - I-37 (factory↔project layer binding, PROPOSED)
+  - I-59 (roadmap-block procedure under MONITOR state)
+  - docs/JOB-DESCRIPTIONS.md (32-agent registry §8), docs/ORG-STRUCTURE.md (§6 HITL gates + §7.3 Finance agents), docs/DEPARTMENT-MAP.md (§3 autonomy + trust zones), docs/RELATIONSHIP-TREE.md
+  - banxe-emi-stack/services/ (84 service directories audited)
