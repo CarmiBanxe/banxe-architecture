@@ -218,3 +218,31 @@ Derive exact path counts for the first priority candidate from `BANXE-RAR-LISTIN
 - **Overall:** REJECT for all 3 candidates (17321 files total).
 - **No code import**, no REWRITE-reference. EMI ports/adapters fully covered without any neuron / uikit / consul fragment.
 
+
+---
+
+## Sprint 10 — Summary
+
+**Date closed:** 2026-05-09
+**PR:** #157 (CarmiBanxe/banxe-architecture)
+**Total fragments classified:** 9 priority candidates across 5 classification blocks
+
+### Aggregate result
+
+| Outcome | Count | Files |
+|---|---:|---:|
+| PASS (direct import) | 0 | 0 |
+| REWRITE-reference (semantics cross-check only) | 22 modules | ~6500 (subset of 4 repos) |
+| REJECT | rest | ~17900 |
+
+### Canon outcome
+
+- **EMI BANXE AI BANK stack remains primary** across all 9 candidates.
+- **BANXE.RAR contributes zero direct code import** in Sprint 10; only domain semantics cross-checks against FROZEN ports (`PaymentRailPort`, `LedgerPort`, `CryptoLedgerPort`, `KYCWorkflowPort`, `OtpDeliveryPort`).
+- **No new EMI files** generated in `banxe-emi-stack` from Sprint 10.
+- All Sprint 6–9 production adapters (Twilio/SendGrid OTP, SumSub HTTP, Modulr SEPA, Midaz crypto) remain canonical.
+
+### Status
+
+**Sprint 10 — CLOSED** (pending PR #157 merge).
+
