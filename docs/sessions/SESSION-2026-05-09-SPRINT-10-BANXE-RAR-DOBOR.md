@@ -187,3 +187,34 @@ Derive exact path counts for the first priority candidate from `BANXE-RAR-LISTIN
 - **No code import** into EMI; only crypto-domain semantics cross-checked against FROZEN CryptoLedgerPort + MidazCryptoAdapter (Sprint 9).
 - **No new EMI files** required. EMI is an EMI / payment institution, not a crypto exchange — exchange modules explicitly out of scope.
 
+
+---
+
+## Classification block 5 — `banxe/banxe-uikit`, `consul-configs/*`, `neuron/*`
+
+### `banxe/banxe-uikit`
+
+- **Files:** 680 (verified)
+- **Stack:** UI component library (frontend)
+- **Classification:** **REJECT**
+- **Rationale:** Out of EMI backend scope. EMI stack is Python/FastAPI services + ports/adapters; UI components do not map to any FROZEN port.
+
+### `consul-configs/*`
+
+- **Files:** 408 (verified)
+- **Stack:** Consul KV configuration (3 envs)
+- **Classification:** **REJECT**
+- **Rationale:** Operational config inventory only. EMI uses `.env` + `services/config/*`; Consul is not part of EMI deployment canon. May be referenced operationally for env-var keys, but not imported as code.
+
+### `neuron/*`
+
+- **Files:** 16233 (verified)
+- **Stack:** Mixed legacy ecosystem (auth, blockchain, exchange, gambling, UI) — already partially classified in Phase 3 category map (most subrepos marked "likely REJECT").
+- **Classification:** **REJECT** (blanket)
+- **Rationale:** Separate ecosystem (Neuron exchange) outside EMI BANXE AI BANK scope. Phase 3 category map already pre-flagged neuron-* subrepos as REJECT across Waves A, C, D, E. No EMI-adjacent backend fragments justify sub-split in Sprint 10.
+
+### Net decision
+
+- **Overall:** REJECT for all 3 candidates (17321 files total).
+- **No code import**, no REWRITE-reference. EMI ports/adapters fully covered without any neuron / uikit / consul fragment.
+

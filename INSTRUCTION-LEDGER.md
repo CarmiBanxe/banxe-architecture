@@ -5927,3 +5927,18 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Bundle B `/tmp/banxe_forensic_254683/` on evo1 retain 30 days (until ~2026-06-07), then operator may delete.
 - Closing IL: CLOSED — this is the final IL entry for this incident.
 - Anchors: all prior incident IL records + observation check SHA256 + G-SECURITY-EVO1-XMRIG-CRYPTOMINER (RESOLVED).
+
+### IL-ADR-028-ACCEPTED-2026-05-09
+
+- Date: 2026-05-09 (CEST).
+- Phase (GSD): CLOSE — ADR-028 KYC re-verification triggers Accepted.
+- Status: DONE.
+- Priority: P1 (Track A implementation).
+- Implementation (banxe-emi-stack):
+  - Step 1 PR #69: BanxeEventType.ROLE_CHANGED / BENEFICIAL_OWNER_CHANGED / JURISDICTION_CHANGED + KycReTriggerEvent dataclass + build_kyc_retrigger_event() + 8 unit tests.
+  - Step 2 PR #70: FSM lifecycle wiring (fsm.py +62 lines) + integration test (183 lines).
+  - Step 3 PR #99: operational check script (kyc-retrigger-check.py) + 4 smoke tests.
+  - Total: 12 tests PASS, coverage 41.02%.
+- Gaps closed: G-KYC-01 (DONE), G-KYC-02 (DONE).
+- ADR status: Proposed → Accepted.
+- Anchors: ADR-028, G-KYC-01, G-KYC-02, banxe-emi-stack PRs #69/#70/#99.
