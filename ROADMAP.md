@@ -528,3 +528,37 @@ Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 ### Pending tags (canon §21 — sprint progress, NO tag applied)
 - Sprint S3 = progress consolidation, not milestone per §21; no checkpoint tag applied for partial state.
 - Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after F1 unblocks + deploys; gates Sprint S3 closure).
+
+## Roadmap Block 2026-05-09 — Sprint S4 F3.2 LiteLLM Routes Reconciliation Diagnostic
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress per §21).
+> Anchors: IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09.
+
+### Sprint S4 F3.2 phase 1 (diagnostic) — DONE
+- [x] All 20 LiteLLM routes enumerated from gateway + config (litellm-config.v2.yaml inspected)
+- [x] 14 extras classified (9 DUPLICATE / 1 UNIQUE-PROMOTE / 2 UNIQUE-DECISION / 2 CROSS-LAYER-VIOLATION)
+- [x] project-heavy resolution candidate identified (route `large` glm-4.5-air distributed inference)
+- [x] Cross-layer concerns documented (factory-mid/heavy/coder backed on evo1+evo2 ollama = project-layer nodes per §1.bis)
+
+### Sprint S4 F3.2 phase 2 (operator decisions) — PENDING
+- [ ] 9 DUPLICATE-ALIASES removal — operator pre-approve bulk REMOVE (low risk; callers can switch to canonical names)
+- [ ] `large` → `project-heavy` promotion strategy — rename / alias / new entry
+- [ ] `fast` (glm-4.7-flash-abliterated) — promote as canonical / remove
+- [ ] `gpt-oss-20b` (gurubot/gpt-oss-derestricted:20b) — keep with documentation / remove
+- [ ] `ai-heavy` + `reasoning` cross-layer — REMOVE per §1.bis strict OR §1.bis amendment to allow cross-layer
+- [ ] Cross-layer concern (factory-mid/heavy/coder on evo1+evo2 ollama) — §1.bis canon update OR Legion model expansion strategy
+
+### Sprint S4 F3.2 phase 3 (implementation) — BLOCKED on phase 2
+- [ ] LiteLLM config sweep per operator decisions (edit /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml)
+- [ ] Restart LiteLLM v2 process (graceful pipx-managed restart)
+- [ ] Verification round-trip (curl all canonical 7 routes post-cleanup)
+- [ ] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT closure
+- [ ] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING closure
+
+### Sprint S4 remaining sub-phases
+- [ ] F3.1 (LiteLLM systemd unit) — operator design spec required (User/WorkingDirectory/ExecStart per current bare pipx invocation)
+- [ ] F3.3 (Spec-First Auditor relocation) — operator decision: relocate to canon path ~/developer/spec-first/audit/ OR canon update §5 to factual path
+
+### Pending tags (canon §21 — sprint progress, NO tag applied)
+- Sprint S4 = progress consolidation, not milestone per §21; no checkpoint tag applied.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Phase F1 unblocks + deploys).
