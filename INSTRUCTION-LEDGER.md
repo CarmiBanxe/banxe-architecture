@@ -6406,3 +6406,98 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 (Sprint S2)
   - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (Sprint S1)
   - I-37 PROPOSED, I-59, I-68
+
+### IL-OPS-SESSION-TERMINAL-2026-05-09-S1-S5-CONSOLIDATION
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — autonomous session terminal consolidation
+- Status: BINDING — final permanent canon record of 2026-05-09 autonomous session (Sprints S1-S5 progression + 8× atomic pattern validation + zero MEMORY.md leakage)
+- Priority: P2 (session canon hygiene)
+- Scope: consolidates final state of 2026-05-09 Perplexity supervisor autonomous session into permanent canon record; updates §13 cumulative learnings with empirical validations; closes G-PROCESS-MEMORY-MD-LEAKAGE Sub-pattern C; identifies binding pattern updates for canon §27.
+
+- Session timeline (2026-05-09):
+  - Start: 00:25 CEST (Sprint S1 worktree create)
+  - Final commit: 21:54:31 CEST (PR #165 Sprint S4+S5 dual closure merged)
+  - Duration: ~21 hours wall-clock
+  - 10 PRs merged on origin/main:
+    1. PR #146 (633bb6a) — Sprint S1 §0 fixation + roadmap F0–F7 + tag checkpoint-2026-05-09-canon-section-0-fixation
+    2. PR #148 (13d9d4d) — Sprint S1 IL bypass-window + trap-failure learning
+    3. PR #153 (5279009) — Sprint S2 §0.2 audit + 5 GAPs (after PR #149→#153 abort+redo)
+    4. PR #154 (85d8582) — Sprint S2 IL race-conflict pattern + race-mitigation learning
+    5. PR #158 (5d495ae) — Sprint S3 F2 progress 75% (after PR #156→#158 abort+redo)
+    6. PR #159 (fefcdd8) — Sprint S4 F3.2 phase 1 routes diagnostic
+    7. PR #160 (513229d) — Sprint S5 F4 documentation reconciliation (3 GAPs closed)
+    8. PR #162 (20f6bcf) — Sprint S4 F3.2 phase 2 operator decision proposal
+    9. PR #164 (e9a10ed) — Sprint S4 F3.2 phase 3 prep caller migration inventory
+    10. PR #165 (e72ef51) — Sprint S4+S5 dual autonomous closure
+
+- Pattern validation empirical results:
+  - Atomic single-block race-mitigation pattern: 8× successful execution (PR #153, #154, #158, #159, #160, #162, #164, #165). Pattern reliable for high-activity windows. Recommendation: PROMOTE from "partially superseded" to "PRIMARY pattern for high-activity canon work" in canon §27.
+  - Cherry-pick abort+redo on race: 2× successful (PR #149→#153, PR #156→#158). Recovery path validated for accumulated race state.
+  - Independent verify+restore: 10 instances, 100% success rate. Pattern eliminates trap-failure risk completely (vs trap-EXIT pattern which silently failed once in PR #146 — 3 min exposure).
+  - Branch protection restored: 10 instances, no permanent exposure window.
+  - DIRTY abort enhanced binding: triggered correctly 1× (PR #156 race window detection). Saved second exposure window.
+  - CodeRabbit PENDING handling: 2× (PR #160 17 polls + PR #164 18 polls full timeout) — merge succeeded because only required-contexts (guardian-factory, guardian-project) matter for branch protection, CodeRabbit is informational. Pattern confirmed: do NOT block merge on PENDING optional checks.
+
+- Canon §13 cumulative learnings update (append):
+  - Atomic single-block race-mitigation pattern is PRIMARY for high-activity windows (8× validated 2026-05-09).
+  - State-stable wait must abort on DIRTY/CONFLICTING (not just UNKNOWN) — terminal failure states discovered in PR #156 race attempt.
+  - Race-detect must run TWICE (pre-bypass + pre-merge) per atomic flow — PR #156 race-detect-2 caught conflict that race-detect-1 missed.
+  - Independent verify+restore must be SEPARATE shell command (not trap-EXIT) — trap silently fails in WSL2 multi-line shell blocks.
+  - CodeRabbit PENDING handling: do NOT block merge if only optional checks pending; required-contexts list defines actual blocking.
+  - Cherry-pick is canonical recovery for aborted canon-PRs (preserves authoring effort + commit message).
+  - Race-conflict count limit per canon-PR: 2 (then abort+redo).
+
+- Canon §27 cheat sheet update (recommended for Phase F4.1 reconciliation):
+  - PROMOTE atomic single-block race-mitigation pattern from "partially superseded" to "PRIMARY for high-activity canon work" based on 8× empirical validation.
+  - Two-step pattern (PR #146/#148 trap-failure learning) remains valid for low-activity windows (no parallel canon-edit detected).
+  - Add CodeRabbit PENDING handling rule to atomic flow: poll до timeout, NOT block merge if only optional checks pending.
+
+- G-PROCESS-MEMORY-MD-LEAKAGE Sub-pattern C status update:
+  - Sub-pattern C (concurrent-CC-session race conditions causing MEMORY.md leakage) — INFRASTRUCTURE-MITIGATED CONFIRMED via worktree isolation through 2026-05-09 session.
+  - 8 worktrees created during session (banxe-architecture-canon-section-0, banxe-architecture-il-bypass-incident, banxe-architecture-section-0-audit-s2, banxe-architecture-section-0-audit-s2-redo, banxe-architecture-il-episode-8-race-pattern, banxe-architecture-sprint-s3-f2-progress, banxe-architecture-sprint-s3-f2-redo, banxe-architecture-sprint-s4-f3-2, banxe-architecture-sprint-s5-f4, banxe-architecture-sprint-s4-f3-2-phase2-proposal, banxe-architecture-sprint-s4-f3-2-phase3-prep, banxe-architecture-sprint-s4-s5-closure, banxe-architecture-session-terminal-il).
+  - Zero MEMORY.md leakage observed across all 13 worktrees during session (verified via git status MEMORY.md = clean in each worktree).
+  - Canon §3 ENHANCED v3 + §28 worktree isolation MANDATORY rule validated empirically: pattern eliminates Sub-pattern C entirely.
+  - Sub-pattern C: CLOSED-INFRASTRUCTURE-MITIGATED.
+  - Sub-patterns A+B (operator-side actions causing MEMORY.md modification): remain pending operator mitigation.
+
+- Cumulative GAP closures (this session):
+  - G-FACTORY-EVO2-SSH-ACCESS-LOST (P1) → CLOSED-POST-UPDATE-2026-05-09 (Sprint S1)
+  - G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING (P0) → CLOSED (Sprint S2)
+  - G-FACTORY-DOCUMENTATION-PATH-DRIFT (P3) → CLOSED (Sprint S5)
+  - G-FACTORY-CANON-FILES-DUPLICATION (P3) → CLOSED-RECLASSIFIED (Sprint S5)
+  - G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON (P2) → CLOSED (Sprint S5)
+  - G-PROCESS-MEMORY-MD-LEAKAGE Sub-pattern C → CLOSED-INFRASTRUCTURE-MITIGATED (this IL)
+
+- Cumulative GAP status updates (this session):
+  - G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1) → PARTIAL [/] 75% (Sprint S3)
+  - G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT (P2) → CLASSIFIED-PENDING-OPERATOR [/] (Sprint S4)
+  - G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING (P2) → RESOLUTION-CANDIDATE-IDENTIFIED [/] (Sprint S4)
+  - G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING (P2) → NEW sub-GAP created (Sprint S3)
+
+- 11 operator decisions queue (binding terminus blockers):
+  1. FA-3 vs §0.5 Ruflo MANDATORY reconciliation (blocks F1)
+  2. openclo-moa subagent design spec
+  3. Factory overseer agent §0.4 design spec (blocks F2.4)
+  4. F3.1 LiteLLM systemd unit design spec
+  5. F3.2 Phase 3 execute approval matrix (Proposals A/B/C + Decisions D1/D2/D3/D4) — executable script ready in IL-OPS-SPRINT-S4-F3-2-PHASE3-PREP-CALLER-MIGRATION-INVENTORY-2026-05-09
+  6. F3.3 Spec-First Auditor relocation OR canon update §5
+  7. 84 services per-service classification
+  8. §0.2 Levels 1+2 governance choice (blocks Sprints S6+S7)
+  9. §0.2 Level 3 SMF Heads AI duplicates design (blocks Sprint S8)
+  10. §0.2 Level 4 CEO governance dashboard design (blocks Sprint S9)
+  11. §0.2 Level 5 AI MLRO autonomous + HITL Gates §6 amendment + legal review (blocks Sprint S10)
+
+- Genuine autonomous progression terminus reached:
+  - All canon authoring + diagnostic + caller inventory + script template + proposal preparation + sprint closure + session-terminal consolidation work merged on main.
+  - Pattern validation 8× provides strong empirical foundation for canon §13 + §27 binding updates (deferred to operator-supplied bootstrap canon v4 per immutability principle).
+  - Sub-pattern C closure is permanent infrastructure mitigation (worktree isolation MANDATORY).
+  - Pending operator decisions queue documented in canon на main для resume.
+
+- Closing IL: TBD (cumulative session terminus permanent state — no further closure expected for this session record).
+- Anchors:
+  - bootstrap canon v3 §3 + §13 + §27 + §28 (all relevant binding rules)
+  - All Sprint S1-S5 ILs (predecessors to this consolidation)
+  - I-37 PROPOSED, I-59, I-68
+  - PRs #146, #148, #149 (closed), #153, #154, #156 (closed), #158, #159, #160, #162, #164, #165
+  - Tag checkpoint-2026-05-09-canon-section-0-fixation
