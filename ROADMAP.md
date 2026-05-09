@@ -587,3 +587,27 @@ Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 ### Pending tags (canon §21 — sprint progress, NO tag applied)
 - Sprint S5 = progress consolidation, not milestone per §21; no checkpoint tag applied.
 - Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after Phase F1 unblocks + deploys).
+
+## Roadmap Block 2026-05-09 — Sprint S4 F3.2 Phase 2 Proposal (operator decision matrix)
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint progress per §21).
+> Anchors: IL-OPS-SPRINT-S4-F3-2-PHASE2-PROPOSAL-2026-05-09.
+
+### Phase 2 proposal authored — operator decision matrix
+- [ ] **PROPOSAL A**: bulk REMOVE 9 DUPLICATE-ALIASES (12 model_list entries) — recommend pre-approval, low risk, all aliases have canonical equivalents
+- [ ] **PROPOSAL B**: `large` → `project-heavy` promotion — recommend B2 (alias) for staged migration
+- [ ] **PROPOSAL C**: cross-layer reconciliation factory-mid/heavy/coder — operator chooses C1 (canon §1.bis amendment) / C2 (Legion model expansion) / C3 (hybrid)
+- [ ] **DECISION D1** `fast` route — recommend D1b REMOVE
+- [ ] **DECISION D2** `gpt-oss-20b` — recommend D2b REMOVE
+- [ ] **DECISION D3** `ai-heavy` — recommend D3a REMOVE per §1.bis strict
+- [ ] **DECISION D4** `reasoning` — recommend D4a REMOVE per §1.bis strict + composite antipattern
+
+### Phase 3 implementation — BLOCKED on Phase 2 operator approval matrix
+- [ ] Edit litellm-config.v2.yaml per approved decisions (single atomic edit)
+- [ ] Reload LiteLLM v2 process (graceful pipx restart)
+- [ ] Verification round-trip (curl all canonical 7 routes — 200 OK; removed routes — 404)
+- [ ] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT closure
+- [ ] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING closure
+
+### Pending tags
+- Sprint S4 = sprint progress, not milestone per §21; no tag.
