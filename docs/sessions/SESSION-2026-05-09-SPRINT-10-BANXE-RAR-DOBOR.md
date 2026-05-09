@@ -110,3 +110,45 @@ Derive exact path counts for the first priority candidate from `BANXE-RAR-LISTIN
 - **No code import** into EMI; only domain semantics cross-checked against existing FROZEN ports (`LedgerPort`, `PaymentRailPort`, `recon_port`, safeguarding flows).
 - **No new EMI files** required from this fragment in Sprint 10.
 
+
+---
+
+## Classification block 3 — `internal_dev/*`
+
+**Total files:** 5639 (finthech-services 580 + support-services 2819 + trigger-system-services 2240)
+
+### `internal_dev/finthech-services` (580 files)
+
+| Submodule | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `auto-acquiring` | **REWRITE-reference** | `services/payment/*` (acquiring flows, future) | Acquiring automation semantics — cross-check only |
+| `auto-reconciliation` | **REWRITE-reference** | `services/recon/*` (recon engine + midaz_reconciliation) | Auto-recon flow — semantics for daily recon pipeline |
+| `crypto-admin-panel` | **REJECT** | — | Admin UI — out of EMI core scope |
+| `document-import` | **REWRITE-reference** | `services/kyc/*` (document ingestion) | Document import flow — cross-check vs SumSub adapter |
+| `fin-monitoring` | **REWRITE-reference** | `services/safeguarding-engine/*` + `services/recon/*` | Financial monitoring — cross-check safeguarding/recon alerts |
+
+### `internal_dev/support-services` (2819 files)
+
+| Submodule | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `clarification-forms` | **REWRITE-reference** | `services/compliance/*` (legacy adapters) | Compliance clarification flow — semantics only |
+| `edd-forms` | **REWRITE-reference** | `services/compliance/legacy/legacy_sumsub_adapter.py` (I-04 EDD) | EDD form domain — cross-check threshold + state machine |
+| `jira-scrapper` | **REJECT** | — | Ops tooling — out of EMI scope |
+| `sendgrid-webhook` | **REJECT** | — | EMI has dedicated `SendGridOtpAdapter` (Sprint 6) |
+
+### `internal_dev/trigger-system-services` (2240 files)
+
+| Submodule | Classification | EMI boundary | Rationale |
+|---|---|---|---|
+| `triggers` | **REWRITE-reference** | `services/events/event_bus.py` + cron jobs | Event triggers — cross-check semantics |
+| `services` | **REWRITE-reference** | `services/events/*` | Trigger service runners — cross-check |
+| `control` | **REJECT** | — | Admin/control plane UI |
+| `dev-tools` | **REJECT** | — | Internal dev tooling |
+| `frontend` | **REJECT** | — | UI — out of EMI scope |
+
+### Net decision
+
+- **Overall:** REWRITE-reference (8 submodules across 3 repos) + REJECT (6 submodules).
+- **No code import** into EMI; only domain semantics for recon, safeguarding, KYC document flows, EDD, and event triggers.
+- **No new EMI files** required from this fragment in Sprint 10.
+
