@@ -1173,6 +1173,12 @@
     Closing IL: TBD (Phase F4.1 — duplicate canon-file reconciliation sweep + add to canon §3 process notes).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
 
+    **2026-05-08 cleanup-actor: CONFIRMED PARALLEL CLAUDE CODE SESSION** —
+    best-decision (§4 BDP) based on Bundle B preservation (mtime 2026-05-07 21:54),
+    PR #138 parallel activity, journalctl absence, sshd hardening pre-Step-5.
+    Authorised internal, forensic-first. Recurring pattern (3rd in 7d). Pending I-68.
+    See IL-INCIDENT-2026-05-08-CLEANUP-ACTOR-CONFIRMED-PARALLEL-SESSION.
+
 - [ ] G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING (P0, OPEN, 2026-05-09)
     Bootstrap canon v3 §0.2 Level 5 requires autonomous AI MLRO agent
     NOT subordinate to CEO, with sign-authority for SAR / sanctions / AML decisions;
@@ -1220,4 +1226,3 @@
     Required action: per-service classification (legitimate-but-undocumented / scaffold / experimental / orphaned) + ROADMAP.md sync to factual state OR cleanup of orphaned directories.
     Closing IL: TBD (Phase F4.1 — ROADMAP.md service inventory sync sweep).
     Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §10 Phase F4.1.
-
