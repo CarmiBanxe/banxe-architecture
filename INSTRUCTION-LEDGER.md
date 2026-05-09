@@ -6033,3 +6033,78 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09 (this commit)
   - IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09 (this commit)
   - I-37 PROPOSED, I-59, I-68
+
+### IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S4 Phase F3.2 read-only routes diagnostic + per-route classification
+- Status: BINDING — diagnostic complete, per-route decision queue prepared for operator
+- Priority: P2 (factory hardening)
+- Scope: enumerates all 20 LiteLLM v2 gateway routes vs 7 canonical (per bootstrap canon v3 §1.bis), classifies 14 extras (DUPLICATE / UNIQUE-PROMOTE / UNIQUE-REMOVE / CROSS-LAYER-CONCERN), identifies project-heavy resolution candidate, prepares operator decision queue.
+
+- Diagnostic method (read-only):
+  - cat /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml — full model_list inspected
+  - GET http://127.0.0.1:4000/v1/models with Bearer sk-banxe-llm-gateway-2026 — 20 routes enumerated
+  - sample chat completion calls per extra route (5 sampled; 1 returned ok, 4 timed out at 3s due to model cold-start, не critical for classification)
+
+- Canonical 7 routes status (per §1.bis):
+  - factory-fast → ollama/qwen2.5-coder:14b-banxe-factory @ Legion 127.0.0.1:11434 ✓ ALIGNED (factory layer = Legion per §1.bis)
+  - factory-mid → ollama/qwen3:30b-a3b @ evo1+evo2 ollama (loadbalanced) ⚠ CROSS-LAYER concern (factory route на project nodes; per §1.bis factory routes должны ходить на Legion)
+  - factory-heavy → ollama/llama3.3:70b @ evo1+evo2 ollama ⚠ same CROSS-LAYER concern
+  - factory-coder → ollama/qwen3-coder-next:q4_K_M @ evo1 ollama ⚠ same CROSS-LAYER concern
+  - project-mid → ollama/qwen3.5:35b + qwen3-coder-next @ evo1+evo2 ollama ✓ ALIGNED (project layer = evo1+evo2)
+  - project-heavy → ✗ MISSING in config — RESOLUTION CANDIDATE FOUND (route `large` below)
+  - project-reason → openai/qwen3 @ evo2:8082 llama-server (RPC qwen3-235b-Q3_K_S) ✓ ALIGNED
+
+- 14 extras classification:
+
+  DUPLICATE-ALIASES (recommend REMOVE; same backend as canonical):
+  - banxe-general → qwen3:30b-a3b @ evo1+evo2 (= factory-mid backend) → REMOVE alias for factory-mid
+  - qwen3-30b → qwen3:30b-a3b @ evo1+evo2 (= factory-mid backend) → REMOVE alias for factory-mid
+  - qwen3-banxe → qwen3:30b-a3b @ evo1 only (= factory-mid subset) → REMOVE alias for factory-mid
+  - glm-4-flash → glm-4.7-flash-abliterated @ evo1 (= fast backend, see UNIQUE) → REMOVE alias for fast
+  - coding → qwen3-coder-next:q4_K_M @ evo1 (= factory-coder backend) → REMOVE alias for factory-coder
+  - glm-4.5-air-distributed → GLM-4.5-Air-Q4_K_M @ evo1:8081 RPC (= large backend, see UNIQUE) → REMOVE alias for large
+  - glm-air → GLM-4.5-Air-Q4_K_M @ evo1:8081 RPC (= large backend) → REMOVE alias for large
+  - ai → qwen3.5:35b @ evo1+evo2 (= project-mid backend) → REMOVE alias for project-mid
+  - reasoning-235b → openai/qwen3 @ evo2:8082 RPC (= project-reason backend) → REMOVE alias for project-reason
+
+  UNIQUE-BACKEND-PROMOTE (recommend PROMOTE to canonical or document):
+  - large → openai/glm-4.5-air @ evo1:8081 RPC (distributed inference via glm-master + llama-rpc-worker over USB4 Vulkan) → PROMOTE as **project-heavy** (closes G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING; matches §1.bis "preserve if registered" intent)
+  - fast → ollama/glm-4.7-flash-abliterated @ evo1+evo2 (UNIQUE backend, glm-4.7-flash family not in canonical) → operator decision: promote as additional canonical alias (e.g., factory-fast-alt) OR remove
+
+  UNIQUE-BACKEND-REMOVE (recommend REMOVE unless documented use case):
+  - gpt-oss-20b → ollama/gurubot/gpt-oss-derestricted:20b @ evo1 (UNIQUE gpt-oss family, no canonical mapping) → REMOVE unless operator documents use case
+
+  CROSS-LAYER-VIOLATION (recommend REMOVE; violates §1.bis layer binding):
+  - ai-heavy → ollama/llama3.3:70b @ evo1+evo2 (= factory-heavy backend BUT project-side alias) → REMOVE — strict §1.bis violation if used by project services (factory routes должны ходить только на factory-bound clients)
+  - reasoning → composite chain (qwen3:235b-a22b-banxe @ evo2 + llama3.3:70b @ evo1+evo2 fallback) → REMOVE — overlap with project-reason + factory-heavy + cross-layer fallback chain violates §1.bis
+
+- Critical findings:
+  1. **project-heavy resolution candidate identified**: existing route `large` (glm-4.5-air @ evo1:8081 distributed) matches project-heavy intent. Promotion path: rename `large` → `project-heavy` OR add canonical `project-heavy` aliasing same backend. Closes G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING.
+  2. **`fast` route has UNIQUE backend** (glm-4.7-flash-abliterated) not covered by canonical — operator decision required.
+  3. **Cross-layer concerns**: factory-mid + factory-heavy + factory-coder all configured against evo1+evo2 ollama (project layer nodes per §1.bis). Either §1.bis requires update to allow factory-routes-on-project-nodes (loadbalancing intent), OR backends must migrate to Legion ollama. Currently Legion ollama has only 2 models (qwen2.5-coder:14b-banxe-factory + qwen2.5-coder:7b) — insufficient for factory-mid (qwen3:30b-a3b) and factory-heavy (llama3.3:70b). Reconciliation requires either canon update OR Legion model expansion.
+  4. **`ai-heavy` cross-layer violation** if used by project services — needs elimination or scope confirmation.
+
+- Reconciliation plan (operator decisions per route):
+  - 9 DUPLICATE-ALIASES: REMOVE per recommendation (low risk, callers can switch to canonical)
+  - 1 UNIQUE-PROMOTE (large → project-heavy): execute promotion in F3.2 implementation
+  - 1 UNIQUE (fast): operator decision — promote / remove
+  - 1 UNIQUE (gpt-oss-20b): operator decision — keep with documentation / remove
+  - 2 CROSS-LAYER-VIOLATION (ai-heavy + reasoning): REMOVE per §1.bis strict reading, unless operator amends §1.bis to allow
+
+- Sandbox→Production gate (§0.3):
+  - Routes drift status: ROUTES-CLASSIFIED-PENDING-IMPLEMENTATION (was ROUTES-DRIFT)
+  - Phase F3.2 implementation requires per-route operator decisions before LiteLLM config sweep proceeds
+
+- Status updates:
+  - G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT (P2, OPEN) → CLASSIFIED-PENDING-OPERATOR (per-route decisions queued)
+  - G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING (P2, OPEN) → RESOLUTION-CANDIDATE-IDENTIFIED (route `large` glm-4.5-air @ evo1:8081 distributed)
+
+- Closing IL: TBD (Phase F3.2 operator per-route decisions + LiteLLM config sweep + verification round-trip).
+- Anchors:
+  - bootstrap canon v3 §0.5 (distribution discipline), §1.bis (canonical 7 routes), §10 Phase F3.2, §11 Sprint S4
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (created G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT + G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING)
+  - I-32, I-33 (PII/AML routing — relevant for project routes via Ruflo, indirect)
+  - I-37 PROPOSED (factory↔project layer binding — directly affected by cross-layer findings)
+  - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config source-of-truth)

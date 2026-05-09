@@ -1108,7 +1108,7 @@
     Closing IL: TBD (Phase F3.1 — create litellm-v2.service systemd unit, User/WorkingDirectory/ExecStart per current invocation, enable + verify restart).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §10 Phase F3.1.
 
-- [ ] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT (P2, OPEN, 2026-05-09)
+- [/] G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT (P2, CLASSIFIED-PENDING-OPERATOR, 2026-05-09)
     LiteLLM v2 gateway exposes 20 routes vs 7 canonical (§1.bis).
     14 extra routes per audit 2026-05-09: banxe-general, qwen3-30b, qwen3-banxe,
     fast, glm-4-flash, coding, gpt-oss-20b, large, glm-4.5-air-distributed,
@@ -1118,8 +1118,11 @@
     from gateway config (/home/mmber/MetaClaw/litellm/litellm-config.v2.yaml).
     Closing IL: TBD (Phase F3.2 — per-route reconciliation decision + canon-or-config update).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §5 + §10 Phase F3.2.
+    Status update 2026-05-09 22:00 CEST (Sprint S4 F3.2 diagnostic): all 14 extra routes classified — 9 DUPLICATE-ALIASES (recommend REMOVE), 1 UNIQUE-PROMOTE (large → project-heavy candidate), 2 UNIQUE-DECISION (fast / gpt-oss-20b — operator), 2 CROSS-LAYER-VIOLATION (ai-heavy / reasoning — recommend REMOVE per §1.bis strict).
+    Cross-layer concern surfaced: factory-mid/heavy/coder configured against evo1+evo2 ollama (project layer nodes) — §1.bis canon update OR Legion model expansion required.
+    See IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 for full classification table.
 
-- [ ] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING (P2, OPEN, 2026-05-09)
+- [/] G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING (P2, RESOLUTION-CANDIDATE-IDENTIFIED, 2026-05-09)
     Canonical project-heavy LiteLLM route (per §1.bis) NOT registered in current
     LiteLLM v2 config. Audit 2026-05-09 confirmed only 6 of 7 canonical routes
     present (project-heavy MISSING). §1.bis says "preserve if registered" —
@@ -1128,6 +1131,8 @@
     qwen3.5:35b) OR formally remove project-heavy from §1.bis canonical list.
     Closing IL: TBD (Phase F3.2 — project-heavy register-or-remove decision).
     Anchors: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, bootstrap canon §1.bis.
+    Status update 2026-05-09 22:00 CEST (Sprint S4 F3.2 diagnostic): existing route `large` (openai/glm-4.5-air @ evo1:8081 distributed inference via glm-master + llama-rpc-worker USB4 Vulkan) matches project-heavy intent. Promotion path: rename `large` → `project-heavy` OR add canonical `project-heavy` aliasing same backend. Operator decision pending.
+    See IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 for backend details.
 
 - [ ] G-FACTORY-LITELLM-LEGACY-V1-RUNNING-PARALLEL (P2, OPEN, 2026-05-09)
     Legion runs second LiteLLM instance PID 339 on 127.0.0.1:8080
