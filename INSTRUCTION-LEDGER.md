@@ -5701,3 +5701,19 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   `I-69 — Stash operations defensive: `git stash drop` MUST be preceded by explicit identity verification of target stash slot (list + show --stat + grep slug). Single-step drop based on slot index is canon-violation.`
 - Closing IL: TBD (no operator action required; recovery complete).
 - Anchors: stash@{0} content (RECOVERED), `git stash store` recovery operation, prior canon-incident IL records (BRANCH-LEAKAGE, EVO1-XMRIG, LIVEBOX-LIMITATION, CLEANUP-ACTOR-CONFIRMED).
+
+### IL-CANON-HYGIENE-2026-05-09-IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-DUPLICATE-DOCUMENTED
+
+- Date: 2026-05-09 (CEST).
+- Phase (GSD): CANON-HYGIENE — duplicate documentation, не deletion (per §10 append-only).
+- Status: DOCUMENTED — duplicate IL-record не удаляется, факт задокументирован.
+- Priority: P3 (operational hygiene; doesn't affect compliance posture).
+- Issue: `IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09` встречается 2 раза в `INSTRUCTION-LEDGER.md` после merge PR #146 (Sprint S1 — Section §0 fixation, параллельная Claude Code сессия). Должно быть 1 occurrence per §10 append-only канон.
+- Root cause hypothesis: PR #146 был создан параллельной сессией со своим набором IL-records; merge process не заметил, что одна из IL-headers уже существовала ниже в файле, либо два разных записей были intended но получили identical header.
+- Decision: НЕ удалять duplicate (это violation append-only §10). Задокументировать факт через эту fix-section. Future readers видят все вхождения как valid (с этим disclaimer).
+- Lesson learned: при создании IL-records параллельные сессии должны проверять existing headers (`grep -c "^### IL-<slug>"`) перед добавлением. Эта lesson дополняет previous canon-incident IL-records (BRANCH-LEAKAGE, EVO1-XMRIG, LIVEBOX, CLEANUP-ACTOR, MISTAKEN-STASH-DROP).
+- Pending invariant proposal (без правки `INVARIANTS.md`):
+  `I-70 — IL-record uniqueness: before adding new ### IL-<slug>, session MUST grep -c '^### IL-<exact-slug>' INSTRUCTION-LEDGER.md and verify count = 0. Duplicate slug = canon-violation, requires renaming with -B/-C suffix.`
+- Compliance impact: NONE на incident `INCIDENT-2026-05-07-EVO1-XMRIG`. Все 5 канон-incident IL-records уникальны и нет duplicates среди них. Duplicate в FACTORY-LAYER-AUDIT-BASELINE — operational hygiene issue, не security/compliance issue.
+- Closing IL: TBD (gap closure после implementation `I-70` check во всех future sessions).
+- Anchors: PR #146 (Sprint S1 Section §0 fixation), prior canon-incident IL-records (5 instances), `I-68` (single-session incident command), `I-69` (stash defensive operations).
