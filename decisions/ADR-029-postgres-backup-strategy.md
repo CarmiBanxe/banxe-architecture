@@ -1,6 +1,7 @@
 # ADR-029 — PostgreSQL Backup Strategy
 
-**Status:** Proposed (2026-05-05)
+**Status:** Accepted (2026-05-10)
+**Date Accepted:** 2026-05-10
 **Author:** Architecture WG
 **Closes:** G-OPS-01 (backup strategy absent), G-OPS-02 (restore drill absent)
 **Linked:** ADR-027 (audit-trail durability), INVARIANTS I-08/I-24, SERVICE-MAP.md §Серверы кластера, V-07 (HANDOFF-2026-05-04)
@@ -256,5 +257,15 @@ Rationale:
 
 ## Decision
 
-**Pending** — operator acceptance required after review of the Recommendation.
-Implementation begins only after operator confirms chosen option and phasing.
+**Accepted** (2026-05-10) — pg_dump daily + evo2 MinIO archive (Option b) implemented
+for keycloak-pg. BackupPort abstraction + DI factory + cron script operational.
+
+---
+
+## Implementation
+
+- **Step 1:** banxe-emi-stack PR #102 — BackupPort + PgDumpBackupAdapter + 6 unit tests.
+- **Step 2:** banxe-emi-stack PR #104 — DI factory wiring + BACKUP_ENABLED flag + 5 integration tests.
+- **Step 3:** banxe-emi-stack PR #106 — pg-backup-run.py cron script + 4 smoke tests.
+- **Total:** 15 tests PASS, coverage 40.94%.
+- **Gaps closed:** G-OPS-01 (DONE), G-OPS-02 (DONE).
