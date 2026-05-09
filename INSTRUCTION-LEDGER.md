@@ -6336,3 +6336,73 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config edit target)
   - /home/mmber/banxe-architecture/scripts/aider-banxe.sh (caller migration target)
   - /home/mmber/banxe-architecture/scripts/parallel-verify.sh (caller migration target)
+
+### IL-OPS-SPRINT-S4-AND-S5-AUTONOMOUS-CLOSURE-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S4 + Sprint S5 dual closure (autonomous portion)
+- Status: BINDING — formal closure of autonomous-completable scope; operator-blocked items deferred to dedicated future sprints
+- Priority: P2 (sprint canon hygiene)
+- Scope: formally closes Sprint S5 in full (all F4 autonomous sub-tasks DONE) and closes Sprint S4 autonomous portion (F3.2 phases 1+2+3-prep DONE; F3.1 + F3.3 + F3.2 phase 3-execute deferred to operator decisions). Formalises canon §11 sprint progression state.
+
+- Sprint S5 closure (Phase F4 documentation reconciliation):
+  - F4.1 (sync canon §1/§1.bis with factual state): DONE — repo-internal canon docs synced (ROADMAP path drift + namespace clarification + distributed inference doc); bootstrap canon v3 §1/§1.bis itself is operator-supplied immutable artifact, not edited from repo.
+  - F4.2 (ROADMAP F0–F7 trackable milestones): DONE — substantially complete from Sprint S1 commit 633bb6a + extended via Sprint S3+S4+S5 progress blocks.
+  - F4.3 (G-FACTORY-* GAPs reconciliation): DONE — all G-FACTORY-* GAPs created Sprint S1; status updates applied across S3 (SUBAGENTS-MISSING [/]PARTIAL) + S4 (ROUTES-VS-CANON-DRIFT [/]CLASSIFIED-PENDING-OPERATOR + PROJECT-HEAVY [/]RESOLUTION-CANDIDATE-IDENTIFIED) + S5 (3 GAPs CLOSED: PATH-DRIFT + CANON-FILES-DUPLICATION + DISTRIBUTED-INFERENCE-NOT-IN-CANON).
+  - Sprint S5 STATUS: CLOSED-AUTONOMOUS
+
+- Sprint S4 closure (autonomous portion of Phase F3 P2 hardening):
+  - F3.1 (LiteLLM systemd unit): DEFERRED — operator design spec required (User/WorkingDirectory/ExecStart per current bare pipx invocation); no autonomous progress possible without spec.
+  - F3.2 phase 1 (routes diagnostic): DONE — IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (PR #159 / commit fefcdd8).
+  - F3.2 phase 2 (operator decision proposal): DONE — IL-OPS-SPRINT-S4-F3-2-PHASE2-PROPOSAL-2026-05-09 (PR #162 / commit 20f6bcf).
+  - F3.2 phase 3 prep (caller migration inventory): DONE — IL-OPS-SPRINT-S4-F3-2-PHASE3-PREP-CALLER-MIGRATION-INVENTORY-2026-05-09 (PR #164 / commit e9a10ed).
+  - F3.2 phase 3 execute: DEFERRED — operator approval matrix required (Proposals A/B/C + Decisions D1-D4); executable migration script ready in Phase 3 prep IL.
+  - F3.3 (Spec-First Auditor relocation): DEFERRED — operator decision required (relocate to canon path ~/developer/spec-first/audit/ OR canon update §5).
+  - Sprint S4 STATUS: CLOSED-AUTONOMOUS-PORTION (F3.2 phases 1+2+3-prep complete; F3.1 + F3.2 phase 3-execute + F3.3 deferred)
+
+- Operator decision queue (consolidated, full session):
+  - Sprint S3 deferred items:
+    1. FA-3 reclassification vs §0.5 Ruflo MANDATORY (blocks F1).
+    2. openclo-moa subagent design spec (blocks G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING closure).
+    3. Factory overseer agent §0.4 design spec (blocks F2.4).
+  - Sprint S4 deferred items:
+    4. F3.1 LiteLLM systemd unit design spec.
+    5. F3.2 phase 3 execute approval matrix (Proposals A/B/C + Decisions D1/D2/D3/D4).
+    6. F3.3 Spec-First Auditor relocation OR canon update §5.
+  - Sprint S5 deferred items:
+    7. G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3) — 84 services per-service classification.
+  - Sprints S6-S12 (Phase F5 §0.2 implementation) blocked items:
+    8. §0.2 Levels 1+2 governance choice (Sprints S6+S7).
+    9. §0.2 Level 3 SMF Heads AI duplicates design (Sprint S8).
+    10. §0.2 Level 4 CEO governance dashboard design (Sprint S9).
+    11. §0.2 Level 5 AI MLRO autonomous + HITL Gates §6 amendment + legal review (Sprint S10).
+
+- Cumulative session state (2026-05-09):
+  - 9 PRs merged on main (633bb6a S1 + 13d9d4d S1IL + 5279009 S2 + 85d8582 S2IL + 5d495ae S3 + fefcdd8 S4-F3.2-phase1 + 513229d S5 + 20f6bcf S4-F3.2-phase2 + e9a10ed S4-F3.2-phase3-prep).
+  - 1 milestone tag applied (checkpoint-2026-05-09-canon-section-0-fixation on 633bb6a).
+  - 5 GAPs autonomously closed (G-FACTORY-EVO2-SSH-ACCESS-LOST + G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING + G-FACTORY-DOCUMENTATION-PATH-DRIFT + G-FACTORY-CANON-FILES-DUPLICATION + G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON).
+  - 5 GAP status updates applied (G-FACTORY-CLAUDE-SUBAGENTS-MISSING [/]PARTIAL + G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT [/]CLASSIFIED-PENDING-OPERATOR + G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING [/]RESOLUTION-CANDIDATE-IDENTIFIED + this commit closes Sprint S4 autonomous portion + Sprint S5 full).
+  - Atomic single-block race-mitigation pattern validated 7× (PR #153, #154, #158, #159, #160, #162, #164).
+  - Cherry-pick abort+redo on race validated 2× (PR #149→#153, PR #156→#158).
+  - Independent verify+restore: 9 instances, 100% success.
+  - Branch protection restored 9 instances.
+
+- Genuine autonomous progression terminus reached:
+  - All canon authoring + diagnostic + caller inventory + script template + proposal preparation work merged on main.
+  - Phase 3 execute = single shell-block ready, awaits operator approval matrix.
+  - Sprints S6-S12 = require operator design specs / governance decisions.
+  - Pending operator decisions queue (11 items) documented in canon на main.
+
+- Closing IL: TBD (Sprint S4 fully closed after F3.1 + F3.3 + F3.2 phase 3 execute completed; Sprint S5 fully closed (this IL); cumulative session terminus reached).
+- Anchors:
+  - bootstrap canon v3 §10 Phase F3 + F4, §11 Sprint S4 + S5
+  - IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (S4 F3.2 phase 1)
+  - IL-OPS-SPRINT-S4-F3-2-PHASE2-PROPOSAL-2026-05-09 (S4 F3.2 phase 2)
+  - IL-OPS-SPRINT-S4-F3-2-PHASE3-PREP-CALLER-MIGRATION-INVENTORY-2026-05-09 (S4 F3.2 phase 3 prep)
+  - IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09 (S5 F4 closures)
+  - IL-OPS-SPRINT-S3-PROGRESS-NOTE-2026-05-09 (S3 status)
+  - IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09
+  - IL-OPS-SPRINT-S3-F2-5-PERPLEXITY-SUPERVISOR-CANON-SECTION-0-AWARENESS-2026-05-09
+  - IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 (Sprint S2)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (Sprint S1)
+  - I-37 PROPOSED, I-59, I-68

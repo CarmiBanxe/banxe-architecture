@@ -632,3 +632,47 @@ Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 
 ### Pending tags
 - Sprint S4 = sprint progress, NO tag.
+
+## Roadmap Block 2026-05-09 — Sprint S4 + S5 Autonomous Closure
+
+> Block opened under I-59. Procedure: one branch → one commit → one PR → NO tag (sprint closure note, not milestone per §21).
+> Anchors: IL-OPS-SPRINT-S4-AND-S5-AUTONOMOUS-CLOSURE-2026-05-09.
+
+### Sprint S5 — CLOSED-AUTONOMOUS
+- [x] F4.1 canon §1/§1.bis sync — DONE (repo-internal canon docs)
+- [x] F4.2 ROADMAP F0–F7 trackable milestones — DONE
+- [x] F4.3 G-FACTORY-* GAPs reconciliation — DONE (5 GAPs closed/updated через S3+S4+S5)
+
+### Sprint S4 — CLOSED-AUTONOMOUS-PORTION
+- [x] F3.2 phase 1 (routes diagnostic) — DONE (PR #159)
+- [x] F3.2 phase 2 (operator decision proposal) — DONE (PR #162)
+- [x] F3.2 phase 3 prep (caller migration inventory) — DONE (PR #164)
+- [ ] F3.2 phase 3 execute — DEFERRED (operator approval matrix required)
+- [ ] F3.1 LiteLLM systemd unit — DEFERRED (operator design spec)
+- [ ] F3.3 Spec-First Auditor relocation — DEFERRED (operator decision)
+
+### Cumulative session state
+- 9 PRs merged on origin/main (633bb6a + 13d9d4d + 5279009 + 85d8582 + 5d495ae + fefcdd8 + 513229d + 20f6bcf + e9a10ed)
+- 1 milestone tag applied (checkpoint-2026-05-09-canon-section-0-fixation)
+- 5 GAPs autonomously closed + 5 status updates applied
+- Atomic single-block race-mitigation pattern validated 7×
+
+### Genuine autonomous progression terminus reached
+All canon authoring + diagnostic + caller inventory + script template + proposal preparation work merged on main. Phase 3 execute ready, awaits operator. Sprints S6-S12 require operator design specs.
+
+### Operator decision queue (11 items consolidated)
+1. FA-3 vs §0.5 Ruflo (blocks F1)
+2. openclo-moa subagent design spec
+3. Factory overseer §0.4 design spec (blocks F2.4)
+4. F3.1 LiteLLM systemd unit design spec
+5. F3.2 phase 3 execute approval matrix (Proposals A/B/C + Decisions D1-D4)
+6. F3.3 Spec-First Auditor relocation OR canon update
+7. 84 services per-service classification
+8. §0.2 Levels 1+2 governance (Sprints S6+S7)
+9. §0.2 Level 3 SMF Heads AI duplicates design (Sprint S8)
+10. §0.2 Level 4 CEO governance dashboard design (Sprint S9)
+11. §0.2 Level 5 AI MLRO + HITL Gates §6 amendment + legal review (Sprint S10)
+
+### Pending tags
+- Sprint S4 + S5 = closure notes, not milestones per §21; no tag.
+- Next milestone tag: checkpoint-2026-05-XX-factory-restoration-F1-complete (after operator unblocks F1 + F1 deploys).
