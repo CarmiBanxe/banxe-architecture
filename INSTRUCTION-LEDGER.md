@@ -6249,3 +6249,90 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Gaps closed: G-KYC-01 (DONE), G-KYC-02 (DONE).
 - ADR status: Proposed → Accepted.
 - Anchors: ADR-028, G-KYC-01, G-KYC-02, banxe-emi-stack PRs #69/#70/#99.
+
+### IL-OPS-SPRINT-S4-F3-2-PHASE3-PREP-CALLER-MIGRATION-INVENTORY-2026-05-09
+
+- Date: 2026-05-09 (CEST)
+- Phase (GSD): CANON — Sprint S4 Phase F3.2 phase 3 prep — caller migration inventory
+- Status: BINDING — caller inventory complete, migration plan authored, awaits operator approval matrix from Phase 2 proposal IL
+- Priority: P2 (factory hardening — LiteLLM gateway cleanup)
+- Scope: completes read-only caller inventory across Legion repos (banxe-emi-stack + MetaClaw + banxe-architecture) for 9 DUPLICATE-ALIASES targeted by Phase 2 Proposal A bulk REMOVE; refines risk classification from MED to LOW for most aliases (callers concentrated in dev tooling, not EMI production); provides actionable migration script template.
+
+- Diagnostic method (read-only):
+  - grep -rE "model[_-]?name['\":]*[='\":]*\${ALIAS}" /home/mmber/banxe-emi-stack /home/mmber/MetaClaw /home/mmber/banxe-architecture
+  - excluded: .git/, node_modules, __pycache__, /cache/, litellm-config*.yaml (config self-reference)
+  - 9 aliases inventoried + false-positive analysis applied
+
+- Caller inventory per alias (refined classification):
+
+  ZERO-CALLER (CLEAN REMOVE — no migration needed):
+  - glm-4.5-air-distributed: 0 callers
+  - glm-air: 0 callers
+  - coding: 4 references but all FALSE-POSITIVES (MetaClaw skill_evolver.py "category": "coding" + memory_data conversation_skills.json "coding" array — not LiteLLM model_name; no actual model migration needed)
+  - ai: 2 references but all FALSE-POSITIVES (pyphen dict + path inventory + AI-PLUMBING.md doc reference; no actual code callers)
+
+  LOW-RISK MIGRATION (1-2 actual callers):
+  - banxe-general: 2 callers in /home/mmber/MetaClaw/scripts/repair-banxe-roadmap-no-rpc.sh (config template, not active routing)
+  - reasoning-235b: 2 callers in /home/mmber/MetaClaw/docs/runbooks/p4.3-q235-rpc-split.md (runbook documentation only, not live code)
+
+  MEDIUM-RISK MIGRATION (10+ callers, all in dev/ops tooling):
+  - qwen3-30b: 15 callers (aider-banxe.sh + sync-backup + ruflo config) — concentrated in /home/mmber/banxe-architecture/scripts/aider-banxe.sh (--full mode default) + /home/mmber/banxe-architecture/.sync-backup-* (historical, ignorable) + ruflo config.yaml (architect role)
+  - qwen3-banxe: 12 callers (parallel-verify.sh + aider-banxe.sh + ruflo) — compliance + executor BANXE-domain
+  - glm-4-flash: 12 callers (parallel-verify.sh + aider-banxe.sh + ruflo) — security + --fast mode
+
+- Critical finding: ALL 9 alias callers are in DEV/OPS tooling (aider-banxe.sh, parallel-verify.sh, ruflo config, MetaClaw scripts, runbooks). NONE in EMI services production code (banxe-emi-stack/services/*). Migration risk LOWER than initial Phase 2 Proposal A "MEDIUM" classification — bulk REMOVE remains LOW-risk if dev tooling migration handled in parallel.
+
+- Migration script template (proposed for Phase 3 execution post-operator-approval):
+
+  Step 1 (LiteLLM config edit):
+    yq eval 'del(.model_list[] | select(.model_name == "banxe-general"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "qwen3-30b"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "qwen3-banxe"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "glm-4-flash"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "coding"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "glm-4.5-air-distributed"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "glm-air"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "ai"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+    yq eval 'del(.model_list[] | select(.model_name == "reasoning-235b"))' -i /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml
+
+  Step 2 (caller migration in dev tooling):
+    sed -i 's|"qwen3-30b"|"factory-mid"|g; s|"qwen3-banxe"|"factory-mid"|g; s|"glm-4-flash"|"fast"|g' /home/mmber/banxe-architecture/scripts/aider-banxe.sh /home/mmber/banxe-architecture/scripts/parallel-verify.sh
+    sed -i 's|: "qwen3-30b"|: "factory-mid"|g; s|: "qwen3-banxe"|: "factory-mid"|g; s|: "glm-4-flash"|: "fast"|g' /home/mmber/banxe-architecture/.sync-backup-*/ruflo/config.yaml 2>/dev/null || true
+    NOTE: `fast` migration target depends on Decision D1 outcome — if `fast` REMOVED per D1b recommend, glm-4-flash callers must migrate to factory-fast (different model class, semantic shift).
+
+  Step 3 (LiteLLM v2 process restart):
+    pkill -f "litellm.*--config /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml" || true
+    sleep 2
+    nohup /home/mmber/.local/share/pipx/venvs/litellm/bin/python /home/mmber/.local/bin/litellm \
+      --config /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml \
+      --port 4000 --host 0.0.0.0 > /var/log/litellm-v2.log 2>&1 &
+
+  Step 4 (verification round-trip):
+    for ROUTE in factory-fast factory-mid factory-heavy factory-coder project-mid project-reason; do
+      curl -s -H "Authorization: Bearer sk-banxe-llm-gateway-2026" -X POST http://127.0.0.1:4000/v1/chat/completions \
+        -H "Content-Type: application/json" -d "{\"model\":\"$ROUTE\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}" \
+        | jq -r '.choices[0].finish_reason // .error.message' | xargs -I{} echo "$ROUTE: {}"
+    done
+    for REMOVED in banxe-general qwen3-30b qwen3-banxe glm-4-flash coding glm-4.5-air-distributed glm-air ai reasoning-235b; do
+      curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer sk-banxe-llm-gateway-2026" -X POST http://127.0.0.1:4000/v1/chat/completions \
+        -H "Content-Type: application/json" -d "{\"model\":\"$REMOVED\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":1}" \
+        | xargs -I{} echo "$REMOVED: HTTP {} (expect 404 or model_not_found)"
+    done
+
+- Operator approval matrix (consolidated from Phase 2 + Phase 3 prep):
+  - PROPOSAL A (9 DUPLICATE-ALIASES bulk REMOVE): refined LOW risk per Phase 3 caller inventory; 4 zero-caller (clean) + 2 low-risk (1-2 callers) + 3 medium-risk (10+ callers all in dev tooling). Recommend approval.
+  - PROPOSAL B (large → project-heavy promotion): unchanged from Phase 2.
+  - PROPOSAL C (cross-layer reconciliation): unchanged — operator chooses C1/C2/C3.
+  - DECISIONS D1-D4: unchanged from Phase 2.
+  - Migration script: ready in this IL, executable post-approval as single shell-block.
+
+- Closing IL: TBD (Phase F3.2 phase 3 implementation completion + verification round-trip + GAP closures).
+- Anchors:
+  - bootstrap canon v3 §0.5, §1.bis, §10 Phase F3.2, §11 Sprint S4
+  - IL-OPS-SPRINT-S4-F3-2-LITELLM-ROUTES-RECONCILIATION-DIAGNOSTIC-2026-05-09 (phase 1 — predecessor)
+  - IL-OPS-SPRINT-S4-F3-2-PHASE2-PROPOSAL-2026-05-09 (phase 2 — predecessor, this IL refines Proposal A risk)
+  - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (creates GAPs being addressed)
+  - I-32, I-33, I-37 PROPOSED, I-59, I-68
+  - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config edit target)
+  - /home/mmber/banxe-architecture/scripts/aider-banxe.sh (caller migration target)
+  - /home/mmber/banxe-architecture/scripts/parallel-verify.sh (caller migration target)
