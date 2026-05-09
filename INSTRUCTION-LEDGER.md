@@ -6236,3 +6236,16 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 (creates G-FACTORY-LITELLM-ROUTES-VS-CANON-DRIFT + G-FACTORY-LITELLM-PROJECT-HEAVY-ROUTE-MISSING)
   - I-32, I-33, I-37 PROPOSED, I-59, I-68
   - /home/mmber/MetaClaw/litellm/litellm-config.v2.yaml (config source-of-truth — edit target)
+### IL-ADR-028-ACCEPTED-2026-05-09
+- Date: 2026-05-09 (CEST).
+- Phase (GSD): CLOSE — ADR-028 KYC re-verification triggers Accepted.
+- Status: DONE.
+- Priority: P1 (Track A implementation).
+- Implementation (banxe-emi-stack):
+  - Step 1 PR #69: BanxeEventType.ROLE_CHANGED / BENEFICIAL_OWNER_CHANGED / JURISDICTION_CHANGED + KycReTriggerEvent dataclass + build_kyc_retrigger_event() + 8 unit tests.
+  - Step 2 PR #70: FSM lifecycle wiring (fsm.py +62 lines) + integration test (183 lines).
+  - Step 3 PR #99: operational check script (kyc-retrigger-check.py) + 4 smoke tests.
+  - Total: 12 tests PASS, coverage 41.02%.
+- Gaps closed: G-KYC-01 (DONE), G-KYC-02 (DONE).
+- ADR status: Proposed → Accepted.
+- Anchors: ADR-028, G-KYC-01, G-KYC-02, banxe-emi-stack PRs #69/#70/#99.
