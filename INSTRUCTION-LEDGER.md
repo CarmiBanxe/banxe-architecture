@@ -6549,3 +6549,83 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 
 - Closing IL: TBD (Phase 10 production launch — ultimate closure).
 - Anchors: PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted; bootstrap canon v3 §0..§30; canon/CANON.md v1.0; PROMPT-CANON-PROJECT.md; PROMPT-CANON-DEVELOPER.md; amendment-30.N + amendment-B.11.N+2; ADR-014..ADR-038 + ADR-074..076; INVARIANTS I-01..I-37; HITL-MATRIX 17 gates; MASTER-PLAN-2026-05-05 Tracks A-I; BANXE-RAR-CATEGORY-MAP 5 Waves; COMPLIANCE-MATRIX; Session Rules 1..7; I-37 PROPOSED + I-59 + I-68.
+
+### IL-OPS-PHASE5-STEP53-TWO-LOOP-MIRROR-BACKFILL-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — Phase 5 Step 5.3 two-loop mirror backfill (banxe-emi-stack → banxe-architecture)
+- Status: BINDING — partial backfill (4 of 8 originally-listed PRs confirmed merged; 3 unmerged + 1 wrong-repo deferred)
+- Priority: P2 (canon-hygiene + two-loop sync compliance)
+- Scope: mirrors emi-stack production adapter PRs (Sprint 6-9) into banxe-architecture INSTRUCTION-LEDGER.md per CORE PRINCIPLE two-loop sync (PR #168 ACCEPTED binding); refines original 8-PR list to 4 actually-mergeable; defers unmerged + wrong-repo entries.
+
+- Two-loop sync rationale: per IL-OPS-PERPLEXITY-MANAGEMENT-IMPROVEMENT-PLAN-ACCEPTED-2026-05-10 + PR #168 binding, каждый emi-stack IL должен иметь mirror в banxe-architecture INSTRUCTION-LEDGER.md. Sprint 6-9 production adapters merged in emi-stack без architecture mirror — Phase 5 Step 5.3 closes this gap.
+
+- 8 PRs original list reconciliation:
+  - PR #94 banxe-emi-stack: MERGED 2026-05-08T23:17:29Z, commit 79219b8 — MIRROR HERE
+  - PR #96 banxe-emi-stack: MERGED 2026-05-09T16:53:27Z, commit e9a27e9 — MIRROR HERE
+  - PR #97 banxe-emi-stack: MERGED 2026-05-09T18:23:21Z, commit bcf86fd — MIRROR HERE
+  - PR #98 banxe-emi-stack: NOT MERGED (Wave E Crypto/Midaz pending) — DEFER mirror until merge
+  - PR #100 banxe-emi-stack: MERGED 2026-05-09T21:29:47Z, commit 316f852 — MIRROR HERE
+  - PR #101 banxe-emi-stack: NOT MERGED (ADR-035 Step 2 mock workflow pending) — DEFER mirror until merge
+  - PR #105 banxe-emi-stack: NOT MERGED (ADR-035 Step 5 audit signal pending) — DEFER mirror until merge
+  - PR #157: WRONG REPO (lives в banxe-architecture, not emi-stack; already on main as cc71188 per Sprint 10 dobor) — NO mirror needed (already in same repo)
+
+- Mirror entries (4 merged emi-stack PRs):
+
+  Mirror 1 — IL-MIRROR-EMI-PR-94-WAVE-B-OTP-PRODUCTION-ADAPTERS-2026-05-08:
+    - Source: banxe-emi-stack PR #94, merge commit 79219b8
+    - Title: feat(wave-b): TwilioOtpAdapter + SendGridOtpAdapter — production OTP delivery (Sprint 6)
+    - Wave: B (SCA/2FA per BANXE-RAR-CATEGORY-MAP)
+    - Port: TwoFactorPort
+    - Architecture impact: enhances services/auth/sca + services/auth/twofactor.py per ADR-014 composable financial stack; aligns with I-32/I-33 PII deny-paths (no OTP via cloud LLM); adds production OTP delivery via Twilio + SendGrid adapters.
+    - Sprint linkage: Sprint 6 production adapters (BANXE EMI Master Roadmap v3 Phase 1).
+
+  Mirror 2 — IL-MIRROR-EMI-PR-96-WAVE-C-SUMSUB-KYC-PRODUCTION-ADAPTER-2026-05-09:
+    - Source: banxe-emi-stack PR #96, merge commit e9a27e9
+    - Title: feat(wave-c): SumsubHttpAdapter — KYCWorkflowPort via SumSub REST API [IL-KYC-PROD-01]
+    - Wave: C (effectively Wave D KYC/Compliance per BANXE-RAR-CATEGORY-MAP, branded Wave C in PR title)
+    - Port: KYCProviderPort / KYCWorkflowPort
+    - Architecture impact: services/kyc enhanced with SumSub production REST adapter per ADR-014; satisfies FCA MLR 2017 §18 CDD requirement; closes critical S5 EMI compliance gap; FCA CASS 15 evidence chain extension.
+    - Sprint linkage: Sprint 7 production adapters; IL-KYC-PROD-01 ledger entry.
+
+  Mirror 3 — IL-MIRROR-EMI-PR-97-WAVE-C-MODULR-SEPA-PRODUCTION-ADAPTER-2026-05-09:
+    - Source: banxe-emi-stack PR #97, merge commit bcf86fd
+    - Title: feat(wave-c): ModulrSepaAdapter — PaymentRailPort via Modulr sandbox [IL-SEPA-PROD-01]
+    - Wave: C (Payments per BANXE-RAR-CATEGORY-MAP)
+    - Port: PaymentRailPort
+    - Architecture impact: services/payment/sepa enhanced with Modulr production adapter (sandbox tier) per ADR-014 + ADR-015 payment processing stack; closes S4 Payment Rails 15% → progresses Wave C migration; FCA PSR 2017 SEPA path.
+    - Operational note: Modulr live API key remains operator-blocked (BT-001 per BANXE EMI Master Roadmap v3 + Layer 4 Plan).
+    - Sprint linkage: Sprint 7 production adapters; IL-SEPA-PROD-01 ledger entry.
+
+  Mirror 4 — IL-MIRROR-EMI-PR-100-ADR-035-SMOKE-GATE-MATRIX-MOCK-TIER-2026-05-09:
+    - Source: banxe-emi-stack PR #100, merge commit 316f852
+    - Title: feat(adr-035): smoke gate matrix — mock tier [Step 1]
+    - ADR linkage: ADR-035 (CI smoke gate policy)
+    - Architecture impact: CI smoke gate matrix mock tier (3-tier strategy: mock / sandbox / live); closes G-CI-01 partial; foundation для Phase 9 production readiness.
+    - Step linkage: Step 1 of 5; Step 2 (PR #101 mock workflow) + Step 5 (PR #105 audit signal) DEFERRED pending merge.
+    - Sprint linkage: Sprint 9 quality hardening per MASTER-PLAN Track G.
+
+- Operational compliance:
+  - Per amendment-30.N §30.N.5 governance > operational: this mirror IL preserves emi-stack canon authority while sync-ing architecture canon record.
+  - Per amendment-B.11.N+2 Статья 2: Claude Code = executor, Mark = pool owner, Perplexity = coordinator.
+  - Per ADR-025 Session Rules 1..7: §15 Claude-Code-First (this IL via Claude Code), §1 OCAT, §4 Best-Decision (autonomous synthesis from emi-stack diagnostic), §3 Whitelist (read-only diagnostic prior), §6 Scope guard (CarmiBanxe/banxe-architecture), §8 Secret-leak zero.
+  - Per binding race-mitigation pattern (validated 11×): atomic single-block.
+
+- Pending mirror backfill (deferred):
+  - PR #98 banxe-emi-stack (Wave E Midaz crypto adapter) — mirror after merge.
+  - PR #101 banxe-emi-stack (ADR-035 Step 2) — mirror after merge.
+  - PR #105 banxe-emi-stack (ADR-035 Step 5 audit signal) — mirror after merge.
+  - Future emi-stack production PRs — sync rule: each merge → mirror IL append within 24h.
+
+- Closing IL: TBD (mirror backfill complete after PR #98 + #101 + #105 merge + their mirrors appended).
+- Anchors:
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted (CORE PRINCIPLE binding source)
+  - IL-OPS-PERPLEXITY-MANAGEMENT-IMPROVEMENT-PLAN-ACCEPTED-2026-05-10 (PR #170 cc2059e — Phase 5 Step 5.3 directive)
+  - bootstrap canon v3 §0..§30 + canon/CANON.md v1.0 (Operational layer)
+  - PROMPT-CANON-PROJECT.md (Governance layer two-loop)
+  - ADR-014 composable financial stack (Midaz + Fineract + ClickHouse + n8n)
+  - ADR-015 payment processing stack
+  - ADR-035 CI smoke gate policy
+  - banxe-emi-stack PRs #94 (79219b8), #96 (e9a27e9), #97 (bcf86fd), #100 (316f852)
+  - BANXE-RAR-CATEGORY-MAP-2026-05-06 (5 Waves A-E)
+  - BANXE EMI Master Roadmap v3 (Phase 1+2 production adapters)
