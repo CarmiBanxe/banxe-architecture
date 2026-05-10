@@ -1,6 +1,7 @@
 # ADR-032 — Secret Rotation Policy (Interim)
 
-**Status:** Proposed (2026-05-06)
+**Status:** Accepted (2026-05-10)
+**Date Accepted:** 2026-05-10
 **Author:** Architecture WG
 **Closes:** G-SEC-01 (canonical), G-IAM-05 (canonical), V-09 (HANDOFF)
 **Linked:** ADR-017 §5 (90-day cadence), I-34 (no direct credentials), ADR-027 (audit trail buffer),
@@ -221,5 +222,15 @@ rotation workflows become Vault leases and this ADR is deprecated.
 
 ## Decision
 
-**Pending** — operator acceptance required.
-Implementation begins only after operator confirms Option (b) and phasing.
+**Accepted** (2026-05-10) — .env-based secret rotation with EnvSecretRotator,
+90-day default cadence, SECRET_ROTATION_ENABLED feature flag, overdue check script.
+
+---
+
+## Implementation
+
+- **Step 1:** banxe-emi-stack PR #110 — SecretRotationPort + EnvSecretRotator + 6 unit tests.
+- **Step 2:** banxe-emi-stack PR #111 — DI factory + SECRET_ROTATION_ENABLED + 4 integration tests.
+- **Step 3:** banxe-emi-stack PR #112 — secret-rotation-check.py script + 4 smoke tests.
+- **Total:** 14 tests PASS.
+- **Gaps closed:** G-IAM-05 (DONE), G-SEC-01 (canonical alias, DONE).

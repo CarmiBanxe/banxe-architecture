@@ -7248,3 +7248,12 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - JOB-DESCRIPTIONS.md §1.2 (MLRO TBC preserved) + DEPARTMENT-MAP.md §3
   - COMPLIANCE-MATRIX (S1-02 sandbox-satisfied) + MASTER-PLAN Track I
   - Operator directives 2026-05-10 02:00 + 14:00 CEST
+
+### IL-ADR-032-ACCEPTED-2026-05-10
+
+- Date: 2026-05-10.
+- Phase (GSD): CLOSE — ADR-032 secret rotation policy Accepted.
+- Status: DONE.
+- Implementation (banxe-emi-stack): Step 1 PR #110 (port + 6 unit), Step 2 PR #111 (wire + 4 integration), Step 3 PR #112 (script + 4 smoke). Total 14 tests.
+- Gaps closed: G-IAM-05 (canonical), G-SEC-01 (alias).
+- Anchors: ADR-032, G-IAM-05, G-SEC-01, banxe-emi-stack PRs #110/#111/#112.

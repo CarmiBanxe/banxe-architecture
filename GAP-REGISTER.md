@@ -156,7 +156,8 @@
 - [ ] G-IAM-02: OIDC discovery URL `http://evo1:8180/realms/banxe-emi/.well-known/openid-configuration` reachable from EMI services — WAITING_FOR_GATE-A
 - [ ] G-IAM-03: Service-to-service tokens provisioned for banxe-compliance-api, banxe-dashboard, deep-search, drive_watcher — NOT_STARTED (ADR-017 §2)
 - [ ] G-IAM-04: Realm mappers (service_id, environment, compliance_scope) + audit log retention ≥ 12 months — NOT_STARTED (ADR-017 §4; FCA CASS 15)
-- [ ] G-IAM-05: Rotation policy for client_secrets (90 days / on-incident) — NOT_STARTED (ADR-017 §5)
+- [x] G-IAM-05: Rotation policy for client_secrets (90 days / on-incident) — DONE 2026-05-10 (ADR-032 Accepted)
+  Resolution: SecretRotationPort + EnvSecretRotator + factory DI + rotation check script + 14 tests. Implementation: banxe-emi-stack PRs #110/#111/#112.
 - [x] G-IAM-06: pre-commit hook + Semgrep rule blocking direct credentials in EMI repos — **DONE 2026-05-03** (I-34 enforcement; banxe-emi-stack PR #41 `feat/iam-creds-guard` → squash `3ce0a01`; artefacts: `.semgrep/banxe-rules/iam-no-direct-creds.yml` + pre-commit hook `iam-no-direct-creds` + `docs/CONTRIBUTING.md §IAM Credentials Guard`)
 - [ ] G-IAM-07: Backout procedure verified — documented in RUNBOOK.md §GATE-D + §Backout — WAITING_FOR_GATE-A
 - [x] G-IAM-08: Keycloak realm cutover via STRATEGY-B host migration to Legion — **DONE 2026-05-04** (banxe-emi-stack PR #50, tag `cass15-iam-cutover-2026-05-07`). Production KC `banxe-emi` UP on Legion `100.101.218.26:8180`. EMI mirror GAP-REGISTER row 54 already reflects this. Reconciles V-05 in HANDOFF-2026-05-04.
