@@ -153,3 +153,39 @@ This document is **PROPOSED**. Promotion to **ACCEPTED** requires:
 - Mirror IL block in `banxe-emi-stack/INSTRUCTION-LEDGER.md`
 - sha256 anchors of all referenced canon files (CANON.md, MASTER-PLAN, ROADMAP, PROMPT-CANON-PROJECT, PROMPT-CANON-DEVELOPER)
 
+## I.E — TOPOLOGY CANON (4th layer, binding, IMMUTABLE 2026-04-29)
+
+Source: `~/banxe-canon/CANON.md`. Discovered in audit completion 2026-05-10 02:00 CEST. NOT a duplicate — orthogonal infrastructure layer.
+
+### Two-machine workflow
+
+**`mark-legion` (WSL2) — PRIMARY workstation**
+- User: `mmber`, Home: `/home/mmber/`
+- Role: orchestration, planning, docs, git ops, light dev
+
+**`gmktec` / `banxe-NucBox-EVO-X2` — SERVER**
+- Users: `banxe` (canonical), `root` (admin only)
+- Path: `/data/banxe-emi-stack/` (main repo, production-like)
+- Path: `/srv/staging/` (legacy artefacts, BANXE.RAR contents)
+- SSH alias: `gmktec` (HostName 192.168.0.72, Port 2222)
+
+### Rule (binding)
+Work ALWAYS starts on `mark-legion`. Switch to `gmktec` ONLY when needed for:
+- access to `/srv/staging/` legacy artefacts (BANXE.RAR-derived data)
+- services requiring real broker (RabbitMQ), real DB (PostgreSQL/ClickHouse), real CBS (Midaz)
+- heavy compute / disk operations on BANXE.RAR derivatives
+- production-like testing
+
+### Anti-patterns (forbidden)
+- Working directly on `gmktec` for documentation / planning
+- Committing from `gmktec` when `mark-legion` has the working copy
+- Running `ruff`/`mypy`/`pytest` on `mark-legion` if target tree exists ONLY on `gmktec:/data/banxe-emi-stack/`
+
+### Implication for BANXE.RAR processing
+Canonical BANXE.RAR location is `gmktec:/srv/staging/`, NOT `~/banxe/` on `mark-legion`. The `~/banxe/` directory on mark-legion (no remote, local-only) is a working snapshot, not source-of-truth. Sprint 10 dobor was done against the listing artefact (`banxe-architecture/docs/inventories/BANXE-RAR-LISTING-2026-05-06.txt`), which is the canonical reference, not the local snapshot.
+
+### Implication for Factory / Claude Code
+Factory MUST respect topology: heavy/legacy/prod-like work via `ssh gmktec`, all docs/canon/IL work on `mark-legion`. Mixing layers is canon violation.
+
+---
+
