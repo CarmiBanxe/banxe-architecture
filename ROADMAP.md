@@ -857,3 +857,34 @@ Step 2 (Item 6 Track G remaining drafts) → next.
 
 ### Sequence post-this-commit
 Step 3 (Item 8 §0.2 Levels 3-5 + FA-3 + openclo-moa + Factory overseer drafts) → next.
+
+## Roadmap Block 2026-05-10 — Step 3 Item 8 Architecture WG Design Drafts
+
+> Block opened under I-59. One branch / one commit / one PR / NO tag (sprint progress per §21).
+> Anchors: IL-OPS-STEP3-ITEM8-ARCHITECTURE-WG-DESIGN-DRAFTS-2026-05-10.
+
+### Architecture WG drafts — autonomous canon-edit complete (6 design proposals)
+- [/] §0.2 Level 3 SMF Heads AI duplicate framework — 4 agents drafted (CRO/CFO/COO/CTO duplicates)
+- [/] §0.2 Level 4 CEO governance dashboard — banxe-platform Next.js 15 widgets spec
+- [/] §0.2 Level 5 AI MLRO autonomous — Option B hybrid recommended; Legal review required
+- [/] FA-3 Ruflo reconciliation — DUAL-ROLE drafted (Internal Review + Regulated Route Checkpoint)
+- [/] openclo-moa subagent — mixture-of-agents draft (project-mid+heavy+reason ensemble + Ruflo + ARL)
+- [/] Factory overseer §0.4 — super-Guardian draft + ADR-037 proposal pending
+
+### Architecture WG deployment standby (sandbox)
+- [ ] Architecture WG review 6 design proposals
+- [ ] CEO Constitutional decision §0.2 Levels 1+2 (Item 9 standby)
+- [ ] Legal review AI MLRO autonomous (FCA precedent + GDPR Art. 22 + EU AI Act Art. 14)
+- [ ] ADR-037 Factory Overseer §0.4 proposal authoring
+- [ ] HITL Gates §6 amendment (Option B hybrid for HITL-001/004/007)
+- [ ] agents/passports/ extension (4 SMF duplicates + openclo-moa)
+- [ ] banxe-platform CEO dashboard implementation
+
+### Sequence post-this-commit
+- Phase Option A items 5+6+8 ✅ DONE (Steps 1+2+3)
+- Items 1, 2, 3, 4, 7, 9 → STANDBY per sandbox status (operator/CEO/MLRO/CTIO authority)
+- Cumulative session deliverables: 18 PRs merged on main (15 pre-Item8 + 3 Items 5+6+8)
+
+### Pending tags
+- checkpoint-2026-05-XX-architecture-wg-drafts-approved (after WG review of 6 proposals)
+- checkpoint-2026-05-XX-adr-037-factory-overseer-accepted
