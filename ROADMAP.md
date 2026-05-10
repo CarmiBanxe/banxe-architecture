@@ -838,3 +838,22 @@ amendment-B.11.N+2: Claude Code executor + Mark pool owner + Perplexity coordina
 
 ### Sequence post-this-commit
 Step 2 (Item 6 Track G remaining drafts) → next.
+
+## Roadmap Block 2026-05-10 — Step 2 Item 6 Track G Remaining Drafts
+
+> Block opened under I-59. One branch / one commit / one PR / NO tag (sprint progress per §21).
+> Anchors: IL-OPS-STEP2-ITEM6-TRACK-G-REMAINING-DRAFTS-2026-05-10.
+
+### Track G remaining drafts — autonomous canon-edit complete
+- [/] G-CI-01 — smoke-gate.yml workflow spec drafted (5-7 endpoints + ephemeral docker-compose + ≤ 7 min budget)
+- [/] G-CI-02 — branch-protection migration spec drafted (smoke-gate required + enforce_admins true post-stabilization)
+- [/] G-INFRA-01 — evo2 full registration map drafted (DNS, ports, monitoring, ROCm regression rollback, backup, Tailscale ACL)
+
+### Track G deployment standby (per sandbox status)
+- [ ] DevOps implement smoke-gate.yml workflow (G-CI-01 closure)
+- [ ] Operator GitHub branch-protection migration (G-CI-02 closure)
+- [ ] Operator evo2 full deploy + Tailscale ACL alignment (G-INFRA-01 closure)
+- [ ] G-INFRA-02 ROCm/amdgpu kernel 6.17 regression resolution (P1)
+
+### Sequence post-this-commit
+Step 3 (Item 8 §0.2 Levels 3-5 + FA-3 + openclo-moa + Factory overseer drafts) → next.

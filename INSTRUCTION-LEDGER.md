@@ -6787,3 +6787,87 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - MetaClaw guardian/src/canon_judge/judge.py + tests/test_canon_judge.py + sql/guardian_audit_events.sql
   - banxe-emi-stack PR #57 feat/guardian-enforce-2026-05-05
   - Operator directive 2026-05-10 02:00 CEST sandbox status
+
+### IL-OPS-STEP2-ITEM6-TRACK-G-REMAINING-DRAFTS-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — Step 2 Track G remaining drafts (sandbox status)
+- Status: BINDING-DRAFTS — autonomous canon-edit drafts; deployment + branch-protection changes require operator action
+- Priority: P2 (canon synthesis per Plan Layer 1 implicit T2 + sandbox status)
+- Scope: drafts 3 Track G remaining items (G-CI-01 smoke-gate workflow + G-CI-02 required-check enforcement spec + G-INFRA-01 evo2 full registration map) for operator review.
+
+- Operator authorization: directive 2026-05-10 02:00 CEST sandbox status; predecessor IL-OPS-STEP1-ITEM5-TRACK-A-GUARDIAN-ENFORCEMENT-DRAFTS-2026-05-10 (PR #176 b3b3804).
+
+- G-CI-01 smoke-gate.yml workflow draft:
+  Target file: /home/mmber/banxe-emi-stack/.github/workflows/smoke-gate.yml (NEW).
+  Predecessor: ADR-031 proposal (per GAP plan Step 2). Existing CI gates: quality-gate.yml + lint-python.yml + lint-frontend.yml + alembic-check.yml + claude-*.yml (all unit/lint level — NO smoke).
+  Smoke gate scope (5-7 endpoints proving "system boots and answers"):
+    1. KC token grant via realm banxe-emi (POST /realms/banxe-emi/protocol/openid-connect/token client_credentials).
+    2. ClickHouse audit append (INSERT into safeguarding_audit + SELECT count).
+    3. Reconciliation engine tick (POST /api/v1/reconciliation/tick + verify response 200).
+    4. Safeguarding endpoint health (GET /api/v1/safeguarding/balance + verify Decimal response).
+    5. Guardian /audit POST (POST :8195/audit + verify pass|warn|unknown verdict).
+    6. KYC FSM transition smoke (POST /api/v1/kyc/initiate + verify state transition logged).
+    7. Payment dry-run (POST /api/v1/payments/dryrun + verify validation 200).
+  Trigger: pull_request opened + synchronize on banxe-emi-stack main; push to main.
+  Env: ephemeral docker-compose-smoke.yml (KC + Postgres + ClickHouse + Guardian-mock + redis); spin-up ≤ 4 min.
+  Time budget: ≤ 7 min total (per V-08 audit spec).
+  Rollback signal: any of 5-7 smoke endpoints fail → workflow FAIL → required-check FAIL → PR merge blocked.
+  Status proposal: NOT_STARTED → WORKFLOW-DRAFT-SPEC-PENDING-DEVOPS-IMPLEMENTATION.
+
+- G-CI-02 required-check enforcement spec:
+  Target: GitHub branch protection on banxe-emi-stack/main + banxe-architecture/main.
+  Current state (banxe-architecture/main): strict=True, contexts=['guardian-factory', 'guardian-project'], enforce_admins=False.
+  Proposed migration (post G-CI-01 deployment):
+    1. banxe-emi-stack/main contexts: ADD 'smoke-gate' to required_status_checks.contexts (currently TBD).
+    2. banxe-architecture/main contexts: ADD 'smoke-gate' if architecture repo also gains smoke-gate workflow.
+    3. enforce_admins: false → true (post-stabilization, per Phase 9 production readiness).
+  IL-CI-01 ledger entry template per GAP plan: "Required-check switch from advisory to required for smoke-gate; audit existing checks; document in INSTRUCTION-LEDGER IL-CI-01".
+  Status proposal: NOT_STARTED → BRANCH-PROTECTION-MIGRATION-SPEC-DRAFTED-PENDING-OPERATOR-PATCH.
+
+- G-INFRA-01 evo2 full registration map:
+  Existing stub (per .claude/rules/infrastructure.md):
+    - Hardware: AMD Ryzen AI MAX+ 395 / 128 GiB LPDDR5X / Radeon 8060S 40 CU gfx1151 ✓
+    - USB4 link: 10.0.0.2/30 ↔ evo1 10.0.0.1/30 (9.12 Gbit/s) ✓
+    - Services as of 2026-05-05: Ollama :11434 / qwen3-235b-master :8082 / llama.cpp RPC :50052 / node_exporter :9100 ✓
+  Full registration items (drafted):
+    1. DNS / Tailscale: banxe-nucbox-evo-x2-2 (100.99.208.21) — already present in Tailscale per audit; document in SERVICE-MAP.md DNS section.
+    2. Port allocation extension (beyond stub):
+       - :11434 Ollama (existing)
+       - :8082 qwen3-235b-master (existing)
+       - :50052 llama-rpc-worker (existing)
+       - :9100 node_exporter (existing)
+       - :3100 Loki (TBD — observability stack)
+       - :3000 Grafana (TBD — dashboards)
+       - :8085 banxe-mock-aspsp (TBD — Open Banking sandbox per Sprint 5 mandate)
+    3. Monitoring config: Prometheus scrape config target evo2:9100; node_exporter rules per ADR-033 alert routing.
+    4. ROCm/amdgpu kernel 6.17 regression (G-INFRA-02 P1 OPEN): rollback path — pin kernel 6.16 LTS OR wait ROCm 6.5+ patch; document in IL-OPS-EVO2-ROCM-REGRESSION-2026-05-XX.
+    5. Backup strategy: ClickHouse on evo1 (primary) + replica config TBD on evo2 per ADR-027 audit trail durability.
+    6. Tailscale ACL: evo2 should match evo1 access policies (currently separate). Operator decision per Track I.
+  Status proposal: PARTIAL → FULL-REGISTRATION-MAP-DRAFTED-PENDING-OPERATOR-DEPLOY.
+
+- Track G remaining items overall status post-this-commit:
+  - G-CI-01: WORKFLOW-DRAFT-SPEC-PENDING-DEVOPS-IMPLEMENTATION (was NEW)
+  - G-CI-02: BRANCH-PROTECTION-MIGRATION-SPEC-DRAFTED-PENDING-OPERATOR-PATCH (was NEW)
+  - G-INFRA-01: FULL-REGISTRATION-MAP-DRAFTED-PENDING-OPERATOR-DEPLOY (was PARTIAL)
+  Track G 100% drafted; deployment standby per sandbox.
+
+- Sandbox status acknowledgement: per operator directive 2026-05-10 02:00 CEST drafts safe to commit; production cutover requires operator action (DevOps + branch protection changes).
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor, Mark = pool owner, Perplexity = coordinator drafting.
+  - amendment-30.N §30.N.5: governance > operational; drafts respect ADR-018 + ADR-027 + ADR-031 (proposed) + ADR-033.
+  - Plan Layer 1 implicit T2 (Canon Synthesis Drafter).
+  - Binding race-mitigation pattern (validated 14×).
+
+- Closing IL: TBD (each Track G item closed individually after operator deployment + verification).
+- Anchors:
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted
+  - PR #170 (cc2059e) + tag checkpoint-2026-05-10-perplexity-management-plan-accepted
+  - PR #176 (b3b3804) Step 1 Item 5 Track A drafts
+  - ADR-018 (5-layer AI compute) + ADR-027 (audit trail durability) + ADR-031 (CI smoke gate — proposed) + ADR-033 (alert routing) + ADR-035 (CI smoke gate policy)
+  - INVARIANTS I-08 + I-24 + I-28
+  - MASTER-PLAN-2026-05-05 Track G + Track E + Track I
+  - banxe-emi-stack .github/workflows/quality-gate.yml (existing) + smoke-gate.yml (proposed)
+  - SERVICE-MAP.md (evo2 stub) + .claude/rules/infrastructure.md (evo1 full + evo2 TBD)
+  - banxe-emi-stack PRs OPEN: #101 (ADR-035 Step 2 mock workflow) + #105 (ADR-035 Step 5 audit signal)
