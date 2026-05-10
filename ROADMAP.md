@@ -818,3 +818,23 @@ amendment-B.11.N+2: Claude Code executor + Mark pool owner + Perplexity coordina
 
 ### Pending tags
 - checkpoint-2026-05-XX-track-G-fully-closed (after G-CI-01 + G-CI-02 + G-INFRA-01 full)
+
+## Roadmap Block 2026-05-10 — Step 1 Item 5 Track A Drafts
+
+> Block opened under I-59. One branch / one commit / one PR / NO tag (sprint progress per §21).
+> Anchors: IL-OPS-STEP1-ITEM5-TRACK-A-GUARDIAN-ENFORCEMENT-DRAFTS-2026-05-10.
+
+### Track A drafts — autonomous canon-edit complete
+- [/] G-GUARD-03 REFRAMED — verification-pending-operator (5y TTL already prescribed per ADR-019, не extension)
+- [/] G-GUARD-04 ROLLOUT-PLAN-DRAFTED — 4 repos shim install pending operator (banxe-architecture / banxe-platform / banxe-payment-core / banxe-infra)
+- [/] G-CANON-AUTONOMY — V-14..V-17 test specs drafted, MetaClaw implementation pending
+- [/] G-CANON-15 — §15 conversation-judge prompt spec drafted, MetaClaw implementation pending
+
+### Track A deployment standby (per sandbox status)
+- [ ] evo1 ClickHouse verify (G-GUARD-03 closure)
+- [ ] Shim rollout 4 repos (G-GUARD-04 closure)
+- [ ] MetaClaw test_canon_judge.py V-14..V-17 implementation (G-CANON-AUTONOMY closure)
+- [ ] MetaClaw judge prompt §15 update (G-CANON-15 closure)
+
+### Sequence post-this-commit
+Step 2 (Item 6 Track G remaining drafts) → next.
