@@ -153,3 +153,52 @@ This document is **PROPOSED**. Promotion to **ACCEPTED** requires:
 - Mirror IL block in `banxe-emi-stack/INSTRUCTION-LEDGER.md`
 - sha256 anchors of all referenced canon files (CANON.md, MASTER-PLAN, ROADMAP, PROMPT-CANON-PROJECT, PROMPT-CANON-DEVELOPER)
 
+## I.F — CLAUDE CODE SESSION CANON (5th layer, ABSOLUTE)
+
+Source: `~/MetaClaw/.claude/CLAUDE_CODE_CANON.md` (66 lines). Discovered in audit completion 2026-05-10 02:10 CEST. Marked ABSOLUTE — must be included verbatim in every Claude Code sprint prompt. Complements but does NOT replace ADR-025 §3 Whitelist.
+
+### 9 binding rules
+1. NEVER ASK QUESTIONS. Pick the best option and execute.
+2. SAFE = AUTO-EXECUTE SILENTLY. No menus, no confirmations.
+3. UNSAFE = one line `OPERATOR_RUN: md>` then STOP. Wait for `go`. No explanations.
+4. SUDO on remote (tty_tickets): `sudo -n` first; if fails print `OPERATOR_RUN`.
+5. WHEN IN DOUBT: pick faster, more idempotent approach. Do not ask.
+6. ON ERROR: diagnose and fix self if safe. Stop only if fix is unsafe.
+7. SPLIT large ops into sub-commands. Execute sequentially without asking.
+8. APPROVAL MENUS: NEVER SHOW. Auto-approve safe patterns internally.
+9. REPORT: single summary after sprint. No JSON unless asked.
+
+### Safe Command Allowlist (zero-question, auto-execute)
+- Filesystem reads: `read`, `ls`, `find`, `cat`, `head`, `tail`
+- Text processing: `grep`, `awk`, `sed` (read-only), `jq`
+- Git read-only: `git status`, `git log`, `git diff`, `git branch`, `git show`, `git reflog`, `git fsck`
+- GitHub read-only: `gh pr view`, `gh pr list`, `gh issue view`, `gh issue list`
+- Network read-only: `ssh <host>` read-only; `curl` GET/HEAD without mutation
+- Local quality: `pytest`, `ruff check`, `ruff format --check`, `mypy`
+
+### Destructive Action Stop-Barrier (STOP + wait for explicit `go`)
+Print `OPERATOR_RUN: <exact command>` on one line, then STOP. Triggers:
+- `git push --force` / `git push -f`
+- `git reset --hard`, `git clean -fd`, `git clean -fx`
+- `DROP TABLE`, `TRUNCATE`, `DELETE` without `WHERE` on financial/audit tables
+- Mass in-place file rewrite without backup or staging copy
+- Any action mutating production infrastructure or running services
+- Secret / credential rotation in a live environment
+
+### Guardian Enforcement matrix
+| Check | Condition | Verdict |
+|-------|-----------|---------|
+| CB-SAFE | Command in Safe Allowlist | PASS — no audit dialog |
+| CB-STOP | Command in Stop-Barrier | BLOCK — log + emit `OPERATOR_RUN` |
+| CB-DEFAULT | All other commands | PASS — audit log written (mode=audit) |
+
+Guardian `fail` -> `exit 1`. Guardian `pass` -> command proceeds.
+
+### Reconciliation with ADR-025
+- Rule 1 (NEVER ASK) reinforces ADR-025 §4 Best-Decision Principle.
+- Safe Allowlist refines ADR-025 §3 Whitelist with concrete tool list.
+- Stop-Barrier extends §3 with explicit destructive-trigger taxonomy.
+- Guardian Enforcement matrix operationalises §3 + §6 Scope guard at shim level.
+
+---
+
