@@ -220,7 +220,7 @@
 
 ## API Gateway / Ingress — Gaps (V-12 from HANDOFF-2026-05-04)
 
-- [ ] G-API-01: No rate limiting on `/auth/*` endpoints — NEW 2026-05-05
+- [x] G-API-01: No rate limiting on `/auth/*` endpoints — DONE 2026-05-10 (ADR-030 Accepted). Resolution: RateLimiterPort + RedisRateLimiterAdapter + sliding window + lockout. PRs #107/#108/#109.
   Source: V-12 LOW in HANDOFF-2026-05-04 (severity LOW per handoff but security-critical: brute-force / credential-stuffing / SCA-bypass risk on banxe-compliance-api auth surface). Affected: any HTTP entrypoint that proxies to Keycloak realm `banxe-emi` token endpoint, including `/auth/login`, `/auth/refresh`, `/auth/sca/*`, `/auth/token` and analogous routes in `api/routers/auth.py`.
   Plan (3 steps):
     1. **Audit** (read-only): grep all `/auth/*` route handlers in `banxe-emi-stack/api/routers/`, identify which lack rate-limit decorators / middleware. Confirm there is no upstream limiter (nginx / Traefik / Cloudflare). Output: `docs/canon/v-12-audit-2026-05-05.md`.
@@ -228,7 +228,7 @@
     3. **Fix**: implement chosen layer; emit `429 Too Many Requests` with `Retry-After`; log every limit hit to ClickHouse `audit_trail` (links with G-CASS-01); add tests covering each limit boundary; canonise via update to ADR-024/030.
   Owner: Architecture WG / Security lead. Linked: `banxe-emi-realm.json` (bruteForceProtected=true at realm level — partial coverage), I-32..I-36, ADR-017.
 
-- [ ] G-API-02: Rate-limit coverage tests — NEW 2026-05-05
+- [x] G-API-02: Rate-limit coverage tests — DONE 2026-05-10 (ADR-030 Accepted). Resolution: 17 tests (6 unit + 6 integration + 5 smoke). PRs #107/#108/#109.
   Add CI fixture that fires N+1 requests against each `/auth/*` endpoint above its declared limit, asserts exactly the (limit+1)th request returns 429 with `Retry-After` header, and verifies an audit_trail event is recorded. Owner: Architecture WG.
 
 ## Infrastructure / Cluster Visibility — Gaps (IL-052 successor)

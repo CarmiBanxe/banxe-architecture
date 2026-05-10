@@ -6549,3 +6549,13 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 
 - Closing IL: TBD (Phase 10 production launch — ultimate closure).
 - Anchors: PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted; bootstrap canon v3 §0..§30; canon/CANON.md v1.0; PROMPT-CANON-PROJECT.md; PROMPT-CANON-DEVELOPER.md; amendment-30.N + amendment-B.11.N+2; ADR-014..ADR-038 + ADR-074..076; INVARIANTS I-01..I-37; HITL-MATRIX 17 gates; MASTER-PLAN-2026-05-05 Tracks A-I; BANXE-RAR-CATEGORY-MAP 5 Waves; COMPLIANCE-MATRIX; Session Rules 1..7; I-37 PROPOSED + I-59 + I-68.
+
+
+### IL-ADR-030-ACCEPTED-2026-05-10
+
+- Date: 2026-05-10.
+- Phase (GSD): CLOSE — ADR-030 auth rate-limit policy Accepted.
+- Status: DONE.
+- Implementation (banxe-emi-stack): Step 1 PR #107 (port + 6 unit), Step 2 PR #108 (wire + 6 integration), Step 3 PR #109 (5 smoke). Total 17 tests.
+- Gaps closed: G-API-01, G-API-02.
+- Anchors: ADR-030, G-API-01, G-API-02, banxe-emi-stack PRs #107/#108/#109.
