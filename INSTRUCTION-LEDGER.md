@@ -7152,3 +7152,40 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - I-59 (roadmap-block procedure)
   - canon/CANON.md v1.0 + PROMPT-CANON-PROJECT.md + PROMPT-CANON-DEVELOPER.md
   - Operator directive 2026-05-10 10:00 CEST "1+4 одной операцией"
+
+### IL-OPS-CANON-RUSSIAN-LANGUAGE-BINDING-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — language binding formalization (PROMPT-CANON-PROJECT §13)
+- Status: BINDING — operator directive 2026-05-10 11:00 CEST formalized
+- Priority: P2 (governance — communication discipline)
+- Scope: adds §13 "Язык общения и стиль" section to PROMPT-CANON-PROJECT.md as permanent binding rule for Perplexity / Comet / Factory / Claude Code sessions with operator Mark (CEO Moriel Carmi).
+
+- Operator directive: 2026-05-10 11:00 CEST "сделай перевод последнего заключения на русский язык и давай добавим в канон обязательное общение на русском языке понятным простым языком".
+
+- Binding rules established:
+  - 13.1 Russian language for all operator-facing communication
+  - 13.2 English for technical artifacts (commits, IL fields, GAP/invariant IDs, file names, code, logs)
+  - 13.3 Bilingual approach (Russian for discussion + English for code)
+  - 13.4 Plain language style — no flattery, no unnecessary jargon, structured for readability
+  - 13.5 Applicability scope (CEO Moriel Carmi + operator Mark, BANXE EMI AI Bank project)
+  - 13.6 Cross-references to bootstrap canon §7 + ADR-025 + amendment-30.N + IL-LEDGER-NORM-001
+
+- Anchor: bootstrap canon v3 §7 ENHANCED v3 already declared bilingual principle: "общение с оператором на русском, технические артефакты (commit messages, IL/GAP записи, log output, имена файлов) на английском. Bootstrap canon — bilingual (концепция русский, technical terms английский)". §13 formalizes this as permanent canon rule with detailed style guidelines.
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor (this commit), Mark = pool owner, Perplexity = coordinator
+  - amendment-30.N §30.N.5: governance > operational
+  - ADR-025 Session Rules 1..7
+  - Plan Layer 1 implicit T2 (Canon Synthesis Drafter)
+  - Binding race-mitigation pattern (validated 17×, this will be 18×)
+
+- Closing IL: TBD (binding remains active perpetually — closing only if operator explicitly retracts).
+- Anchors:
+  - PROMPT-CANON-PROJECT.md §13 (added this commit)
+  - bootstrap canon v3 §7 ENHANCED v3 (originating directive)
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted
+  - PR #170 (cc2059e) + tag checkpoint-2026-05-10-perplexity-management-plan-accepted
+  - PR #180 (d50f1b4) + tag checkpoint-2026-05-10-session-consolidation
+  - ADR-025 + amendment-30.N + amendment-B.11.N+2
+  - Operator directive 2026-05-10 11:00 CEST
