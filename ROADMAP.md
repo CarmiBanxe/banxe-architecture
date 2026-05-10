@@ -792,3 +792,29 @@ amendment-B.11.N+2: Claude Code executor + Mark pool owner + Perplexity coordina
 
 ### Pending tags
 - checkpoint-2026-05-XX-phase5-step53-mirror-backfill-complete (after deferred 3 PRs merged + their mirrors appended)
+
+## Roadmap Block 2026-05-10 — Phase 5 Step 5.2 Track G Partial Closure
+
+> Block opened under I-59. Procedure: one branch / one commit / one PR / NO tag (sprint progress per §21).
+> Anchors: IL-OPS-PHASE5-STEP52-TRACK-G-PARTIAL-CLOSURE-2026-05-10.
+
+### Track G — Ops/CI Hardening status (4/7 DONE + 1 PARTIAL + 2 NEW)
+- [x] G-OPS-01 Postgres backup rotation — DONE 2026-05-10 (ADR-029 PR #167 + tag)
+- [x] G-OPS-02 Backup-restore CI smoke — DONE 2026-05-10 (ADR-029)
+- [x] G-API-01 Auth rate-limit — DONE 2026-05-10 (ADR-030 PR #172 + tag)
+- [x] G-API-02 Rate-limit tests (17 tests) — DONE 2026-05-10 (ADR-030)
+- [/] G-INFRA-01 evo2 stub registered (SERVICE-MAP + infrastructure.md), full registration TBD — PARTIAL
+- [ ] G-CI-01 End-to-end smoke gate workflow — NEW operator-blocked (DevOps lead)
+- [ ] G-CI-02 Required-check enforcement — NEW operator-blocked (depends on G-CI-01)
+
+### Phase 5 status post-this-commit
+- [x] Step 5.3 mirror backfill (PR #174)
+- [x] Step 5.2 Track G partial closure (this commit)
+- [ ] Step 5.1 Track A close — operator-blocked (G-GUARD-03/04 + G-CANON-AUTONOMY/15)
+- [ ] Step 5.4 Local-only repos rescue — operator-led
+
+### Phase 5 autonomous track substantially complete
+2 of 4 steps DONE (5.2 + 5.3). Steps 5.1 + 5.4 await operator action.
+
+### Pending tags
+- checkpoint-2026-05-XX-track-G-fully-closed (after G-CI-01 + G-CI-02 + G-INFRA-01 full)
