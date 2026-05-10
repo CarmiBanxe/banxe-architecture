@@ -1210,7 +1210,7 @@
     Closing IL: TBD (Phase F5.3 — deploy AI duplicates for SMF C-suite Heads + formalise sub-Heads AI partner pattern as §0.2 Level 3 + audit log of overrides).
     Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 3 + §10 Phase F5.3 + §11 Sprint S8.
 
-- [ ] G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION (P1, OPEN, 2026-05-09)
+- [x] G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION (P1, CLOSED-VIA-CANON-AMENDMENT, 2026-05-10)
     Bootstrap canon v3 §0.2 Level 2 requires тимлиды / supervisors / department leads = 100% AI без human duplicate.
     Existing pattern: ALL Level-2-candidate AI agents (ComplianceOfficerAgent, EscalationAgent, ComplaintTriageAgent, CampaignAgent, ContentAgent, AML-Analyst-v1, KYC-Specialist-v2, LedgerAgent, ReconciliationAgent) HAVE human doubles per JOB-DESCRIPTIONS Agent Summary Registry.
     Fundamental governance choice required (operator-only):
@@ -1219,13 +1219,17 @@
       Hybrid: Level 2 flexible (duplicate optional).
     Closing IL: TBD (Phase F5.2 — operator decides Option A/B/Hybrid; canon §0.2 amended OR existing framework rewritten accordingly).
     Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 2 + §10 Phase F5.2 + §11 Sprint S7.
+    Closing 2026-05-10 14:00 CEST: CEO Constitutional decision Option A reformulate §0.2 Level 2 to allow human duplicates. §0.2 amendment active per IL-OPS-STEP2-CONSOLIDATED-OPTION-A-MLRO-API-MOCK-2026-05-10. Existing Level 2 agents (ComplianceOfficerAgent + EscalationAgent + ComplaintTriageAgent + CampaignAgent + ContentAgent + AML-Analyst-v1 + KYC-Specialist-v2 + LedgerAgent + ReconciliationAgent) c human doubles теперь canon-aligned per FCA SM&CR pattern.
+    Sprint S7 (Phase F5.2) unblocked.
 
-- [ ] G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION (P1, OPEN, 2026-05-09)
+- [x] G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION (P1, CLOSED-VIA-CANON-AMENDMENT, 2026-05-10)
     Bootstrap canon v3 §0.2 Level 1 requires front-line operations = 100% AI без human duplicate.
     Existing pattern: ALL Level-1-candidate AI agents HAVE human doubles per JOB-DESCRIPTIONS Agent Summary Registry. Level-1 candidates: NotificationAgent, OnboardingNurtureAgent, AnalyticsAgent, FeedbackAnalyticsAgent, LeadScoringAgent + 22 Finance agents (GL Close, AP/AR, Expense Anomaly, IFRS, Consolidation, Tax Compliance, Beancount Export, Budget, Forecast, Variance Analysis, Scenario, Cash Position, Liquidity Forecast, FX Exposure, Covenant Monitor, FCA Data Extraction, Reg Data Quality, FCA Return Generator, Resolution Pack, Finance BI, Data Pipeline, Data Quality Gate) — all with Financial Controller / Head of FP&A / Head of Reg Reporting / Head of Treasury / Head of Finance Systems doubles.
     Same governance choice as Level 2 (Option A reformulate §0.2, Option B reform framework, Hybrid).
     Closing IL: TBD (Phase F5.1 — operator decides; canon §0.2 amended OR existing framework rewritten).
     Anchors: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09, bootstrap canon v3 §0.2 Level 1 + §10 Phase F5.1 + §11 Sprint S6.
+    Closing 2026-05-10 14:00 CEST: CEO Constitutional decision Option A reformulate §0.2 Level 1 to allow human duplicates. §0.2 amendment active per IL-OPS-STEP2-CONSOLIDATED-OPTION-A-MLRO-API-MOCK-2026-05-10. Existing 32 agent passports + Level 1 candidates (NotificationAgent / 22 Finance agents / etc) c human doubles теперь canon-aligned per FCA SM&CR pattern.
+    Sprint S6 (Phase F5.1) unblocked.
 
 - [ ] G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3, OPEN, 2026-05-09)
     ROADMAP.md Phase 4 lists 27 implemented services in banxe-emi-stack;

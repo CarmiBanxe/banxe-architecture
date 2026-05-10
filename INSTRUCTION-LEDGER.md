@@ -7189,3 +7189,62 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - PR #180 (d50f1b4) + tag checkpoint-2026-05-10-session-consolidation
   - ADR-025 + amendment-30.N + amendment-B.11.N+2
   - Operator directive 2026-05-10 11:00 CEST
+
+### IL-OPS-STEP2-CONSOLIDATED-OPTION-A-MLRO-API-MOCK-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — Шаг 2 consolidated (Step 0.2 reclassification + §0.2 Option A reformulation + Sandbox MLRO + Sandbox API mock)
+- Status: BINDING — operator directive 2026-05-10 14:00 CEST (CEO положительное решение Option A + sandbox MLRO assumption + sandbox API mock)
+- Priority: P0 (Constitutional decision §0.2 + sandbox framework formalization)
+- Scope: 4 components в одном commit:
+  (1) Step 0.2 reclassification (P0 → P3, banxe-ai-infrastructure removed from STANDBY)
+  (2) §0.2 Levels 1+2 reformulation (Option A — accept human doubles)
+  (3) Sandbox MLRO assumption framework
+  (4) Sandbox API mock strategy framework
+
+- Operator directives anchor:
+  - 2026-05-10 02:00 CEST sandbox status declared
+  - 2026-05-10 14:00 CEST: "MLRO априори существует / API ключи эмулируем / §0.2 положительное решение"
+  - Source: Mark (operator, pool owner, CEO Moriel Carmi)
+
+- Component 1 — Step 0.2 reclassification (P0 → P3):
+  - /home/mmber/banxe: .git = 164K; "No commits yet"; staged = scaffold metadata only; 15 gitleaks; no remote.
+  - banxe-ai-infrastructure: NOT FOUND (repo never existed — hallucination in plan authoring).
+  - banxe scaffold: P0 → P3 (scaffold-cleanup-or-discard). Step 0.2 closure: P0 угроза мифическая.
+
+- Component 2 — §0.2 Levels 1+2 reformulation (Option A):
+  - CEO Constitutional decision: Option A reformulate §0.2 to allow human duplicates L1+L2.
+  - §0.2 Level 1 (operators): human duplicates ALLOWED per FCA SM&CR practice.
+  - §0.2 Level 2 (low management): human duplicates ALLOWED per same practice.
+  - Prior strict reading "100% AI без human duplicate" superseded by CEO decision.
+  - GAPs closed: G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION + G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION.
+  - Sprints S6+S7 unblocked.
+
+- Component 3 — Sandbox MLRO assumption framework:
+  - Sandbox MLRO Persona: "Sarah Mitchell" (per DEPARTMENT-MAP §3 reference "Appointed 2026-04-13").
+  - Sandbox tests: AML/SAR/sanctions/KYC routed via sandbox persona.
+  - HITL Gates sandbox: mock approvals from persona.
+  - Production transition: real MLRO appointment required; JOB-DESCRIPTIONS §1.2 TBC preserved.
+  - G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING: partial sandbox unblock.
+
+- Component 4 — Sandbox API mock strategy framework:
+  - 7 API keys mock-adapter pattern: Modulr / Companies House / OpenCorporates / Sardine.ai / Telegram / Marble / Jube.
+  - Hexagonal Architecture (ADR-014): same Port interface; DI factory SANDBOX_MODE=true → mocks.
+  - Production transition: real keys procurement (Track I) required.
+
+- Updated STANDBY queue: 6 → 3 real items (amendment-30.O / emi-stack PRs / Production transition).
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor, Mark = pool owner, Perplexity = coordinator
+  - PROMPT-CANON-PROJECT.md §13 Russian language binding (active)
+  - Race-mitigation pattern (validated 18×, this будет 19×)
+
+- Closing IL: TBD (sandbox→production transition).
+- Anchors:
+  - PR #168 (be2ab59) + PR #170 (cc2059e) + PR #180 (d50f1b4) + PR #181 (7cb3776)
+  - bootstrap canon v3 §0.2 (amended this IL Levels 1+2)
+  - ADR-014 (Hexagonal Architecture for mock-adapters) + ADR-018 + ADR-019
+  - HITL-MATRIX (17 gates — sandbox MLRO for HITL-001/004/007)
+  - JOB-DESCRIPTIONS.md §1.2 (MLRO TBC preserved) + DEPARTMENT-MAP.md §3
+  - COMPLIANCE-MATRIX (S1-02 sandbox-satisfied) + MASTER-PLAN Track I
+  - Operator directives 2026-05-10 02:00 + 14:00 CEST

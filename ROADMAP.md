@@ -959,3 +959,49 @@ Phases F0-F7 + Sprints S1-S12 (bootstrap canon v3 §10/§11) → corrected unifi
 
 ### Effect
 Binding active for all Perplexity / Comet / Factory / Claude Code sessions с operator Mark на проекте BANXE EMI AI Bank. Bootstrap canon v3 §7 ENHANCED v3 formalized as permanent §13.
+
+## Roadmap Block 2026-05-10 — Шаг 2 Consolidated (Option A + Sandbox MLRO + Sandbox API Mock)
+
+> Block opened under I-59. One branch / one commit / one PR / annotated tag `checkpoint-2026-05-10-step2-consolidated` after merge.
+> Anchors: IL-OPS-STEP2-CONSOLIDATED-OPTION-A-MLRO-API-MOCK-2026-05-10.
+
+### CEO Constitutional decision §0.2 Levels 1+2 (Option A reformulate)
+- [x] §0.2 Level 1 reformulated — human duplicates allowed (canon-aligned with existing 32 passports)
+- [x] §0.2 Level 2 reformulated — human duplicates allowed (canon-aligned with existing supervisors)
+- [x] G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION CLOSED-VIA-CANON-AMENDMENT
+- [x] G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION CLOSED-VIA-CANON-AMENDMENT
+- [x] Sprint S6 + Sprint S7 unblocked
+
+### Sandbox MLRO assumption framework
+- [x] Sandbox MLRO Persona "Sarah Mitchell" formalized (testing scope only)
+- [x] HITL-001/004/007 sandbox responses via persona
+- [ ] Production criterion preserved: real MLRO appointment before sandbox→production
+- [/] G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING — sandbox-satisfied; production-grade autonomous AI MLRO design pending Architecture WG (Step 3 Item 8 Option B)
+
+### Sandbox API mock strategy
+- [x] 7 API keys mock-adapter pattern formalized (Modulr / Companies House / OpenCorporates / Sardine.ai / Telegram / Marble / Jube)
+- [x] Hexagonal Architecture compliance (ADR-014 Port-based)
+- [x] DI factory: SANDBOX_MODE=true → mocks; false → production
+- [ ] Production criterion preserved: real keys procurement (Track I) before sandbox→production
+
+### Step 0.2 reclassification
+- [/] /home/mmber/banxe scaffold: P0 → P3 (15 gitleaks + no commits + no remote — non-critical scaffold)
+- [N/A] banxe-ai-infrastructure: REMOVED from STANDBY (hallucination — repo never existed)
+
+### STANDBY queue update post-this-commit
+- ✅ §0.2 Levels 1+2 governance → RESOLVED Option A (CEO 2026-05-10 14:00 CEST)
+- 🟢 MLRO appointment → SANDBOX-SATISFIED (production-blocking preserved)
+- 🟢 7 API keys → SANDBOX-SATISFIED (production-blocking preserved)
+- 🟢 Step 0.2 rescue → RECLASSIFIED P3 (mythical P0 угроза)
+- ⏸ amendment-30.O T2-T5 — REMAINS PENDING (CEO Constitutional)
+- ⏸ emi-stack PRs #98/#101/#105 — REMAINS PENDING (operator-led, different repo)
+
+### Real remaining operator queue (3 items, was 6)
+1. amendment-30.O T2-T5 (CEO Constitutional)
+2. emi-stack PRs #98/#101/#105 merge (operator-led)
+3. Production transition (when sandbox criteria met for go-live)
+
+### Pending tags
+- checkpoint-2026-05-10-step2-consolidated (after this PR merge)
+- checkpoint-2026-05-XX-section-0-levels-1-2-implementation-complete (after Sprints S6+S7)
+- checkpoint-2026-05-XX-amendment-30-O-accepted
