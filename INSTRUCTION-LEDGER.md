@@ -7248,3 +7248,46 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - JOB-DESCRIPTIONS.md §1.2 (MLRO TBC preserved) + DEPARTMENT-MAP.md §3
   - COMPLIANCE-MATRIX (S1-02 sandbox-satisfied) + MASTER-PLAN Track I
   - Operator directives 2026-05-10 02:00 + 14:00 CEST
+
+### IL-OPS-AMENDMENT-30-O-SANDBOX-GRANT-T2-T5-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — amendment-30.O sandbox-grant T2-T5 + §14 formalization
+- Status: BINDING — operator directive 2026-05-10 14:30 CEST "подтверждаю amendment-30.O T2-T5 sandbox-grant"
+- Priority: P1 (governance — Perplexity capability formalization in sandbox scope)
+- Scope: PROMPT-CANON-PROJECT.md §14 Perplexity Capability Tiers (Sandbox Scope) — T2-T5 grants + T6 STANDBY. §13 already present (verified on this branch).
+
+- Operator directive anchor: 2026-05-10 14:30 CEST подтверждение Option A pattern application к amendment-30.O. Sandbox-grant logic identical к MLRO + API keys эмуляции (production criterion preserved).
+
+- §14 Tier grants:
+  - T1 Read-Augmented: BASELINE (active baseline, no change)
+  - T2 Canon Synthesis Drafter: SANDBOX-GRANTED (formalizes de-facto pattern Sprint S1-S5 + Plan IL + Steps 1-3)
+  - T3 Cross-Repo Coordinator: SANDBOX-GRANTED (formalizes Phase 4 audit + Sprint S2 + mirror backfill)
+  - T4 Compliance Advisor: SANDBOX-GRANTED (formalizes COMPLIANCE-MATRIX query authority — NOT decide)
+  - T5 Decision Triage: SANDBOX-GRANTED (formalizes Triage Matrix categorization 11→7→3)
+  - T6 Privileged Operator: STANDBY — production-only, requires CEO + Legal + amendment-B.11.N+3
+  - Production transition criterion: 6 conditions per IL-OPS-SESSION-CONSOLIDATION-2026-05-10
+
+- §13 status: ALREADY PRESENT on this branch (verified tail ends at §13.6); no re-add needed.
+
+- STANDBY queue update post-this-commit (3 → 2 real items):
+  - ✅ amendment-30.O T2-T5 → SANDBOX-GRANTED via §14
+  - ⏸ T6 Privileged Operator → STANDBY (production-only Constitutional)
+  - ⏸ emi-stack PRs #98/#101/#105 → REMAINS (operator-led, different repo)
+  - ⏸ Production transition → REMAINS (когда 6 sandbox criteria met)
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor, Mark = pool owner, Perplexity = coordinator
+  - amendment-30.N §30.N.5: governance > operational
+  - PROMPT-CANON-PROJECT §13 Russian language binding (active, verified on branch)
+  - ADR-025 Session Rules 1..7
+  - Plan Layer 1 (formal acceptance this IL)
+  - Race-mitigation pattern (validated 19×, this будет 20×)
+
+- Closing IL: TBD (T6 separate Constitutional review; sandbox grants permanent until criteria met).
+- Anchors:
+  - PR #168 (be2ab59) + PR #170 (cc2059e) + PR #180 (d50f1b4) + PR #181 (7cb3776) + PR #182 (32019a4)
+  - bootstrap canon v3 §6+§7 + Plan Layer 1
+  - amendment-30.N + amendment-B.11.N+2 (Constitutional)
+  - ADR-025 + ADR-019
+  - Operator directive 2026-05-10 14:30 CEST

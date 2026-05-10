@@ -127,3 +127,67 @@ Pre-commit гейт всех коммитов в обоих репо.
 - ADR-025 Agent Interaction Canon (Session Rules 1..7)
 - amendment-30.N Perplexity Relay Protocol (transparency principle)
 - IL-LEDGER-NORM-001 (английский для IL field structure preserved)
+
+## 14. Perplexity Capability Tiers — Sandbox Scope (BINDING)
+
+> Operator directive 2026-05-10 14:00 CEST: подтверждение "amendment-30.O T2-T5 sandbox-grant" по аналогии с MLRO + API ключи sandbox-эмуляцией.
+> Anchor: Plan Layer 1 (Perplexity rights expansion); amendment-B.11.N+2 Статья 4 (T6 production-only restriction preserved).
+
+### 14.1 Tier T1 — Read-Augmented Coordinator (BASELINE, active everywhere)
+- GitHub API read across 21 CarmiBanxe repos + external + local.
+- Conversational coordination of Claude Code shell blocks per amendment-B.11.N+2 Статья 2 chain.
+- Multi-source canon synthesis в формате response.
+- Pending decision queue tracking.
+
+### 14.2 Tier T2 — Canon Synthesis Drafter (SANDBOX-GRANTED)
+- Authority: создавать draft IL/canon proposals через Claude Code execution chain.
+- Drafts authored через CC prompts (executor); operator review через PR mechanism per I-59.
+- Cap: 5 proposals per session; no auto-merge; operator approval required per PR.
+- De-facto operating: уже использовался в Sprint S1-S5 + Plan IL + Step 1+2+3 drafts (PRs #146-#178).
+
+### 14.3 Tier T3 — Cross-Repo Coordinator (SANDBOX-GRANTED)
+- Authority: cross-reference canon между 5 production repos (banxe-architecture / banxe-emi-stack / MetaClaw / banxe-infra / banxe-platform).
+- Detect cross-repo conflicts (FA-3 Ruflo example).
+- Generate reconciliation proposals.
+- De-facto operating: использовался в Phase 4 audit + Sprint S2 §0.2 audit + two-loop sync mirror backfill (PR #174).
+
+### 14.4 Tier T4 — Compliance Advisor (SANDBOX-GRANTED)
+- Authority: queries against COMPLIANCE-MATRIX + HITL-MATRIX + INVARIANTS.
+- Flag FCA SUP / AMLR / GDPR / EU AI Act gaps.
+- Generate compliance status reports per regulatory framework.
+- НЕ принимает compliance decisions (это MLRO authority — sandbox-Persona Sarah Mitchell per IL Шаг 2 Component 3).
+- De-facto operating: COMPLIANCE-MATRIX 35% coverage analysis + HITL gates 17 review.
+
+### 14.5 Tier T5 — Decision Triage (SANDBOX-GRANTED)
+- Authority: categorize pending decisions per Triage Matrix (Constitutional / Regulatory / Architectural / Operational / Routine).
+- Reduce noise в operator queue (11 → 7 → 3 demonstrated в этой сессии).
+- НЕ resolve decisions — только categorize + recommend authority owner.
+- De-facto operating: Plan Layer 3 reduction + STANDBY queue priority sorting.
+
+### 14.6 Tier T6 — Privileged Operator (STANDBY — production-only)
+- Direct write через gh CLI с operator-issued tokens.
+- Limited scope: canon docs only (НЕ production code / secrets / deployment configs / financial logic).
+- Audit log mandatory ClickHouse 5y per I-08.
+- **Override amendment-B.11.N+2 Статья 4** per-session.
+- **STANDBY status binding**: requires CEO + Legal review + amendment-B.11.N+3 (new) before activation.
+- НЕ доступен в sandbox; не grant'ится autonomous через эту секцию.
+- Production transition criterion: full Constitutional approval before T6 activation.
+
+### 14.7 Production transition criterion для full amendment-30.O
+- Sandbox grants T2-T5 переходят в production-grade при выполнении 6 conditions per IL-OPS-SESSION-CONSOLIDATION-2026-05-10 (sandbox→production transition criteria).
+- T6 требует отдельный Constitutional review независимо от других transition conditions.
+- Sandbox-scope binding активен до transition; production-scope требует новой acceptance.
+
+### 14.8 Sandbox guardrails (binding regardless of tier)
+- All Tiers respect amendment-30.N §30.N.5 (governance > operational).
+- All Tiers respect ADR-025 Session Rules 1..7 (§15 Claude-Code-First / §1 OCAT / §4 Best-Decision / §3 Whitelist / §6 Scope guard / §8 Secret-leak zero).
+- All Tiers respect §13 language binding (Russian для оператора, English для technical).
+- T2-T5 НЕ обходят Spec-First Auditor pre-commit + Guardian factory/project + race-mitigation pattern.
+- T6 в production — additional safeguards required per future amendment-B.11.N+3.
+
+### 14.9 Cross-references
+- Plan Layer 1 (Perplexity rights expansion) — IL-OPS-PERPLEXITY-MANAGEMENT-IMPROVEMENT-PLAN-ACCEPTED-2026-05-10
+- amendment-30.N Perplexity Relay Protocol
+- amendment-B.11.N+2 Execution Protocol Formalization (Статья 4 preservation)
+- IL-OPS-SESSION-CONSOLIDATION-2026-05-10 (transition criteria)
+- IL-OPS-STEP2-CONSOLIDATED-OPTION-A-MLRO-API-MOCK-2026-05-10 (sandbox pattern precedent)

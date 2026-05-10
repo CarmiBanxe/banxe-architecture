@@ -1005,3 +1005,46 @@ Binding active for all Perplexity / Comet / Factory / Claude Code sessions с op
 - checkpoint-2026-05-10-step2-consolidated (after this PR merge)
 - checkpoint-2026-05-XX-section-0-levels-1-2-implementation-complete (after Sprints S6+S7)
 - checkpoint-2026-05-XX-amendment-30-O-accepted
+
+## Roadmap Block 2026-05-10 — amendment-30.O T2-T5 Sandbox-Grant + §14 Formalization
+
+> Block opened under I-59. One branch / one commit / one PR / annotated tag `checkpoint-2026-05-10-amendment-30-O-sandbox-grant` after merge.
+> Anchors: IL-OPS-AMENDMENT-30-O-SANDBOX-GRANT-T2-T5-2026-05-10.
+
+### Sandbox grants formalized
+- [x] T2 Canon Synthesis Drafter — SANDBOX-GRANTED
+- [x] T3 Cross-Repo Coordinator — SANDBOX-GRANTED
+- [x] T4 Compliance Advisor — SANDBOX-GRANTED
+- [x] T5 Decision Triage — SANDBOX-GRANTED
+- [ ] T6 Privileged Operator — STANDBY (production-only, CEO + Legal + amendment-B.11.N+3)
+
+### §13 Russian binding status
+- [x] §13 already present on this branch (verified — no re-add needed)
+
+### STANDBY queue update: 3 → 2 real items
+- ✅ amendment-30.O T2-T5 → SANDBOX-GRANTED via §14
+- ⏸ T6 Privileged Operator → STANDBY (production-only Constitutional)
+- ⏸ emi-stack PRs #98/#101/#105 merge → REMAINS (operator-led, different repo)
+- ⏸ Production transition → REMAINS (когда 6 sandbox criteria met)
+
+### Real remaining operator queue post-this-commit (2 items)
+1. emi-stack PRs #98/#101/#105 merge (operator-led, different repo)
+2. Production transition (когда sandbox criteria met for go-live)
+
+### Sandbox autonomous track substantially complete
+After this PR merge: все autonomous-completable items in sandbox scope DONE. Phase 6+ требует только operator физических действий (cross-repo merges OR production transition trigger).
+
+### Pending tags
+- checkpoint-2026-05-10-amendment-30-O-sandbox-grant (after this PR merge)
+- checkpoint-2026-05-XX-emi-stack-prs-merged (after operator merges PR #98/#101/#105)
+- checkpoint-2026-05-XX-sandbox-to-production-transition (when 6 criteria met)
+- checkpoint-2026-05-XX-amendment-B-11-N-3-accepted (Tier T6 Constitutional review)
+
+### Sandbox state summary
+- AI MLRO via Sarah Mitchell persona
+- 7 API keys via mock-adapters
+- §0.2 Levels 1+2 reformulated (Option A)
+- §13 Russian language binding active
+- §14 Perplexity Tiers T2-T5 sandbox-granted
+- 21 worktrees zero MEMORY.md leakage
+- Atomic race-mitigation pattern validated 19× (this PR будет 20×)
