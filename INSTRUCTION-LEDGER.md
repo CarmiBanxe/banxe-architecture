@@ -6638,3 +6638,69 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - banxe-emi-stack PRs #94 (79219b8), #96 (e9a27e9), #97 (bcf86fd), #100 (316f852)
   - BANXE-RAR-CATEGORY-MAP-2026-05-06 (5 Waves A-E)
   - BANXE EMI Master Roadmap v3 (Phase 1+2 production adapters)
+
+### IL-OPS-PHASE5-STEP52-TRACK-G-PARTIAL-CLOSURE-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — Phase 5 Step 5.2 Track G Ops/CI Hardening partial closure
+- Status: BINDING — autonomous closure status fixation; remaining items operator-blocked
+- Priority: P2 (sprint progress + canon hygiene)
+- Scope: fixates Track G (Ops/CI Hardening per MASTER-PLAN-2026-05-05) status as of 2026-05-10 02:00 CEST; documents 4 GAPs DONE / 1 PARTIAL / 2 NEW operator-blocked; identifies remaining work for Phase 6 + Track I.
+
+- Track G items status reconciliation:
+
+  ✅ DONE items (autonomous closure not needed — already canon):
+  - G-OPS-01: Postgres backup rotation policy — DONE 2026-05-10 via ADR-029 acceptance (PR #167 + tag checkpoint-2026-05-10-adr029-accepted; emi-stack PRs #102/#104/#106 BackupPort + PgDumpBackupAdapter + cron + 15 tests).
+  - G-OPS-02: Backup-restore CI smoke test — DONE 2026-05-10 via ADR-029 acceptance (5 integration + 4 smoke tests).
+  - G-API-01: Auth rate-limit endpoints — DONE 2026-05-10 via ADR-030 acceptance (PR #172 + tag checkpoint-2026-05-10-adr030-accepted; emi-stack PRs #107/#108/#109 RateLimiterPort + RedisRateLimiterAdapter + sliding window + lockout).
+  - G-API-02: Rate-limit coverage tests — DONE 2026-05-10 via ADR-030 acceptance (17 tests: 6 unit + 6 integration + 5 smoke).
+
+  🟡 PARTIAL — G-INFRA-01 (evo2 SERVICE-MAP + .claude/rules/infrastructure.md):
+  - SERVICE-MAP.md: evo2 stub registered 2026-05-05 (line "evo2 | 192.168.0.15 | GMKtec EVO-X2 #2 | AI / Inference stack — TBD G-INFRA-01").
+  - .claude/rules/infrastructure.md: evo2 section present с status TBD (Ollama :11434 + qwen3-235b-master :8082 + llama.cpp RPC :50052 + node_exporter :9100 documented).
+  - Outstanding: full registration (final port allocation, DNS, monitoring config) pending operator + Track I (external API keys per banxe-platform).
+  - Effective status: documented-stub-with-pending-final-registration.
+
+  ⏳ NEW operator-blocked:
+  - G-CI-01: End-to-end smoke gate before merge / auto-deploy — NEW 2026-05-05; subsumes G-OPS-02 (closed) + aligns with G-DEPLOY-02 + IL-CANON-04. Implementation requires `smoke-gate.yml` workflow + branch-protection required-check switch. ADR-035 mock tier (PR #100) merged but Step 2 (PR #101) + Step 5 (PR #105) NOT MERGED in emi-stack.
+  - G-CI-02: Required-check enforcement — NEW 2026-05-05; depends on G-CI-01 implementation; switch GitHub branch-protection on main so smoke-gate is required (currently advisory only).
+
+- Track G partial closure summary:
+  - 4 of 7 GAPs DONE (G-OPS-01, G-OPS-02, G-API-01, G-API-02 via ADR-029 + ADR-030 acceptance).
+  - 1 of 7 PARTIAL (G-INFRA-01 evo2 stub registered, full registration deferred).
+  - 2 of 7 NEW operator-blocked (G-CI-01 + G-CI-02 require workflow implementation + branch-protection changes).
+  - Track G overall progress: 57% complete (4 DONE + 1 PARTIAL).
+
+- Phase 5 sequence post-this-commit:
+  - Step 5.3 ✅ DONE (PR #174 mirror backfill).
+  - Step 5.2 ✅ DONE this IL (Track G partial closure documented).
+  - Step 5.1 — Track A close: BLOCKED on operator (G-GUARD-03 ClickHouse retention 12 months + G-GUARD-04 ENFORCE everywhere + G-CANON-AUTONOMY V-14..V-17 test suite + G-CANON-15 §15 conversation-judge prompts).
+  - Step 5.4 — Local-only repos rescue: BLOCKED on operator (banxe + banxe-ai-infrastructure push to remote).
+  - Phase 5 autonomous track substantially complete (Steps 5.2 + 5.3 DONE); Step 5.1 + 5.4 await operator action per Plan Layer 0 Step 0.2 + Layer 5.
+
+- Operator action queue update (post-this-commit):
+  - Track A items (G-GUARD-03/04 + G-CANON-AUTONOMY/15): operator-led + Architecture WG.
+  - Track G remaining (G-CI-01 + G-CI-02): operator-led + DevOps lead.
+  - G-INFRA-01 full registration: operator-led + Track I dependencies.
+  - emi-stack PR #101 + #105 (ADR-035 Steps 2 + 5): operator-led merge in emi-stack repo.
+  - Plan Layer 0 Step 0.2 local-only repos rescue: operator-led push.
+
+- Pattern compliance:
+  - Per amendment-B.11.N+2 Статья 2: Claude Code = executor (this commit), Mark = pool owner, Perplexity = coordinator.
+  - Per ADR-025 Session Rules 1..7: §15 Claude-Code-First, §1 OCAT, §4 Best-Decision, §3 Whitelist (read-only diagnostic prior), §6 Scope guard.
+  - Per binding race-mitigation pattern (validated 12×): atomic single-block.
+
+- Closing IL: TBD (Track G fully closed after G-CI-01 + G-CI-02 + G-INFRA-01 full registration completed).
+- Anchors:
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted (CORE PRINCIPLE binding)
+  - PR #170 (cc2059e) + tag checkpoint-2026-05-10-perplexity-management-plan-accepted (Plan binding)
+  - PR #167 + tag checkpoint-2026-05-10-adr029-accepted (G-OPS closure)
+  - PR #172 + tag checkpoint-2026-05-10-adr030-accepted (G-API closure)
+  - PR #174 (62eb789) Phase 5 Step 5.3 mirror backfill
+  - bootstrap canon v3 §10 Phase F3 + F4
+  - MASTER-PLAN-2026-05-05 Track G
+  - ADR-014 + ADR-018 + ADR-029 + ADR-030 + ADR-035
+  - banxe-emi-stack PRs: #102 / #104 / #106 (ADR-029) + #107 / #108 / #109 (ADR-030) + #100 (ADR-035 Step 1)
+  - banxe-emi-stack PRs OPEN: #101 (ADR-035 Step 2) + #105 (ADR-035 Step 5)
+  - SERVICE-MAP.md (evo2 stub registered)
+  - .claude/rules/infrastructure.md (evo1 full + evo2 TBD)
