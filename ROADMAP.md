@@ -888,3 +888,58 @@ Step 3 (Item 8 §0.2 Levels 3-5 + FA-3 + openclo-moa + Factory overseer drafts) 
 ### Pending tags
 - checkpoint-2026-05-XX-architecture-wg-drafts-approved (after WG review of 6 proposals)
 - checkpoint-2026-05-XX-adr-037-factory-overseer-accepted
+
+## Roadmap Block 2026-05-10 — Session Consolidation + Roadmap Correction
+
+> Block opened under I-59. One branch / one commit / one PR / annotated tag `checkpoint-2026-05-10-session-consolidation` after merge.
+> Anchors: IL-OPS-SESSION-CONSOLIDATION-2026-05-10-MORNING.
+
+### Cumulative session 2026-05-09 → 2026-05-10 — DONE
+- 18 PRs merged on main
+- 3 milestone tags applied
+- 5 GAPs autonomously closed + 6 GAPs draft-status-updated
+- Atomic race-mitigation pattern validated 16×
+- Worktree isolation: 19 worktrees zero MEMORY.md leakage
+
+### Phase progression frozen
+- [x] Phase 0 (Bootstrap canon + Unified Canon + Plan acceptance)
+- [x] Phase 5 substantially complete (5.2 + 5.3 DONE; 5.1 + 5.4 operator-blocked)
+- [x] Option A 9-queue autonomous portion (Steps 1+2+3 = Items 5+6+8 drafts)
+- [ ] Phase 6 operator-blocked tracks
+- [ ] Phase 7 Crypto Block + Wave E
+- [ ] Phase 8 Multi-agent Comms + dashboard
+- [ ] Phase 9 QA Matrix + Production Readiness
+- [ ] Phase 10 FCA Authorization + Go-Live
+
+### 6 STANDBY items canonicalized (operator queue)
+- [ ] **P0-immediate** Local-only repos rescue (banxe + banxe-ai-infrastructure)
+- [ ] **P0-critical** MLRO appointment (S1-02 unblock)
+- [ ] **P1** 7 external API keys procurement (Track I)
+- [ ] **P1** amendment-30.O T2-T5 approval (CEO Constitutional)
+- [ ] **P1-Constitutional** §0.2 Levels 1+2 governance choice (CEO)
+- [ ] **P2** emi-stack PRs #98/#101/#105 merge (different repo)
+
+### Roadmap correction binding
+Phases F0-F7 + Sprints S1-S12 (bootstrap canon v3 §10/§11) → corrected unified Phase 0/5/6/7/8/9/10 aligned с MASTER-PLAN Tracks A-I + Plan 8 Layers.
+
+### Sandbox→production transition criteria (6 conditions)
+1. All 6 STANDBY items resolved
+2. FCA pre-application engagement initiated
+3. ADR-027 Safeguarding engine production-ready
+4. Phase 6 operator-blocked tracks resolved
+5. Architecture WG approval of 6 design proposals
+6. CEO Constitutional decisions
+
+### Perplexity canon updates (binding)
+- Atomic single-block PRIMARY for high-activity windows (16× validation)
+- Long-session consolidation IL mandatory (>5 PRs)
+- Option A drafts bounded by amendment-B.11.N+2 Статья 4
+- Sandbox→production transition criteria formalized
+
+### Pending tags
+- checkpoint-2026-05-10-session-consolidation (after this PR merge)
+- checkpoint-2026-05-XX-sandbox-to-production-transition (after 6 STANDBY items resolved)
+- checkpoint-2026-05-XX-fca-pre-application-initiated
+- checkpoint-2026-05-XX-mlro-appointed
+- checkpoint-2026-05-XX-phase6-complete
+- checkpoint-2026-05-XX-phase10-go-live (FINAL)
