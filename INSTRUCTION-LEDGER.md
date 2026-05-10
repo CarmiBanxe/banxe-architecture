@@ -7291,3 +7291,12 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - amendment-30.N + amendment-B.11.N+2 (Constitutional)
   - ADR-025 + ADR-019
   - Operator directive 2026-05-10 14:30 CEST
+
+### IL-ADR-032-ACCEPTED-2026-05-10
+
+- Date: 2026-05-10.
+- Phase (GSD): CLOSE — ADR-032 secret rotation policy Accepted.
+- Status: DONE.
+- Implementation (banxe-emi-stack): Step 1 PR #110 (port + 6 unit), Step 2 PR #111 (wire + 4 integration), Step 3 PR #112 (script + 4 smoke).
+- Result: secret rotation policy implemented and accepted; G-SEC-01 closed.
+
