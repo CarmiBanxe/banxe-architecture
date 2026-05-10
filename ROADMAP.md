@@ -943,3 +943,19 @@ Phases F0-F7 + Sprints S1-S12 (bootstrap canon v3 §10/§11) → corrected unifi
 - checkpoint-2026-05-XX-mlro-appointed
 - checkpoint-2026-05-XX-phase6-complete
 - checkpoint-2026-05-XX-phase10-go-live (FINAL)
+
+## Roadmap Block 2026-05-10 — Russian Language Binding (PROMPT-CANON-PROJECT §13)
+
+> Block opened under I-59. One branch / one commit / one PR / NO tag (binding rule formalization, not milestone per §21).
+> Anchors: IL-OPS-CANON-RUSSIAN-LANGUAGE-BINDING-2026-05-10.
+
+### Binding rules added to canon
+- [x] §13.1 Russian language for operator-facing communication
+- [x] §13.2 English for technical artifacts (commits / IL fields / GAP-IDs / files / code)
+- [x] §13.3 Bilingual approach formalized
+- [x] §13.4 Plain language style (no flattery, no jargon, structured)
+- [x] §13.5 Applicability scope (CEO Moriel Carmi + operator Mark)
+- [x] §13.6 Cross-references to bootstrap canon + ADR-025 + amendments
+
+### Effect
+Binding active for all Perplexity / Comet / Factory / Claude Code sessions с operator Mark на проекте BANXE EMI AI Bank. Bootstrap canon v3 §7 ENHANCED v3 formalized as permanent §13.
