@@ -6998,3 +6998,157 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - banxe-platform ROADMAP (frontend Next.js 15 — Level 4 dashboard host)
   - agents/swarms/accounting-swarm.yaml + monthly-fca-return.yaml (existing Ruflo swarm patterns)
   - Operator directive 2026-05-10 02:00 CEST sandbox status
+
+### IL-OPS-SESSION-CONSOLIDATION-2026-05-10-MORNING
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — long session consolidation + roadmap correction + Perplexity canon update
+- Status: BINDING — operator directive 2026-05-10 10:00 CEST "зафиксировать положение дел как результат, откорректировать roadmap и канон для Perplexity, идти дальше"
+- Priority: P1 (governance + transition gate)
+- Scope: fixates 18-PR cumulative session 2026-05-09 → 2026-05-10 final state; corrects roadmap aligning bootstrap canon v3 §10/§11 с MASTER-PLAN Tracks + Plan 8 Layers; updates Perplexity binding rules per session learnings; defines sandbox→production transition criteria.
+
+- DONE STATE summary (frozen baseline):
+  - 18 PRs merged on origin/main 2026-05-09 → 2026-05-10
+  - 3 milestone tags: checkpoint-2026-05-09-canon-section-0-fixation + checkpoint-2026-05-10-canon-unified-accepted + checkpoint-2026-05-10-perplexity-management-plan-accepted
+  - 5 GAPs autonomously closed (G-FACTORY-EVO2-SSH-ACCESS-LOST + G-PROJECT-SECTION-0-COMPLIANCE-AUDIT-PENDING + G-FACTORY-DOCUMENTATION-PATH-DRIFT + G-FACTORY-CANON-FILES-DUPLICATION + G-FACTORY-DISTRIBUTED-INFERENCE-NOT-IN-CANON)
+  - 6 GAPs draft-status-updated (Option A): G-GUARD-03 REFRAMED + G-GUARD-04 ROLLOUT-PLAN-DRAFTED + G-CANON-AUTONOMY V-14..V-17 specs + G-CANON-15 §15 prompt spec + G-CI-01 smoke-gate workflow + G-CI-02 branch-protection migration + G-INFRA-01 evo2 full registration map + G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS + G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO Option B + G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA + G-FACTORY-OVERSEER §0.4 design + FA-3 Ruflo dual-role reconciliation
+  - Atomic single-block race-mitigation pattern validated 16× (binding empirical evidence)
+  - Cherry-pick abort+redo: 3× (PR #149→#153 / #156→#158 / #173→#174)
+  - Independent verify+restore: 16 instances 100% success
+  - Branch protection restored: 16 instances no permanent exposure
+  - Worktree isolation: 19 worktrees zero MEMORY.md leakage (Sub-pattern C closure permanent)
+  - GAP statistics on main: 60 open / 71 closed / 3 partial (134 total)
+
+- Phase progression frozen state:
+  - Phase 0 (Bootstrap canon v3 + Unified Canon + Plan acceptance): ✅ DONE
+  - Phase 5 (autonomous track): ✅ SUBSTANTIALLY COMPLETE (Steps 5.2 + 5.3 DONE; 5.1 + 5.4 operator-blocked)
+  - Option A 9-queue (autonomous canon-edit drafts portion): ✅ DONE (Steps 1+2+3 = Items 5+6+8 drafts merged)
+  - Phases 6-10: ⏸ STANDBY pending operator action
+
+- 6 STANDBY items canonicalized as explicit operator queue (re-prioritized by urgency):
+  P0-immediate (data loss prevention):
+    1. Local-only repos rescue — push banxe + banxe-ai-infrastructure to remote (one git push command, operator-led)
+  P0-critical (FCA authorization blocker):
+    2. MLRO appointment (S1-02 unblock) — UK interim MLRO procurement OR verify Sarah Mitchell status; FCA auth impossible without MLRO per ORG-STRUCTURE.md + COMPLIANCE-MATRIX
+  P1 (production unblock):
+    3. 7 external API keys procurement (Track I) — Modulr / Companies House / OpenCorporates / Sardine.ai / Telegram bot / Marble / Jube; CEO sign-off for Modulr (BT-001); commercial procurement
+    4. amendment-30.O T2-T5 approval (CEO Constitutional) — Perplexity capability expansion (T2 Drafter + T3 Cross-Repo + T4 Compliance Advisor + T5 Decision Triage)
+  P1-Constitutional (most critical CEO decision):
+    5. §0.2 Levels 1+2 governance choice — bootstrap canon §0.2 "100% AI без duplicate" vs FCA SM&CR pattern (human doubles); 3 options (reformulate / reform / hybrid)
+  P2 (cross-repo coordination):
+    6. emi-stack PRs #98/#101/#105 merge — operator-led merge in different repo; after merge mirror backfill 3 deferred items per Phase 5 Step 5.3
+
+- Roadmap correction (aligning multiple canon sources):
+  Previous structure (bootstrap canon v3 §10/§11): Phases F0-F7 + Sprints S1-S12
+  Corrected unified structure (this IL):
+    - Phase 0: Bootstrap canon + Unified Canon + Plan acceptance — ✅ DONE
+    - Phase 5: Sprint S1-S5 autonomous track (substantially complete)
+    - Phase 6: Operator-blocked tracks (B/D/E/F + Track A items + Track G remaining + Architecture WG approvals)
+    - Phase 7: Crypto Block + ADR-036 FATF Travel Rule + CryptoCompliancePort + Wave E process extraction + Neuronext + TomPay + Crypto AML
+    - Phase 8: Multi-agent Comms + real-time dashboard (ClickHouse + Superset/Metabase + Telegram bot + FCA Section 4 + MI report)
+    - Phase 9: QA matrix + Production Readiness (E2E + payment regression + compliance playbooks + AI benchmarks + load testing + Track I cutover + DR/failover + monitoring + docs audit + go-live checklist)
+    - Phase 10: FCA EMI Authorization Submission + Go-Live (SMF complete + Internal Audit + Board + RegData + safeguarding evidence + MLRO report + AML policy + business plan + multi-party sign-off + customer data migration + live operations)
+  Sequence binding: Tracks A/G partial DONE → 6 STANDBY operator items resolution → Phase 6 unblock → Phase 7-10 sequential
+
+- Perplexity canon updates (binding for future sessions):
+  - Update §13 cumulative learnings: "Atomic single-block race-mitigation pattern is PRIMARY for high-activity canon-edit windows (16× empirical validation 2026-05-09 → 2026-05-10). Two-step pattern (PR #146/#148 trap-failure learning) remains valid for low-activity windows only."
+  - Update §27 cheat sheet: PROMOTE atomic single-block from "partially superseded" to "PRIMARY for high-activity canon work".
+  - Add new rule: "Long-session consolidation IL mandatory at end of multi-PR sessions (>5 PRs) per amendment-30.N transparency principle. Consolidation IL must include DONE state baseline + STANDBY items canonicalization + roadmap correction if drift detected."
+  - Add new rule: "Option A scope (autonomous canon-edit drafts under sandbox status) bounded by amendment-B.11.N+2 Статья 4 — drafts only, deployment standby per sandbox declaration. Production cutover requires explicit operator transition directive."
+  - Add new rule: "Sandbox→production transition criteria require 6 STANDBY items resolution + FCA pre-application engagement + MLRO appointed + Safeguarding engine production-ready. Until all 6 satisfied, project remains in sandbox per operator directive 2026-05-10 02:00 CEST."
+
+- Sandbox→production transition criteria (formalized):
+  Required for transition out of sandbox status:
+    1. All 6 STANDBY items resolved (rescue + MLRO + 7 keys + amendment-30.O + §0.2 Levels 1+2 + emi-stack PRs)
+    2. FCA pre-application engagement initiated
+    3. ADR-027 Safeguarding engine production-ready (ClickHouse replication + pgAudit WAL archival per Track D)
+    4. Phase 6 operator-blocked tracks resolved (Track B/D/E/F + Track A items + Track G remaining)
+    5. Architecture WG approval of 6 design proposals (Step 3 Item 8 drafts)
+    6. CEO Constitutional decisions (§0.2 Levels 1+2 governance + amendment-30.O + ADR-037 Factory overseer)
+  Until criteria met: project remains in sandbox per operator directive 2026-05-10 02:00 CEST "проект пока является 'песочницей'".
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor (this commit), Mark = pool owner, Perplexity = coordinator drafting consolidation
+  - amendment-30.N §30.N.5: governance > operational; consolidation IL preserves all canon source authority
+  - ADR-025 Session Rules 1..7
+  - Plan Layer 1 implicit T2 (Canon Synthesis Drafter)
+  - Binding race-mitigation pattern (validated 16×, this commit will be 17×)
+
+- Closing IL: TBD (this consolidation closes when Phase 10 production launch achieved OR project formally archived).
+- Anchors:
+  - All 18 session PRs (#146 + #148 + #153 + #154 + #158 + #159 + #160 + #162 + #164 + #165 + #166 + #168 + #170 + #174 + #175 + #176 + #177 + #178)
+  - 3 milestone tags
+  - bootstrap canon v3 §0..§30 (operator-supplied)
+  - Unified Canon (PR #168 ACCEPTED) — canon/CANON.md v1.0 + PROMPT-CANON-PROJECT.md + PROMPT-CANON-DEVELOPER.md
+  - Perplexity Management Improvement Plan (PR #170 ACCEPTED) — 8 Layers
+  - Section I.F Claude Code Session Canon (commit 1b2f224 — 5th layer ABSOLUTE MetaClaw-sourced)
+  - 38 ADRs + 38 Invariants + HITL-MATRIX 17 gates
+  - amendment-30.N + amendment-B.11.N+2 (Constitutional)
+  - MASTER-PLAN-2026-05-05 9 Tracks A-I
+  - BANXE-RAR-CATEGORY-MAP 5 Waves
+  - COMPLIANCE-MATRIX (35% ТЗ coverage baseline)
+  - 26 agent passports + 11 actors
+  - Operator directive 2026-05-10 02:00 CEST sandbox status + 10:00 CEST consolidation directive
+
+### IL-MIRROR-PR-168-UNIFIED-CANON-ACCEPTED-PLUS-SECTION-IF-DEVIATION-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — formal IL mirror entry для PR #168 ACCEPTED + Section I.F deviation acknowledgement
+- Status: integrated
+- Priority: P0 (governance audit trail completion per IL-LEDGER-NORM-001)
+- parent-cycle: cycle-013-unified-canon-acceptance (implicit; bootstrap canon v3 §0 acceptance + Plan acceptance + Phase 5 + Option A unified scope)
+- amendment-ref: amendment-30.N (Perplexity Relay Protocol) + amendment-B.11.N+2 (Execution Protocol Formalization) — both ACTIVE per cycle-012
+- source: operator directive 2026-05-10 10:00 CEST "зафиксировать положение дел как результат" + bootstrap canon v3 (operator-supplied 2026-05-09)
+- scope: closes governance audit trail gap для (a) PR #168 ACCEPTED merge без journal entry + (b) commit 1b2f224 Section I.F 5th layer added directly to main без PR (deviation per cycle-012 amendment-B.11.N+2 Статья 5 commit discipline).
+
+- Event 1 — PR #168 Unified Canon ACCEPTED:
+  - PR: #168 https://github.com/CarmiBanxe/banxe-architecture/pull/168
+  - Title: docs: unified canon + roadmap to full EMI BANXE AI BANK realization [ACCEPTED]
+  - Status: PROPOSED → ACCEPTED 2026-05-09T23:38:46Z
+  - Merge commit: be2ab59 (squash)
+  - Tag applied: checkpoint-2026-05-10-canon-unified-accepted (annotated tag pointing to be2ab59)
+  - Operator approval: 100% per directive 2026-05-10 01:00 CEST "принимаю твой план на 100%. Зафиксируй его..."
+  - File added: docs/sessions/SESSION-2026-05-10-UNIFIED-CANON-ROADMAP.md (+155 lines)
+  - Bypass-window applied (per amendment §4): snapshot contexts → PATCH contexts=[] → CodeRabbit SUCCESS → squash merge → INDEPENDENT verify+restore (validated atomic single-block pattern, race-mitigation 11th instance).
+
+- Event 2 — Section I.F deviation:
+  - Commit: 1b2f224
+  - Title: docs(unified-canon): append Section I.F Claude Code Session Canon (5th layer, ABSOLUTE, MetaClaw-sourced)
+  - Branch path: docs/unified-canon-roadmap-2026-05-10 → main directly (no separate PR, no review label)
+  - Deviation classification: per amendment-B.11.N+2 Статья 5 (commit-message discipline) + amendment-30.N §30.N.7 (cycle classification) — Section I.F appended directly to main без separate PR violates one-branch/one-PR procedure (I-59 roadmap-block).
+  - Substantive correctness: Section I.F content (5th canon layer ABSOLUTE, MetaClaw-sourced) is canon-aligned per cycle-012 amendment Статья 1 scope (governance content); deviation is procedural only (process violation), not substantive.
+  - Mitigation: this IL entry serves as retroactive audit trail — equivalent informational coverage без separate PR backfill. Future cycle should use one-branch/one-PR procedure per I-59.
+  - Anchor: commit 1b2f224 author Moriel Carmi; date 2026-05-10 between be2ab59 (PR #168 merge) and PR #169 first plan PR; specific timestamp captured in git log.
+
+- verification (sha256-anchors of actual canon files at this commit):
+  - docs/canon/CANON.md: FILE-NOT-PRESENT
+  - PROMPT-CANON-PROJECT.md: c997315d9770c744bded7398d045b218a91a2b8289f4044d945e71e5d93fa69f
+  - PROMPT-CANON-DEVELOPER.md: cf6aa8be83414ffd7adb526c1d09de01e36a0fab79a06ed5c466c352ba03e461
+  - INSTRUCTION-LEDGER.md (pre-this-block): 937ff33ea32f694b6b9f1304a5a9bfee8d5cb861d9568ad5b63fe4f0895c46f7
+  - ROADMAP.md: f43460d6d4bf96b7df4c2e0d81cad08d965b84c00485117e36b442307b08a0ce
+  - INVARIANTS.md: 428d08835a8fd91d5bd8bdd403cc5588ef278179681d526932a1f6c96955973b
+  - HITL-MATRIX.yaml: 7f3fff13f58a96eb0ad8ac2eb79297166f2a3f9405c145ecd7792ce9e6c2424d
+
+- deviations:
+  - Procedural: commit 1b2f224 Section I.F merged directly to main без separate PR (violates one-branch/one-PR per I-59 + cycle-012 amendment Статья 2). Mitigation = retroactive IL audit entry (this block).
+  - No substantive deviation: Section I.F content canon-aligned per cycle-012 scope.
+
+- privileged-ops:
+  - git tag: EXECUTED (checkpoint-2026-05-10-canon-unified-accepted on be2ab59)
+  - gh release: NOT EXECUTED
+  - git push: EXECUTED (PR #168 + tag pushed)
+
+- successor: IL-OPS-PERPLEXITY-MANAGEMENT-IMPROVEMENT-PLAN-ACCEPTED-2026-05-10 (PR #170 cc2059e + tag checkpoint-2026-05-10-perplexity-management-plan-accepted) extends Unified Canon binding с 8-Layer Plan acceptance.
+
+- notes:
+  Closes journal entries Item 1 (PR #168 IL mirror) + Item 4 (Section I.F retroactive audit trail) per operator scope 2026-05-10 10:00 CEST "1+4 одной операцией". Items 2 (banxe-emi-stack mirror) + 3 (sha256 anchors expanded) remain for future steps. After this IL: Factory + Perplexity + Operator can verify Unified Canon binding both via git tag chain AND via journal entry per IL-LEDGER-NORM-001.
+
+- anchors:
+  - bootstrap canon v3 §0..§30 (operator-supplied)
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted
+  - commit 1b2f224 (Section I.F deviation acknowledgment)
+  - amendment-30.N + amendment-B.11.N+2
+  - IL-LEDGER-NORM-001 (journal append-only contract)
+  - I-59 (roadmap-block procedure)
+  - canon/CANON.md v1.0 + PROMPT-CANON-PROJECT.md + PROMPT-CANON-DEVELOPER.md
+  - Operator directive 2026-05-10 10:00 CEST "1+4 одной операцией"
