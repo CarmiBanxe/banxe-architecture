@@ -6516,3 +6516,36 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Gaps closed: G-OPS-01 (DONE), G-OPS-02 (DONE).
 - ADR status: Proposed → Accepted.
 - Anchors: ADR-029, G-OPS-01, G-OPS-02, banxe-emi-stack PRs #102/#104/#106.
+
+### IL-OPS-PERPLEXITY-MANAGEMENT-IMPROVEMENT-PLAN-ACCEPTED-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — Perplexity Management Improvement Plan formal acceptance + Phase 5 kickoff
+- Status: BINDING — operator approval 100% received 2026-05-10 01:00 CEST
+- Priority: P0 (governance + roadmap)
+- Scope: fixates 8-Layer Perplexity Management Improvement Plan; references ACCEPTED Unified Canon (PR #168 commit be2ab59 + tag checkpoint-2026-05-10-canon-unified-accepted); opens Phase 5 autonomous track.
+
+- Operator approval: directive "принимаю твой план на 100%. Зафиксируй его, закомить и включи в канон для перплексити и в роад мап. Начинаем далее действовать по спринтам твоего подготовленного роад мапа под каноном для перплексити. Работаем как фабрика над проектом." at 2026-05-10 01:00 CEST by Mark (operator/CEO Moriel Carmi).
+
+- 8 Layers binding:
+  L0 Canon promotion + rescue: Step 0.1 PR #168 ACCEPTED DONE; Step 0.2 local-only repos rescue PENDING (operator-led); Step 0.3 mirror backfill PENDING.
+  L1 Perplexity rights expansion (amendment-30.O): T1 current; T2 Canon Synthesis Drafter NEW; T3 Cross-Repo Coordinator NEW; T4 Compliance Advisor NEW; T5 Decision Triage NEW; T6 Privileged Operator gated. T2-T5 strongly recommended; T6 CEO constitutional.
+  L2 Multi-CC orchestration: two-loop sync formalization; SSIC formalization (I-68 PROPOSED→ACCEPTED); cc-coordinator agent на evo1.
+  L3 Decision queue rebuild: 11→7 real burden via Triage Matrix (1 Constitutional + 1 Regulatory + 5 Architectural + 0 Operational + 1 Routine).
+  L4 External API keys procurement (7 items P0 operator-led): Modulr, Companies House, OpenCorporates, Sardine.ai, Telegram bot, Marble, Jube.
+  L5 Compliance acceleration P0: MLRO appointment (S1-02 unblock) + Safeguarding engine (ADR-027) + Phase 6 tracks B/D/E/F/H/I.
+  L6 Smart process migration NOT code per CORE PRINCIPLE (PR #168 binding): BANXE.RAR процессы only; Sprint 10 dobor PR #157 confirmed (0 PASS / 22 REWRITE-reference / rest REJECT); existing 27 services = MAIN target; Waves A-E = process extraction.
+  L7 Production transition (Phases 8-10): multi-agent comms + dashboard / QA matrix + production ready / FCA EMI authorisation submission + go-live.
+  L8 Continuous monitoring post-launch: Factory overseer ADR-019 deployed; ClickHouse 5y per I-08; two-loop pre-commit hook; HITL metrics; quarterly MLRO+CEO+Board.
+
+- Phase 5 kickoff (autonomous):
+  Step 5.1 Track A close (per MASTER-PLAN-2026-05-05)
+  Step 5.2 Track G close
+  Step 5.3 Two-loop mirror backfill 8 PRs Sprint 6-10 (#94, #96, #97, #98, #100, #101, #105, #157) → architecture INSTRUCTION-LEDGER.md
+  Step 5.4 Local-only repos rescue (operator-led)
+  Sequence: 5.3 first, 5.1+5.2 second, 5.4 last.
+
+- Pattern compliance: amendment-B.11.N+2 Статья 2 (Claude Code executor + Mark pool owner + Perplexity coordinator); amendment-30.N §30.N.5 (governance > operational); ADR-025 Session Rules 1..7; binding race-mitigation pattern (validated 10×).
+
+- Closing IL: TBD (Phase 10 production launch — ultimate closure).
+- Anchors: PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted; bootstrap canon v3 §0..§30; canon/CANON.md v1.0; PROMPT-CANON-PROJECT.md; PROMPT-CANON-DEVELOPER.md; amendment-30.N + amendment-B.11.N+2; ADR-014..ADR-038 + ADR-074..076; INVARIANTS I-01..I-37; HITL-MATRIX 17 gates; MASTER-PLAN-2026-05-05 Tracks A-I; BANXE-RAR-CATEGORY-MAP 5 Waves; COMPLIANCE-MATRIX; Session Rules 1..7; I-37 PROPOSED + I-59 + I-68.
