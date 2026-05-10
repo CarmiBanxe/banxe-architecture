@@ -6871,3 +6871,130 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - banxe-emi-stack .github/workflows/quality-gate.yml (existing) + smoke-gate.yml (proposed)
   - SERVICE-MAP.md (evo2 stub) + .claude/rules/infrastructure.md (evo1 full + evo2 TBD)
   - banxe-emi-stack PRs OPEN: #101 (ADR-035 Step 2 mock workflow) + #105 (ADR-035 Step 5 audit signal)
+
+### IL-OPS-STEP3-ITEM8-ARCHITECTURE-WG-DESIGN-DRAFTS-2026-05-10
+
+- Date: 2026-05-10 (CEST)
+- Phase (GSD): CANON — Step 3 Item 8 Architecture WG design drafts (sandbox status)
+- Status: BINDING-DRAFTS — autonomous canon-edit drafts; design approval требует Architecture WG + CEO Constitutional review
+- Priority: P2 (canon synthesis per Plan Layer 1 implicit T2 + sandbox status; 1 P0 GAP draft + 2 P1 + 2 P2 + 1 NEW Level 4 design)
+- Scope: drafts 6 Architecture WG design proposals (§0.2 Level 3 SMF Heads AI duplicate framework + Level 4 CEO governance dashboard + Level 5 AI MLRO autonomous + FA-3 Ruflo reconciliation + openclo-moa subagent + Factory overseer §0.4) for Architecture WG + CEO review.
+
+- Operator authorization: directive 2026-05-10 02:00 CEST sandbox status; predecessor IL Step 1 (PR #176 b3b3804) + Step 2 (PR #177 0f3928b).
+
+- Design proposal 1 — §0.2 Level 3 SMF Heads AI duplicate framework:
+  Target GAP: G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING (P1).
+  Existing pattern: 6 SMF holders (CEO/MLRO/CRO/CFO/COO/CTO) per JOB-DESCRIPTIONS.md. Sub-Heads уже have AI agent partners (Head of Treasury → PaymentRouterAgent, Head of FP&A → Budget+Forecast+Variance+Scenario, Head of Reg Reporting → 4 agents, Head of Customer Support → CustomerLifecycle+TicketRouting+CustomerSupport+Escalation).
+  Design draft AI duplicate framework для SMF C-suite Heads:
+    - **CRO-AI-Duplicate** (paired with CRO SMF4 TBC): backbone llama3.3:70b; functions = AI risk assessment review + threshold approval review + EU AI Act Art.22 oversight; HITL gate = override authority human CRO retains за всеми decisions; audit log ClickHouse 5y.
+    - **CFO-AI-Duplicate** (David Goldstein SMF2): backbone llama3.3:70b; functions = financial controlling + treasury + FP&A swarm coordination (per agents/swarms/accounting-swarm.yaml); HITL gate = human CFO sign-off per FCA RegData submissions.
+    - **COO-AI-Duplicate** (SMF24 TBC): backbone qwen3.5:35b; functions = operations + safeguarding shortfall alert + payment ops review; HITL gate = human COO override authority.
+    - **CTO-AI-Duplicate** (Oleg @p314pm SMF26): backbone qwen3-coder; functions = production deploy review + AI model update review + security incident; HITL gate = human CTO sign-off per ADR-019 production gates.
+  Implementation pattern: extend agents/passports/ с 4 new YAML files (cro_duplicate_agent.yaml, cfo_duplicate_agent.yaml, coo_duplicate_agent.yaml, cto_duplicate_agent.yaml); routing через project-mid LiteLLM alias per ADR-018; audit log ClickHouse table guardian_audit_smf_duplicates 5y TTL.
+  Status proposal: NOT_STARTED → DESIGN-DRAFTED-PENDING-WG-REVIEW.
+
+- Design proposal 2 — §0.2 Level 4 CEO governance dashboard:
+  Target: NEW design (no explicit GAP).
+  Per Plan Layer 7 reference: governance UI = banxe-dashboard repo + banxe-platform/n8n.
+  Design draft CEO governance dashboard:
+    - Frontend: banxe-platform Next.js 15 (per banxe-platform ROADMAP Phase 1-4 COMPLETE).
+    - Routes: /dashboard/ceo (auth gate via Keycloak realm banxe-emi role=CEO).
+    - Widgets:
+      (a) Pending HITL decisions counter per HITL-MATRIX 17 gates (real-time WebSocket from banxe-emi-stack)
+      (b) SMF status board (SMF1-SMF26 fill state)
+      (c) FCA returns deadlines (FIN060/RegData/SAR statistics) с countdown timers
+      (d) ADR pending acceptance queue (ADR-031/036/etc proposed)
+      (e) Operator action queue (Plan Layer 1-8 items pending)
+      (f) Production health (services status from evo1+evo2 monitoring)
+    - Data source: ClickHouse OLAP queries via FastAPI gateway endpoint /api/v1/governance/dashboard.
+    - Audit: each CEO sign-off action logged to ClickHouse safeguarding_audit per I-24.
+  Status proposal: NEW → DESIGN-DRAFTED-PENDING-WG-REVIEW.
+
+- Design proposal 3 — §0.2 Level 5 AI MLRO autonomous + HITL Gates §6 amendment:
+  Target GAP: G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING (P0).
+  Constitutional conflict identified: §0.2 Level 5 says "AI MLRO NOT subordinate to CEO"; HITL-MATRIX gates HITL-004 (Sanctions Reversal MLRO+CEO required) + HITL-007 (PEP Onboarding MLRO+CEO required) requires BOTH MLRO + CEO sign-off. Strict §0.2 reading would remove CEO from these gates.
+  Design draft AI MLRO autonomous (3 options):
+    - **Option A — Strict §0.2 (CEO removed from AML co-sign):** AI MLRO sole authority for SAR / Sanctions Reversal / PEP. HITL Gates §6 amendment removes "MLRO + CEO" co-sign for HITL-001/004/007. Risk: CEO loses operational AML visibility; FCA precedent unclear. Legal review mandatory.
+    - **Option B — Hybrid (preserve co-sign, AI MLRO handles primary decision):** AI MLRO autonomous primary decision, human MLRO + CEO co-sign formality (rubber-stamp pattern). Preserves §0.2 spirit while maintaining FCA reporting structure.
+    - **Option C — Reject §0.2 Level 5 strict reading:** keep human MLRO + AI subagents + MLRO+CEO co-sign (status quo per HITL-MATRIX). §0.2 amended to allow co-sign on AML decisions.
+  Recommendation: Option B (hybrid) — reduces regulatory risk, preserves FCA precedent, satisfies §0.2 functionality.
+  Implementation pattern: agents/passports/mlro_autonomous_agent.yaml (qwen3:235b backbone via project-reason LiteLLM alias); Ruflo MANDATORY chain integration per §0.5; ARL handshake for regulated routes; audit log ClickHouse table guardian_audit_mlro 5y TTL with FCA Connect / NCA / UKFIU integration markers.
+  Legal review required: FCA precedent на AI MLRO authority + GDPR Art. 22 automated decision-making + EU AI Act Art. 14 HITL.
+  Status proposal: NOT_STARTED → DESIGN-DRAFTED-OPTION-B-RECOMMENDED-PENDING-WG-LEGAL-REVIEW.
+
+- Design proposal 4 — FA-3 Ruflo reconciliation:
+  Target: existing canon FA-3 reclassified Ruflo as "internal review agent" (per ops/phase-f branch); §0.5 + §1.bis say Ruflo MANDATORY for regulated routes (request → ARL → Ruflo → target → response).
+  Reconciliation analysis: existing canon evidence shows Ruflo function = audit/review (not Layer). Examples:
+    - "Ruflo: review I-28 + CTX-06 boundary + safeguarding flow → APPROVED" (IL-006-review)
+    - "Ruflo агенты (.claude/agents/): reconciliation-agent.md + reporting-agent.md"
+    - "OpenClaw/Ruflo swarm: hierarchical topology, CFO/Controller coordinator"
+  Both interpretations compatible:
+    - **Function side**: Ruflo = review/audit role across multiple swarms (FA-3 confirms).
+    - **Routing side**: For regulated routes (project-mid/heavy/reason), Ruflo serves as MANDATORY review checkpoint between LiteLLM ARL and target agent (§0.5 + §1.bis confirm).
+  Reconciliation draft: Ruflo classified as "Internal Review Agent + Regulated Route Checkpoint" (dual-role, NOT contradictory). Routing chain for regulated routes: client → LiteLLM v2 (Legion :4000) → ARL (Anti-Run-Loop check) → Ruflo (review/audit checkpoint per FA-3 reclassification) → target agent (project-* aliases) → response (with Ruflo audit metadata appended). Both §0.5 and FA-3 satisfied.
+  Status proposal: CONFLICT → RECONCILED-DUAL-ROLE-DRAFTED-PENDING-WG-CONFIRMATION.
+
+- Design proposal 5 — openclo-moa subagent design:
+  Target GAP: G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING (P2).
+  Per bootstrap canon §5: "openclo-moa — mixture-of-agents для project layer" (high-level only).
+  Design draft openclo-moa.md (mixture-of-agents subagent для ~/.claude/agents/):
+    - Purpose: orchestrate mixture-of-agents pattern для project layer reasoning tasks (multi-agent consensus, anti-hallucination через diverse model voting, complex regulatory analysis).
+    - Routing rules: project-mid (qwen3.5:35b) + project-heavy (large/glm-4.5-air) + project-reason (qwen3:235b RPC) — ensemble call с majority vote.
+    - Trigger: tasks tagged "complex-regulatory" / "multi-source-synthesis" / "high-stakes-decision".
+    - Ruflo MANDATORY chain integration per §0.5 (each MoA invocation passes through Ruflo review checkpoint).
+    - ARL handshake: each component agent routed via Anti-Run-Loop check.
+    - Response aggregation: weighted voting (project-reason 50% + project-heavy 30% + project-mid 20%); divergence > 30% triggers human escalation per HITL Gates.
+    - Audit log: ClickHouse table guardian_audit_openclo_moa 5y TTL + Guardian factory verdict on each invocation.
+  Implementation pattern: ~/.claude/agents/openclo-moa.md (similar format к existing controller.md / inspector-agent.md / safeguarding-agent.md); deploy на Legion per Sprint S3 F2.3 partial closure pattern.
+  Status proposal: PENDING → DESIGN-DRAFTED-PENDING-WG-IMPLEMENTATION.
+
+- Design proposal 6 — Factory overseer §0.4 design:
+  Target GAP: G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED (P1).
+  Existing canon: ADR-019 (Factory + Project Guardian) уже defines two-family Guardian (banxe-guardian-factory.service evo1:8195 + banxe-guardian-project.service evo1:8196 — both ACTIVE per audit). §0.4 factory overseer additional layer выше Guardian.
+  Design draft factory overseer agent §0.4 (super-Guardian):
+    - Purpose: continuous monitoring of §0.1+§0.2+§0.3 immutable canon compliance (above Guardian rule-level enforcement).
+    - Functions:
+      (a) §0.1 monitoring: factory ↔ project layer crossing detection (factory-agent calling project-node OR vice versa).
+      (b) §0.2 monitoring: Level 1-5 hierarchy violations (e.g., AI agent signing decision out of scope).
+      (c) §0.3 monitoring: sandbox→production gate violations (real customer data routed before 100% completion).
+      (d) §0.4 self-monitoring: factory overseer's own canon compliance (avoid recursion).
+      (e) §0.5 monitoring: distribution discipline (cross-layer без LiteLLM gateway / regulated route без Ruflo).
+    - 100% completion KPI: % of §0.2 roles deployed (target: all 5 levels operational); current Sprint S2 audit baseline = ~40%.
+    - Alert routing: AlertManager + Telegram bot (per ADR-033) + email to CEO + MLRO + CTIO.
+    - Audit log: ClickHouse table guardian_audit_overseer 5y TTL.
+    - Block authority: factory overseer может veto Guardian PASS verdicts если §0 immutable rules violated; operator override required per ADR-019 §6.4 (label = factory-overseer-override-approved).
+    - Routing pattern: separate systemd unit banxe-factory-overseer.service evo1:8197 (port allocation за Guardian factory:8195 + project:8196); backbone qwen3:235b RPC via project-reason; daily integrity drill cron per ADR-019 §6.5.
+  Implementation pattern: extends ADR-019 architecture; new ADR-037 (Factory Overseer §0.4 super-Guardian) proposal authored separately.
+  Status proposal: NOT_STARTED → DESIGN-DRAFTED-PENDING-WG-REVIEW-AND-ADR-037-PROPOSAL.
+
+- Item 8 Architecture WG overall status post-this-commit:
+  - §0.2 Level 3 SMF Heads AI duplicate (G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING P1): DESIGN-DRAFTED-PENDING-WG-REVIEW
+  - §0.2 Level 4 CEO governance dashboard (NEW): DESIGN-DRAFTED-PENDING-WG-REVIEW
+  - §0.2 Level 5 AI MLRO autonomous (G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING P0): DESIGN-DRAFTED-OPTION-B-RECOMMENDED-PENDING-WG-LEGAL-REVIEW
+  - FA-3 Ruflo reconciliation: RECONCILED-DUAL-ROLE-DRAFTED-PENDING-WG-CONFIRMATION
+  - openclo-moa subagent (G-FACTORY-CLAUDE-SUBAGENT-OPENCLO-MOA-MISSING P2): DESIGN-DRAFTED-PENDING-WG-IMPLEMENTATION
+  - Factory overseer §0.4 (G-FACTORY-OVERSEER-AGENT-NOT-DEPLOYED P1): DESIGN-DRAFTED-PENDING-WG-REVIEW-AND-ADR-037-PROPOSAL
+  Item 8 100% drafted; deployment standby per sandbox.
+
+- Sandbox status acknowledgement: per operator directive 2026-05-10 02:00 CEST drafts safe to commit; Architecture WG review + CEO Constitutional decision (§0.2 Levels 1+2 governance choice — separate item 9 standby) + Legal review for AI MLRO required.
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor, Mark = pool owner, Perplexity = coordinator drafting.
+  - amendment-30.N §30.N.5: governance > operational; drafts respect §0.2 + ADR-019 + ADR-025 + ADR-018 + HITL-MATRIX + JOB-DESCRIPTIONS.
+  - Plan Layer 1 implicit T2 (Canon Synthesis Drafter).
+  - Binding race-mitigation pattern (validated 15×).
+
+- Closing IL: TBD (each design proposal closed individually after WG approval + implementation + verification).
+- Anchors:
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted
+  - PR #170 (cc2059e) + tag checkpoint-2026-05-10-perplexity-management-plan-accepted
+  - PR #176 (b3b3804) Step 1 Track A drafts + PR #177 (0f3928b) Step 2 Track G remaining drafts
+  - bootstrap canon v3 §0.2 + §0.4 + §0.5 + §1.bis
+  - ADR-018 (5-layer AI compute) + ADR-019 (Guardian two-family) + ADR-020 (Memory governance) + ADR-025 (Agent Interaction Canon)
+  - HITL-MATRIX (17 gates: HITL-001 SAR / HITL-004 Sanctions Reversal / HITL-007 PEP)
+  - JOB-DESCRIPTIONS.md (6 SMF holders + 32 agents) + ORG-STRUCTURE.md + DEPARTMENT-MAP.md + RELATIONSHIP-TREE.md
+  - INVARIANTS I-08 + I-24 + I-27 (HITL AI proposes only) + I-32 + I-33
+  - MASTER-PLAN-2026-05-05 Track H Phase 5
+  - banxe-platform ROADMAP (frontend Next.js 15 — Level 4 dashboard host)
+  - agents/swarms/accounting-swarm.yaml + monthly-fca-return.yaml (existing Ruflo swarm patterns)
+  - Operator directive 2026-05-10 02:00 CEST sandbox status
