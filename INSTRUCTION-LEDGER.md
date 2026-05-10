@@ -6516,3 +6516,12 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Gaps closed: G-OPS-01 (DONE), G-OPS-02 (DONE).
 - ADR status: Proposed → Accepted.
 - Anchors: ADR-029, G-OPS-01, G-OPS-02, banxe-emi-stack PRs #102/#104/#106.
+
+### IL-ADR-030-ACCEPTED-2026-05-10
+
+- Date: 2026-05-10.
+- Phase (GSD): CLOSE — ADR-030 auth rate-limit policy Accepted.
+- Status: DONE.
+- Implementation (banxe-emi-stack): Step 1 PR #107 (port + 6 unit), Step 2 PR #108 (wire + 6 integration), Step 3 PR #109 (5 smoke). Total 17 tests.
+- Gaps closed: G-API-01, G-API-02.
+- Anchors: ADR-030, G-API-01, G-API-02, banxe-emi-stack PRs #107/#108/#109.

@@ -1,6 +1,7 @@
 # ADR-030 — Auth Surface Rate-Limit Policy
 
-**Status:** Proposed (2026-05-05)
+**Status:** Accepted (2026-05-10)
+**Date Accepted:** 2026-05-10
 **Author:** Architecture WG / Security Lead
 **Closes:** G-API-01 (no rate limiting on /auth/* endpoints), G-API-02 (rate-limit coverage tests absent), V-12 (HANDOFF-2026-05-04)
 **Linked:** ADR-017 (KC realm bruteForceProtected), ADR-027 (audit-trail durability — 429 event buffering), INVARIANTS I-32/I-33/I-34/I-35/I-36, MASTER-PLAN Track A4, OWASP ASVS 2.2.1, PSD2 RTS SCA Art.4
@@ -292,5 +293,16 @@ at the application layer.
 
 ## Decision
 
-**Pending** — operator acceptance required after review of the Recommendation.
-Implementation begins only after operator confirms chosen option and phasing.
+**Accepted** (2026-05-10) — Redis-backed sliding window rate limiter on `/auth/login`
+and `/auth/token/refresh` with per-IP/per-token-prefix dimensions, configurable
+max_attempts/window/lockout via env vars.
+
+---
+
+## Implementation
+
+- **Step 1:** banxe-emi-stack PR #107 — RateLimiterPort + RedisRateLimiterAdapter + 6 unit tests.
+- **Step 2:** banxe-emi-stack PR #108 — wire rate-limit into auth flow (login + refresh) + 6 integration tests.
+- **Step 3:** banxe-emi-stack PR #109 — CI smoke tests (5 tests).
+- **Total:** 17 tests PASS.
+- **Gaps closed:** G-API-01 (DONE), G-API-02 (DONE).
