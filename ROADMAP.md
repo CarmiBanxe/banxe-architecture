@@ -763,3 +763,32 @@ emi-stack IL → architecture IL mirror. Pre-commit hook on both repos enforce.
 
 ### Working as factory under unified canon
 amendment-B.11.N+2: Claude Code executor + Mark pool owner + Perplexity coordinator. ADR-025 Session Rules 1..7. Race-mitigation pattern validated 10×.
+
+## Roadmap Block 2026-05-10 — Phase 5 Step 5.3 Mirror Backfill (partial — 4 of 8)
+
+> Block opened under I-59. Procedure: one branch / one commit / one PR / NO tag (sprint progress per §21).
+> Anchors: IL-OPS-PHASE5-STEP53-TWO-LOOP-MIRROR-BACKFILL-2026-05-10.
+
+### Phase 5 Step 5.3 — partial backfill DONE (4 of 8 originally-listed)
+- [x] PR #94 mirror — TwilioOtpAdapter + SendGridOtpAdapter (Wave B OTP) — IL-MIRROR-EMI-PR-94
+- [x] PR #96 mirror — SumsubHttpAdapter (Wave C/D KYC) — IL-MIRROR-EMI-PR-96
+- [x] PR #97 mirror — ModulrSepaAdapter (Wave C SEPA) — IL-MIRROR-EMI-PR-97
+- [x] PR #100 mirror — ADR-035 smoke gate matrix mock tier — IL-MIRROR-EMI-PR-100
+
+### Deferred (NOT merged in emi-stack OR wrong-repo)
+- [ ] PR #98 mirror (Wave E Midaz crypto adapter — NOT merged)
+- [ ] PR #101 mirror (ADR-035 Step 2 mock workflow — NOT merged)
+- [ ] PR #105 mirror (ADR-035 Step 5 audit signal — NOT merged)
+- [N/A] PR #157 mirror (lives в banxe-architecture, не emi-stack; already on main as Sprint 10 dobor)
+
+### Two-loop sync rule (binding going forward)
+Каждый emi-stack production PR merge → architecture INSTRUCTION-LEDGER.md mirror IL appended within 24h. Pre-commit hook to enforce — TBD Phase 6.
+
+### Phase 5 status post-this-commit
+- [x] Step 5.3 partial (4 mirrors done, 3 deferred pending merges)
+- [ ] Step 5.1 Track A close (per MASTER-PLAN-2026-05-05) — next
+- [ ] Step 5.2 Track G close — next
+- [ ] Step 5.4 Local-only repos rescue (operator-led)
+
+### Pending tags
+- checkpoint-2026-05-XX-phase5-step53-mirror-backfill-complete (after deferred 3 PRs merged + their mirrors appended)
