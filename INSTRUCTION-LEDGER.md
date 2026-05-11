@@ -7355,3 +7355,47 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - /tmp/banxe_handoff_2026-05-11_0300.md (sha256 927941fb48fe7580a3dcf23667e33fada816c3d6e8732c4b57455c703ab47c11)
   - Operator directives 2026-05-10 02:00 + 14:00 + 14:30 + 2026-05-11 03:00 CEST
 
+### IL-OPS-PRIORITY1-MIRROR-BACKFILL-V2-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — Priority 1 two-loop mirror backfill v2 (12 emi-stack merged PRs)
+- Status: BINDING — closes two-loop mirror gap for ADR-028 / ADR-029 / ADR-030 / ADR-032 production adapter chains
+- Priority: P2 (canon hygiene + two-loop sync per PR #168 CORE PRINCIPLE)
+- Scope: mirrors 12 banxe-emi-stack merged PRs into banxe-architecture INSTRUCTION-LEDGER.md; extends PR #174 coverage (which covered #94/#96/#97/#100); grouped by ADR implementation chain.
+
+- ADR-028 KYC re-verification triggers (3 PRs):
+  Mirror 5 — IL-MIRROR-EMI-PR-69: feat(adr-028): extend BanxeEventType with KYC re-trigger events [Step 1]. Commit f85ac27. Port: KYCWorkflowPort. ADR-028 Step 1 canon linkage.
+  Mirror 6 — IL-MIRROR-EMI-PR-70: feat(adr-028): wire KYC re-trigger events into lifecycle [Step 2]. Commit b3caee5. DI integration + event wiring.
+  Mirror 7 — IL-MIRROR-EMI-PR-99: feat(adr-028): KYC re-trigger operational script + CI smoke tests [Step 3]. Commit 52153e9. Closes G-KYC-01/02. ADR-028 Accepted.
+
+- ADR-029 Postgres backup strategy (3 PRs):
+  Mirror 8 — IL-MIRROR-EMI-PR-102: feat(adr-029): BackupPort + PgDumpBackupAdapter + 6 unit tests [Step 1]. Commit 8752172. Port: BackupPort. Hexagonal adapter pattern per ADR-014.
+  Mirror 9 — IL-MIRROR-EMI-PR-104: feat(adr-029): wire PgDumpBackupAdapter into DI + BACKUP_ENABLED flag + 5 integration tests [Step 2]. Commit b64f20c.
+  Mirror 10 — IL-MIRROR-EMI-PR-106: feat(adr-029): backup cron script + 4 smoke tests [Step 3]. Commit 1691a69. Closes G-OPS-01/02. ADR-029 Accepted. Tag checkpoint-2026-05-10-adr029-accepted.
+
+- ADR-030 auth rate-limit policy (3 PRs):
+  Mirror 11 — IL-MIRROR-EMI-PR-107: feat(adr-030): RateLimiterPort + RedisRateLimiterAdapter + 6 unit tests [Step 1]. Commit 03b0d74. Port: RateLimiterPort. Sliding window + lockout pattern.
+  Mirror 12 — IL-MIRROR-EMI-PR-108: feat(adr-030): wire rate-limit into auth flow + 6 integration tests [Step 2]. Commit 338b7fb.
+  Mirror 13 — IL-MIRROR-EMI-PR-109: feat(adr-030): auth rate-limit CI smoke tests [Step 3]. Commit 69f6086. Closes G-API-01/02. ADR-030 Accepted. Tag checkpoint-2026-05-10-adr030-accepted.
+
+- ADR-032 secret rotation policy (3 PRs):
+  Mirror 14 — IL-MIRROR-EMI-PR-110: feat(adr-032): SecretRotationPort + EnvSecretRotator + 6 unit tests [Step 1]. Commit fa4ff06. Port: SecretRotationPort.
+  Mirror 15 — IL-MIRROR-EMI-PR-111: feat(adr-032): wire EnvSecretRotator into DI + SECRET_ROTATION_ENABLED + 4 integration tests [Step 2]. Commit 2f088ae.
+  Mirror 16 — IL-MIRROR-EMI-PR-112: feat(adr-032): secret rotation check script + 4 smoke tests [Step 3]. Commit 38e71d8. Closes G-SEC-01. ADR-032 Accepted. Tag checkpoint-2026-05-10-adr032-accepted.
+
+- Two-loop sync status:
+  - Mirrored by PR #174 (previous): #94 TwilioOtpAdapter + #96 SumsubHttpAdapter + #97 ModulrSepaAdapter + #100 ADR-035 mock tier
+  - Mirrored by this commit: #69/#70/#99 ADR-028 + #102/#104/#106 ADR-029 + #107/#108/#109 ADR-030 + #110/#111/#112 ADR-032
+  - Total mirrored: 16 of 16 merged emi-stack production PRs
+  - Deferred (NOT merged): #98 Wave-E / #101 ADR-035 Step 2 / #105 ADR-035 Step 5 (mirror after merge)
+  - Two-loop sync gap: CLOSED for all merged PRs
+
+- Closing IL: TBD (two-loop sync continues per PR merge cadence; pre-commit hook enforcement TBD Phase 6).
+- Anchors:
+  - PR #168 (be2ab59) + tag checkpoint-2026-05-10-canon-unified-accepted (CORE PRINCIPLE binding)
+  - PR #174 (62eb789) Priority 1 mirror backfill v1 (4 PRs)
+  - PR #186 (14613d8) + tag checkpoint-2026-05-11-main-factory-terminal-handoff (Priority 1 ownership accepted)
+  - ADR-028 (KYC re-verification), ADR-029 (Postgres backup), ADR-030 (auth rate-limit), ADR-032 (secret rotation)
+  - Tags: checkpoint-2026-05-10-adr029-accepted, checkpoint-2026-05-10-adr030-accepted, checkpoint-2026-05-10-adr032-accepted
+  - PROMPT-CANON-PROJECT §11 (two-loop sync) + §15 (multi-terminal discipline: this IL from main factory terminal per §71)
+
