@@ -7541,3 +7541,40 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Priority: P3 (canon hygiene)
 - Scope: EVO2-SSH-ACCESS-LOST (stale checkbox) + LOAD-AVG-35 (XMRig root cause removed) + 4 IOC sweep/resweep entries (observation 24h PASS per incident RESOLVED).
 - Anchors: incident RESOLVED PR #155 + tag checkpoint-2026-05-09-incident-resolved + Sprint S1 audit.
+
+### IL-OPS-TRACKS-CD-PARTIAL-CLOSURE-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — Tracks C+D partial closure formalization
+- Status: BINDING — Track C (KYC Reliability) + Track D (Audit Trail Durability) substantially closed
+- Priority: P2 (MASTER-PLAN Tracks C+D)
+- Scope: formalize partial closure status for Tracks C+D per MASTER-PLAN-2026-05-05.
+
+- Track C — KYC Reliability (MASTER-PLAN):
+  - ADR-028 KYC re-verification triggers: ✅ Accepted (tag checkpoint-2026-05-10-adr028)
+  - ADR-034 webhook reliability KYC: ✅ Accepted (tag checkpoint-2026-05-11-track-a-complete)
+  - G-KYC-01: ✅ CLOSED (KYC FSM PENDING trigger per ADR-028)
+  - G-KYC-02: ✅ CLOSED (re-verification triggers per ADR-028)
+  - G-KYC-03: ✅ CLOSED (SumSub webhook retry + DLQ per ADR-034)
+  - G-KYC-04: OPEN (webhook signature verification + idempotency-key coverage tests — test extension, not blocking)
+  - Track C status: SUBSTANTIALLY-CLOSED (3/4 GAPs closed, 2/2 ADRs Accepted; remaining = test coverage extension)
+
+- Track D — Audit Trail Durability (MASTER-PLAN):
+  - ADR-027 audit-trail durability: ✅ Accepted (tag checkpoint-2026-05-10-adr027)
+  - G-CASS-01: ✅ DONE (BufferedAuditPort SQLite ring-buffer per ADR-027, PR #66)
+  - G-CASS-02: OPEN (E2E audit-trail coverage tests — CI fixture with ClickHouse kill mid-flight, not blocking)
+  - Track D status: SUBSTANTIALLY-CLOSED (1/2 GAPs closed, 1/1 ADR Accepted; remaining = E2E test coverage)
+
+- MASTER-PLAN Tracks status update:
+  - Track A: ✅ COMPLETE 8/8 ADRs
+  - Track B: OPEN (IAM Live-Ops — operator-led Phase F/G)
+  - Track C: ✅ SUBSTANTIALLY-CLOSED (3/4 GAPs + 2/2 ADRs)
+  - Track D: ✅ SUBSTANTIALLY-CLOSED (1/2 GAPs + 1/1 ADR)
+  - Track E: PARTIALLY-CLOSED (ADR-033 Accepted + G-OBS-01 CLOSED; G-OBS-02 OPEN)
+  - Track F: PARTIALLY-CLOSED (ADR-032 Accepted + G-SEC-01 CLOSED; G-SEC-02 OPEN)
+  - Track G: ✅ CLOSED-SANDBOX 7/7 GAPs
+  - Track H: OPEN (new architecture work)
+  - Track I: OPEN (external/organisational blockers)
+  - Summary: 4 of 9 Tracks CLOSED/SUBSTANTIALLY-CLOSED (A + C + D + G); 2 PARTIALLY-CLOSED (E + F); 3 OPEN (B + H + I)
+
+- Anchors: MASTER-PLAN-2026-05-05 Tracks C+D + ADR-027/028/034 Accepted + incident RESOLVED per PR #155.
