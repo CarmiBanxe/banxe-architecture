@@ -622,14 +622,15 @@
     Closing IL: TBD.
     Anchors: docs/sessions/HANDOFF-2026-05-07-fixes-roadmap.md §6.
 
-- [ ] G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1, ESCALATED → P0 via G-SECURITY-EVO1-XMRIG-CRYPTOMINER, 2026-05-07)
+- [x] G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE (P1→P0, CLOSED-REMEDIATED, 2026-05-07)
     **ESCALATED:** daemon classified as XMRig-compatible cryptominer. See G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0) for full evidence and remediation plan.
     Original discovery: unknown root daemon masquerading as systemd on evo1.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED,
     G-SECURITY-EVO1-XMRIG-CRYPTOMINER.
+    Closing 2026-05-11 (V-XMRIG sync): unknown systemd service = XMRig cryptominer (observed.service + systemd.service). Both removed V6. Parent GAP G-SECURITY-EVO1-XMRIG-CRYPTOMINER also closed.
 
-- [ ] G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0, OPEN — IDENTIFIED, 2026-05-07)
+- [x] G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0, CLOSED-REMEDIATED, 2026-05-07)
     **Active malware on project-layer node evo1.** XMRig-compatible RandomX/Monero CPU miner
     masquerading as systemd. GDPR/FCA-relevant compromise of project layer node hosting
     BANXE customer-data services.
@@ -774,6 +775,7 @@
     Observation window 24-48h starts now. Roadmap unfreeze under I-59 active.
     MLRO/DPO/Legal external sign-off pending (parallel-safe).
     See IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR.
+    Closing 2026-05-11 (sync from V-XMRIG track): XMRig removed V6 destructive cleanup 2026-05-08. Incident RESOLVED PR #155 tag checkpoint-2026-05-09-incident-resolved. Note: duplicate [x] entry exists at line ~1046 per PR #155 cleanup-actor track — both entries now marked closed.
 
 - [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
     Read-only IoC sweep evo2 required for XMRig IoC signatures (sha256, paths, pool IP,
@@ -858,7 +860,7 @@
     See IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR.
 
 
-- [ ] G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0, OPEN, 2026-05-07)
+- [x] G-SECURITY-EVO1-CTIO-SUDOERS-BACKDOOR (P0, CLOSED-REMEDIATED, 2026-05-07)
     Backdoor sudoers entry on evo1: /etc/sudoers.d/ctio = "ctio ALL=(ALL) NOPASSWD: ALL".
     User ctio (UID 1002) has unrestricted root without password. mtime: Mar 28 20:04 (older
     than XMRig install Apr 23). Classic privilege escalation persistence.
@@ -866,8 +868,9 @@
     Linked: G-SECURITY-EVO1-XMRIG-CRYPTOMINER (likely escalation vector for XMRig install).
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+    Closing 2026-05-11 (V-XMRIG sync): /etc/sudoers.d/ctio removed V6. Content was "ctio ALL=(ALL) NOPASSWD: ALL".
 
-- [ ] G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN (P0, OPEN, 2026-05-07)
+- [x] G-SECURITY-EVO1-OBSERVED-SERVICE-UNKNOWN (P0, CLOSED-REMEDIATED, 2026-05-07)
     Suspicious systemd unit /etc/systemd/system/observed.service created Apr 23 07:05 — exact
     same mtime as XMRig systemd.service. Size 226 bytes. Likely second persistence unit by same
     threat actor (potential XMRig watchdog or restart guardian).
@@ -888,6 +891,7 @@
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT,
     IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-OBSERVED-CLASSIFIED.
+    Closing 2026-05-11 (V-XMRIG sync): observed.service removed V6. sha256 53d664a4eecf377193161193e8d0ec9f3852c55d48a124e4f1097cd87d8d51e0.
 
 - [ ] G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0, OPEN, 2026-05-07)
     Non-canon users with /bin/bash login shell on evo1 (per /etc/passwd live audit):
@@ -914,7 +918,7 @@
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
 
-- [ ] G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN (P0, OPEN, 2026-05-07)
+- [x] G-SECURITY-EVO1-SSHD-ROOT-LOGIN-OPEN (P0, CLOSED-REMEDIATED, 2026-05-07)
     /etc/ssh/sshd_config.d/10-legion.conf currently active with:
       PermitRootLogin yes
       PasswordAuthentication yes
@@ -934,8 +938,9 @@
       - G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0)
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+    Closing 2026-05-11 (V-XMRIG sync): sshd_config hardened V6. Root login disabled. Host keys rotated V7-PART1.
 
-- [ ] G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0, OPEN, 2026-05-07)
+- [x] G-SECURITY-EVO1-ROOT-AUTHORIZED-KEYS-AUDIT (P0, CLOSED-REMEDIATED, 2026-05-07)
     /root/.ssh/authorized_keys on evo1 (mtime Mar 28 12:49, 690 bytes) contains
     multiple SSH public keys for direct root login:
       - ssh-rsa egor.kopylov@egit-MacBook-Air.local — non-canon identity
@@ -950,6 +955,7 @@
       - G-SECURITY-EVO1-UNAUTHORIZED-USERS (P0)
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+    Closing 2026-05-11 (V-XMRIG sync): root authorized_keys audited + github_gmktec keypair removed V7-PART1. sha256 1abf9d09e162a22d61758430708496efd957e3ba270b3a93a951b44ce495206b.
 
 - [ ] G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION (P1, OPEN, 2026-05-07)
     Same RSA public key alex@MacBook-Pro-Alex.local present in:
@@ -969,7 +975,7 @@
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
 
-- [ ] G-SECURITY-EVO1-CRON-PULL-UNSIGNED (P2, OPEN, 2026-05-07)
+- [x] G-SECURITY-EVO1-CRON-PULL-UNSIGNED (P2, CLOSED-REMEDIATED, 2026-05-07)
     Cron entries on evo1 auto-execute pulled code without signature verification:
       - banxe crontab: */15 git pull --ff-only origin main + rsync guardian + sudo systemctl restart banxe-guardian-factory
       - root crontab: bash /data/vibe-coding/memory-autosync-watcher.sh
@@ -986,6 +992,7 @@
       - G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0)
     Closing IL: TBD.
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-COMPROMISE-AUDIT.
+    Closing 2026-05-11 (V-XMRIG sync): cron pulls disabled V7-PART2 Phase 7-B. Atomic rebuild via temp file + crontab -u banxe FILE.
 
 - [ ] G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER (P2, OPEN, 2026-05-08)
     Orange Livebox UI does not support outbound destination filtering.
