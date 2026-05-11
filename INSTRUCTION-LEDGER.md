@@ -7496,3 +7496,27 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - TRACK A COMPLETE: 8/8 ADRs Accepted (027/028/029/030/032/033/034/035). MASTER-PLAN Track A CLOSED.
 - Two-loop mirrors total: 26 (16 PR #174/#187 + 3 PR #191 + 3 PR #194 + 4 this commit).
 - Anchors: ADR-034 Accepted + emi-stack PRs #114/#115/#117/#120 + G-KYC-03 closed + Sub-B §71 + MASTER-PLAN Track A complete.
+
+### IL-OPS-TRACK-G-FINAL-CLOSURE-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — Track G final closure (sandbox scope)
+- Status: BINDING — G-CI-02 CLOSED-SANDBOX; Track G sandbox-scope CLOSED
+- Priority: P2 (MASTER-PLAN Track G)
+- Scope: G-CI-02 closure (smoke-gate mock tier already required in branch-protection) + Track G sandbox status summary.
+
+- Track G final sandbox status:
+  - G-OPS-01 ✅ CLOSED (ADR-029)
+  - G-OPS-02 ✅ CLOSED (ADR-029)
+  - G-API-01 ✅ CLOSED (ADR-030)
+  - G-API-02 ✅ CLOSED (ADR-030)
+  - G-INFRA-01 ✅ CLOSED (evo2 full registration PR #190)
+  - G-CI-01 ✅ CLOSED (ADR-035 smoke-gate implemented PR #191)
+  - G-CI-02 ✅ CLOSED-SANDBOX (mock tier required; full-tier advisory deferred Phase 9)
+  Track G sandbox: 7/7 CLOSED (6 full + 1 sandbox-scoped). G-OBS-02 deferred to Phase 6 Track E.
+
+- MASTER-PLAN Tracks closed:
+  - Track A ✅ COMPLETE 8/8 ADRs (tag checkpoint-2026-05-11-track-a-complete)
+  - Track G ✅ CLOSED-SANDBOX 7/7 GAPs
+
+- Anchors: MASTER-PLAN-2026-05-05 Track G + branch-protection API verify 2026-05-11 (contexts confirmed: guardian-factory, guardian-project, Smoke Gate mock tier).
