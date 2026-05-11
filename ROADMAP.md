@@ -1094,3 +1094,22 @@ After this PR merge: все autonomous-completable items in sandbox scope DONE. 
 ### Real remaining operator queue (2 items, unchanged)
 1. emi-stack PR #98/#101/#105 merge (operator-led, different repo)
 2. Production transition (когда 6 sandbox criteria met)
+
+## Roadmap Block 2026-05-11 — Priority 1 Mirror Backfill v2 (12 merged emi-stack PRs)
+
+> Block opened under I-59. One branch / one commit / one PR / NO tag (canon hygiene per §21).
+> Anchors: IL-OPS-PRIORITY1-MIRROR-BACKFILL-V2-2026-05-11.
+
+### 12 new mirror entries (grouped by ADR)
+- [x] ADR-028 KYC re-verification: #69 (Step 1) + #70 (Step 2) + #99 (Step 3) — G-KYC-01/02 closed
+- [x] ADR-029 Postgres backup: #102 (Step 1) + #104 (Step 2) + #106 (Step 3) — G-OPS-01/02 closed
+- [x] ADR-030 auth rate-limit: #107 (Step 1) + #108 (Step 2) + #109 (Step 3) — G-API-01/02 closed
+- [x] ADR-032 secret rotation: #110 (Step 1) + #111 (Step 2) + #112 (Step 3) — G-SEC-01 closed
+
+### Two-loop sync status
+- Total mirrored: 16 of 16 merged emi-stack production PRs ✅
+- Deferred (NOT merged): #98 / #101 / #105 — mirror after operator merge
+- Priority 1 Two-loop mirror backfill: **COMPLETE** for all merged PRs
+
+### Multi-terminal note
+This mirror backfill authored by main factory terminal per §71 single-writer. Sub-B (ADR-035) works independently in banxe-emi-stack bounded context. Non-overlap verified.
