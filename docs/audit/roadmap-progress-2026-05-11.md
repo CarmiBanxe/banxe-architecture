@@ -1,6 +1,6 @@
 # ADR-035 ROADMAP — Progress Report
-# ADR-035 ROADMAP — Parts 1–4 Progress
-# Updated: 2026-05-11 (Part 4 complete)
+# ADR-035 ROADMAP — Parts 1–5 Progress
+# Updated: 2026-05-11 (Part 5 revised complete)
 # Date: 2026-05-11 | Auditor: Sub-terminal A (Claude Code)
 
 ## Reference: ADR-035 AI Pool Roadmap (10 Steps)
@@ -19,7 +19,7 @@ Source: `docs/adr/ADR-035-ai-pool-roadmap-2026-05-11.md` (committed 2026-05-11, 
 | 4    | LiteLLM route — add evo2           | 🔜 PENDING  | Blocked by Step 3; risk A-3 flagged       |
 | 5    | Redis + LiteLLM cache              | ✅ DONE      | Redis on evo1 (Docker, hardened) + LiteLLM cache wired; cache verified 0.65ms |
 | 6    | LLM router + A-8 resolution        | ✅ DONE      | MetaClaw stopped; default→evo1; fallback-claude guardrail-gated |
-| 7    | Tailscale mesh verify all 3 nodes  | 🔜 PENDING  | Legion→evo1 Tailscale confirmed; evo2 unverified |
+| 7    | Tailscale mesh verify all 3 nodes  | ✅ DONE      | All 3 nodes verified; 6/6 directed pairs direct WireGuard; Ollama HTTP reachable |
 | 8    | Compliance routing guardrails      | 🟡 PARTIAL  | C1 fix + custom_code guardrail active (pre_call); Presidio not installed (not needed) |
 | 9    | Load balancing (evo1 + evo2)       | 🔜 PENDING  | Requires Steps 4 + 5 first               |
 | 10   | HITL gate for L3+ agent decisions  | 🔜 PENDING  | Architectural; blocked by Steps 4–9      |
@@ -280,4 +280,46 @@ Anthropic API NOT reached during negative test (verified by error source = guard
 ### Runbooks Added/Updated
 - `docs/audit/a8-metaclaw-resolution-2026-05-11.md` (new)
 - `docs/runbooks/legion-llm-router-setup.md` (updated — was stub)
+
+
+---
+
+## Part 5 (revised) — Detail (ADR-035 ROADMAP Part 5 revised / Step 7 — Tailscale Mesh Verify)
+
+**Branch:** feat/part5-tailscale-mesh-verify-2026-05-11
+**Performed:** 2026-05-11 by Sub-terminal A
+**Scope:** Read-only verification — zero writes to evo1/evo2 configs
+
+**Rationale for revision:** Original Part 5 (qwen3:235b Q4→Q8 migration on evo2) blocked
+by central terminal G-INFRA-01 evo2 mutations in flight. This revised Part 5 substitutes
+the verification step, which was originally planned as Step 7 later in the roadmap.
+
+### Node Verification
+
+| Node | TS IP | LAN IP | TS version | Ollama | Daemon |
+|------|-------|--------|-----------|--------|--------|
+| Legion | 100.101.218.26 | 192.168.0.75 | 1.96.4 | N/A | active ✅ |
+| evo1 | 100.68.102.48 | 192.168.0.72 | 1.96.4 | :11434 (9 models) ✅ | active ✅ |
+| evo2 | 100.99.208.21 | 192.168.0.15 | 1.96.4 | :11434 (10 models) ✅ | active ✅ |
+
+### Reachability Matrix Result
+
+All 6 directed tailscale ping pairs: PASS (1–3ms direct WireGuard, no DERP relay).
+ICMP Legion→evo1 and Legion→evo2: 0% packet loss.
+Ollama HTTP via Tailscale (3 of 6 relevant pairs tested): PASS.
+LiteLLM Legion :8080: loopback-only (not on Tailscale) — expected, secure.
+
+### Notable Findings
+
+| # | Finding | Severity | Action |
+|---|---------|----------|--------|
+| F-7a | evo2 shows `-` (idle) for evo1 in `tailscale status` | INFO | Normal — activates on demand, confirmed by tailscale ping |
+| F-7b | DNS warning on evo1 + evo2 (MagicDNS resolver) | LOW | Non-blocking for pool ops; deferred to future part |
+| F-7c | LiteLLM not exposed on Tailscale mesh | INFO (positive) | Correct loopback-only binding |
+
+### Deliverables
+
+- `docs/audit/tailscale-mesh-verify-2026-05-11.md` — full verification report + topology diagram
+- `docs/runbooks/legion-tailscale-quick-reference.md` — quick-reference card for mesh ops
+- `docs/audit/roadmap-progress-2026-05-11.md` — Step 7 updated to DONE
 
