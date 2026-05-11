@@ -251,3 +251,27 @@ guardian-factory + guardian-project services (already running on evo1:8195/8196)
 с regulated данными в обход Ruflo, нарушая §0.5 + I-32/I-33; project-агенты
 могут вызывать factory-модели для production задач, нарушая FCA SUP layer
 separation для regulated EMI операций.
+
+**I-71 — Single-Writer Terminal Discipline (ACCEPTED)**
+Main factory terminal (Perplexity Comet — primary) — ЕДИНСТВЕННЫЙ writer в banxe-architecture + banxe-emi-stack repos. Sub-terminals (Claude Code factory worker + read-only diagnostics) НЕ выполняют git push / gh pr create / gh pr merge / git tag без promtа из main factory terminal. Все промпты для sub-terminals формируются только в main factory terminal.
+Канон: PROMPT-CANON-PROJECT.md §15.1 §71.
+Enforcement: pre-commit hook check + Guardian conversation-judge prompt + IL audit (IL-CANON-MULTI-TERMINAL-RACE-DETECTED format при violation).
+Severity: P0 — multi-terminal race condition leading to canon corruption.
+
+**I-72 — Parallel Session Halt Rule (ACCEPTED)**
+При обнаружении параллельной Claude Code сессии (new PRs / branches appearing on origin от other source) main factory terminal ОСТАНАВЛИВАЕТСЯ. НЕ выполняет rebase / merge / workaround race condition. Фиксирует факт в IL формате `IL-CANON-MULTI-TERMINAL-RACE-DETECTED-<date>`. Ждёт пока параллельная сессия завершит свой PR-цикл (gh pr list --state open = 0 от другой сессии). Только после этого продолжает.
+Канон: PROMPT-CANON-PROJECT.md §15.2 §72.
+Enforcement: gh pr list pre-flight check (per I-73) + IL audit.
+Severity: P0 — race condition prevention.
+
+**I-73 — Pre-flight Check Mandatory (ACCEPTED)**
+Перед каждой write-операцией main factory terminal выполняет: (1) git fetch --all --prune; (2) git log --oneline origin/main -3 сверить HEAD; (3) gh pr list --state open --json number,title,headRefName проверить параллельные open PRs; (4) если есть open PR от другой сессии → STOP, wait, re-check; (5) только если clean → proceed.
+Канон: PROMPT-CANON-PROJECT.md §15.3 §73.
+Enforcement: shell-block template обязательно начинается с pre-flight check sequence.
+Severity: P1 — process discipline violation.
+
+**I-74 — Atomic PR Lifecycle (ACCEPTED)**
+Каждый PR проходит lifecycle atomically: create → push → merge (без интервалов / других операций в same repo между этими шагами). gh pr merge ВСЕГДА с --admin от main factory terminal (через Claude Code chain). Bypass-window для required-status-checks работает только из main factory terminal. Sub-terminals не имеют прав bypass.
+Канон: PROMPT-CANON-PROJECT.md §15.4 §74.
+Enforcement: atomic single-block shell pattern (validated 20× в session 2026-05-09 → 2026-05-11).
+Severity: P0 — atomic merge integrity preservation.

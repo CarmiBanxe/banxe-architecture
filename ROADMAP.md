@@ -1048,3 +1048,49 @@ After this PR merge: все autonomous-completable items in sandbox scope DONE. 
 - §14 Perplexity Tiers T2-T5 sandbox-granted
 - 21 worktrees zero MEMORY.md leakage
 - Atomic race-mitigation pattern validated 19× (this PR будет 20×)
+
+## Roadmap Block 2026-05-11 — Main Factory Terminal Handoff Acknowledgement + §15 Multi-Terminal Discipline
+
+> Block opened under I-59. One branch / one commit / one PR / annotated tag `checkpoint-2026-05-11-main-factory-terminal-handoff` after merge.
+> Anchors: IL-OPS-MAIN-FACTORY-TERMINAL-HANDOFF-ACKNOWLEDGEMENT-2026-05-11.
+
+### Handoff acknowledgement
+- [x] Left terminal CLOSED 2026-05-11 03:00 CEST
+- [x] Right terminal CLOSED 2026-05-11 03:00 CEST
+- [x] Main factory terminal = SOLE WRITE OWNER
+- [x] Handoff file recreated: /tmp/banxe_handoff_2026-05-11_0300.md (sha256 927941fb48fe7580a3dcf23667e33fada816c3d6e8732c4b57455c703ab47c11)
+- [x] All 5 priorities ACCEPTED ownership
+
+### §15 Multi-terminal discipline + I-71..I-74 formalized
+- [x] §71 Single-writer terminal + sub-terminals A/B roles
+- [x] §72 Parallel session halt rule
+- [x] §73 Pre-flight check mandatory
+- [x] §74 Atomic PR lifecycle
+- [x] I-71 Single-Writer Terminal Discipline (ACCEPTED)
+- [x] I-72 Parallel Session Halt Rule (ACCEPTED)
+- [x] I-73 Pre-flight Check Mandatory (ACCEPTED)
+- [x] I-74 Atomic PR Lifecycle (ACCEPTED)
+
+### 5 priorities ownership transferred to main factory terminal
+- [ ] **Priority 1** Two-loop mirror backfill (IL entries для PRs #94/#96/#97/#98/#100/#101/#105/#157)
+- [ ] **Priority 2** Audit-residual closures (PR #168 IL + sha256 anchors + repos rescue)
+- [ ] **Priority 3** ADR Track A close (033 alert routing / 034 webhook reliability / 035 CI smoke-gate)
+- [ ] **Priority 4** Track G remaining (G-INFRA-01 evo2 full registration)
+- [ ] **Priority 5** Operator-blocked Phase 6 (11-decision queue + Track I 7 API keys sandbox-satisfied)
+
+### Sub-terminals для ускорения (когда нужно параллельно)
+- Sub-terminal A — bounded context A (отдельный worktree + отдельная ветка + non-overlapping track)
+- Sub-terminal B — bounded context B (отдельный worktree + отдельная ветка + non-overlapping с A)
+- Migration rule: задача sub-terminal → main factory terminal через handoff IL когда становится "главной"
+
+### Pending tags
+- checkpoint-2026-05-11-main-factory-terminal-handoff (after this PR merge)
+- checkpoint-2026-05-XX-priority-1-mirror-backfill-complete
+- checkpoint-2026-05-XX-adr-033-accepted
+- checkpoint-2026-05-XX-adr-034-accepted
+- checkpoint-2026-05-XX-adr-035-accepted (Track A complete)
+- checkpoint-2026-05-XX-sandbox-to-production-transition
+
+### Real remaining operator queue (2 items, unchanged)
+1. emi-stack PR #98/#101/#105 merge (operator-led, different repo)
+2. Production transition (когда 6 sandbox criteria met)

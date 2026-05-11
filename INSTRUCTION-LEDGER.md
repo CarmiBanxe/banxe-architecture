@@ -7300,3 +7300,58 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Implementation (banxe-emi-stack): Step 1 PR #110 (port + 6 unit), Step 2 PR #111 (wire + 4 integration), Step 3 PR #112 (script + 4 smoke).
 - Result: secret rotation policy implemented and accepted; G-SEC-01 closed.
 
+### IL-OPS-MAIN-FACTORY-TERMINAL-HANDOFF-ACKNOWLEDGEMENT-2026-05-11
+
+- Date: 2026-05-11 03:00 CEST
+- Phase (GSD): CANON — main factory terminal handoff acknowledgement
+- Status: BINDING — left + right terminals CLOSED; main factory = SOLE OWNER
+- Priority: P0 (ownership transfer + multi-terminal discipline binding)
+- Scope: 4 components в одном commit:
+  (1) Acknowledgement handoff from left-terminal (Comet/Perplexity) — operator directive 2026-05-11 03:00 CEST
+  (2) PROMPT-CANON-PROJECT.md §15 Multi-terminal discipline (rules §71-§74)
+  (3) INVARIANTS.md I-71..I-74 formalization
+  (4) Ownership acceptance of all 5 handoff priorities
+
+- Handoff file anchor:
+  - Path: /tmp/banxe_handoff_2026-05-11_0300.md
+  - sha256: 927941fb48fe7580a3dcf23667e33fada816c3d6e8732c4b57455c703ab47c11
+  - Size: 2658 bytes
+  - Note: original handoff file from left-terminal NOT persisted to /tmp; main factory re-created acknowledgement file from operator chat transcript 2026-05-11 03:00 CEST. Content authoritative per re-creation; processed deviation recorded here.
+
+- Terminal closure status:
+  - **Left terminal** (Comet/Perplexity, было: умный рефакторинг + перенос старого кода): CLOSED 2026-05-11 03:00 CEST per operator directive
+  - **Right terminal** (Claude Code factory worker): CLOSED 2026-05-11 03:00 CEST per operator directive
+  - **Main factory terminal** (this session, Perplexity Comet): SOLE WRITE OWNER per multi-terminal discipline §71
+
+- Ownership acceptance — 5 priorities from handoff:
+  - **Priority 1** Two-loop mirror backfill: ACCEPTED
+  - **Priority 2** Audit-residual closures: ACCEPTED
+  - **Priority 3** ADR Track A close (3 remaining): ACCEPTED — ADR-033 alert routing / ADR-034 webhook reliability / ADR-035 CI smoke-gate
+  - **Priority 4** Track G remaining: ACCEPTED — G-INFRA-01 evo2 full registration
+  - **Priority 5** Operator-blocked Phase 6: ACCEPTED — 11-decision queue + Track I 7 API keys (sandbox-satisfied per Шаг 2 IL)
+
+- Current canon state baseline:
+  - banxe-architecture main: aa4a12b (PR #185 ADR-032 Accepted, tag checkpoint-2026-05-10-adr032-accepted)
+  - banxe-emi-stack main: 38e71d8 (PR #112 ADR-032 Step 3)
+  - 7 checkpoint tags 2026-05-10
+  - INVARIANTS.md count: 37 (I-71..I-74 added this commit → 41)
+
+- Multi-terminal binding (§15 added this commit + I-71..I-74):
+  - Main factory terminal = single writer для оба repo
+  - Sub-terminals = bounded contexts в worktree-isolation
+  - Pre-flight check mandatory перед каждой write-operation
+  - Parallel session detection → halt + IL fixation
+  - Atomic PR lifecycle (create → merge без интервалов)
+
+- Pattern compliance:
+  - amendment-B.11.N+2 Статья 2: Claude Code = executor, Mark = pool owner, Perplexity = coordinator
+  - PROMPT-CANON-PROJECT §13 Russian binding + §14 Perplexity Tiers T2-T5 + §15 Multi-terminal discipline (this commit)
+  - ADR-025 Session Rules 1..7
+  - Race-mitigation pattern (validated 20×, this будет 21×)
+
+- Closing IL: TBD (Priority 5 production transition closes this acknowledgement permanently).
+- Anchors:
+  - PR #168 (be2ab59) + PR #170 (cc2059e) + PR #180 (d50f1b4) + PR #181 (7cb3776) + PR #182 (32019a4) + PR #183 (3410118) + PR #185 (aa4a12b)
+  - /tmp/banxe_handoff_2026-05-11_0300.md (sha256 927941fb48fe7580a3dcf23667e33fada816c3d6e8732c4b57455c703ab47c11)
+  - Operator directives 2026-05-10 02:00 + 14:00 + 14:30 + 2026-05-11 03:00 CEST
+
