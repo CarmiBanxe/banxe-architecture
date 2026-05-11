@@ -7520,3 +7520,15 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Track G ✅ CLOSED-SANDBOX 7/7 GAPs
 
 - Anchors: MASTER-PLAN-2026-05-05 Track G + branch-protection API verify 2026-05-11 (contexts confirmed: guardian-factory, guardian-project, Smoke Gate mock tier).
+
+### IL-OPS-VXMRIG-GAP-SYNC-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — V-XMRIG incident GAP register sync (main ← V-XMRIG track §9)
+- Status: BINDING — 7 stale GAP entries updated to [x] CLOSED per V-XMRIG track confirmed closures
+- Priority: P2 (canon hygiene — incident RESOLVED but checkboxes stale)
+- Scope: sync 7 V-XMRIG incident GAPs from [ ] OPEN to [x] CLOSED per bootstrap canon §9 confirmed closures (V6 destructive cleanup + V7-PART1 SSH rotation + V7-PART2 cron disable). 2 entries stay OPEN (COMPROMISE-AUDIT-PENDING parent tracker + UNAUTHORIZED-USERS V8 pending).
+
+- 7 closures: XMRIG-CRYPTOMINER (P0) + OBSERVED-SERVICE-UNKNOWN (P0) + CTIO-SUDOERS-BACKDOOR (P0) + SSHD-ROOT-LOGIN-OPEN (P0) + ROOT-AUTHORIZED-KEYS-AUDIT (P0) + CRON-PULL-UNSIGNED (P2) + UNKNOWN-SYSTEMD-SERVICE (P1→P0).
+- 2 stay OPEN: COMPROMISE-AUDIT-PENDING (P0 parent) + UNAUTHORIZED-USERS (P0 V8 pending).
+- Anchors: bootstrap canon §9 + V-XMRIG track c44b1ab + incident RESOLVED PR #155 + tag checkpoint-2026-05-09-incident-resolved.
