@@ -1206,3 +1206,24 @@ Per MASTER-PLAN-2026-05-05 Track A "Guardian Enforcement Completion" — all ADR
 - G-CI-02 full-tier enforcement (Phase 9)
 - G-INFRA-02 ROCm regression (P1)
 - G-KYC-04 test coverage extension
+
+## Roadmap Block 2026-05-11 — Tracks C+D Substantially Closed
+
+> I-59. One branch / one commit / one PR / NO tag (partial closure formalization).
+
+### MASTER-PLAN: 4/9 Tracks CLOSED + 2 PARTIALLY-CLOSED
+- [x] Track A — Guardian Enforcement COMPLETE (8/8 ADRs)
+- [x] Track C — KYC Reliability SUBSTANTIALLY-CLOSED (3/4 GAPs + 2/2 ADRs)
+- [x] Track D — Audit Trail Durability SUBSTANTIALLY-CLOSED (1/2 GAPs + 1/1 ADR)
+- [x] Track G — Ops/CI Hardening CLOSED-SANDBOX (7/7 GAPs)
+- [/] Track E — Observability PARTIALLY-CLOSED (ADR-033 + G-OBS-01; G-OBS-02 open)
+- [/] Track F — Security PARTIALLY-CLOSED (ADR-032 + G-SEC-01; G-SEC-02 open)
+- [ ] Track B — IAM Live-Ops (operator-led)
+- [ ] Track H — New Architecture Work
+- [ ] Track I — External / Organisational Blockers
+
+### Remaining open GAPs per track (test-extension items only)
+- G-KYC-04 (Track C): webhook signature + idempotency tests
+- G-CASS-02 (Track D): E2E audit-trail coverage tests
+- G-OBS-02 (Track E): alert CI smoke
+- G-SEC-02 (Track F): Vault/Infisical long-term adoption placeholder
