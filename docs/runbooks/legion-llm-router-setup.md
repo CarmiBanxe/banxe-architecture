@@ -1,177 +1,215 @@
-# Runbook: Legion LLM Router Setup (LiteLLM Proxy)
-
+# Runbook: Legion LLM Router (LiteLLM Proxy — Part 4 Canonical Config)
 **Environment:** Legion WSL2
 **Date:** 2026-05-11
-**Prerequisite:** evo1 reachable at `http://evo1:11434`
-**DO NOT run as root.**
+**ADR:** ADR-035, Part 4 / Step 6
+**Status:** ACTIVE — canonical endpoint `:8080` on `127.0.0.1`
 
 ---
 
-## Part A — OfficeCLI Install
+## 1. Architecture
 
-```bash
-# A.1 Prerequisites
-sudo apt-get update && sudo apt-get install -y python3.12 python3.12-venv pipx
-
-# A.2 Install OfficeCLI via pipx
-pipx install officecli
-
-# A.3 PATH update (add to ~/.bashrc if not present)
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
-
-# A.4 Verify
-officecli --version
-
-# A.5 Create safe workspace (NEVER use /data/* paths)
-mkdir -p ~/banxe-dev/office-workspace
-echo 'export OFFICECLI_WORKSPACE="$HOME/banxe-dev/office-workspace"' >> ~/.bashrc
-source ~/.bashrc
-
-# A.6 Confirm no symlinks into /data/*
-ls -la ~/banxe-dev/office-workspace
-
-# A.7 Smoke test
-officecli --workspace "$OFFICECLI_WORKSPACE" status
+```
+Claude Code / dev tools
+       │
+       ▼
+LiteLLM Proxy (Legion :8080, 127.0.0.1 only)
+  systemd: litellm.service
+  config:  ~/litellm-config.yaml
+       │
+       ├── model: default ──────────────────► evo1 Ollama (100.68.102.48:11434)
+       │   (Priority 1 — local, within EMI)    qwen3:30b-a3b
+       │
+       └── model: fallback-claude ──────────► Anthropic claude-sonnet-4-6
+           (ONLY if evo1 unreachable AND       GUARDRAIL: block-regulated-paths
+            guardrail passes)                  pre_call keyword blocking
+                                               NEVER for: iban, kyc_id, national_id,
+                                               aml_flag, transaction_id, /kyc/, /aml/, /compliance/
 ```
 
 ---
 
-## Part B — LiteLLM Proxy Install
+## 2. Canonical Config Sections Added (Part 4)
 
-```bash
-# B.1 Install LiteLLM proxy
-pipx install 'litellm[proxy]'
-litellm --version
+All changes are in `~/litellm-config.yaml` (managed by systemd `litellm.service`).
+**Do NOT edit MetaClaw config** (`~/MetaClaw/litellm/litellm-config.v2.yaml`) — it is archived.
+
+### 2.1 Models added
+
+```yaml
+# Priority 1 — evo1 Ollama via Tailscale
+- model_name: "default"
+  litellm_params:
+    model: "ollama/qwen3:30b-a3b"
+    api_base: "http://100.68.102.48:11434"
+    timeout: 120
+
+# Anthropic fallback — GUARDRAIL PROTECTED
+- model_name: "fallback-claude"
+  litellm_params:
+    model: "claude-sonnet-4-6"
+    api_key: "os.environ/ANTHROPIC_API_KEY"
 ```
 
----
+### 2.2 Router settings added
 
-## Part C — Router Configuration
-
-```bash
-# C.1 Create config directory
-mkdir -p ~/banxe-dev/llm-router
-
-# C.2 Write config (copy-paste exactly)
-cat > ~/banxe-dev/llm-router/config.yaml << 'EOF'
-model_list:
-  # Priority 1 — on-prem Ollama on evo1 (stays within EMI perimeter)
-  - model_name: "default"
-    litellm_params:
-      model: "ollama/llama3"
-      api_base: "http://evo1:11434"
-
-  # Priority 2 — Anthropic Claude FALLBACK ONLY
-  # BLOCKED for any request matching regulated path keywords (see guardrails below)
-  - model_name: "fallback-claude"
-    litellm_params:
-      model: "claude-sonnet-4-6"
-      api_key: "os.environ/ANTHROPIC_API_KEY"
-
+```yaml
 router_settings:
-  routing_strategy: "least-busy"
-  fallback_models: ["fallback-claude"]
+  routing_strategy: simple-shuffle
+  default_fallbacks:
+    - fallback-claude
   timeout: 30
   num_retries: 2
+```
 
+Note: `default_fallbacks` is the correct LiteLLM 1.82.0 key.
+`fallback_models` (spec draft) is silently ignored by this version.
+
+### 2.3 Guardrail added
+
+```yaml
 guardrails:
   - guardrail_name: "block-regulated-paths"
     litellm_params:
-      guardrail: "presidio"
-      mode: "during_call"
-      block_request_if_contains:
-        - "/compliance/"
-        - "/kyc/"
-        - "/aml/"
-        - "kyc_id"
-        - "aml_flag"
-        - "transaction_id"
-        - "iban"
-        - "national_id"
+      guardrail: "custom_code"    # NOT "presidio" — Presidio not installed
+      mode: "pre_call"
+      default_on: true
+      custom_code: |
+        def apply_guardrail(inputs, request_data, input_type):
+            regulated_keywords = [
+                "/compliance/", "/kyc/", "/aml/",
+                "kyc_id", "aml_flag", "transaction_id",
+                "iban", "national_id",
+            ]
+            texts = inputs.get("texts") or []
+            for text in texts:
+                tl = lower(text)
+                for kw in regulated_keywords:
+                    if contains(tl, kw.lower()):
+                        return block("Request blocked: regulated path/keyword '" + kw + "'")
+            return allow()
+```
 
-general_settings:
-  master_key: "os.environ/LLM_ROUTER_MASTER_KEY"
-  database_url: null
-  store_model_in_db: false
-EOF
+**Why `custom_code` not `presidio`:** Microsoft Presidio is not installed in the LiteLLM
+pipx venv (`presidio_analyzer` not importable). `custom_code` is LiteLLM-native, no deps.
+The `allow()`, `block()`, `lower()`, `contains()` primitives are built into LiteLLM 1.82.0.
+
+---
+
+## 3. Service Management
+
+```bash
+# Restart after config change
+systemctl --user restart litellm
+
+# Status
+systemctl --user status litellm --no-pager -l
+
+# Logs (last 50 lines)
+journalctl --user -u litellm -n 50 --no-pager
+
+# Verify only one listener (127.0.0.1:8080, NOT 0.0.0.0:4000)
+ss -tlnp | grep -E ':4000|:8080'
 ```
 
 ---
 
-## Part D — Environment Variables
+## 4. Environment Variables
 
-```bash
-# D.1 Set in ~/.bashrc (NEVER commit this file to any repo)
-cat >> ~/.bashrc << 'EOF'
-export OLLAMA_BASE_URL="http://evo1:11434"
-export ANTHROPIC_API_KEY="<your-key-here>"      # replace before use
-export LLM_ROUTER_MASTER_KEY="dev-only-$(openssl rand -hex 8)"
-EOF
-source ~/.bashrc
+Secrets are injected via systemd EnvironmentFile, NOT in the YAML config.
+
+File: `~/.config/litellm/.env` (chmod 600, NOT in any git repo)
+
+Required variables:
+```
+ANTHROPIC_API_KEY=<value>
+REDIS_PASS=<value>
+LITELLM_MASTER_KEY=<value>
 ```
 
-**WARNING:** Do NOT commit `~/.bashrc` exports, `config.yaml`, or any file
-containing `ANTHROPIC_API_KEY` or `LLM_ROUTER_MASTER_KEY` to any branch
-in `banxe-emi-stack` or `banxe-architecture`.
-The Semgrep rule `banxe-hardcoded-secret` will catch inline keys but NOT
-externally-sourced shell exports. Add `~/banxe-dev/llm-router/config.yaml`
-to `~/.gitignore` as a host-level safeguard.
+The `litellm.service` unit file has `EnvironmentFile=%h/.config/litellm/.env`.
+**Never add secrets to `~/litellm-config.yaml`** — it is not secret-protected.
 
 ---
 
-## Part E — Startup and Health Checks
+## 5. Smoke Tests
+
+Run after any config change or service restart:
+
+### 5.1 Positive — non-regulated prompt → evo1 Ollama
 
 ```bash
-# E.1 Start router (foreground, dev mode)
-litellm --config ~/banxe-dev/llm-router/config.yaml --port 4000 --detailed_debug
-```
+MASTER_KEY=$(grep "^LITELLM_MASTER_KEY" ~/.config/litellm/.env | cut -d= -f2)
 
-```bash
-# E.2 Health check — evo1 Ollama (run in separate terminal)
-curl -sf http://evo1:11434/api/tags | python3 -m json.tool | head -20
-# Expected: JSON listing available models on evo1
-```
-
----
-
-## Part F — Smoke Tests
-
-### F.1 — Positive: non-regulated prompt routed to evo1
-
-```bash
-curl -s http://localhost:4000/v1/chat/completions \
-  -H "Authorization: Bearer $LLM_ROUTER_MASTER_KEY" \
+curl -s http://localhost:8080/v1/chat/completions \
+  -H "Authorization: Bearer $MASTER_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model":"default","messages":[{"role":"user","content":"ping"}]}' \
-  | python3 -m json.tool
-# Expected: response from evo1 Ollama model
+  -d '{"model":"default","messages":[{"role":"user","content":"ping router test"}]}' \
+  | python3 -c "import sys,json; d=json.load(sys.stdin); print('model:', d.get('model')); print('reply:', d['choices'][0]['message']['content'][:80])"
+# Expected: model=default, reply from evo1 Ollama
 ```
 
-### F.2 — Negative: regulated keyword blocked BEFORE Anthropic
+### 5.2 Negative — regulated keyword → guardrail block (must NOT reach Anthropic)
 
 ```bash
-curl -s http://localhost:4000/v1/chat/completions \
-  -H "Authorization: Bearer $LLM_ROUTER_MASTER_KEY" \
+MASTER_KEY=$(grep "^LITELLM_MASTER_KEY" ~/.config/litellm/.env | cut -d= -f2)
+
+curl -s http://localhost:8080/v1/chat/completions \
+  -H "Authorization: Bearer $MASTER_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model":"default","messages":[{"role":"user","content":"/kyc/ check this IBAN"}]}' \
+  -d '{"model":"default","messages":[{"role":"user","content":"/kyc/ verify this iban DE89370400440532013000"}]}' \
   | python3 -m json.tool
-# Expected: guardrail block response (error/blocked)
-# The request MUST NOT appear in Anthropic API logs.
+# Expected: {"error": {"message": "Custom code guardrail execution failed: Request blocked..."}}
+# The request must NOT appear in Anthropic API usage logs.
 ```
+
+**Verified results (2026-05-11):**
+- Positive: `model: default`, reply `pong` ✅
+- Negative: guardrail block `regulated path/keyword '/kyc/'` ✅ (Anthropic NOT reached)
 
 ---
 
-## Hard Rules (Enforce Always)
+## 6. Guardrail Keyword Reference
 
-1. **Never point any backend at `http://evo2:*`** — evo2 is production inference;
-   dev traffic causes resource starvation and log contamination.
+| Keyword | Reason blocked |
+|---|---|
+| `/compliance/` | Compliance path prefix |
+| `/kyc/` | KYC path prefix |
+| `/aml/` | AML path prefix |
+| `kyc_id` | KYC identifier field |
+| `aml_flag` | AML flag field |
+| `transaction_id` | Financial transaction identifier |
+| `iban` | International Bank Account Number |
+| `national_id` | Personal identification number |
 
-2. **Never run `litellm` or `officecli` as root under WSL2** — root shares the
-   Windows host token store; a root process can escape the namespace boundary
-   and reach host-mounted evo1/evo2 NFS shares.
+Matching is **case-insensitive** (lowercased before check).
+To add keywords: edit `custom_code` in `~/litellm-config.yaml`, restart service.
+**Never remove keywords without MLRO/CTIO sign-off** — this is a compliance control (I-27).
 
-3. **Never commit `~/.bashrc` exports, `config.yaml`, or any file containing
-   `ANTHROPIC_API_KEY` or `LLM_ROUTER_MASTER_KEY`** to any branch in
-   `banxe-emi-stack` or `banxe-architecture`. The Semgrep rule
-   `banxe-hardcoded-secret` enforces this for inline keys; `.gitignore` covers
-   the config file. Both controls must be active simultaneously.
+---
+
+## 7. Do-Not-Do
+
+| Action | Why forbidden |
+|---|---|
+| Add evo2 (`192.168.0.15:*`) as backend | evo2 is production inference — Part 5 only |
+| Bind to `0.0.0.0` | Exposes LiteLLM to all Legion interfaces — MetaClaw A-8 finding |
+| Hardcode `ANTHROPIC_API_KEY` in YAML | Semgrep `banxe-hardcoded-secret` — always env var |
+| Remove `block-regulated-paths` guardrail | Compliance control — I-27 HITL, UK GDPR Art.44 |
+| Start second LiteLLM process manually | Causes A-8-class port collision and config split |
+| Install Presidio without testing isolation | Presidio NER models may surface PII in logs |
+| Point `fallback-claude` to regulated content | Anthropic is outside EMI perimeter for regulated data |
+
+---
+
+## 8. MetaClaw Reference
+
+MetaClaw was a comprehensive local-model routing gateway (30+ routes, evo1+evo2+RPC).
+It was stopped as part of A-8 resolution. Its config is archived (not deleted) at:
+`/home/mmber/MetaClaw/litellm/litellm-config.v2.yaml.bak-2026-05-11`
+
+Model routes from MetaClaw that may be useful in future canonical config merges:
+- `factory-*` aliases (qwen3-coder, llama3.3, qwen3:30b)
+- `reasoning` / `reasoning-235b` (evo2 qwen3:235b + evo2 llama-server RPC)
+- `glm-4.5-air` (evo1 llama-server :8081)
+
+See `docs/audit/a8-metaclaw-resolution-2026-05-11.md` for full investigation.

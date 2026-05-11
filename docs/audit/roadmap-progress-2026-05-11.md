@@ -1,6 +1,6 @@
 # ADR-035 ROADMAP — Progress Report
-# ADR-035 ROADMAP — Parts 1–3 Progress
-# Updated: 2026-05-11 (Part 3 complete)
+# ADR-035 ROADMAP — Parts 1–4 Progress
+# Updated: 2026-05-11 (Part 4 complete)
 # Date: 2026-05-11 | Auditor: Sub-terminal A (Claude Code)
 
 ## Reference: ADR-035 AI Pool Roadmap (10 Steps)
@@ -18,9 +18,9 @@ Source: `docs/adr/ADR-035-ai-pool-roadmap-2026-05-11.md` (committed 2026-05-11, 
 | 3    | Model inventory deduplication      | 🔜 PENDING  | Blocked by Step 2 completion              |
 | 4    | LiteLLM route — add evo2           | 🔜 PENDING  | Blocked by Step 3; risk A-3 flagged       |
 | 5    | Redis + LiteLLM cache              | ✅ DONE      | Redis on evo1 (Docker, hardened) + LiteLLM cache wired; cache verified 0.65ms |
-| 6    | Grafana unified dashboard          | 🔜 PENDING  | evo2 has grafana; evo1 does not           |
+| 6    | LLM router + A-8 resolution        | ✅ DONE      | MetaClaw stopped; default→evo1; fallback-claude guardrail-gated |
 | 7    | Tailscale mesh verify all 3 nodes  | 🔜 PENDING  | Legion→evo1 Tailscale confirmed; evo2 unverified |
-| 8    | Compliance routing guardrails      | 🟡 PARTIAL  | C1 fix applied; stale config archived; Presidio not yet installed |
+| 8    | Compliance routing guardrails      | 🟡 PARTIAL  | C1 fix + custom_code guardrail active (pre_call); Presidio not installed (not needed) |
 | 9    | Load balancing (evo1 + evo2)       | 🔜 PENDING  | Requires Steps 4 + 5 first               |
 | 10   | HITL gate for L3+ agent decisions  | 🔜 PENDING  | Architectural; blocked by Steps 4–9      |
 
@@ -214,3 +214,70 @@ add to systemd management before routing external traffic through Legion.
 
 ### Runbook Added
 - `docs/runbooks/legion-officecli-setup.md`
+
+---
+
+## Part 4 — Detail (ADR-035 ROADMAP Part 4 / Step 6 — LLM Router + A-8 Resolution)
+
+**Branch:** feat/part4-llm-router-a8-resolution-2026-05-11
+**Performed:** 2026-05-11 by Sub-terminal A
+
+### A-8 MetaClaw Resolution
+
+#### Investigation (Step A)
+- PID 71814 confirmed: `litellm --config ~/MetaClaw/litellm/litellm-config.v2.yaml --port 4000 --host 0.0.0.0`
+- Owner: mmber (same user), started 2026-05-07
+- Config: 30+ model aliases for evo1/evo2/Legion — purpose: comprehensive local routing gateway built during MetaClaw dev session
+- Security findings: `0.0.0.0` binding (HIGH), hardcoded `master_key` (MEDIUM), no Redis password (MEDIUM), no guardrails (MEDIUM)
+- Full investigation: `docs/audit/a8-metaclaw-resolution-2026-05-11.md`
+
+#### Reconciliation (Step B)
+- **Decision: canonical = systemd litellm.service at :8080 (127.0.0.1)**
+- MetaClaw config archived: `~/MetaClaw/litellm/litellm-config.v2.yaml.bak-2026-05-11`
+- MetaClaw stopped: `kill -15 71814`
+- Port :4000 cleared; only :8080 remains
+
+### LLM Router Configuration (Step C)
+
+`~/litellm-config.yaml` additions:
+
+#### New models
+| model_name | backend | purpose |
+|---|---|---|
+| `default` | `ollama/qwen3:30b-a3b` @ `100.68.102.48:11434` | Priority 1 — evo1 Ollama (Tailscale) |
+| `fallback-claude` | `claude-sonnet-4-6` @ Anthropic | Fallback — guardrail-gated |
+
+#### router_settings
+```yaml
+router_settings:
+  routing_strategy: simple-shuffle
+  default_fallbacks: [fallback-claude]   # correct key for LiteLLM 1.82.0
+  timeout: 30
+  num_retries: 2
+```
+
+#### guardrails
+```yaml
+guardrails:
+  - guardrail_name: block-regulated-paths
+    litellm_params:
+      guardrail: custom_code             # presidio NOT available in venv
+      mode: pre_call
+      default_on: true
+      custom_code: <keyword blocking function — see runbook>
+```
+Keywords blocked: `/compliance/`, `/kyc/`, `/aml/`, `kyc_id`, `aml_flag`, `transaction_id`, `iban`, `national_id`
+
+### Verification (Steps D + E)
+
+| Test | Input | Expected | Result |
+|---|---|---|---|
+| Positive | `model=default`, content=`"ping router test"` | Reply from evo1 Ollama | `model=default`, reply `pong` ✅ |
+| Negative | content contains `/kyc/` + `iban` | Guardrail block before Anthropic | Error: `Request blocked: regulated path/keyword '/kyc/'` ✅ |
+
+Anthropic API NOT reached during negative test (verified by error source = guardrail pre_call hook).
+
+### Runbooks Added/Updated
+- `docs/audit/a8-metaclaw-resolution-2026-05-11.md` (new)
+- `docs/runbooks/legion-llm-router-setup.md` (updated — was stub)
+
