@@ -1,6 +1,6 @@
 # ADR-034 — Webhook Reliability Strategy (KYC / SumSub Inbound)
 
-**Status:** Proposed (2026-05-06)
+**Status:** Accepted (2026-05-11) — Steps 1-4 merged in banxe-emi-stack (#114 Step 1, #115 Step 2, #117 Step 3, #120 Step 4). G-KYC-03 CLOSED. G-KYC-04 pending test coverage extension.
 **Author:** Architecture WG / Compliance lead
 **Closes:** G-KYC-03 (canonical), G-KYC-04 (canonical), V-11 (HANDOFF-2026-05-04)
 **Linked:** ADR-LCY-01, ADR-027 (audit-trail buffer — ALERT_DELIVERED / KYC_WEBHOOK_RECEIVED),

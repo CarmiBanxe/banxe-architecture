@@ -7477,3 +7477,22 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Track A: 7 of 8 ADRs Accepted (027/028/029/030/032/033/035). Remaining: ADR-034 (webhook reliability — Sub-B in progress).
 - Closing IL: this IL closes ADR-033 + G-OBS-01. G-OBS-02 remains open.
 - Anchors: ADR-033 Accepted + emi-stack PRs #116/#118/#119 + G-OBS-01 closed + Sub-B ADR-034 in progress.
+
+### IL-OPS-ADR-034-ACCEPTED-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — ADR-034 webhook reliability KYC Accepted + G-KYC-03 closure + TRACK A COMPLETE
+- Status: BINDING — ADR-034 Proposed → Accepted; G-KYC-03 CLOSED; Track A 8/8 ALL ACCEPTED
+- Priority: P1 (Track A COMPLETE — milestone)
+- Scope: ADR-034 status + G-KYC-03 closure + two-loop mirrors PR #114/#115/#117/#120 + Track A completion
+
+- ADR-034 acceptance:
+  Mirror 23 — IL-MIRROR-EMI-PR-114: WebhookReliabilityPort + InMemoryWebhookAdapter + 6 unit tests [Step 1]. Commit 78baf12.
+  Mirror 24 — IL-MIRROR-EMI-PR-115: DI wiring WebhookReliabilityPort → InMemoryWebhookAdapter [Step 2]. Commit 3844d85.
+  Mirror 25 — IL-MIRROR-EMI-PR-117: async webhook delivery worker [Step 3]. Commit 8dc7bfb.
+  Mirror 26 — IL-MIRROR-EMI-PR-120: Redis adapter + HTTP delivery + DLQ + Telegram alert [Step 4]. Commit edca2f0. Sub-B handoff per §71.
+
+- GAP closure: G-KYC-03 CLOSED. G-KYC-04 OPEN (test coverage extension).
+- TRACK A COMPLETE: 8/8 ADRs Accepted (027/028/029/030/032/033/034/035). MASTER-PLAN Track A CLOSED.
+- Two-loop mirrors total: 26 (16 PR #174/#187 + 3 PR #191 + 3 PR #194 + 4 this commit).
+- Anchors: ADR-034 Accepted + emi-stack PRs #114/#115/#117/#120 + G-KYC-03 closed + Sub-B §71 + MASTER-PLAN Track A complete.
