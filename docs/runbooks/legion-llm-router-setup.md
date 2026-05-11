@@ -213,3 +213,82 @@ Model routes from MetaClaw that may be useful in future canonical config merges:
 - `glm-4.5-air` (evo1 llama-server :8081)
 
 See `docs/audit/a8-metaclaw-resolution-2026-05-11.md` for full investigation.
+
+---
+
+## 9. evo2 Backend — Load Balancing (Part 6, 2026-05-11)
+
+evo2 (`100.99.208.21:11434`) added as second backend for shared models.
+LiteLLM `simple-shuffle` distributes requests across all entries with the same `model_name`.
+
+### 9.1 Architecture (updated)
+
+```
+LiteLLM Proxy (Legion :8080, 127.0.0.1 only)
+       │
+       ├─ model: default ──── simple-shuffle ──► evo1 :11434  qwen3:30b-a3b
+       │                                    └──► evo2 :11434  qwen3:30b-a3b
+       │
+       ├─ model: llama-3.3-70b ─────────────► evo1 :11434  llama3.3:70b
+       │                                  └──► evo2 :11434  llama3.3:70b
+       │
+       ├─ model: banxe/operations ──────────► evo1 :11434  qwen3:30b-a3b
+       │                                  └──► evo2 :11434  qwen3:30b-a3b
+       │
+       ├─ model: ollama/llama3.3-70b ───────► evo1 :11434  llama3.3:70b
+       │                                  └──► evo2 :11434  llama3.3:70b
+       │
+       ├─ model: ollama/glm-flash ──────────► evo1 :11434  qwen3:30b-a3b
+       │                                  └──► evo2 :11434  qwen3:30b-a3b
+       │
+       ├─ model: ollama/qwen3.5-35b ────────► evo1 :11434  qwen3.5:latest
+       │                                  └──► evo2 :11434  qwen3.5:latest
+       │
+       └─ model: fallback-claude ───────────► Anthropic claude-sonnet-4-6
+           (guardrail-gated — keyword block active)
+```
+
+### 9.2 Distribution verification
+
+After restart, send 6 requests to `model=default`. Both nodes should load the model:
+
+```bash
+MASTER_KEY=$(grep "^LITELLM_MASTER_KEY" ~/.config/litellm/.env | cut -d= -f2)
+for i in $(seq 1 6); do
+  curl -s --max-time 30 http://127.0.0.1:8080/v1/chat/completions \
+    -H "Authorization: Bearer $MASTER_KEY" \
+    -H "Content-Type: application/json" \
+    -d "{\"model\":\"default\",\"messages\":[{\"role\":\"user\",\"content\":\"/no_think ping$i\"}],\"max_tokens\":5}" \
+    -o /dev/null -w "req$i: HTTP %{http_code}\n"
+done
+
+# Then check both nodes loaded the model:
+curl -s http://100.68.102.48:11434/api/ps   # evo1
+curl -s http://100.99.208.21:11434/api/ps   # evo2
+```
+
+Verified result (2026-05-11 14:29 CEST): both evo1 and evo2 showed `qwen3:30b-a3b` loaded
+with expiry times 489ms apart — confirming simple-shuffle distribution ✅.
+
+### 9.3 evo2-only models (NOT load-balanced)
+
+`qwen3:235b-a22b` and `qwen3:235b-a22b-banxe` are evo2-only (142 GB each).
+Add dedicated model_name entries pointing ONLY to evo2 when needed:
+
+```yaml
+- model_name: reasoning-235b
+  litellm_params:
+    model: ollama/qwen3:235b-a22b-banxe
+    api_base: http://100.99.208.21:11434
+    timeout: 600
+```
+
+### 9.4 Do-Not-Do (updated)
+
+| ~~Old rule~~ | New status |
+|---|---|
+| ~~Add evo2 as backend~~ | **DONE in Part 6 — evo2 IS a backend now** |
+
+Rule updated: evo2 is now the second canonical Ollama backend. Do not add a third
+backend without a Part 7+ ROADMAP step.
+
