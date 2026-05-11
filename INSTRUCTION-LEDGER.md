@@ -7641,3 +7641,25 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - MASTER-PLAN update: Track D upgraded SUBSTANTIALLY → FULLY CLOSED. Now 5 of 9 Tracks at least SUBSTANTIALLY CLOSED (A+C+D+G fully; E+F partially).
 - Two-loop mirrors total: 27.
 - Anchors: ADR-027 + emi-stack PR #125 (69411f3) + G-CASS-02 closed + Track D fully closed.
+
+### IL-OPS-G-KYC-04-CLOSED-TRACK-C-FULLY-CLOSED-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — G-KYC-04 closure + Track C FULLY CLOSED
+- Status: BINDING — G-KYC-04 CLOSED; Track C KYC Reliability FULLY CLOSED (4/4 GAPs + 2/2 ADRs)
+- Priority: P1 (FCA MLR 2017 Reg.28 — regulatory)
+- Scope: G-KYC-04 closure + two-loop mirror PR #126 + Track C upgrade SUBSTANTIALLY → FULLY CLOSED.
+
+- G-KYC-04 closure: 6 tests in banxe-emi-stack PR #126 (64f40c5).
+  Mirror 28 — IL-MIRROR-EMI-PR-126: feat(g-kyc-04): webhook signature + idempotency-key coverage [6 tests]. Commit 64f40c5.
+
+- Track C: FULLY CLOSED (was SUBSTANTIALLY per PR #201).
+  - G-KYC-01 ✅ CLOSED (ADR-028)
+  - G-KYC-02 ✅ CLOSED (ADR-028)
+  - G-KYC-03 ✅ CLOSED (ADR-034)
+  - G-KYC-04 ✅ CLOSED (PR #126)
+  - ADR-028 ✅ Accepted + ADR-034 ✅ Accepted
+
+- MASTER-PLAN: A+C+D+G FULLY CLOSED (4 of 9); E+F PARTIALLY; B+H+I OPEN.
+- Two-loop mirrors total: 28.
+- Anchors: ADR-028/034 + emi-stack PR #126 (64f40c5) + G-KYC-04 closed + Track C fully closed.

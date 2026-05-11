@@ -330,7 +330,7 @@
               G-KYC-02 (re-verification triggers), FCA MLR 2017 Reg.28.
   **Closing 2026-05-11:** ADR-034 Steps 1-4 merged: PR #114 WebhookReliabilityPort + 6 tests / PR #115 DI wiring / PR #117 async delivery worker / PR #120 Redis adapter + HTTP delivery + DLQ + Telegram alert. Sub-B handoff per §71.
 
-- [ ] G-KYC-04: Webhook signature verification + idempotency-key coverage tests — NEW 2026-05-05
+- [x] G-KYC-04: Webhook signature + idempotency-key coverage tests implemented — CLOSED 2026-05-11
   **Source:** G-KYC-03 follow-on.
   **Components:** `tests/test_webhook_router.py`, `tests/test_webhook_audit.py`, `services/webhooks/webhook_router.py`.
   **Risk:** Existing tests cover happy-path signature check; no tests for:
@@ -343,6 +343,7 @@
     4. Add test: handler error path → assert correct HTTP status returned to SumSub.
   **Owner:** Platform WG.
   **Linked:** G-KYC-03, ADR-034, .claude/rules/cass15.md, FCA MLR 2017 Reg.28.
+  Closing 2026-05-11: 6 tests merged in banxe-emi-stack PR #126 (commit 64f40c5): valid/invalid/missing signature (HMAC-SHA1 SumSub), replay attack idempotency (handler-level dedup), out-of-order delivery (REJECTED before COMPLETED), 5xx DLQ path. Per ADR-034 + FCA MLR 2017 Reg.28. Track C KYC Reliability: 4/4 GAPs CLOSED (G-KYC-01/02/03/04) + 2/2 ADRs Accepted (ADR-028/034). Track C FULLY CLOSED.
 
 ## Что реализовано лучше стандарта
 
