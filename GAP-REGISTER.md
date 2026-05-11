@@ -296,7 +296,7 @@
 > but no idempotency key tracking and no DLQ path for inbound SumSub events.
 > Existing webhook_orchestrator/dead_letter_queue.py covers outbound delivery only.
 
-- [ ] G-KYC-03: SumSub webhook retry / dead-letter handling not defined — NEW 2026-05-05
+- [x] G-KYC-03: SumSub webhook retry + DLQ implemented — CLOSED 2026-05-11 (ADR-034 Accepted)
   **Source:** V-11 (HANDOFF-2026-05-04, MEDIUM).
   **Components:**
     - `services/webhooks/webhook_router.py` — inbound SumSub handler (HMAC-SHA1 sig, audit-log); no idempotency key.
@@ -326,6 +326,7 @@
   **Owner:** Platform WG.
   **Linked:** ADR-034 (to be opened), ADR-LCY-01, G-KYC-01 (FSM PENDING trigger),
               G-KYC-02 (re-verification triggers), FCA MLR 2017 Reg.28.
+  **Closing 2026-05-11:** ADR-034 Steps 1-4 merged: PR #114 WebhookReliabilityPort + 6 tests / PR #115 DI wiring / PR #117 async delivery worker / PR #120 Redis adapter + HTTP delivery + DLQ + Telegram alert. Sub-B handoff per §71.
 
 - [ ] G-KYC-04: Webhook signature verification + idempotency-key coverage tests — NEW 2026-05-05
   **Source:** G-KYC-03 follow-on.
