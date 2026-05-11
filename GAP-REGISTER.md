@@ -246,13 +246,14 @@
 
 ## CI / Deploy Pipeline — Gaps (V-08 from HANDOFF-2026-05-04)
 
-- [ ] G-CI-01: No end-to-end smoke gate before merge / auto-deploy — NEW 2026-05-05
+- [x] G-CI-01: End-to-end smoke gate implemented — CLOSED 2026-05-11 (ADR-035 Accepted, Steps 1-3+5 merged)
   Source: V-08 MEDIUM in HANDOFF-2026-05-04. Existing CI gates in `banxe-emi-stack/.github/workflows/`: `quality-gate.yml`, `lint-python.yml`, `lint-frontend.yml`, `alembic-check.yml`, `claude-*.yml` — all unit/lint level. Missing: a smoke job that exercises a real boot-and-call path (KC token grant via realm `banxe-emi`, ClickHouse audit append, reconciler tick, safeguarding endpoint, Guardian /audit) before a PR can merge into main. Risk: regressions only caught post-merge; production-state change without smoke evidence violates IL-CANON-04 §best-decision (cannot pick "best" without smoke signal).
   Plan (3 steps):
     1. **Audit** (read-only): inventory existing workflows + their job-level dependencies; identify minimal smoke surface (5-7 endpoints) that proves "system boots and answers". Output: `docs/canon/v-08-audit-2026-05-05.md`.
     2. **Propose**: ADR-031 — CI smoke-gate policy. Define: which workflow file (`smoke-gate.yml`), trigger (PR opened + push to main), env (ephemeral docker compose with KC + Postgres + ClickHouse + Guardian-mock), required-status check on `main` branch protection, time budget (≤ 7 min), rollback signal.
     3. **Fix**: implement `smoke-gate.yml`, add to branch-protection required checks, document in `docs/ops/`. Subsumes G-OPS-02 (backup-restore smoke) and aligns with G-DEPLOY-02 (CI-driven deploy).
   Owner: Architecture WG / DevOps lead. Linked: `quality-gate.yml`, G-DEPLOY-02, G-OPS-02, IL-CANON-04.
+    Closing 2026-05-11: ADR-035 5 implementation steps merged in banxe-emi-stack: PR #100 mock tier Step 1 + PR #101 mock workflow Step 2 + PR #113 real workflow Step 3 + PR #105 audit signal Step 5. smoke-gate-mock.yml + smoke-gate workflow + CI_SMOKE_FAILURE audit event all in main. G-CI-02 (required-check enforcement switch) tracked separately.
 
 - [ ] G-CI-02: Required-check enforcement — NEW 2026-05-05
   After G-CI-01 implementation: switch GitHub branch-protection on `main` so that `smoke-gate` is a required status check (not just advisory). Audit existing required checks; document in `INSTRUCTION-LEDGER` IL-CI-01. Owner: Architecture WG.

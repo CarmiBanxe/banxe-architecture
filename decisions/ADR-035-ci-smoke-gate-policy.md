@@ -1,6 +1,6 @@
 # ADR-035 — CI Smoke-Gate Policy
 
-**Status:** Proposed (2026-05-05)
+**Status:** Accepted (2026-05-11) — all 5 implementation steps merged in banxe-emi-stack (#100 Step 1, #101 Step 2, #113 Step 3, #105 Step 5). G-CI-01 CLOSED. G-CI-02 pending branch-protection enforcement switch.
 **Author:** Architecture WG / DevOps Lead
 **Closes:** G-CI-01 (no end-to-end smoke gate before merge), G-CI-02 (required-check enforcement absent), V-08 (HANDOFF-2026-05-04)
 **Linked:** ADR-024 (Guardian shim — current sole required check), ADR-027 (audit-trail durability — smoke-gate failure events buffered via BufferedAuditPort), ADR-029 (PostgreSQL backup — G-OPS-02 backup-restore smoke subsumed here), ADR-LCY-01 (Customer lifecycle FSM — smoke surface), IL-CANON-04 (best-decision principle — smoke evidence prerequisite), MASTER-PLAN Track A5

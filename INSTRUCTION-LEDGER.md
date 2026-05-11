@@ -7434,3 +7434,29 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Closing IL: this IL closes G-INFRA-01. G-INFRA-02 (ROCm/amdgpu kernel 6.17 regression) remains P1 OPEN per known issues.
 - Anchors: ADR-018 + ADR-019 + IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 + INCIDENT-2026-05-07-EVO1-XMRIG (containment iptables reference) + G-INFRA-01 closed + G-INFRA-02 P1 open.
 
+### IL-OPS-ADR-035-ACCEPTED-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — ADR-035 CI smoke-gate policy Accepted + G-CI-01 closure
+- Status: BINDING — ADR-035 Proposed → Accepted; G-CI-01 CLOSED; two-loop mirrors for 3 emi-stack PRs
+- Priority: P2 (Track A closure progress — 6 of 8 ADRs now Accepted)
+- Scope: ADR-035 status update + G-CI-01 closure + two-loop mirrors PR #101/#105/#113
+
+- ADR-035 acceptance evidence:
+  - Step 1: PR #100 MERGED 2026-05-09 — smoke gate matrix mock tier (6 tests) — IL-MIRROR-EMI-PR-100 (PR #174)
+  - Step 2: PR #101 MERGED 2026-05-11 — mock smoke gate workflow (smoke-gate-mock.yml)
+  - Step 3: PR #113 MERGED 2026-05-11 — real smoke-gate workflow implementation (Sub-B handoff, 3 files +137)
+  - Step 5: PR #105 MERGED 2026-05-11 — CI_SMOKE_FAILURE audit signal on nightly smoke gate
+
+- Two-loop mirrors (new, PR #101/#105/#113):
+  Mirror 17 — IL-MIRROR-EMI-PR-101: feat(adr-035): add mock smoke gate CI workflow [Step 2]. Commit 7134432. CI workflow smoke-gate-mock.yml.
+  Mirror 18 — IL-MIRROR-EMI-PR-113: feat(adr-035): real smoke-gate workflow implementation [Step 3]. Commit a1835ec. Sub-B handoff per §71. 3 files: .github/protection-update.json + .github/workflows/smoke-gate-mock.yml update + tests/smoke/test_ci_smoke_gate_enforcement.py.
+  Mirror 19 — IL-MIRROR-EMI-PR-105: feat(adr-035): emit CI_SMOKE_FAILURE audit signal on nightly smoke gate [Step 5]. Commit post-squash (verify via gh pr view 105).
+
+- GAP closure: G-CI-01 CLOSED (end-to-end smoke gate implemented). G-CI-02 OPEN (branch-protection required-check switch — operator action pending).
+
+- Track A progress: 6 of 8 ADRs Accepted (027/028/029/030/032/035). Remaining: ADR-033 (alert routing, operator-blocked) + ADR-034 (webhook reliability, not started).
+
+- Closing IL: this IL closes ADR-035 acceptance + G-CI-01. G-CI-02 remains open for operator branch-protection action.
+- Anchors: ADR-035 decisions/ADR-035-ci-smoke-gate-policy.md (Accepted this commit) + banxe-emi-stack PRs #100/#101/#105/#113 + G-CI-01 closed + Sub-B handoff per §71.
+
