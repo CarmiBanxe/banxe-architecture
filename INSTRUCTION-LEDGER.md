@@ -7621,3 +7621,23 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 
 - Autonomous progression terminus: all canon-addressable Track work complete. Remaining = operator/production scope.
 - Anchors: MASTER-PLAN-2026-05-05 all 9 Tracks + all ADR acceptance tags + incident RESOLVED.
+
+### IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — G-CASS-02 closure + Track D fully closed + two-loop mirror PR #125
+- Status: BINDING — G-CASS-02 CLOSED; Track D Audit Trail Durability FULLY CLOSED (2/2 GAPs + 1/1 ADR)
+- Priority: P1 (FCA CASS 15 audit trail — regulatory)
+- Scope: G-CASS-02 closure + two-loop mirror + Track D status upgrade SUBSTANTIALLY → FULLY CLOSED.
+
+- G-CASS-02 closure: 5 E2E tests in banxe-emi-stack PR #125 (69411f3).
+  Mirror 27 — IL-MIRROR-EMI-PR-125: feat(g-cass-02): audit-trail E2E coverage tests — BufferedAuditPort failure/recovery/invariant [5 tests]. Commit 69411f3.
+
+- Track D status: FULLY CLOSED (was SUBSTANTIALLY-CLOSED per PR #201).
+  - G-CASS-01 ✅ DONE (BufferedAuditPort SQLite ring-buffer PR #66)
+  - G-CASS-02 ✅ CLOSED (E2E tests PR #125)
+  - ADR-027 ✅ Accepted
+
+- MASTER-PLAN update: Track D upgraded SUBSTANTIALLY → FULLY CLOSED. Now 5 of 9 Tracks at least SUBSTANTIALLY CLOSED (A+C+D+G fully; E+F partially).
+- Two-loop mirrors total: 27.
+- Anchors: ADR-027 + emi-stack PR #125 (69411f3) + G-CASS-02 closed + Track D fully closed.
