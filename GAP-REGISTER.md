@@ -592,11 +592,12 @@
     На evo1 порт 4000 (TCP, 127.0.0.1) занят Google IDX preview / Firebase emulator (HTML «Copyright 2020 Google LLC»). Не блокер сейчас, но мешает развернуть real LiteLLM на evo1 если потребуется.
     Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07.
 
-- [ ] G-INFRA-EVO1-LOAD-AVG-35 (P2, OPEN, 2026-05-07 — ROOT-CAUSE-IDENTIFIED: XMRig cryptominer)
+- [x] G-INFRA-EVO1-LOAD-AVG-35 (P2, CLOSED-REMEDIATED, 2026-05-07)
     Постоянный load avg ~35 на evo1 (3 пользователя). Источник heavy CPU не идентифицирован в текущих аудитах. Нужно отдельное расследование (top -c, htop, iotop).
     **2026-05-07 escalation:** root cause identified as unknown daemon /etc/systemd/system/systemd.service (PID 2127, ≈2911% CPU, 38 threads). Effective priority escalated to P1 until daemon classified. See G-SECURITY-EVO1-UNKNOWN-SYSTEMD-SERVICE.
     **2026-05-07 ROOT-CAUSE-IDENTIFIED:** daemon classified as XMRig-compatible RandomX/Monero CPU miner. See G-SECURITY-EVO1-XMRIG-CRYPTOMINER (P0). Awaiting remediation.
     Anchors: IL-OPS-R1-R2-FACTORY-PROJECT-EXECUTION-2026-05-07, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-UNKNOWN-DAEMON, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+    Closing 2026-05-11: root cause XMRig cryptominer removed V6 destructive cleanup 2026-05-08. Load average normalized post-removal. Incident RESOLVED PR #155.
 
 - [ ] G-CI-WORKFLOWS-FAILING (P2, OPEN, 2026-05-07)
     .github/workflows/ci.yml fails 0s + docs.yml fails 17s on every push to main / PR.
@@ -777,7 +778,7 @@
     See IL-INCIDENT-2026-05-08-STATE-TRANSITION-P0-TO-MONITOR.
     Closing 2026-05-11 (sync from V-XMRIG track): XMRig removed V6 destructive cleanup 2026-05-08. Incident RESOLVED PR #155 tag checkpoint-2026-05-09-incident-resolved. Note: duplicate [x] entry exists at line ~1046 per PR #155 cleanup-actor track — both entries now marked closed.
 
-- [ ] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
+- [x] G-SECURITY-EVO2-IOC-SWEEP-PENDING (P1, CLOSED-OBSERVATION-PASS, 2026-05-07)
     Read-only IoC sweep evo2 required for XMRig IoC signatures (sha256, paths, pool IP,
     BuildID, masquerade patterns). Same threat actor may have compromised evo2 via same
     vector. No destructive actions until sweep complete.
@@ -789,8 +790,9 @@
     See IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+    Closing 2026-05-11: observation 24h PASS per incident RESOLVED PR #155 tag checkpoint-2026-05-09-incident-resolved. Containment static 43+h, zero reinfection.
 
-- [ ] G-SECURITY-LEGION-IOC-SWEEP-PENDING (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-07)
+- [x] G-SECURITY-LEGION-IOC-SWEEP-PENDING (P1, CLOSED-OBSERVATION-PASS, 2026-05-07)
     Read-only IoC sweep Legion (factory layer) required for XMRig IoC signatures.
     Lower probability (WSL2, different access vector) but factory-layer compromise
     would affect all downstream trust. No destructive actions until sweep complete.
@@ -801,6 +803,7 @@
     See IL-INCIDENT-2026-05-07-IOC-SWEEP-EVO2-LEGION-CLEAN.
     Closing IL: TBD.
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER, IL-CANON-PROCESS-INCIDENT-2026-05-07-EVO1-XMRIG-IDENTIFIED.
+    Closing 2026-05-11: same evidence as G-SECURITY-EVO2-IOC-SWEEP-PENDING. Observation 24h PASS. Incident RESOLVED.
 
 - [ ] G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (P0, OPEN, 2026-05-07)
     Full compromise audit evo1 required BEFORE any cleanup/remediation:
@@ -1015,7 +1018,7 @@
     Anchors: IL-CANON-PROCESS-INCIDENT-2026-05-08-LIVEBOX-LIMITATION,
     IL-INCIDENT-2026-05-07-CONTAINMENT-APPLIED-HOST-LEVEL.
 
-- [ ] G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-08)
+- [x] G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, CLOSED-OBSERVATION-PASS, 2026-05-08)
     Supplemental IoC re-sweep evo2 required for 2 newly identified artefacts
     from Phase 1 Step 3 analysis (not in original sweep checklist):
     - /etc/systemd/system/observed.service
@@ -1035,8 +1038,9 @@
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
     IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
     IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED.
+    Closing 2026-05-11: extended IoC resweep evo2 CLEAN per incident RESOLVED. Observation window closed.
 
-- [ ] G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, OPEN → RESOLVED-PENDING-OBSERVATION, 2026-05-08)
+- [x] G-SECURITY-LEGION-IOC-RESWEEP-OBSERVED-FREE-PROC (P1, CLOSED-OBSERVATION-PASS, 2026-05-08)
     Supplemental IoC re-sweep Legion required for 2 newly identified artefacts
     (same as G-SECURITY-EVO2-IOC-RESWEEP-OBSERVED-FREE-PROC).
     Read-only. No destructive actions.
@@ -1050,6 +1054,7 @@
     Anchors: G-SECURITY-EVO1-XMRIG-CRYPTOMINER,
     IL-INCIDENT-2026-05-07-IOC-EXPANSION-OBSERVED-FREE-PROC,
     IL-INCIDENT-2026-05-08-IOC-RESWEEP-REQUIRED.
+    Closing 2026-05-11: extended IoC resweep Legion CLEAN per incident RESOLVED. Observation window closed.
 
 - [ ] G-FACTORY-RUFLO-NOT-DEPLOYED (P0, OPEN, 2026-05-09)
     Ruflo regulated-routes proxy NOT deployed on Legion factory infrastructure.
@@ -1076,7 +1081,7 @@
     Closing IL: IL-OPS-PROJECT-SECTION-0-COMPLIANCE-AUDIT-2026-05-09 (Sprint S2 audit completed; 5 per-deviation GAPs opened: G-PROJECT-SECTION-0-LEVEL-5-AI-MLRO-AUTONOMOUS-MISSING (P0), G-PROJECT-SECTION-0-LEVEL-3-SMF-HEADS-AI-DUPLICATE-MISSING (P1), G-PROJECT-SECTION-0-LEVEL-2-NO-DUPLICATE-VIOLATION (P1), G-PROJECT-SECTION-0-LEVEL-1-NO-DUPLICATE-VIOLATION (P1), G-PROJECT-SERVICES-COUNT-DRIFT-VS-ROADMAP (P3)).
     Closure verified: 2026-05-09 (CEST).
 
-- [ ] G-FACTORY-EVO2-SSH-ACCESS-LOST (P1, CLOSED-POST-UPDATE, 2026-05-09)
+- [x] G-FACTORY-EVO2-SSH-ACCESS-LOST (P1, CLOSED-POST-UPDATE, 2026-05-09)
     Original state: evo2 SSH access lost (carryover from V-XMRIG track §22 Phase F2.1).
     2026-05-09 status: CLOSED — operator-applied evo2 power-on + kernel update
     (kernel 6.17.0-23-generic, fresh boot uptime 10 min, boot_id
@@ -1085,6 +1090,7 @@
     at 2026-05-09 00:47 CEST during IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
     Closing IL: IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09.
     Anchors: bootstrap canon §22 Phase F2.1, §9 V-XMRIG carryover.
+    Checkbox sync 2026-05-11: label already said CLOSED-POST-UPDATE since Sprint S1 (PR #146); checkbox was stale [ ].
 
 - [/] G-FACTORY-CLAUDE-SUBAGENTS-MISSING (P1, PARTIAL, 2026-05-09)
     4 canonical Claude subagents (controller, inspector-agent, openclo-moa,
