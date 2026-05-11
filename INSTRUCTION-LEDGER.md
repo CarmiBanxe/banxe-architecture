@@ -7532,3 +7532,12 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - 7 closures: XMRIG-CRYPTOMINER (P0) + OBSERVED-SERVICE-UNKNOWN (P0) + CTIO-SUDOERS-BACKDOOR (P0) + SSHD-ROOT-LOGIN-OPEN (P0) + ROOT-AUTHORIZED-KEYS-AUDIT (P0) + CRON-PULL-UNSIGNED (P2) + UNKNOWN-SYSTEMD-SERVICE (P1→P0).
 - 2 stay OPEN: COMPROMISE-AUDIT-PENDING (P0 parent) + UNAUTHORIZED-USERS (P0 V8 pending).
 - Anchors: bootstrap canon §9 + V-XMRIG track c44b1ab + incident RESOLVED PR #155 + tag checkpoint-2026-05-09-incident-resolved.
+
+### IL-OPS-GAP-CLEANUP-ROUND2-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — GAP cleanup round 2 (6 stale entries)
+- Status: BINDING — 6 factually-resolved GAPs checkboxes synced to [x]
+- Priority: P3 (canon hygiene)
+- Scope: EVO2-SSH-ACCESS-LOST (stale checkbox) + LOAD-AVG-35 (XMRig root cause removed) + 4 IOC sweep/resweep entries (observation 24h PASS per incident RESOLVED).
+- Anchors: incident RESOLVED PR #155 + tag checkpoint-2026-05-09-incident-resolved + Sprint S1 audit.
