@@ -264,7 +264,7 @@
 > V-10 reads "Keycloak realm alerts not wired to PagerDuty". PagerDuty NOT deployed (not in stack).
 > Reframed as product-neutral: Keycloak audit events exist but reach no alert channel.
 
-- [ ] G-OBS-01: Keycloak audit events not wired to any alert channel — NEW 2026-05-05
+- [x] G-OBS-01: Keycloak alert routing implemented via n8n+Telegram — CLOSED 2026-05-11 (ADR-033 Accepted)
   **Source:** V-10 (HANDOFF-2026-05-04, MEDIUM).
   **Components:** `infra/keycloak-banxe-emi/realms/banxe-emi-realm.json` (`eventsListeners = []`), n8n :5678, Telegram Bot.
   **Risk:** `LOGIN_ERROR`, `CLIENT_LOGIN_ERROR`, `TOKEN_EXCHANGE_ERROR` events are captured by Keycloak internally but silently dropped — no ops team notification on auth anomalies.
@@ -275,6 +275,7 @@
     3. Fix — implement chosen option; set `eventsListeners` in realm-export; add KC event retention (≥90 days for audit trail).
   **Owner:** Platform WG.
   **Linked:** ADR-017 §GATE-D (realm provisioning), ADR-033 (to be opened), G-IAM-01, I-24.
+  **Closing 2026-05-11:** ADR-033 Option (a) n8n+Telegram implemented. Steps 1-3 merged: PR #116 AlertRoutingPort + N8nTelegramAlertAdapter + 6 tests / PR #118 DI wiring + ALERT_ENABLED + 5 tests / PR #119 operational script + 4 smoke tests. 15 total tests PASS.
 
 - [ ] G-OBS-02: Alert-coverage CI smoke test for Keycloak auth events — NEW 2026-05-05
   **Source:** G-OBS-01 follow-on.
