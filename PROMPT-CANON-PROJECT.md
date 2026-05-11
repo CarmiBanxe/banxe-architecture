@@ -263,3 +263,44 @@ Sub-terminal B (read-only diagnostics / monitoring):
 - I-68 single-session incident command (predecessor) + I-71..I-74 (this commit)
 - §13 Russian language binding + §14 Perplexity Capability Tiers
 - Operator directive 2026-05-11 03:00 CEST
+
+## 16. Запрет вопросов + self-answer discipline (BINDING)
+
+> Operator directive 2026-05-11 05:00 CEST: "добавь в канон полный запрет вопросов на безопасные команды и самоответ на остальные исходя из принципа лучшее решение. Это канон."
+> Anchor: bootstrap canon v3 §7 ENHANCED v3 ("не задавать вопросов оператору"), §4 BDP (Best-Decision Principle), §6 Working layer.
+
+### 16.1 Безопасные команды — полный запрет вопросов
+Read-only + canon append операции выполняются автоматически без запроса:
+- git status, git log, git diff, grep, cat, ls, curl GET, ssh read-only diagnostics, gh pr list/view
+- Canon append: IL / GAP / ROADMAP / INVARIANTS append в рабочем worktree
+- Pre-commit auditor run
+- Worktree create / remove / cleanup
+- git fetch, git pull --ff-only
+
+### 16.2 Write операции — self-answer per «лучшее решение» (BDP §4)
+Все write операции выполняются автоматически по validated pattern без вопросов:
+- git push, gh pr create, gh pr merge, git tag — atomic single-block pattern (validated 22×)
+- Bypass-window (PATCH contexts) — atomic pattern с independent verify+restore
+- Branch delete / worktree remove — post-merge cleanup
+- Выбор между вариантами — BDP §4 из 6 источников (сессионный канон / production CLAUDE.md / ADR + INVARIANTS / read-only факты / GAP-REGISTER / отраслевой best-practice)
+- Неизвестная ситуация — read-only diagnostic первым, затем BDP, НЕ вопрос оператору
+- Race condition detection — self-resolve per §72 halt rule + cherry-pick recovery (validated 3×)
+
+### 16.3 Единственное исключение — destructive verify-step
+Вопрос оператору допустим ТОЛЬКО когда действие:
+- Необратимо И затрагивает production data / security credentials / FCA regulated content
+- Per amendment-B.11.N+2 Статья 3 (sanctioned block) — оператор sanctioning через stdout return
+- Примеры: real MLRO назначение / real API key insertion / production data migration / FCA filing
+
+### 16.4 Формат self-answer
+Вместо "какой вариант выбрать?" → "Лучшее решение: вариант X потому что [причина]. Выполняю."
+Вместо "продолжать?" → продолжать автоматически per §7 ENHANCED v3.
+Вместо "подтверди?" → выполнять если безопасно per §16.1-§16.2.
+Вместо "operator decision needed" → BDP §4 self-answer + execution. ЕДИНСТВЕННЫЙ вариант STANDBY = explicit §16.3 exception list.
+
+### 16.5 Cross-references
+- bootstrap canon v3 §4 (BDP), §6 (working layer), §7 ENHANCED v3 (не задавать вопросов)
+- ADR-025 Session Rules §4 (Best-Decision Principle)
+- amendment-B.11.N+2 Статья 3 (sanctioned block — единственный exception path)
+- PROMPT-CANON-PROJECT §15 Multi-terminal discipline (§71-§74 — self-resolve per halt rule)
+- Operator directive 2026-05-11 05:00 CEST

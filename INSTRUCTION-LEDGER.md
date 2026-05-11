@@ -7399,3 +7399,20 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Tags: checkpoint-2026-05-10-adr029-accepted, checkpoint-2026-05-10-adr030-accepted, checkpoint-2026-05-10-adr032-accepted
   - PROMPT-CANON-PROJECT §11 (two-loop sync) + §15 (multi-terminal discipline: this IL from main factory terminal per §71)
 
+### IL-OPS-CANON-SELF-ANSWER-DISCIPLINE-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — §16 self-answer discipline formalization
+- Status: BINDING — operator directive 2026-05-11 05:00 CEST
+- Priority: P1 (governance — operator burden elimination)
+- Scope: adds §16 to PROMPT-CANON-PROJECT.md; eliminates ALL questions to operator except explicit destructive verify-step per amendment-B.11.N+2 Статья 3; formalizes BDP §4 self-answer as mandatory pattern.
+
+- Operator directive: "добавь в канон полный запрет вопросов на безопасные команды и самоответ на остальные исходя из принципа лучшее решение. Это канон. Запомни и применяй." at 2026-05-11 05:00 CEST.
+
+- Effect: reduces operator interaction overhead by eliminating confirmation prompts for 95%+ of terminal actions. Operator sees only: outputs, reports, deviation notes, and §16.3 exception requests (rare).
+
+- Pattern compliance: amendment-B.11.N+2 chain; ADR-025 Session Rules; §13 Russian binding; §14 Tiers active; §15 multi-terminal; §16 NEW self-answer (this commit).
+
+- Closing IL: TBD (binding remains perpetually active).
+- Anchors: bootstrap canon v3 §4+§6+§7; ADR-025 §4 BDP; amendment-B.11.N+2 Статья 3; PROMPT-CANON-PROJECT §16 (this commit); Operator directive 2026-05-11 05:00 CEST.
+
