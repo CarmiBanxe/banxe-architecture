@@ -1143,3 +1143,19 @@ This mirror backfill authored by main factory terminal per §71 single-writer. S
 - Mirror 18: PR #113 (Step 3, Sub-B)
 - Mirror 19: PR #105 (Step 5)
 - Total mirrored: 19 of 19 merged emi-stack PRs ✅
+
+## Roadmap Block 2026-05-11 — ADR-033 Alert Routing ACCEPTED (7/8 Track A)
+
+> I-59. One branch / one commit / one PR / tag checkpoint-2026-05-11-adr033-accepted after merge.
+
+### ADR-033 implementation complete
+- [x] Step 1: PR #116 AlertRoutingPort + adapters (6 tests)
+- [x] Step 2: PR #118 DI wiring + ALERT_ENABLED (5 tests)
+- [x] Step 3: PR #119 operational script + smoke tests (4 tests)
+- [x] ADR-033 Proposed → Accepted
+- [x] G-OBS-01 CLOSED
+- [ ] G-OBS-02 smoke CI integration (pending)
+
+### Track A: 7/8 Accepted
+- [x] 027/028/029/030/032/033/035
+- [ ] ADR-034 webhook reliability (Sub-B in progress — Steps 1-3 already merged per #114/#115/#117)

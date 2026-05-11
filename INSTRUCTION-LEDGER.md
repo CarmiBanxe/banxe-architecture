@@ -7460,3 +7460,20 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Closing IL: this IL closes ADR-035 acceptance + G-CI-01. G-CI-02 remains open for operator branch-protection action.
 - Anchors: ADR-035 decisions/ADR-035-ci-smoke-gate-policy.md (Accepted this commit) + banxe-emi-stack PRs #100/#101/#105/#113 + G-CI-01 closed + Sub-B handoff per §71.
 
+### IL-OPS-ADR-033-ACCEPTED-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — ADR-033 alert routing strategy Accepted + G-OBS-01 closure
+- Status: BINDING — ADR-033 Proposed → Accepted; G-OBS-01 CLOSED
+- Priority: P2 (Track A closure — 7 of 8 ADRs now Accepted)
+- Scope: ADR-033 status update + G-OBS-01 closure + two-loop mirrors PR #116/#118/#119
+
+- ADR-033 acceptance: Option (a) n8n+Telegram per BDP §4 self-answer (operator-blocked decision resolved autonomously per §16.2). Steps 1-3 merged in banxe-emi-stack.
+  Mirror 20 — IL-MIRROR-EMI-PR-116: AlertRoutingPort + N8nTelegramAlertAdapter + 6 unit tests [Step 1]. Commit 61025a4.
+  Mirror 21 — IL-MIRROR-EMI-PR-118: DI wiring + ALERT_ENABLED flag + 5 integration tests [Step 2]. Commit 89d22fd.
+  Mirror 22 — IL-MIRROR-EMI-PR-119: alert routing operational script + 4 smoke tests [Step 3]. Commit 239c2f2.
+
+- GAP closure: G-OBS-01 CLOSED. G-OBS-02 OPEN (smoke CI integration pending).
+- Track A: 7 of 8 ADRs Accepted (027/028/029/030/032/033/035). Remaining: ADR-034 (webhook reliability — Sub-B in progress).
+- Closing IL: this IL closes ADR-033 + G-OBS-01. G-OBS-02 remains open.
+- Anchors: ADR-033 Accepted + emi-stack PRs #116/#118/#119 + G-OBS-01 closed + Sub-B ADR-034 in progress.

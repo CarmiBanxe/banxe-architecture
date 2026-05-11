@@ -1,6 +1,6 @@
 # ADR-033 — Alert Routing Strategy (Keycloak Auth Events)
 
-**Status:** Proposed (2026-05-06)
+**Status:** Accepted (2026-05-11) — Option (a) n8n+Telegram. Steps 1-3 merged in banxe-emi-stack (#116 Step 1, #118 Step 2, #119 Step 3). G-OBS-01 CLOSED. G-OBS-02 pending smoke CI integration.
 **Author:** Architecture WG / Observability lead
 **Closes:** G-OBS-01 (canonical), G-OBS-02 (canonical), V-10 (HANDOFF-2026-05-04)
 **Linked:** ADR-024 (Guardian), ADR-027 (audit-trail buffer), ADR-032 (secret rotation, n8n pattern),
