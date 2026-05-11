@@ -1,7 +1,7 @@
 # Service Map — Banxe Cluster
 
 **Последнее обновление:** 2026-05-05 (G-INFRA-01: evo2 stub registered)  
-**Кластер:** evo1 (192.168.0.72) + evo2 (192.168.0.15, TBD — G-INFRA-01)
+**Кластер:** evo1 (192.168.0.72) + evo2 (192.168.0.15, REGISTERED — G-INFRA-01 closed 2026-05-11)
 
 ---
 
@@ -10,9 +10,9 @@
 | Узел | IP | Hardware | Роль |
 |------|----|----------|------|
 | evo1 | 192.168.0.72 | GMKtec EVO-X2 #1, Ryzen AI MAX+ 395, 128 GiB | Compliance / IAM / Banking stack (PRIMARY) |
-| evo2 | 192.168.0.15 | GMKtec EVO-X2 #2, Ryzen AI MAX+ 395, 128 GiB | AI / Inference stack — TBD (G-INFRA-01) |
+| evo2 | 192.168.0.15 | GMKtec EVO-X2 #2, Ryzen AI MAX+ 395, 128 GiB | AI / Inference stack — REGISTERED (G-INFRA-01 closed 2026-05-11) |
 
-> evo2 services: Ollama :11434, qwen3-235b-master :8082, llama.cpp RPC :50052. Full registration pending G-INFRA-01.
+> evo2 services: Ollama :11434 (10 models), qwen3-235b-master :8082 (235B reasoning, healthy), llama.cpp RPC :50052 (USB4 Vulkan), node_exporter :9100. G-INFRA-01 CLOSED 2026-05-11.
 
 ---
 

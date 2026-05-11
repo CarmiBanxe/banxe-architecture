@@ -233,7 +233,7 @@
 
 ## Infrastructure / Cluster Visibility — Gaps (IL-052 successor)
 
-- [ ] G-INFRA-01: evo2 node missing from `.claude/rules/infrastructure.md` + `SERVICE-MAP.md` — NEW 2026-05-05
+- [x] G-INFRA-01: evo2 node registered in `.claude/rules/infrastructure.md` + `SERVICE-MAP.md` — CLOSED 2026-05-11
   Source: IL-052 post-mortem (phase4 org-cleanup branch recovery). Root cause: evo2 (EVO-X2 #2, 192.168.0.15) was added to the cluster in v2.1 and upgraded in P4.3-EVO2 (BIOS UMA rebalance), but neither the canonical infrastructure rule file nor the service map was updated to reflect it as a named cluster node.
   Risk: agents and operators navigating architecture docs see only evo1 (192.168.0.72). Confusion about which node runs which service (Ollama, llama.cpp RPC worker :50052, Prometheus/Grafana stack) leads to mis-directed operational commands — repeat of IL-052 subjective-loss pattern.
   Plan (3 steps):
@@ -241,6 +241,8 @@
     2. **Update** `.claude/rules/infrastructure.md`: rename current header from "GMKtec EVO-X2" to "evo1 — GMKtec EVO-X2 (192.168.0.72)"; add sibling section "evo2 — GMKtec EVO-X2 #2 (192.168.0.15)" with hostname `banxe-NucBox-EVO-X2-2` (Tailscale: `banxe-nucbox-evo-x2-2`), specs (Ryzen AI MAX+ 395 / 128 GiB LPDDR5X / Radeon 8060S 40 CU gfx1151), services (Ollama :11434 key `sk-banxe-evo2-local-2026`, llama.cpp RPC :50052, Prometheus :9090, Grafana :3000, Blackbox :9115, node_exporter :9100). Mirror equivalent rows in `SERVICE-MAP.md` header + service table.
     3. **Verify**: `grep -n "evo2\|192.168.0.15" .claude/rules/infrastructure.md SERVICE-MAP.md` returns non-empty from both files. Commit `docs(infra): G-INFRA-01 — add evo2 node to infrastructure.md + SERVICE-MAP [G-INFRA-01]`.
   Owner: Architecture WG. Linked: ADR-018 (5-layer hybrid AI compute), IL-052, INS-2026-05-04-P4.3-EVO2, `MetaClaw/docs/roadmap/HW-MODEL-UPGRADE-matrix.md`.
+    Closing 2026-05-11 09:00 CEST: evo2 full registration completed. Infrastructure.md updated from TBD → REGISTERED with complete service table (7 services), LiteLLM routing map, network config, known issues (G-INFRA-02 ROCm regression + V-XMRIG containment iptables). SERVICE-MAP.md header + table + note updated. Per Sprint S1 audit (IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09) verified services data.
+    See IL-OPS-G-INFRA-01-EVO2-FULL-REGISTRATION-2026-05-11.
 
 ## CI / Deploy Pipeline — Gaps (V-08 from HANDOFF-2026-05-04)
 

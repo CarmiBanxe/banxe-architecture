@@ -20,19 +20,46 @@ paths: ["docker/**", "infra/**", "scripts/**"]
 
 ---
 
-## evo2 — GMKtec EVO-X2 #2 (192.168.0.15) [G-INFRA-01]
+## evo2 — GMKtec EVO-X2 #2 (192.168.0.15) [G-INFRA-01 REGISTERED]
 
-> **Status: TBD** — node active, not yet fully registered in canonical map. Full registration tracked in G-INFRA-01.
-> Anchors: ADR-018 (5-layer AI compute), ADR-032 (GLM-4.5-Air distributed), IL-AUDIT-01 A3.
+> **Status: REGISTERED** — full registration completed 2026-05-11 per G-INFRA-01 closure.
+> Hostname: `banxe-NucBox-EVO-X2-2`
+> Tailscale: `banxe-nucbox-evo-x2-2` (100.99.208.21)
+> Anchors: ADR-018 (5-layer AI compute), ADR-019 (Guardian two-family), IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09, G-INFRA-01 closure this commit.
 
 - Hardware: AMD Ryzen AI MAX+ 395 / 128 GiB LPDDR5X / Radeon 8060S 40 CU gfx1151
-- USB4 link to evo1: 10.0.0.2/30 ↔ evo1 10.0.0.1/30 (9.12 Gbit/s)
-- Key services (as of 2026-05-05):
-  - Ollama :11434 (qwen3:235b + 10 models)
-  - qwen3-235b-master :8082
-  - llama.cpp RPC worker :50052
-  - node_exporter :9100 (observability — G-OBS-01 pending)
-- GPU userspace: ROCm/amdgpu regression post kernel 6.17 — G-INFRA-02 (P1 open)
+- Boot ID (per audit 2026-05-09): 23320028-9093-4406-8b4f-7b09d15a35c4
+- Kernel: 6.17.0-23-generic Ubuntu (post-operator-update 2026-05-09)
+- USB4 link to evo1: 10.0.0.2/30 ↔ evo1 10.0.0.1/30 (9.12 Gbit/s, 0.5 ms RTT)
+
+### Services (verified 2026-05-09 00:47 CEST + 2026-05-11 status carry-forward)
+
+| Service | Port | Backend | Status |
+|---------|------|---------|--------|
+| Ollama | :11434 | 10 models (qwen3:235b-a22b-banxe, qwen3:235b-a22b, llama3.3:70b, qwen3.5:35b, qwen3:4b, qwen3:30b-a3b, qwen3.5:latest, qwen3-coder-next, glm-4.7-flash-abliterated, gpt-oss-derestricted:20b) | ✅ active |
+| qwen3-235b-master | :8082 | qwen3-235b-Q3_K_S.gguf (235.1B params, 101.4 GB, ADR-018 P4.3-Q235) | ✅ healthy (HTTP 200 /health) |
+| llama-rpc-worker | :50052 | USB4 RPC worker (Vulkan backend, paired with glm-master on evo1) | ✅ active |
+| node_exporter | :9100 | Prometheus metrics | ✅ active |
+| ollama.service | systemd | Ollama daemon | ✅ running |
+| qwen3-235b-master.service | systemd | qwen3-235b-a22b Q3_K_S reasoning (partial GPU offload) | ✅ running |
+| llama-rpc-worker.service | systemd | llama.cpp RPC Worker (USB4 link, Vulkan) | ✅ running |
+
+### LiteLLM routing (via Legion :4000 gateway per ADR-018)
+- `project-reason` → openai/qwen3 @ evo2:8082 (RPC qwen3-235b-Q3_K_S) — canonical Layer 1 reasoning
+- `reasoning` → ollama/qwen3:235b-a22b-banxe @ evo2:11434 (fallback chain with evo1 llama3.3:70b)
+- `reasoning-235b` → openai/qwen3 @ evo2:8082 (dedicated 235B route per ADR-018)
+- `factory-mid` / `factory-heavy` / `ai` / `ai-heavy` → evo2:11434 as LB target (loadbalanced with evo1)
+- `project-heavy` resolution candidate: `large` route → glm-4.5-air via evo1:8081 (distributed master) + evo2:50052 (RPC worker)
+
+### Network
+- LAN: 192.168.0.15 (static)
+- Tailscale: 100.99.208.21 (banxe-nucbox-evo-x2-2, online per audit)
+- USB4 private: 10.0.0.2/30 ↔ evo1 10.0.0.1/30
+- SSH: port 22, user banxe (key-based auth)
+
+### Known issues
+- G-INFRA-02 (P1 OPEN): ROCm/amdgpu kernel 6.17 regression — GPU userspace не fully functional; workaround = CPU-only inference for qwen3-235b; rollback path = pin kernel 6.16 LTS OR wait ROCm 6.5+ patch
+- Containment iptables from V-XMRIG incident: KEEP until ~2026-06-08 (30 days per INCIDENT-2026-05-07 RESOLVED recommendations)
 
 ---
 
