@@ -7708,3 +7708,33 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 
 - Two-loop mirrors total: 35 (29 prior + 6 this commit). All merged emi-stack production PRs mirrored.
 - Anchors: PR #168 CORE PRINCIPLE two-loop sync + ADR-029/030/032/034.
+
+### IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11
+
+- Date: 2026-05-11 20:00 CEST
+- Phase (GSD): CANON — Sprints S12-S25 roadmap approved + fixated as binding
+- Status: BINDING — operator directive 2026-05-11 20:00 CEST "утвердить план, зафиксировать, уточнить роад мап и разделить на спринты"
+- Priority: P0 (governance + roadmap — binding for Perplexity + Factory + Operator)
+- Scope: 14 sprints S12-S25 covering 35 open GAPs + Tracks B/F/H/I closure + §0.2 Levels 1-5 implementation + Crypto Block + Multi-agent Comms + QA + FCA submission + go-live.
+
+- Sprint plan summary:
+  S12: KC IAM Track B (6 G-IAM GAPs, Phase F+G)
+  S13: Factory infra cleanup (8 GAPs: model dedup 95 GiB + LiteLLM systemd + legacy kill + ROCm + auditor path + gitignore + port collision + Legion KC Java)
+  S14: Guardian + governance (5 GAPs: ClickHouse verify + ENFORCE rollout + webhook + agent placement + gateway bypass)
+  S15: Security residual (5 GAPs: user classification V8 + Legion key + parent tracker + FCA notification + historical leaks)
+  S16: Operational infra (4 GAPs: Livebox router + CI workflows + Redis gate + safeguarding recon)
+  S17: §0.2 Levels 1-2 verification (reformulated Option A human doubles allowed)
+  S18: §0.2 Levels 3-5 (SMF Heads AI duplicates + CEO dashboard + AI MLRO Option B + openclo-moa + Factory overseer §0.4)
+  S19: Sandbox 100% verification (Phase F6 — COMPLIANCE-MATRIX 80%+ + G-SEC-02 Vault + AMLR review)
+  S20: External blockers Track I (7 API keys real + MLRO real + Board + Internal Audit)
+  S21: Crypto Block Phase 7 (ADR-036 Travel Rule + Neuronext + TomPay + Crypto AML)
+  S22: Multi-agent Comms Phase 8 (dashboard + Telegram bot + FCA Section 4 + MI report)
+  S23: QA + Production Ready Phase 9 (E2E + regression + compliance playbooks + load testing)
+  S24: FCA Submission Phase 10.1 (RegData + safeguarding evidence + MLRO report + business plan)
+  S25: Go-Live Phase 10.2 (customer data migration + live operations + post-launch monitoring)
+
+- Critical path: S12-S15 (2-3 weeks parallel) → S16-S19 (2-3 weeks) → S20 (2-6 weeks) → S21-S23 (4-6 weeks parallel) → S24-S25 (6-12 weeks FCA)
+- Estimated total to go-live: 4-6 months
+
+- MASTER-PLAN baseline at approval: 5/9 Tracks FULLY CLOSED (A+C+D+E+G) + F PARTIALLY + B/H/I OPEN. 35 open / 96 closed GAPs. 35 two-loop mirrors.
+- Anchors: MASTER-PLAN-2026-05-05 + all session PRs #146-#214 + operator directive 2026-05-11 20:00 CEST.
