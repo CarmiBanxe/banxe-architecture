@@ -1113,3 +1113,33 @@ After this PR merge: все autonomous-completable items in sandbox scope DONE. 
 
 ### Multi-terminal note
 This mirror backfill authored by main factory terminal per §71 single-writer. Sub-B (ADR-035) works independently in banxe-emi-stack bounded context. Non-overlap verified.
+
+## Roadmap Block 2026-05-11 — ADR-035 CI Smoke-Gate ACCEPTED (6/8 Track A)
+
+> Block opened under I-59. One branch / one commit / one PR / tag `checkpoint-2026-05-11-adr035-accepted` after merge.
+> Anchors: IL-OPS-ADR-035-ACCEPTED-2026-05-11.
+
+### ADR-035 implementation complete
+- [x] Step 1: PR #100 mock tier (6 tests)
+- [x] Step 2: PR #101 mock workflow
+- [x] Step 3: PR #113 real workflow (Sub-B handoff)
+- [x] Step 5: PR #105 audit signal
+- [x] ADR-035 Proposed → Accepted
+- [x] G-CI-01 CLOSED
+- [ ] G-CI-02 branch-protection switch (operator pending)
+
+### Track A progress: 6/8 Accepted
+- [x] ADR-027 audit-trail durability
+- [x] ADR-028 KYC re-verification
+- [x] ADR-029 Postgres backup
+- [x] ADR-030 auth rate-limit
+- [x] ADR-032 secret rotation
+- [x] ADR-035 CI smoke-gate (this commit)
+- [ ] ADR-033 alert routing (operator-blocked: choose n8n+Telegram / KC SPI+Slack / Prometheus+Alertmanager)
+- [ ] ADR-034 webhook reliability KYC (not started)
+
+### Two-loop mirrors added
+- Mirror 17: PR #101 (Step 2)
+- Mirror 18: PR #113 (Step 3, Sub-B)
+- Mirror 19: PR #105 (Step 5)
+- Total mirrored: 19 of 19 merged emi-stack PRs ✅
