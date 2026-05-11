@@ -1,5 +1,6 @@
 # ADR-035 ROADMAP — Progress Report
-# ADR-035 ROADMAP Part 1 / Step 2 deliverable
+# ADR-035 ROADMAP — Parts 1 & 2 Progress
+# Updated: 2026-05-11 (Part 2 complete)
 # Date: 2026-05-11 | Auditor: Sub-terminal A (Claude Code)
 
 ## Reference: ADR-035 AI Pool Roadmap (10 Steps)
@@ -16,10 +17,10 @@ Source: `docs/adr/ADR-035-ai-pool-roadmap-2026-05-11.md` (committed 2026-05-11, 
 | 2    | Pool audit — read-only SSH         | ✅ DONE      | This document + pool-audit-2026-05-11.md  |
 | 3    | Model inventory deduplication      | 🔜 PENDING  | Blocked by Step 2 completion              |
 | 4    | LiteLLM route — add evo2           | 🔜 PENDING  | Blocked by Step 3; risk A-3 flagged       |
-| 5    | Redis session layer                | 🔜 PENDING  | No Redis on any node (risk A-5)           |
+| 5    | Redis + LiteLLM cache              | ✅ DONE      | Redis on evo1 (Docker, hardened) + LiteLLM cache wired; cache verified 0.65ms |
 | 6    | Grafana unified dashboard          | 🔜 PENDING  | evo2 has grafana; evo1 does not           |
 | 7    | Tailscale mesh verify all 3 nodes  | 🔜 PENDING  | Legion→evo1 Tailscale confirmed; evo2 unverified |
-| 8    | Compliance routing guardrails      | 🟡 PARTIAL  | C1 fix applied (Kimi K2 disabled); Presidio not installed |
+| 8    | Compliance routing guardrails      | 🟡 PARTIAL  | C1 fix applied; stale config archived; Presidio not yet installed |
 | 9    | Load balancing (evo1 + evo2)       | 🔜 PENDING  | Requires Steps 4 + 5 first               |
 | 10   | HITL gate for L3+ agent decisions  | 🔜 PENDING  | Architectural; blocked by Steps 4–9      |
 
@@ -121,3 +122,51 @@ Authority:  Local commit only — no push, no PR (Clause 6)
 Pre-flight: CLEAR (branch docs/pool-audit-2026-05-11, base 1cc7cbb)
 ```
 
+
+---
+
+## Part 2 — Detail (ADR-035 ROADMAP Part 2 / Step 4)
+
+**Branch:** feat/part2-redis-litellm-cache-2026-05-11
+**Performed:** 2026-05-11 by Sub-terminal A
+
+### Actions Taken
+
+#### Step A+B — Redis on evo1 (hardened Docker container)
+- `redis:7` Docker image already present on evo1 (no apt-get required; no sudo)
+- Container `banxe-redis` started with `--network host`, `--restart unless-stopped`
+- Bind: `127.0.0.1 192.168.0.72 100.68.102.48` (localhost + LAN eno1 + Tailscale only)
+- `requirepass` set (48-char hex, stored at `~/banxe-dev/redis-evo1.env` chmod 600 on Legion)
+- AOF persistence enabled (`appendonly yes`, `appendfsync everysec`)
+- Dangerous commands disabled: `CONFIG`, `FLUSHALL`, `FLUSHDB`, `DEBUG`
+- Verified PONG on all three bound interfaces including Legion→evo1 Tailscale
+
+#### Step C — Config consolidation on Legion
+- Canonical config identified: `~/litellm-config.yaml` (hyphenated, active systemd service :8080)
+- Stale file archived: `~/litellm_config.yaml` → `~/litellm_config.yaml.bak-2026-05-11`
+- `REDIS_PASS` added to `~/.config/litellm/.env` and `environment_variables` block in config
+
+#### Step D — LiteLLM Redis cache wired
+- `~/litellm-config.yaml` updated: `cache: true`, `cache_params` pointing to `100.68.102.48:6379`
+- `supported_call_types`: completion, acompletion, embedding
+- TTL: 3600 seconds
+
+#### Step E — Cache verified
+- LiteLLM restarted (`systemctl --user restart litellm`) — PID 1614785, startup clean
+- Call 1: upstream Groq (~300ms response)
+- Call 2+: `x-litellm-response-duration-ms: 0.65` — sub-millisecond = Redis cache hit confirmed
+- Redis DBSIZE = 5 keys after 3 test calls
+
+### New Findings from Part 2
+
+| ID  | Severity | Finding                                                 |
+|-----|----------|---------------------------------------------------------|
+| A-8 | MEDIUM   | Second LiteLLM instance (PID ~71814) at :4000 `--host 0.0.0.0` unmanaged by systemd (MetaClaw) |
+| A-9 | LOW      | `~/litellm_config.yaml.bak.20260501` already existed — third stale config file |
+
+**A-8 action required:** Investigate MetaClaw LiteLLM instance — restrict to 127.0.0.1 or
+add to systemd management before routing external traffic through Legion.
+
+### Runbooks Added
+- `docs/runbooks/redis-evo1-setup.md`
+- `docs/runbooks/legion-litellm-cache.md`
