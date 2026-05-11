@@ -1,6 +1,6 @@
 # ADR-035 ROADMAP — Progress Report
-# ADR-035 ROADMAP — Parts 1–5 Progress
-# Updated: 2026-05-11 (Part 5 revised complete)
+# ADR-035 ROADMAP — Parts 1–6 Progress
+# Updated: 2026-05-11 (Part 6 complete)
 # Date: 2026-05-11 | Auditor: Sub-terminal A (Claude Code)
 
 ## Reference: ADR-035 AI Pool Roadmap (10 Steps)
@@ -15,8 +15,8 @@ Source: `docs/adr/ADR-035-ai-pool-roadmap-2026-05-11.md` (committed 2026-05-11, 
 |------|------------------------------------|-------------|-------------------------------------------|
 | 1    | Smoke gate (ADR-035 original)      | ✅ DONE      | PR #105 merged; 3 files: emit script + workflow + tests |
 | 2    | Pool audit — read-only SSH         | ✅ DONE      | This document + pool-audit-2026-05-11.md  |
-| 3    | Model inventory deduplication      | 🔜 PENDING  | Blocked by Step 2 completion              |
-| 4    | LiteLLM route — add evo2           | 🔜 PENDING  | Blocked by Step 3; risk A-3 flagged       |
+| 3    | Model inventory deduplication      | 🟡 PARTIAL  | Inventory done (Part 6); dedup plan TBD  |
+| 4    | LiteLLM route — add evo2           | ✅ DONE      | evo2 added; 6 LB pairs; simple-shuffle verified |
 | 5    | Redis + LiteLLM cache              | ✅ DONE      | Redis on evo1 (Docker, hardened) + LiteLLM cache wired; cache verified 0.65ms |
 | 6    | LLM router + A-8 resolution        | ✅ DONE      | MetaClaw stopped; default→evo1; fallback-claude guardrail-gated |
 | 7    | Tailscale mesh verify all 3 nodes  | ✅ DONE      | All 3 nodes verified; 6/6 directed pairs direct WireGuard; Ollama HTTP reachable |
@@ -322,4 +322,64 @@ LiteLLM Legion :8080: loopback-only (not on Tailscale) — expected, secure.
 - `docs/audit/tailscale-mesh-verify-2026-05-11.md` — full verification report + topology diagram
 - `docs/runbooks/legion-tailscale-quick-reference.md` — quick-reference card for mesh ops
 - `docs/audit/roadmap-progress-2026-05-11.md` — Step 7 updated to DONE
+
+
+---
+
+## Part 6 — Detail (ADR-035 ROADMAP Part 6 / Step 4 — Add evo2 as second LiteLLM backend)
+
+**Branch:** feat/part6-litellm-evo2-route-2026-05-11
+**Performed:** 2026-05-11 by Sub-terminal A
+**Scope:** Legion-side config change only — zero writes to evo1/evo2
+
+### Inventory (Step A)
+
+Collected via HTTP GET /api/tags (read-only Tailscale):
+- evo1: 9 models (185.1 GB total)
+- evo2: 10 models (463.3 GB total, includes 235b variants)
+- Shared (both nodes): 8 models → load-balanceable
+
+Full inventory: `docs/audit/evo1-evo2-model-inventory-2026-05-11.md`
+
+### Config Changes (Steps B + C)
+
+`~/litellm-config.yaml` — 6 evo2 entries added (backup: `~/litellm-config.yaml.bak-part6-2026-05-11`):
+
+| model_name | model | evo2 api_base |
+|-----------|-------|--------------|
+| `default` | `ollama/qwen3:30b-a3b` | `http://100.99.208.21:11434` |
+| `banxe/operations` | `ollama/qwen3:30b-a3b` | `http://100.99.208.21:11434` |
+| `ollama/glm-flash` | `ollama/qwen3:30b-a3b` | `http://100.99.208.21:11434` |
+| `llama-3.3-70b` | `ollama/llama3.3:70b` | `http://100.99.208.21:11434` |
+| `ollama/llama3.3-70b` | `ollama/llama3.3:70b` | `http://100.99.208.21:11434` |
+| `ollama/qwen3.5-35b` | `ollama/qwen3.5:latest` | `http://100.99.208.21:11434` |
+
+Router: `simple-shuffle` (unchanged from Part 4). Total model entries: 22 (verified via /model/info).
+
+### Verification (Steps D + E + F)
+
+| Test | Result |
+|------|--------|
+| LiteLLM restart clean (PID 2313804) | ✅ no errors in startup log |
+| /model/info: 22 entries, 12 Ollama (6 evo1+evo2 pairs) | ✅ |
+| 6 requests to `model=default`: all HTTP 200 | ✅ |
+| evo1 Ollama `/api/ps` shows qwen3:30b-a3b loaded | ✅ |
+| evo2 Ollama `/api/ps` shows qwen3:30b-a3b loaded | ✅ (489ms after evo1) |
+| Guardrail `iban` keyword → block (no Anthropic call) | ✅ |
+
+### Invariants
+
+| Invariant | Check | Result |
+|-----------|-------|--------|
+| I-71 | Single-Writer Terminal Discipline | PASS |
+| I-72 | Parallel Session Halt | PASS |
+| I-73 | Pre-flight Check Mandatory | PASS — fetch + log + PR check |
+| I-74 | Atomic PR Lifecycle | PASS — single commit, local only |
+| I-27 | HITL — no writes to evo1/evo2 | PASS — Legion config only |
+| I-02 | No sanctioned jurisdiction backends | PASS — all evo IPs are local LAN |
+
+### Next Unblocked
+
+Step 3 (model dedup) is now unblocked — inventory from Part 6 provides the source of truth.
+Recommended: designate canonical nodes per model family before Step 9 (load balancing) expands.
 
