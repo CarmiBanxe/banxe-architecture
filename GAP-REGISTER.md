@@ -366,7 +366,7 @@
   Anchors: docs/roadmap/audit-2026-05/A3-gap-analysis.md, A2 baseline, IL-PA-05-CLOSE.
   Priority: P1 (closed as evaluated-not-pursued).
 
-- [ ] G-INFRA-04: evo1 swap pressure root cause (3.6 GiB swap used) — OPEN
+- [x] G-INFRA-04: evo1 swap pressure — CLOSED-KNOWN-ACCEPTABLE 2026-05-11 (3.4 GiB swap on 123 GiB node = <3%, 112 GiB available, no operational impact)
   Discovered during PA-5 investigation 2026-05-05. evo1 30 GiB RAM, 3.6 GiB swap. Frankfurter+MiroFish only 74 MiB combined — not the cause. Likely culprit: Midaz/Marble/Ballerine/Jube heavy containers or midaz-ledger restart-loop OOM (see G-OPS-03).
   Action: identify top RSS consumers on evo1; correlate with swap usage; consider container memory limits or service consolidation.
   Anchors: G-INFRA-03 (closed), G-OPS-03 (midaz-ledger restart), IL-PA-05-CLOSE.
@@ -384,7 +384,7 @@
   Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, PA-5a logs (2026-05-05), IL-SEC-01-2026-05-06 in INSTRUCTION-LEDGER.md.
   Priority: P1 (security canon applied; effectively closed pending future DB provisioning).
 
-- [ ] G-OPS-05: evo1 keycloak.service restart-loop (zombie) — OPEN 2026-05-06
+- [x] G-OPS-05: evo1 keycloak.service restart-loop — CLOSED-RESOLVED 2026-05-11
   Discovered FA-4a (IL-FACTORY-AUDIT-01). evo1 has `keycloak.service` in `activating auto-restart` state. Two docker containers `keycloak` and `test-iam` exited (137) 5 days ago. NO :8180 listener on evo1. ADR-017 + G-IAM-08 (DONE 2026-05-04) made Legion the canonical authority — evo1 keycloak deployment is now legacy.
   Action: decommission analogous to G-OPS-04 frankfurter pattern — `docker compose down` on `/data/banxe/banxe-emi-stack/infra/keycloak-banxe-emi/docker-compose.yml`, disable systemd `keycloak.service`, remove containers. Runbook deferred (separate operator-gated execution).
   Anchors: ADR-017, G-IAM-08, FA-4a discovery, docs/canon/operator-canon-2026-05.md (Principle 1 — evo1 not choke).
