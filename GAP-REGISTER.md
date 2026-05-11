@@ -195,8 +195,9 @@
     - banxe-emi-stack PR #68: `scripts/audit-buffer-drain.py` cron drain, 3 smoke tests. Total: 15 tests, 0 new deps.
   Owner: Architecture WG. Linked: ADR-027 (Accepted), I-08, .claude/rules/cass15.md.
 
-- [ ] G-CASS-02: Audit-trail end-to-end coverage tests (no gaps detectable) — NEW 2026-05-05
+- [x] G-CASS-02: Audit-trail E2E coverage tests implemented — CLOSED 2026-05-11
   Add CI check: pytest fixture that runs a full reconciliation cycle with ClickHouse connection killed mid-flight, asserts every recon event eventually persists OR returns 5xx (no silent success). Owner: Architecture WG.
+  Closing 2026-05-11: 5 E2E tests merged in banxe-emi-stack PR #125 (commit 69411f3): buffer survives backend failure + drains on recovery + no silent loss + recon produces audit record + I-24 append-only invariant. BufferedAuditPort (ADR-027 SQLite ring-buffer) fully covered. Track D Audit Trail Durability: 2/2 GAPs CLOSED (G-CASS-01 + G-CASS-02) + 1/1 ADR Accepted (ADR-027). Track D FULLY CLOSED.
 
 ## KYC / Customer Lifecycle — Gaps (V-03 from HANDOFF-2026-05-04)
 
