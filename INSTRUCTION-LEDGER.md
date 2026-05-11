@@ -7416,3 +7416,21 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Closing IL: TBD (binding remains perpetually active).
 - Anchors: bootstrap canon v3 §4+§6+§7; ADR-025 §4 BDP; amendment-B.11.N+2 Статья 3; PROMPT-CANON-PROJECT §16 (this commit); Operator directive 2026-05-11 05:00 CEST.
 
+### IL-OPS-G-INFRA-01-EVO2-FULL-REGISTRATION-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — G-INFRA-01 closure (evo2 full registration)
+- Status: BINDING — closes G-INFRA-01 (was NEW 2026-05-05)
+- Priority: P2 (infrastructure canonical map completion)
+- Scope: updates .claude/rules/infrastructure.md (evo2 TBD → REGISTERED with 7 services + LiteLLM routing + network + known issues) + SERVICE-MAP.md (evo2 table + header + note) + GAP-REGISTER (G-INFRA-01 closed).
+
+- Changes summary:
+  - infrastructure.md: evo2 section fully populated (7 services table, LiteLLM routing map, network config, boot ID, kernel, known issues G-INFRA-02 + containment iptables)
+  - SERVICE-MAP.md: evo2 row TBD → REGISTERED, services note expanded, cluster header updated
+  - GAP-REGISTER: G-INFRA-01 [ ] → [x] CLOSED with closing note
+
+- Data source: Sprint S1 audit (IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09) verified 2026-05-09 00:47 CEST + carry-forward per stable infrastructure state.
+
+- Closing IL: this IL closes G-INFRA-01. G-INFRA-02 (ROCm/amdgpu kernel 6.17 regression) remains P1 OPEN per known issues.
+- Anchors: ADR-018 + ADR-019 + IL-OPS-FACTORY-LAYER-AUDIT-BASELINE-2026-05-09 + INCIDENT-2026-05-07-EVO1-XMRIG (containment iptables reference) + G-INFRA-01 closed + G-INFRA-02 P1 open.
+
