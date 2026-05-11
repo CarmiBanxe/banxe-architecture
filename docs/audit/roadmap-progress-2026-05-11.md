@@ -1,6 +1,6 @@
 # ADR-035 ROADMAP — Progress Report
-# ADR-035 ROADMAP — Parts 1–6 Progress
-# Updated: 2026-05-11 (Part 6 complete)
+# ADR-035 ROADMAP — Parts 1–7 Progress
+# Updated: 2026-05-11 (Part 7 complete)
 # Date: 2026-05-11 | Auditor: Sub-terminal A (Claude Code)
 
 ## Reference: ADR-035 AI Pool Roadmap (10 Steps)
@@ -22,7 +22,7 @@ Source: `docs/adr/ADR-035-ai-pool-roadmap-2026-05-11.md` (committed 2026-05-11, 
 | 7    | Tailscale mesh verify all 3 nodes  | ✅ DONE      | All 3 nodes verified; 6/6 directed pairs direct WireGuard; Ollama HTTP reachable |
 | 8    | Compliance routing guardrails      | 🟡 PARTIAL  | C1 fix + custom_code guardrail active (pre_call); Presidio not installed (not needed) |
 | 9    | Load balancing (evo1 + evo2)       | 🔜 PENDING  | Requires Steps 4 + 5 first               |
-| 10   | HITL gate for L3+ agent decisions  | 🔜 PENDING  | Architectural; blocked by Steps 4–9      |
+| 10   | HITL gate for L3+ agent decisions  | ✅ DONE      | Policy + runbook; L0–L3 defined; I-27 mapped; FCA/EU AI Act hooks |
 
 Legend: ✅ Done | 🟡 Partial | 🔜 Pending | ❌ Blocked
 
@@ -382,4 +382,75 @@ Router: `simple-shuffle` (unchanged from Part 4). Total model entries: 22 (verif
 
 Step 3 (model dedup) is now unblocked — inventory from Part 6 provides the source of truth.
 Recommended: designate canonical nodes per model family before Step 9 (load balancing) expands.
+
+
+---
+
+## Part 7 — Detail (ADR-035 ROADMAP Part 7 / Step 10 — HITL L3 Agent Gate Policy + Runbook)
+
+**Branch:** feat/part7-hitl-l3-policy-2026-05-11
+**Performed:** 2026-05-11 by Sub-terminal A
+**Scope:** Documentation only — no changes to Legion config, evo1, evo2, or live services
+
+### Deliverables
+
+| File | Type | Description |
+|------|------|-------------|
+| `docs/policies/hitl-l3-agent-gate-2026-05-11.md` | NEW | Normative HITL L3 gate policy (7 sections) |
+| `docs/runbooks/hitl-decision-recording.md` | NEW | Operational runbook: ASK/response/audit format |
+| `docs/audit/roadmap-progress-2026-05-11.md` | MOD | Step 10 DONE; header → Parts 1–7 |
+
+### Policy Summary (hitl-l3-agent-gate-2026-05-11.md)
+
+**Section 2 — Autonomy Levels:**
+
+| Level | Name | Gate? | Examples |
+|-------|------|-------|---------|
+| L0 | Read Only | None | tailscale status, GET /api/tags, git status |
+| L1 | Local Reversible Write | None | Write to worktree, ruff check, write to /tmp/ |
+| L2 | Local Irreversible/Shared | Operator confirm | git commit, litellm-config.yaml edit (with backup) |
+| L3 | Remote or Compliance-Critical | Mandatory OCAT | evo1/evo2 writes, Alembic migration exec, secret rotation, push |
+
+**Section 3 — Gate mechanism:** DETECT → PROPOSE (ASK block) → WAIT → RECEIVE → RECORD → BRANCH.
+Silence ≠ OCAT. Timeout (5 min) = DENIED. Audit record written BEFORE action executes.
+
+**Section 4 — Three concrete L3 examples:**
+- Example A: evo2 SSH write (`~/.bashrc`)
+- Example B: Alembic `upgrade head` on prod DB
+- Example C: Redis password rotation (evo1 + Legion restart)
+
+**Section 5 — Control mappings:**
+- I-27: L3 gate is primary runtime enforcement ("AI PROPOSES, human DECIDES")
+- SESSION-CANON Clause 8.1: T2 sandbox boundary; OCAT = authority elevation
+- `settings.json` deny rules: complementary hard-block (no proposal emitted)
+- OCAT: scoped, single-use, recorded verbatim
+
+**Section 7 — FCA/EU AI Act hooks:**
+- FCA CASS 15: safeguarding agent ops are L3; audit record = oversight evidence
+- EU AI Act Art.14: timeout-as-denial enforces "silence ≠ approval"
+- MLR 2017: SAR filing = L4 (human only); no autonomous SAR via HITL gate
+- Retention: 5 years minimum (`~/.claude/hitl-audit/` + ClickHouse `hitl_decisions`)
+
+### Runbook Summary (hitl-decision-recording.md)
+
+- **§2 ASK block:** mandatory fields (Action ID, Agent, Timestamp, Target, Action, Rationale,
+  Reversible, Blast radius, Invariants)
+- **§3 Operator response templates:** APPROVE (`yes, execute`), DENY (`no`), TIMEOUT procedure
+- **§4 Audit file format:** `~/.claude/hitl-audit/YYYY-MM-DD.jsonl` (JSON Lines, append-only)
+  with full field schema
+- **§5 ClickHouse sync:** DDL for `hitl_decisions` table with 5-year TTL
+- **§6 Review/export:** CLI snippets for listing, counting, and FCA evidence export
+- **§7 Retention:** 5-year minimum, deletion prohibited without CFO + MLRO sign-off
+
+### Invariants Checked
+
+| Invariant | Check | Result |
+|-----------|-------|--------|
+| I-71 | Single-Writer Terminal Discipline | PASS — no concurrent terminals during Part 7 |
+| I-72 | Parallel Session Halt | PASS — no parallel session active |
+| I-73 | Pre-flight Check Mandatory | PASS — branch verified before writes |
+| I-74 | Atomic PR Lifecycle | PASS — single commit, local only |
+| I-27 | HITL — policy itself documents gate; no autonomous writes | PASS |
+| I-24 | Audit append-only rule — documented in §4/§7 | PASS |
+| I-02 | No sanctioned jurisdiction involvement | PASS — doc-only, no backends |
 
