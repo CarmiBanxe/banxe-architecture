@@ -255,8 +255,9 @@
   Owner: Architecture WG / DevOps lead. Linked: `quality-gate.yml`, G-DEPLOY-02, G-OPS-02, IL-CANON-04.
     Closing 2026-05-11: ADR-035 5 implementation steps merged in banxe-emi-stack: PR #100 mock tier Step 1 + PR #101 mock workflow Step 2 + PR #113 real workflow Step 3 + PR #105 audit signal Step 5. smoke-gate-mock.yml + smoke-gate workflow + CI_SMOKE_FAILURE audit event all in main. G-CI-02 (required-check enforcement switch) tracked separately.
 
-- [ ] G-CI-02: Required-check enforcement — NEW 2026-05-05
+- [x] G-CI-02: Required-check enforcement — CLOSED-SANDBOX 2026-05-11
   After G-CI-01 implementation: switch GitHub branch-protection on `main` so that `smoke-gate` is a required status check (not just advisory). Audit existing required checks; document in `INSTRUCTION-LEDGER` IL-CI-01. Owner: Architecture WG.
+  Closing 2026-05-11: Smoke Gate (mock tier) already added as required status check in banxe-emi-stack branch-protection (contexts: ['guardian-factory', 'guardian-project', 'Smoke Gate (mock tier)']). Full-tier enforcement (smoke-gate-full.yml) active as advisory workflow — promotion to required deferred to Phase 9 production readiness (risk: full-tier infra dependencies may block all merges if enforced prematurely). Sandbox scope satisfied.
 
 
 ## Observability — Gaps (V-10 from HANDOFF-2026-05-04, reframed)

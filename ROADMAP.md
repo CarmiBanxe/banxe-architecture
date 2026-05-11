@@ -1178,3 +1178,31 @@ This mirror backfill authored by main factory terminal per §71 single-writer. S
 Per MASTER-PLAN-2026-05-05 Track A "Guardian Enforcement Completion" — all ADRs accepted, implementation merged.
 
 ### Two-loop mirrors: 26 total (all merged emi-stack PRs mirrored)
+
+## Roadmap Block 2026-05-11 — Track G Final Closure (sandbox) + Tracks A+G COMPLETE
+
+> I-59. One branch / one commit / one PR / tag checkpoint-2026-05-11-tracks-a-g-complete after merge.
+
+### Track G sandbox: 7/7 CLOSED
+- [x] G-OPS-01/02 (ADR-029)
+- [x] G-API-01/02 (ADR-030)
+- [x] G-INFRA-01 (evo2 registration)
+- [x] G-CI-01 (ADR-035 smoke-gate)
+- [x] G-CI-02 CLOSED-SANDBOX (mock tier required; full-tier deferred Phase 9)
+
+### MASTER-PLAN status: 2 of 9 Tracks CLOSED
+- [x] Track A — Guardian Enforcement (8/8 ADRs)
+- [x] Track G — Ops/CI Hardening (7/7 GAPs sandbox)
+- [ ] Track B — IAM Live-Ops
+- [ ] Track C — KYC Reliability (partially via ADR-028/034)
+- [ ] Track D — Audit Trail Durability
+- [ ] Track E — Observability / Alert Routing (partially via ADR-033)
+- [ ] Track F — Security / Secrets Rotation (partially via ADR-032)
+- [ ] Track H — New Architecture Work
+- [ ] Track I — External / Organisational Blockers
+
+### Remaining for Phase 6+ (operator-blocked or production-scope)
+- G-OBS-02 alert CI smoke (Track E)
+- G-CI-02 full-tier enforcement (Phase 9)
+- G-INFRA-02 ROCm regression (P1)
+- G-KYC-04 test coverage extension
