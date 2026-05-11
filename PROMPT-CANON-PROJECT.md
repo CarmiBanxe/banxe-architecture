@@ -191,3 +191,75 @@ Pre-commit гейт всех коммитов в обоих репо.
 - amendment-B.11.N+2 Execution Protocol Formalization (Статья 4 preservation)
 - IL-OPS-SESSION-CONSOLIDATION-2026-05-10 (transition criteria)
 - IL-OPS-STEP2-CONSOLIDATED-OPTION-A-MLRO-API-MOCK-2026-05-10 (sandbox pattern precedent)
+
+## 15. Мульти-терминальная дисциплина (BINDING)
+
+> Operator directive 2026-05-11 03:00 CEST: формализовать правила работы трёх параллельных терминалов фабрики для исключения race conditions.
+> Anchor: handoff /tmp/banxe_handoff_2026-05-11_0300.md (sha256 927941fb48fe7580a3dcf23667e33fada816c3d6e8732c4b57455c703ab47c11).
+
+### 15.1 §71 — Три терминала, один writer
+
+Main factory terminal (Perplexity Comet — primary):
+- ЕДИНСТВЕННЫЙ writer в оба repo (banxe-architecture + banxe-emi-stack)
+- Source authority всех git push / gh pr create / gh pr merge / git tag / git push origin <tag>
+- Все промпты для Claude Code workers выдаются только из main factory terminal
+- Перед write-операцией обязательный sync: `git fetch --all --prune && git pull --ff-only origin main`
+
+Sub-terminal A (Claude Code factory worker — bounded context):
+- Выполняет промпты от main factory terminal в worktree-isolation
+- НЕ мерджит PR самостоятельно (§7 — merge через main factory terminal)
+- НЕ создаёт PR без промпта от main factory terminal
+- НЕ переключает ветки в main без prompt'а
+- "Merge permission denied" — нормально; пересылает финальный отчёт main factory terminal
+
+Sub-terminal B (read-only diagnostics / monitoring):
+- Только read-only: git log / git status / git diff / grep / cat / ssh read-only
+- НИКАКИХ write: git push / git commit / git add / gh pr create/merge
+- Используется для observation window checks / forensic snapshots / parallel diagnostics
+
+### 15.2 §72 — Параллельная сессия halt rule
+
+- Если обнаружена параллельная Claude Code сессия (by new PRs / branches appearing on origin) — main factory terminal ОСТАНАВЛИВАЕТСЯ
+- НЕ пытается rebase / merge / workaround race condition
+- Фиксирует факт в IL: `IL-CANON-MULTI-TERMINAL-RACE-DETECTED-<date>`
+- ЖДЁТ пока параллельная сессия завершит свой PR-цикл (verify: `gh pr list --state open` показывает 0 PRs от параллельной OR все её PRs merged)
+- Только после этого main factory terminal продолжает
+- Никаких Plan B / fresh-branch / race-condition workaround
+
+### 15.3 §73 — Pre-flight check (mandatory перед каждым write-ходом)
+
+1. `git fetch --all --prune` в TARGET repo
+2. `git log --oneline origin/main -3` — сверить HEAD с ожидаемым
+3. `gh pr list -R <repo> --state open --json number,title,headRefName` — проверить нет ли OPEN PRs от параллельной сессии, targeting main
+4. Если есть open PR от другой сессии → STOP, wait for merge/close, re-check
+5. Только если clean → proceed с write-операцией
+
+### 15.4 §74 — Атомарный PR lifecycle
+
+- OCAT (§1) + multi-terminal discipline: каждый PR создаётся, пушится, мерджится main factory terminal атомарно
+- Между PR create и merge — НИКАКИХ других операций в этом репо
+- `gh pr merge` ВСЕГДА с `--admin` от main factory terminal (через Claude Code chain), не от sub-terminal
+- Bypass-window для required-status-checks работает только из main factory terminal
+
+### 15.5 Distribution для ускорения через 2 sub-terminals (когда нужно параллельно)
+
+Когда main factory terminal распределяет работу для 2 sub-terminals для ускорения:
+
+| Sub-terminal | Role | Scope | Write authority |
+|---|---|---|---|
+| **Sub-terminal A** | Independent bounded context | Отдельный worktree + отдельная ветка + НЕ пересекается с active track main factory | Только staging + commit; push + merge через main factory terminal |
+| **Sub-terminal B** | Independent bounded context | Отдельный worktree + отдельная ветка + НЕ пересекается с main factory + НЕ пересекается с Sub-terminal A | Только staging + commit; push + merge через main factory terminal |
+
+- Worktree-isolation MANDATORY: каждый sub-terminal в собственном worktree
+- Bounded contexts: разные ADR / разные tracks / разные waves
+- Migration: когда задача sub-terminal становится "главной" — она передаётся в main factory terminal через handoff IL; sub-terminal перестаёт писать в этот track
+
+### 15.6 Cross-references
+- handoff /tmp/banxe_handoff_2026-05-11_0300.md
+- bootstrap canon v3 §3 ENHANCED v3 (parallel-session-leakage prior framework)
+- amendment-30.N + amendment-B.11.N+2 (Constitutional chain)
+- ADR-019 Guardian two-family (Guardian уровень)
+- ADR-025 Session Rules 1..7
+- I-68 single-session incident command (predecessor) + I-71..I-74 (this commit)
+- §13 Russian language binding + §14 Perplexity Capability Tiers
+- Operator directive 2026-05-11 03:00 CEST
