@@ -7683,3 +7683,28 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - MASTER-PLAN: **5 of 9 Tracks FULLY CLOSED** (A+C+D+E+G). F PARTIALLY. B+H+I OPEN.
 - Two-loop mirrors total: 29.
 - Anchors: ADR-033 + emi-stack PR #129 (c7d5e7d) + G-OBS-02 closed + Track E fully closed.
+
+### IL-OPS-MIRROR-BACKFILL-V3-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — two-loop mirror backfill v3 (6 emi-stack merged PRs)
+- Status: BINDING — closes mirror gap for ADR-029 Steps 4-5 / ADR-030 Step 4 / ADR-032 Steps 4-5 / ADR-034 Step 5
+- Priority: P3 (canon hygiene + two-loop sync)
+- Scope: 6 mirror entries for unmirrored emi-stack PRs.
+
+- ADR-034 webhook reliability (1 PR):
+  Mirror 30 — IL-MIRROR-EMI-PR-121: feat(adr-034): Step 5 smoke tests — closes ADR-034 implementation chain. Commit 3d905157.
+
+- ADR-032 secret rotation (2 PRs):
+  Mirror 31 — IL-MIRROR-EMI-PR-122: feat(adr-032): Step 4 rotation audit event emitter (ROTATION_DUE + ROTATION_COMPLETED). Commit 6bb1afa8.
+  Mirror 32 — IL-MIRROR-EMI-PR-123: feat(adr-032): Step 5 gitleaks coverage audit + emitter smoke. Commit ddfa0448.
+
+- ADR-029 Postgres backup (2 PRs):
+  Mirror 33 — IL-MIRROR-EMI-PR-124: feat(adr-029): Step 4 restore drill port + adapter + cron script. Commit 08f7d2be.
+  Mirror 34 — IL-MIRROR-EMI-PR-127: feat(adr-029): Step 5 offsite upload port + InMemory adapter + backup chain smoke. Commit 70cc3d1a.
+
+- ADR-030 auth rate-limit (1 PR):
+  Mirror 35 — IL-MIRROR-EMI-PR-128: feat(adr-030): Step 4 AUTH_RATE_LIMIT_EXCEEDED audit emitter + 429 integration. Commit 1a53a16e.
+
+- Two-loop mirrors total: 35 (29 prior + 6 this commit). All merged emi-stack production PRs mirrored.
+- Anchors: PR #168 CORE PRINCIPLE two-loop sync + ADR-029/030/032/034.
