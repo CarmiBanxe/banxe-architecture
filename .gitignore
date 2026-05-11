@@ -3,3 +3,4 @@ scripts/__pycache__/
 *.db
 *.log
 data/
+.claude/settings.local.json
