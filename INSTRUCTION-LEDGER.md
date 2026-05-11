@@ -7578,3 +7578,46 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - Summary: 4 of 9 Tracks CLOSED/SUBSTANTIALLY-CLOSED (A + C + D + G); 2 PARTIALLY-CLOSED (E + F); 3 OPEN (B + H + I)
 
 - Anchors: MASTER-PLAN-2026-05-05 Tracks C+D + ADR-027/028/034 Accepted + incident RESOLVED per PR #155.
+
+### IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — Tracks E+F partial closure formalization + MASTER-PLAN 6/9 summary
+- Status: BINDING — Tracks E (Observability) + F (Security) partially closed
+- Priority: P2 (MASTER-PLAN Tracks E+F)
+- Scope: formalize partial closure for Tracks E+F; consolidate MASTER-PLAN 6/9 addressed status.
+
+- Track E — Observability / Alert Routing:
+  - ADR-033 alert routing n8n+Telegram: ✅ Accepted (tag checkpoint-2026-05-11-adr033-accepted)
+  - G-OBS-01 KC auth events alert routing: ✅ CLOSED (ADR-033 Steps 1-3 merged)
+  - G-OBS-02 alert-coverage CI smoke test: OPEN (KC Admin API integration fixture — production-scope)
+  - Track E status: PARTIALLY-CLOSED (1/2 GAPs + 1/1 ADR; remaining = CI smoke test)
+
+- Track F — Security / Secrets Rotation:
+  - ADR-032 secret rotation policy: ✅ Accepted (tag checkpoint-2026-05-10-adr032-accepted)
+  - G-SEC-01 interim secrets rotation: ✅ DONE (ADR-032 Steps 1-3 merged PRs #110/#111/#112)
+  - G-SEC-02 Vault/Infisical long-term adoption: OPEN (ADR-038 placeholder — production-scope)
+  - Track F status: PARTIALLY-CLOSED (1/2 GAPs + 1/1 ADR; remaining = Vault adoption placeholder)
+
+- MASTER-PLAN 6/9 Tracks addressed (final autonomous consolidation):
+  - ✅ Track A: COMPLETE 8/8 ADRs (tag checkpoint-2026-05-11-track-a-complete)
+  - ✅ Track C: SUBSTANTIALLY-CLOSED (3/4 GAPs + 2/2 ADRs)
+  - ✅ Track D: SUBSTANTIALLY-CLOSED (1/2 GAPs + 1/1 ADR)
+  - ✅ Track G: CLOSED-SANDBOX (7/7 GAPs, tag checkpoint-2026-05-11-tracks-a-g-complete)
+  - ✓ Track E: PARTIALLY-CLOSED (1/2 GAPs + 1/1 ADR)
+  - ✓ Track F: PARTIALLY-CLOSED (1/2 GAPs + 1/1 ADR)
+  - ○ Track B: OPEN (IAM Live-Ops — operator-led Phase F/G)
+  - ○ Track H: OPEN (New Architecture Work — Phase 5-8)
+  - ○ Track I: OPEN (External / Organisational Blockers — 7 API keys sandbox-mocked)
+
+- Remaining open items across all tracks (test-extension + production-scope only):
+  - G-KYC-04 (Track C): webhook tests
+  - G-CASS-02 (Track D): E2E audit tests
+  - G-OBS-02 (Track E): alert CI smoke
+  - G-SEC-02 (Track F): Vault adoption
+  - Track B: KC Phase F/G operator-led
+  - Track H: Phase 5-8 new architecture
+  - Track I: 7 API keys + MLRO + SMF holders
+
+- Autonomous progression terminus: all canon-addressable Track work complete. Remaining = operator/production scope.
+- Anchors: MASTER-PLAN-2026-05-05 all 9 Tracks + all ADR acceptance tags + incident RESOLVED.
