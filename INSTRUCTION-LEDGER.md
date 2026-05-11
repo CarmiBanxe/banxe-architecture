@@ -2208,14 +2208,14 @@
   - IL-OBS-MCP-TESTS-FIX
 - Handoff: /tmp/banxe_handoff_2026-04-22_1613.md
 
-### IL-CNS-AUD-PIPELINE-FIX (mirror) — TODO
-- Status: TODO
+### IL-CNS-AUD-PIPELINE-FIX (mirror) — DEFERRED
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope (emi-stack):
   - tests/test_integration/test_consent_audit_pipeline.py::TestConsentAuditPipeline::test_query_audit_log_by_event_type
 - Blocks: IL-LINT-03 commit proof
 
-### IL-OBS-MCP-TESTS-FIX (mirror) — TODO
-- Status: TODO
+### IL-OBS-MCP-TESTS-FIX (mirror) — DEFERRED
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope (emi-stack):
   - tests/test_observability/test_mcp_tools_observability.py (full test id TBD)
 - Blocks: IL-LINT-03 commit proof
@@ -2223,7 +2223,7 @@
 ---
 
 ### IL-COMPSYNC-0X — Compliance Sync scope (parking)
-- Status: TODO
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope:
   - services/compliance_sync/
   - tests/test_compliance_sync/
@@ -2232,7 +2232,7 @@
   promote to DONE only with dedicated proof SHA.
 
 ### IL-FRAUDTRACE-0X — Fraud Tracer scope (parking)
-- Status: TODO
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope:
   - services/fraud_tracer/
   - tests/test_fraud_tracer/
@@ -2241,7 +2241,7 @@
   IL-FRAUD adapters.
 
 ### IL-MIDAZMCP-0X — Midaz MCP scope (parking)
-- Status: TODO
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope:
   - services/midaz_mcp/
   - tests/test_midaz_mcp/
@@ -2250,7 +2250,7 @@
   contracts and MCP tools passports.
 
 ### IL-SCA-ADAPTERS-0X — SCA adapters model (parking)
-- Status: TODO
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope:
   - api/models/sca_adapters.py
 - Origin: new untracked in banxe-emi-stack working tree
@@ -2260,11 +2260,11 @@
 ---
 
 ### IL-COMPSYNC-0X (mirror) — parking map v3 recorded
-- Status: TODO
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Linked plan: /tmp/banxe_parking_il_contours_v3_20260422192527.txt
 
-### IL-COMPSYNC-MCP-TOOLS-FIX (mirror) — TODO (new blocker)
-- Status: TODO
+### IL-COMPSYNC-MCP-TOOLS-FIX (mirror) — DEFERRED
+- Status: DEFERRED (2026-05-11 — not blocking active Tracks; revisit Phase 6+)
 - Scope (emi-stack):
   - banxe_mcp/server.py (missing name: compliance_scan)
   - tests/test_compliance_sync/test_mcp_tools.py
