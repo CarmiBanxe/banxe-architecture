@@ -1,6 +1,6 @@
 # ADR-035 ROADMAP — Progress Report
-# ADR-035 ROADMAP — Parts 1 & 2 Progress
-# Updated: 2026-05-11 (Part 2 complete)
+# ADR-035 ROADMAP — Parts 1–3 Progress
+# Updated: 2026-05-11 (Part 3 complete)
 # Date: 2026-05-11 | Auditor: Sub-terminal A (Claude Code)
 
 ## Reference: ADR-035 AI Pool Roadmap (10 Steps)
@@ -170,3 +170,47 @@ add to systemd management before routing external traffic through Legion.
 ### Runbooks Added
 - `docs/runbooks/redis-evo1-setup.md`
 - `docs/runbooks/legion-litellm-cache.md`
+
+---
+
+## Part 3 — Detail (ADR-035 ROADMAP Part 3 / Step 5 — OfficeCLI)
+
+**Branch:** feat/part3-officecli-legion-2026-05-11
+**Performed:** 2026-05-11 by Sub-terminal A
+
+### Actions Taken
+
+#### Step A — Prerequisites verified
+- `pipx` 1.4.3 already present; `node` v22.22.0 via nvm
+- Running as `mmber` (non-root) — VERIFIED
+- evo1/evo2 NOT touched
+
+#### Step B — OfficeCLI installed via npm
+- `npm install -g officecli` → officecli 0.2.52
+- Binary: `~/.nvm/versions/node/v22.22.0/bin/officecli` (Node.js wrapper + Linux x64 runtime)
+- Pre-install: package contents inspected (postinstall.js, install.js) — downloads
+  from `officecli/officecli-dist` with checksum verification. No network calls at rest.
+- Version confirmed: `officecli version 0.2.52 (1f19ed2a1d6b8ab968583c76515dcec00fdd3832)`
+- Note: `pipx install officecli` fails (no PyPI package); `office-cli` (PyPI) is a seating-map
+  tool — wrong product. npm is the correct install path.
+
+#### Step C — Safe workspace created
+- `~/banxe-dev/office-workspace` created, owner `mmber`
+- Symlink scan: zero symlinks (no `/data/*` links)
+
+#### Step D — Env var set
+- `OFFICECLI_WORKSPACE="$HOME/banxe-dev/office-workspace"` appended to `~/.bashrc`
+
+#### Step E — Smoke test
+- `officecli config status` → Config file at `~/.config/officecli/config.json`, service not yet configured
+- `officecli auth status` → Free trial quota: 0 used. No API key configured.
+- No network call required for smoke test commands.
+
+#### Step F — Deny boundary
+- `/data/kyc`, `/data/transactions`, `/data/aml` paths: not mounted on Legion WSL2
+- Deny enforced at `~/.claude/settings.json` layer: `Read(/data/kyc/**)`,
+  `Read(/data/transactions/**)`, `Read(/data/aml/**)`
+- No runtime probe of deny paths (per HARD CONSTRAINTS)
+
+### Runbook Added
+- `docs/runbooks/legion-officecli-setup.md`
