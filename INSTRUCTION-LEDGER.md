@@ -7663,3 +7663,23 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - MASTER-PLAN: A+C+D+G FULLY CLOSED (4 of 9); E+F PARTIALLY; B+H+I OPEN.
 - Two-loop mirrors total: 28.
 - Anchors: ADR-028/034 + emi-stack PR #126 (64f40c5) + G-KYC-04 closed + Track C fully closed.
+
+### IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11
+
+- Date: 2026-05-11 (CEST)
+- Phase (GSD): CANON — G-OBS-02 closure + Track E FULLY CLOSED
+- Status: BINDING — G-OBS-02 CLOSED; Track E Observability FULLY CLOSED (2/2 GAPs + 1/1 ADR)
+- Priority: P1 (FCA SYSC 15A operational resilience)
+- Scope: G-OBS-02 closure + two-loop mirror PR #129 + Track E upgrade PARTIALLY → FULLY CLOSED.
+
+- G-OBS-02 closure: 5 smoke tests in banxe-emi-stack PR #129 (c7d5e7d).
+  Mirror 29 — IL-MIRROR-EMI-PR-129: feat(g-obs-02): alert-coverage CI smoke tests — KC auth event categories [5 tests]. Commit c7d5e7d.
+
+- Track E: FULLY CLOSED.
+  - G-OBS-01 ✅ CLOSED (ADR-033 n8n+Telegram alert routing)
+  - G-OBS-02 ✅ CLOSED (CI smoke tests PR #129)
+  - ADR-033 ✅ Accepted
+
+- MASTER-PLAN: **5 of 9 Tracks FULLY CLOSED** (A+C+D+E+G). F PARTIALLY. B+H+I OPEN.
+- Two-loop mirrors total: 29.
+- Anchors: ADR-033 + emi-stack PR #129 (c7d5e7d) + G-OBS-02 closed + Track E fully closed.

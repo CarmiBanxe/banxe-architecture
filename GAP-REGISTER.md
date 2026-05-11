@@ -279,7 +279,7 @@
   **Linked:** ADR-017 §GATE-D (realm provisioning), ADR-033 (to be opened), G-IAM-01, I-24.
   **Closing 2026-05-11:** ADR-033 Option (a) n8n+Telegram implemented. Steps 1-3 merged: PR #116 AlertRoutingPort + N8nTelegramAlertAdapter + 6 tests / PR #118 DI wiring + ALERT_ENABLED + 5 tests / PR #119 operational script + 4 smoke tests. 15 total tests PASS.
 
-- [ ] G-OBS-02: Alert-coverage CI smoke test for Keycloak auth events — NEW 2026-05-05
+- [x] G-OBS-02: Alert-coverage CI smoke tests implemented — CLOSED 2026-05-11
   **Source:** G-OBS-01 follow-on.
   **Components:** `tests/integration/` or dedicated smoke fixture, Keycloak Admin API, alert channel endpoint.
   **Risk:** Without a smoke test, alert routing regressions are invisible until a real auth incident goes unnoticed.
@@ -289,6 +289,7 @@
     3. Run in `quality-gate.yml` smoke job after KC health check.
   **Owner:** Platform WG.
   **Linked:** G-OBS-01, ADR-033, G-CI-01.
+  Closing 2026-05-11: 5 smoke tests merged in banxe-emi-stack PR #129 (commit c7d5e7d): LOGIN_ERROR brute-force + CLIENT_LOGIN_ERROR exposure + TOKEN_EXCHANGE replay + admin DELETE_USER CEO routing + delivery latency < 1s budget. Per ADR-033 + FCA SYSC 15A. Track E Observability: 2/2 GAPs CLOSED (G-OBS-01 + G-OBS-02) + 1/1 ADR Accepted (ADR-033). Track E FULLY CLOSED.
 
 
 ## KYC Webhook Reliability — Gaps (V-11 from HANDOFF-2026-05-04)
