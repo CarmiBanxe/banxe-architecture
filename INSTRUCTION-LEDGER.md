@@ -7786,3 +7786,30 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Applicability: BINDING for Perplexity (Central terminal), Terminal A (sandbox), Terminal B (parallel executor). Any work without accompanying documentation is not accepted into main.
 - Rationale: documentation-as-code is required by FCA SYSC, GDPR Art.30, ADR-019 Guardian audit, and operator directive 2026-05-12 02:00 CEST.
 - Refs: operator directive in-session 2026-05-12 02:00 CEST; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-FACTORY-CLAUDE-CODE-PERMISSIONS-DOC-MANDATORY-2026-05-12
+
+- Date: 2026-05-12 02:38 CEST
+- Phase (GSD): CANON — Claude Code permissions extension for documentation-mandatory canon
+- Status: BINDING
+- Priority: P1
+- Decision: Claude Code permissions are extended to support CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 (mandatory documentation, two-layer factory/product separation, SD1-SD8 roadmap).
+- Verified state (read-only diagnostic, 2026-05-12 02:38 CEST, host mark-legion):
+  - File: /home/mmber/.claude/settings.json
+  - Size: 20624 bytes, mtime 2026-05-12 02:32 CEST
+  - permissions.allow rules total: 621
+  - permissions.deny  rules total: 62
+  - Backup of pre-change state: /home/mmber/.claude/settings.json.bak-20260512-023245 (20240 bytes)
+- Required rules (28/28 present in allow):
+  Bash: mkdir -p:*, mkdir:*, touch:*, cp:*, mv:*
+  Edit/Write/MultiEdit: ./**, docs/**, **/docs/**, **/docs/audit/**, **/docs/runbooks/**
+  Git (read+local-write subset via git -C *): add:*, commit:*, worktree:*, fetch:*, log:*, status:*, diff:*, branch:*
+- Rationale: SD1-SD8 sprints require Claude Code to create/edit docs trees (CANON.md, docs/canon/SECTION-0-*, GAP-REGISTRY.md, COMPLIANCE-MATRIX-*, ADR files, runbooks, agent passports), copy/move files during factory-canon repo bootstrap, and perform safe git local operations (add/commit/worktree/fetch/log/status/diff/branch). Destructive operations (push/merge/tag, rm) remain operator-only by exclusion (no push:*, no merge:*, no tag:*, no rm:* added).
+- Out of scope (intentionally NOT granted):
+  - Bash(git -C * push:*), Bash(git -C * merge:*), Bash(git -C * tag:*) — destructive remote/history operations stay operator-only.
+  - Bash(rm:*), Bash(rm -rf:*) — destructive filesystem ops stay operator-only.
+- Compliance:
+  - IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12: this entry fixates a behavior-changing decision in INSTRUCTION-LEDGER.md within the same session.
+  - IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12: permission set sized to required scope of Layer 1 (factory-*) and Layer 2 (banxe-*) documentation work.
+  - ADR-027 (Claude Code permissions reclassification): this IL entry will be referenced in a follow-up ADR-027 update.
+- Refs: ~/.claude/settings.json (local, out-of-git); ~/.claude/settings.json.bak-20260512-023245.
