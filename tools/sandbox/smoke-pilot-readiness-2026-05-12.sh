@@ -64,7 +64,7 @@ fi
 
 # 4. Condition C — reviewer named in eval protocol doc
 EVAL=/home/mmber/banxe-architecture/docs/audit/condition-c-evaluation-protocol-2026-05-12.md
-if [[ -f "$EVAL" ]] && grep -qE "Reviewer: [A-Za-z]" "$EVAL"; then
+if [[ -f "$EVAL" ]] && grep -qE "Reviewer:[* ]+[A-Za-z]" "$EVAL"; then
   report PASS "Condition C: reviewer slot filled"
 else
   report FAIL "Condition C: reviewer NOT named (blank slot)"
@@ -72,7 +72,7 @@ fi
 
 # 5. Condition A — dataset pointer
 DATASET=/home/mmber/banxe-architecture/docs/audit/condition-a-training-dataset-2026-05-12.md
-if [[ -f "$DATASET" ]] && grep -qE "^Source: [^<]" "$DATASET"; then
+if [[ -f "$DATASET" ]] && grep -qE "^[* ]*Source:[* ]+[^_<]" "$DATASET"; then
   report PASS "Condition A: dataset source named"
 else
   report FAIL "Condition A: dataset source NOT named (placeholder)"
