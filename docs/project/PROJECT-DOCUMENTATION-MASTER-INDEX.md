@@ -151,3 +151,7 @@ A new or revised project-documentation deliverable is published when:
 | Date       | Change                                                          | Sprint |
 |------------|-----------------------------------------------------------------|--------|
 | 2026-05-12 | Sprint D1 — initial publication of master index + S12-S25 backlog | D1     |
+
+## Sprint history
+
+D3.1 (2026-05-12): OI-1 reconciliation — backlog target paths renamed; 38 rows MISSING -> PARTIAL.

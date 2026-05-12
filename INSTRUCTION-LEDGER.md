@@ -8052,3 +8052,28 @@ Refs:
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
   IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
   IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+
+### IL-PROJECT-DOCS-SPRINT-D3-1-OI-1-RECONCILIATION-2026-05-12
+
+- Date: 2026-05-12 11:05 CEST
+- Phase (GSD): Sprint D3.1 — OI-1 folder-name reconciliation in backlog + master-index refresh
+- Status: BINDING
+- Priority: P0
+- Executor: Central (per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12).
+- Scope (bounded): only docs/project/PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md and docs/project/PROJECT-DOCUMENTATION-MASTER-INDEX.md modified. No new files, no other paths.
+- Action:
+  1. Renamed in backlog target paths: docs/project/iam-security -> docs/project/security; docs/project/data-governance -> docs/project/data.
+  2. Flipped MISSING -> PARTIAL for every backlog row whose target path now matches one of the 8 D2 domain skeleton paths or docs/adr/INDEX.md; each flipped row tagged with "(D3.1 reconciled @ <path>)".
+  3. Recomputed and replaced the STATUS-TOTALS block in backlog header (idempotent <!-- STATUS-TOTALS --> markers).
+  4. Appended Sprint history entry to master index with D3.1 marker.
+- Result: see git diff and python script stdout (rows flipped, by sprint, new status totals). Numbers are computed at commit time from the actual file contents, not asserted in this entry.
+- OI-1 status: CLOSED for the 8 D2 domain skeletons + ADR INDEX. Remaining MISSING rows (if any) reference target paths outside the 8 domains (e.g. testing/, go-live/, infrastructure/) and will be handled by future D-sprints.
+- Bounded-context compliance: no edits outside docs/project/PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md and docs/project/PROJECT-DOCUMENTATION-MASTER-INDEX.md.
+- Refs:
+  IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
