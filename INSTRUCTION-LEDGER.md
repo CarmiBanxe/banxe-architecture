@@ -8131,3 +8131,27 @@ Refs:
   IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
   IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+
+### IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12
+
+- Date: 2026-05-12 11:55 CEST
+- Phase (GSD): CANON — execution surface clarified: Claude Code primary, shell only when necessary
+- Status: BINDING
+- Priority: P0
+- Operator directive (in-session 2026-05-12 ~11:50 CEST): "по канону мы работаем в клод коде и только при необходимости (диагностика и другое) в шелле."
+- Decision:
+  1. PRIMARY execution surface for all Central work = Claude Code. Documentation writes, file edits, content expansion (e.g. D3.2b sub-domain expansion), code refactors, multi-line content creation MUST be performed via Claude Code, not via shell heredoc.
+  2. SECONDARY execution surface = shell terminal (Legion mark-legion). Shell is used only when objectively better: diagnostics (read-only `git`, `ls`, `grep`, `find`, `gh`, system queries), destructive ops under operator directive (rm, systemd restart, kill, kernel-pin), git workflow when Claude Code cannot complete it (push/PR/merge/tag, branch surgery, rebase recovery), shell-script execution (sed, awk, jq) for one-shot transforms, and any task where shell is the right tool.
+  3. The "best-solution" principle (correctness -> safety -> canon compliance -> minimization of destructive risk -> speed) remains supreme. Where Claude Code and shell are equivalent, Claude Code is preferred. Where shell is objectively better, switch to shell without losing canon.
+  4. Long content writes (more than ~50 lines) MUST NOT be attempted via bash heredoc from browser-to-terminal copy-paste. Past attempts (D3.2a compliance/security full-content expansion) have repeatedly truncated mid-stream. Use Claude Code (file edit), or break into incremental small patches (sed, short python heredoc <=30 lines), or use base64-encoded one-liners as a last resort.
+- Override / clarification: this entry CLARIFIES and REINFORCES Decision B of IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12. It does not supersede it; it makes the priority order explicit and operationally testable.
+- Operational consequences:
+  - Sprint D3.2b (full content expansion of compliance + security domains) will be performed via Claude Code, not via shell heredoc. Central will issue a Claude Code prompt for the file edits and use shell only for diagnostics + final commit/push/PR/merge.
+  - All future long-form documentation writes go through Claude Code.
+- Refs:
+  IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12 (Decision B, clarified here)
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (Clause F-01, unchanged)
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12 (Central ownership, unchanged)
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 (TARGET header, unchanged)
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12 (persistence, unchanged)
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 (doc mandatory, unchanged)
