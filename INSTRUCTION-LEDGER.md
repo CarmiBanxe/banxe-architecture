@@ -8373,3 +8373,19 @@ Refs:
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Follow-up: D3.3.2 api, D3.3.3 runbooks, D3.3.4 data, D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.2+" enumerates architecture-specific MISSING files queued for owner sprints S12-S20 plus D3.3.x pairings.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12 (pattern reference); IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12; IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11; IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11; IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12
+
+- Date: 2026-05-12 16:00 CEST
+- Phase (GSD): CANON — extend file-intermediary rule from Sub-B to ALL Claude Code prompts (Central + Sub-B)
+- Status: BINDING
+- Priority: P0
+- Trigger: 2026-05-12 ~15:55 CEST, a D3.3.2 prompt issued inline in chat as fenced code block (intended for Claude Code Central) was instead pasted into Legion bash by operator, producing command-not-found cascade. Same root cause as IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12 (which only covered Sub-B). Central Claude Code prompts have identical fragility: prose in code-block fences is visually indistinguishable from shell artifacts at copy-paste time.
+- Decision: From now on, every Claude Code prompt (Central in /home/mmber/banxe-architecture; Sub-B in /home/mmber/banxe-emi-stack; any other Claude Code instance) issued by Central (Perplexity) MUST be delivered via a file intermediary on Legion, not as inline chat prose. The mechanics are identical to IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12:
+  1. Central composes the prompt and writes it to /tmp/<terminal>-prompt-<sprint-id>-<YYYY-MM-DD>.txt via a short TARGET-headed shell command (cat-heredoc safe size, or python heredoc, or base64 fallback).
+  2. Operator switches to the target Claude Code terminal and reads the file (cat) or pastes content into Claude Code conversation. Claude Code then executes the prompt autonomously per its existing autonomy canon.
+  3. Inline prompt prose in chat is NEVER pasted directly into Legion shell. The file-intermediary pattern makes the prompt physically distinguishable from a shell artifact.
+- Scope: applies to ALL Claude Code prompts issued by Central — Central CC, Sub-B CC, any future Claude Code instance. Supersedes IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12 by generalization (Sub-B rule remains a special case of this broader rule).
+- Format: TARGET terminal: Legion shell (Central) for the file-write; then a separate instruction line "After file write succeeds, switch to <Claude Code target> and feed it the content of /tmp/<path>".
+- Exception: short Central Claude Code prompts (<30 lines) MAY be issued inline, BUT MUST be enclosed in a NON-fenced quote block clearly labelled "Claude Code prompt — do not paste in bash" + the TARGET header. Long prompts (>=30 lines) MUST use file intermediary.
+- Refs: IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12 (generalized); IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
