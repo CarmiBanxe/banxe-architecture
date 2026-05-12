@@ -7851,3 +7851,25 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   3. On ambiguity: if the rule governs how the factory builds, it is factory canon by default.
 - Applicability: BINDING for Perplexity (Central), Terminal A, Terminal B; all future sessions until explicitly revoked.
 - Refs: docs/factory/FACTORY-CANON-ADDENDUM-2026-05-12.md; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12
+
+- Date: 2026-05-12 09:00 CEST
+- Phase (GSD): Sprint D1 — 100% Project Documentation Programme baseline
+- Status: BINDING (programme baseline)
+- Priority: P0
+- Artifacts (commit 1a002f6 on main, +444 / 0, 3 files):
+  - README.md (+1 line; nav entry -> docs/project/)
+  - docs/project/PROJECT-DOCUMENTATION-MASTER-INDEX.md (NEW, 153 lines)
+  - docs/project/PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md (NEW, 290 lines)
+- Spec-First Auditor: PASS 12/12 blocks.
+- Coverage summary (D1 baseline):
+  - New namespace docs/project/ — project-implementation docs (Layer 2 per CANON-DOC-MANDATORY-TWO-LAYER), isolated from factory canon (docs/canon/, ROADMAP.md, INSTRUCTION-LEDGER.md, docs/factory/).
+  - Master index: scope, bounded context, in-vs-out separation, "100% project documentation" 4-rule Definition of Done, 5-tag status legend, 8-domain coverage table at D1 baseline, S12-S25 sprint horizon, navigation to existing artifacts.
+  - Sprint backlog: deliverables sprint-by-sprint (S12 -> S25) grouped by domain with status tags. S12 = canonical Phase F7 entry; S13-S25 explicitly marked as documentation-execution sprints defined in this backlog, not pre-existing canon (transparent provenance).
+  - Status totals across S12-S25: ~80 deliverables — 5 DONE (S12 baseline + existing ADRs), ~10 PARTIAL (existing master-doc / runbooks / policies), 3 DEFERRED (G-SEC-02 Vault, G-CI-02 full-tier, etc. with IL anchors), 4 BLOCKED (cross-border transfer assessment, sandbox-mocked API keys, MLRO/DPO sign-off, KC live-ops Track B), remainder MISSING with target paths.
+  - Cross-cutting blockers/dependencies tracker added at end of backlog for programme-level visibility.
+- Relation to canon roadmap:
+  - This baseline implements Layer 2 (Product Docs) under CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 and is the project-side counterpart of factory-side SD1-SD8.
+  - S12 documentation deliverables are aligned with IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (Sprint S12 KC IAM Phase F).
+- Refs: commit 1a002f6 (local main, to be published in this entry's PR); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12.
