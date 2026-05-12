@@ -8389,3 +8389,20 @@ Refs:
 - Format: TARGET terminal: Legion shell (Central) for the file-write; then a separate instruction line "After file write succeeds, switch to <Claude Code target> and feed it the content of /tmp/<path>".
 - Exception: short Central Claude Code prompts (<30 lines) MAY be issued inline, BUT MUST be enclosed in a NON-fenced quote block clearly labelled "Claude Code prompt — do not paste in bash" + the TARGET header. Long prompts (>=30 lines) MUST use file intermediary.
 - Refs: IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12 (generalized); IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-3-2-API-CONTENT-2026-05-12
+
+- Date: 2026-05-12 16:15 CEST
+- Phase (GSD): Sprint D3.3.2 — api domain content expansion (SKELETON -> CONTENT)
+- Status: BINDING
+- Priority: P0
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief delivered via /tmp file per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (`/tmp/central-cc-prompt-d3-3-2-api-2026-05-12.txt`, 110 lines).
+- Artifact: docs/project/api/README.md expanded from 89 lines (SKELETON D2) to 396 lines (CONTENT D3.3.2). Within target tolerance (300-400).
+- Sub-sections (8/8): A API surface overview, B contracts & specs, C auth & rate-limiting, D webhook reliability, E inter-service messaging, F error & status codes, G API observability, H open gaps.
+- Anchors used (only real, all verified pre-write): 12 ADRs (ADR-005, 012, 013, 015, 016, 017, 025, 027, 028, 030, 033, 034 — all in `decisions/`). 7 IL anchors. Sprint refs S12, S12.3, S15, S16.4, S17, S19, S20, S22, S22.1, D3.3.3. GAP refs: G-API-01, G-API-02 (closed), G-IAM-03 (OPEN, S12.3), G-OBS-01, G-OBS-02 (closed), G-FACTORY-05 (cross-link).
+- Status bump verified: `SKELETON (D2)` -> `CONTENT (D3.3.2 — full sub-domain content landed)`.
+- Stale-reference correction: the D2 skeleton's line 57 incorrectly claimed ADR-030 / ADR-034 lived in `banxe-emi-stack/docs/adr/`. Corrected during expansion — both ADRs live in `decisions/` in this repo, alongside ADR-012/013/015/016/017/025/027/033 that anchor the API surface.
+- Bounded-context: only docs/project/api/README.md + INSTRUCTION-LEDGER.md modified. Forbidden paths untouched.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Follow-up: D3.3.3 runbooks, D3.3.4 data, D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.3+" enumerates API-specific MISSING files queued for owner sprints S12-S22.1 plus D3.3.3 pairings.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12 (pattern reference); IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12 (anchor reconciliation done); IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (brief delivery via file); IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11; IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
