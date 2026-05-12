@@ -1,4 +1,4 @@
-# ADR-027 — Claude Code permissions reclassification
+# ADR-039 — Claude Code permissions reclassification
 
 | Field | Value |
 |---|---|
@@ -97,4 +97,4 @@ The change takes effect on next Claude Code session start (settings.json is read
 
 | Date | Status | Note |
 |---|---|---|
-| 2026-05-05 | ACCEPTED | settings.json reclassified by operator; ADR-027 created post-hoc to formalise governance decision |
+| 2026-05-05 | ACCEPTED | settings.json reclassified by operator; ADR-039 created post-hoc to formalise governance decision |

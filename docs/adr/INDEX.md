@@ -19,12 +19,12 @@ The generator script is reproduced at the bottom for re-execution by Central.
 
 | Number | Title                                                                     | Status   | Date       | Path                                                          |
 |--------|---------------------------------------------------------------------------|----------|------------|---------------------------------------------------------------|
-| 027    | Claude Code permissions reclassification                                  | ACCEPTED | 2026-05-05 | [`ADR-027-claude-code-permissions-reclassification.md`](./ADR-027-claude-code-permissions-reclassification.md) |
-| 031    | AI Execution Policy — Meta-Plane vs Inference-Plane                       | ACCEPTED | 2026-05-03 | [`ADR-031-ai-execution-policy.md`](./ADR-031-ai-execution-policy.md) |
-| 032    | GLM-4.5-Air Distributed Inference (USB4 RPC)                              | ACCEPTED | 2026-05-03 | [`ADR-032-glm45-air-distributed.md`](./ADR-032-glm45-air-distributed.md) |
-| 033    | ufw Perimeter Posture per Host                                            | ACCEPTED | 2026-05-03 | [`ADR-033-ufw-perimeter.md`](./ADR-033-ufw-perimeter.md) |
-| 034    | Aider/Continue Routes — ai / ai-heavy / reasoning                         | ACCEPTED | 2026-05-03 | [`ADR-034-aider-routes.md`](./ADR-034-aider-routes.md) |
-| 035    | AI Pool Roadmap 2026-05-11                                                | Proposed | 2026-05-11 | [`ADR-035-ai-pool-roadmap-2026-05-11.md`](./ADR-035-ai-pool-roadmap-2026-05-11.md) |
+| 039 | Claude Code permissions reclassification                                  | ACCEPTED | 2026-05-05 | [`ADR-039-claude-code-permissions-reclassification.md`](./ADR-039-claude-code-permissions-reclassification.md) |
+| 040 | AI Execution Policy — Meta-Plane vs Inference-Plane                       | ACCEPTED | 2026-05-03 | [`ADR-040-ai-execution-policy.md`](./ADR-040-ai-execution-policy.md) |
+| 041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                              | ACCEPTED | 2026-05-03 | [`ADR-041-glm45-air-distributed.md`](./ADR-041-glm45-air-distributed.md) |
+| 042 | ufw Perimeter Posture per Host                                            | ACCEPTED | 2026-05-03 | [`ADR-042-ufw-perimeter.md`](./ADR-042-ufw-perimeter.md) |
+| 043 | Aider/Continue Routes — ai / ai-heavy / reasoning                         | ACCEPTED | 2026-05-03 | [`ADR-043-aider-routes.md`](./ADR-043-aider-routes.md) |
+| 044 | AI Pool Roadmap 2026-05-11                                                | Proposed | 2026-05-11 | [`ADR-044-ai-pool-roadmap-2026-05-11.md`](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
 
 ## MISSING (gap analysis)
 

@@ -1,5 +1,5 @@
 ---
-id: ADR-031
+id: ADR-040
 title: AI Execution Policy — Meta-Plane vs Inference-Plane
 status: ACCEPTED
 date: 2026-05-03
@@ -13,7 +13,7 @@ related:
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
-# ADR-031: AI Execution Policy — Meta-Plane vs Inference-Plane
+# ADR-040: AI Execution Policy — Meta-Plane vs Inference-Plane
 
 ## Status
 ACCEPTED — 2026-05-03 (CEO: Moriel Carmi)
