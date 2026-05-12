@@ -8155,3 +8155,45 @@ Refs:
   IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 (TARGET header, unchanged)
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12 (persistence, unchanged)
   IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 (doc mandatory, unchanged)
+
+### IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12
+
+- Date: 2026-05-12 12:00 CEST
+- Phase (GSD): Sprint D3.2b — full content expansion for compliance + security domains
+- Status: BINDING
+- Priority: P1
+- Executor: Central via Claude Code (per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 and IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12).
+- Artifact commit: this commit; SHA visible in `git log` of branch `docs/project-sprint-d3-2b-compliance-security-content-2026-05-12` HEAD.
+- Files changed: docs/project/compliance/README.md (401 lines; was 103 lines D3.2a), docs/project/security/README.md (376 lines; was 100 lines D3.2a), INSTRUCTION-LEDGER.md (+this entry).
+- Action: expanded both READMEs from CONTENT-PARTIAL (D3.2a) to CONTENT (D3.2b) with substantive sub-domain content. All anchors verifiable in repo (IL, ADR in `decisions/` or `docs/adr/`, GAP, Sprint). Unknown facts marked as TODO with owner sprint or "discover in D3.2c".
+- Status bump: both READMEs now `Status: CONTENT (D3.2b — full sub-domain content landed)`.
+- Auditor: Spec-First Auditor v2 PASS 12/12 (verified via pre-commit hook).
+- Bounded-context compliance: only the 3 listed files modified. Forbidden paths (docs/canon/**, docs/factory/**, ROADMAP.md, MASTER-PLAN-2026-05-05.md, HITL-MATRIX.yaml, docs/adr/**, other docs/project/**, banxe-* sources, MEMORY.md) untouched.
+- Anchor reconciliation TODOs surfaced for D3.2c:
+  - Brief cited ADR-019 for "audit retention 5y ClickHouse Guardian", but `decisions/ADR-019-ai-guardian-two-family.md` is about a different topic. The audit-trail durability ADR is `decisions/ADR-027-audit-trail-durability.md`. Compliance README §A.3 cites ADR-027 and flags the brief anchor as TODO.
+  - Brief cited ADR-036 (Travel Rule "CLOSED per PR #214"). `decisions/ADR-036-*.md` is not present in repo. Compliance README §F flags as TODO; security README does not depend on this anchor.
+  - ADR-033 number collision: `decisions/ADR-033-alert-routing-strategy.md` vs `docs/adr/ADR-033-ufw-perimeter.md`. Security README §F.1 uses the explicit `docs/adr/` path when citing the ufw perimeter anchor.
+  - G-FACTORY-05 currently appears only in `INSTRUCTION-LEDGER.md`, not in `GAP-REGISTER.md`. Security README §F.4 flags reconciliation in D3.2c.
+- Open issues persisting after D3.2b:
+  OI-2 (SD2): .gitignore data/ rule still matches docs/project/data/.
+  OI-3 (SD2/D3): ADR-028/029/030 number collision (and ADR-033 collision, ADR-019 misalignment, ADR-036 missing) — reconcile in D3.2c.
+  Multiple MISSING target files under docs/project/compliance/** and docs/project/security/** queued for D3.2c+; see the H sections of both READMEs.
+- Refs:
+  IL-PROJECT-DOCS-SPRINT-D3-2A-STATUS-BUMP-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D3-1-OI-1-RECONCILIATION-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D2-RECOVERY-IL-PAIRING-FIXUP-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+  IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+  IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11
+  IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11
+  IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12
+  IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11 (G-SEC-02 deferral)
+  ADR-027 (audit-trail durability), ADR-028 (KYC re-verification), ADR-029 (Postgres backup), ADR-030 (auth rate-limit), ADR-032 (secret rotation), ADR-033 ufw perimeter (`docs/adr/`), ADR-038 (Vault placeholder)
+  GAP: G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION, G-IAM-03, G-IAM-08, G-IAM-09, G-SEC-02, G-SECURITY-HISTORICAL-LEAKS, G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER, G-CASS-01, G-CASS-02
+  FCA SUP 15, CASS 15 §15.10, SYSC 4.1, GDPR Art. 30/32/33/15-22, AMLR 2017, AMLD6, JMLSG, FATF Travel Rule, OFSI / EU / UN sanctions, PSR 2017, EMR 2011
