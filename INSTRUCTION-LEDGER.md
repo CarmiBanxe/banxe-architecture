@@ -8248,3 +8248,47 @@ Refs:
   IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
   IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+
+### IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12
+
+- Date: 2026-05-12 12:35 CEST
+- Phase (GSD): Sprint D3.2d.2 — ADR-036 Travel Rule backfill in decisions/
+- Status: BINDING
+- Priority: P0
+- Executor: Central per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12.
+- Artifact: decisions/ADR-036-travel-rule.md (NEW, ~55 lines).
+- Background: D3.2c finding #2 — ADR-036 was CLOSED via docs/audit/adr-036-final-summary-2026-05-11.md + PR #214 (commit 6fa8f52), but decisions/ADR-036-*.md did not exist, breaking anchor citations from compliance/security READMEs.
+- Action: created decisions/ADR-036-travel-rule.md as a thin canonical ADR record that references the audit doc as source-of-truth. Includes: Context, Decision (4 items), Implementation status, Severity vocabulary, Known follow-ups, References.
+- Decision content (no invented facts): Travel Rule mandatory for any production crypto-asset transfer; implementation deferred to Sprint S21 (Crypto Block); Sprint 3 candidate CANCELLED 2026-05-11; no crypto flow may go live without Travel Rule provider or signed MLRO manual procedure.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Resolves: D3.2c open question Q2.
+- Bounded-context compliance: only decisions/ADR-036-travel-rule.md created + INSTRUCTION-LEDGER.md append.
+- Follow-up:
+  - D3.2d.3: rewrite ADR INDEX.md to cover both catalogues.
+  - D3.2d.4: re-anchor citations (CASS 15 -> ADR-027, S19.7 -> S17/G-SEC-02, Travel Rule references -> this ADR-036).
+- Refs:
+  IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12
+  IL-OPS-MIRROR-BACKFILL-V3-2026-05-11
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+  IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+  PR #214, commit 6fa8f52
+  docs/audit/adr-036-final-summary-2026-05-11.md
+
+### IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12
+
+- Date: 2026-05-12 12:45 CEST
+- Phase (GSD): Sprint D3.2d.2 — ADR-036 Travel Rule backfill in decisions/
+- Status: BINDING
+- Priority: P0
+- Executor: Central per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12.
+- Artifact: decisions/ADR-036-travel-rule.md (NEW, 49 lines, 3883 B).
+- Background: D3.2c finding #2 — ADR-036 was CLOSED via docs/audit/adr-036-final-summary-2026-05-11.md + PR #214 (commit 6fa8f52), but decisions/ADR-036-*.md did not exist, breaking anchor citations from compliance/security READMEs.
+- Action: created decisions/ADR-036-travel-rule.md as a canonical ADR record that references the audit doc as source-of-truth. Status: Closed (2026-05-11). Decision: Travel Rule mandatory for production crypto-asset transfers; implementation deferred to Sprint S21 (Crypto Block); Sprint 3 candidate CANCELLED.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Resolves: D3.2c open question Q2.
+- Follow-up: D3.2d.3 (rewrite ADR INDEX.md), D3.2d.4 (re-anchor citations).
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-OPS-MIRROR-BACKFILL-V3-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; PR #214 / commit 6fa8f52; docs/audit/adr-036-final-summary-2026-05-11.md.
