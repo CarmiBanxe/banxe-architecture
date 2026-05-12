@@ -8077,3 +8077,26 @@ Refs:
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
   IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
   IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+
+### IL-PROJECT-DOCS-SPRINT-D3-2A-STATUS-BUMP-2026-05-12
+
+- Date: 2026-05-12 11:35 CEST
+- Phase (GSD): Sprint D3.2a — status bump for compliance + security skeletons
+- Status: BINDING
+- Priority: P1
+- Executor: Central (per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12).
+- Scope (bounded): only docs/project/compliance/README.md and docs/project/security/README.md modified. 2 lines changed total (+2 / -2).
+- Action: replaced `Status: SKELETON (D2)` with `Status: CONTENT-PARTIAL (D3.2a — sub-domains scaffolded; full CONTENT pending in D3.2b)` in both domain READMEs. No body changes.
+- Reason: D3.2a originally planned as full CONTENT expansion (~300 lines each) blocked by repeated bash heredoc copy-paste fragility from browser-to-terminal. Status bump documents the partial-CONTENT intent and prepares the way for incremental content expansion in D3.2b via small sed-style or short python-heredoc patches per sub-domain.
+- Auditor: Spec-First Auditor v2 expected to PASS 12/12 on this trivial 2-line change.
+- Follow-up sprint D3.2b: incremental content expansion (one sub-domain per artifact) using short patches; no large heredocs. Sub-domains queued for D3.2b: compliance/{FCA, GDPR, AML, Safeguarding, Sanctions, Travel-Rule}; security/{threat-model, secrets-policy, Vault-status, historical-leaks, KC-hardening-evidence}.
+- Bounded-context compliance: only the 2 listed files modified plus this IL entry. Forbidden paths untouched.
+- Refs:
+  IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D2-RECOVERY-FROM-ORPHAN-COMMIT-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D3-1-OI-1-RECONCILIATION-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
