@@ -1,88 +1,178 @@
-# ADR Index — banxe-architecture
+# ADR Index — banxe-architecture (unified)
 
 Generated: 2026-05-12
-Generator: Sprint D2 (one-shot)
-Source: `docs/adr/ADR-*.md`
+Generator: Sprint D3.2d.3 (rewrite from D2 single-catalogue scope to unified scope)
+Source: `decisions/ADR-*.md` (canonical catalogue, 37 files) + `docs/adr/ADR-*.md`
+(factory ADRs post-D3.2d.1 renumber, 6 files)
 
-This index enumerates every ADR file currently present under `docs/adr/` in the
-canonical `banxe-architecture` repository (Layer 2 / project documentation). It also
-records explicit MISSING rows for ADR numbers that are referenced from other
-documentation but have no body in this repo (most bank-side ADRs live in the
-`banxe-emi-stack` source repository; the factory-side ADR numbering has gaps to be
-backfilled).
+This index covers BOTH ADR catalogues. After Sprint D3.2d.1 collision renumber,
+the two catalogues are non-colliding: `decisions/` holds ADR-001..035, ADR-036,
+ADR-038, ADR-074..076 (37 files); `docs/adr/` holds ADR-039..044 (6 files;
+factory / agent governance scope). Numbers ADR-021, ADR-023, ADR-031, ADR-037,
+ADR-045..073, ADR-077+ are unassigned (see §"MISSING / unassigned").
 
-The generator script is reproduced at the bottom for re-execution by Central.
+Status values are parsed verbatim from each ADR's `**Status:**` line. Where no
+`**Status:**` line exists at the top of the file, the row shows `UNKNOWN` and
+the ADR is listed in the §"Parse failures" section at the bottom for follow-up
+in a later D3.2d sprint.
 
 ---
 
-## Real ADR files in `docs/adr/`
+## Real ADR files in `decisions/` (canonical catalogue, 37 files)
 
-| Number | Title                                                                     | Status   | Date       | Path                                                          |
-|--------|---------------------------------------------------------------------------|----------|------------|---------------------------------------------------------------|
-| 039 | Claude Code permissions reclassification                                  | ACCEPTED | 2026-05-05 | [`ADR-039-claude-code-permissions-reclassification.md`](./ADR-039-claude-code-permissions-reclassification.md) |
-| 040 | AI Execution Policy — Meta-Plane vs Inference-Plane                       | ACCEPTED | 2026-05-03 | [`ADR-040-ai-execution-policy.md`](./ADR-040-ai-execution-policy.md) |
-| 041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                              | ACCEPTED | 2026-05-03 | [`ADR-041-glm45-air-distributed.md`](./ADR-041-glm45-air-distributed.md) |
-| 042 | ufw Perimeter Posture per Host                                            | ACCEPTED | 2026-05-03 | [`ADR-042-ufw-perimeter.md`](./ADR-042-ufw-perimeter.md) |
-| 043 | Aider/Continue Routes — ai / ai-heavy / reasoning                         | ACCEPTED | 2026-05-03 | [`ADR-043-aider-routes.md`](./ADR-043-aider-routes.md) |
-| 044 | AI Pool Roadmap 2026-05-11                                                | Proposed | 2026-05-11 | [`ADR-044-ai-pool-roadmap-2026-05-11.md`](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
+| Number  | Title                                                                                              | Status                                          | Date       | Path |
+|---------|----------------------------------------------------------------------------------------------------|-------------------------------------------------|------------|------|
+| ADR-001 | Модель привилегий — разработчик vs оператор-дублёр                                                  | UNKNOWN                                         | —          | [decisions/ADR-001-privilege-model.md](../../decisions/ADR-001-privilege-model.md) |
+| ADR-002 | Telegram-бот — область применения                                                                   | UNKNOWN                                         | —          | [decisions/ADR-002-telegram-bot-scope.md](../../decisions/ADR-002-telegram-bot-scope.md) |
+| ADR-003 | Обучение модели — только разработчик/CTIO                                                            | UNKNOWN                                         | —          | [decisions/ADR-003-training-developer-only.md](../../decisions/ADR-003-training-developer-only.md) |
+| ADR-004 | Jube AGPLv3 — граница использования                                                                  | UNKNOWN                                         | —          | [decisions/ADR-004-jube-agplv3-boundary.md](../../decisions/ADR-004-jube-agplv3-boundary.md) |
+| ADR-005 | Marble Elastic License V2 — граница использования                                                    | UNKNOWN                                         | —          | [decisions/ADR-005-marble-elastic-v2.md](../../decisions/ADR-005-marble-elastic-v2.md) |
+| ADR-006 | EvidenceBundle — контракт доказательной базы                                                         | UNKNOWN                                         | —          | [decisions/ADR-006-evidence-bundle.md](../../decisions/ADR-006-evidence-bundle.md) |
+| ADR-007 | Scenario Registry Design — AMLTRIX Mapping Policy                                                    | Accepted                                        | —          | [decisions/ADR-007-scenario-registry-design.md](../../decisions/ADR-007-scenario-registry-design.md) |
+| ADR-008 | Jurisdiction label — preemptive UK tagging                                                           | UNKNOWN                                         | —          | [decisions/ADR-008-jurisdiction-label.md](../../decisions/ADR-008-jurisdiction-label.md) |
+| ADR-009 | OpenSanctions + Yente — primary sanctions/PEP source                                                 | UNKNOWN                                         | —          | [decisions/ADR-009-opensanctions-yente.md](../../decisions/ADR-009-opensanctions-yente.md) |
+| ADR-010 | AMLTRIX taxonomy — industry-standard scenario labelling                                              | UNKNOWN                                         | —          | [decisions/ADR-010-amltrix-taxonomy.md](../../decisions/ADR-010-amltrix-taxonomy.md) |
+| ADR-011 | Reference Architecture vs Operational Dependency                                                     | UNKNOWN                                         | —          | [decisions/ADR-011-reference-vs-dependency.md](../../decisions/ADR-011-reference-vs-dependency.md) |
+| ADR-012 | Compliance API Port Migration :8090 → :8093                                                          | ACCEPTED                                        | —          | [decisions/ADR-012-compliance-api-port-8093.md](../../decisions/ADR-012-compliance-api-port-8093.md) |
+| ADR-013 | Midaz CBS: PRIMARY Core Banking System                                                               | ACCEPTED                                        | —          | [decisions/ADR-013-midaz-cbs-primary.md](../../decisions/ADR-013-midaz-cbs-primary.md) |
+| ADR-014 | Composable Financial Stack — EMI Core Architecture                                                   | PROPOSED                                        | —          | [decisions/ADR-014-composable-financial-stack.md](../../decisions/ADR-014-composable-financial-stack.md) |
+| ADR-015 | Payment Processing Stack — Hyperswitch + Paymentology                                                | ACCEPTED                                        | 2026-04-13 | [decisions/ADR-015-payment-processing-stack.md](../../decisions/ADR-015-payment-processing-stack.md) |
+| ADR-016 | AI Plane and PII/AML Routing for EMI Stack                                                           | UNKNOWN                                         | —          | [decisions/ADR-016-ai-plane-pii-aml-routing.md](../../decisions/ADR-016-ai-plane-pii-aml-routing.md) |
+| ADR-017 | Keycloak IAM Cutover for EMI Realm `banxe-emi`                                                       | UNKNOWN                                         | —          | [decisions/ADR-017-keycloak-iam-cutover.md](../../decisions/ADR-017-keycloak-iam-cutover.md) |
+| ADR-018 | Hybrid 5-layer AI Compute Architecture (canonical target)                                            | ACCEPTED (canon, locked)                        | —          | [decisions/ADR-018-hybrid-5-layer-ai-compute.md](../../decisions/ADR-018-hybrid-5-layer-ai-compute.md) |
+| ADR-019 | AI Guardian Agent — two-family architecture compliance enforcement                                   | ACCEPTED (canon, locked)                        | —          | [decisions/ADR-019-ai-guardian-two-family.md](../../decisions/ADR-019-ai-guardian-two-family.md) |
+| ADR-020 | Memory governance — 100% utilization of MEMORY/LEDGER/GAP/CANON/HITL                                 | ACCEPTED (canon, locked)                        | —          | [decisions/ADR-020-memory-governance.md](../../decisions/ADR-020-memory-governance.md) |
+| ADR-022 | Guardian bootstrap baseline exception (one-time amendment to ADR-019 §6.1 F7)                        | ACCEPTED (one-time, scoped exception)           | —          | [decisions/ADR-022-guardian-bootstrap-baseline-exception.md](../../decisions/ADR-022-guardian-bootstrap-baseline-exception.md) |
+| ADR-024 | Guardian Bash Shim: Claude Code Pre-Command Enforcement                                              | UNKNOWN                                         | —          | [decisions/ADR-024-guardian-bash-shim.md](../../decisions/ADR-024-guardian-bash-shim.md) |
+| ADR-025 | Agent Interaction Canon                                                                              | UNKNOWN                                         | —          | [decisions/ADR-025-agent-interaction-canon.md](../../decisions/ADR-025-agent-interaction-canon.md) |
+| ADR-026 | Guardian Third Family — agent.bash                                                                   | UNKNOWN                                         | —          | [decisions/ADR-026-guardian-agent-bash-family.md](../../decisions/ADR-026-guardian-agent-bash-family.md) |
+| ADR-027 | Audit-Trail Durability Strategy                                                                      | Accepted (2026-05-06)                           | 2026-05-06 | [decisions/ADR-027-audit-trail-durability.md](../../decisions/ADR-027-audit-trail-durability.md) |
+| ADR-028 | KYC Re-verification Triggers                                                                         | Accepted (2026-05-09)                           | 2026-05-09 | [decisions/ADR-028-kyc-reverification-triggers.md](../../decisions/ADR-028-kyc-reverification-triggers.md) |
+| ADR-029 | PostgreSQL Backup Strategy                                                                           | Accepted (2026-05-10)                           | 2026-05-10 | [decisions/ADR-029-postgres-backup-strategy.md](../../decisions/ADR-029-postgres-backup-strategy.md) |
+| ADR-030 | Auth Surface Rate-Limit Policy                                                                       | Accepted (2026-05-12)                           | 2026-05-12 | [decisions/ADR-030-auth-rate-limit-policy.md](../../decisions/ADR-030-auth-rate-limit-policy.md) |
+| ADR-032 | Secret Rotation Policy (Interim)                                                                     | Proposed (2026-05-06)                           | 2026-05-06 | [decisions/ADR-032-secret-rotation-policy.md](../../decisions/ADR-032-secret-rotation-policy.md) |
+| ADR-033 | Alert Routing Strategy (Keycloak Auth Events)                                                        | Accepted (2026-05-11) — Option (a) n8n+Telegram | 2026-05-11 | [decisions/ADR-033-alert-routing-strategy.md](../../decisions/ADR-033-alert-routing-strategy.md) |
+| ADR-034 | Webhook Reliability Strategy (KYC / SumSub Inbound)                                                  | Accepted (2026-05-11) — Steps 1-4 merged        | 2026-05-11 | [decisions/ADR-034-webhook-reliability-kyc.md](../../decisions/ADR-034-webhook-reliability-kyc.md) |
+| ADR-035 | CI Smoke-Gate Policy                                                                                 | Accepted (2026-05-11) — 5 steps merged          | 2026-05-11 | [decisions/ADR-035-ci-smoke-gate-policy.md](../../decisions/ADR-035-ci-smoke-gate-policy.md) |
+| ADR-036 | FATF Travel Rule for crypto-asset transfers                                                          | Closed (2026-05-11) — deferred S21              | 2026-05-11 | [decisions/ADR-036-travel-rule.md](../../decisions/ADR-036-travel-rule.md) |
+| ADR-038 | Vault / Infisical Adoption (Placeholder)                                                             | Placeholder (2026-05-06)                        | 2026-05-06 | [decisions/ADR-038-vault-adoption-placeholder.md](../../decisions/ADR-038-vault-adoption-placeholder.md) |
+| ADR-074 | Stealth Addresses, Silent Payments & ZKP Identity for Ghost Mode                                     | PROPOSED                                        | —          | [decisions/ADR-074-stealth-and-silent-payments.md](../../decisions/ADR-074-stealth-and-silent-payments.md) |
+| ADR-075 | PayJoin & HD Privacy Score for Ghost Mode                                                            | PROPOSED                                        | —          | [decisions/ADR-075-payjoin-and-hd-privacy-score.md](../../decisions/ADR-075-payjoin-and-hd-privacy-score.md) |
+| ADR-076 | RAILGUN Integration Decision Gate                                                                    | PENDING LEGAL REVIEW                            | —          | [decisions/ADR-076-railgun-integration-decision-gate.md](../../decisions/ADR-076-railgun-integration-decision-gate.md) |
 
-## MISSING (gap analysis)
+## Real ADR files in `docs/adr/` (factory governance, 6 files)
 
-ADR numbers referenced elsewhere (project documentation, bank source repo
-`banxe-emi-stack/docs/adr/`, master-document, IL) but **without a body in this
-repository's `docs/adr/`**. To be backfilled in SD2 (factory canon side) and D3
-(project canon side). Titles are left blank to avoid fabrication.
+| Number  | Title                                                                                              | Status   | Date | Path |
+|---------|----------------------------------------------------------------------------------------------------|----------|------|------|
+| ADR-039 | Claude Code permissions reclassification                                                            | UNKNOWN  | —    | [./ADR-039-claude-code-permissions-reclassification.md](./ADR-039-claude-code-permissions-reclassification.md) |
+| ADR-040 | AI Execution Policy — Meta-Plane vs Inference-Plane                                                  | UNKNOWN  | —    | [./ADR-040-ai-execution-policy.md](./ADR-040-ai-execution-policy.md) |
+| ADR-041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                                                         | UNKNOWN  | —    | [./ADR-041-glm45-air-distributed.md](./ADR-041-glm45-air-distributed.md) |
+| ADR-042 | ufw Perimeter Posture per Host                                                                       | UNKNOWN  | —    | [./ADR-042-ufw-perimeter.md](./ADR-042-ufw-perimeter.md) |
+| ADR-043 | Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`                                              | UNKNOWN  | —    | [./ADR-043-aider-routes.md](./ADR-043-aider-routes.md) |
+| ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Proposed | —    | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
 
-| Number     | Title | Status  | Date | Path | Note                                                                |
-|------------|-------|---------|------|------|---------------------------------------------------------------------|
-| 001–026    | —     | MISSING | —    | —    | Range gap; to be backfilled in SD2 (factory canon) / D3 (project)   |
-| 028        | —     | MISSING | —    | —    | Referenced (KYC re-verification triggers, bank-side); to be backfilled in SD2 / D3 |
-| 029        | —     | MISSING | —    | —    | Referenced (Postgres backup strategy, bank-side); to be backfilled in SD2 / D3 |
-| 030        | —     | MISSING | —    | —    | Referenced (Auth rate-limit policy, bank-side); to be backfilled in SD2 / D3 |
-| 036        | —     | MISSING | —    | —    | Range gap; to be backfilled in SD2 (factory canon) / D3 (project)   |
-| 037        | —     | MISSING | —    | —    | Range gap; to be backfilled in SD2 (factory canon) / D3 (project)   |
-| 038        | —     | MISSING | —    | —    | Placeholder referenced from `../project/security/README.md`; to be backfilled in SD2 / D3 |
+## MISSING / unassigned ADR numbers
 
-> Note: ADRs 027, 029, 030, 032, 033, 034, 035 in the **bank source repo**
-> (`banxe-emi-stack/docs/adr/`) have distinct titles from the factory-side
-> ADRs of the same number in this canonical repo. The MISSING rows above
-> document the GAP in the canonical repo; they do not assert that the bank-side
-> ADRs are missing from their own repo.
+| Number(s)        | Status                                                                  |
+|------------------|-------------------------------------------------------------------------|
+| ADR-021          | UNASSIGNED — no file in either catalogue.                                |
+| ADR-023          | UNASSIGNED — no file in either catalogue.                                |
+| ADR-031          | UNASSIGNED — no file in either catalogue.                                |
+| ADR-037          | UNASSIGNED — free for next factory or product ADR.                       |
+| ADR-045..073     | UNASSIGNED block — 29 free numbers between docs/adr/ and Ghost-Mode set. |
+| ADR-077+         | UNASSIGNED — next free after ADR-076 (RAILGUN gate).                     |
 
-## Generator script
+Note: the brief listed the ADR-045..073 block as "28 free numbers"; the
+inclusive range 45..73 actually contains 29 numbers. Flagged here for the
+canon record; non-blocking.
 
-Reproducible enumeration script. Run from the repository root:
+## Parse failures (Status = UNKNOWN)
+
+20 ADRs do not carry a `**Status:**` line at the top of the file and are
+listed below for follow-up. Status was set to UNKNOWN; title and path were
+still parsed successfully.
+
+`decisions/` (15 files):
+- ADR-001 privilege-model
+- ADR-002 telegram-bot-scope
+- ADR-003 training-developer-only
+- ADR-004 jube-agplv3-boundary
+- ADR-005 marble-elastic-v2
+- ADR-006 evidence-bundle
+- ADR-008 jurisdiction-label
+- ADR-009 opensanctions-yente
+- ADR-010 amltrix-taxonomy
+- ADR-011 reference-vs-dependency
+- ADR-016 ai-plane-pii-aml-routing
+- ADR-017 keycloak-iam-cutover
+- ADR-024 guardian-bash-shim
+- ADR-025 agent-interaction-canon
+- ADR-026 guardian-agent-bash-family
+
+`docs/adr/` (5 files):
+- ADR-039 claude-code-permissions-reclassification
+- ADR-040 ai-execution-policy
+- ADR-041 glm45-air-distributed
+- ADR-042 ufw-perimeter
+- ADR-043 aider-routes
+
+Follow-up: backfill `**Status:**` lines in a later D3.2d sprint so the next
+index regeneration can populate these rows with real status values.
+
+## Cross-references
+
+Anchor citations from `docs/project/compliance/README.md`,
+`docs/project/security/README.md`, and other Layer-2 product-docs READMEs
+MUST reference the canonical catalogue:
+
+- `decisions/` for ADR-001..036, ADR-038, ADR-074..076.
+- `docs/adr/` for ADR-039..044.
+
+Specific anchors worth re-citing correctly:
+
+- **ADR-027 (audit-trail durability)** lives in `decisions/` at
+  [decisions/ADR-027-audit-trail-durability.md](../../decisions/ADR-027-audit-trail-durability.md).
+  The previously-colliding `docs/adr/ADR-027` (claude-code permissions)
+  was renumbered to **ADR-039** in Sprint D3.2d.1 and now lives at
+  [./ADR-039-claude-code-permissions-reclassification.md](./ADR-039-claude-code-permissions-reclassification.md).
+- **ADR-030 (Auth Surface Rate-Limit Policy)** Status: Accepted
+  (2026-05-12) per file body in
+  [decisions/ADR-030-auth-rate-limit-policy.md](../../decisions/ADR-030-auth-rate-limit-policy.md).
+  Implementation evidence: banxe-architecture PR #172 (c9de9fc).
+- **ADR-036 (FATF Travel Rule)** Status: Closed (2026-05-11) per
+  [decisions/ADR-036-travel-rule.md](../../decisions/ADR-036-travel-rule.md);
+  implementation deferred to Sprint S21 (Crypto Block).
+- **ADR-042 (ufw Perimeter Posture per Host)** is the new home of the
+  former docs/adr/ADR-033 (ufw perimeter) after the D3.2d.1 renumber;
+  `decisions/ADR-033-alert-routing-strategy.md` retains the alert-routing
+  scope.
+
+## Generator script (reproducibility)
+
+The two tables and the parse-failures list above are reproducible by the
+following shell snippet, run from the repo root:
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-cd docs/adr
-{
-  echo "| Number | Title | Status | Date | Path |"
-  echo "|--------|-------|--------|------|------|"
-  for f in ADR-*.md; do
-    [ -e "$f" ] || continue
-    num=$(echo "$f" | sed -E 's/^ADR-?0*([0-9]+).*/\1/' | awk '{printf "%03d", $1}')
-    title=$(awk '/^# /{sub(/^# +/, ""); sub(/^ADR-?[0-9]+[ —-]+/, ""); print; exit}' "$f")
-    if [ -z "$title" ]; then
-      title=$(awk -F': ' '/^title:/{print $2; exit}' "$f")
-    fi
-    status=$(awk -F'[: |]+' '
-      /^Status:/        {print $2; exit}
-      /^- Status:/      {print $3; exit}
-      /^\| Status \|/   {gsub(/^\| Status \| */, ""); gsub(/ *\|.*$/, ""); print; exit}
-      /^status:/        {print $2; exit}
-    ' "$f")
-    [ -z "$status" ] && status="UNKNOWN"
-    date=$(awk -F'[: |]+' '
-      /^Date:/          {print $2; exit}
-      /^\*\*Date:/      {gsub(/^\*\*Date:\*\* */, ""); print; exit}
-      /^\| Date \|/     {gsub(/^\| Date \| */, ""); gsub(/ *\|.*$/, ""); print; exit}
-      /^date:/          {print $2; exit}
-    ' "$f")
-    [ -z "$date" ] && date=$(git log -1 --format=%cI -- "$f" 2>/dev/null | cut -c1-10)
-    [ -z "$date" ] && date="—"
-    printf "| %s | %s | %s | %s | [\`%s\`](./%s) |\n" "$num" "$title" "$status" "$date" "$f" "$f"
-  done
+parse_one() {
+  local f="$1"
+  local num title status date_acc
+  num=$(basename "$f" | sed -E 's/^ADR-([0-9]+).*/\1/')
+  title=$(grep -m1 '^# ' "$f" | sed -E 's/^# +ADR-[0-9]+ *(—|–|:|-) *//; s/^# +//')
+  status=$(grep -m1 '^\*\*Status:\*\*' "$f" | sed -E 's/^\*\*Status:\*\* *//' || true)
+  date_acc=$(grep -m1 '^\*\*Date Accepted:\*\*' "$f" \
+             | sed -E 's/^\*\*Date Accepted:\*\* *//' || true)
+  [ -z "${status:-}" ] && status="UNKNOWN"
+  printf '%s|%s|%s|%s|%s\n' "$num" "$title" "$status" "${date_acc:-}" "$f"
 }
+echo '# decisions/'
+for f in $(ls -1 decisions/ADR-*.md | sort -t- -k2 -n); do parse_one "$f"; done
+echo '# docs/adr/'
+for f in $(ls -1 docs/adr/ADR-*.md | sort -t- -k2 -n); do parse_one "$f"; done
 ```
+
+The generator is informational only; this `INDEX.md` is hand-curated to
+preserve human-readable status normalisation and cross-reference notes.
+Re-running the generator may show drift from this index when ADR files
+gain new `**Status:**` lines; reconcile in the next D3.2d sub-sprint.
