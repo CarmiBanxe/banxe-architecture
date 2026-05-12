@@ -1,6 +1,8 @@
 # ADR-030 — Auth Surface Rate-Limit Policy
 
-**Status:** Proposed (2026-05-05)
+**Status:** Accepted (2026-05-12)
+**Date Accepted:** 2026-05-12
+**Implementation Evidence:** banxe-architecture PR #172 (c9de9fc) — G-API-01 + G-API-02 DONE in IL-ledger and GAP-REGISTER. Implementation chain in banxe-emi-stack: feat/adr-030-step1-rate-limiter-port + feat/adr-030-step2-auth-wiring + feat/adr-030-step3-rate-limit-smoke.
 **Author:** Architecture WG / Security Lead
 **Closes:** G-API-01 (no rate limiting on /auth/* endpoints), G-API-02 (rate-limit coverage tests absent), V-12 (HANDOFF-2026-05-04)
 **Linked:** ADR-017 (KC realm bruteForceProtected), ADR-027 (audit-trail durability — 429 event buffering), INVARIANTS I-32/I-33/I-34/I-35/I-36, MASTER-PLAN Track A4, OWASP ASVS 2.2.1, PSD2 RTS SCA Art.4
