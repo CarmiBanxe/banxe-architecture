@@ -7831,3 +7831,23 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   3. "Best-solution" principle is supreme: on every step, the tool/approach chosen MUST optimize correctness -> safety -> canon compliance (§0.1/§0.2/§0.3/§0.4, ADR-019, HITL-MATRIX) -> minimization of destructive risk -> speed. Where Claude Code and shell are equivalent, Claude Code is preferred; where shell is objectively better, switch to shell without losing canon.
 - Applicability: BINDING for all future sessions until explicitly revoked by operator.
 - Refs: operator directives in-session 2026-05-12 (terminals topology, execution rule, best-solution principle); IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12.
+
+### IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
+
+- Date: 2026-05-12 02:50 CEST
+- Phase (GSD): CANON — factory addendum (single output + canon placement)
+- Status: BINDING
+- Priority: P0
+- Artifact: docs/factory/FACTORY-CANON-ADDENDUM-2026-05-12.md (commit 7837a72)
+- Clause F-01 — Single Output Discipline (factory-wide, mandatory):
+  1. One assistant response = exactly one actionable artifact.
+  2. The artifact is either one shell command OR one Claude Code prompt, never both in the same response.
+  3. No parallel next-steps, no alternative command blocks, no chained "do this and then this" in the same output.
+  4. The next artifact is produced only after the result of the previous artifact is returned.
+  5. Factory/process rule; belongs to factory canon, not to bank/project canon.
+- Clause F-02 — Canon Placement Heuristic:
+  1. Rules about agents, terminals, prompts, shell discipline, output formatting, session transfer, memory limits, repo hygiene, worktree discipline, factory operating model -> factory canon.
+  2. Rules about bank product behavior, EMI compliance implementation, Keycloak, KYC/AML flows, ledger logic, safeguarding, FCA submission, production architecture, project delivery roadmap -> project canon.
+  3. On ambiguity: if the rule governs how the factory builds, it is factory canon by default.
+- Applicability: BINDING for Perplexity (Central), Terminal A, Terminal B; all future sessions until explicitly revoked.
+- Refs: docs/factory/FACTORY-CANON-ADDENDUM-2026-05-12.md; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12.
