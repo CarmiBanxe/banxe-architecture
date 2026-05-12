@@ -1,9 +1,25 @@
 # BANXE EMI Bank — Project Documentation Backlog (S12 → S25)
 
-**Status:** Sprint D1 baseline (initial publication)
+**Status:** Sprint D2 refresh
 **Owner:** CEO + CTIO (project documentation)
 **Created:** 2026-05-12
+**Last updated:** 2026-05-12 (Sprint D2)
 **Parent index:** [`PROJECT-DOCUMENTATION-MASTER-INDEX.md`](./PROJECT-DOCUMENTATION-MASTER-INDEX.md)
+
+### Status totals (post-Sprint D2 refresh)
+
+| Tag       | Count (D1 baseline) | Count (D2 refresh) | Delta D1 → D2  |
+|-----------|---------------------|--------------------|----------------|
+| DONE      | 11                  | 11                 |  0             |
+| PARTIAL   | 7                   | 35                 | +28            |
+| MISSING   | 60                  | 32                 | -28            |
+| BLOCKED   | 1                   | 1                  |  0             |
+| DEFERRED  | 2                   | 2                  |  0             |
+| **Total** | **81**              | **81**             |                |
+
+D2 delta: 28 rows moved MISSING → PARTIAL via the 8 domain skeletons +
+`docs/adr/INDEX.md` landed in Sprint D2. Each flipped row carries an inline
+`(D2 skeleton @ ...)` annotation pointing at the skeleton that scaffolds it.
 
 ---
 
@@ -49,9 +65,9 @@ authoritative target list. Confirm domain owners.
 |-----------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | go-live readiness     | Project documentation master index                                | `docs/project/PROJECT-DOCUMENTATION-MASTER-INDEX.md`                     | DONE     |
 | go-live readiness     | Sprint backlog S12–S25                                            | `docs/project/PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md`                  | DONE     |
-| architecture          | Architecture freeze note (production candidate scope)             | `docs/project/architecture/architecture-freeze-S12.md`                   | MISSING  |
+| architecture          | Architecture freeze note (production candidate scope)             | `docs/project/architecture/architecture-freeze-S12.md`                   | PARTIAL (D2 skeleton @ `docs/project/architecture/README.md`) |
 | architecture          | Master architecture (existing)                                    | `docs/master-document/01-master-full.md`                                 | PARTIAL  |
-| architecture          | ADR coverage map (which ADRs cover which subsystems)              | `docs/project/architecture/adr-coverage-map.md`                          | MISSING  |
+| architecture          | ADR coverage map (which ADRs cover which subsystems)              | `docs/project/architecture/adr-coverage-map.md`                          | PARTIAL (D2 skeleton @ `docs/project/architecture/README.md`) |
 | infrastructure        | Hardware inventory (existing)                                     | `docs/canon/HW-MODEL-UPGRADE-matrix.md`                                  | PARTIAL  |
 | infrastructure        | Production network topology + VPN/Tailscale diagram                | `docs/project/infrastructure/production-topology.md`                     | MISSING  |
 | IAM/security          | Privilege model (existing)                                        | `PRIVILEGE-MODEL.md`                                                     | DONE     |
@@ -65,13 +81,13 @@ pack. Cross-reference accepted ADRs.
 
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
-| compliance/regulatory   | AML programme SOP                                                 | `docs/project/compliance/aml-programme-sop.md`                           | MISSING  |
+| compliance/regulatory   | AML programme SOP                                                 | `docs/project/compliance/aml-programme-sop.md`                           | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 | compliance/regulatory   | KYC / KYB onboarding SOP                                          | `docs/project/compliance/kyc-kyb-onboarding-sop.md`                      | PARTIAL  |
 | compliance/regulatory   | Sanctions screening policy (existing root)                        | `SANCTIONS-POLICY.md`                                                    | PARTIAL  |
-| compliance/regulatory   | FCA SYSC 15A operational resilience plan                          | `docs/project/compliance/sysc-15a-operational-resilience.md`             | MISSING  |
-| compliance/regulatory   | MLR 2017 Reg 27/28 evidence map                                   | `docs/project/compliance/mlr-2017-evidence-map.md`                       | MISSING  |
+| compliance/regulatory   | FCA SYSC 15A operational resilience plan                          | `docs/project/compliance/sysc-15a-operational-resilience.md`             | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
+| compliance/regulatory   | MLR 2017 Reg 27/28 evidence map                                   | `docs/project/compliance/mlr-2017-evidence-map.md`                       | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 | compliance/regulatory   | HITL gates registry (existing partial)                            | `docs/policies/hitl-l3-agent-gate-2026-05-11.md`                         | PARTIAL  |
-| go-live readiness       | Compliance pack v1 review checklist                               | `docs/project/compliance/compliance-pack-v1-review-checklist.md`         | MISSING  |
+| go-live readiness       | Compliance pack v1 review checklist                               | `docs/project/compliance/compliance-pack-v1-review-checklist.md`         | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 
 ---
 
@@ -83,9 +99,9 @@ testimony pack.
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | architecture            | ADR-027 reference (existing)                                      | `docs/adr/ADR-027-audit-trail-durability.md`                             | DONE     |
-| operations/runbooks     | Audit-buffer drain runbook                                        | `docs/project/operations/audit-buffer-drain-runbook.md`                  | MISSING  |
-| operations/runbooks     | ClickHouse outage response runbook                                | `docs/project/operations/clickhouse-outage-response.md`                  | MISSING  |
-| compliance/regulatory   | CASS 15 §15.10 evidence dossier                                   | `docs/project/compliance/cass-15-15-10-evidence.md`                      | MISSING  |
+| operations/runbooks     | Audit-buffer drain runbook                                        | `docs/project/operations/audit-buffer-drain-runbook.md`                  | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | ClickHouse outage response runbook                                | `docs/project/operations/clickhouse-outage-response.md`                  | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| compliance/regulatory   | CASS 15 §15.10 evidence dossier                                   | `docs/project/compliance/cass-15-15-10-evidence.md`                      | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 | testing/QA              | E2E audit-trail coverage report (links to G-CASS-02 tests)         | `docs/project/testing/audit-trail-coverage-report.md`                    | MISSING  |
 | data governance         | Audit-trail retention + erasure policy                            | `docs/project/data-governance/audit-trail-retention.md`                  | MISSING  |
 
@@ -98,10 +114,10 @@ testimony pack.
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | architecture            | ADR-034 reference (existing)                                      | `docs/adr/ADR-034-webhook-reliability-kyc.md`                            | DONE     |
-| operations/runbooks     | SumSub webhook ops runbook (HMAC, replay, DLQ drain)              | `docs/project/operations/sumsub-webhook-runbook.md`                      | MISSING  |
+| operations/runbooks     | SumSub webhook ops runbook (HMAC, replay, DLQ drain)              | `docs/project/operations/sumsub-webhook-runbook.md`                      | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
 | IAM/security            | SumSub credential rotation procedure                              | `docs/project/iam-security/sumsub-credential-rotation.md`                | MISSING  |
 | testing/QA              | Webhook signature + idempotency test catalogue (G-KYC-04 link)    | `docs/project/testing/webhook-signature-idempotency-tests.md`            | MISSING  |
-| compliance/regulatory   | KYC FSM transitions evidence map                                  | `docs/project/compliance/kyc-fsm-transitions-evidence.md`                | MISSING  |
+| compliance/regulatory   | KYC FSM transitions evidence map                                  | `docs/project/compliance/kyc-fsm-transitions-evidence.md`                | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 
 ---
 
@@ -112,9 +128,9 @@ testimony pack.
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | architecture            | ADR-033 reference (existing)                                      | `docs/adr/ADR-033-alert-routing-strategy.md`                             | DONE     |
-| operations/runbooks     | Alert on-call playbook (KC auth + safeguarding + admin events)    | `docs/project/operations/alert-on-call-playbook.md`                      | MISSING  |
-| operations/runbooks     | n8n + Telegram pipeline ops runbook                               | `docs/project/operations/n8n-telegram-pipeline.md`                       | MISSING  |
-| operations/runbooks     | Alert severity + ownership matrix                                 | `docs/project/operations/alert-severity-ownership-matrix.md`             | MISSING  |
+| operations/runbooks     | Alert on-call playbook (KC auth + safeguarding + admin events)    | `docs/project/operations/alert-on-call-playbook.md`                      | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | n8n + Telegram pipeline ops runbook                               | `docs/project/operations/n8n-telegram-pipeline.md`                       | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | Alert severity + ownership matrix                                 | `docs/project/operations/alert-severity-ownership-matrix.md`             | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
 | testing/QA              | Alert coverage smoke test catalogue (G-OBS-02 link)               | `docs/project/testing/alert-coverage-smoke-tests.md`                     | MISSING  |
 
 ---
@@ -130,7 +146,7 @@ testimony pack.
 | IAM/security            | Keycloak realm + client documentation                             | `docs/project/iam-security/keycloak-realm-client-doc.md`                 | MISSING  |
 | IAM/security            | BYOK / KMS policy                                                 | `docs/project/iam-security/byok-kms-policy.md`                           | MISSING  |
 | IAM/security            | Privilege model (existing)                                        | `PRIVILEGE-MODEL.md`                                                     | DONE     |
-| compliance/regulatory   | Secrets-in-CI scan policy (gitleaks coverage doc)                 | `docs/project/compliance/secrets-in-ci-scan-policy.md`                   | MISSING  |
+| compliance/regulatory   | Secrets-in-CI scan policy (gitleaks coverage doc)                 | `docs/project/compliance/secrets-in-ci-scan-policy.md`                   | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 | IAM/security            | Long-term Vault / Infisical adoption (G-SEC-02)                   | `docs/project/iam-security/vault-adoption-plan.md`                       | DEFERRED |
 
 > DEFERRED anchor: G-SEC-02 stays OPEN per `INSTRUCTION-LEDGER.md`
@@ -145,9 +161,9 @@ testimony pack.
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | architecture            | ADR-029 reference (existing)                                      | `docs/adr/ADR-029-postgres-backup-strategy.md`                           | DONE     |
-| operations/runbooks     | Backup chain runbook (pgbackrest / WAL-G / cron)                  | `docs/project/operations/postgres-backup-runbook.md`                     | MISSING  |
-| operations/runbooks     | Restore drill runbook + cadence                                   | `docs/project/operations/postgres-restore-drill-runbook.md`              | MISSING  |
-| operations/runbooks     | Offsite upload verification procedure                             | `docs/project/operations/postgres-offsite-verification.md`               | MISSING  |
+| operations/runbooks     | Backup chain runbook (pgbackrest / WAL-G / cron)                  | `docs/project/operations/postgres-backup-runbook.md`                     | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | Restore drill runbook + cadence                                   | `docs/project/operations/postgres-restore-drill-runbook.md`              | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | Offsite upload verification procedure                             | `docs/project/operations/postgres-offsite-verification.md`               | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
 | go-live readiness       | RPO / RTO targets + measured baseline                             | `docs/project/go-live/postgres-rpo-rto-baseline.md`                      | MISSING  |
 | testing/QA              | Backup chain smoke test catalogue                                 | `docs/project/testing/backup-chain-smoke-tests.md`                       | MISSING  |
 
@@ -161,8 +177,8 @@ testimony pack.
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | architecture            | ADR-030 reference (existing)                                      | `docs/adr/ADR-030-auth-rate-limit-policy.md`                             | DONE     |
 | IAM/security            | Rate-limit configuration matrix (per route, per identity tier)    | `docs/project/iam-security/rate-limit-configuration-matrix.md`           | MISSING  |
-| operations/runbooks     | 429 incident response runbook                                     | `docs/project/operations/429-incident-response.md`                       | MISSING  |
-| compliance/regulatory   | Brute-force / abuse escalation policy                             | `docs/project/compliance/abuse-escalation-policy.md`                     | MISSING  |
+| operations/runbooks     | 429 incident response runbook                                     | `docs/project/operations/429-incident-response.md`                       | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| compliance/regulatory   | Brute-force / abuse escalation policy                             | `docs/project/compliance/abuse-escalation-policy.md`                     | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 | testing/QA              | Rate-limit smoke test catalogue                                   | `docs/project/testing/rate-limit-smoke-tests.md`                         | MISSING  |
 
 ---
@@ -174,8 +190,8 @@ testimony pack.
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | architecture            | ADR-035 reference (existing)                                      | `docs/adr/ADR-035-ci-smoke-gate-policy.md`                               | DONE     |
-| operations/runbooks     | Branch-protection + required-checks contract                      | `docs/project/operations/branch-protection-contract.md`                  | MISSING  |
-| operations/runbooks     | Release checklist (sandbox → production candidate)                | `docs/project/operations/release-checklist.md`                           | MISSING  |
+| operations/runbooks     | Branch-protection + required-checks contract                      | `docs/project/operations/branch-protection-contract.md`                  | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | Release checklist (sandbox → production candidate)                | `docs/project/operations/release-checklist.md`                           | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
 | testing/QA              | Smoke-gate full-tier promotion plan (G-CI-02 full-tier)           | `docs/project/testing/smoke-gate-full-tier-promotion.md`                 | DEFERRED |
 
 > DEFERRED anchor: G-CI-02 full-tier enforcement deferred to Phase 9 per
@@ -223,9 +239,9 @@ playbook and incident-response procedure.
 
 | Domain                  | Deliverable                                                       | Target path                                                              | Status   |
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
-| operations/runbooks     | Runbook library index (consolidates `docs/runbooks/`)             | `docs/project/operations/runbook-library-index.md`                       | MISSING  |
-| operations/runbooks     | On-call playbook (rotations, escalation, comms)                   | `docs/project/operations/on-call-playbook.md`                            | MISSING  |
-| operations/runbooks     | Incident response procedure                                       | `docs/project/operations/incident-response-procedure.md`                 | MISSING  |
+| operations/runbooks     | Runbook library index (consolidates `docs/runbooks/`)             | `docs/project/operations/runbook-library-index.md`                       | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | On-call playbook (rotations, escalation, comms)                   | `docs/project/operations/on-call-playbook.md`                            | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
+| operations/runbooks     | Incident response procedure                                       | `docs/project/operations/incident-response-procedure.md`                 | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
 | operations/runbooks     | HITL decision recording (existing)                                | `docs/runbooks/hitl-decision-recording.md`                               | PARTIAL  |
 | go-live readiness       | Runbook completeness checklist (per service)                      | `docs/project/go-live/runbook-completeness-checklist.md`                 | MISSING  |
 
@@ -242,7 +258,7 @@ playbook and incident-response procedure.
 | go-live readiness       | DPO sign-off checklist                                            | `docs/project/go-live/dpo-signoff-checklist.md`                          | MISSING  |
 | go-live readiness       | Legal sign-off checklist                                          | `docs/project/go-live/legal-signoff-checklist.md`                        | MISSING  |
 | go-live readiness       | CCO sign-off checklist                                            | `docs/project/go-live/cco-signoff-checklist.md`                          | MISSING  |
-| compliance/regulatory   | Open-items register (everything still PARTIAL/BLOCKED at S24)     | `docs/project/compliance/open-items-register.md`                         | MISSING  |
+| compliance/regulatory   | Open-items register (everything still PARTIAL/BLOCKED at S24)     | `docs/project/compliance/open-items-register.md`                         | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
 
 ---
 
@@ -254,8 +270,8 @@ playbook and incident-response procedure.
 |-------------------------|-------------------------------------------------------------------|--------------------------------------------------------------------------|----------|
 | go-live readiness       | Business Continuity Plan (BCP)                                    | `docs/project/go-live/business-continuity-plan.md`                       | MISSING  |
 | go-live readiness       | Disaster Recovery (DR) plan                                       | `docs/project/go-live/disaster-recovery-plan.md`                         | MISSING  |
-| compliance/regulatory   | Regulator-notification SOP (FCA, ICO, ECB-relevant)               | `docs/project/compliance/regulator-notification-sop.md`                  | MISSING  |
-| operations/runbooks     | Post-go-live operations handover dossier                          | `docs/project/operations/post-go-live-handover.md`                       | MISSING  |
+| compliance/regulatory   | Regulator-notification SOP (FCA, ICO, ECB-relevant)               | `docs/project/compliance/regulator-notification-sop.md`                  | PARTIAL (D2 skeleton @ `docs/project/compliance/README.md`) |
+| operations/runbooks     | Post-go-live operations handover dossier                          | `docs/project/operations/post-go-live-handover.md`                       | PARTIAL (D2 skeleton @ `docs/project/operations/README.md`) |
 | go-live readiness       | Day-1 / Day-7 / Day-30 review playbooks                           | `docs/project/go-live/post-go-live-review-playbooks.md`                  | MISSING  |
 | go-live readiness       | Sign-off ledger (final)                                           | `docs/project/go-live/sign-off-ledger.md`                                | MISSING  |
 
@@ -285,6 +301,7 @@ A sprint S-N is considered done when **all** of the following hold:
 
 ## Change log
 
-| Date       | Change                                                          | Sprint |
-|------------|-----------------------------------------------------------------|--------|
-| 2026-05-12 | Sprint D1 — initial publication of S12-S25 backlog              | D1     |
+| Date       | Change                                                                                                                | Sprint |
+|------------|-----------------------------------------------------------------------------------------------------------------------|--------|
+| 2026-05-12 | Sprint D1 — initial publication of S12-S25 backlog                                                                    | D1     |
+| 2026-05-12 | Sprint D2 — 8 domain skeletons + `docs/adr/INDEX.md` landed; 28 MISSING → PARTIAL via D2 skeleton scaffolding; status totals refreshed | D2     |

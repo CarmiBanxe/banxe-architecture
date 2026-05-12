@@ -1,8 +1,9 @@
 # BANXE EMI Bank — Project Documentation Master Index
 
-**Status:** Sprint D1 baseline (initial publication)
+**Status:** Sprint D2 refresh (8 domain skeletons + ADR INDEX.md landed)
 **Owner:** CEO + CTIO (project documentation)
 **Created:** 2026-05-12
+**Last updated:** 2026-05-12 (Sprint D2)
 **Programme horizon:** Sprint S12 → Sprint S25 (per [`PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md`](./PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md))
 
 ---
@@ -80,22 +81,25 @@ Every deliverable in this index and in the backlog is tagged with exactly one st
 | BLOCKED   | Authoring blocked on an external dependency (operator, MLRO, vendor contract).  |
 | DEFERRED  | Explicitly postponed past go-live. Carries an IL anchor justifying deferral.    |
 
-## 5. Domain coverage table (Sprint D1 baseline)
+## 5. Domain coverage table (Sprint D2 refresh)
 
 The eight domains form the rows; the columns show what already exists in the repository
-versus what is required by the S12–S25 backlog. Statuses reflect Sprint D1 baseline
-publication on 2026-05-12 and will be re-asserted at the close of each sprint.
+versus what is required by the S12–S25 backlog. Sprint D2 (2026-05-12) landed one
+minimum-viable skeleton per domain plus the ADR INDEX.md; every domain row now shows
+`SKELETON (D2)` and carries a link to its new README. The 4-rule Definition of Done
+(§3) and the 5-tag status legend (§4) are unchanged. Status will be re-asserted at
+each subsequent sprint close.
 
-| Domain                       | Existing artifacts (samples)                                                                                       | Sprint D1 status |
-|------------------------------|--------------------------------------------------------------------------------------------------------------------|------------------|
-| Architecture                 | `docs/master-document/01-master-full.md`, `docs/adr/` (ADR-027/028/029/030/032/033/034/035), `docs/PLANES.md`      | PARTIAL          |
-| Infrastructure               | `docs/canon/HW-MODEL-UPGRADE-matrix.md`, `docs/runbooks/legion-do-not-do.md`, partial topology in master-document  | PARTIAL          |
-| IAM / Security               | `PRIVILEGE-MODEL.md`, `INVARIANTS.md`, ADR-030 (rate-limit), ADR-032 (secret rotation)                             | PARTIAL          |
-| Compliance / Regulatory      | `COMPLIANCE-ARCH.md`, `SANCTIONS-POLICY.md`, `docs/compliance/`, `docs/policies/`, GAP-REGISTER (factory mirror)   | PARTIAL          |
-| Operations / Runbooks        | `docs/runbooks/`, `docs/ops/`, `docs/runbooks/hitl-decision-recording.md`                                          | PARTIAL          |
-| Testing / QA                 | (Test strategy doc not yet under `docs/project/`)                                                                   | MISSING          |
-| Data governance              | `docs/privacy/`, `docs/governance/`, `docs/compliance/ai-data-flow.md`                                             | PARTIAL          |
-| Go-live readiness            | (No consolidated go-live dossier yet — assembled in S24/S25)                                                        | MISSING          |
+| Domain                       | Domain skeleton (D2)                                          | Existing artifacts (samples)                                                                                       | Sprint D2 status |
+|------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|------------------|
+| Architecture                 | [`architecture/README.md`](./architecture/README.md)          | `docs/master-document/01-master-full.md`, `docs/adr/INDEX.md`, `docs/PLANES.md`                                    | SKELETON (D2)    |
+| API                          | [`api/README.md`](./api/README.md)                            | `SERVICE-MAP.md`, `PRIVILEGE-MODEL.md`; bank-side API in `banxe-emi-stack/api/`                                    | SKELETON (D2)    |
+| Runbooks                     | [`runbooks/README.md`](./runbooks/README.md)                  | `docs/runbooks/` (full directory), `docs/ops/phase-f-execution-2026-05-06.md`                                      | SKELETON (D2)    |
+| Compliance / Regulatory      | [`compliance/README.md`](./compliance/README.md)              | `COMPLIANCE-ARCH.md`, `SANCTIONS-POLICY.md`, `docs/compliance/ai-data-flow.md`, `docs/policies/`, `GAP-REGISTER.md` | SKELETON (D2)    |
+| Security                     | [`security/README.md`](./security/README.md)                  | `PRIVILEGE-MODEL.md`, `INVARIANTS.md`, ADR-033 ufw, `docs/policies/ACCESS-AND-SECRETS.md`                          | SKELETON (D2)    |
+| Data Governance              | [`data/README.md`](./data/README.md)                          | `docs/privacy/`, `docs/governance/branch-protection.md`, `docs/compliance/ai-data-flow.md`                         | SKELETON (D2)    |
+| Operations                   | [`operations/README.md`](./operations/README.md)              | `docs/runbooks/hitl-decision-recording.md`, `docs/ops/`, `docs/policies/hitl-l3-agent-gate-2026-05-11.md`          | SKELETON (D2)    |
+| Governance                   | [`governance/README.md`](./governance/README.md)              | `docs/governance/branch-protection.md`, `INSTRUCTION-LEDGER.md`, `MASTER-PLAN-2026-05-05.md`                       | SKELETON (D2)    |
 
 PARTIAL entries are unpacked deliverable-by-deliverable in the [backlog](./PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md).
 
@@ -146,8 +150,9 @@ A new or revised project-documentation deliverable is published when:
 3. Status row updated in the backlog (`PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md`).
 4. Linked from this index if it is a top-level deliverable.
 
-## 9. Change log
+## 9. Change log / Sprint history
 
-| Date       | Change                                                          | Sprint |
-|------------|-----------------------------------------------------------------|--------|
-| 2026-05-12 | Sprint D1 — initial publication of master index + S12-S25 backlog | D1     |
+| Date       | Change                                                                                                                | Sprint |
+|------------|-----------------------------------------------------------------------------------------------------------------------|--------|
+| 2026-05-12 | Sprint D1 — initial publication of master index + S12-S25 backlog                                                     | D1     |
+| 2026-05-12 | Sprint D2 — 8 domain skeletons + `docs/adr/INDEX.md` landed; domain table refreshed to SKELETON (D2) status            | D2     |
