@@ -7813,3 +7813,21 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12: permission set sized to required scope of Layer 1 (factory-*) and Layer 2 (banxe-*) documentation work.
   - ADR-027 (Claude Code permissions reclassification): this IL entry will be referenced in a follow-up ADR-027 update.
 - Refs: ~/.claude/settings.json (local, out-of-git); ~/.claude/settings.json.bak-20260512-023245.
+
+### IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12
+
+- Date: 2026-05-12 02:42 CEST
+- Phase (GSD): CANON — factory terminals topology + execution rule
+- Status: BINDING
+- Priority: P0
+- Decision A — Factory terminals topology:
+  1. Central terminal = Perplexity (this assistant) — main production line for 100% of EMI BANXE AI BANK project; dispatcher and arbiter for terminals A and B; integrates results into the canonical pipeline S12-S25 and SD1-SD8.
+  2. Terminal A (left) = innovation sandbox — used to prototype new features and integrations before they enter the canonical pipeline; outputs must be reviewed by Central before merging into canonical branches.
+  3. Terminal B (right) = parallel executor — receives autonomous, non-conflicting work packages from Central to accelerate delivery; isolation guaranteed by at least one of: separate repo, separate branch, non-overlapping GAP scope, non-overlapping files/modules/services, non-overlapping ports/instances.
+  4. Direct merge from A into main is prohibited; A -> Central review -> canonical branch only.
+- Decision B — Execution rule:
+  1. Primary execution surface = Claude Code (Claude Code subscription active).
+  2. Secondary execution surface = shell terminal, used for: diagnostics, destructive ops under operator directive, git push/PR/merge/tag, and any task where shell is objectively the best tool.
+  3. "Best-solution" principle is supreme: on every step, the tool/approach chosen MUST optimize correctness -> safety -> canon compliance (§0.1/§0.2/§0.3/§0.4, ADR-019, HITL-MATRIX) -> minimization of destructive risk -> speed. Where Claude Code and shell are equivalent, Claude Code is preferred; where shell is objectively better, switch to shell without losing canon.
+- Applicability: BINDING for all future sessions until explicitly revoked by operator.
+- Refs: operator directives in-session 2026-05-12 (terminals topology, execution rule, best-solution principle); IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12.
