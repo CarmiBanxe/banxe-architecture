@@ -7917,3 +7917,20 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
   IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
   IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
+
+### IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+
+- Date: 2026-05-12 10:25 CEST
+- Phase (GSD): CANON — explicit target (terminal + cwd) for every shell artifact issued by Central
+- Status: BINDING
+- Priority: P0
+- Decision: Every shell artifact issued by Central (Perplexity) MUST be prefixed by an explicit "TARGET" header stating:
+  1. Which terminal to paste it into (Central / Terminal A / Terminal B / Claude Code in repo X).
+  2. Which working directory the command expects (absolute path).
+  3. Whether the command itself performs cd to that directory (so the operator can paste from any cwd) or requires the operator to be already there.
+- Rationale: operator has multiple shells open across multiple repos and worktrees (banxe-architecture, factory, factory/banxe-repo-template, banxe-* clones, ~/banxe/, ~/banxe-*). Past artifacts caused breakage because they were pasted into the wrong terminal or wrong cwd (e.g. ~/factory vs ~/banxe-architecture).
+- Format requirement (mandatory): every Central-issued shell artifact must begin with a one- or two-line TARGET block before the fenced command, e.g.:
+  TARGET terminal: Legion shell (Central)
+  TARGET cwd: /home/mmber/banxe-architecture (command performs cd)
+- Applicability: BINDING for Perplexity Central in all future sessions until explicitly revoked. Does not apply to Terminal B prompts (those are Claude Code prompts, not shell commands).
+- Refs: IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (Clause F-01 single output); IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12.
