@@ -7708,3 +7708,81 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 
 - Two-loop mirrors total: 35 (29 prior + 6 this commit). All merged emi-stack production PRs mirrored.
 - Anchors: PR #168 CORE PRINCIPLE two-loop sync + ADR-029/030/032/034.
+
+### IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11
+
+- Date: 2026-05-11 20:00 CEST
+- Phase (GSD): CANON — Sprints S12-S25 roadmap approved + fixated as binding
+- Status: BINDING — operator directive 2026-05-11 20:00 CEST "утвердить план, зафиксировать, уточнить роад мап и разделить на спринты"
+- Priority: P0 (governance + roadmap — binding for Perplexity + Factory + Operator)
+- Scope: 14 sprints S12-S25 covering 35 open GAPs + Tracks B/F/H/I closure + §0.2 Levels 1-5 implementation + Crypto Block + Multi-agent Comms + QA + FCA submission + go-live.
+
+- Sprint plan summary:
+  S12: KC IAM Track B (6 G-IAM GAPs, Phase F+G)
+  S13: Factory infra cleanup (8 GAPs: model dedup 95 GiB + LiteLLM systemd + legacy kill + ROCm + auditor path + gitignore + port collision + Legion KC Java)
+  S14: Guardian + governance (5 GAPs: ClickHouse verify + ENFORCE rollout + webhook + agent placement + gateway bypass)
+  S15: Security residual (5 GAPs: user classification V8 + Legion key + parent tracker + FCA notification + historical leaks)
+  S16: Operational infra (4 GAPs: Livebox router + CI workflows + Redis gate + safeguarding recon)
+  S17: §0.2 Levels 1-2 verification (reformulated Option A human doubles allowed)
+  S18: §0.2 Levels 3-5 (SMF Heads AI duplicates + CEO dashboard + AI MLRO Option B + openclo-moa + Factory overseer §0.4)
+  S19: Sandbox 100% verification (Phase F6 — COMPLIANCE-MATRIX 80%+ + G-SEC-02 Vault + AMLR review)
+  S20: External blockers Track I (7 API keys real + MLRO real + Board + Internal Audit)
+  S21: Crypto Block Phase 7 (ADR-036 Travel Rule + Neuronext + TomPay + Crypto AML)
+  S22: Multi-agent Comms Phase 8 (dashboard + Telegram bot + FCA Section 4 + MI report)
+  S23: QA + Production Ready Phase 9 (E2E + regression + compliance playbooks + load testing)
+  S24: FCA Submission Phase 10.1 (RegData + safeguarding evidence + MLRO report + business plan)
+  S25: Go-Live Phase 10.2 (customer data migration + live operations + post-launch monitoring)
+
+- Critical path: S12-S15 (2-3 weeks parallel) → S16-S19 (2-3 weeks) → S20 (2-6 weeks) → S21-S23 (4-6 weeks parallel) → S24-S25 (6-12 weeks FCA)
+- Estimated total to go-live: 4-6 months
+
+- MASTER-PLAN baseline at approval: 5/9 Tracks FULLY CLOSED (A+C+D+E+G) + F PARTIALLY + B/H/I OPEN. 35 open / 96 closed GAPs. 35 two-loop mirrors.
+- Anchors: MASTER-PLAN-2026-05-05 + all session PRs #146-#214 + operator directive 2026-05-11 20:00 CEST.
+
+### IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+
+- Date: 2026-05-12 02:26 CEST
+- Phase (GSD): CANON — persistence rule for all future sessions
+- Status: BINDING
+- Priority: P0
+- Decision: Perplexity session memory is ephemeral and non-sufficient as a durable control plane.
+- Mandatory rule:
+  1. Every canon decision, operator directive, binding roadmap change, workflow invariant, or standing rule accepted in-session MUST be fixated in-repo within the same session via shell command.
+  2. Minimum fixation target: INSTRUCTION-LEDGER.md; if applicable also ROADMAP.md, SESSION-CANON file, ADR, runbook, or other canon artifact.
+  3. A decision is not considered durably adopted until shell fixation is executed and committed to git.
+  4. Perplexity must therefore always provide a shell command for fixation when a new binding canon rule is accepted.
+  5. This rule is standing and applies to all future sessions unless explicitly revoked by operator.
+- Rationale: chat/session memory alone is not durable enough; canon must survive session boundaries and be reconstructible from repository history.
+- Refs: operator instruction in-session 2026-05-12; prior roadmap fixation IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11.
+
+
+### IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+
+- Date: 2026-05-12 02:30 CEST
+- Phase (GSD): CANON — documentation as mandatory canon, two-layer separation
+- Status: BINDING
+- Priority: P0
+- Decision: Documentation is a mandatory canon artifact for every code artifact.
+- Mandatory rules:
+  1. No code artifact (module, service, ADR implementation, migration, agent, script) is considered "done" until its documentation is produced and committed.
+  2. Documentation is split into two physically separated layers:
+     - Layer 1 — Factory Docs: §0.1/§0.2/§0.3/§0.4 canon, factory ADRs, INSTRUCTION-LEDGER, HITL-MATRIX, GAP-REGISTRY, COMPLIANCE-MATRIX-FACTORY, factory runbooks, agent passports, auditor spec, Guardian rules, terminals topology (Central/A/B), openclo-moa, Factory overseer §0.4.
+     - Layer 2 — Product Docs (EMI BANXE AI BANK): per-repo README, architecture (C4), API specs (OpenAPI/AsyncAPI), product ADRs, runbooks, compliance (FCA SUP/CASS/SYSC, GDPR Art.30 RoPA, AML/CTF, safeguarding), security (threat model, secrets, Vault status), data (models, retention, lineage), CHANGELOG, inline docstrings/JSDoc.
+  3. Repositories are strictly separated:
+     - Factory repos: prefix factory-* (e.g. factory-canon, factory-guardian, factory-agents, factory-auditor, factory-runbooks, factory-overseer).
+     - Product repos: prefix banxe-* (banxe-architecture, banxe-platform, banxe-payment-core, banxe-infra, banxe-emi-stack, ...).
+     - Mixing factory canon into banxe-* or product runbooks/API into factory-* is prohibited; cross-links only via explicit anchors (PR/ADR/IL refs).
+  4. Pre-commit auditor gains BLOCK 13 "doc-coverage": no commit of new/changed code without accompanying doc artifact (docstring/TSDoc, ADR-ref, runbook-ref) or explicit "# doc-debt: <ADR-ref>" recorded in GAP-REGISTRY.
+  5. Guardian ENFORCE extended to verify doc-coverage on PR events.
+- Roadmap (parallel to S12-S25):
+  SD1: Bootstrap two-layer separation — create factory-canon repo, migrate §0.x + factory ADRs + HITL-MATRIX + factory runbooks out of banxe-architecture. (2-3 days)
+  SD2: Restore missing canonical files — CANON.md + SECTION-0-1..0-4, GAP-REGISTRY.md, COMPLIANCE-MATRIX-FACTORY/PRODUCT, backfill missing factory ADRs (001..026, 028..030, 036..038). (2 days)
+  SD3: Pre-commit auditor BLOCK 13 doc-coverage rollout across all repos. (2 days)
+  SD4: Auto-generation — OpenAPI → Markdown, ADR-index generator, CHANGELOG from conventional commits, C4 diagrams via Structurizr. (3-4 days)
+  SD5: Guardian doc-webhook + ClickHouse doc-audit trail. (2 days)
+  SD6: Product docs per-repo bootstrap — README, architecture, API, ADR, runbooks, compliance, security, data, CHANGELOG. (3-5 days)
+  SD7: Compliance evidence pack auto-assembly — FCA SUP/CASS/SYSC, GDPR Art.30 RoPA, AML/CTF, safeguarding. (3 days)
+  SD8: Two-layer separation verification — audit that no factory canon leaks into banxe-* and no product docs leak into factory-*. (1-2 days)
+- Applicability: BINDING for Perplexity (Central terminal), Terminal A (sandbox), Terminal B (parallel executor). Any work without accompanying documentation is not accepted into main.
+- Rationale: documentation-as-code is required by FCA SYSC, GDPR Art.30, ADR-019 Guardian audit, and operator directive 2026-05-12 02:00 CEST.
+- Refs: operator directive in-session 2026-05-12 02:00 CEST; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
