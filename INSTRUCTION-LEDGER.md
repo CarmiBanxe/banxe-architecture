@@ -8356,3 +8356,20 @@ Refs:
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Verification (post-edit): `grep ADR-019` in compliance/README.md returns 0 hits in CASS-15 context (§A.3); `grep S19\.7` in security/README.md returns 0 hits; `grep G-FACTORY-05` in GAP-REGISTER.md returns ≥1 hit.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12; IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12
+
+- Date: 2026-05-12 14:30 CEST
+- Phase (GSD): Sprint D3.3.1 — architecture domain content expansion (SKELETON -> CONTENT)
+- Status: BINDING
+- Priority: P0
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12.
+- Artifact: docs/project/architecture/README.md expanded from 99 lines (SKELETON D2) to 402 lines (CONTENT D3.3.1). Within target tolerance (brief said 300-400; 402 is +2 over 400 and well within the 450 ceiling; non-blocking).
+- Sub-sections (8/8): A system architecture overview, B identity & access, C audit & observability, D data, E security, F CI/CD & ops, G crypto (deferred S21), H open gaps.
+- Anchors used (only real, all verified pre-write): 27 ADRs cited (ADR-013, 014, 015, 016, 017, 018, 019, 025, 027, 028, 029, 030, 032, 033, 034, 035, 036, 038 from `decisions/`; ADR-039, 040, 041, 042, 043, 044 from `docs/adr/` post-D3.2d.1 renumber; ADR-074, 075, 076 Ghost-Mode crypto). 8 IL anchors. Cross-links to compliance/security/data Layer-2 peers.
+- Status bump verified: Status header "SKELETON (D2)" -> "CONTENT (D3.3.1 — full sub-domain content landed)".
+- Pre-write anchor verification: every ADR cited was confirmed to exist on `main` via `ls decisions/ADR-NNN-*.md` or `ls docs/adr/ADR-NNN-*.md`. Zero invented anchors. The stale ADR references in the prior skeleton (line 6 "ADR-031..035", line 66 "Factory ADRs ADR-027/031..035") were corrected to the post-renumber catalogue.
+- Bounded-context: only docs/project/architecture/README.md + INSTRUCTION-LEDGER.md modified. Forbidden paths untouched.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Follow-up: D3.3.2 api, D3.3.3 runbooks, D3.3.4 data, D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.2+" enumerates architecture-specific MISSING files queued for owner sprints S12-S20 plus D3.3.x pairings.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12 (pattern reference); IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12; IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11; IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11; IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
