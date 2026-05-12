@@ -28,6 +28,7 @@
 | `DEFERRED-PROJECTS.md` | Отложенные проекты (не делать сейчас) |
 | `decisions/` | ADR — Architecture Decision Records |
 | `validators/` | Скрипты проверки соответствия |
+| `docs/project/` | **Project documentation programme** — master index + S12-S25 backlog (start here for project-implementation docs) |
 
 ## Как использовать
 
