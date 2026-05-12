@@ -8406,3 +8406,20 @@ Refs:
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Follow-up: D3.3.3 runbooks, D3.3.4 data, D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.3+" enumerates API-specific MISSING files queued for owner sprints S12-S22.1 plus D3.3.3 pairings.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12 (pattern reference); IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12 (anchor reconciliation done); IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (brief delivery via file); IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11; IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-3-3-RUNBOOKS-CONTENT-2026-05-12
+
+- Date: 2026-05-12 18:15 CEST
+- Phase (GSD): Sprint D3.3.3 — runbooks domain content expansion (SKELETON -> CONTENT)
+- Status: BINDING
+- Priority: P0
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief delivered via /tmp file per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (`/tmp/central-cc-prompt-d3-3-3-runbooks-2026-05-12.txt`, 116 lines; file ended with explicit READY FOR EXECUTION signal despite a "PART 1" header — all 8 H2 sub-sections, IL pairing, CONSTRAINTS, and REPORT format were present, so the brief was treated as complete).
+- Artifact: docs/project/runbooks/README.md expanded from 102 lines (SKELETON D2) to 451 lines (CONTENT D3.3.3). Line count is 1 over the brief's 450 ceiling; justified by the §C real-runbooks index (19 files enumerated one-line-each with grouping headers + 2 adjacent docs/ops/ entries) and the §H/MISSING-table consistency with peer Layer-2 READMEs.
+- Sub-sections (8/8): A catalogue overview, B structure standard, C existing runbooks index (19 files), D operational lifecycle, E pre-flight & validation pattern, F HITL gates, G rollback patterns, H open gaps.
+- Anchors used (only real, all verified pre-write): 2 ADRs (ADR-027 audit-trail, ADR-029 Postgres backup). 7 unique IL anchors. 4 unique GAPs (G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION, G-FACTORY-05, G-IAM-08, G-IAM-09 — all verified in `GAP-REGISTER.md`). 10 unique sprint refs (S12.4, S12.5, S12.6, S13, S13.8, S14, S15, S16, S16.4, S17, S18, S20, S21, S23, S25, S25.4). Cross-repo references to banxe-emi-stack PRs #133 / #134 / #135 (Sub-B prep packages; cited as pattern precedent only, not as in-repo evidence).
+- Status bump verified: `SKELETON (D2)` -> `CONTENT (D3.3.3 — full sub-domain content landed)`.
+- Real runbooks enumerated in §C: 19 files under `docs/runbooks/` + 2 adjacent files under `docs/ops/`. Grouping (documentation-side only; not filename-encoded): sandbox lifecycle (2), maintenance (1), LLM/AI plane (5), hardware/OS infra (5), workstation/dev (3), provisioning/decommission (2), HITL/process (1), adjacent docs/ops/ (2).
+- Bounded-context: only docs/project/runbooks/README.md + INSTRUCTION-LEDGER.md modified. Forbidden paths untouched (HITL-MATRIX.yaml referenced READ-ONLY per §F.1).
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Follow-up: D3.3.4 data, D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.4+" enumerates 13 runbook-specific MISSING target files queued for owner sprints S12.4–S25.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-2-API-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12.
