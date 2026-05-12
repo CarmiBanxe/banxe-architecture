@@ -8278,17 +8278,17 @@ Refs:
   PR #214, commit 6fa8f52
   docs/audit/adr-036-final-summary-2026-05-11.md
 
-### IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12
+### IL-CANON-IL-DEDUPE-FIX-D3-2D-2-2026-05-12
 
-- Date: 2026-05-12 12:45 CEST
-- Phase (GSD): Sprint D3.2d.2 — ADR-036 Travel Rule backfill in decisions/
-- Status: BINDING
-- Priority: P0
+- Date: 2026-05-12 13:00 CEST
+- Phase (GSD): IL hygiene — remove duplicate D3-2D-2 entry from INSTRUCTION-LEDGER.md
+- Status: BINDING (fix-up)
+- Priority: P1
 - Executor: Central per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12.
-- Artifact: decisions/ADR-036-travel-rule.md (NEW, 49 lines, 3883 B).
-- Background: D3.2c finding #2 — ADR-036 was CLOSED via docs/audit/adr-036-final-summary-2026-05-11.md + PR #214 (commit 6fa8f52), but decisions/ADR-036-*.md did not exist, breaking anchor citations from compliance/security READMEs.
-- Action: created decisions/ADR-036-travel-rule.md as a canonical ADR record that references the audit doc as source-of-truth. Status: Closed (2026-05-11). Decision: Travel Rule mandatory for production crypto-asset transfers; implementation deferred to Sprint S21 (Crypto Block); Sprint 3 candidate CANCELLED.
+- Trigger: after PR #244 merge, INSTRUCTION-LEDGER.md on main contained TWO copies of IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12 (lines 8252 and 8281). Cause: race with parallel PR (#243 or similar from condition-d-step3 branch) that touched INSTRUCTION-LEDGER.md between our local IL append and origin/main merge. Both copies were textually identical.
+- Action: removed the second (later) duplicate block from INSTRUCTION-LEDGER.md via deterministic python dedupe (kept the first occurrence at the original line 8252 position). No other changes.
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
-- Resolves: D3.2c open question Q2.
-- Follow-up: D3.2d.3 (rewrite ADR INDEX.md), D3.2d.4 (re-anchor citations).
-- Refs: IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-OPS-MIRROR-BACKFILL-V3-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; PR #214 / commit 6fa8f52; docs/audit/adr-036-final-summary-2026-05-11.md.
+- Bounded-context: only INSTRUCTION-LEDGER.md modified.
+- Pattern recognition: this is the second IL dedupe event in the session (D3.2c also had a duplicate via different mechanism — handled via reset on unpushed commit). Both events traced to concurrent PR merges touching INSTRUCTION-LEDGER.md.
+- Mitigation for future sprints: before committing IL append, run `grep -c <anchor> INSTRUCTION-LEDGER.md` and abort if >0 already exists on local branch.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12 (kept), IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12, IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
