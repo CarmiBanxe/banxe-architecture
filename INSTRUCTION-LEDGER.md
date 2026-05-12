@@ -8292,3 +8292,21 @@ Refs:
 - Pattern recognition: this is the second IL dedupe event in the session (D3.2c also had a duplicate via different mechanism — handled via reset on unpushed commit). Both events traced to concurrent PR merges touching INSTRUCTION-LEDGER.md.
 - Mitigation for future sprints: before committing IL append, run `grep -c <anchor> INSTRUCTION-LEDGER.md` and abort if >0 already exists on local branch.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12 (kept), IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12, IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12
+
+- Date: 2026-05-12 12:05 CEST
+- Phase (GSD): CANON — Sub-B prompts delivered via file intermediary, not inline in chat
+- Status: BINDING
+- Priority: P0
+- Trigger: 2026-05-12 ~12:00 CEST, a Sub-B Claude Code prompt was issued inline in a chat message. Operator copy-pasted it into Legion bash by mistake; bash interpreted the prose as commands and produced a cascade of "command not found" / "syntax error" errors. No filesystem or git state was changed, but the canon discipline was broken: a prompt intended for Sub-B was visually indistinguishable from a Central shell artifact at copy-paste time.
+- Decision: From now on, every prompt Central issues to Sub-B (Terminal B, Claude Code in /home/mmber/banxe-emi-stack) MUST be delivered via a file intermediary on Legion, not as inline chat prose. Specifically:
+  1. Central composes the prompt and writes it to a file under /tmp/ using a short shell artifact: a single TARGET-headed shell command that does `cat > /tmp/sub-b-prompt-<sprint-id>-<YYYY-MM-DD>.txt <<'EOF' ... EOF`. The shell command is short (≤30 lines of EOF-content per Clause F-01 safe-size rule) OR uses base64 if longer. Worst case the prompt body lives in a separate `cat > /tmp/...txt <<'EOF'` followed by `ls -la /tmp/...txt && wc -l /tmp/...txt`.
+  2. After the file is written, operator switches to Sub-B (Claude Code terminal) and runs `cat /tmp/sub-b-prompt-<sprint-id>-<YYYY-MM-DD>.txt` (or pastes its content) into the Claude Code conversation. Sub-B then executes the prompt autonomously per IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12.
+  3. Inline prompt prose in chat is NEVER pasted directly into Legion shell. The file-intermediary pattern makes the prompt physically distinguishable from a shell artifact: shell artifacts contain executable bash; Sub-B prompts live in a /tmp/ file that bash never tries to execute.
+- Scope: applies ONLY to Sub-B (Claude Code) prompts. Central-internal Claude Code prompts (Central work in /home/mmber/banxe-architecture) follow IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 unchanged.
+- Format requirement for Central artifacts targeting Sub-B:
+  TARGET terminal: Legion shell (Central) — for the file-write step
+  TARGET cwd: any (writes to /tmp/)
+  Then a separate instruction line: "After file write succeeds, switch to Sub-B Claude Code and feed it the content of /tmp/sub-b-prompt-<sprint-id>-<YYYY-MM-DD>.txt."
+- Refs: IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
