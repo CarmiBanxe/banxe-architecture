@@ -8197,3 +8197,22 @@ Refs:
   ADR-027 (audit-trail durability), ADR-028 (KYC re-verification), ADR-029 (Postgres backup), ADR-030 (auth rate-limit), ADR-032 (secret rotation), ADR-033 ufw perimeter (`docs/adr/`), ADR-038 (Vault placeholder)
   GAP: G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION, G-IAM-03, G-IAM-08, G-IAM-09, G-SEC-02, G-SECURITY-HISTORICAL-LEAKS, G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER, G-CASS-01, G-CASS-02
   FCA SUP 15, CASS 15 §15.10, SYSC 4.1, GDPR Art. 30/32/33/15-22, AMLR 2017, AMLD6, JMLSG, FATF Travel Rule, OFSI / EU / UN sanctions, PSR 2017, EMR 2011
+
+### IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12
+
+- Date: 2026-05-12 12:05 CEST
+- Phase (GSD): Sprint D3.2c — ADR collision + open question diagnostic findings
+- Status: BINDING (findings record; no structural change)
+- Priority: P0
+- Executor: Central per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12.
+- Artifact: docs/audit/d3-2c-adr-reconciliation-findings-2026-05-12.md (82 lines, 5236 B). Full findings text lives in that audit doc.
+- Summary of 6 findings (full detail in audit doc):
+  1. ADR-019 ≠ CASS 15 anchor; correct anchor is decisions/ADR-027-audit-trail-durability.md (compliance README §A.3 cite is wrong, inherited from D3.2b brief).
+  2. ADR-036 not present as decisions/ artifact; CLOSED only via docs/audit/adr-036-final-summary-2026-05-11.md + PR #214 (commit 6fa8f52).
+  3. ADR-033 collision: decisions/ADR-033-alert-routing-strategy.md vs docs/adr/ADR-033-ufw-perimeter.md (both ACCEPTED, different content).
+  4. G-FACTORY-05 missing from GAP-REGISTER.md (referenced only in IL line 7938).
+  5. S19.7 anchor invented; real Vault anchors are G-SEC-02 / Track F / Sprint S17 / DEFERRED.
+  6. STRUCTURAL: ADR dual-catalogue — decisions/ (36 files) vs docs/adr/ (6 files). Five collisions: ADR-027, ADR-032, ADR-033, ADR-034, ADR-035. ADR INDEX.md covers only docs/adr/ scope, 30 ADRs from decisions/ invisible to index.
+- D3.2d / D3.3 BLOCKED on 5 Central decisions (listed in audit doc): canonical catalogue, collision renumbering rule, ADR-036 canonical form, INDEX.md scope, CANON-DOC-MANDATORY-TWO-LAYER application to ADRs.
+- No structural change in this commit. Both files (audit doc + this IL entry) are documentation-only.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12, IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12, IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12, IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12, IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12, IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12.
