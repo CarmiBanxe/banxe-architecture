@@ -431,6 +431,15 @@
   Anchors: FA-4a discovery, G-IAM-08 (cutover artefact), Legion-side keycloak install dirs `/home/mmber/keycloak-banxe-emi-legion`, `/home/mmber/keycloak-banxe-emi-pg-test`.
   Priority: P3 (Quarkus consumes ~750 MB RAM each → ~1.5 GB total used; second process is wasted RAM but not breaking anything).
   Update 2026-05-06: No Java Keycloak processes found on Legion :8180; only docker-proxy. Original "2 orphan Java procs" not confirmed. See IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06.
+- [ ] G-FACTORY-05: Legion :8180 logical collision with evo1 KC — OPEN 2026-05-12
+  IL anchor: IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12.
+  Evidence: on Legion (mark-legion), `ss -tlnp` shows :8180 Java LISTEN; two local KC processes observed — pid 1491 (Tailscale-bound dev KC, `--import-realm`, `--hostname=100.101.218.26`) and pid 2266209 (fresh, racing). evo1 also runs KC 26.2.5 prod on :8180. Cross-host routing/proxy can authenticate clients against the wrong KC.
+  Risk: clients may auth against the wrong KC; prod realm config integrity for `banxe-emi`.
+  Fix: decide canonical :8180 owner; stop/rebind Legion KC or document explicit dev-only role with DNS/proxy routing.
+  Owner sprint: S13.8 (extends G-FACTORY-04).
+  Severity: P2.
+  Blocking: not strictly blocking S12.4 but must resolve before prod client config touches realm `banxe-emi`.
+  Anchors: G-FACTORY-04 (sibling/predecessor), G-IAM-08, G-IAM-09, IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12, IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12 (registration anchor).
 - [x] G-FACTORY-CHAIN: agents.md chain matrix not formalised — DONE 2026-05-06 (FA-5: agent-chain × GSD-phase matrix added to .claude/rules/agents.md with 6 canonical chains A-F; Ruflo placement formalised per FA-3 reclassification; agent-to-LiteLLM-route mapping included per FA-2)
   Anchors: PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), .claude/rules/agents.md, A4 proposal.
   Priority: P3 (closed).

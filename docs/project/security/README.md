@@ -9,7 +9,7 @@ IL-OPS-G-OBS-02-CLOSED-TRACK-E-FULLY-CLOSED-2026-05-11,
 ADR-033 (ufw perimeter — `docs/adr/ADR-033-ufw-perimeter.md`),
 ADR-038 (Vault placeholder — `decisions/ADR-038-vault-adoption-placeholder.md`),
 ADR-032 (secret rotation — `decisions/ADR-032-secret-rotation-policy.md`),
-G-SEC-02 (DEFERRED — long-term Vault adoption), G-IAM-03, G-IAM-08, G-IAM-09,
+G-SEC-02 (Track F, DEFERRED — long-term Vault adoption), G-IAM-03, G-IAM-08, G-IAM-09,
 G-SECURITY-HISTORICAL-LEAKS, G-SECURITY-LIVEBOX-NO-OUTBOUND-FILTER,
 historical leak sprint S15.5, Sprint S12.x KC hardening,
 Sprint S17 secrets rotation
@@ -175,8 +175,10 @@ D3.2b reference:
   `decisions/ADR-038-vault-adoption-placeholder.md` as the placeholder ADR.
 - **ADR-038 placeholder** — the canonical artifact recording that the
   decision has been deferred. Full Vault adoption ADR to land alongside
-  the operator decision (currently pending; **S19.7** decision per brief —
-  TODO: verify S19.7 anchor against backlog and ROADMAP in D3.2c).
+  the operator decision (currently pending; **Sprint S17 / G-SEC-02 /
+  Track F (DEFERRED per IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11)**).
+  D3.2d.4 anchor reconciliation: canonical anchor stack confirmed as
+  S17 + G-SEC-02 + Track F (shown above).
 - **Interim mitigations** while Vault is deferred:
   1. `chmod 0600` on every systemd `EnvironmentFile` reading a production
      secret; owner = service user.
@@ -336,8 +338,10 @@ or later sprints.
   citation `G-FACTORY-05` exists only in `INSTRUCTION-LEDGER.md`; reconcile
   to `GAP-REGISTER.md` in D3.2c).
 - TODO: verify full G-IAM-09 title against `GAP-REGISTER.md` in D3.2c.
-- TODO: verify Sprint S19.7 (Vault decision pending) against ROADMAP and
-  backlog in D3.2c.
+- Resolved (D3.2d.4): canonical anchors for the Vault decision are
+  **Sprint S17 / G-SEC-02 / Track F (DEFERRED per
+  IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11)**. See §C and
+  IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12.
 
 ---
 

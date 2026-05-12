@@ -8339,3 +8339,20 @@ Refs:
 - Off-by-one note: brief specified "ADR-045..073 = 28 free numbers"; inclusive range 45..73 actually contains 29. Index recorded the corrected count (29) with an explicit note; non-blocking.
 - Follow-up: D3.2d.4 (re-anchor citations in compliance/security READMEs to use unified INDEX); later D3.2d sub-sprint to backfill missing `**Status:**` lines for the 20 UNKNOWN ADRs.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12; IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12
+
+- Date: 2026-05-12 13:30 CEST
+- Phase (GSD): Sprint D3.2d.4 — close D3.2c open questions Q1/Q4/Q5 via citation re-anchor + G-FACTORY-05 backfill
+- Status: BINDING
+- Priority: P0
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12.
+- Resolves D3.2c open questions:
+  - Q1: compliance/README.md §A.3 CASS 15 citation re-anchored from ADR-019 (AI Guardian) to decisions/ADR-027-audit-trail-durability.md (correct). §G table-row note and §H resolved-TODO updated to match.
+  - Q4: G-FACTORY-05 added to GAP-REGISTER.md row using G-FACTORY-04 template (Legion :8180 logical collision with evo1 KC, P2, owner S13.8, blocking note for prod realm provisioning).
+  - Q5: security/README.md §C "S19.7 Vault decision" replaced with "Sprint S17 / G-SEC-02 / Track F (DEFERRED per IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11)". §H resolved-TODO updated. Anchors block at top now reads "G-SEC-02 (Track F, DEFERRED — long-term Vault adoption)".
+- D3.2d Sprint final close: D3.2d.1 (collision renumber) + D3.2d.2 (ADR-036 backfill) + IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12 (bonus ADR-030 sync) + D3.2d.3 (INDEX unified) + this D3.2d.4 = D3.2c findings completely resolved.
+- Bounded-context: only docs/project/compliance/README.md, docs/project/security/README.md, GAP-REGISTER.md, INSTRUCTION-LEDGER.md modified.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Verification (post-edit): `grep ADR-019` in compliance/README.md returns 0 hits in CASS-15 context (§A.3); `grep S19\.7` in security/README.md returns 0 hits; `grep G-FACTORY-05` in GAP-REGISTER.md returns ≥1 hit.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12; IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
