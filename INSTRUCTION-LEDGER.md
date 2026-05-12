@@ -8310,3 +8310,16 @@ Refs:
   TARGET cwd: any (writes to /tmp/)
   Then a separate instruction line: "After file write succeeds, switch to Sub-B Claude Code and feed it the content of /tmp/sub-b-prompt-<sprint-id>-<YYYY-MM-DD>.txt."
 - Refs: IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12
+
+- Date: 2026-05-12 13:00 CEST
+- Phase (GSD): CANON — ADR-030 file Status synchronized with already-merged acceptance evidence
+- Status: BINDING (file-level sync; no new policy change)
+- Priority: P1
+- Executor: Central via Claude Code (per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12, IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12).
+- Background: PR #172 (c9de9fc, 2026-05-10) merged G-API-01 + G-API-02 DONE evidence to GAP-REGISTER.md + INSTRUCTION-LEDGER.md, declaring ADR-030 Accepted. The ADR-030 file body on main retained "Status: Proposed (2026-05-05)" — anchor mismatch (same class as D3.2c findings Q1 ADR-019/CASS-15).
+- Action: minimal acceptance sync — Status line replaced with "Accepted (2026-05-12)", added "Date Accepted" line, added "Implementation Evidence" line pointing to PR #172 + 3 banxe-emi-stack step branches. Decision/Implementation body NOT modified (no invented content; original Decision text preserved verbatim).
+- Bounded-context: only decisions/ADR-030-auth-rate-limit-policy.md + INSTRUCTION-LEDGER.md modified.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Refs: PR #172 / commit c9de9fc; IL-OPS-MIRROR-BACKFILL-V4-ADR-028-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12 (anchor-mismatch class); IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12.
