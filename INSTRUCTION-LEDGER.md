@@ -8423,3 +8423,20 @@ Refs:
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Follow-up: D3.3.4 data, D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.4+" enumerates 13 runbook-specific MISSING target files queued for owner sprints S12.4–S25.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-2-API-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-3-4-DATA-CONTENT-2026-05-12
+
+- Date: 2026-05-12 18:30 CEST
+- Phase (GSD): Sprint D3.3.4 — data domain content expansion (SKELETON -> CONTENT)
+- Status: BINDING
+- Priority: P0
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief delivered via /tmp file per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (`/tmp/central-cc-prompt-d3-3-4-data-2026-05-12.txt`, 132 lines; file ended with explicit READY FOR EXECUTION signal despite a "PART 1" header — all 8 H2 sub-sections, IL pairing, CONSTRAINTS, and REPORT format present).
+- Artifact: docs/project/data/README.md expanded from 93 lines (SKELETON D2) to 441 lines (CONTENT D3.3.4). Within 450 ceiling.
+- Sub-sections (8/8): A data model overview, B classification & sensitivity, C GDPR / UK DPA, D retention schedule, E backup & recovery, F lineage & flow, G UK data residency, H open gaps.
+- Anchors used (only real, all verified pre-write): 9 ADRs cited (ADR-013, 014, 015, 016, 027, 028, 029, 032, 036 — all in `decisions/`; ADR-032 added beyond the brief's 8-ADR list as a Vault-cross-link in §C.2 for the Art. 32 deferral cite). 7 unique IL anchors. 3 unique real GAPs (G-CASS-02, G-IAM-09, G-SEC-02). 11 unique sprint refs (S12.4, S12.6, S14, S16.4, S17, S18, S20, S20.4, S21, S25). Cross-repo precedent: banxe-emi-stack PR #134 (G-IAM-09 prep, 29/29 PASS).
+- Status bump verified: `SKELETON (D2)` -> `CONTENT (D3.3.4 — full sub-domain content landed)`.
+- .gitignore note (OI-2 carry-forward): root `.gitignore` line 5 carries `data/` rule which matches `docs/project/data/`. Staging used `git add -f` per D2 precedent and per brief §CONSTRAINTS. The auditor accepts force-add for this domain only; full reconciliation of the `.gitignore` rule deferred to a later D3.3.5 / D3.4 housekeeping sub-sprint.
+- Bounded-context: only docs/project/data/README.md + INSTRUCTION-LEDGER.md modified. Forbidden paths untouched.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Follow-up: D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.5+" enumerates 8 data-specific MISSING target files queued for owner sprints S14 / S21.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-2-API-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-3-RUNBOOKS-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11; IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
