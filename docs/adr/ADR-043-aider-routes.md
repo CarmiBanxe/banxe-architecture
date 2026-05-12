@@ -1,5 +1,5 @@
 ---
-id: ADR-034
+id: ADR-043
 title: Aider/Continue Routes — ai / ai-heavy / reasoning
 status: ACCEPTED
 date: 2026-05-03
@@ -11,7 +11,7 @@ related:
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
-# ADR-034: Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`
+# ADR-043: Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`
 
 ## Status
 ACCEPTED — 2026-05-03 (CEO: Moriel Carmi)

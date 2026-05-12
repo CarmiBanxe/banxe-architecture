@@ -1,5 +1,5 @@
 ---
-id: ADR-033
+id: ADR-042
 title: ufw Perimeter Posture per Host
 status: ACCEPTED
 date: 2026-05-03
@@ -11,7 +11,7 @@ related:
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
-# ADR-033: ufw Perimeter Posture per Host
+# ADR-042: ufw Perimeter Posture per Host
 
 ## Status
 ACCEPTED — 2026-05-03 (CEO: Moriel Carmi)

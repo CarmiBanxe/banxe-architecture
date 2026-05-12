@@ -1,4 +1,4 @@
-# ADR-035 — AI Pool Roadmap 2026-05-11
+# ADR-044 — AI Pool Roadmap 2026-05-11
 
 **Status:** Proposed
 **Date:** 2026-05-11

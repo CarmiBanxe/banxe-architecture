@@ -8216,3 +8216,35 @@ Refs:
 - D3.2d / D3.3 BLOCKED on 5 Central decisions (listed in audit doc): canonical catalogue, collision renumbering rule, ADR-036 canonical form, INDEX.md scope, CANON-DOC-MANDATORY-TWO-LAYER application to ADRs.
 - No structural change in this commit. Both files (audit doc + this IL entry) are documentation-only.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12, IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12, IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12, IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12, IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12, IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12
+
+- Date: 2026-05-12 12:20 CEST
+- Phase (GSD): Sprint D3.2d.1 — ADR collision renumber (docs/adr/ catalogue moved to ADR-039..ADR-044 block)
+- Status: BINDING (structural change executed)
+- Priority: P0
+- Executor: Central per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12.
+- Background: D3.2c findings #6 revealed 5 collisions (ADR-027, 032, 033, 034, 035) between decisions/ (36 files, canonical) and docs/adr/ (6 files, Sprint D2). Recommendation A: rename all 6 docs/adr/ ADR to a clean block.
+- Action (git mv + internal sed):
+  - docs/adr/ADR-027-claude-code-permissions-reclassification.md -> ADR-039 (was colliding with decisions/ADR-027-audit-trail-durability)
+  - docs/adr/ADR-031-ai-execution-policy.md -> ADR-040 (no collision; renumbered for block consistency)
+  - docs/adr/ADR-032-glm45-air-distributed.md -> ADR-041 (was colliding with decisions/ADR-032-secret-rotation-policy)
+  - docs/adr/ADR-033-ufw-perimeter.md -> ADR-042 (was colliding with decisions/ADR-033-alert-routing-strategy)
+  - docs/adr/ADR-034-aider-routes.md -> ADR-043 (was colliding with decisions/ADR-034-webhook-reliability-kyc)
+  - docs/adr/ADR-035-ai-pool-roadmap-2026-05-11.md -> ADR-044 (was colliding with decisions/ADR-035-ci-smoke-gate-policy)
+- Internal ADR-XXX tokens updated within each renamed file (front-matter, body refs).
+- docs/adr/INDEX.md and docs/adr/README.md updated to match new filenames + ADR numbers.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12 on this commit.
+- Result: ADR collisions eliminated. decisions/ catalogue authoritative for ADR-001..ADR-035, ADR-038, ADR-074..ADR-076. docs/adr/ now occupies clean block ADR-039..ADR-044.
+- Follow-up (D3.2d.2..d.4):
+  - D3.2d.2: create decisions/ADR-036-travel-rule.md (resolves Q2 ADR-036 anchor).
+  - D3.2d.3: rewrite ADR INDEX.md to cover both catalogues OR document one-index-per-catalogue split.
+  - D3.2d.4: re-anchor citations in compliance/security READMEs (CASS 15 -> ADR-027 audit-trail-durability, S19.7 -> S17/G-SEC-02, ADR-019 cite cleanup); update any anchors in decisions/ that referenced the renamed docs/adr/ ADRs.
+- Out of scope this commit: anchors in OTHER repositories (banxe-emi-stack, banxe-platform, banxe-payment-core, banxe-infra) that may cite old ADR-027/032/033/034/035 from docs/adr/. If such cross-repo references exist, they will be discovered and reconciled in D3.2d.4 or a follow-up cross-repo sprint.
+- Refs:
+  IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+  IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12

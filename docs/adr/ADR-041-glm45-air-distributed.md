@@ -1,5 +1,5 @@
 ---
-id: ADR-032
+id: ADR-041
 title: GLM-4.5-Air Distributed Inference (USB4 RPC)
 status: ACCEPTED
 date: 2026-05-03
@@ -11,7 +11,7 @@ related:
 binding_artifact: banxe-infra/ai-routing/policy.yaml
 ---
 
-# ADR-032: GLM-4.5-Air Distributed Inference (USB4 RPC)
+# ADR-041: GLM-4.5-Air Distributed Inference (USB4 RPC)
 
 ## Status
 ACCEPTED — 2026-05-03 (CEO: Moriel Carmi)
