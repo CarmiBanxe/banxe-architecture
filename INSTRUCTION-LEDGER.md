@@ -7755,3 +7755,34 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Rationale: chat/session memory alone is not durable enough; canon must survive session boundaries and be reconstructible from repository history.
 - Refs: operator instruction in-session 2026-05-12; prior roadmap fixation IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11.
 
+
+### IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+
+- Date: 2026-05-12 02:30 CEST
+- Phase (GSD): CANON — documentation as mandatory canon, two-layer separation
+- Status: BINDING
+- Priority: P0
+- Decision: Documentation is a mandatory canon artifact for every code artifact.
+- Mandatory rules:
+  1. No code artifact (module, service, ADR implementation, migration, agent, script) is considered "done" until its documentation is produced and committed.
+  2. Documentation is split into two physically separated layers:
+     - Layer 1 — Factory Docs: §0.1/§0.2/§0.3/§0.4 canon, factory ADRs, INSTRUCTION-LEDGER, HITL-MATRIX, GAP-REGISTRY, COMPLIANCE-MATRIX-FACTORY, factory runbooks, agent passports, auditor spec, Guardian rules, terminals topology (Central/A/B), openclo-moa, Factory overseer §0.4.
+     - Layer 2 — Product Docs (EMI BANXE AI BANK): per-repo README, architecture (C4), API specs (OpenAPI/AsyncAPI), product ADRs, runbooks, compliance (FCA SUP/CASS/SYSC, GDPR Art.30 RoPA, AML/CTF, safeguarding), security (threat model, secrets, Vault status), data (models, retention, lineage), CHANGELOG, inline docstrings/JSDoc.
+  3. Repositories are strictly separated:
+     - Factory repos: prefix factory-* (e.g. factory-canon, factory-guardian, factory-agents, factory-auditor, factory-runbooks, factory-overseer).
+     - Product repos: prefix banxe-* (banxe-architecture, banxe-platform, banxe-payment-core, banxe-infra, banxe-emi-stack, ...).
+     - Mixing factory canon into banxe-* or product runbooks/API into factory-* is prohibited; cross-links only via explicit anchors (PR/ADR/IL refs).
+  4. Pre-commit auditor gains BLOCK 13 "doc-coverage": no commit of new/changed code without accompanying doc artifact (docstring/TSDoc, ADR-ref, runbook-ref) or explicit "# doc-debt: <ADR-ref>" recorded in GAP-REGISTRY.
+  5. Guardian ENFORCE extended to verify doc-coverage on PR events.
+- Roadmap (parallel to S12-S25):
+  SD1: Bootstrap two-layer separation — create factory-canon repo, migrate §0.x + factory ADRs + HITL-MATRIX + factory runbooks out of banxe-architecture. (2-3 days)
+  SD2: Restore missing canonical files — CANON.md + SECTION-0-1..0-4, GAP-REGISTRY.md, COMPLIANCE-MATRIX-FACTORY/PRODUCT, backfill missing factory ADRs (001..026, 028..030, 036..038). (2 days)
+  SD3: Pre-commit auditor BLOCK 13 doc-coverage rollout across all repos. (2 days)
+  SD4: Auto-generation — OpenAPI → Markdown, ADR-index generator, CHANGELOG from conventional commits, C4 diagrams via Structurizr. (3-4 days)
+  SD5: Guardian doc-webhook + ClickHouse doc-audit trail. (2 days)
+  SD6: Product docs per-repo bootstrap — README, architecture, API, ADR, runbooks, compliance, security, data, CHANGELOG. (3-5 days)
+  SD7: Compliance evidence pack auto-assembly — FCA SUP/CASS/SYSC, GDPR Art.30 RoPA, AML/CTF, safeguarding. (3 days)
+  SD8: Two-layer separation verification — audit that no factory canon leaks into banxe-* and no product docs leak into factory-*. (1-2 days)
+- Applicability: BINDING for Perplexity (Central terminal), Terminal A (sandbox), Terminal B (parallel executor). Any work without accompanying documentation is not accepted into main.
+- Rationale: documentation-as-code is required by FCA SYSC, GDPR Art.30, ADR-019 Guardian audit, and operator directive 2026-05-12 02:00 CEST.
+- Refs: operator directive in-session 2026-05-12 02:00 CEST; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
