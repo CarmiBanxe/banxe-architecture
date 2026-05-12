@@ -7889,3 +7889,31 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   - This baseline implements Layer 2 (Product Docs) under CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 and is the project-side counterpart of factory-side SD1-SD8.
   - S12 documentation deliverables are aligned with IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (Sprint S12 KC IAM Phase F).
 - Refs: commit 1a002f6 (local main, to be published in this entry's PR); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12.
+
+### IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12
+
+- Date: 2026-05-12 10:05 CEST
+- Phase (GSD): CANON — Terminal B autonomy + Central non-handoff for sub-terminal work
+- Status: BINDING
+- Priority: P0
+- Decision A — Terminal B fixates its own work end-to-end:
+  1. Every work package executed by Terminal B is fully autonomous: B performs the work, runs pre-commit Spec-First Auditor, commits locally, pushes the branch to origin, opens the PR, merges (with admin merge if policy allows), and deletes the branch — all from within Terminal B itself.
+  2. Terminal B writes its own INSTRUCTION-LEDGER.md entry pairing the artifact commit (per IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12) and includes it in the same PR as the artifact, so canon pairing is satisfied without Central involvement.
+  3. Terminal B reports back to Central only the final result (PR number, merge SHA, IL entry anchor, auditor status). Central does not re-fixate, re-commit, or re-merge B work.
+- Decision B — Central does not run B work:
+  1. Central (Perplexity, browser-side) does not push, PR, or merge artifacts produced by Terminal B. Central only issues prompts and accepts/rejects reports.
+  2. Central remains responsible for fixation of canon decisions taken in the chat session itself (per IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12) and for its own roadmap work on Central terminal.
+- Decision C — Non-conflict guarantee for B prompts (Central obligation):
+  1. Every prompt Central issues to Terminal B MUST be in non-overlapping scope with any in-flight Central work: separate branch, separate file scope, separate ports/services where applicable.
+  2. Central explicitly declares Allowed paths and Forbidden paths in every B prompt (already in use for Sprint D2 / D3 prompts).
+  3. If a conflict is detected after the fact, Central is responsible for backing off, not Terminal B.
+- Decision D — Reporting format mandatory in every B prompt:
+  1. Final report must include: PR number, merge SHA on main, IL entry anchor, auditor BLOCK 0..11 status, files changed +add/-del, open issues for next sprint.
+  2. If Terminal B cannot merge (CI failing, branch protection, missing permissions), B reports the blocker and stops; Central decides next step.
+- Applicability: BINDING for all future sessions until explicitly revoked. Supersedes any prior implicit pattern where Central performed push/PR/merge for Terminal B work.
+- Operational consequence: the Sprint D2 IL pairing remains open. Terminal B will be re-prompted to add IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12 to INSTRUCTION-LEDGER.md, push the existing branch docs/project-sprint-d2-domain-skeletons-2026-05-12 (HEAD 952341e, rebased onto origin/main 4d4ec6b), open and admin-merge its own PR.
+- Refs:
+  IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
