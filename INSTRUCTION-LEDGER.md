@@ -7934,3 +7934,48 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
   TARGET cwd: /home/mmber/banxe-architecture (command performs cd)
 - Applicability: BINDING for Perplexity Central in all future sessions until explicitly revoked. Does not apply to Terminal B prompts (those are Claude Code prompts, not shell commands).
 - Refs: IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (Clause F-01 single output); IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12.
+
+### IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12
+
+- Date: 2026-05-12 10:30 CEST
+- Phase (GSD): Sprint S12.1 evidence + 3 new GAPs + S12.4 HOLD
+- Status: BINDING
+- Priority: P0
+- Source: read-only pre-state diagnostic on evo1 (banxe-NucBox-EVO-X2), 2026-05-12 07:37:50Z, Central terminal.
+
+S12.1 — Keycloak backend switch (G-IAM-01, G-IAM-02) — DONE on evo1 (evidence-based):
+- Keycloak 26.2.5 (JDK 21, profile=prod, optimized), systemd unit keycloak.service active since 2026-05-07 01:03:57 CEST.
+- Install path: /home/banxe/keycloak-26.2.5/ (non-standard; documentation TODO under docs/project/runbooks/).
+- Backend: PostgreSQL via jdbc:postgresql://127.0.0.1:15433/keycloak. Live KC<->PG connection observed. No H2/dev-file artifacts under /home /opt /var (depth 4).
+- Bind: *:8180 data plane, 127.0.0.1:9000 management.
+- Conclusion: S12.1 backend switch already in production-profile on evo1. G-IAM-01 and G-IAM-02 CLOSED with this entry as evidence anchor. Remaining S12 sub-tasks (S12.2..S12.6) unchanged.
+
+S12.4 — Realm banxe-emi provisioning — HOLD:
+- /realms/banxe-emi/.well-known/openid-configuration -> HTTP 404 on evo1.
+- Must not proceed until all 3 new GAPs below are resolved + explicit operator go-trigger.
+
+New GAPs:
+
+G-IAM-08 (P1) — Keycloak DB password exposed in systemd ExecStart.
+- Evidence: keycloak.service ExecStart contains --db-password=teral> visible in `ps -ef` to any local user on evo1.
+- Risk: local credential disclosure; FCA SYSC 4.1; GDPR Art.32.
+- Fix: migrate to --db-password-file or Quarkus EnvironmentFile (0600); rotate password.
+- Owner sprint: S12.5; blocking S12.4.
+
+G-IAM-09 (P1) — No Keycloak backups located.
+- Evidence: no artifacts under /var/backups, /opt/backups, or any *keycloak*backup* path under /home /opt /var (depth 4).
+- Risk: zero RPO; violates ADR-029 and FCA SYSC 4.1.5.
+- Fix: pg_dump from 127.0.0.1:15433/keycloak on cron, retention per ADR-029, encrypted, off-host copy. Document under docs/project/runbooks/keycloak-backup.md.
+- Owner sprint: S12.6; blocking S12.4.
+
+G-FACTORY-05 (P2) — Legion :8180 logical collision with evo1 KC.
+- Evidence: on Legion, ss -tlnp shows :8180 Java LISTEN; pid 1491 (Tailscale-bound dev KC, --import-realm) and pid 2266209 (fresh, racing).
+- Risk: clients may authenticate against the wrong KC.
+- Fix: decide canonical :8180 owner; stop/rebind Legion KC or document explicit dev-only role with DNS/proxy routing.
+- Owner sprint: S13.8 (extends G-FACTORY-04); not strictly blocking S12.4 but must be resolved before prod client config.
+
+S12.4 HOLD lift conditions: G-IAM-08 fixed, G-IAM-09 fixed, G-FACTORY-05 resolved or operator-waived, explicit operator go-trigger.
+
+No code or config changes; documentation only.
+
+Refs: IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12; IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; ADR-029; FCA SYSC 4.1; GDPR Art.32.
