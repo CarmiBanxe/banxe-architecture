@@ -1,6 +1,6 @@
 # Compliance & Regulatory — Project Documentation (Layer 2)
 
-Status: SKELETON (D2)
+Status: CONTENT-PARTIAL (D3.2a — sub-domains scaffolded; full CONTENT pending in D3.2b)
 Sprint: D2 (2026-05-12)
 Layer: 2 (Product Docs per IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12)
 Anchors: IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12,
