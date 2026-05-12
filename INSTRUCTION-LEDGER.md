@@ -7738,3 +7738,20 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 
 - MASTER-PLAN baseline at approval: 5/9 Tracks FULLY CLOSED (A+C+D+E+G) + F PARTIALLY + B/H/I OPEN. 35 open / 96 closed GAPs. 35 two-loop mirrors.
 - Anchors: MASTER-PLAN-2026-05-05 + all session PRs #146-#214 + operator directive 2026-05-11 20:00 CEST.
+
+### IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+
+- Date: 2026-05-12 02:26 CEST
+- Phase (GSD): CANON — persistence rule for all future sessions
+- Status: BINDING
+- Priority: P0
+- Decision: Perplexity session memory is ephemeral and non-sufficient as a durable control plane.
+- Mandatory rule:
+  1. Every canon decision, operator directive, binding roadmap change, workflow invariant, or standing rule accepted in-session MUST be fixated in-repo within the same session via shell command.
+  2. Minimum fixation target: INSTRUCTION-LEDGER.md; if applicable also ROADMAP.md, SESSION-CANON file, ADR, runbook, or other canon artifact.
+  3. A decision is not considered durably adopted until shell fixation is executed and committed to git.
+  4. Perplexity must therefore always provide a shell command for fixation when a new binding canon rule is accepted.
+  5. This rule is standing and applies to all future sessions unless explicitly revoked by operator.
+- Rationale: chat/session memory alone is not durable enough; canon must survive session boundaries and be reconstructible from repository history.
+- Refs: operator instruction in-session 2026-05-12; prior roadmap fixation IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11.
+
