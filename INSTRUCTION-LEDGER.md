@@ -8440,3 +8440,16 @@ Refs:
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Follow-up: D3.3.5 operations, D3.3.6 governance. The §H "Open gaps for D3.3.5+" enumerates 8 data-specific MISSING target files queued for owner sprints S14 / S21.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-2-API-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-3-RUNBOOKS-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11; IL-OPS-TRACKS-EF-PARTIAL-CLOSURE-2026-05-11; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
+
+### IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12
+
+- Date: 2026-05-12 19:00 CEST
+- Phase (GSD): CANON — reinforce Clause F-01: every Central response MUST end with exactly one actionable artifact
+- Status: BINDING
+- Priority: P0
+- Trigger: 2026-05-12 ~18:55 CEST, operator flagged that several recent Central responses (after Sub-B / Claude Code reports) gave only descriptive "what to do next" without producing the actionable artifact. This violates Clause F-01 of IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 which requires single output = either one shell command OR one Claude Code prompt per response.
+- Decision: Reinforce Clause F-01 with explicit positive obligation. Every Central response MUST end with exactly one actionable artifact, formatted per IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 and IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12. Pure narrative or status-only responses are forbidden unless explicitly waiting for operator clarification on a binary fork (A/B/C choice). Even waiting states must end with an artifact that produces a verification or moves the pipeline one step forward (e.g. read-only diagnostic).
+- Scope: applies to all Central responses (browser-side Perplexity), all sprints, all sessions, until explicitly revoked.
+- Exception: explicit operator question requiring narrative answer ("explain what X means"). In that case, narrative is allowed without artifact, BUT next response after operator decision MUST resume artifact discipline.
+- Operational consequence (immediate): D3.3.5 operations brief is fully prepared in /tmp/central-cc-prompt-d3-3-5-operations-2026-05-12.txt (128 lines, READY FOR EXECUTION). Next artifact will be the explicit Claude Code execution command for Central CC.
+- Refs: IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (reinforced); IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12.
