@@ -117,7 +117,7 @@ other metrics. Regulated classes must always reach HITL review.
 
 ## 6. Reviewer Naming
 
-**Reviewer: ________ (CTIO or MLRO)**
+**Reviewer: Perplexity (sandbox-only, non-production reviewer role, per operator decision 2026-05-12)**
 
 The reviewer must be named by the operator or CTIO before the pilot
 begins. The reviewer's responsibilities:
