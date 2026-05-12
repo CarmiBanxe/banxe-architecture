@@ -268,6 +268,7 @@ Rationale:
 **Accepted** (2026-05-09) — KYC re-trigger events implemented for 3 of 5 trigger
 categories (role change, beneficial owner change, jurisdiction change). Remaining 2
 (sanctions match, 24-month periodic review) deferred to ADR-034/ADR-LCY-01 addendum.
+Code-side implementation completed on 2026-05-12 via banxe-emi-stack PR #131 and PR #132.
 
 ---
 
@@ -276,5 +277,8 @@ categories (role change, beneficial owner change, jurisdiction change). Remainin
 - **Step 1:** banxe-emi-stack PR #69 — `BanxeEventType` extension (`ROLE_CHANGED` / `BENEFICIAL_OWNER_CHANGED` / `JURISDICTION_CHANGED`) + `KycReTriggerEvent` dataclass + `build_kyc_retrigger_event()` + 8 unit tests.
 - **Step 2:** banxe-emi-stack PR #70 — FSM lifecycle wiring (`services/customer_lifecycle/fsm.py` +62 lines, `notify_attribute_change()`) + 183-line integration test.
 - **Step 3:** banxe-emi-stack PR #99 — operational check script (`scripts/kyc-retrigger-check.py`) + 4 smoke tests.
-- **Total:** 12 tests PASS, coverage 41.02%.
+- **Step 4:** banxe-emi-stack PR #131 — KYC reverification audit emitter + `KYCWorkflowPort.trigger_reverification()` + permissive `MockKYCWorkflow` + audit-emission integration tests + emitter/unit coverage.
+- **Step 5:** banxe-emi-stack PR #132 — FSM call-site integration with additive audit emission + integration coverage + chain smoke tests.
+- **Total:** 43 targeted tests PASS in final Step 5 verification; full hook chain PASS on handoff.
 - **Gaps closed:** G-KYC-01 (DONE), G-KYC-02 (DONE).
+- **Code-chain status:** COMPLETE in code as of 2026-05-12 via PRs #69, #70, #99, #131, #132.

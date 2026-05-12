@@ -7709,6 +7709,22 @@ G-FACTORY-01 in GAP-REGISTER.md moved [ ] → [~] (in-progress, runbook ready).
 - Two-loop mirrors total: 35 (29 prior + 6 this commit). All merged emi-stack production PRs mirrored.
 - Anchors: PR #168 CORE PRINCIPLE two-loop sync + ADR-029/030/032/034.
 
+### IL-OPS-MIRROR-BACKFILL-V4-ADR-028-2026-05-12
+
+- Date: 2026-05-12 (CEST)
+- Phase (GSD): CANON — two-loop mirror backfill v4 (ADR-028 code-chain closure)
+- Status: BINDING / DONE — mirrors ADR-028 Step 4 + Step 5 emi-stack PRs
+- Priority: P3 (canon hygiene + two-loop sync)
+- Scope: 2 mirror entries closing the ADR-028 implementation chain in code.
+
+- ADR-028 KYC re-verification triggers (2 PRs):
+  Mirror 36 — IL-MIRROR-EMI-PR-131: feat(adr-028): Step 4 KYC reverification audit emitter + KYCWorkflowPort.trigger_reverification() + permissive MockKYCWorkflow + audit-emission integration tests + emitter/unit coverage.
+  Mirror 37 — IL-MIRROR-EMI-PR-132: feat(adr-028): Step 5 FSM call-site integration with additive audit emission + integration coverage + chain smoke tests.
+
+- Two-loop mirrors total: 37 (35 prior + 2 this commit).
+- ADR-028 code chain status: COMPLETE in code as of 2026-05-12 via PRs #69, #70, #99, #131, #132.
+- Anchors: ADR-028 Step 4 (PR #131) + Step 5 (PR #132); §71 single-writer (local commit only, no push).
+
 ### IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11
 
 - Date: 2026-05-11 20:00 CEST
