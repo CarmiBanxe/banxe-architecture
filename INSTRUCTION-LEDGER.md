@@ -8323,3 +8323,19 @@ Refs:
 - Bounded-context: only decisions/ADR-030-auth-rate-limit-policy.md + INSTRUCTION-LEDGER.md modified.
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Refs: PR #172 / commit c9de9fc; IL-OPS-MIRROR-BACKFILL-V4-ADR-028-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12 (anchor-mismatch class); IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12.
+
+### IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12
+
+- Date: 2026-05-12 13:15 CEST
+- Phase (GSD): Sprint D3.2d.3 — ADR INDEX.md rewrite to unified scope (decisions/ + docs/adr/)
+- Status: BINDING
+- Priority: P0
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12.
+- Background: D3.2c finding #6 — `docs/adr/INDEX.md` from Sprint D2 covered only docs/adr/ scope (6 files), leaving 37 decisions/ ADRs invisible. Post D3.2d.1 collision renumber, the two catalogues are non-colliding; INDEX can now safely enumerate both.
+- Action: full rewrite of `docs/adr/INDEX.md` to include both catalogues with parsed Number/Title/Status/Date/Path columns. MISSING block enumerates unassigned numbers (ADR-021, 023, 031, 037, 045..073, 077+). Generator script included for reproducibility. Parse-failures section lists 20 ADRs whose body lacks a `**Status:**` line (status set to UNKNOWN per brief).
+- Coverage: decisions/ (37 files) + docs/adr/ (6 files) = 43 ADRs indexed. Previous index covered 6 (14%). New index covers 43 (100%).
+- Bounded-context: only docs/adr/INDEX.md modified + this IL entry.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Off-by-one note: brief specified "ADR-045..073 = 28 free numbers"; inclusive range 45..73 actually contains 29. Index recorded the corrected count (29) with an explicit note; non-blocking.
+- Follow-up: D3.2d.4 (re-anchor citations in compliance/security READMEs to use unified INDEX); later D3.2d sub-sprint to backfill missing `**Status:**` lines for the 20 UNKNOWN ADRs.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2C-ADR-RECONCILIATION-FINDINGS-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2D-2-ADR-036-TRAVEL-RULE-BACKFILL-2026-05-12; IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12.
