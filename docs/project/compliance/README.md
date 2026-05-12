@@ -109,12 +109,10 @@ Real files (enumerated via `git ls-files` / `find docs/`):
   Track D (Audit-Trail Durability) — 5 E2E tests merged demonstrating buffered
   audit-trail behaviour under backend failure / recovery / no silent loss.
 - Authoritative ADR: **ADR-027 audit-trail durability**
-  (`decisions/ADR-027-audit-trail-durability.md`).
-- TODO: brief references "ADR-019" as the anchor for CASS 15 audit retention,
-  but `decisions/ADR-019-ai-guardian-two-family.md` is a different topic
-  (AI Guardian architecture). Reconcile in D3.2c — either re-cite ADR-027
-  consistently across documentation, or open a new ADR specific to ClickHouse
-  Guardian 5y retention.
+  ([decisions/ADR-027-audit-trail-durability.md](../../decisions/ADR-027-audit-trail-durability.md)).
+- Anchor reconciliation closed by D3.2d.4: CASS 15 §15.10 / 5y ClickHouse
+  retention is anchored on ADR-027 (cited above). Full reconciliation history
+  is recorded in IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12.
 - ClickHouse Guardian: the production audit sink. Retention configuration
   (5y TTL, append-only, I-24 invariant enforced) is referenced in
   `IL-OPS-G-CASS-02-CLOSED-TRACK-D-FULLY-CLOSED-2026-05-11`.
@@ -327,7 +325,7 @@ or later sprints. Each line names the target path, anchor, and owner sprint.
   `sysc-4-1-...` in D3.2c to match the actual FCA Handbook section.
 - `docs/project/compliance/mlr-2017-evidence-map.md` — MLR 2017 evidence (S13).
 - `docs/project/compliance/cass-15-15-10-evidence.md` — CASS 15 §15.10
-  evidence (S14); cite ADR-027, not ADR-019 (anchor reconciliation TODO).
+  evidence (S14); cite ADR-027 audit-trail durability per §A.3.
 - `docs/project/compliance/kyc-fsm-transitions-evidence.md` — KYC FSM
   evidence (S15).
 - `docs/project/compliance/safeguarding-fin060-procedure.md` — safeguarding +
@@ -349,8 +347,9 @@ or later sprints. Each line names the target path, anchor, and owner sprint.
 - `docs/project/compliance/compliance-pack-v1-review-checklist.md` — review
   checklist (S13).
 - `docs/project/compliance/open-items-register.md` — open-items register (S24).
-- TODO: verify anchor **ADR-019** for audit retention — current
-  `decisions/ADR-019-ai-guardian-two-family.md` does not match brief usage.
+- Resolved (D3.2d.4): canonical anchor for CASS 15 §15.10 / 5y retention is
+  ADR-027 audit-trail durability. See §A.3 and
+  IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12.
 - TODO: verify anchor **ADR-036** for Travel Rule — not present in
   `decisions/`. If brief claim ("CLOSED per PR #214") is correct, retrieve
   artifact; otherwise open a fresh Travel Rule ADR in D3.2c.
