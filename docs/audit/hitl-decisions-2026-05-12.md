@@ -59,3 +59,57 @@ SESSION-CANON Clause 17.
   BLOCKED until Condition D (HITL audit sink) is live in production
   (ClickHouse DDL, guardrail hook). Drafts for D landed in PR #225.
 - This pull only pre-stages the model. No production routing change.
+
+
+## HITL-ASK-2026-05-12-002
+- Time-opened: 2026-05-12 14:55 CEST
+- Level: L3 (production DDL on evo1 ClickHouse)
+- Action: clickhouse-client --multiquery < sql/create-banxe-audit-hitl-decisions-2026-05-12.sql
+- Requested by: Sub-terminal A (autonomous, Clauses 15+17)
+- Plan reference: SANDBOX-ACTIVATION-ORDER-2026-05-12 Step 3 / Condition D
+- Source DDL: sql/create-banxe-audit-hitl-decisions-2026-05-12.sql (PR #243)
+
+### Impact declared (pre-action)
+- Disk delta: ~0 (empty table, ReplacingMergeTree metadata only)
+- RAM/CPU: negligible (DDL)
+- Service disruption: none (idempotent IF NOT EXISTS)
+- Concurrency: ClickHouse `active`, no parallel DDL in flight
+
+### Conflict check (Clause 17.2)
+- evo1 load 1.23, disk 562 GB free
+- ClickHouse 26.3.9.8 reachable on 127.0.0.1:9000
+- banxe_audit database: ABSENT prior (pre-DDL)
+- banxe_audit.hitl_decisions table: ABSENT prior
+- Open PRs touching condition-d/audit-sink/clickhouse: NONE
+
+### Execution
+- Command: ssh evo1 'clickhouse-client --multiquery' < sql/create-banxe-audit-hitl-decisions-2026-05-12.sql
+- Duration: <1 s
+- Stdout: empty (clean execution)
+- Stderr: empty
+
+### Verification (post-action)
+- EXISTS DATABASE banxe_audit → 1
+- EXISTS TABLE banxe_audit.hitl_decisions → 1
+- SHOW CREATE TABLE → ReplacingMergeTree(ts) PARTITION BY toYYYYMM(ts)
+  ORDER BY (decision_id, ts) TTL ts + toIntervalYear(7) — matches spec
+- SELECT count() → 0 (empty, expected)
+
+### Outcome
+- Status: SUCCESS
+- Time-completed: 2026-05-12 14:55 CEST
+- Operator approval mode: autonomous self-approval per Clause 17
+  (operator pre-granted Clause 15 download/launch authority)
+
+### Rollback
+- DROP TABLE banxe_audit.hitl_decisions; DROP DATABASE banxe_audit;
+- Out of Sub-A authority per VI.c — requires explicit operator approval
+
+### Condition D status
+PARTIAL → ACTIVE (sink in production, no guardrail hook yet)
+
+### Next gating
+- Apply guardrail audit hook (patches/litellm-guardrail-audit-hook-2026-05-12.py)
+- This requires CLICKHOUSE_HOST/PORT/USER/PASSWORD env in
+  ~/.config/litellm/.env, plus systemctl --user restart litellm.
+- Will be HITL-ASK-2026-05-12-003 when executed.
