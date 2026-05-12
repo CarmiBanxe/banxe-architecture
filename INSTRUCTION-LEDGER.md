@@ -8100,3 +8100,34 @@ Refs:
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
   IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
   IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+
+### IL-PROJECT-DOCS-SPRINT-D2-RECOVERY-IL-PAIRING-FIXUP-2026-05-12
+
+- Date: 2026-05-12 11:45 CEST
+- Phase (GSD): Sprint D2 recovery — IL pairing fixup for commit 1aff6b1
+- Status: BINDING (canon pairing restored)
+- Priority: P0
+- Executor: Central.
+- Artifact commit: 1aff6b1 (already in main, merged via PR #233 at 2026-05-12 ~11:08 CEST). 9 files changed, +869 lines: docs/adr/INDEX.md (88), docs/project/{architecture,api,runbooks,compliance,security,data,operations,governance}/README.md.
+- Reason: when commit 1aff6b1 was prepared, an IL pairing append was authored via python heredoc, then incorrectly discarded by an intermediate `git restore INSTRUCTION-LEDGER.md` issued for a separate purpose. The 9 D2 artifact files were committed and merged without an accompanying IL entry, violating IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12. This entry restores the missing pairing.
+- Action: this IL entry retroactively pairs commit 1aff6b1 (orphan 84cbcbe recovery) with INSTRUCTION-LEDGER. No code or file changes; INSTRUCTION-LEDGER.md only.
+- Substantive content recap (so this pairing is self-sufficient and not just a back-reference):
+  - Orphan SHA 84cbcbe held Sprint D2 artifacts (8 domain skeletons + ADR INDEX.md) that were never reachable from main. Forensic verification 2026-05-12 ~11:10 CEST proved this: `git branch -a --contains 84cbcbe` empty; `git ls-tree HEAD -- docs/project docs/adr` lacked all 9 files.
+  - Recovery action in commit 1aff6b1: checkout 84cbcbe -- of the 9 artifact files (docs/project/data/README.md required `git add -f` due to root .gitignore `data/` rule, OI-2 still open). Backlog and master-index on main were intentionally left at D3.1 state (not regressed).
+  - Spec-First Auditor on commit 1aff6b1: PASS 12/12.
+- Consequence (now restored to truthful state):
+  - IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12 (line 8016): artifacts now exist in main — entry truthful.
+  - IL-PROJECT-DOCS-SPRINT-D3-1-OI-1-RECONCILIATION-2026-05-12 (line 8056): reconciled paths now exist — entry truthful.
+  - IL-PROJECT-DOCS-SPRINT-D3-2A-STATUS-BUMP-2026-05-12 (line 8081): targets exist — entry truthful.
+- Open issues still tracked:
+  - OI-2 (SD2): root .gitignore `data/` rule still matches docs/project/data/.
+  - OI-3 (SD2/D3): ADR-028/029/030 number collision between banxe-architecture and banxe-emi-stack.
+- Refs:
+  commit 1aff6b1 (D2 recovery, PR #233)
+  IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D3-1-OI-1-RECONCILIATION-2026-05-12
+  IL-PROJECT-DOCS-SPRINT-D3-2A-STATUS-BUMP-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
