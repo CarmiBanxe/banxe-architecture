@@ -8012,3 +8012,43 @@ Refs: IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-PERSISTENCE-S
   IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12 (in force)
   IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 (in force; ownership assigned to Central)
   IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12 (anchor)
+
+### IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12
+
+- Date: 2026-05-12 10:55 CEST
+- Phase (GSD): Sprint D2 — 8 domain skeletons + ADR index backfill + backlog/master-index refresh (canon pairing fixup, executed by Central post-canon-change)
+- Status: BINDING (sprint accepted, pairing restored post-merge)
+- Priority: P0
+- Executor of artifact: Terminal B (under IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12, since superseded for documentation scope by IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12).
+- Executor of this IL pairing: Central (per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12).
+- Artifact commit: 84cbcbe, already merged into main prior to this entry. Canon pairing was missed at the time of merge; this entry restores it per IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12.
+- Spec-First Auditor on artifact commit: PASS 12/12 (BLOCK 0..11).
+- Files changed by artifact commit: 11, +942 / -51 lines.
+- Domain skeletons (8 of 8 created):
+  - docs/project/architecture/README.md (99 lines)
+  - docs/project/api/README.md (89 lines)
+  - docs/project/runbooks/README.md (102 lines)
+  - docs/project/compliance/README.md (103 lines)
+  - docs/project/security/README.md (100 lines)
+  - docs/project/data/README.md (93 lines; required `git add -f` due to root .gitignore `data/` rule — OI-2)
+  - docs/project/operations/README.md (105 lines)
+  - docs/project/governance/README.md (90 lines)
+- ADR INDEX.md (docs/adr/INDEX.md): 6 known ADRs indexed (027, 031, 032, 033, 034, 035) + 7 MISSING range rows (001-026, 028, 029, 030, 036, 037, 038). No existing ADR-*.md bodies modified.
+- Backlog deltas (docs/project/PROJECT-DOCUMENTATION-BACKLOG-S12-S25.md): 28 rows flipped MISSING -> PARTIAL. By sprint: S12 (2), S13 (4), S14 (3), S15 (2), S16 (3), S17 (1), S18 (3), S19 (2), S20 (2), S23 (3), S24 (1), S25 (2). Status totals (D1 -> D2): DONE 11 -> 11; PARTIAL 7 -> 35 (+28); MISSING 60 -> 32 (-28); BLOCKED 1 -> 1; DEFERRED 2 -> 2; TOTAL 81 -> 81.
+- Master index: §5 domain coverage table refreshed to 8-row SKELETON (D2) with inline links. §3 4-rule DoD and §4 5-tag legend untouched.
+- Bounded-context compliance: only docs/project/** + docs/adr/INDEX.md modified by artifact commit. Forbidden paths untouched.
+
+Open issues recorded for D3 / SD2:
+- OI-1 (D3): folder-name reconciliation between backlog target paths (iam-security/, data-governance/) and D2 skeleton paths (security/, data/). ~28 remaining MISSING rows; D3 will rewrite backlog target paths to D2 short names.
+- OI-2 (SD2 factory canon): root .gitignore rule `data/` matches docs/project/data/. D2 used `git add -f` workaround; repo-wide fix out of D2 scope.
+- OI-3 (SD2/D3 policy): ADR-028/029/030 number collision between canonical banxe-architecture (MISSING) and bank-side banxe-emi-stack. Policy decision deferred.
+
+Refs:
+  IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12
+  IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12
+  IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12 (partially superseded for documentation scope)
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12
+  IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
