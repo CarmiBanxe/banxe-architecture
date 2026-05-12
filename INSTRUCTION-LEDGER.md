@@ -7979,3 +7979,36 @@ S12.4 HOLD lift conditions: G-IAM-08 fixed, G-IAM-09 fixed, G-FACTORY-05 resolve
 No code or config changes; documentation only.
 
 Refs: IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12; IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12; ADR-029; FCA SYSC 4.1; GDPR Art.32.
+
+### IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+
+- Date: 2026-05-12 10:50 CEST
+- Phase (GSD): CANON — full documentation work is owned by Central; Terminal B remains autonomous for non-documentation tasks
+- Status: BINDING
+- Priority: P0
+- Operator directive (verbatim, in-session 2026-05-12 ~10:40 CEST): "делай полную документацию в этом терминале, не передавая. Возникают ошибки и путаница. Все что делается в терминале B должно быть автономным и терминал сам должен фиксировать свою работу. Просто те задания, которые ты выдаешь терминалу B не должны быть в конфликте с тем, что ты делаешь."
+- Decision:
+  1. The full documentation programme (Layer 1 factory canon + Layer 2 project docs, including all Sprint D1, D2, D3, ... entries; INSTRUCTION-LEDGER fixations; ROADMAP updates; ADRs; runbooks; agent passports; compliance / security / data / operations / governance docs) is OWNED BY CENTRAL. Central performs the writes, the commits, the pushes, the PRs, the merges, and the IL pairing — all from the Central terminal (Legion shell, host mark-legion).
+  2. Documentation work is NOT dispatched to Terminal B. Past attempts (e.g. Sprint D2 dispatched to Terminal B) caused canon-pairing violations and copy-paste fragility across multiple shells. Documentation is single-owner from now on.
+  3. Terminal B remains operational AND autonomous for non-documentation tasks. When Central dispatches a work package to Terminal B (e.g. code refactor, infra task, sandbox prototype, evaluation pipeline), Terminal B executes it end-to-end: B performs the work, runs the auditor, commits, pushes, opens the PR, merges (with admin merge if policy allows), writes its own IL entry pairing the artifact, and deletes the branch — all autonomously. Central does NOT push/PR/merge B work and does not write IL entries on B's behalf.
+  4. Central, when issuing a prompt to Terminal B, MUST guarantee non-overlapping scope with any in-flight Central work: separate branch, separate file scope, separate ports/services where applicable; Allowed paths and Forbidden paths declared explicitly in the prompt.
+  5. Terminal A (innovation sandbox) is unaffected by this entry: it remains an A-only sandbox for prototypes, with outputs reviewed by Central before merging.
+- Relation to prior canon:
+  - SUPERSEDES the part of IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12 that applied to documentation work (documentation is no longer dispatched to B). The autonomous-fixation rule REMAINS IN FORCE for non-documentation tasks dispatched to B.
+  - MODIFIES IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12: Terminal B scope is narrowed to non-documentation work packages.
+  - Does NOT supersede IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (Clause F-01 single output, F-02 placement) — still in force.
+  - Does NOT supersede IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 — still in force; Central artifacts continue to carry explicit TARGET headers.
+  - Does NOT supersede IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12 — still in force.
+  - Does NOT supersede IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 — still in force; this entry assigns ownership of that two-layer work to Central.
+- Operational consequences (immediate):
+  - The outstanding Sprint D2 IL pairing (IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12, missing for artifact commit 84cbcbe already in main) is the responsibility of Central. Central will issue the IL pairing fixup as its next shell artifact after this entry.
+  - Any in-flight Terminal B prompt that involves documentation writing (e.g. earlier Sprint D2/D3 prompts) is CANCELLED. Operator should not paste documentation prompts into Terminal B.
+  - Any non-documentation work currently dispatched to Terminal B remains valid and continues under IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12 (autonomous fixation by B).
+- Refs:
+  IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12 (partially superseded — documentation scope removed)
+  IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12 (modified — B scope narrowed)
+  IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (in force)
+  IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 (in force)
+  IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12 (in force)
+  IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 (in force; ownership assigned to Central)
+  IL-PROJECT-DOCS-SPRINT-D1-BASELINE-2026-05-12 (anchor)
