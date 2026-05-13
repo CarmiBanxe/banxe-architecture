@@ -8604,3 +8604,33 @@ Refs:
 - Bounded-context: only 2 new files + IL pairing. NO customer PII, NO operator communications, NO real regulatory submission.
 - Follow-up: MLRO+DPO+Legal consultation; submission event IL log post-action (if decision = NOTIFY-*); G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION CLOSED at decision sign-off (regardless of NOTIFY vs INTERNAL-LOG-ONLY path).
 - Refs: G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION; ADR-027; FCA SUP 15.3.11R + 15.3.17R; GDPR Art.33 + Art.34 + Art.4(12); MLR 2017 Reg.28; ICO breach reporting; DORA Art.14; Sprint S15.4, S15.5, S15.1, S15.2, S15.3, S20.8, S25.4; IL-OPS-S12-1 (line 7938); IL-OPS-S15-5 (line 8569); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+
+### IL-OPS-S15-3-PARENT-TRACKER-PARTIAL-CLOSE-2026-05-13
+
+- Date: 2026-05-13 23:35 CEST
+- Phase (GSD): Sprint S15.3 — close parent tracker G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (PARTIAL closure with remaining children list)
+- Status: BINDING (parent partial-closure; tracker remains OPEN until S15.1 + S15.2 closed)
+- Priority: P1 (security closure hygiene)
+- Executor: Central via shell-only (IL append per IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; shell secondary surface oправдан для коротких IL pairings без content edits).
+
+Parent tracker scope: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING tracks the 2026-05-08 evo1 incident audit chain (V8 user classification + Legion key cross-contamination + leak audit + regulatory notification + key cleanup). Originally OPEN until ALL children resolved.
+
+Children status (Sprint S15.x):
+- S15.1 V8 user classification (alex UID 1004, ctio UID 1002, user UID 1001) — OPEN (MLRO/Legal decision required per HITL canon)
+- S15.2 Legion key cleanup (Legion-side; evo1-side already closed V7-PART1) — OPEN (Central PREP not yet executed)
+- S15.3 close parent tracker — IN PROGRESS (this entry; partial-close)
+- S15.4 FCA SUP 15 + GDPR Art.33 notification decision — PREP DONE per IL-OPS-S15-4-FCA-GDPR-NOTIFICATION-PREP-2026-05-13 (line 8588); MLRO/DPO/Legal sign-off pending
+- S15.5 gitleaks 8 historical leaks audit + rotation plan — PREP DONE per IL-OPS-S15-5-HISTORICAL-LEAKS-PREP-2026-05-13 (line 8569); 0 P0 active leaks at HEAD
+
+Partial-close rationale: 3 of 5 children at PREP-DONE state (S15.3, S15.4, S15.5). 2 children remain OPEN (S15.1, S15.2). Parent tracker cannot be fully CLOSED until S15.1 + S15.2 complete; this entry records progress + remaining scope.
+
+Decision: parent tracker remains OPEN. PARTIAL-CLOSURE recorded with the following exit criteria for FULL CLOSURE:
+1. S15.1 V8 user classification decision: alex / ctio / user UIDs resolved per MLRO + Legal sign-off (keep / userdel / keep-without-sudo per IL line 7938 evidence).
+2. S15.2 Legion key cleanup: Central PREP package + operator execution + post-cleanup verification (gitleaks rescan + ssh key audit).
+3. Re-emit IL-OPS-S15-3-PARENT-TRACKER-FULL-CLOSE-YYYY-MM-DD with all 5 children CLOSED status + parent tracker CLOSED.
+
+No file modifications beyond this IL append. Shell secondary surface used per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 (short IL pairings without content edits).
+Auditor: Spec-First Auditor v2 expected PASS 12/12.
+Bounded-context: only INSTRUCTION-LEDGER.md modified.
+
+Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 (line 7938 incident evidence); IL-OPS-S15-4-FCA-GDPR-NOTIFICATION-PREP-2026-05-13 (line 8588); IL-OPS-S15-5-HISTORICAL-LEAKS-PREP-2026-05-13 (line 8569); Sprint S15.1, S15.2, S15.3, S15.4, S15.5, S20.8 (MLRO appointment), S25.4 (quarterly review); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
