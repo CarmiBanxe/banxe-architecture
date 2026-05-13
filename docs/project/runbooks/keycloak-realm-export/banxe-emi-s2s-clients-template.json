@@ -1,0 +1,90 @@
+{
+  "_comment": "Sprint S12.3 PREP — Service-to-service OAuth2 client_credentials grant template for KC realm banxe-emi. Placeholders {{CLIENT_SECRET_*}} to be filled by operator from /dev/urandom (32+ bytes base64). NEVER commit real secret values. Operator stores secrets in vault only.",
+  "_anchors": {
+    "adr": ["ADR-012", "ADR-013", "ADR-015", "ADR-016", "ADR-017", "ADR-018", "ADR-019", "ADR-027", "ADR-030"],
+    "il": "IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11",
+    "sprint": "S12.3",
+    "rotation": "90d per Sprint S12.5"
+  },
+  "realm": "banxe-emi",
+  "clients": [
+    {
+      "clientId": "svc-compliance-api",
+      "name": "Service: Compliance API (port 8093, ADR-012)",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{CLIENT_SECRET_COMPLIANCE_API}}",
+      "_anchors": ["ADR-012", "S12.3"]
+    },
+    {
+      "clientId": "svc-midaz-cbs",
+      "name": "Service: Midaz CBS (port 8095, ADR-013)",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{CLIENT_SECRET_MIDAZ_CBS}}",
+      "_anchors": ["ADR-013", "S12.3"]
+    },
+    {
+      "clientId": "svc-hyperswitch",
+      "name": "Service: Hyperswitch payments (ports 8096-8098, ADR-015)",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{CLIENT_SECRET_HYPERSWITCH}}",
+      "_anchors": ["ADR-015", "S12.3"]
+    },
+    {
+      "clientId": "svc-safeguarding",
+      "name": "Service: Safeguarding (Sprint S16.4)",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{CLIENT_SECRET_SAFEGUARDING}}",
+      "_anchors": ["S16.4", "S12.3"]
+    },
+    {
+      "clientId": "svc-reconciliation",
+      "name": "Service: Reconciliation engine (Sprint S16.4)",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{CLIENT_SECRET_RECONCILIATION}}",
+      "_anchors": ["S16.4", "S12.3"]
+    },
+    {
+      "clientId": "svc-ai-plane",
+      "name": "Service: AI plane (ADR-016/018/019)",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{CLIENT_SECRET_AI_PLANE}}",
+      "_anchors": ["ADR-016", "ADR-018", "ADR-019", "S12.3"]
+    }
+  ]
+}

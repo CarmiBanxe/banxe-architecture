@@ -8504,3 +8504,22 @@ Refs:
 - Note: untracked file evo1:9000 in worktree (mistaken curl/redirect output during Claude -p execution) is NOT staged; left untracked for housekeeping.
 - Follow-up: D3.x validation script docs/project/runbooks/keycloak-session-timeout-validate.sh; operator deploy event IL logging post-action; runbook Status SKELETON -> CONTENT after operator deploy validation.
 - Refs: ADR-017, ADR-027, ADR-030; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
+
+### IL-OPS-S12-3-S2S-TOKENS-PREP-2026-05-13
+
+- Date: 2026-05-13 17:00 CEST
+- Phase (GSD): Sprint S12.3 PREP — Keycloak S2S tokens (G-IAM-03 mitigation; runbook + JSON template)
+- Status: BINDING (prep only; deploy HITL-gated; G-IAM-03 CLOSED at deploy time)
+- Priority: P1
+- Executor: D1 (runbook 16052 B / ~200 lines) produced by Claude Code Central via claude -p non-interactive per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. D2 (JSON template 6 service entries) produced via shell cat-heredoc (claude -p completed only D1 then exited without commit, same pattern as S12.2). Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+- Artifacts (NEW):
+  - docs/project/runbooks/keycloak-s2s-tokens-deploy-2026-05-13.md (16052 B, ~200 lines)
+  - docs/project/runbooks/keycloak-realm-export/banxe-emi-s2s-clients-template.json (6 client entries, placeholders only)
+- Service inventory (6): svc-compliance-api (8093, ADR-012), svc-midaz-cbs (8095, ADR-013), svc-hyperswitch (8096-8098, ADR-015), svc-safeguarding (S16.4), svc-reconciliation (S16.4), svc-ai-plane (ADR-016/018/019).
+- Pattern: confidential client + serviceAccountsEnabled true + client_credentials grant + clientAuthenticatorType client-secret. 90-day rotation per Sprint S12.5. NEVER commit real secrets.
+- NO production deploy. Operator deploys via kcadm.sh under HITL gate (Central + operator + MLRO advisory). Audit ClickHouse Guardian per ADR-027 (5y CASS 15).
+- Pre-condition for deploy: G-IAM-08 fixed (banxe-emi-stack PR #133 prep — no DB password in ExecStart).
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Note: untracked evo1:9000 housekeeping file remains in worktree from S12.2 session; NOT staged.
+- Follow-up: S12.5 90-day rotation cadence; operator deploy event IL log; G-IAM-03 CLOSED at deploy.
+- Refs: ADR-012, ADR-013, ADR-015, ADR-016, ADR-017, ADR-018, ADR-019, ADR-027, ADR-030. Sprint S12.3, S12.5, S16.4. IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; banxe-emi-stack PR #133/#134.

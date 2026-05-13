@@ -1,0 +1,227 @@
+# Keycloak Service-to-Service Tokens Deploy Runbook (Sprint S12.3)
+
+Document ID: RB-KC-S2S-TOKENS-2026-05-13
+Status: SKELETON
+Sprint: S12.3 (service-to-service tokens provisioned — G-IAM-03 mitigation)
+Layer: 2 (Product Plane runbook per IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12)
+HITL gate: REQUIRED — Central authoring; operator executes kcadm.sh on evo1; MLRO advisory on auth-surface change.
+Owner: Central per IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; operator executes under HITL gate.
+Last reviewed: 2026-05-13
+
+## Anchors
+
+- ADR-017 — Keycloak IAM cutover (realm `banxe-emi` on evo1:8180 = canonical issuer; §1 single IAM-plane; §2 service-to-service auth via client_id + client_secret; §5 90-day rotation policy).
+- ADR-030 — Auth surface rate-limit policy (S2S token endpoint shares `/realms/banxe-emi/protocol/openid-connect/token` surface; KC `bruteForceProtected` already enabled per realm JSON; application-level limiters separate).
+- ADR-012 — Compliance API port 8093 (service consumer of S2S tokens).
+- ADR-013 — Midaz CBS primary ledger (service consumer; port 8095).
+- ADR-015 — Payment processing stack (Hyperswitch ports 8096-8098; service consumer).
+- ADR-016 — AI plane PII/AML routing (AI plane consumer).
+- ADR-018 — Hybrid 5-layer AI compute (AI plane consumer).
+- ADR-019 — AI Guardian two-family (AI plane consumer).
+- ADR-027 — Audit-trail durability (ClickHouse Guardian sink, 5y CASS 15 retention; S2S issuance events MUST flow there).
+- IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 — defines Sprint S12.3 scope.
+- IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 — KC 26.2.5 prod evidence (Postgres backend `jdbc:postgresql://127.0.0.1:15433/keycloak`).
+- IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13 — S12.2 PREP style sibling (session timeout runbook + template).
+- banxe-emi-stack PR #133 — G-IAM-08 fix (KC service unit no longer reads DB password from ExecStart). MUST be merged + deployed BEFORE this runbook deploys.
+- banxe-emi-stack PR #134 — G-IAM-09 prep (pg_dump backup pattern, 29/29 PASS).
+- Style sibling: docs/project/runbooks/keycloak-session-timeout-deploy-2026-05-13.md (S12.2 PREP).
+
+## Scope
+
+KC realm `banxe-emi` on evo1 (canonical issuer per ADR-017 §1). This deploy provisions six confidential OAuth2 clients with `serviceAccountsEnabled=true` so that internal services can obtain tokens via the `client_credentials` grant. It is a policy/config edit (client-create), NOT a destructive realm-create. S12.4 realm provisioning HOLD (G-IAM-08 / G-IAM-09 / G-FACTORY-05) does NOT block S12.3 — the realm already exists per ADR-017 cutover; S12.3 only adds clients.
+
+### Service inventory (6 clients)
+
+| clientId            | Service               | Port(s)    | Anchor                                  | Notes                                     |
+|---------------------|-----------------------|------------|-----------------------------------------|-------------------------------------------|
+| svc-compliance-api  | Compliance API        | 8093       | ADR-012                                 | FastAPI; AML/KYC/SCA surface.             |
+| svc-midaz-cbs       | Midaz CBS (primary)   | 8095       | ADR-013                                 | Ledger consumer; LedgerPort (I-28).       |
+| svc-hyperswitch     | Hyperswitch (payments)| 8096-8098  | ADR-015                                 | Card/SEPA/Faster Payments orchestrator.   |
+| svc-safeguarding    | Safeguarding daemon   | (internal) | Sprint S16.4                            | Daily CASS 15 reconciliation worker.      |
+| svc-reconciliation  | Reconciliation engine | (internal) | Sprint S16.4                            | dbt + ReconciliationEngine consumer.      |
+| svc-ai-plane        | AI plane gateway      | (internal) | ADR-016 / ADR-018 / ADR-019             | PII/AML routing; Guardian-shim consumer.  |
+
+### Target client configuration (per service)
+
+| KC field                          | Target value                                       |
+|-----------------------------------|----------------------------------------------------|
+| `clientId`                        | `svc-<name>` (see inventory)                       |
+| `enabled`                         | `true`                                             |
+| `publicClient`                    | `false` (confidential client)                      |
+| `serviceAccountsEnabled`          | `true` (enables `client_credentials` grant)        |
+| `standardFlowEnabled`             | `false` (no authorization code flow)               |
+| `directAccessGrantsEnabled`       | `false` (no ROPC; not for S2S)                     |
+| `implicitFlowEnabled`             | `false` (deprecated by OAuth 2.1)                  |
+| `clientAuthenticatorType`         | `client-secret` (default; `client-jwt` alternative — see EDGE CASES §1) |
+| Rotation cadence                  | 90 days per ADR-017 §5; tracked under Sprint S12.5 |
+
+`secret` is generated by KC on client-create. Operator captures the secret to a vault entry; the repo NEVER carries real secrets (template uses placeholders only — see D2 artefact).
+
+## Pre-flight (NOT executed in this PR — operator-only under HITL gate)
+
+1. SSH evo1 and verify KC service is healthy:
+   ```
+   ssh evo1 systemctl status keycloak
+   ```
+   Expected: `active (running)` with no recent restart loop. Abort if degraded.
+
+2. Per service, verify the target client does NOT already exist:
+   ```
+   kcadm.sh get clients -r banxe-emi -q clientId=svc-<name> --fields id,clientId
+   ```
+   Expected: empty array `[]`. If a client with the same `clientId` already exists, STOP and reconcile with operator — never silently overwrite a live client.
+
+3. Verify pg_dump backup is available per G-IAM-09 prep package (banxe-emi-stack PR #134, 29/29 PASS pattern). Restore-path MUST exist before any KC mutation. Abort if no recent backup (≤24 h old).
+
+4. **G-IAM-08 pre-condition.** Confirm banxe-emi-stack PR #133 (G-IAM-08 fix — KC service unit no longer reads DB password from `ExecStart`) is merged AND deployed on evo1. Without this fix, restarting KC during deploy may expose the DB password in process listing. Abort if PR #133 not yet deployed.
+
+5. Confirm no in-flight authentication-sensitive operation (no SCA challenge volume spike, no Phase G smoke test window). Coordinate with operator + MLRO advisory.
+
+## Deploy steps (NOT executed in this PR — operator-led under HITL gate)
+
+Per service (repeat for each of the six `svc-<name>` entries in the inventory):
+
+1. Create the confidential client (idempotent: skip if §Pre-flight step 2 returned non-empty):
+   ```
+   kcadm.sh create clients -r banxe-emi \
+     -s clientId=svc-<name> \
+     -s enabled=true \
+     -s publicClient=false \
+     -s serviceAccountsEnabled=true \
+     -s standardFlowEnabled=false \
+     -s directAccessGrantsEnabled=false \
+     -s implicitFlowEnabled=false \
+     -s clientAuthenticatorType=client-secret
+   ```
+   Capture the returned client UUID to the deploy event evidence.
+
+2. Retrieve the generated client secret and store in operator's vault (NOT in this repo, NOT in any IL entry, NOT in any log line):
+   ```
+   kcadm.sh get clients/<uuid>/client-secret -r banxe-emi
+   ```
+   Vault entry key convention: `keycloak/banxe-emi/svc-<name>/client-secret/v1`.
+
+3. Smoke test the `client_credentials` grant from operator's session (test consumer, NOT prod service):
+   ```
+   curl -sX POST \
+     -d grant_type=client_credentials \
+     -d client_id=svc-<name> \
+     -d client_secret=<from-vault> \
+     http://evo1:8180/realms/banxe-emi/protocol/openid-connect/token
+   ```
+   Assert: HTTP 200, `access_token` issued, no `refresh_token` (correct for S2S — refresh tokens are not part of `client_credentials`).
+
+4. Decode the returned JWT and verify (jq + base64):
+   - `iss` equals `http://evo1:8180/realms/banxe-emi` (ADR-017 §3 canonical issuer).
+   - `aud` includes `account` (KC default) AND the per-service audience mapping (TODO operator decision under EDGE CASES §3).
+   - `azp` equals `svc-<name>`.
+   - `exp - iat` matches the realm `accessTokenLifespan` set under Sprint S12.2 (900 s if S12.2 already deployed; KC default 300 s otherwise).
+   - `scope` is the default scope set; verify NO unexpected role mapper added scopes beyond service identity.
+
+5. Log the deploy event to INSTRUCTION-LEDGER.md (timestamp + operator co-sign + `clientId` + client UUID). **NEVER log the client secret value to IL.**
+
+## HITL gate
+
+Required parties before any `kcadm.sh create clients` runs:
+- **Central** (this runbook + IL pairing — authoring authority).
+- **Operator** (execution authority on evo1; only the operator runs kcadm.sh writes).
+- **MLRO advisory** (auth surface change touches FCA SCA scope per ADR-030 §Decision drivers — advisory, not blocking, because S2S client-create does not change end-user authentication flow).
+
+No EMERGENCY override permitted. Auth surface mutation without operator co-sign = P0 governance incident (CLAUDE.md §11 production-state mutation gate).
+
+## Rollback (NOT executed in this PR)
+
+1. Delete the confidential client (per service):
+   ```
+   kcadm.sh delete clients/<uuid> -r banxe-emi
+   ```
+
+2. Verify the client is gone and fails-closed:
+   ```
+   kcadm.sh get clients -r banxe-emi -q clientId=svc-<name> --fields id,clientId
+   ```
+   Expected: empty array `[]`. Smoke test the token endpoint with the deleted credentials — assert HTTP 401 / `invalid_client`.
+
+3. Invalidate the vault secret entry (`keycloak/banxe-emi/svc-<name>/client-secret/v1`) per operator's vault rotation procedure.
+
+4. Log rollback event to INSTRUCTION-LEDGER.md (timestamp + operator co-sign + reason).
+
+If rollback also fails: fall back to pg_dump restore per G-IAM-09 prep (banxe-emi-stack PR #134). Escalate to Central + MLRO immediately.
+
+## Audit trail
+
+Deploy + rollback events MUST be logged to ClickHouse Guardian per ADR-027 §Decision drivers — durable evidence chain, 5 y FCA CASS 15 retention. Sink is the standard Guardian audit table (per ADR-027 §Implementation); event payload includes `clientId`, client UUID, operator handle, MLRO advisory artefact ID, and IL anchor. **Client secret values MUST NEVER appear in any audit payload.**
+
+If ClickHouse Guardian write fails at deploy time, abort deploy (do NOT proceed silently). Audit gap = compliance incident per ADR-027 §Context.
+
+## Cross-service code-side update tickets
+
+Each consuming service must be updated to fetch an S2S token via `client_credentials` and pass it on outbound calls as `Authorization: Bearer <token>`. The repo-side tickets are queued (separate PRs, separate sprints):
+
+- **svc-compliance-api (ADR-012, port 8093)** — TICKET-S12-3-CS-01: outbound calls to Midaz + Hyperswitch + AI plane wrap in S2S token client; inbound auth middleware validates `azp` / `aud` for incoming S2S calls.
+- **svc-midaz-cbs (ADR-013, port 8095)** — TICKET-S12-3-CS-02: LedgerPort adapter (I-28) acquires S2S token before Midaz HTTP calls.
+- **svc-hyperswitch (ADR-015, ports 8096-8098)** — TICKET-S12-3-CS-03: S2S token middleware on inbound; outbound webhook callbacks signed with S2S token.
+- **svc-safeguarding (Sprint S16.4)** — TICKET-S12-3-CS-04: daily recon daemon fetches S2S token to call Midaz + compliance API.
+- **svc-reconciliation (Sprint S16.4)** — TICKET-S12-3-CS-05: dbt orchestrator and ReconciliationEngine consume S2S token for ClickHouse + Midaz read paths.
+- **svc-ai-plane (ADR-016 / ADR-018 / ADR-019)** — TICKET-S12-3-CS-06: AI plane gateway acquires S2S token before calling compliance API + Guardian-shim.
+
+Tickets are **out of scope for this PREP package** (S12.3 PREP = repo-only documentation + template). They are queued under S12.3 EXEC and follow-up sprints.
+
+## TODO list (open for operator action under HITL gate)
+
+- TODO operator decision: `clientAuthenticatorType=client-secret` vs `client-jwt` (mTLS-grade asymmetric auth) per EDGE CASES §1.
+- TODO per-service audience mapper decision (EDGE CASES §3): default `account` audience vs explicit per-service audience.
+- TODO mark `svc-<name>` entries as `_pendingDeployment: true` for any service in the inventory not yet running in prod (EDGE CASES §2).
+- TODO operator vault entry naming convention review (`keycloak/banxe-emi/svc-<name>/client-secret/v1`).
+- TODO landing of `docs/project/runbooks/keycloak-s2s-tokens-validate.sh` (D3.x follow-up validation script).
+- TODO Sprint S12.5 rotation runbook (90-day cadence per ADR-017 §5).
+
+## EDGE CASES
+
+### §1 — `client-secret` vs `client-jwt`
+
+Default chosen: `clientAuthenticatorType=client-secret` (symmetric shared secret, KC native). Alternative: `client-jwt` (RFC 7523 — private_key_jwt; service holds a private key, KC verifies via JWKS or registered public key).
+
+Trade-offs:
+- `client-secret`: simpler operator workflow; secret is a single string to vault; 90-day rotation per ADR-017 §5; risk = secret leak via env vars / logs.
+- `client-jwt`: stronger (no shared secret in flight); aligns with PSD2 RTS Art.4 / FAPI 1.0 advanced profile; requires per-service key management; rotation = key roll, not string roll.
+
+Operator decision required before deploy. The D2 template entries default to `client-secret` for parity with ADR-017 §2 wording; switching to `client-jwt` is a per-service choice tracked under Sprint S12.5.
+
+### §2 — service-not-yet-in-prod
+
+Some services in the inventory may not be running in prod at deploy time (svc-safeguarding, svc-reconciliation depend on Sprint S16.4; svc-ai-plane may pre-date or post-date AI plane GA). For any such service, mark the D2 template entry with `_pendingDeployment: true` and either:
+- Defer the client-create to a follow-up deploy event (preferred — avoids dangling clients with unused secrets).
+- Create the client now with `enabled=false` so the credential exists but cannot mint tokens until enabled.
+
+Operator decides per service. Default in this PREP package: defer (D2 entries carry `_pendingDeployment` placeholder).
+
+### §3 — audience mapper
+
+KC default audience for `client_credentials` is `account`. For strict per-service authorisation (so that an `svc-ai-plane` token cannot impersonate `svc-compliance-api` calls), add an audience mapper per client that injects the target service identifier into the `aud` claim. This is the recommended pattern but requires consuming services to validate `aud` on inbound — a code-side change tracked under the §Cross-service code-side update tickets above.
+
+Operator decision required before deploy. The D2 template entries do NOT include the audience mapper in this PREP package (mapper config is a separate `protocolMappers` block; documented as TODO).
+
+## Validation script (follow-up)
+
+TODO follow-up artefact: `docs/project/runbooks/keycloak-s2s-tokens-validate.sh` — automated client-list + token-smoke wrapper. Out of scope for this PREP package (Sprint S12.3 PREP is repo-only documentation + template). Owner queued under D3.x follow-up sprint.
+
+## Anchors footer
+
+- ADR-012 (decisions/ADR-012-compliance-api-port-8093.md)
+- ADR-013 (decisions/ADR-013-midaz-cbs-primary.md)
+- ADR-015 (decisions/ADR-015-payment-processing-stack.md)
+- ADR-016 (decisions/ADR-016-ai-plane-pii-aml-routing.md)
+- ADR-017 (decisions/ADR-017-keycloak-iam-cutover.md)
+- ADR-018 (decisions/ADR-018-hybrid-5-layer-ai-compute.md)
+- ADR-019 (decisions/ADR-019-ai-guardian-two-family.md)
+- ADR-027 (decisions/ADR-027-audit-trail-durability.md)
+- ADR-030 (decisions/ADR-030-auth-rate-limit-policy.md)
+- Sprint S12.3 (G-IAM-03 mitigation), Sprint S12.5 (90-day rotation), Sprint S16.4 (safeguarding + reconciliation)
+- IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11
+- IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12
+- IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13
+- banxe-emi-stack PR #133 (G-IAM-08 fix — pre-condition)
+- banxe-emi-stack PR #134 (G-IAM-09 prep — pg_dump backup pattern)
+- IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12
+- IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12
