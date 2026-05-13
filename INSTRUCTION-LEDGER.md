@@ -8548,3 +8548,20 @@ Refs:
 - Real secrets in template: ZERO (placeholders + vault key names only; per-repo secret generation is operator-side `openssl rand -hex 32`).
 - Follow-up: D3.x validation script `docs/project/runbooks/github-webhook-validate.sh`; operator deploy event IL log per repo; G-GUARDIAN-WEBHOOK-MISSING CLOSED at first successful PR-event-receive on Guardian per repo; S14.2 ENFORCE rollout to 4 repos (PR #176, downstream).
 - Refs: ADR-019, ADR-027, ADR-029, ADR-033. Sprint S14.3, S14.2. IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13; IL-OPS-S12-3-S2S-TOKENS-PREP-2026-05-13; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+
+### IL-OPS-S14-1-CLICKHOUSE-AUDIT-RETENTION-VERIFY-2026-05-13
+
+- Date: 2026-05-13 21:00 CEST
+- Phase (GSD): Sprint S14.1 — ClickHouse Guardian audit retention verify (DONE; ADR-019 naming amendment scheduled separately)
+- Status: BINDING (S14.1 deliverable closed)
+- Priority: P0
+- Executor: Central read-only shell diagnostic on evo1 per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 (shell legitimate for read-only DB diagnostic).
+- Artifact: docs/audit/s14-1-clickhouse-guardian-audit-retention-verify-2026-05-13.md (4494 B, full findings + verdict + open follow-ups).
+- Verdict: 5y TTL retention ACTIVE on default.guardian_audit_events (MergeTree, TTL event_date + toIntervalYear(5), 2801 live events, PARTITION BY toYYYYMM(event_date), 15 columns with scope dispatch). Functionally compliant with FCA CASS 15 §15.10, DORA Art.14(2), ADR-019 line 53-54 (5y BLOCK on reduction).
+- Canon-prod naming mismatch: ADR-019 prescribed guardian_audit_factory + guardian_audit_project NOT present (8 candidate locations all MISSING). Prod uses unified default.guardian_audit_events with scope column dispatch (factory vs project). Functionally equivalent.
+- Decision: S14.1 DONE (5y retention verified). ADR-019 amendment SCHEDULED separately (low-priority, cosmetic naming alignment, no data migration risk, same class as D3.2c anchor mismatches resolved by amendment).
+- Adjacent findings (out of S14.1 scope, recorded for future sprints): banxe.audit_trail no-TTL (non-Guardian chain); banxe.safeguarding_breaches + safeguarding_events (S16.4 territory); banxe_audit.hitl_decisions (HITL log, S25.4 quarterly review).
+- Bounded-context: only docs/audit/s14-1-clickhouse-guardian-audit-retention-verify-2026-05-13.md + this IL entry.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Follow-up: ADR-019 amendment to reflect actual prod naming (lines 31, 47, 74); ADR-027 fail-open httpx implementation gap remains separate open work; banxe.audit_trail TTL review.
+- Refs: ADR-019 (AI Guardian two-family, ACCEPTED locked); ADR-027 (audit-trail-durability); FCA CASS 15 §15.10; DORA Art.14(2); MLR 2017 Reg.28; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-S14-3-GUARDIAN-WEBHOOK-PREP-2026-05-13; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
