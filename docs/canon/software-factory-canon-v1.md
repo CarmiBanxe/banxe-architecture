@@ -1,6 +1,6 @@
 # Software Factory Canon v1.0
 
-**Status:** DRAFT
+**Status:** RATIFIED (2026-05-14, Sub-A Clause 17)
 **Date:** 2026-05-14
 **Owner:** Operator (Moriel Carmi)
 **Scope:** CarmiBanxe organisation — all repos under banxe-emi-stack and MetaClaw
@@ -75,8 +75,8 @@ These invariants are non-negotiable. Violation triggers an immediate BLOCK verdi
 | Role | Person | Gate authority |
 |------|--------|---------------|
 | **Operator** | Moriel Carmi | Final approval on all promotions, UNSAFE command execution, P0 deprioritisation override |
-| **MLRO** | [UNKNOWN — to be designated] | Compliance sign-off on AML/KYC changes, CASS 15 reconciliation, payment routing |
-| **CTIO** | [UNKNOWN — to be designated] | Architecture sign-off on ADR amendments, model changes, cluster topology |
+| **MLRO** | Moriel Carmi (interim until dedicated MLRO designated) | Compliance sign-off on AML/KYC changes, CASS 15 reconciliation, payment routing |
+| **CTIO** | Moriel Carmi (interim until dedicated CTIO designated) | Architecture sign-off on ADR amendments, model changes, cluster topology |
 
 ### 4.3 HITL risk matrix
 
