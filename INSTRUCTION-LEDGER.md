@@ -8565,3 +8565,22 @@ Refs:
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Follow-up: ADR-019 amendment to reflect actual prod naming (lines 31, 47, 74); ADR-027 fail-open httpx implementation gap remains separate open work; banxe.audit_trail TTL review.
 - Refs: ADR-019 (AI Guardian two-family, ACCEPTED locked); ADR-027 (audit-trail-durability); FCA CASS 15 §15.10; DORA Art.14(2); MLR 2017 Reg.28; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-S14-3-GUARDIAN-WEBHOOK-PREP-2026-05-13; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
+
+### IL-OPS-S15-5-HISTORICAL-LEAKS-PREP-2026-05-13
+
+- Date: 2026-05-13 22:15 CEST
+- Phase (GSD): Sprint S15.5 PREP — Historical secret leaks audit + rotation plan (G-SECURITY-HISTORICAL-LEAKS mitigation; audit doc + runbook)
+- Status: BINDING (audit-prep DONE; rotation HITL-gated for operator)
+- Priority: P1
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12. Read-only gitleaks v8.18.4 scan executed pre-edit against origin/main HEAD 56134e33cc2089ae829183a4a867dd319dc46f6f.
+- Artifacts:
+  - docs/audit/s15-5-historical-leaks-audit-2026-05-13.md (NEW; gitleaks findings table, severity, vendor classification, P0 escalation criteria)
+  - docs/project/runbooks/secret-rotation-runbook-2026-05-13.md (NEW; per-secret-type rotation procedure template, HITL gate, rollback)
+- Findings: gitleaks scan (current HEAD, --no-git, --redact) returned 6 findings, all classified false positive (4× Midaz ADR-013 safeguarding account UUIDs, 1× Keycloak client UUID from provision-clients.sh log, 2× SHA-256 anchor hashes in IL anchor block per ADR-027). P0 / P1 active-prod credential count at current HEAD: 0. Roadmap-cited "8 historical leaks" refers to git history (--no-git omitted from scope this sprint); enumeration deferred to S17 with tuned .gitleaks.toml.
+- Vendor coverage (runbook): Modulr, SumSub, Sardine.ai, Marble, Telegram, Jube, Keycloak, internal S2S, database passwords.
+- NO production rotation executed. Operator rotates via vendor consoles under HITL gate (Central + operator + MLRO advisory). P0 leaks require immediate operator + MLRO notification per FCA SUP 15 + DPO per GDPR Art.33.
+- Pre-condition for rotation: S15.5 audit (D1) confirms severity; per-leak owner sprint assigned (most → S17 per ADR-032); vendor incident reports if P0; ADR-029 backup rollback path verified.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only 2 new files + this IL entry; no edits outside Allowed paths.
+- Follow-up: operator rotation events logged to IL post-action (IL-SEC-ROTATE-<vendor>-<YYYY-MM-DD>); G-SECURITY-HISTORICAL-LEAKS CLOSED when S17 history-walk scan + per-leak rotation complete; ADR-038 Vault adoption (S17) supersedes runbook step 2 env-var injection; S15.4 FCA SUP 15 + GDPR Art.33 notification decision (MLRO/DPO/Legal) for P0 active leaks; .gitleaks.toml allow-list TODO for Midaz UUIDs + SHA-256 anchors.
+- Refs: G-SECURITY-HISTORICAL-LEAKS; ADR-027 (audit trail), ADR-029 (backup), ADR-032 (secret rotation), ADR-038 (Vault placeholder); Sprint S15.5, S15.4, S17, S12.5, S12.6; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1, S12-2, S12-3, S14-1, S14-3; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12, IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12, IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12, IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12, IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12, IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12, IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; FCA SYSC 4.1; FCA SYSC 15A; FCA SUP 15; GDPR Art.32; GDPR Art.33; banxe-emi-stack PR #133, PR #134.
