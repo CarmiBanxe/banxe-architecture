@@ -2,5 +2,5 @@ scripts/__pycache__/
 *.swp
 *.db
 *.log
-data/
+/data/
 .claude/settings.local.json

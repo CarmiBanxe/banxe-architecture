@@ -8653,3 +8653,22 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Bounded-context: only 2 new files + IL pairing. NO ssh private key content. NO authorized_keys content. NO gpg secret keys. NO real passwords.
 - Follow-up: operator cleanup events to IL post-action; G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION CLOSED at post-cleanup verification; S15.3 FULL-CLOSE possible after S15.1 + S15.2 operator execution; S17 Vault adoption for long-term key lifecycle.
 - Refs: G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION; G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent); ADR-032; ADR-033; ADR-027; Sprint S15.1, S15.2, S15.3, S15.4, S15.5, S17, S25.4; IL-OPS-S12-1 (line 7938); IL-OPS-S15-3 (line 8608); IL-OPS-S15-4 (line 8588); IL-OPS-S15-5 (line 8569); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+
+### IL-OPS-S13-7-GITIGNORE-UPDATE-2026-05-13
+
+- Date: 2026-05-13 23:55 CEST
+- Phase (GSD): Sprint S13.7 - .gitignore update (OI-2 closure from D2 audit findings)
+- Status: BINDING (S13.7 deliverable closed; OI-2 resolved)
+- Priority: P2 (housekeeping; closes carry-forward from Sprint D2)
+- Executor: Central via shell direct (single-line sed edit per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 "shell when objectively better" for minimal patches).
+- Background: Sprint D2 OI-2 (per IL line 8016 + D3.3.4 OI-2 clarification line 8427) — root .gitignore line 5 `data/` overly-broad rule caught docs/project/data/ subpath; D2/data/README.md required `git add -f` workaround (acceptable for tracked files per Git semantics, but blocks NEW files under docs/project/data/).
+- Action: replaced `data/` → `/data/` in root .gitignore. Anchored pattern matches only repo-root `data/` directory; sub-paths like `docs/project/data/` no longer affected.
+- Verification (in commit context):
+  - `git check-ignore docs/project/data/README.md` → no longer matched (PASS).
+  - Root `data/test.txt` if present → still ignored via `/data/` anchored rule.
+- Side effect: existing tracked files under `docs/project/data/` unchanged; only NEW file behavior improved (no -f required).
+- Auditor: Spec-First Auditor v2 expected PASS 12/12 (trivial 1-line change).
+- Bounded-context: only .gitignore + IL pairing modified.
+- Resolves: OI-2 from IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12 (line 8016) + IL-PROJECT-DOCS-SPRINT-D3-3-4-DATA-CONTENT-2026-05-12 clarification (line 8427).
+- Follow-up: NEW files under docs/project/data/ no longer require `git add -f`. If repo-root data/ directory is needed in future, the anchored rule still ignores it correctly.
+- Refs: Sprint S13.7; IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12 (OI-2 origin); IL-PROJECT-DOCS-SPRINT-D3-3-4-DATA-CONTENT-2026-05-12 (OI-2 clarification); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
