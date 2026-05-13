@@ -1,5 +1,9 @@
 # ADR-026: Guardian Third Family — agent.bash
 
+**Status:** Accepted
+**Date:** 2026-05-05
+**Source-of-determination:** body line `- **Status:** ACCEPTED` (hyphen-prefixed list-form header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 - **Status:** ACCEPTED
 - **Date:** 2026-05-05
 - **Authors:** Moriel Carmi (operator), Comet/Claude (agent draft)

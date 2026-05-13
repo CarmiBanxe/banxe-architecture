@@ -13,6 +13,10 @@ binding_artifact: banxe-infra/ai-routing/policy.yaml
 
 # ADR-042: ufw Perimeter Posture per Host
 
+**Status:** Accepted
+**Date:** 2026-05-03
+**Source-of-determination:** YAML frontmatter `status: ACCEPTED` + body section `## Status` line `ACCEPTED — 2026-05-03 (CEO: Moriel Carmi)` (neither form matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 ## Status
 ACCEPTED — 2026-05-03 (CEO: Moriel Carmi)
 

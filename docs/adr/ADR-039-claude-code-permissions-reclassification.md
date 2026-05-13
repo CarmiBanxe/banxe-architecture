@@ -1,5 +1,9 @@
 # ADR-039 — Claude Code permissions reclassification
 
+**Status:** Accepted
+**Date:** 2026-05-05
+**Source-of-determination:** body table row `| Status | ACCEPTED |` + Status history table entry `2026-05-05 | ACCEPTED` (markdown table-form headers — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 | Field | Value |
 |---|---|
 | Status | ACCEPTED |

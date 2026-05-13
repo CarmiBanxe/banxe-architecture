@@ -1,5 +1,9 @@
 # ADR-016: AI Plane and PII/AML Routing for EMI Stack
 
+**Status:** Accepted
+**Date:** 2026-05-03
+**Source-of-determination:** body line `- **Status:** Accepted` (hyphen-prefixed list-form header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 - **Status:** Accepted
 - **Date:** 2026-05-03
 - **Deciders:** Architecture WG (Banxe)
