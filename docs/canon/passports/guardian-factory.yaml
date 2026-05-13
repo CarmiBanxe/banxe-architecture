@@ -1,0 +1,19 @@
+role_id: guardian-factory
+role_name: Factory Guardian
+actor: guardian-factory-service
+type: agent
+responsibility: Enforces 8 factory rules (F1-F8) deterministically
+tools:
+- factory_rules.py
+- github-status-check
+- clickhouse-append
+allowed_skills: []
+gate_authority: auto
+risk_ceiling: LOW
+invariants_enforced:
+- INV-05
+- INV-09
+- INV-10
+litellm_routes:
+- ai
+notes: 'Backbone: qwen3.5:35b. Port :8195 on evo1.'

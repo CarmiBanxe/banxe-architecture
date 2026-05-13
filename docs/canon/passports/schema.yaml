@@ -1,0 +1,56 @@
+passport_schema:
+  version: '1.0'
+  fields:
+    role_id:
+      type: string
+      required: true
+      description: Unique role identifier
+    role_name:
+      type: string
+      required: true
+    actor:
+      type: string
+      required: true
+      description: Who fills this role
+    type:
+      type: enum
+      values:
+      - agent
+      - human
+      required: true
+    responsibility:
+      type: string
+      required: true
+    tools:
+      type: list[string]
+      required: true
+    allowed_skills:
+      type: list[string]
+      required: true
+      description: Skill IDs from SKILLS-MATRIX.md
+    gate_authority:
+      type: enum
+      values:
+      - none
+      - auto
+      - operator
+      - mlro
+      - ctio
+      required: true
+    risk_ceiling:
+      type: enum
+      values:
+      - LOW
+      - MEDIUM
+      - HIGH
+      required: true
+    invariants_enforced:
+      type: list[string]
+      required: true
+    litellm_routes:
+      type: list[string]
+      required: false
+      description: null for humans
+    notes:
+      type: string
+      required: false

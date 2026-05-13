@@ -1,0 +1,19 @@
+role_id: mlro
+role_name: MLRO
+actor: Moriel Carmi (interim)
+type: human
+responsibility: Compliance sign-off on AML/KYC, CASS 15, payment routing
+tools:
+- marble-ui
+- telegram
+- sar-generator
+allowed_skills:
+- S5-performance-scanner
+gate_authority: mlro
+risk_ceiling: HIGH
+invariants_enforced:
+- INV-03
+- INV-04
+- INV-07
+litellm_routes: null
+notes: UNDESIGNATED — Moriel Carmi interim until dedicated MLRO hired.

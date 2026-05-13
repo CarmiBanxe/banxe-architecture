@@ -1,0 +1,16 @@
+role_id: canon-judge
+role_name: Canon Judge
+actor: canon-judge-mcp
+type: agent
+responsibility: LLM-evaluates agent output against ADR-025 (audit mode)
+tools:
+- canon_judge/mcp/server.py
+allowed_skills: []
+gate_authority: auto
+risk_ceiling: LOW
+invariants_enforced:
+- INV-01
+- INV-08
+litellm_routes:
+- ai
+notes: 'Backbone: qwen3.5:35b. Audit mode only until Sprint 8.'
