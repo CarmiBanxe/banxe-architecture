@@ -8523,3 +8523,28 @@ Refs:
 - Note: untracked evo1:9000 housekeeping file remains in worktree from S12.2 session; NOT staged.
 - Follow-up: S12.5 90-day rotation cadence; operator deploy event IL log; G-IAM-03 CLOSED at deploy.
 - Refs: ADR-012, ADR-013, ADR-015, ADR-016, ADR-017, ADR-018, ADR-019, ADR-027, ADR-030. Sprint S12.3, S12.5, S16.4. IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; banxe-emi-stack PR #133/#134.
+
+### IL-OPS-S14-3-GUARDIAN-WEBHOOK-PREP-2026-05-13
+
+- Date: 2026-05-13 17:15 CEST
+- Phase (GSD): Sprint S14.3 PREP — GitHub webhook to Guardian apps (G-GUARDIAN-WEBHOOK-MISSING mitigation; runbook + config template)
+- Status: BINDING (prep only; deploy HITL-gated; G-GUARDIAN-WEBHOOK-MISSING CLOSED at first successful PR-event-receive on Guardian per repo)
+- Priority: P1
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (`/tmp/central-cc-prompt-s14-3-guardian-webhook-prep-2026-05-13.txt`).
+- Artifacts (NEW, this commit):
+  - docs/project/runbooks/github-webhook-guardian-deploy-2026-05-13.md (NEW runbook, 191 lines)
+  - docs/project/runbooks/github-webhook-config-template.md (NEW config template, 79 lines; 4-repo × 2-plane table; placeholders only)
+- Repo inventory (4): banxe-architecture, banxe-platform, banxe-payment-core, banxe-infra. Same 4 repos as S14.2 ENFORCE rollout (PR #176).
+- Webhook endpoints: evo1:8195 (factory Guardian per ADR-019 §6.1) + evo1:8196 (project Guardian per ADR-019 §6.2). Both behind Tailscale (100.101.218.26 canonical per ADR-017 KC cutover; reuse same Tailscale routing).
+- Pattern: GitHub webhook with HMAC-SHA256 signature (X-Hub-Signature-256); one secret per repo (`GUARDIAN_WEBHOOK_SECRET_<REPO_SLUG>`) generated via `openssl rand -hex 32`, stored in operator vault; events = Pull requests + Pushes + Check runs + Workflow runs. Two webhook entries per repo (factory `:8195` + project `:8196`) sharing one secret.
+- NO production webhook config. Operator configures via GitHub UI Settings → Webhooks under HITL gate (Central + operator + MLRO advisory). Audit to ClickHouse Guardian `guardian_audit_factory` / `guardian_audit_project` per ADR-027 (5y CASS 15 retention; matches ADR-019 §6.1 / §6.2 TTL).
+- Pre-condition for deploy: Guardian apps reachable (curl https://evo1.<tailnet>:8195/health + :8196/health both 200); webhook secret generated per repo and stored in vault; GitHub repo admin access verified; ufw allow rules for inbound 8195/8196 per ADR-033 (TODO confirm cross-link to Sprint S14.x ufw runbook once landed).
+- Pre-requisite for S14.2: G-GUARDIAN-WEBHOOK-MISSING must reach CLOSED before ENFORCE mode rollout (PR #176) is meaningful — without webhook delivery, ENFORCE falls back to post-merge audit only.
+- HITL gate: Central + operator + MLRO advisory (security boundary change — webhook secrets land in operator vault + cross-host PR-event flow over Tailscale; auth-surface adjacent because Guardian audit feeds compliance evidence chain per ADR-027). No EMERGENCY override.
+- TODOs landed: (1) ADR-019 exact port confirmation (8195 factory / 8196 project not pinned in ADR body); (2) HTTPS cert provisioning (self-signed vs CA-issued) per EDGE CASES §2; (3) ufw allow rules per ADR-033 / Sprint S14.x ufw runbook; (4) validation script `docs/project/runbooks/github-webhook-validate.sh` (D3.x follow-up); (5) operator vault entry naming convention review; (6) GitHub event selection confirmation against Guardian ruleset inputs.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only 2 new files + this IL pairing append. No edits outside Allowed paths.
+- Note: untracked `evo1:9000` housekeeping file remains in worktree from S12.2 session; NOT staged.
+- Real secrets in template: ZERO (placeholders + vault key names only; per-repo secret generation is operator-side `openssl rand -hex 32`).
+- Follow-up: D3.x validation script `docs/project/runbooks/github-webhook-validate.sh`; operator deploy event IL log per repo; G-GUARDIAN-WEBHOOK-MISSING CLOSED at first successful PR-event-receive on Guardian per repo; S14.2 ENFORCE rollout to 4 repos (PR #176, downstream).
+- Refs: ADR-019, ADR-027, ADR-029, ADR-033. Sprint S14.3, S14.2. IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13; IL-OPS-S12-3-S2S-TOKENS-PREP-2026-05-13; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
