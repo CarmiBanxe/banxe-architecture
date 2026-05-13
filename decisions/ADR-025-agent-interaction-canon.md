@@ -1,5 +1,9 @@
 # ADR-025: Agent Interaction Canon
 
+**Status:** Accepted
+**Date:** 2026-05-04
+**Source-of-determination:** body line `- **Status:** ACCEPTED` (hyphen-prefixed list-form header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 - **Status:** ACCEPTED
 - **Date:** 2026-05-04
 - **Authors:** Moriel Carmi (operator), Comet/Claude (agent draft)

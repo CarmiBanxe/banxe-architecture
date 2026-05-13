@@ -1,7 +1,8 @@
 # ADR Index — banxe-architecture (unified)
 
-Generated: 2026-05-12
-Generator: Sprint D3.2d.3 (rewrite from D2 single-catalogue scope to unified scope)
+Generated: 2026-05-12 (regenerated 2026-05-14 per Sprint D3.2d.3-FU)
+Generator: Sprint D3.2d.3 (rewrite from D2 single-catalogue scope to unified scope);
+Sprint D3.2d.3-FU (ADR Status backfill — 20 UNKNOWN → Accepted)
 Source: `decisions/ADR-*.md` (canonical catalogue, 37 files) + `docs/adr/ADR-*.md`
 (factory ADRs post-D3.2d.1 renumber, 6 files)
 
@@ -14,7 +15,11 @@ ADR-045..073, ADR-077+ are unassigned (see §"MISSING / unassigned").
 Status values are parsed verbatim from each ADR's `**Status:**` line. Where no
 `**Status:**` line exists at the top of the file, the row shows `UNKNOWN` and
 the ADR is listed in the §"Parse failures" section at the bottom for follow-up
-in a later D3.2d sprint.
+in a later D3.2d sprint. As of 2026-05-14 (Sprint D3.2d.3-FU) the 20 previous
+parse failures have been resolved by inserting canonical `**Status:**` /
+`**Date:**` / `**Source-of-determination:**` header lines after the H1 in
+each of the 20 ADRs; INDEX UNKNOWN coverage was 24 (20 file-side + 4 placeholder)
+and is now 4 (placeholder-only).
 
 ---
 
@@ -22,30 +27,30 @@ in a later D3.2d sprint.
 
 | Number  | Title                                                                                              | Status                                          | Date       | Path |
 |---------|----------------------------------------------------------------------------------------------------|-------------------------------------------------|------------|------|
-| ADR-001 | Модель привилегий — разработчик vs оператор-дублёр                                                  | UNKNOWN                                         | —          | [decisions/ADR-001-privilege-model.md](../../decisions/ADR-001-privilege-model.md) |
-| ADR-002 | Telegram-бот — область применения                                                                   | UNKNOWN                                         | —          | [decisions/ADR-002-telegram-bot-scope.md](../../decisions/ADR-002-telegram-bot-scope.md) |
-| ADR-003 | Обучение модели — только разработчик/CTIO                                                            | UNKNOWN                                         | —          | [decisions/ADR-003-training-developer-only.md](../../decisions/ADR-003-training-developer-only.md) |
-| ADR-004 | Jube AGPLv3 — граница использования                                                                  | UNKNOWN                                         | —          | [decisions/ADR-004-jube-agplv3-boundary.md](../../decisions/ADR-004-jube-agplv3-boundary.md) |
-| ADR-005 | Marble Elastic License V2 — граница использования                                                    | UNKNOWN                                         | —          | [decisions/ADR-005-marble-elastic-v2.md](../../decisions/ADR-005-marble-elastic-v2.md) |
-| ADR-006 | EvidenceBundle — контракт доказательной базы                                                         | UNKNOWN                                         | —          | [decisions/ADR-006-evidence-bundle.md](../../decisions/ADR-006-evidence-bundle.md) |
+| ADR-001 | Модель привилегий — разработчик vs оператор-дублёр                                                  | Accepted                                        | 2026-04-05 | [decisions/ADR-001-privilege-model.md](../../decisions/ADR-001-privilege-model.md) |
+| ADR-002 | Telegram-бот — область применения                                                                   | Accepted                                        | 2026-04-05 | [decisions/ADR-002-telegram-bot-scope.md](../../decisions/ADR-002-telegram-bot-scope.md) |
+| ADR-003 | Обучение модели — только разработчик/CTIO                                                            | Accepted                                        | 2026-04-05 | [decisions/ADR-003-training-developer-only.md](../../decisions/ADR-003-training-developer-only.md) |
+| ADR-004 | Jube AGPLv3 — граница использования                                                                  | Accepted                                        | 2026-04-05 | [decisions/ADR-004-jube-agplv3-boundary.md](../../decisions/ADR-004-jube-agplv3-boundary.md) |
+| ADR-005 | Marble Elastic License V2 — граница использования                                                    | Accepted                                        | 2026-04-05 | [decisions/ADR-005-marble-elastic-v2.md](../../decisions/ADR-005-marble-elastic-v2.md) |
+| ADR-006 | EvidenceBundle — контракт доказательной базы                                                         | Accepted                                        | 2026-04-05 | [decisions/ADR-006-evidence-bundle.md](../../decisions/ADR-006-evidence-bundle.md) |
 | ADR-007 | Scenario Registry Design — AMLTRIX Mapping Policy                                                    | Accepted                                        | —          | [decisions/ADR-007-scenario-registry-design.md](../../decisions/ADR-007-scenario-registry-design.md) |
-| ADR-008 | Jurisdiction label — preemptive UK tagging                                                           | UNKNOWN                                         | —          | [decisions/ADR-008-jurisdiction-label.md](../../decisions/ADR-008-jurisdiction-label.md) |
-| ADR-009 | OpenSanctions + Yente — primary sanctions/PEP source                                                 | UNKNOWN                                         | —          | [decisions/ADR-009-opensanctions-yente.md](../../decisions/ADR-009-opensanctions-yente.md) |
-| ADR-010 | AMLTRIX taxonomy — industry-standard scenario labelling                                              | UNKNOWN                                         | —          | [decisions/ADR-010-amltrix-taxonomy.md](../../decisions/ADR-010-amltrix-taxonomy.md) |
-| ADR-011 | Reference Architecture vs Operational Dependency                                                     | UNKNOWN                                         | —          | [decisions/ADR-011-reference-vs-dependency.md](../../decisions/ADR-011-reference-vs-dependency.md) |
+| ADR-008 | Jurisdiction label — preemptive UK tagging                                                           | Accepted                                        | 2026-04-05 | [decisions/ADR-008-jurisdiction-label.md](../../decisions/ADR-008-jurisdiction-label.md) |
+| ADR-009 | OpenSanctions + Yente — primary sanctions/PEP source                                                 | Accepted                                        | 2026-04-05 | [decisions/ADR-009-opensanctions-yente.md](../../decisions/ADR-009-opensanctions-yente.md) |
+| ADR-010 | AMLTRIX taxonomy — industry-standard scenario labelling                                              | Accepted                                        | 2026-04-05 | [decisions/ADR-010-amltrix-taxonomy.md](../../decisions/ADR-010-amltrix-taxonomy.md) |
+| ADR-011 | Reference Architecture vs Operational Dependency                                                     | Accepted                                        | 2026-04-05 | [decisions/ADR-011-reference-vs-dependency.md](../../decisions/ADR-011-reference-vs-dependency.md) |
 | ADR-012 | Compliance API Port Migration :8090 → :8093                                                          | ACCEPTED                                        | —          | [decisions/ADR-012-compliance-api-port-8093.md](../../decisions/ADR-012-compliance-api-port-8093.md) |
 | ADR-013 | Midaz CBS: PRIMARY Core Banking System                                                               | ACCEPTED                                        | —          | [decisions/ADR-013-midaz-cbs-primary.md](../../decisions/ADR-013-midaz-cbs-primary.md) |
 | ADR-014 | Composable Financial Stack — EMI Core Architecture                                                   | PROPOSED                                        | —          | [decisions/ADR-014-composable-financial-stack.md](../../decisions/ADR-014-composable-financial-stack.md) |
 | ADR-015 | Payment Processing Stack — Hyperswitch + Paymentology                                                | ACCEPTED                                        | 2026-04-13 | [decisions/ADR-015-payment-processing-stack.md](../../decisions/ADR-015-payment-processing-stack.md) |
-| ADR-016 | AI Plane and PII/AML Routing for EMI Stack                                                           | UNKNOWN                                         | —          | [decisions/ADR-016-ai-plane-pii-aml-routing.md](../../decisions/ADR-016-ai-plane-pii-aml-routing.md) |
-| ADR-017 | Keycloak IAM Cutover for EMI Realm `banxe-emi`                                                       | UNKNOWN                                         | —          | [decisions/ADR-017-keycloak-iam-cutover.md](../../decisions/ADR-017-keycloak-iam-cutover.md) |
+| ADR-016 | AI Plane and PII/AML Routing for EMI Stack                                                           | Accepted                                        | 2026-05-03 | [decisions/ADR-016-ai-plane-pii-aml-routing.md](../../decisions/ADR-016-ai-plane-pii-aml-routing.md) |
+| ADR-017 | Keycloak IAM Cutover for EMI Realm `banxe-emi`                                                       | Accepted                                        | 2026-05-03 | [decisions/ADR-017-keycloak-iam-cutover.md](../../decisions/ADR-017-keycloak-iam-cutover.md) |
 | ADR-018 | Hybrid 5-layer AI Compute Architecture (canonical target)                                            | ACCEPTED (canon, locked)                        | —          | [decisions/ADR-018-hybrid-5-layer-ai-compute.md](../../decisions/ADR-018-hybrid-5-layer-ai-compute.md) |
 | ADR-019 | AI Guardian Agent — two-family architecture compliance enforcement                                   | ACCEPTED (canon, locked)                        | —          | [decisions/ADR-019-ai-guardian-two-family.md](../../decisions/ADR-019-ai-guardian-two-family.md) |
 | ADR-020 | Memory governance — 100% utilization of MEMORY/LEDGER/GAP/CANON/HITL                                 | ACCEPTED (canon, locked)                        | —          | [decisions/ADR-020-memory-governance.md](../../decisions/ADR-020-memory-governance.md) |
 | ADR-022 | Guardian bootstrap baseline exception (one-time amendment to ADR-019 §6.1 F7)                        | ACCEPTED (one-time, scoped exception)           | —          | [decisions/ADR-022-guardian-bootstrap-baseline-exception.md](../../decisions/ADR-022-guardian-bootstrap-baseline-exception.md) |
-| ADR-024 | Guardian Bash Shim: Claude Code Pre-Command Enforcement                                              | UNKNOWN                                         | —          | [decisions/ADR-024-guardian-bash-shim.md](../../decisions/ADR-024-guardian-bash-shim.md) |
-| ADR-025 | Agent Interaction Canon                                                                              | UNKNOWN                                         | —          | [decisions/ADR-025-agent-interaction-canon.md](../../decisions/ADR-025-agent-interaction-canon.md) |
-| ADR-026 | Guardian Third Family — agent.bash                                                                   | UNKNOWN                                         | —          | [decisions/ADR-026-guardian-agent-bash-family.md](../../decisions/ADR-026-guardian-agent-bash-family.md) |
+| ADR-024 | Guardian Bash Shim: Claude Code Pre-Command Enforcement                                              | Accepted                                        | 2026-05-04 | [decisions/ADR-024-guardian-bash-shim.md](../../decisions/ADR-024-guardian-bash-shim.md) |
+| ADR-025 | Agent Interaction Canon                                                                              | Accepted                                        | 2026-05-04 | [decisions/ADR-025-agent-interaction-canon.md](../../decisions/ADR-025-agent-interaction-canon.md) |
+| ADR-026 | Guardian Third Family — agent.bash                                                                   | Accepted                                        | 2026-05-05 | [decisions/ADR-026-guardian-agent-bash-family.md](../../decisions/ADR-026-guardian-agent-bash-family.md) |
 | ADR-027 | Audit-Trail Durability Strategy                                                                      | Accepted (2026-05-06)                           | 2026-05-06 | [decisions/ADR-027-audit-trail-durability.md](../../decisions/ADR-027-audit-trail-durability.md) |
 | ADR-028 | KYC Re-verification Triggers                                                                         | Accepted (2026-05-09)                           | 2026-05-09 | [decisions/ADR-028-kyc-reverification-triggers.md](../../decisions/ADR-028-kyc-reverification-triggers.md) |
 | ADR-029 | PostgreSQL Backup Strategy                                                                           | Accepted (2026-05-10)                           | 2026-05-10 | [decisions/ADR-029-postgres-backup-strategy.md](../../decisions/ADR-029-postgres-backup-strategy.md) |
@@ -62,14 +67,14 @@ in a later D3.2d sprint.
 
 ## Real ADR files in `docs/adr/` (factory governance, 6 files)
 
-| Number  | Title                                                                                              | Status   | Date | Path |
-|---------|----------------------------------------------------------------------------------------------------|----------|------|------|
-| ADR-039 | Claude Code permissions reclassification                                                            | UNKNOWN  | —    | [./ADR-039-claude-code-permissions-reclassification.md](./ADR-039-claude-code-permissions-reclassification.md) |
-| ADR-040 | AI Execution Policy — Meta-Plane vs Inference-Plane                                                  | UNKNOWN  | —    | [./ADR-040-ai-execution-policy.md](./ADR-040-ai-execution-policy.md) |
-| ADR-041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                                                         | UNKNOWN  | —    | [./ADR-041-glm45-air-distributed.md](./ADR-041-glm45-air-distributed.md) |
-| ADR-042 | ufw Perimeter Posture per Host                                                                       | UNKNOWN  | —    | [./ADR-042-ufw-perimeter.md](./ADR-042-ufw-perimeter.md) |
-| ADR-043 | Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`                                              | UNKNOWN  | —    | [./ADR-043-aider-routes.md](./ADR-043-aider-routes.md) |
-| ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Proposed | —    | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
+| Number  | Title                                                                                              | Status   | Date       | Path |
+|---------|----------------------------------------------------------------------------------------------------|----------|------------|------|
+| ADR-039 | Claude Code permissions reclassification                                                            | Accepted | 2026-05-05 | [./ADR-039-claude-code-permissions-reclassification.md](./ADR-039-claude-code-permissions-reclassification.md) |
+| ADR-040 | AI Execution Policy — Meta-Plane vs Inference-Plane                                                  | Accepted | 2026-05-03 | [./ADR-040-ai-execution-policy.md](./ADR-040-ai-execution-policy.md) |
+| ADR-041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                                                         | Accepted | 2026-05-03 | [./ADR-041-glm45-air-distributed.md](./ADR-041-glm45-air-distributed.md) |
+| ADR-042 | ufw Perimeter Posture per Host                                                                       | Accepted | 2026-05-03 | [./ADR-042-ufw-perimeter.md](./ADR-042-ufw-perimeter.md) |
+| ADR-043 | Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`                                              | Accepted | 2026-05-03 | [./ADR-043-aider-routes.md](./ADR-043-aider-routes.md) |
+| ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Proposed | —          | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
 
 ## MISSING / unassigned ADR numbers
 
@@ -88,36 +93,40 @@ canon record; non-blocking.
 
 ## Parse failures (Status = UNKNOWN)
 
-20 ADRs do not carry a `**Status:**` line at the top of the file and are
-listed below for follow-up. Status was set to UNKNOWN; title and path were
-still parsed successfully.
+As of 2026-05-14 (Sprint D3.2d.3-FU): **0 parse failures**. All 20 previously
+UNKNOWN ADRs were resolved by inserting canonical `**Status:**` /
+`**Date:**` / `**Source-of-determination:**` header lines after the H1.
+All 20 resolved to Status = Accepted with no body content rewrites.
 
-`decisions/` (15 files):
-- ADR-001 privilege-model
-- ADR-002 telegram-bot-scope
-- ADR-003 training-developer-only
-- ADR-004 jube-agplv3-boundary
-- ADR-005 marble-elastic-v2
-- ADR-006 evidence-bundle
-- ADR-008 jurisdiction-label
-- ADR-009 opensanctions-yente
-- ADR-010 amltrix-taxonomy
-- ADR-011 reference-vs-dependency
-- ADR-016 ai-plane-pii-aml-routing
-- ADR-017 keycloak-iam-cutover
-- ADR-024 guardian-bash-shim
-- ADR-025 agent-interaction-canon
-- ADR-026 guardian-agent-bash-family
+Backfill summary (Sprint D3.2d.3-FU, 2026-05-14):
 
-`docs/adr/` (5 files):
-- ADR-039 claude-code-permissions-reclassification
-- ADR-040 ai-execution-policy
-- ADR-041 glm45-air-distributed
-- ADR-042 ufw-perimeter
-- ADR-043 aider-routes
+`decisions/` (15 files — all Accepted):
+- ADR-001 privilege-model — Accepted 2026-04-05 (Russian `**Статус:** ACCEPTED`)
+- ADR-002 telegram-bot-scope — Accepted 2026-04-05 (Russian `**Статус:** ACCEPTED`)
+- ADR-003 training-developer-only — Accepted 2026-04-05 (Russian `**Статус:** ACCEPTED`)
+- ADR-004 jube-agplv3-boundary — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО`)
+- ADR-005 marble-elastic-v2 — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО`)
+- ADR-006 evidence-bundle — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО`)
+- ADR-008 jurisdiction-label — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО`)
+- ADR-009 opensanctions-yente — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО (Phase 3)`)
+- ADR-010 amltrix-taxonomy — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО`)
+- ADR-011 reference-vs-dependency — Accepted 2026-04-05 (Russian `**Статус:** ПРИНЯТО`)
+- ADR-016 ai-plane-pii-aml-routing — Accepted 2026-05-03 (list-form `- **Status:** Accepted`)
+- ADR-017 keycloak-iam-cutover — Accepted 2026-05-03 (list-form `- **Status:** Accepted`; S12.1 / S13.8 verify)
+- ADR-024 guardian-bash-shim — Accepted 2026-05-04 (table-form `| **Status** | Accepted |`)
+- ADR-025 agent-interaction-canon — Accepted 2026-05-04 (list-form `- **Status:** ACCEPTED`)
+- ADR-026 guardian-agent-bash-family — Accepted 2026-05-05 (list-form `- **Status:** ACCEPTED`)
 
-Follow-up: backfill `**Status:**` lines in a later D3.2d sprint so the next
-index regeneration can populate these rows with real status values.
+`docs/adr/` (5 files — all Accepted):
+- ADR-039 claude-code-permissions-reclassification — Accepted 2026-05-05 (table-form + Status history table)
+- ADR-040 ai-execution-policy — Accepted 2026-05-03 (YAML frontmatter `status: ACCEPTED` + `## Status` section)
+- ADR-041 glm45-air-distributed — Accepted 2026-05-03 (YAML frontmatter `status: ACCEPTED` + `## Status` section)
+- ADR-042 ufw-perimeter — Accepted 2026-05-03 (YAML frontmatter `status: ACCEPTED` + `## Status` section)
+- ADR-043 aider-routes — Accepted 2026-05-03 (YAML frontmatter `status: ACCEPTED` + `## Status` section)
+
+Methodology: per-file content analysis (decision drivers + Closes refs + body
+mentions), NO invention; ambiguous → UNKNOWN with TODO. Status determination
+methodology anchor: IL-OPS-D3-2D-3-FU-ADR-STATUS-BACKFILL-2026-05-14.
 
 ## Cross-references
 
@@ -163,6 +172,10 @@ parse_one() {
   status=$(grep -m1 '^\*\*Status:\*\*' "$f" | sed -E 's/^\*\*Status:\*\* *//' || true)
   date_acc=$(grep -m1 '^\*\*Date Accepted:\*\*' "$f" \
              | sed -E 's/^\*\*Date Accepted:\*\* *//' || true)
+  if [ -z "${date_acc:-}" ]; then
+    date_acc=$(grep -m1 '^\*\*Date:\*\*' "$f" \
+               | sed -E 's/^\*\*Date:\*\* *//' || true)
+  fi
   [ -z "${status:-}" ] && status="UNKNOWN"
   printf '%s|%s|%s|%s|%s\n' "$num" "$title" "$status" "${date_acc:-}" "$f"
 }
@@ -176,3 +189,7 @@ The generator is informational only; this `INDEX.md` is hand-curated to
 preserve human-readable status normalisation and cross-reference notes.
 Re-running the generator may show drift from this index when ADR files
 gain new `**Status:**` lines; reconcile in the next D3.2d sub-sprint.
+
+Generator-script run timestamp (latest reconciliation): 2026-05-14 00:30 CEST
+(Sprint D3.2d.3-FU — ADR Status backfill for 20 UNKNOWN ADRs;
+INDEX UNKNOWN coverage 24 → 4 placeholder-only).

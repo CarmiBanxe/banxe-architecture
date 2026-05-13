@@ -1,5 +1,9 @@
 # ADR-009: OpenSanctions + Yente — primary sanctions/PEP source
 
+**Status:** Accepted
+**Date:** 2026-04-05
+**Source-of-determination:** body line `**Статус:** ПРИНЯТО (Phase 3)` (Russian header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 **Статус:** ПРИНЯТО (Phase 3)  
 **Дата:** 2026-04-05  
 **Автор:** Moriel Carmi (CEO)

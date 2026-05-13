@@ -1,5 +1,9 @@
 # ADR-024 — Guardian Bash Shim: Claude Code Pre-Command Enforcement
 
+**Status:** Accepted
+**Date:** 2026-05-04
+**Source-of-determination:** body table row `| **Status** | Accepted |` (markdown table-form header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 | Field | Value |
 |-------|-------|
 | **Status** | Accepted |

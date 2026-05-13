@@ -1,5 +1,9 @@
 # ADR-017: Keycloak IAM Cutover for EMI Realm `banxe-emi`
 
+**Status:** Accepted
+**Date:** 2026-05-03
+**Source-of-determination:** body line `- **Status:** Accepted` (hyphen-prefixed list-form header — not matched by INDEX generator regex `^\*\*Status:\*\*`); confirmed Accepted per S12.1 evidence (INSTRUCTION-LEDGER line 7938) and S13.8 Legion :8180 collision-verify (PR #282)
+
 - **Status:** Accepted
 - **Date:** 2026-05-03
 - **Deciders:** Architecture WG (Banxe), IAM lead

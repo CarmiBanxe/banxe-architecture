@@ -1,5 +1,9 @@
 # ADR-010: AMLTRIX taxonomy — industry-standard scenario labelling
 
+**Status:** Accepted
+**Date:** 2026-04-05
+**Source-of-determination:** body line `**Статус:** ПРИНЯТО` (Russian header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 **Статус:** ПРИНЯТО  
 **Дата:** 2026-04-05  
 **Автор:** Moriel Carmi (CEO)

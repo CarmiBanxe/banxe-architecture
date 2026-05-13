@@ -1,5 +1,9 @@
 # ADR-002: Telegram-бот — область применения
 
+**Status:** Accepted
+**Date:** 2026-04-05
+**Source-of-determination:** body line `**Статус:** ACCEPTED` (Russian header — not matched by INDEX generator regex `^\*\*Status:\*\*`)
+
 **Статус:** ACCEPTED  
 **Дата:** 2026-04-05  
 **Автор:** Moriel Carmi (CEO)

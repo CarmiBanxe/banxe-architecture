@@ -8693,3 +8693,24 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Bounded-context: only audit doc + IL pairing modified.
 - Follow-up: evo1:8180 secondary KC may be addressed separately (S12.x or new sprint) if dual-host KC not desired long-term; S12.4 realm provisioning unblocks after G-IAM-08 + G-IAM-09 operator deploy.
 - Refs: ADR-017 (KC IAM cutover); G-FACTORY-04 (line 3830 reclassified 2026-05-06); G-FACTORY-05 (line 7971 origin); IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 (line 7938); IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06 (line 3830); Sprint S13.8, S12.4; banxe-emi-stack PR #133/#134; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
+
+### IL-OPS-D3-2D-3-FU-ADR-STATUS-BACKFILL-2026-05-14
+
+- Date: 2026-05-14 00:30 CEST
+- Phase (GSD): Sprint D3.2d.3-FU - ADR Status backfill for 20 UNKNOWN ADRs (closes D3.2d.3 carry-forward)
+- Status: BINDING (D3.2d.3 carry-forward CLOSED)
+- Priority: P1 (canon hygiene; INDEX coverage 53% -> 100% verifiable)
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 (per-file content analysis = Claude Code primary). Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+- Artifacts: 20 ADR files (15 decisions/ + 5 docs/adr/) + docs/adr/INDEX.md regenerated + IL pairing.
+- Closes: D3.2d.3 carry-forward (parse failures list 20 ADRs).
+- Status determination methodology: per-file content analysis (decision drivers + Closes refs + body mentions), NO invention; ambiguous -> UNKNOWN with TODO.
+- Status distribution result: Accepted 20, Proposed 0, Closed 0, Deprecated 0, Superseded 0, UNKNOWN 0 (sum = 20). INDEX UNKNOWN coverage: 24 -> 4 placeholder-only (file-side UNKNOWN cleared: 20 -> 0).
+- Determination anchors used (counts):
+  - Russian `**Статус:** ACCEPTED/ПРИНЯТО` (decisions/ADR-001..011, 10 ADRs)
+  - Hyphen-prefixed list-form `- **Status:** Accepted/ACCEPTED` (decisions/ADR-016, 017, 025, 026, 4 ADRs)
+  - Markdown table-form `| Status | ACCEPTED |` (decisions/ADR-024, docs/adr/ADR-039, 2 ADRs)
+  - YAML frontmatter `status: ACCEPTED` + `## Status` section (docs/adr/ADR-040..043, 4 ADRs)
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only 22 files modified (20 ADRs + INDEX + IL pairing). NO content body rewrites; only Status/Date/Source-of-determination header lines added per ADR.
+- Follow-up: ADR-019 amendment from S14.1 follow-up (separate sprint) still pending; ADR-036 vs audit-doc canonical-anchor decision pending.
+- Refs: IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12 (line 8327; origin); IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12 (line 8220; renumber baseline); IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12 (line 8343); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
