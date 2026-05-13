@@ -8714,3 +8714,20 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Bounded-context: only 22 files modified (20 ADRs + INDEX + IL pairing). NO content body rewrites; only Status/Date/Source-of-determination header lines added per ADR.
 - Follow-up: ADR-019 amendment from S14.1 follow-up (separate sprint) still pending; ADR-036 vs audit-doc canonical-anchor decision pending.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-2D-3-ADR-INDEX-UNIFIED-2026-05-12 (line 8327; origin); IL-PROJECT-DOCS-SPRINT-D3-2D-1-ADR-COLLISION-RENUMBER-2026-05-12 (line 8220; renumber baseline); IL-PROJECT-DOCS-SPRINT-D3-2D-4-CITATIONS-REANCHOR-2026-05-12 (line 8343); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
+
+### IL-OPS-S17-SECRETS-ROTATION-POLICY-PREP-2026-05-14
+
+- Date: 2026-05-14 00:35 CEST
+- Phase (GSD): Sprint S17 PREP - Secrets rotation policy (90d cadence + per-secret-type matrix + cron reminder template; consumer of S12.5/S12.6/S12.3/S15.5 + ADR-032/ADR-038)
+- Status: BINDING (policy-prep DONE; cron deployment + per-secret rotation HITL-gated)
+- Priority: P1 (security hygiene; interim bridge until G-SEC-02 Vault adoption deferred)
+- Executor: Central via Claude Code per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+- Artifacts: docs/project/security/secret-rotation-policy-2026-05-14.md (NEW; 90d cadence + 11-row secret-type matrix); docs/project/runbooks/secret-rotation-cron-template-2026-05-14.md (NEW; cron reminder-only framework, HITL gate, operator workflow).
+- Secret-type matrix: 11 secret types covering KC DB / KC S2S clients / vendor APIs (Modulr, SumSub, Sardine, Marble, Telegram, Jube) / SSH-GPG keys / GitHub PAT. Per-type: source-of-truth, owner, cadence, runbook ref.
+- Cadence policy: 90d standard; 30d P0 post-incident; on-demand for compromise. GPG keys 365d (longer cycle per practice).
+- NO auto-execution. Cron is reminder-only; rotation operator-led under HITL gate (Central + operator + MLRO advisory for vendor compliance keys).
+- Vault adoption (ADR-038, G-SEC-02) DEFERRED; S17 = interim 90d cron-reminder bridge.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only 2 new files + IL pairing. NO secret values. NO vault deployment. NO cron actual install on prod.
+- Follow-up: secret-vault metadata schema (TODO; awaits Vault decision); Telegram bot deploy (Sprint S20.5); per-vendor procurement (S20.1, S20.4, S20.6); Vault adoption (G-SEC-02 deferred); MLRO appointment (S20.8) for vendor co-sign.
+- Refs: ADR-032 (rotation framework); ADR-038 (Vault placeholder); ADR-027 (5y CASS 15 audit); G-SEC-02 (Vault deferred); G-IAM-08, G-IAM-09; Sprint S17, S12.3, S12.5, S12.6, S15.2, S15.5, S20.1, S20.4, S20.5, S20.6, S20.8, S25.4; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 (line 7938); IL-OPS-S12-3-S2S-TOKENS-PREP-2026-05-13 (line 8508); IL-OPS-S15-2-LEGION-KEY-CLEANUP-PREP-2026-05-13 (line 8638); IL-OPS-S15-5-HISTORICAL-LEAKS-PREP-2026-05-13 (line 8569); FCA SYSC 4.1; GDPR Art.32; banxe-emi-stack PR #133/#134; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
