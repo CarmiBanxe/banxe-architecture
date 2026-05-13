@@ -8634,3 +8634,22 @@ Auditor: Spec-First Auditor v2 expected PASS 12/12.
 Bounded-context: only INSTRUCTION-LEDGER.md modified.
 
 Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 (line 7938 incident evidence); IL-OPS-S15-4-FCA-GDPR-NOTIFICATION-PREP-2026-05-13 (line 8588); IL-OPS-S15-5-HISTORICAL-LEAKS-PREP-2026-05-13 (line 8569); Sprint S15.1, S15.2, S15.3, S15.4, S15.5, S20.8 (MLRO appointment), S25.4 (quarterly review); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
+
+### IL-OPS-S15-2-LEGION-KEY-CLEANUP-PREP-2026-05-13
+
+- Date: 2026-05-13 23:50 CEST
+- Phase (GSD): Sprint S15.2 PREP - Legion-side key cleanup audit + remediation runbook (G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION mitigation)
+- Status: BINDING (audit-prep DONE; operator-led cleanup HITL-gated; G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION CLOSED at successful operator post-cleanup verification)
+- Priority: P1 (security hygiene)
+- Executor: Central via shell direct (claude -p produced silent no-op on 2 attempts; shell secondary surface oправдан per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 "shell when objectively better"). Brief delivered via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+- Artifacts (NEW):
+  - docs/audit/s15-2-legion-key-cleanup-audit-2026-05-13.md (4972 B, 80 lines; methodology + severity classification + risk model)
+  - docs/project/runbooks/legion-key-cleanup-runbook-2026-05-13.md (6361 B, 104 lines; pre-flight + per-key-type cleanup + HITL + rollback + verification + audit trail)
+- Scope: Legion (mark-legion) host. NO touch of evo1 (already closed V7-PART1). NO touch of remote prod hosts beyond authorized_keys read.
+- Baseline: S15.5 confirms 0 P0 active-prod leaks at HEAD (IL line 8569). S15.2 audit complements with Legion-host-side methodology.
+- NO production key deletion. NO ssh-agent flush. NO authorized_keys edit on remote hosts. Operator executes cleanup via HITL gate.
+- S15 chain status: S15.1 OPEN (MLRO/Legal), S15.2 PREP DONE (this), S15.3 PARTIAL-CLOSE (line 8608), S15.4 PREP DONE (line 8588), S15.5 PREP DONE (line 8569). 4/5 children PREP/DONE; S15.1 remaining for FULL parent-close.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only 2 new files + IL pairing. NO ssh private key content. NO authorized_keys content. NO gpg secret keys. NO real passwords.
+- Follow-up: operator cleanup events to IL post-action; G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION CLOSED at post-cleanup verification; S15.3 FULL-CLOSE possible after S15.1 + S15.2 operator execution; S17 Vault adoption for long-term key lifecycle.
+- Refs: G-SECURITY-LEGION-ALEX-KEY-CROSSCONTAMINATION; G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent); ADR-032; ADR-033; ADR-027; Sprint S15.1, S15.2, S15.3, S15.4, S15.5, S17, S25.4; IL-OPS-S12-1 (line 7938); IL-OPS-S15-3 (line 8608); IL-OPS-S15-4 (line 8588); IL-OPS-S15-5 (line 8569); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
