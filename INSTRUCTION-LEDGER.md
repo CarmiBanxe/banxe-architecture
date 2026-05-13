@@ -8731,3 +8731,27 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Bounded-context: only 2 new files + IL pairing. NO secret values. NO vault deployment. NO cron actual install on prod.
 - Follow-up: secret-vault metadata schema (TODO; awaits Vault decision); Telegram bot deploy (Sprint S20.5); per-vendor procurement (S20.1, S20.4, S20.6); Vault adoption (G-SEC-02 deferred); MLRO appointment (S20.8) for vendor co-sign.
 - Refs: ADR-032 (rotation framework); ADR-038 (Vault placeholder); ADR-027 (5y CASS 15 audit); G-SEC-02 (Vault deferred); G-IAM-08, G-IAM-09; Sprint S17, S12.3, S12.5, S12.6, S15.2, S15.5, S20.1, S20.4, S20.5, S20.6, S20.8, S25.4; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 (line 7938); IL-OPS-S12-3-S2S-TOKENS-PREP-2026-05-13 (line 8508); IL-OPS-S15-2-LEGION-KEY-CLEANUP-PREP-2026-05-13 (line 8638); IL-OPS-S15-5-HISTORICAL-LEAKS-PREP-2026-05-13 (line 8569); FCA SYSC 4.1; GDPR Art.32; banxe-emi-stack PR #133/#134; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+
+### IL-CANON-SOFTWARE-FACTORY-V1-INTEGRATION-ACKNOWLEDGE-2026-05-14
+
+- Date: 2026-05-14 01:00 CEST
+- Phase (GSD): CANON — Software Factory Canon v1.0 integration acknowledgement (no conflict, two-layer alignment)
+- Status: BINDING (operating canon under Factory canon hierarchy)
+- Priority: P0 (canon consistency)
+- Trigger: 2026-05-14 PR #285 (d764ed7 / 2668232) landed Software Factory Canon v1.0 (325 lines, RATIFIED Sub-A Clause 17) + 8-sprint roadmap audit docs. Central must reconcile its 49-entry operating IL canon stack with the new factory governance canon.
+- Diagnostic: read-only analysis 2026-05-14 00:55-01:00 CEST verified document content (10 INVARIANTS, 4 binding ADRs, 9 sections, role matrix, approval model). No conflict with existing IL canon entries — complementary two-layer separation:
+  - Layer 1 (factory governance) = Software Factory Canon v1.0 (WHAT factory builds, WHO does what, WHICH gates, invariants).
+  - Layer 2 (operating discipline) = Central's IL canon stack (HOW to execute work: shell discipline, Clause F-01, persistence-shell-fixation, doc-mandatory-two-layer, terminals topology, explicit-target, claude-code-primary, all-prompts-via-file, F01-reinforce, documentation-owned-by-central).
+- Cross-mapping (Software Factory Canon v1.0 INV -> Central IL canon entries):
+  - INV-08 (one terminal = one project = one repo) -> ratifies IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12 (line 7833)
+  - INV-09 (.claude/settings.json locked) -> ratifies IL-FACTORY-CLAUDE-CODE-PERMISSIONS-DOC-MANDATORY-2026-05-12 (line 7806)
+  - INV-10 (Roadmap append-only) -> ratifies IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (line 7728)
+  - Approval model (LOW/MEDIUM/HIGH gates) -> compatible with existing HITL canon (Central + operator + MLRO advisory pattern)
+- Decision: Software Factory Canon v1.0 = Layer 1 binding canon. Central's IL operating stack = Layer 2 operating discipline that executes under Factory canon authority. Both remain in force; no supersession; no conflict.
+- INV-03 clarification per PR #286 acknowledged: Claude Code Anthropic API permitted for factory planning/review (not production workload). All current Central work uses Claude Code as planner/reviewer (not as production inference) — INV-03 compliant.
+- INV-04 (Decimal only for money) — applies to future code in services; current S12-S25 docs work has no money-handling code; future S16.4 / S21 implementations must comply.
+- Action: no Software Factory Canon v1.0 body modification (operator-ratified). No existing IL canon entries modified. This entry records integration acknowledgement + cross-mapping for future sprint references.
+- Sprint 2..8 of Software Factory Canon roadmap (role passports, routing enforcement, evaluation loop, approval+ruflo, evidence/runbooks, pilot, full adoption) tracked separately; Central will participate as Layer 2 operating compliance.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only INSTRUCTION-LEDGER.md modified.
+- Refs: docs/canon/software-factory-canon-v1.md (RATIFIED 2026-05-14 Sub-A Clause 17); PR #285 (2668232 canon landed) + PR #286 (d764ed7 Sprint 1 ratified); ADR-019, ADR-020, ADR-025, ADR-031 (binding ADRs per canon); IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12 (line 7758); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12 (line 7775); IL-FACTORY-CLAUDE-CODE-PERMISSIONS-DOC-MANDATORY-2026-05-12 (line 7806); IL-CANON-TERMINALS-TOPOLOGY-AND-EXECUTION-RULE-2026-05-12 (line 7833); IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (line 7851); IL-CANON-TERMINAL-B-AUTONOMOUS-FIXATION-2026-05-12 (line 7893); IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 (line 7921); IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12 (line 7983); IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 (line 8135); IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (line 8377); IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12 (line 8444); IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (line 7728); IL-CANON-IL-DEDUPE-FIX-D3-2D-2-2026-05-12 (line 8281); IL-CANON-SUB-B-PROMPT-VIA-FILE-2026-05-12 (line 8296); IL-CANON-ADR-030-ACCEPTED-FILE-STATUS-2026-05-12 (line 8314); docs/audit/sprint1..8-2026-05-14 (8-sprint roadmap files).
