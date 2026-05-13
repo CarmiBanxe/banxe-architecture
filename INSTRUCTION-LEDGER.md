@@ -8672,3 +8672,24 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Resolves: OI-2 from IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12 (line 8016) + IL-PROJECT-DOCS-SPRINT-D3-3-4-DATA-CONTENT-2026-05-12 clarification (line 8427).
 - Follow-up: NEW files under docs/project/data/ no longer require `git add -f`. If repo-root data/ directory is needed in future, the anchored rule still ignores it correctly.
 - Refs: Sprint S13.7; IL-PROJECT-DOCS-SPRINT-D2-DOMAIN-SKELETONS-2026-05-12 (OI-2 origin); IL-PROJECT-DOCS-SPRINT-D3-3-4-DATA-CONTENT-2026-05-12 (OI-2 clarification); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
+
+### IL-OPS-S13-8-LEGION-8180-COLLISION-VERIFY-2026-05-13
+
+- Date: 2026-05-14 00:00 CEST
+- Phase (GSD): Sprint S13.8 — Legion :8180 collision verify; G-FACTORY-05 reclassified FALSE-COLLISION (ADR-017 canonical authority)
+- Status: BINDING (G-FACTORY-05 CLOSED via reclassification; S12.4 HOLD lift condition #3 satisfied)
+- Priority: P2 (closure hygiene; partially unblocks S12.4 HOLD lift)
+- Executor: Central via shell read-only diagnostic + audit doc per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 (shell secondary for read-only DB/process diagnostic).
+- Artifact: docs/audit/s13-8-legion-8180-collision-verify-2026-05-13.md (55 lines, 3840 B; diagnostic findings + reclassification rationale + impact on S12.4 HOLD).
+- Verdict: G-FACTORY-05 = FALSE-COLLISION. ADR-017 KC IAM cutover declared Legion 100.101.218.26:8180 as canonical KC authority pre-S12.1. Legion 2 Java procs = containerised quay.io/keycloak/keycloak:26.2.5 (keycloak-banxe-emi + keycloak-banxe-emi-pg-test). evo1:8180 = secondary/legacy. Same misclassification pattern as G-FACTORY-04 (IL line 3830 reclassified MONITOR/VERIFY 2026-05-06).
+- No destructive cleanup required. No orphan processes. Tailscale routing canonical per ADR-017 (mark-legion 100.101.218.26 + evo1 100.99.208.21 / 100.68.102.48).
+- Impact on S12.4 HOLD lift (per IL line 7977):
+  - #1 G-IAM-08 — STILL OPEN (PREP DONE Sub-B PR #133, deploy HITL-gated)
+  - #2 G-IAM-09 — STILL OPEN (PREP DONE Sub-B PR #134, deploy HITL-gated)
+  - #3 G-FACTORY-05 — RESOLVED via this reclassification (FALSE-COLLISION; ADR-017 canonical) ✅
+  - #4 Operator go-trigger — pending
+- S12.4 HOLD lift remaining = G-IAM-08 + G-IAM-09 deploy (HITL-gated) + operator go-trigger.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only audit doc + IL pairing modified.
+- Follow-up: evo1:8180 secondary KC may be addressed separately (S12.x or new sprint) if dual-host KC not desired long-term; S12.4 realm provisioning unblocks after G-IAM-08 + G-IAM-09 operator deploy.
+- Refs: ADR-017 (KC IAM cutover); G-FACTORY-04 (line 3830 reclassified 2026-05-06); G-FACTORY-05 (line 7971 origin); IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12 (line 7938); IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06 (line 3830); Sprint S13.8, S12.4; banxe-emi-stack PR #133/#134; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
