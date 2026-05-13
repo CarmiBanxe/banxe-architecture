@@ -8486,3 +8486,21 @@ Refs:
 - **Programme milestone: 8/8 Layer-2 domain READMEs in CONTENT** (compliance D3.2b, security D3.2b, architecture D3.3.1, api D3.3.2, runbooks D3.3.3, data D3.3.4, operations D3.3.5, governance D3.3.6 — this commit). D3.3.X domain expansion programme closes here; next phase is D3.4 (programme-level integration / cross-domain coherence pass).
 - Post-commit state: STAY on `docs/sprint-d3-3-6-governance-content-2026-05-12` branch per brief constraint (D3.3.5 lesson — guard script blocks push from `main`). Central operator handles push / PR / admin merge via shell artifact.
 - Refs: IL-PROJECT-DOCS-SPRINT-D3-3-1-ARCHITECTURE-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-2-API-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-3-RUNBOOKS-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-4-DATA-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-3-5-OPERATIONS-CONTENT-2026-05-12; IL-PROJECT-DOCS-SPRINT-D3-2B-CONTENT-EXPANSION-2026-05-12; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12.
+
+### IL-OPS-S12-2-KC-SESSION-TIMEOUT-PREP-2026-05-13
+
+- Date: 2026-05-13 09:35 CEST
+- Phase (GSD): Sprint S12.2 PREP — Keycloak session timeout hardening (runbook + JSON template)
+- Status: BINDING (prep only; deploy HITL-gated)
+- Priority: P1
+- Executor: Central via Claude Code (claude -p non-interactive) per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12. IL pairing appended via shell (Claude -p completed file edits but did not commit; secondary shell completes git workflow per canon).
+- Artifacts (NEW files staged this commit):
+  - docs/project/runbooks/keycloak-session-timeout-deploy-2026-05-13.md (9489 B, ~150-200 lines)
+  - docs/project/runbooks/keycloak-realm-export/banxe-emi-session-config.json (1802 B, JSON template with placeholders + anchors block)
+- Target values per IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 Sprint S12.2: access TTL 15 min (900s), refresh TTL 30 min, SSO idle 8 h (28800s), SSO max 24 h (86400s defensive).
+- Scope: KC realm banxe-emi on evo1 (Legion 100.101.218.26:8180 canonical per ADR-017). NO production deploy. Operator deploys via kcadm.sh under HITL gate (Central + operator + MLRO advisory). Audit to ClickHouse Guardian per ADR-027 (5y CASS 15 retention).
+- Pattern reference: banxe-emi-stack PR #134 (G-IAM-09 prep, 29/29 PASS).
+- Auditor: Spec-First Auditor v2 expected PASS 12/12 on this commit.
+- Note: untracked file evo1:9000 in worktree (mistaken curl/redirect output during Claude -p execution) is NOT staged; left untracked for housekeeping.
+- Follow-up: D3.x validation script docs/project/runbooks/keycloak-session-timeout-validate.sh; operator deploy event IL logging post-action; runbook Status SKELETON -> CONTENT after operator deploy validation.
+- Refs: ADR-017, ADR-027, ADR-030; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12.
