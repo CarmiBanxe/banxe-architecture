@@ -1,0 +1,20 @@
+role_id: guardian-project
+role_name: Project Guardian
+actor: guardian-project-service
+type: agent
+responsibility: Enforces 8 project rules (P1-P8) deterministically
+tools:
+- project_rules.py
+- github-status-check
+- clickhouse-append
+allowed_skills: []
+gate_authority: auto
+risk_ceiling: LOW
+invariants_enforced:
+- INV-03
+- INV-04
+- INV-05
+- INV-07
+litellm_routes:
+- ai-heavy
+notes: 'Backbone: llama3.3:70b. Port :8196 on evo1.'

@@ -1,0 +1,26 @@
+role_id: planner
+role_name: Planner
+actor: claude-code
+type: agent
+responsibility: Decomposes tasks, creates plans, assigns sprints
+tools:
+- plan-mode
+- task-create
+- read
+- grep
+- glob
+allowed_skills:
+- S1-context-memory-sync
+- S3-rapid-spec-builder
+- S6-api-contract-guardian
+- S10-clean-arch-enforcer
+gate_authority: none
+risk_ceiling: MEDIUM
+invariants_enforced:
+- INV-08
+- INV-10
+litellm_routes:
+- factory-mid
+- factory-heavy
+- project-reason
+notes: Does NOT write code (INV-01). Delegates to Executor.

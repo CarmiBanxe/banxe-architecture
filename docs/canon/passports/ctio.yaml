@@ -1,0 +1,21 @@
+role_id: ctio
+role_name: CTIO
+actor: Moriel Carmi (interim)
+type: human
+responsibility: Architecture sign-off on ADR amendments, model changes, cluster topology
+tools:
+- github-ui
+- terminal
+- ssh
+allowed_skills:
+- S2-cicd-quick-setup
+- S6-api-contract-guardian
+- S7-dependency-optimizer
+gate_authority: ctio
+risk_ceiling: HIGH
+invariants_enforced:
+- INV-02
+- INV-06
+- INV-09
+litellm_routes: null
+notes: UNDESIGNATED — Moriel Carmi interim until dedicated CTIO hired.

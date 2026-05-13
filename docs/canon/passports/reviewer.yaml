@@ -1,0 +1,27 @@
+role_id: reviewer
+role_name: Reviewer
+actor: claude-code
+type: agent
+responsibility: Reviews diffs, checks invariants, approves or defers
+tools:
+- git-diff
+- read
+- grep
+- glob
+allowed_skills:
+- S1-context-memory-sync
+- S5-performance-scanner
+- S6-api-contract-guardian
+- S10-clean-arch-enforcer
+gate_authority: auto
+risk_ceiling: MEDIUM
+invariants_enforced:
+- INV-01
+- INV-04
+- INV-05
+- INV-07
+- INV-10
+litellm_routes:
+- factory-mid
+- factory-heavy
+notes: Reviews output of Executor. Does not write code.

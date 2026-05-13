@@ -1,0 +1,27 @@
+role_id: executor
+role_name: Executor
+actor: aider-cli
+type: agent
+responsibility: Sole code executor — writes code, runs commands, applies patches
+tools:
+- file-edit
+- shell-exec
+- git-commit
+allowed_skills:
+- S2-cicd-quick-setup
+- S4-error-handling
+- S7-dependency-optimizer
+- S8-smart-test-generator
+- S9-auto-refactor-pro
+gate_authority: none
+risk_ceiling: MEDIUM
+invariants_enforced:
+- INV-01
+- INV-02
+- INV-03
+- INV-05
+litellm_routes:
+- factory-fast
+- factory-mid
+- factory-coder
+notes: ALL code changes go through Aider via LiteLLM (INV-01).

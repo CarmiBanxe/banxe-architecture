@@ -1,7 +1,7 @@
 # Sprint 2: Role Passports
 
 **Date:** 2026-05-14
-**Status:** OPEN
+**Status:** DONE
 **Depends on:** Sprint 1 (canon ratified)
 **Blocks:** Sprint 3, Sprint 5
 
@@ -26,18 +26,18 @@ Create a machine-readable role passport for each factory profession defined in c
 
 | ID | Item | Owner | Status |
 |----|------|-------|--------|
-| S2-01 | Define passport schema (YAML) with fields: role_id, actor, permissions, tool_allowlist, gate_authority, risk_ceiling | Planner | PENDING |
-| S2-02 | Create passport: Planner (Claude Code) | Planner | PENDING |
-| S2-03 | Create passport: Executor (Aider) | Planner | PENDING |
-| S2-04 | Create passport: Reviewer (Claude Code) | Planner | PENDING |
-| S2-05 | Create passport: Factory Guardian | Planner | PENDING |
-| S2-06 | Create passport: Project Guardian | Planner | PENDING |
-| S2-07 | Create passport: Canon Judge | Planner | PENDING |
-| S2-08 | Create passport: Operator (human) | Planner | PENDING |
-| S2-09 | Create passport: MLRO (human) | Planner | PENDING |
-| S2-10 | Create passport: CTIO (human) | Planner | PENDING |
-| S2-11 | Validate passports against HITL-MATRIX.yaml consistency | Reviewer | PENDING |
-| S2-12 | Store passports in `docs/canon/passports/` | Executor | PENDING |
+| S2-01 | Define passport schema (YAML) with fields: role_id, actor, permissions, tool_allowlist, gate_authority, risk_ceiling | Planner | DONE |
+| S2-02 | Create passport: Planner (Claude Code) | Planner | DONE |
+| S2-03 | Create passport: Executor (Aider) | Planner | DONE |
+| S2-04 | Create passport: Reviewer (Claude Code) | Planner | DONE |
+| S2-05 | Create passport: Factory Guardian | Planner | DONE |
+| S2-06 | Create passport: Project Guardian | Planner | DONE |
+| S2-07 | Create passport: Canon Judge | Planner | DONE |
+| S2-08 | Create passport: Operator (human) | Planner | DONE |
+| S2-09 | Create passport: MLRO (human) | Planner | DONE |
+| S2-10 | Create passport: CTIO (human) | Planner | DONE |
+| S2-11 | Validate passports against HITL-MATRIX.yaml consistency | Reviewer | DONE |
+| S2-12 | Store passports in `docs/canon/passports/` | Executor | DONE |
 
 ---
 

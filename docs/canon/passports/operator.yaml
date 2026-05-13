@@ -1,0 +1,17 @@
+role_id: operator
+role_name: Operator
+actor: Moriel Carmi
+type: human
+responsibility: Final approval on promotions, UNSAFE commands, P0 deprioritisation
+tools:
+- github-ui
+- telegram
+- terminal
+allowed_skills:
+- all
+gate_authority: operator
+risk_ceiling: HIGH
+invariants_enforced:
+- all
+litellm_routes: null
+notes: CEO. Single human authority until team grows.
