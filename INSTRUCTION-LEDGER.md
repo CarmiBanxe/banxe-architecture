@@ -8584,3 +8584,23 @@ Refs:
 - Bounded-context: only 2 new files + this IL entry; no edits outside Allowed paths.
 - Follow-up: operator rotation events logged to IL post-action (IL-SEC-ROTATE-<vendor>-<YYYY-MM-DD>); G-SECURITY-HISTORICAL-LEAKS CLOSED when S17 history-walk scan + per-leak rotation complete; ADR-038 Vault adoption (S17) supersedes runbook step 2 env-var injection; S15.4 FCA SUP 15 + GDPR Art.33 notification decision (MLRO/DPO/Legal) for P0 active leaks; .gitleaks.toml allow-list TODO for Midaz UUIDs + SHA-256 anchors.
 - Refs: G-SECURITY-HISTORICAL-LEAKS; ADR-027 (audit trail), ADR-029 (backup), ADR-032 (secret rotation), ADR-038 (Vault placeholder); Sprint S15.5, S15.4, S17, S12.5, S12.6; IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11; IL-OPS-S12-1, S12-2, S12-3, S14-1, S14-3; IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12, IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12, IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12, IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12, IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12, IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12, IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12; FCA SYSC 4.1; FCA SYSC 15A; FCA SUP 15; GDPR Art.32; GDPR Art.33; banxe-emi-stack PR #133, PR #134.
+
+### IL-OPS-S15-4-FCA-GDPR-NOTIFICATION-PREP-2026-05-13
+
+- Date: 2026-05-13 23:20 CEST
+- Phase (GSD): Sprint S15.4 PREP — FCA SUP 15 + GDPR Art.33 notification decision package (G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION mitigation)
+- Status: BINDING (decision-PREP DONE; awaits MLRO/DPO/Legal sign-off for actual submission)
+- Priority: P0 (regulatory)
+- Executor: D1 produced by Claude Code Central via claude -p non-interactive per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12. D2 + IL pairing produced via shell cat-heredoc (claude -p completed only D1 then exited without commit, same pattern as S12.2/S12.3). Brief via /tmp per IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
+- Artifacts:
+  - docs/audit/s15-4-fca-gdpr-notification-decision-package-2026-05-13.md (NEW, 12454 B; gap analysis + Art.33 72h timeline + SUP 15 significance + decision matrix)
+  - docs/project/runbooks/regulatory-incident-notification-runbook-2026-05-13.md (NEW, 4542 B, 95 lines; FCA Form A + ICO ReportIT + Art.34 templates + escalation chain + HITL gate)
+- Incident: 2026-05-08 evo1 V8 user classification + Legion key cross-contamination (IL line 7938 S12.1 evidence). S15.5 (IL line 8569) characterizes 0 P0 active-prod leaks at HEAD; downgrades exfiltration vector but does NOT eliminate FCA SUP 15 operational-resilience obligation.
+- Art.33 72h status: window expired 2026-05-11 ~00:00 UTC; ~5 days late at decision time 2026-05-13; Art.33(4) reasoned-justification framework provided in audit doc.
+- Decision paths (matrix in audit doc): NOTIFY-FCA-SUP-15, NOTIFY-ICO-ART-33, NOTIFY-CUSTOMER-ART-34, INTERNAL-LOG-ONLY. Recommended path TBC by MLRO + DPO consultation.
+- NO actual submission. Central does NOT contact FCA Connect / ICO ReportIT directly. MLRO/DPO/Legal sign-off + operator-led submission required per HITL gate.
+- Open dependencies: MLRO appointment (S20.8), DPO appointment (TBD), Legal counsel.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12.
+- Bounded-context: only 2 new files + IL pairing. NO customer PII, NO operator communications, NO real regulatory submission.
+- Follow-up: MLRO+DPO+Legal consultation; submission event IL log post-action (if decision = NOTIFY-*); G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION CLOSED at decision sign-off (regardless of NOTIFY vs INTERNAL-LOG-ONLY path).
+- Refs: G-COMPLIANCE-FCA-EMI-INCIDENT-NOTIFICATION; ADR-027; FCA SUP 15.3.11R + 15.3.17R; GDPR Art.33 + Art.34 + Art.4(12); MLR 2017 Reg.28; ICO breach reporting; DORA Art.14; Sprint S15.4, S15.5, S15.1, S15.2, S15.3, S20.8, S25.4; IL-OPS-S12-1 (line 7938); IL-OPS-S15-5 (line 8569); IL-CANON-DOC-MANDATORY-TWO-LAYER-2026-05-12; IL-CANON-DOCUMENTATION-OWNED-BY-CENTRAL-2026-05-12; IL-CANON-PERSISTENCE-SHELL-FIXATION-2026-05-12; IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12; IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12; IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12.
