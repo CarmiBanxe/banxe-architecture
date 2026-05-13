@@ -1,0 +1,31 @@
+{
+  "realm": "banxe-emi",
+  "_comment": "Sprint S12.2 PREP — session timeout target values. Placeholders {{CURRENT_*}} to be filled by operator from prod read-only fetch (kcadm.sh get realms/banxe-emi --fields ...). Apply via kcadm.sh update realms/banxe-emi under HITL gate per docs/project/runbooks/keycloak-session-timeout-deploy-2026-05-13.md.",
+  "accessTokenLifespan": 900,
+  "accessTokenLifespanForImplicitFlow": 900,
+  "ssoSessionIdleTimeout": 28800,
+  "ssoSessionMaxLifespan": 86400,
+  "offlineSessionIdleTimeout": 2592000,
+  "_previousValues": {
+    "accessTokenLifespan": "{{CURRENT_AT_LIFESPAN}}",
+    "ssoSessionIdleTimeout": "{{CURRENT_SSO_IDLE}}",
+    "ssoSessionMaxLifespan": "{{CURRENT_SSO_MAX}}",
+    "_capturedAt": "{{TIMESTAMP_UTC}}",
+    "_capturedBy": "{{OPERATOR_HANDLE}}"
+  },
+  "_anchors": {
+    "adr": ["ADR-017", "ADR-027", "ADR-030"],
+    "il": "IL-OPS-S12-1-DONE-EVIDENCE-AND-NEW-GAPS-2026-05-12",
+    "sprint": "S12.2",
+    "roadmap": "IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11",
+    "runbook": "docs/project/runbooks/keycloak-session-timeout-deploy-2026-05-13.md",
+    "backup_pattern": "banxe-emi-stack PR #134 (G-IAM-09 prep, 29/29 PASS)"
+  },
+  "_apply": {
+    "command": "kcadm.sh update realms/banxe-emi -s accessTokenLifespan=900 -s ssoSessionIdleTimeout=28800 -s ssoSessionMaxLifespan=86400",
+    "verify": "kcadm.sh get realms/banxe-emi --fields accessTokenLifespan,ssoSessionIdleTimeout,ssoSessionMaxLifespan",
+    "rollback": "kcadm.sh update realms/banxe-emi -s accessTokenLifespan={{CURRENT_AT_LIFESPAN}} -s ssoSessionIdleTimeout={{CURRENT_SSO_IDLE}} -s ssoSessionMaxLifespan={{CURRENT_SSO_MAX}}",
+    "audit_sink": "ClickHouse Guardian per ADR-027 (5y CASS 15 retention)",
+    "hitl_parties": ["Central", "operator (evo1)", "MLRO advisory"]
+  }
+}
