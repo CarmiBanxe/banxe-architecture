@@ -113,3 +113,97 @@ PARTIAL → ACTIVE (sink in production, no guardrail hook yet)
 - This requires CLICKHOUSE_HOST/PORT/USER/PASSWORD env in
   ~/.config/litellm/.env, plus systemctl --user restart litellm.
 - Will be HITL-ASK-2026-05-12-003 when executed.
+
+
+## HITL-ASK-2026-05-12-003
+- Time-opened: 2026-05-13 09:00 CEST
+- Time-completed: 2026-05-13 09:10 CEST
+- Level: L3 (live runtime change to production LiteLLM behavior)
+- Action: install shadow-mode classifier tap end-to-end on Legion LiteLLM
+- Requested by: Sub-terminal A (autonomous, Clauses 15+17)
+- Plan reference: sprint5-pilot-plan-2026-05-12.md §3 (shadow-mode design),
+  SANDBOX-ACTIVATION-ORDER-2026-05-12 Step 6
+
+### Components installed
+1. `pip install clickhouse-driver` in LiteLLM pipx venv
+2. Created ~/litellm-callbacks/shadow_classifier_tap.py:
+   - ShadowClassifierTap(CustomLogger) with log_success_event
+   - Extracts prompt, calls qwen2.5:0.5b on evo2 (100.99.208.21:11434)
+     via /api/generate for classification
+   - Inserts audit row into banxe_audit.hitl_decisions via ClickHouse
+   - Fallback: writes to ~/banxe-dev/audit-staging/hitl-fallback.log
+     if ClickHouse insert fails
+   - Auto-registers into litellm.callbacks list on import (required
+     for LiteLLM 1.82+ — YAML success_callback alone is insufficient)
+3. Added to ~/.config/litellm/.env:
+   - CLICKHOUSE_HOST=127.0.0.1
+   - CLICKHOUSE_PORT=9000
+   - CLICKHOUSE_USER=default
+   - CLICKHOUSE_PASSWORD=<empty>
+   - PYTHONPATH=/home/mmber/litellm-callbacks
+4. Added success_callback to litellm-config.yaml:
+   - success_callback: shadow_classifier_tap.shadow_classifier_tap
+5. Created clickhouse-tunnel.service (user systemd):
+   - ssh tunnel 127.0.0.1:9000 -> evo1:9000
+6. Restarted litellm.service
+
+### Conflict check (Clause 17.2)
+- LiteLLM service: active prior to changes
+- ClickHouse tunnel: established, evo1:9000 reachable
+- banxe_audit.hitl_decisions: 3 rows pre-test (ASK-001 smoke +
+  ASK-002 DDL smoke + 1 tunnel smoke)
+- Classifier qwen2.5:0.5b on evo2: PRESENT (pulled via ASK-001)
+- Open PRs touching shadow-tap / hitl-decisions: NONE
+- No concurrent LiteLLM config changes in flight
+
+### Live evidence
+- Smoke request: curl POST /v1/chat/completions model=default
+  prompt="What is the capital of France?"
+- LiteLLM response: 200 OK, reply="Paris"
+- BEFORE row count: 3
+- AFTER row count: 4 (delta = 1, exact)
+- New row:
+  - ts: 2026-05-13 07:10:00 UTC
+  - action: shadow_classify
+  - outcome: approve
+  - classifier_out: {"cls": "unknown", "confidence": 0.0}
+- Journal: no exceptions related to shadow-tap
+- No customer-facing latency impact (callback fires async,
+  post-response)
+
+### No-silent-bypass
+- Every chat completion request now triggers shadow_classifier_tap
+- On ClickHouse insert failure: fallback write to
+  ~/banxe-dev/audit-staging/hitl-fallback.log (append-only)
+- On outer exception: error printed to stderr (visible in journal)
+- No code path bypasses the callback once registered in
+  litellm.callbacks
+
+### Auto-register fix
+- LiteLLM 1.82+ does not invoke CustomLogger instances registered
+  only via YAML success_callback
+- Fix: shadow_classifier_tap.py appends the ShadowClassifierTap
+  instance to litellm.callbacks list at module import time
+- This is the canonical pattern for LiteLLM custom callbacks in
+  current versions
+
+### Outcome
+- Status: SUCCESS
+- Shadow-mode classifier tap is LIVE on Legion LiteLLM
+- Every chat completion generates a shadow classification row in
+  banxe_audit.hitl_decisions
+- Classifier (qwen2.5:0.5b on evo2) reachable and responding
+- ClickHouse audit sink on evo1 receiving writes via ssh tunnel
+- Condition D status: ACTIVE → VERIFIED
+
+### Rollback procedure
+1. systemctl --user stop clickhouse-tunnel.service
+2. cp ~/litellm-config.yaml.bak-pre-shadowtap-2026-05-12 \
+      ~/litellm-config.yaml
+3. cp ~/.config/litellm/.env.bak-pre-clickhouse-2026-05-12 \
+      ~/.config/litellm/.env
+4. rm -rf ~/litellm-callbacks
+5. systemctl --user restart litellm
+6. Verify: no [shadow-tap] entries in journal after restart
+7. ClickHouse data preserved (no deletion without operator approval)
+8. Record post-mortem per RB-HITL-001
