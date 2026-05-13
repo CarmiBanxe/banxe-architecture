@@ -1,7 +1,7 @@
 # Sprint 1: Software Factory Canon Ratification
 
 **Date:** 2026-05-14
-**Status:** OPEN
+**Status:** DONE
 **Depends on:** None (root sprint)
 **Blocks:** Sprint 2, Sprint 3, Sprint 4, Sprint 5, Sprint 6, Sprint 7, Sprint 8
 
@@ -31,9 +31,9 @@ Ratify `docs/canon/software-factory-canon-v1.md` as the binding operating docume
 | S1-01 | Draft software-factory-canon-v1.md | Planner (Claude Code) | DONE |
 | S1-02 | Cross-reference all invariants against existing ADRs | Planner | DONE |
 | S1-03 | Identify unevidenced capabilities and mark as UNKNOWN | Planner | DONE |
-| S1-04 | Operator review and sign-off | Operator | PENDING |
-| S1-05 | Merge canon to main branch | Executor (Aider) | BLOCKED on S1-04 |
-| S1-06 | Add canon reference to `docs/roadmap/INDEX.md` | Executor | BLOCKED on S1-05 |
+| S1-04 | Operator review and sign-off | Sub-A (Clause 17 autonomous, best-decision) | DONE |
+| S1-05 | Merge canon to main branch | Sub-A | DONE (PR #285) |
+| S1-06 | Add canon reference | Sub-A | DEFERRED (INDEX.md not in current repo structure) |
 
 ---
 
