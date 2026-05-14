@@ -1,7 +1,7 @@
 # Sprint 7: Pilot Factory Pack
 
 **Date:** 2026-05-14
-**Status:** OPEN
+**Status:** DONE
 **Depends on:** Sprint 3 (routing enforcement), Sprint 4 (evaluation loop), Sprint 6 (evidence standard)
 **Blocks:** Sprint 8
 
@@ -28,16 +28,16 @@ Execute one complete factory loop end-to-end on a real work item, producing all 
 
 | ID | Item | Owner | Status |
 |----|------|-------|--------|
-| S7-01 | Select pilot work item from backlog (Operator approval) | Planner | PENDING |
-| S7-02 | **PLAN:** Create Instruction Pack (P1) for pilot item | Planner | PENDING |
-| S7-03 | **ROUTE:** Select model alias and validate against canon Section 5 | Planner | PENDING |
-| S7-04 | **EXECUTE:** Aider implements the work item, producing Execution Pack (P2) | Executor | PENDING |
-| S7-05 | **EVALUATE:** Run evaluation orchestrator, producing Evaluation Pack (P3) and Audit Pack (P4) | Reviewer | PENDING |
-| S7-06 | **REVIEW:** Claude Code reviews all verdicts and makes promote/defer decision | Reviewer | PENDING |
-| S7-07 | **APPROVE:** Run through approval gates (auto or Operator depending on risk) | Operator | PENDING |
-| S7-08 | **PROMOTE/DEFER:** Execute promote (merge PR) or defer (return to Plan with notes) | Executor | PENDING |
-| S7-09 | **EVIDENCE:** Generate Evidence Pack (P5) from P1-P4 + approval record | Executor | PENDING |
-| S7-10 | Retrospective: document what worked, what failed, what needs adjustment | Planner | PENDING |
+| S7-01 | Select pilot work item from backlog (Operator approval) | Planner | DONE |
+| S7-02 | **PLAN:** Create Instruction Pack (P1) for pilot item | Planner | DONE |
+| S7-03 | **ROUTE:** Select model alias and validate against canon Section 5 | Planner | DONE |
+| S7-04 | **EXECUTE:** Aider implements the work item, producing Execution Pack (P2) | Executor | DONE |
+| S7-05 | **EVALUATE:** Run evaluation orchestrator, producing Evaluation Pack (P3) and Audit Pack (P4) | Reviewer | DONE |
+| S7-06 | **REVIEW:** Claude Code reviews all verdicts and makes promote/defer decision | Reviewer | DONE |
+| S7-07 | **APPROVE:** Run through approval gates (auto or Operator depending on risk) | Operator | DONE |
+| S7-08 | **PROMOTE/DEFER:** Execute promote (merge PR) or defer (return to Plan with notes) | Executor | DONE |
+| S7-09 | **EVIDENCE:** Generate Evidence Pack (P5) from P1-P4 + approval record | Executor | DONE |
+| S7-10 | Retrospective: document what worked, what failed, what needs adjustment | Planner | DONE |
 
 ---
 
