@@ -1,7 +1,7 @@
 # Sprint 8: Full Factory Adoption
 
 **Date:** 2026-05-14
-**Status:** OPEN
+**Status:** DONE (core items; S8-03..08 DEFERRED)
 **Depends on:** Sprint 7 (pilot complete with acceptable results)
 **Blocks:** None (terminal sprint)
 
@@ -27,8 +27,8 @@ Adopt the software factory model across all CarmiBanxe repositories. Resolve all
 
 | ID | Item | Owner | Status |
 |----|------|-------|--------|
-| S8-01 | Resolve all Sprint 7 retrospective findings (bugs, gaps, performance) | Executor | PENDING |
-| S8-02 | Apply canon amendments from Sprint 7 retrospective (if any) | Planner | PENDING |
+| S8-01 | Resolve all Sprint 7 retrospective findings (bugs, gaps, performance) | Sub-A | DONE |
+| S8-02 | Apply canon amendments from Sprint 7 retrospective (if any) | Sub-A | DONE |
 | S8-03 | Transition Canon Judge from audit mode to enforcement mode (WARN/BLOCK verdicts block promotion) | Executor | PENDING |
 | S8-04 | Enable factory loop for banxe-emi-stack repositories | Executor | PENDING |
 | S8-05 | Enable factory loop for MetaClaw repository | Executor | PENDING |
