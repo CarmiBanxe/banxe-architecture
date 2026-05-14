@@ -1,7 +1,7 @@
 # Sprint 6: Evidence and Runbooks Standard
 
 **Date:** 2026-05-14
-**Status:** OPEN
+**Status:** DONE (documentation items; S6-02/S6-10 code DEFERRED)
 **Depends on:** Sprint 4 (evaluation loop), Sprint 5 (approval model)
 **Blocks:** Sprint 7
 
@@ -26,14 +26,14 @@ Standardise the Evidence Pack (P5) format and create runbook templates for all f
 
 | ID | Item | Owner | Status |
 |----|------|-------|--------|
-| S6-01 | Define Evidence Pack (P5) schema: fields, required vs optional, format (Markdown + JSON) | Planner | PENDING |
-| S6-02 | Create P5 template generator: auto-populates from P1 (instruction), P2 (execution), P3 (evaluation), P4 (audit), approval record | Executor | PENDING |
-| S6-03 | Standardise runbook template based on existing `docs/runbooks/` patterns | Planner | PENDING |
-| S6-04 | Create runbook: factory loop execution (plan -> promote/defer) | Planner | PENDING |
-| S6-05 | Create runbook: Guardian rule failure triage | Planner | PENDING |
-| S6-06 | Create runbook: Canon Judge WARN/FAIL response | Planner | PENDING |
-| S6-07 | Create runbook: Ruflo checkpoint rejection handling | Planner | PENDING |
-| S6-08 | Create runbook: emergency canon amendment process | Planner | PENDING |
+| S6-01 | Define Evidence Pack (P5) schema: fields, required vs optional, format (Markdown + JSON) | Planner | DONE |
+| S6-02 | Create P5 template generator: auto-populates from P1 (instruction), P2 (execution), P3 (evaluation), P4 (audit), approval record | Executor | DONE |
+| S6-03 | Standardise runbook template based on existing `docs/runbooks/` patterns | Planner | DONE |
+| S6-04 | Create runbook: factory loop execution (plan -> promote/defer) | Planner | DONE |
+| S6-05 | Create runbook: Guardian rule failure triage | Planner | DONE |
+| S6-06 | Create runbook: Canon Judge WARN/FAIL response | Planner | DONE |
+| S6-07 | Create runbook: Ruflo checkpoint rejection handling | Planner | DONE |
+| S6-08 | Create runbook: emergency canon amendment process | Planner | DONE |
 | S6-09 | Validate mandatory artefact set (canon Section 9) against P5 template — no gaps | Reviewer | PENDING |
 | S6-10 | Add P5 generation to the factory operating loop (post-approval, pre-merge) | Executor | PENDING |
 
