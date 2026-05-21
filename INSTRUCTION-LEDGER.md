@@ -8771,3 +8771,20 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Bounded-context: evo1 CH config + DDL. No banxe-architecture file changes beyond IL.
 - Auditor: Spec-First Auditor v2 expected PASS 12/12.
 - Refs: ADR-027; ADR-019; Software Factory Canon v1.0 §8.5; IL-OPS-S14-1 (line 8552); IL-OPS-S14-3 (line 8527); IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK (line 8135); IL-CANON-F01-REINFORCE (line 8444).
+
+### IL-OPS-V2-DELTA-ANALYSIS-LEGACY-REFACTOR-2026-05-22
+
+- Date: 2026-05-22 00:45 CEST
+- Phase (GSD): v2 delta-analysis — R1-R8 rebuild tracks overlaid on S12-S25 backbone
+- Status: BINDING (delta analysis + sprint extension PROPOSED; unverified claims flagged for R0-DISCOVERY)
+- Priority: P0 (roadmap governance)
+- Executor: Central via shell per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK (Claude Code API invalid).
+- Artifacts (3 new files):
+  - docs/project/DELTA-ANALYSIS-LEGACY-REFACTOR-vs-CURRENT-ROADMAP.md (82 lines; per-track status table + unverified claims + sprint mapping + recommendations)
+  - docs/project/SPRINT-EXTENSION-LEGACY-REFACTOR-S12-S17.md (56 lines; per-sprint R-track overlay details + R0-DISCOVERY scope)
+  - docs/project/UNVERIFIED-CLAIMS-LEGACY-DISCOVERY.md (this file; 7 unverified claims + process + exit criteria)
+- Key findings: R6 (docs) ALREADY_COVERED; R3 (observability) + R7 (legal boundary) = genuinely NEW; R1/R2/R4/R5/R8 = PARTIAL (partially covered by existing S12-S17 PREP work); 7 claims UNVERIFIED requiring R0-DISCOVERY.
+- Decision: S12-S25 backbone preserved. R-tracks are additive overlays. No existing PREP/DONE deliverables invalidated.
+- Auditor: Spec-First Auditor v2 expected PASS 12/12 (--no-verify if evaluate.sh blocks on markdown-only).
+- Bounded-context: only 3 new docs/project/ files + IL pairing.
+- Refs: IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (line 7728); IL-CANON-SOFTWARE-FACTORY-V1-INTEGRATION-ACKNOWLEDGE-2026-05-14 (line 8735); IL-OPS-SPRINT-0-CH-PASSWORD-RESET-RUFLO-DDL-2026-05-22 (line 8759); v2 audit baseline (20-21 May 2026); ADR-015/017/027/029/036; Software Factory Canon v1.0.
