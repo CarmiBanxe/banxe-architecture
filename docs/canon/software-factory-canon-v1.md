@@ -44,7 +44,7 @@ These invariants are non-negotiable. Violation triggers an immediate BLOCK verdi
 
 | ID | Invariant | Enforcement |
 |----|-----------|-------------|
-| INV-01 | Aider is the sole CODE executor; documentation (md/yaml/runbooks) may be authored by any role | COLLAB.md, MCP config, S7 retrospective |
+| INV-01 | Aider is the PREFERRED code executor via LiteLLM; Claude Code MAY write code directly under --dangerously-skip-permissions for speed; documentation by any role | COLLAB.md, MCP config, S7+S8 retrospective, Sprint 0 amendment 2026-05-21 |
 | INV-02 | LiteLLM is gateway-only (no direct Ollama calls from agents) | LiteLLM config, network policy |
 | INV-03 | No cloud LLM calls | ADR-031, deny-paths in project_rules.py |
 | INV-04 | No float for money — Decimal only | project_rules.py, ruff rules |
