@@ -4,3 +4,4 @@ scripts/__pycache__/
 *.log
 /data/
 .claude/settings.local.json
+runtime/midaz-ledger/env.live
