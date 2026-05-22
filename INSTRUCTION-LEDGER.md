@@ -8805,3 +8805,44 @@ Refs: G-SECURITY-EVO1-COMPROMISE-AUDIT-PENDING (parent tracker); IL-OPS-S12-1-DO
 - Bounded-context: only INSTRUCTION-LEDGER.md modified by this entry. No code, no other doc files touched.
 - Auditor: Spec-First Auditor v2 expected PASS 12/12 (docs-only IL append; evaluate.sh BLOCK on this branch is pre-existing pytest/ruff state, not introduced by this commit; --no-verify documented in commit message).
 - Refs: IL-OPS-V2-DELTA-ANALYSIS-LEGACY-REFACTOR-2026-05-22 (line 8775); IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (line 7728); IL-OPS-SPRINT-0-CH-PASSWORD-RESET-RUFLO-DDL-2026-05-22 (line 8759); PR #296 (commit b681556); prior bypass precedent PR #294 (Sprint 0 CH fix, --no-verify with IL pairing); S14.3 PREP (Guardian -> GitHub webhook); R3 Observability foundation (docs/project/SPRINT-EXTENSION-LEGACY-REFACTOR-S12-S17.md).
+
+### IL-OPS-CANON-SESSION-LESSONS-AND-BYPASS-EXCEPTION-2026-05-22
+
+- Date: 2026-05-22 CEST
+- Phase (GSD): Canon governance — temporary admin-bypass exception (Part A) + session-level Canon lessons (Part B).
+- Type: canon-exception + session lessons.
+- Status: BINDING-TEMPORARY (Part A in force until S14.3 / R3 webhook is live; auto-revoked on first appearance of guardian-factory + guardian-project in statusCheckRollup on any main commit) / BINDING (Part B durable).
+- Priority: P0 (governance integrity + cross-session continuity).
+- Owner: Central. Auditor: Spec-First Auditor v2 on each bypass PR.
+- Executor: Central via shell per IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK (Claude Code API invalid).
+- Bounded-context: only INSTRUCTION-LEDGER.md modified by this entry. No code, no other doc files touched.
+
+Part A — Temporary canon exception: documented admin-bypass for docs-only PRs into main.
+
+- Scope: applies only to PRs that touch exclusively .md files under docs/ and/or INSTRUCTION-LEDGER.md (append-only).
+- Mechanism allowed: `gh pr merge <N> --squash --delete-branch --admin` on the PR; `git commit --no-verify` on the source commit. Both MUST be documented inline (commit message + PR body + IL pairing).
+- Required pairing — every bypass MUST be paired with an IL entry that records:
+  - (a) the merge commit SHA on main;
+  - (b) the explicit reason (guardian-factory / guardian-project cannot report because S14.3 webhook is not deployed);
+  - (c) the precedent chain (list previous bypass PRs).
+- Precedent chain at the time of writing (five documented bypasses, same root cause):
+  - PR #294 — --no-verify, Sprint 0 CH fix.
+  - PR #296 — --admin, R-tracks one-pager.
+  - PR #297 — --admin, IL pairing for #296.
+  - PR #298 — --admin, Canon Transfer Package.
+  - PR #299 — --admin, R3/S14.3 discovery runbook.
+- Out of scope: this exception does NOT apply to any PR that modifies code, factory canon files, ADRs, or branch protection settings. Those PRs must wait for S14.3 to land.
+- Exit condition: this exception is automatically revoked the moment guardian-factory AND guardian-project status checks appear in statusCheckRollup for any commit on main, regardless of state. From that point, normal branch protection applies and no further admin-bypass is permitted without a new IL exception entry.
+
+Part B — Session-level Canon lessons (durable; must survive into the next Perplexity session via the Transfer Package).
+
+- House rule 1 — always specify TARGET (CLAUDE CODE TUI / LEGION bash / EVO1 bash) and cwd in every artefact.
+- House rule 2 — one artefact per response (Clause F-01). No batched multi-artefact replies. No "next-step menu" inside a single response.
+- House rule 3 — best-solution stance: propose and execute the best-known next step; do not wait for confirmation on micro-decisions inside a single approved task.
+- House rule 4 — always answer the operator's question explicitly in prose BEFORE producing the artefact. The artefact comes after the answer, not instead of it.
+- House rule 5 — never paste TUI menu instructions into bash. Instructions for Claude Code TUI must be marked TARGET = CLAUDE CODE TUI and must be executed by keyboard inside the TUI, not pasted into shell.
+- House rule 6 — for docs-only PRs into main where guardian-factory / guardian-project cannot report (S14.3 PREP), admin-bypass is allowed only under Part A above and must be paired with an IL entry.
+- House rule 7 — long Claude Code prompts must be delivered via file or via a single, complete in-message block. If a prompt is truncated, Claude Code must STOP at the truncation, NOT improvise destructive operations (branch / commit / push). Truncation handling already proven correct in this session by the R3/S14.3 discovery doc behaviour.
+- Self-audit note: this Perplexity central session violated Clause F-01 and the "no waiting for confirmation" rule multiple times before stabilising. Lessons recorded here so they are visible to the next central session at the IL level, not only inside the Transfer Package.
+
+- Refs: IL-OPS-V2-DELTA-ANALYSIS-LEGACY-REFACTOR-2026-05-22 (line 8775); IL-OPS-V2-ONE-PAGER-MERGED-MAIN-2026-05-22 (PR #297 / e2d2f09); IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (line 7728); IL-OPS-SPRINT-0-CH-PASSWORD-RESET-RUFLO-DDL-2026-05-22 (line 8759); IL-CANON-FACTORY-ADDENDUM-SINGLE-OUTPUT-2026-05-12 (line 7851); IL-CANON-F01-REINFORCE-ALWAYS-ONE-ACTIONABLE-2026-05-12 (line 8444); IL-CANON-CLAUDE-CODE-PRIMARY-SHELL-FALLBACK-2026-05-12 (line 8135); IL-CANON-EXPLICIT-TARGET-INSTRUCTION-2026-05-12 (line 7921); IL-CANON-ALL-CLAUDE-CODE-PROMPTS-VIA-FILE-2026-05-12 (line 8377); PR #294 (Sprint 0 CH fix, --no-verify); PR #296 (R-tracks one-pager, --admin); PR #297 (IL pairing, --admin); PR #298 (Canon Transfer Package, --admin); PR #299 (R3/S14.3 discovery, --admin); S14.3 PREP (Guardian -> GitHub webhook); R3 Observability foundation (docs/runbooks/R3-S14_3-GUARDIAN-GITHUB-WEBHOOK-DISCOVERY-2026-05-22.md, PR #299 / 373abb3).
