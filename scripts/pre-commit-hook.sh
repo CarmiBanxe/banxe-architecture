@@ -46,6 +46,10 @@ fi
 
 # ── Stage 3: Guardian 16-rule check ──
 log "Stage 3: Guardian audit"
+if [[ "${GUARDIAN_OFF:-0}" == "1" ]]; then
+  log "Guardian SKIP (GUARDIAN_OFF=1 — Legion-local commit, Guardian lives on evo1)"
+  return 0 2>/dev/null || true
+fi
 GUARDIAN_URL="http://127.0.0.1:8195/audit"
 if curl -sf --max-time 10 "$GUARDIAN_URL" -X POST \
   -H "Content-Type: application/json" \
