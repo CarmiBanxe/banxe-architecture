@@ -36,3 +36,19 @@ Owner sprint: R0-DISCOVERY (pre-S16, operator-led with Central documentation sup
 ## Anchors
 
 IL-OPS-ROADMAP-SPRINTS-S12-S25-APPROVED-2026-05-11 (line 7728); DELTA-ANALYSIS §3; SPRINT-EXTENSION §R0-DISCOVERY.
+
+## IL-110 Verification Result — 2026-06-06 CEST (Terminal B)
+
+Method: read-only inventory on Legion (BANXE-only scope; non-BANXE/legal resources excluded per operator).
+
+| # | Claim | Verdict | Evidence |
+|---|-------|---------|----------|
+| 1 | 8.6 GB unpacked | BLOCKED | banxe.rar = RAR5 encrypted headers (unrar exit 11); no full unpack on disk (only 116K stub /home/mmber/banxe-legacy-unpack). Requires operator password OR fresh unpack. |
+| 2 | 12 projects | BLOCKED | archive contents inaccessible (encrypted). |
+| 3 | 7 Binance files (in archive) | UNVERIFIABLE-IN-ARCHIVE | cannot inspect archive; Binance code exists only in current repos (banxe-emi-stack legacy_binancekyc_adapter.py; crypto-ops-monitor mock_binance.py). |
+| 4 | neuron-bitshares-ui = trading frontend | NOT-FOUND | marker absent anywhere on machine (find -iname). |
+| 5 | HollaEx/CCXT recommended | BLOCKED | depends on claim 4 (unavailable). |
+| 6 | Paymentology 11 endpoints complete | REJECTED | actual: 3 RPC ops (handle_deduct/handle_balance/handle_deduct_reversal) + 2 REST (/paymentology/webhook, /health) in banxe-payment-core/src/paymentology. Not 11. |
+| 7 | <500ms payment SLA | NOT-AN-INVARIANT | absent from canon; only mention is this same unverified list (UNIVERSAL-CANON-2026-05-22.md:292). Operator decision required to create I-NEW. |
+
+Operator action required: provide banxe.rar password (RAR5 encrypted headers) to unblock claims 1,2,5; claim 3 re-scope to "current repos" not archive; claim 4 evidence absent; claim 6 corrected to 3 RPC ops; claim 7 not an invariant.
