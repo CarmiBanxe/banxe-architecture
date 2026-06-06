@@ -10103,3 +10103,16 @@ Self-audit note
 - This banxe-architecture PR is the twenty-sixth admin-bypass merge, authorised by IL-OPS-CANON-BYPASS-EXCEPTION-EXTEND-TO-TWENTYSIX-2026-06-06 (sibling above). Source commit 7a18c9e used patched R5 hook (PASS, no --no-verify). House rule 14 demonstrated: Central published repos and rolled canon actively, self-audited, without delegating or waiting.
 
 - Refs: IL-OPS-CANON-BYPASS-EXCEPTION-EXTEND-TO-TWENTYSIX-2026-06-06 (sibling above); IL-OPS-V2-EMI-CANON-COVERAGE-COMPLETE-AND-HOUSE-RULE-14-DONE-2026-06-06; IL-OPS-V2-FACTORY-CANON-ROLLOUT-v1.6.1-BATCH-DONE-2026-06-06; IL-OPS-V2-FACTORY-ROLLOUT-CONSUMER-HOUSE-RULE-13-DONE-2026-06-06; IL-OPS-CANON-SESSION-LESSONS-AND-BYPASS-EXCEPTION-2026-05-22 (line 8809); docs/audit/EMI-CANON-COVERAGE-10-REPOS-2026-06-06.md; ~/factory v1.6.1.
+
+### IL-OPS-TERMINAL-B-REFACTOR-CONSOLIDATED-PUSH-2026-06-06
+- Date: 2026-06-06 CEST
+- Phase (GSD): Terminal B smart refactor — consolidated push to resolve coordination lag.
+- Type: canon-exception (single consolidated admin-bypass).
+- Status: BINDING-TEMPORARY (subordinate to Part A; auto-revoked at guardian webhook live).
+- Owner: Central (operator authorised "A"). Executor: Terminal B via Legion bash.
+- Bounded-context: docs/refactor/legacy/* only (24 files: 21 design SPECs + 3 CONTRACTs deltas + INDEX + PRIORITY-MAP) + this IL entry.
+- Reason: 42 Terminal B feature branches were isolated from main (no-push pending webhook), breaking coordination-via-merge (House rule 10). Parallel Central created a duplicate gap-hunt plan unaware of SPECs #9-#21. Operator chose option A: consolidate all refactor design into one push so parallel processes see the work.
+- Mechanism: one git commit --no-verify + one gh pr merge --squash --admin. Replaces 42 individual bypasses with one.
+- Scope: docs-only (markdown SPECs); no code, no production zones.
+- Exit condition: same as Part A (guardian-factory + guardian-project in statusCheckRollup on main).
+- Refs: BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md; NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; 270/270 legacy NEW-driven swept; House rules 1-12.

@@ -34,32 +34,9 @@ jobs:
 
       - name: Extract and validate Mermaid diagrams
         run: |
-          echo "🔍 Extracting Mermaid diagrams from Markdown files..."
-          ERRORS=0
-          TOTAL=0
+          echo "🔍 Extracting and validating Mermaid diagrams from Markdown files..."
           while IFS= read -r -d '' md_file; do
-            # Extract mermaid code blocks
-            python3 - <<'PYEOF'
-import sys, re, subprocess, tempfile, os
-
-content = open("$md_file").read()
-blocks = re.findall(r'```mermaid\n(.*?)\n```', content, re.DOTALL)
-
-for i, block in enumerate(blocks):
-    with tempfile.NamedTemporaryFile(suffix='.mmd', mode='w', delete=False) as f:
-        f.write(block)
-        fname = f.name
-    result = subprocess.run(
-        ['mmdc', '-i', fname, '-o', '/tmp/test-out.svg', '--quiet'],
-        capture_output=True, text=True
-    )
-    os.unlink(fname)
-    if result.returncode != 0:
-        print(f"❌ Invalid Mermaid in $md_file (block {i+1}): {result.stderr[:200]}")
-        sys.exit(1)
-    else:
-        print(f"✅ Block {i+1} in $md_file OK")
-PYEOF
+            python3 .github/scripts/validate_mermaid.py "$md_file" || exit 1
           done < <(find . -name "*.md" -not -path './.git/*' -print0)
           echo "✅ All Mermaid diagrams valid"
 
