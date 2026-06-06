@@ -198,3 +198,7 @@ export interface PartnerPort {
 - UNIVERSAL-CANON-BEST-SOLUTION-AND-SEQUENTIAL-2026-05-23.md (House rules 11 + 12)
 
 === END OF EMI Banking Services SPEC (snapshot 4ca0eef) ===
+
+## NEW capability anchor (per NEW-PROJECT-PRIORITY-MAP canon)
+
+Serves NEW capabilities C3 (fiat payment rails: SEPA, Open Banking) + C4 (Banking-as-a-Service: account issuance) per ADR-020 + PartnerPort. Canon: NEW drives legacy reuse — banxe-open-banking + banxe-baas + sepa-service are reused only because C3/C4 are EMI-licence-mandatory; cex/cex + cex/gql-cex (bare) and the older standalone banxe-open-banking are anti-mapped (DROP/DROP-FORENSIC, no NEW capability). KYC inside banxe-baas serves C5 and is extracted in SPEC #8. No decision change; NEW-need-first justification confirmed.
