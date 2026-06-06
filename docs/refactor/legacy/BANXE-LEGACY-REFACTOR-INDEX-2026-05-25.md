@@ -131,3 +131,31 @@ CONTRACT layer properties:
 ## Governing canon reference
 
 Per docs/refactor/legacy/NEW-PROJECT-PRIORITY-MAP-2026-06-06.md: NEW drives legacy reuse. Every SPEC + CONTRACT is anchored to a NEW capability C1-C18; legacy is reused only where it serves a NEW need. 4 build-fresh capabilities (C14-C17) have no refactor SPEC by design.
+
+## CLASS_TRANSFORM layer (NEW-driven, 2026-06-06)
+
+Beyond the 8 KEEP design SPECs, the CLASS_TRANSFORM category (99 legacy projects) was analysed NEW-first. Only capability-serving projects got SPECs; the rest are build-fresh/infra/anti-map per NEW-PROJECT-PRIORITY-MAP.
+
+| SPEC | TRANSFORM sub-group | Projects | NEW capability | Decision |
+|---|---|---|---|---|
+| #9 vendor-to-oss-group | TRANSFORM-VENDOR-TO-OS | 14 (Temenos x4 + Tribe x3 + crypto-processing x8) | C3/C4/C14 | TRANSFORM (mine config, drop vendor) |
+| #10 vabs-to-openbanking-group | TRANSFORM-VABS | 10 (vabs2 monorepo + abs-api x3) | C3 | TRANSFORM (one OpenBankingAdapter) |
+| #11 aml-patterns | EXTRACT-PATTERNS (gambling) | 2 | C5 | EXTRACT (AML heuristics lib) |
+
+CLASS_TRANSFORM NEW-driven verdict (99 total):
+- 26 capability-serving -> SPECs #9/#10/#11 (C3/C4/C5/C14).
+- 18 EXTRACT-PATTERNS (UI/UX) -> build-fresh banxe-ui + banxe-ux-flows (legacy as design reference; no Transform SPEC).
+- 13 TRANSFORM-GQL -> cross-cutting ADR-019 Apollo->Hasura (infra, not a customer capability).
+- 12 TRANSFORM-INFRA -> build-fresh gateway/discovery/monorepo/consul (infra).
+- 19 TRANSFORM-CONTENT -> build-fresh marketing sites/emails/frontends (legacy reference).
+- 5 EXTRACT-TO-INTERNAL-TOOLS -> Backstage dev portal (internal, not customer capability).
+- 5 ARCHIVE-RESEARCH + 2 EXTRACT-CONFIGS -> anti-map / archive.
+
+Net: of 99 TRANSFORM projects, 26 are reused via SPECs; 73 are correctly excluded as build-fresh, infra, internal, or anti-map. This is the NEW-priority canon working: legacy is NOT refactored just because it exists; only where a NEW capability needs it.
+
+## Coverage summary (KEEP + TRANSFORM)
+
+- KEEP: 24/24 -> 8 design SPECs (#1-#8).
+- TRANSFORM: 26 capability-serving -> 3 SPECs (#9-#11); 73 excluded NEW-first.
+- Ports: 6/6 executable CONTRACTs.
+- Build-fresh NEW capabilities (no legacy): C14-C17 per PRIORITY-MAP.
