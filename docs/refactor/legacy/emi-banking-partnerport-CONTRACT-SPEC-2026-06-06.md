@@ -13,93 +13,58 @@ SPEC #5 defined PartnerPort at a high level. This CONTRACT SPEC turns it into an
 
 ## Contract types
 
-```python
-from __future__ import annotations
+```typescript
+export type PartnerType = "open_banking" | "sepa" | "baas" | "card_acquiring";
+export type Currency = string; // ISO 4217
+export type Iban = string;
+export type Amount = string; // decimal string, never float
 
-import abc
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Mapping
+export interface PartnerAccountId {
+  partner: PartnerType;
+  externalAccountId: string;
+}
 
+export interface PaymentInstruction {
+  fromAccount: PartnerAccountId;
+  toIban: Iban;
+  amount: Amount;
+  currency: Currency;
+  reference: string;
+  idempotencyKey: string; // caller-generated UUID v4
+  correlationId: string;  // trace id for audit
+}
 
-class PartnerType(str, Enum):
-    OPEN_BANKING = "open_banking"
-    SEPA = "sepa"
-    BAAS = "baas"
-    CARD_ACQUIRING = "card_acquiring"
+export type PaymentStatus = "accepted" | "settled" | "rejected" | "pending" | "unknown";
 
+export interface PaymentResult {
+  status: PaymentStatus;
+  partnerTxId?: string;
+  settledAt?: string;
+  reason?: string;
+  raw?: Record<string, unknown>; // provider response for audit
+}
 
-Currency = str  # ISO 4217
-Iban = str
-Amount = str  # decimal string, never float
-
-
-@dataclass
-class PartnerAccountId:
-    partner: PartnerType
-    external_account_id: str
-
-
-@dataclass
-class PaymentInstruction:
-    from_account: PartnerAccountId
-    to_iban: Iban
-    amount: Amount
-    currency: Currency
-    reference: str
-    idempotency_key: str  # caller-generated UUID v4
-    correlation_id: str  # trace id for audit
-
-
-class PaymentStatus(str, Enum):
-    ACCEPTED = "accepted"
-    SETTLED = "settled"
-    REJECTED = "rejected"
-    PENDING = "pending"
-    UNKNOWN = "unknown"
-
-
-@dataclass
-class PaymentResult:
-    status: PaymentStatus
-    partner_tx_id: str | None = None
-    settled_at: str | None = None
-    reason: str | None = None
-    raw: Mapping[str, Any] | None = None  # provider response for audit
-
-
-@dataclass
-class MismatchDetail:
-    partner_tx_id: str
-    expected: Amount
-    actual: Amount
-
-
-@dataclass
-class ReconcileResult:
-    date: str
-    count: int
-    mismatches: int
-    mismatch_details: list[MismatchDetail]
+export interface ReconcileResult {
+  date: string;
+  count: number;
+  mismatches: number;
+  mismatchDetails: Array<{ partnerTxId: string; expected: Amount; actual: Amount }>;
+}
 ```
 
 ## Operations
 
-```python
-class PartnerPort(abc.ABC):
-    @abc.abstractmethod
-    async def initiate_payment(self, instruction: PaymentInstruction) -> PaymentResult: ...
-
-    @abc.abstractmethod
-    async def get_payment_status(self, partner_tx_id: str) -> PaymentResult: ...
-
-    @abc.abstractmethod
-    async def reconcile(self, date: str) -> ReconcileResult: ...
+```typescript
+export interface PartnerPort {
+  initiatePayment(instruction: PaymentInstruction): Promise<PaymentResult>;
+  getPaymentStatus(partnerTxId: string): Promise<PaymentResult>;
+  reconcile(date: string): Promise<ReconcileResult>;
+}
 ```
 
 Operation semantics:
-- initiate_payment: MUST be idempotent on idempotency_key. Re-submitting the same key returns the original PaymentResult, never a duplicate payment.
-- get_payment_status: read-only; safe to poll; no side effects.
+- initiatePayment: MUST be idempotent on idempotencyKey. Re-submitting the same key returns the original PaymentResult, never a duplicate payment.
+- getPaymentStatus: read-only; safe to poll; no side effects.
 - reconcile: compares partner-side ledger vs midaz-ledger for the given date; feeds banxe-recon (R-REG-01 CASS 15).
 
 ## Error model
@@ -113,7 +78,7 @@ Operation semantics:
 | ComplianceBlock | Travel Rule / sanctions / KYC tier gate | escalate to MLRO; never auto-retry |
 | UnknownPartnerState | partner returned ambiguous status | reconcile() resolves; mark pending |
 
-All errors carry correlation_id and persist to guardian_audit_events.
+All errors carry correlationId and persist to guardian_audit_events.
 
 ## Adapter mapping (3 adapters from SPEC #5)
 
@@ -123,20 +88,20 @@ All errors carry correlation_id and persist to guardian_audit_events.
 | SepaAdapter | banxe/sepa-service | sepa | SCT + SCT Inst; partner Modulr/ClearBank per S20 |
 | BaasAdapter | banxe-fiat-backend/banxe-baas | baas | partner-bank rails; account issuance |
 
-All three implement the identical PartnerPort interface; routing by PaymentInstruction.from_account.partner.
+All three implement the identical PartnerPort interface; routing by PaymentInstruction.fromAccount.partner.
 
 ## Idempotency rules
 
-- idempotency_key is caller-generated UUID v4, unique per logical payment intent.
-- Adapter stores (idempotency_key -> partner_tx_id) mapping in its own table BEFORE calling the partner API.
+- idempotencyKey is caller-generated UUID v4, unique per logical payment intent.
+- Adapter stores (idempotencyKey -> partnerTxId) mapping in its own table BEFORE calling the partner API.
 - On retry with same key: return stored PaymentResult; do NOT re-call partner.
-- On same key + different payload: raise IdempotencyConflict.
+- On same key + different payload: throw IdempotencyConflict.
 - Key retention: minimum 90 days (covers partner dispute windows); aligned with CASS 15 evidence retention where the payment is client-money.
 
 ## Audit obligations (ADR-027 + R-COMP-FCA-02)
 
-- Every initiate_payment, get_payment_status, reconcile call emits one guardian_audit_events row.
-- Required fields: correlation_id, idempotency_key, partner, operation, status, http_status, latency_ms, timestamp_utc.
+- Every initiatePayment, getPaymentStatus, reconcile call emits one guardian_audit_events row.
+- Required fields: correlationId, idempotencyKey, partner, operation, status, http_status, latency_ms, timestamp_utc.
 - PaymentResult.raw (provider response) stored for MLRO + FCA Section 4 evidence; PII redacted per ADR-021 PII routing.
 - Retention 5 years (CASS 15) for any client-money payment.
 
@@ -144,17 +109,17 @@ All three implement the identical PartnerPort interface; routing by PaymentInstr
 
 Every adapter MUST pass this shared suite before Phase E cut-over:
 
-1. initiate_payment with valid instruction -> status accepted|pending; partner_tx_id present.
-2. initiate_payment with same idempotency_key twice -> identical PaymentResult; partner called once (assert via mock).
-3. initiate_payment with same key + different payload -> IdempotencyConflict.
-4. initiate_payment with bad IBAN -> ValidationError; partner NOT called.
-5. get_payment_status on known partner_tx_id -> consistent status; no side effects.
-6. get_payment_status on unknown id -> UnknownPartnerState, not exception.
+1. initiatePayment with valid instruction -> status accepted|pending; partnerTxId present.
+2. initiatePayment with same idempotencyKey twice -> identical PaymentResult; partner called once (assert via mock).
+3. initiatePayment with same key + different payload -> IdempotencyConflict.
+4. initiatePayment with bad IBAN -> ValidationError; partner NOT called.
+5. getPaymentStatus on known partnerTxId -> consistent status; no side effects.
+6. getPaymentStatus on unknown id -> UnknownPartnerState, not exception.
 7. reconcile on a date with 0 mismatches -> mismatches=0.
 8. reconcile on a seeded mismatch -> mismatches>=1 with details.
 9. partner timeout -> PartnerUnavailable; circuit-breaker opens after threshold.
 10. compliance gate (KYC tier / sanctions) -> ComplianceBlock; escalation logged; never retried.
-11. every operation emits exactly one guardian_audit_events row with correlation_id.
+11. every operation emits exactly one guardian_audit_events row with correlationId.
 
 ## Acceptance criteria
 

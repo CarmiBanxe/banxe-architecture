@@ -10,104 +10,72 @@ Owner: Terminal B (smart refactor)
 
 ## Purpose
 
-Deepen SPEC #4 ExchangePort into an executable contract. Order placement governs financial transactions, so initiate_payment-equivalents (place_order) MUST be idempotent and fully audited. Terminal B implements PrimaryExchangeAdapter (from fast-exchange), CCXT fallback, and a Hyperswitch-compatible adapter against this contract. NEW-driven: C6 trading capability is authoritative; legacy fast-exchange is reused only because it serves C6.
+Deepen SPEC #4 ExchangePort into an executable contract. Order placement governs financial transactions, so initiatePayment-equivalents (placeOrder) MUST be idempotent and fully audited. Terminal B implements PrimaryExchangeAdapter (from fast-exchange), CCXT fallback, and a Hyperswitch-compatible adapter against this contract. NEW-driven: C6 trading capability is authoritative; legacy fast-exchange is reused only because it serves C6.
 
 ## Contract types
 
-```python
-from __future__ import annotations
+```typescript
+export type AssetSymbol = string;
+export type OrderSide = "buy" | "sell";
+export type OrderType = "market" | "limit";
+export type Amount = string; // decimal string, never float
 
-import abc
-from dataclasses import dataclass
-from enum import StrEnum
-from typing import Any, Mapping
+export interface RateQuote {
+  baseAsset: AssetSymbol;
+  quoteAsset: AssetSymbol;
+  bid: Amount;
+  ask: Amount;
+  ttlSeconds: number;
+  quotedAt: string;
+}
 
+export interface OrderRequest {
+  baseAsset: AssetSymbol;
+  quoteAsset: AssetSymbol;
+  side: OrderSide;
+  type: OrderType;
+  amount: Amount;
+  limitPrice?: Amount;
+  clientOrderId: string;   // idempotency key, caller-generated UUID v4
+  correlationId: string;
+}
 
-AssetSymbol = str
-Amount = str  # decimal string, never float
+export type OrderState = "accepted" | "filled" | "partial" | "rejected" | "expired" | "cancelled";
 
-
-class OrderSide(StrEnum):
-    BUY = "buy"
-    SELL = "sell"
-
-
-class OrderType(StrEnum):
-    MARKET = "market"
-    LIMIT = "limit"
-
-
-class OrderState(StrEnum):
-    ACCEPTED = "accepted"
-    FILLED = "filled"
-    PARTIAL = "partial"
-    REJECTED = "rejected"
-    EXPIRED = "expired"
-    CANCELLED = "cancelled"
-
-
-@dataclass
-class RateQuote:
-    base_asset: AssetSymbol
-    quote_asset: AssetSymbol
-    bid: Amount
-    ask: Amount
-    ttl_seconds: int
-    quoted_at: str
-
-
-@dataclass
-class OrderRequest:
-    base_asset: AssetSymbol
-    quote_asset: AssetSymbol
-    side: OrderSide
-    type: OrderType
-    amount: Amount
-    client_order_id: str  # idempotency key, caller-generated UUID v4
-    correlation_id: str
-    limit_price: Amount | None = None
-
-
-@dataclass
-class OrderResult:
-    order_id: str
-    state: OrderState
-    filled_amount: Amount
-    average_price: Amount | None = None
-    fee: Amount | None = None
-    raw: Mapping[str, Any] | None = None
+export interface OrderResult {
+  orderId: string;
+  state: OrderState;
+  filledAmount: Amount;
+  averagePrice?: Amount;
+  fee?: Amount;
+  raw?: Record<string, unknown>;
+}
 ```
 
 ## Operations
 
-```python
-class ExchangePort(abc.ABC):
-    @abc.abstractmethod
-    async def get_rate(self, base: AssetSymbol, quote: AssetSymbol) -> RateQuote: ...
-
-    @abc.abstractmethod
-    async def place_order(self, order: OrderRequest) -> OrderResult: ...
-
-    @abc.abstractmethod
-    async def cancel_order(self, order_id: str) -> bool: ...
-
-    @abc.abstractmethod
-    async def get_order_status(self, order_id: str) -> OrderResult: ...
+```typescript
+export interface ExchangePort {
+  getRate(base: AssetSymbol, quote: AssetSymbol): Promise<RateQuote>;
+  placeOrder(order: OrderRequest): Promise<OrderResult>;
+  cancelOrder(orderId: string): Promise<boolean>;
+  getOrderStatus(orderId: string): Promise<OrderResult>;
+}
 ```
 
 ## Operation semantics
 
-- get_rate: read-only; honour ttl_seconds; rate sourced via crypto-ops-monitor RPC (SPEC #7). Stale rate (past ttl) MUST be refused, not used.
-- place_order: MUST be idempotent on client_order_id. Re-submission returns original OrderResult; never double-executes.
-- cancel_order: idempotent; cancelling an already-final order returns False without error.
-- get_order_status: read-only; safe to poll.
+- getRate: read-only; honour ttlSeconds; rate sourced via crypto-ops-monitor RPC (SPEC #7). Stale rate (past ttl) MUST be refused, not used.
+- placeOrder: MUST be idempotent on clientOrderId. Re-submission returns original OrderResult; never double-executes.
+- cancelOrder: idempotent; cancelling an already-final order returns false without error.
+- getOrderStatus: read-only; safe to poll.
 
 ## Idempotency rules
 
-- client_order_id is caller-generated UUID v4, unique per order intent.
-- Adapter stores (client_order_id -> order_id) BEFORE calling the exchange.
-- Retry same client_order_id -> return stored OrderResult; do NOT re-place.
-- Same client_order_id + different OrderRequest payload -> IdempotencyConflict.
+- clientOrderId is caller-generated UUID v4, unique per order intent.
+- Adapter stores (clientOrderId -> orderId) BEFORE calling the exchange.
+- Retry same clientOrderId -> return stored OrderResult; do NOT re-place.
+- Same clientOrderId + different OrderRequest payload -> IdempotencyConflict.
 - Retention >= 90 days (dispute window); 5y if order moves client money (CASS 15).
 
 ## Error model
@@ -115,19 +83,19 @@ class ExchangePort(abc.ABC):
 | Error class | Meaning | Caller action |
 |---|---|---|
 | ValidationError | bad symbol/amount/price | fix, resubmit; do not retry blindly |
-| IdempotencyConflict | same client_order_id, different payload | reject; caller bug |
-| StaleRate | rate past ttl | re-fetch get_rate, then retry |
+| IdempotencyConflict | same clientOrderId, different payload | reject; caller bug |
+| StaleRate | rate past ttl | re-fetch getRate, then retry |
 | ExchangeUnavailable | exchange API down/timeout | retry with backoff via @banxe/circuit-breaker (SPEC #6) |
 | InsufficientBalance | account underfunded | surface to user; no retry |
 | ComplianceBlock | KYC tier / sanctions / Travel Rule gate | escalate to MLRO; never auto-retry |
 | PartialFillTimeout | order partially filled then expired | reconcile; settle partial |
 
-All errors carry correlation_id + client_order_id and persist to guardian_audit_events.
+All errors carry correlationId + clientOrderId and persist to guardian_audit_events.
 
 ## Audit obligations (ADR-027 + R-COMP-FCA-02)
 
-- Every get_rate, place_order, cancel_order, get_order_status emits one guardian_audit_events row.
-- Required fields: correlation_id, client_order_id, order_id, operation, state, http_status, latency_ms, timestamp_utc.
+- Every getRate, placeOrder, cancelOrder, getOrderStatus emits one guardian_audit_events row.
+- Required fields: correlationId, clientOrderId, orderId, operation, state, http_status, latency_ms, timestamp_utc.
 - OrderResult.raw stored for MLRO + FCA Section 4; PII redacted per ADR-021 PII routing.
 - Retention 5 years for any order that moves client money (CASS 15).
 
@@ -143,24 +111,24 @@ All three implement identical ExchangePort; selection via config flag EXCHANGE_P
 
 ## Conformance test suite (one suite, all adapters)
 
-1. get_rate(valid pair) -> bid/ask present; ttl_seconds > 0.
-2. get_rate then wait past ttl -> StaleRate on reuse (no stale trade).
-3. place_order(valid) -> state accepted|filled|partial; order_id present.
-4. place_order same client_order_id twice -> identical OrderResult; exchange called once (mock assert).
-5. place_order same client_order_id + different payload -> IdempotencyConflict.
-6. place_order bad symbol -> ValidationError; exchange NOT called.
-7. cancel_order on open order -> True; on final order -> False (no error).
-8. get_order_status -> consistent state; no side effects.
+1. getRate(valid pair) -> bid/ask present; ttlSeconds > 0.
+2. getRate then wait past ttl -> StaleRate on reuse (no stale trade).
+3. placeOrder(valid) -> state accepted|filled|partial; orderId present.
+4. placeOrder same clientOrderId twice -> identical OrderResult; exchange called once (mock assert).
+5. placeOrder same clientOrderId + different payload -> IdempotencyConflict.
+6. placeOrder bad symbol -> ValidationError; exchange NOT called.
+7. cancelOrder on open order -> true; on final order -> false (no error).
+8. getOrderStatus -> consistent state; no side effects.
 9. exchange timeout -> ExchangeUnavailable; circuit-breaker opens after threshold; failover to CCXTFallbackAdapter.
 10. compliance gate -> ComplianceBlock; escalation logged; never retried.
-11. every operation emits exactly one guardian_audit_events row with correlation_id + client_order_id.
+11. every operation emits exactly one guardian_audit_events row with correlationId + clientOrderId.
 
 ## Acceptance criteria
 
 - ExchangePort interface frozen as defined; changes require CONTRACT revision.
 - 3 adapters each pass the 11-test conformance suite.
 - Idempotency table + retention implemented.
-- Shadow-mode (Phase D) vs legacy fast-exchange: 0 mismatch on get_rate; place_order verified equivalent settlement.
+- Shadow-mode (Phase D) vs legacy fast-exchange: 0 mismatch on getRate; placeOrder verified equivalent settlement.
 - Audit: 1 row per operation; raw stored with PII redaction.
 - Failover (Primary -> CCXT) verified under induced outage.
 
