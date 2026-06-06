@@ -1,0 +1,30 @@
+name: guardian
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  guardian-factory:
+    name: guardian-factory
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Factory invariants
+        run: |
+          set -e
+          test -d agents/souls && test -d agents/passports || { echo "Реестр агентов фабрики отсутствует"; exit 1; }
+          test -d .claude/agents || { echo "Контроллеры фабрики отсутствуют"; exit 1; }
+          echo "guardian-factory OK"
+  guardian-project:
+    name: guardian-project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Project invariants (BANXE)
+        run: |
+          set -e
+          test -f README.md || { echo "README отсутствует"; exit 1; }
+          echo "guardian-project OK"
