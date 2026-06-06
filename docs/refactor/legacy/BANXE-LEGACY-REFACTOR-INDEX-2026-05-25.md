@@ -107,3 +107,27 @@ Per the governing canon "NEW drives legacy reuse", each SPEC maps to authoritati
 Build-fresh NEW capabilities (NO legacy SPEC; built from scratch): C14 ledger (Midaz), C15 audit trail (Guardian/ClickHouse), C16 Travel Rule v2, C17 observability. These are NOT in the 8 refactor SPECs because no legacy source serves them — they are tracked separately in NEW-PROJECT-PRIORITY-MAP build-fresh gaps.
 
 Coverage: 14 of 18 NEW capabilities served by refactored legacy (C1-C13 + C18); 4 build-fresh (C14-C17).
+
+## Executable CONTRACT layer (6/6 ports, 2026-06-06)
+
+Beyond the 8 design SPECs, each Hexagonal port has an executable CONTRACT (types + operations + idempotency + error model + audit + conformance suite). These are implementation-ready for Terminal B Phase C — no design ambiguity remains.
+
+| Port | Capability | CONTRACT file | Conformance tests |
+|---|---|---|---|
+| WalletPort | C1 custody | wallet-port-CONTRACT-SPEC-2026-06-06.md | 10 (zero-mismatch) |
+| PartnerPort | C3/C4 fiat | emi-banking-partnerport-CONTRACT-SPEC-2026-06-06.md | 11 |
+| ExchangePort | C6 trading | exchange-port-CONTRACT-SPEC-2026-06-06.md (definitive; supersedes 8-line stub) | 11 |
+| KYCProviderPort | C5 KYC/AML | kyc-provider-port-CONTRACT-SPEC-2026-06-06.md | 11 |
+| NotificationPort | C9 notifications | notification-port-CONTRACT-SPEC-2026-06-06.md | 9 |
+| CRMPort | C10 referral/CRM | crm-port-CONTRACT-SPEC-2026-06-06.md | 7 |
+
+CONTRACT layer properties:
+- All 4 regulatory-critical ports (Wallet/Partner/Exchange/KYC) have idempotency + 5y audit retention (CASS 15).
+- All carry correlationId; all persist to guardian_audit_events.
+- @banxe/circuit-breaker (SPEC #6) used for *Unavailable error classes across ports.
+- ComplianceBlock / KYC-gate consistent across Exchange + Partner ports.
+- NotificationPort is the cross-cutting MLRO escalation channel for all other ports.
+
+## Governing canon reference
+
+Per docs/refactor/legacy/NEW-PROJECT-PRIORITY-MAP-2026-06-06.md: NEW drives legacy reuse. Every SPEC + CONTRACT is anchored to a NEW capability C1-C18; legacy is reused only where it serves a NEW need. 4 build-fresh capabilities (C14-C17) have no refactor SPEC by design.
