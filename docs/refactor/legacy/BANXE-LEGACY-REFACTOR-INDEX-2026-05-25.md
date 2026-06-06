@@ -88,3 +88,22 @@ Critical-path: #2 -> #1 -> #6-lib -> #5 -> #6-services -> #7 -> #4 -> #3.
 - UNIVERSAL-CANON-2026-05-22.md + TOPOLOGY-CLARIFICATION-2026-05-22 + BEST-SOLUTION-AND-SEQUENTIAL-2026-05-25 (House rules 1-12 + worktree-isolation pattern)
 
 === END OF BANXE LEGACY REFACTOR INDEX (24/24 KEEP coverage; Phase A milestone) ===
+
+## NEW capability mapping (per NEW-PROJECT-PRIORITY-MAP-2026-06-06)
+
+Per the governing canon "NEW drives legacy reuse", each SPEC maps to authoritative NEW capabilities C1-C18:
+
+| SPEC | NEW capabilities served | Decision class |
+|---|---|---|
+| #1 crypto-api-keys-lib | C1 (custody) | legacy-serves |
+| #2 crypto-utils-libs | C1 + C2 (custody primitives + address validation) | legacy-serves |
+| #3 notification-port | C9 (notifications) | legacy-serves |
+| #4 trading-ui-group | C6 (trading) | legacy-serves |
+| #5 emi-banking-services | C3 + C4 (fiat rails + BaaS) | legacy-serves |
+| #6 fiat-backend-utils | C10 + C11 + C12 + C13 (CRM + tariff + files + resilience) | legacy-serves |
+| #7 crypto-ops-subgroup | C7 + C8 + C18 (portfolio + RPC + news) | legacy-serves |
+| #8 kyc-provider-port | C5 (KYC/AML) | legacy-serves |
+
+Build-fresh NEW capabilities (NO legacy SPEC; built from scratch): C14 ledger (Midaz), C15 audit trail (Guardian/ClickHouse), C16 Travel Rule v2, C17 observability. These are NOT in the 8 refactor SPECs because no legacy source serves them — they are tracked separately in NEW-PROJECT-PRIORITY-MAP build-fresh gaps.
+
+Coverage: 14 of 18 NEW capabilities served by refactored legacy (C1-C13 + C18); 4 build-fresh (C14-C17).
