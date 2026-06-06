@@ -20,25 +20,25 @@ pie title BANXE AI Bank — EMI Readiness (120 requirements)
 block-beta
   columns 3
 
-  block:governance["S1 Governance\n40% 🟡"]:1
-  block:geniusto["S2 Geniusto→замена\n100% 🟢"]:1
-  block:cbs["S3 CBS/Midaz\n55% 🟡"]:1
+  block:governance["S1 Governance — 40% 🟡"]:1
+  block:geniusto["S2 Geniusto→замена — 100% 🟢"]:1
+  block:cbs["S3 CBS/Midaz — 55% 🟡"]:1
 
-  block:payments["S4 Payment Rails\n0% 🔴\n❌ CRITICAL"]:1
-  block:compliance["S5 Compliance/AML\n65% 🟡"]:1
-  block:safeguarding["S6 Safeguarding\n43% 🟠\n⏰ 7 May 2026"]:1
+  block:payments["S4 Payment Rails — 0% 🔴 — ❌ CRITICAL"]:1
+  block:compliance["S5 Compliance/AML — 65% 🟡"]:1
+  block:safeguarding["S6 Safeguarding — 43% 🟠 — ⏰ 7 May 2026"]:1
 
-  block:ai["S7 AI & HITL\n95% 🟢"]:1
-  block:infra["S8 Infrastructure\n59% 🟡"]:1
-  block:emiready["S9 EMI Readiness\n35% 🔴"]:1
+  block:ai["S7 AI & HITL — 95% 🟢"]:1
+  block:infra["S8 Infrastructure — 59% 🟡"]:1
+  block:emiready["S9 EMI Readiness — 35% 🔴"]:1
 
-  block:components["S10 Components\n50% 🟡"]:1
-  block:layers["S11 Layers\n50% 🟡"]:1
-  block:gaps["S12 Gap Analysis\n100% 🟢"]:1
+  block:components["S10 Components — 50% 🟡"]:1
+  block:layers["S11 Layers — 50% 🟡"]:1
+  block:gaps["S12 Gap Analysis — 100% 🟢"]:1
 
-  block:govmech["S13 Governance\n65% 🟡"]:1
-  block:roadmap["S14 Roadmap\n44% 🟡"]:1
-  block:deadlines["S15 Deadlines\ntracked 🟡"]:1
+  block:govmech["S13 Governance — 65% 🟡"]:1
+  block:roadmap["S14 Roadmap — 44% 🟡"]:1
+  block:deadlines["S15 Deadlines — tracked 🟡"]:1
 ```
 
 ---
