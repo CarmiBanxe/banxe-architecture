@@ -10187,3 +10187,20 @@ Self-audit note
 - Form chosen: status-only transition (no body edits) — frontmatter `status: ACCEPTED` + `accepted: 2026-06-07` on each of the four ADRs; INDEX status column + cross-reference section updated to Accepted/ACCEPTED.
 - Artifacts: docs/adr/ADR-046-decision-lineage-schema.md, docs/adr/ADR-047-ai-cost-governance-policy.md, docs/adr/ADR-048-business-process-repository.md, docs/adr/ADR-049-intent-layer-client-facing-agent-masks.md (frontmatter status+accepted only); docs/adr/INDEX.md (status column + ADR-046..049 cross-ref rows → ACCEPTED); INSTRUCTION-LEDGER.md (this anchor, append-only).
 - Refs: ADR-045 (parent — Intent-First Banking, ACCEPTED; §D7 backlog now CLOSED via 046/047/048; L1 surface ACCEPTED via 049); ADR-046/047/048/049 (the four promoted); ADR-040 (meta-plane — the LLM-orchestration substrate L2 implementation is gated on); ADR-049 §D6 (Terminal-A readiness as gating dependency); IL-123/IL-124/IL-125/IL-126 (the SPEC/DESIGN anchors of the four ADRs); CLAUDE.md §11 (production-state mutation gate — acceptance of design, not a production green light).
+
+
+---
+
+## IL-128
+
+| Поле | Значение |
+|---|---|
+| IL-NNN | IL-128 |
+| Источник | CEO (handoff continuation, new Perplexity session) |
+| Дата | 2026-06-07T22:00:00+02:00 |
+| Инструкция | Continue interrupted session per SESSION-HANDOFF-2026-06-07.md; verify OPERATOR-PLAYBOOK.md and record its IL entry. |
+| Шаги | 1. Read PROMPT-CANON-PROJECT.md §13-16 (binding). 2. Read SESSION-HANDOFF-2026-06-07.md. 3. Report IL status / open PRs / blockers / next step. 4. Append IL-128 for OPERATOR-PLAYBOOK.md. |
+| Статус | ✅ DONE |
+| Proof | OPERATOR-PLAYBOOK.md committed in b2e5b042f3241403bdb970401a45c91cc1171f3f (9 parts, operator playbook); SESSION-HANDOFF-2026-06-07.md present (130 lines); this IL append commit. |
+| Deviation | None. |
+| Blocker | None. Prior session halted on Perplexity length limit; resumed via handoff package. |
