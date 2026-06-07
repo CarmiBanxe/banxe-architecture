@@ -10344,3 +10344,16 @@ Self-audit note
   * (b) wiring the §D5 fields to real values (ClickHouse `immutable_storage_ref`, actual input/output token counts) — requires live LLM-orchestration (AGENT_ROUTING_ENABLED, Terminal-A infra per ADR-049 §D6). The additive field scaffolding is ready and will populate when that infra is live; no client surface is opened by this entry.
 - Note on IL number: prior milestone IL-132 recorded the L2 layer complete; origin/main subsequently advanced (parallel sessions) through IL-133 (OPERATOR-PLAYBOOK/SESSION-HANDOFF registration) and IL-134 (ADR-044 Proposed→Accepted); IL-135 is the genuine next free number (append-only, no collision).
 - Refs: ADR-046 (AgentDecisionRecord — §D5 instrumentation fields added here); ADR-047 (cost caps / RequestCost / CostCap / CostWindow); ADR-048 (ProcessRef intent→process_ref resolution); ADR-049 (Intent Layer & Client-Facing Agent Masks — the 6 L2 agents these primitives back; §D6 the infra §D5 live-wiring is gated on); IL-132 (L2 Execution layer complete — this increment hardens its lineage/cost primitives); .claude/rules/agents.md (HITL bands; AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §11 (production-state mutation gate — code-complete, not a production green light).
+
+### IL-135: ADR-044 Steps 7–10 — operator-sanction (gate lifted)
+- **Источник:** CEO / оператор, 2026-06-08 (Antibes, CEST)
+- **Инструкция:** «разблокируй все шаги по канону» — оператор даёт явную санкцию на снятие gate для ADR-044 Шаги 7–10.
+- **Шаги:**
+  1. Зафиксировать санкцию оператора в реестре (append-only) — DONE
+  2. Снять gate-формулировку в ADR-044 (только строка Status) — DONE
+  3. Атомарный PR + guardian checks (dual-PASS) + squash-merge — в процессе
+- **Статус:** DONE (после merge PR)
+- **Proof:** <SHA + ссылка на merged PR — заполнить после merge>
+- **Deviation:** нет
+- **Blocker:** —
+- **Инвариант:** I-28; санкция роли оператора получена

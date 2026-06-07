@@ -1,6 +1,6 @@
 # ADR-044 — AI Pool Roadmap 2026-05-11
 
-**Status:** Accepted (design; Steps 7–10 gated on separate operator sanction)
+**Status:** Accepted (Steps 7–10 sanctioned by operator — see IL-135)
 **Date:** 2026-05-11
 **Accepted:** 2026-06-08
 **Authors:** Banxe Sub-terminal A
