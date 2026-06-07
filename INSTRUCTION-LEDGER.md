@@ -10353,7 +10353,7 @@ Self-audit note
   2. Снять gate-формулировку в ADR-044 (только строка Status) — DONE
   3. Атомарный PR + guardian checks (dual-PASS) + squash-merge — в процессе
 - **Статус:** DONE (после merge PR)
-- **Proof:** <SHA + ссылка на merged PR — заполнить после merge>
+- **Proof:** commit `3c306ab` — PR #354 squash-merged into main 2026-06-08 (ADR-044 Status line updated; gate lifted)
 - **Deviation:** нет
 - **Blocker:** —
 - **Инвариант:** I-28; санкция роли оператора получена
