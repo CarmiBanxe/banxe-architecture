@@ -10256,3 +10256,26 @@ Self-audit note
 | Deviation | Нет. P0-A разрешён как hybrid (рекомендация Factory Terminal); любой иной выбор (чистый Claude / чистый Local) правится одной строкой статуса ADR-051. |
 | Blocker | None в зоне документации. Остаётся реализация в zone Terminal A: wiring Enforcer/Supervisor в guardian-pipeline + spec-build routing через LiteLLM. |
 | anchors | ADR-044, ADR-047, ADR-051, ADR-052, §19, I-27, I-71, I-74, I-75, I-76, I-77, I-78, IL-129, IL-130. |
+
+---
+
+## IL-132-L2-EXECUTION-LAYER-COMPLETE-2026-06-08
+- Date: 2026-06-08 CEST
+- Phase (GSD): CLOSE — milestone anchor recording that the Intent-First L2 Execution layer is COMPLETE in CODE. Docs-only IL entry; no code/tests/ADR bodies touched by this entry.
+- Type: governance-MILESTONE (factory-delivered code, recorded here; this entry itself is append-only governance).
+- Status: DONE.
+- Scope: BANXE-only.
+- Milestone: L2 Execution layer complete — 6/6 ADR-049 client-facing agent masks implemented via the factory and merged. The L1→L2 client surface specified in ADR-049 (IL-126) now has its L2 code counterpart for all six masks.
+- Agents merged (6/6):
+  * PaymentsAgent — banxe-payment-core PR #10.
+  * FXExchangeAgent — banxe-payment-core: increment 1 read/quote (PR #11) + increment 2 place_order/cancel/settlement (PR #12).
+  * WalletAgent — banxe-payment-core PR #13 (SHA 1f33155).
+  * KYCOnboardingAgent — banxe-emi-stack PR #151 (SHA b6ceaed).
+  * NotificationAgent — banxe-emi-stack PR #152 (SHA 636c808).
+  * CRMAgent — banxe-emi-stack PR #153 (SHA 0cbbf04).
+- Common pattern (uniform across all six): each agent enforces the ADR-049 §D2 gate chain — process_ref[ADR-048] → scope → confidence band → cost_cap[ADR-047] → compliance(AML/PII/anti-abuse) → biometric step-up where applicable → port call; emits exactly one AgentDecisionRecord[ADR-046] per action on EVERY exit path; injects the CONTRACT ports + DecisionRecorder as interfaces (unit-testable without live infra); 100% module coverage. R-SEC: no secret material (seed/keys/passwords) is ever written to lineage — WalletAgent test-proven.
+- 4-layer model mapping: L1 (ADR-049 spec) → L2 (6 ports as contracts + 6 agents as code) → L3 (ADR-046/047 enforced inside every agent) → L4 (ADR-048 process repository).
+- GATED: live operation (AGENT_ROUTING_ENABLED) remains OFF — depends on Terminal-A LLM-orchestration infra (LiteLLM/Postgres, evo GPU) per ADR-049 §D6. This milestone records the L2 CODE as complete and governance-enforced, NOT live client exposure; no CONTRACT port is opened to clients by this entry.
+- Open follow-ups (future increments, non-blocking): AgentDecisionRecord token-split + immutable_storage_ref (ADR-046 §D5 instrumentation sprint); payments_agent.py >300-line split; per-agent scope increments if needed.
+- Note on IL number: task brief assumed last IL was IL-127, but origin/main had advanced (parallel session) through IL-128..IL-131; IL-132 is the next free number (append-only, no collision).
+- Refs: ADR-049 (Intent Layer & Client-Facing Agent Masks — the L1 spec these 6 agents implement at L2; IL-126 SPEC/DESIGN, IL-127 ACCEPTANCE); ADR-046 (AgentDecisionRecord — one per action, every exit path); ADR-047 (cost caps + AUTO/REVIEW/BLOCK bands); ADR-048 (intent→process_ref resolution); ADR-040 (meta-plane — the LLM-orchestration substrate L2 live operation is gated on, Terminal A); ADR-045 (Intent-First Banking, four-layer model); the 6 CONTRACT ports WalletPort/PartnerPort/ExchangePort (banxe-payment-core) + KYCProviderPort/NotificationProviderPort/CRMProviderPort (banxe-emi-stack); .claude/rules/agents.md (HITL bands; ARL AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §11 (production-state mutation gate — code-complete, not a production green light).
