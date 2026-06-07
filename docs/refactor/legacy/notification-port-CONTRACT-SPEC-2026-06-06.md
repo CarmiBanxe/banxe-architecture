@@ -14,55 +14,95 @@ Deepen SPEC #3 NotificationPort into an executable contract. NotificationPort is
 
 ## Contract types
 
-```typescript
-export type NotificationChannel = "telegram" | "mobile_push" | "email" | "sms" | "in_app";
-export type Severity = "info" | "warn" | "alert" | "critical";
+```python
+from __future__ import annotations
 
-export interface Recipient {
-  userId: string;
-  channelPreferences: NotificationChannel[];
-}
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Any
 
-export interface NotificationMessage {
-  severity: Severity;
-  subject: string;
-  body: string;
-  template?: string;
-  data?: Record<string, unknown>;
-  correlationId: string;
-  dedupeKey: string; // caller-generated; same key = same logical notification
-}
 
-export interface DeliveryResult {
-  channel: NotificationChannel;
-  delivered: boolean;
-  providerMessageId?: string;
-  deduped: boolean;
-  error?: string;
-}
+class NotificationChannel(StrEnum):
+    TELEGRAM = "telegram"
+    MOBILE_PUSH = "mobile_push"
+    EMAIL = "email"
+    SMS = "sms"
+    IN_APP = "in_app"
+
+
+class Severity(StrEnum):
+    INFO = "info"
+    WARN = "warn"
+    ALERT = "alert"
+    CRITICAL = "critical"
+
+
+@dataclass(frozen=True)
+class Recipient:
+    user_id: str
+    channel_preferences: list[NotificationChannel]
+
+
+@dataclass(frozen=True)
+class NotificationMessage:
+    severity: Severity
+    subject: str
+    body: str
+    correlation_id: str
+    dedupe_key: str  # caller-generated; same key = same logical notification
+    template: str | None = None
+    data: dict[str, Any] | None = None
+
+
+@dataclass(frozen=True)
+class DeliveryResult:
+    channel: NotificationChannel
+    delivered: bool
+    deduped: bool
+    provider_message_id: str | None = None
+    error: str | None = None
 ```
 
 ## Operations
 
-```typescript
-export interface NotificationPort {
-  send(recipient: Recipient, message: NotificationMessage): Promise<DeliveryResult[]>;
-  isChannelAvailable(channel: NotificationChannel): Promise<boolean>;
-}
+```python
+import abc
+from abc import abstractmethod
+
+
+class NotificationProviderPort(abc.ABC):
+    @abstractmethod
+    async def send(
+        self,
+        recipient: Recipient,
+        message: NotificationMessage,
+    ) -> list[DeliveryResult]:
+        ...
+
+    @abstractmethod
+    async def is_channel_available(self, channel: NotificationChannel) -> bool:
+        ...
 ```
+
+Python target naming: the emi-stack contract surface is named `NotificationProviderPort` in
+`services/notifications/notification_provider_port.py`. This avoids a class-name collision with the
+existing application-facing `NotificationPort` (services/notifications/notification_port.py) and
+mirrors the KYC precedent (KYCProviderPort / kyc_provider_port.py is separate from the workflow
+KYCWorkflowPort). The provider-facing delivery boundary and the application dispatch boundary are
+distinct bounded contexts and MUST NOT be merged.
 
 ## Delivery semantics
 
-- send: at-least-once delivery; idempotent per dedupeKey (same key within window = single delivery per channel).
-- Routes to enabled adapters by recipient.channelPreferences; returns one DeliveryResult per attempted channel.
+- send: at-least-once delivery; idempotent per dedupe_key (same key within window = single delivery per channel).
+- Routes to enabled adapters by recipient.channel_preferences; returns one DeliveryResult per attempted channel.
 - critical severity (e.g. MLRO escalation) MUST attempt all available channels, not just preferred.
-- Channel failure on one does not block others; partial delivery returns mixed DeliveryResult[].
+- Channel failure on one does not block others; partial delivery returns mixed list[DeliveryResult].
 
 ## Idempotency rules
 
-- dedupeKey is caller-generated; identical key within dedupe window (default 24h) -> deduped=true, single delivery per channel.
-- Adapter stores (dedupeKey, channel) -> providerMessageId before/after send.
-- Retry same dedupeKey -> return stored DeliveryResult; do not re-send.
+- dedupe_key is caller-generated; identical key within dedupe window (default 24h) -> deduped=True, single delivery per channel.
+- Adapter stores (dedupe_key, channel) -> provider_message_id before/after send.
+- Retry same dedupe_key -> return stored DeliveryResult; do not re-send.
 
 ## Error model
 
@@ -72,14 +112,14 @@ export interface NotificationPort {
 | ChannelUnavailable | provider down (Telegram/FCM) | other channels still attempted; retry via circuit-breaker |
 | RecipientOptedOut | user disabled this channel | skip channel; not an error for critical severity (override) |
 | RateLimited | provider throttling | backoff; queue and retry |
-| DedupeHit | dedupeKey already delivered | deduped=true; not an error |
+| DedupeHit | dedupe_key already delivered | deduped=True; not an error |
 
-All sends + errors carry correlationId + dedupeKey and persist to guardian_audit_events.
+All sends + errors carry correlation_id + dedupe_key and persist to guardian_audit_events.
 
 ## Audit obligations (ADR-027)
 
 - Every send emits one guardian_audit_events row per channel attempted.
-- Fields: correlationId, dedupeKey, userId, channel, severity, delivered, providerMessageId, timestamp_utc.
+- Fields: correlation_id, dedupe_key, user_id, channel, severity, delivered, provider_message_id, timestamp_utc.
 - critical severity notifications (MLRO escalations from Wallet/Partner/Exchange/KYC ports) MUST be auditable for FCA Section 4.
 - Retention: 5y for compliance-related notifications; 90d for routine.
 
@@ -96,21 +136,21 @@ Two adapters at launch (Telegram + mobile push); email/sms deferred to a later q
 
 ## Conformance test suite (one suite, all adapters)
 
-1. send(valid, single channel) -> delivered=true; providerMessageId present.
-2. send same dedupeKey twice -> deduped=true on second; single provider call.
+1. send(valid, single channel) -> delivered=True; provider_message_id present.
+2. send same dedupe_key twice -> deduped=True on second; single provider call.
 3. send critical severity -> attempts ALL available channels regardless of preferences.
-4. send with one channel down -> that channel delivered=false; others delivered=true (partial).
+4. send with one channel down -> that channel delivered=False; others delivered=True (partial).
 5. send empty body -> ValidationError; no provider call.
-6. isChannelAvailable(up) -> true; (down) -> false.
+6. is_channel_available(up) -> True; (down) -> False.
 7. RecipientOptedOut on non-critical -> channel skipped; critical -> override delivers.
 8. provider rate-limited -> RateLimited; queued + retried.
-9. every send emits one guardian_audit_events row per channel with correlationId + dedupeKey.
+9. every send emits one guardian_audit_events row per channel with correlation_id + dedupe_key.
 
 ## Acceptance criteria
 
-- NotificationPort interface frozen; changes require CONTRACT revision.
+- NotificationProviderPort interface frozen; changes require CONTRACT revision.
 - TelegramAdapter + MobilePushAdapter pass the 9-test conformance suite.
-- Idempotency (dedupeKey) enforced within window.
+- Idempotency (dedupe_key) enforced within window.
 - critical-severity all-channel delivery verified (MLRO escalation path).
 - Audit: 1 row per channel per send; 5y retention for compliance notifications.
 
