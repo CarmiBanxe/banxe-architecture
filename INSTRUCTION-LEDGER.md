@@ -10116,3 +10116,17 @@ Self-audit note
 - Scope: docs-only (markdown SPECs); no code, no production zones.
 - Exit condition: same as Part A (guardian-factory + guardian-project in statusCheckRollup on main).
 - Refs: BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md; NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; 270/270 legacy NEW-driven swept; House rules 1-12.
+
+### IL-110-R0-DISCOVERY-LEGACY-CLAIMS-VERIFIED-2026-06-07
+- Date: 2026-06-07 CEST
+- Phase (GSD): R0-DISCOVERY — verify 7 legacy-discovery claims before any binding roadmap entry (Sprint 1, Phase B-F plan).
+- Type: verification (read-only inventory; no production zones).
+- Status: DONE (0 claims remain BLOCKED).
+- Owner: Terminal B (smart refactor). Executor: Terminal B via Legion bash. Operator provided RAR5 password interactively.
+- Bounded-context: docs/project/UNVERIFIED-CLAIMS-LEGACY-DISCOVERY.md (verification result appended) + this IL entry.
+- Evidence source: banxe.rar (RAR5 encrypted headers) listing /tmp/banxe-listing.txt = 100,488 file entries; BANXE-only scope (non-BANXE/legal resources excluded per operator).
+- Verdicts: (1) 8.6 GB unpacked = VERIFIED 8.24 GiB; (2) "12 projects" = CLARIFIED (12 top-level groups, but banxe/ alone = 103 sub-projects); (3) "7 Binance files" = REJECTED (797 matches); (4) neuron-bitshares-ui trading frontend = VERIFIED (neuron/neuron-bitshares-ui/); (5) HollaEx/CCXT = UNBLOCKED -> ExchangePort ADR pending; (6) "Paymentology 11 endpoints" = REJECTED (3 RPC + 2 REST in banxe-payment-core); (7) "<500ms SLA" = NOT-AN-INVARIANT (operator decision on I-NEW).
+- Key finding: legacy scale far larger than claimed (12 groups / hundreds of sub-projects / 8.24 GiB); 3 of 7 claims materially inaccurate. Verification mandate justified.
+- Scope: docs-only; no code, no production zones; archive read-only (listing, never extracted to disk).
+- Next: ADR draft ExchangePort (HollaEx/CCXT feasibility); MIGRATION_DASHBOARD domain coverage from real 12-group inventory; IL-111 sprint backlog.
+- Refs: docs/project/UNVERIFIED-CLAIMS-LEGACY-DISCOVERY.md; docs/sprints/SPRINT-PLAN-PHASE-B-F-2026-06-06.md; NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; House rules 10-12.
