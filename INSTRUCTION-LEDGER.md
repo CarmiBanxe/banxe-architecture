@@ -10302,3 +10302,26 @@ Self-audit note
 | Blocker | None. |
 | Successor | None. |
 | anchors | OPERATOR-PLAYBOOK.md, SESSION-HANDOFF-2026-06-07.md, §11, §12, I-71, I-74, I-75, IL-132, IL-131. |
+
+---
+
+## IL-134 — ADR-044 status transition Proposed → Accepted (design; Steps 7–10 remain gated)
+
+| Поле | Значение |
+|------|----------|
+| IL-NNN | IL-134 |
+| Источник | CEO (операторская санкция: «продолжай исполнять спринты и выполни») |
+| Дата | 2026-06-08T00:30:00+02:00 |
+| Инструкция | Закрыть governance-разрыв: ADR-044 содержит amendment 2026-06-07 (ADR-051/052, IL-131) под P0-A sanction, но шапка осталась Proposed. Перевести в Accepted (design-scope). |
+| Шаги | S1: ADR-044 frontmatter Status Proposed → Accepted (+ accepted date 2026-06-08). S2: пометка, что Steps 7–10 (мутация evo2) остаются gated на отдельную operator sanction. S3: INDEX.md статус ADR-044 → Accepted. S4: IL-134. |
+| Статус | integrated |
+| Status-history | proposed 2026-06-08 → integrated 2026-06-08 (после squash-merge) |
+| Scope | docs-only (ADR frontmatter + INDEX + ledger); НЕ авторизует Steps 7–10; no production mutation; no KYC/AML/CRM. |
+| Integration-rule | append-only ledger; ADR-044 body/decision/Steps-таблица НЕ меняются — только Status/accepted строки. |
+| Proof | base origin/main @242cbbfa94eb9b2063df3a7847cfcbcfd7778551; final transition (squash-merge) SHA assigned by main terminal per Privileged-ops |
+| Verification | sha256 ADR-044 = 76303937f12775a34821a1a45a13987ed56ab4435029c5fb4be79257e292d1c8 |
+| Deviation | Acceptance охватывает ТОЛЬКО design roadmap (Steps 1–6 safe + структуру), как ADR-049/IL-127 pattern. Steps 7–10 (T6, amendment-B.11.N+2) требуют отдельной operator sanction — НЕ green light. |
+| Privileged-ops | git push + PR + gh pr merge --squash --admin: EXECUTED главным терминалом. |
+| Blocker | None. |
+| Successor | crypto-ops спринт PARKED (ждёт Terminal B: 3 SPEC + repos banxe-portfolio/banxe-news). |
+| anchors | ADR-044, ADR-051, ADR-052, §19, I-27, I-71, I-74, I-75, IL-131, IL-133. |

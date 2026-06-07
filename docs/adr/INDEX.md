@@ -79,7 +79,7 @@ and is now 4 (placeholder-only).
 | ADR-041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                                                         | Accepted | 2026-05-03 | [./ADR-041-glm45-air-distributed.md](./ADR-041-glm45-air-distributed.md) |
 | ADR-042 | ufw Perimeter Posture per Host                                                                       | Accepted | 2026-05-03 | [./ADR-042-ufw-perimeter.md](./ADR-042-ufw-perimeter.md) |
 | ADR-043 | Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`                                              | Accepted | 2026-05-03 | [./ADR-043-aider-routes.md](./ADR-043-aider-routes.md) |
-| ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Proposed | —          | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
+| ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Accepted | —          | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
 | ADR-045 | Intent-First Banking Architecture for EMI BANXE AI BANK                                              | Accepted | 2026-06-07 | [./ADR-045-intent-first-banking-architecture.md](./ADR-045-intent-first-banking-architecture.md) |
 | ADR-046 | Decision Lineage Schema (AgentDecisionRecord) for EMI BANXE AI BANK                                  | Accepted | 2026-06-07 | [./ADR-046-decision-lineage-schema.md](./ADR-046-decision-lineage-schema.md) |
 | ADR-047 | AI Cost Governance Policy (per-agent budgets & cost caps) for EMI BANXE AI BANK                      | Accepted | 2026-06-07 | [./ADR-047-ai-cost-governance-policy.md](./ADR-047-ai-cost-governance-policy.md) |
