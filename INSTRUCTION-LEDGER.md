@@ -10279,3 +10279,26 @@ Self-audit note
 - Open follow-ups (future increments, non-blocking): AgentDecisionRecord token-split + immutable_storage_ref (ADR-046 §D5 instrumentation sprint); payments_agent.py >300-line split; per-agent scope increments if needed.
 - Note on IL number: task brief assumed last IL was IL-127, but origin/main had advanced (parallel session) through IL-128..IL-131; IL-132 is the next free number (append-only, no collision).
 - Refs: ADR-049 (Intent Layer & Client-Facing Agent Masks — the L1 spec these 6 agents implement at L2; IL-126 SPEC/DESIGN, IL-127 ACCEPTANCE); ADR-046 (AgentDecisionRecord — one per action, every exit path); ADR-047 (cost caps + AUTO/REVIEW/BLOCK bands); ADR-048 (intent→process_ref resolution); ADR-040 (meta-plane — the LLM-orchestration substrate L2 live operation is gated on, Terminal A); ADR-045 (Intent-First Banking, four-layer model); the 6 CONTRACT ports WalletPort/PartnerPort/ExchangePort (banxe-payment-core) + KYCProviderPort/NotificationProviderPort/CRMProviderPort (banxe-emi-stack); .claude/rules/agents.md (HITL bands; ARL AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §11 (production-state mutation gate — code-complete, not a production green light).
+
+---
+
+## IL-133 — OPERATOR-PLAYBOOK + SESSION-HANDOFF ledger registration
+
+| Поле | Значение |
+|------|----------|
+| IL-NNN | IL-133 |
+| Источник | CEO (операторская санкция: «продолжай исполнять спринты и выполни»; закрытие governance-долга из SESSION-HANDOFF §4) |
+| Дата | 2026-06-08T00:00:00+02:00 |
+| Инструкция | Зарегистрировать в ledger артефакты session-transfer пакета (OPERATOR-PLAYBOOK.md + SESSION-HANDOFF-2026-06-07.md), смерженные коммитом b2e5b04 без IL-anchor. |
+| Шаги | S1: вычислить proof SHA обоих файлов. S2: создать IL-132 append-only. S3: PR + squash-merge через главный терминал. |
+| Статус | integrated |
+| Status-history | proposed 2026-06-08 → integrated 2026-06-08 (после squash-merge в main) |
+| Scope | docs-only (ledger anchor); no code, no production zones, no KYC/AML/CRM. |
+| Integration-rule | append-only; existing IL-122…IL-131 неприкосновенны. |
+| Proof | source commit b2e5b04; файлы в main @36e1df3. |
+| Verification | sha256 OPERATOR-PLAYBOOK.md = ccab9df2db5a74f7f84753ec33d13d3f9ad5255ac0597aa986f47f07cb4218a6; sha256 SESSION-HANDOFF-2026-06-07.md = 5cbef547e6ea2f7b405acf51d1462f7e33fbf366b2b627189f98fc7d0a37113e |
+| Deviation | Артефакты смержены (b2e5b04) до IL-регистрации — этот IL закрывает разрыв ретроспективно. |
+| Privileged-ops | git push + PR + gh pr merge --squash --admin: EXECUTED главным терминалом. Sub-terminal B не пушит (I-71). |
+| Blocker | None. |
+| Successor | None. |
+| anchors | OPERATOR-PLAYBOOK.md, SESSION-HANDOFF-2026-06-07.md, §11, §12, I-71, I-74, I-75, IL-132, IL-131. |
