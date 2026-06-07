@@ -10222,3 +10222,20 @@ Self-audit note
 | Deviation | Прямой коммит в main не использован (branch protection); всё через PR — без bypass rules. |
 | Blocker | None. |
 | anchors | §16, §17, §18, §19, I-24, I-27, I-28, I-75, I-76, I-77, I-78, ADR-044. |
+
+---
+
+## IL-130 — ADR-051 + ADR-052 (Coding Execution Decision + Canon Enforcement Runtime)
+
+| Поле | Значение |
+|------|----------|
+| IL-NNN | IL-130 |
+| Источник | CEO (операторская директива, продолжение по канону — «лучшее решение») |
+| Дата | 2026-06-07T23:00:00+02:00 |
+| Инструкция | Продолжить по канону best-solution: канонизировать решение по исполнению кодинга и определить runtime для агентов enforcement, чтобы governance стал механически связывающим. |
+| Шаги | 1. ADR-051 Coding Execution Decision (Claude vs Local) канонизирован. 2. ADR-052 Canon Enforcement Runtime создан: Enforcer (I-76/I-77) как CI-gate+CLI, Supervisor (I-78), dual-PASS, fail-closed audit fallback, HITL-override (I-27). 3. IL-130 запись. |
+| Статус | ✅ DONE |
+| Proof | PR #342 merged (ADR-051, docs/adr/ADR-051-coding-execution-decision.md); PR #343 merged (ADR-052, docs/adr/ADR-052-canon-enforcement-runtime.md). Оба в main через squash. |
+| Deviation | Прямой коммит в main не использован (branch protection); всё через PR + dual guardian checks — без bypass. |
+| Blocker | None. ADR-051 статус Proposed — ждёт operator sanction P0-A (Claude vs Local hybrid) до перевода в Accepted. ADR-052 статус Proposed — ждёт sanction для wiring в zone Terminal A. |
+| anchors | ADR-044, ADR-047, ADR-051, ADR-052, §19, I-27, I-74, I-75, I-76, I-77, I-78, IL-129. |
