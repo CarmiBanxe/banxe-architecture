@@ -17,28 +17,41 @@ pie title BANXE AI Bank — EMI Readiness (120 requirements)
 ## 2. Block Heatmap — 15 разделов Master Doc
 
 ```mermaid
-block-beta
-  columns 3
-
-  block:governance["S1 Governance\n40% 🟡"]:1
-  block:geniusto["S2 Geniusto→замена\n100% 🟢"]:1
-  block:cbs["S3 CBS/Midaz\n55% 🟡"]:1
-
-  block:payments["S4 Payment Rails\n0% 🔴\n❌ CRITICAL"]:1
-  block:compliance["S5 Compliance/AML\n65% 🟡"]:1
-  block:safeguarding["S6 Safeguarding\n43% 🟠\n⏰ 7 May 2026"]:1
-
-  block:ai["S7 AI & HITL\n95% 🟢"]:1
-  block:infra["S8 Infrastructure\n59% 🟡"]:1
-  block:emiready["S9 EMI Readiness\n35% 🔴"]:1
-
-  block:components["S10 Components\n50% 🟡"]:1
-  block:layers["S11 Layers\n50% 🟡"]:1
-  block:gaps["S12 Gap Analysis\n100% 🟢"]:1
-
-  block:govmech["S13 Governance\n65% 🟡"]:1
-  block:roadmap["S14 Roadmap\n44% 🟡"]:1
-  block:deadlines["S15 Deadlines\ntracked 🟡"]:1
+flowchart TB
+subgraph R1[" "]
+  direction LR
+  governance["S1 Governance — 40% 🟡"]
+  geniusto["S2 Geniusto zamena — 100% 🟢"]
+  cbs["S3 CBS/Midaz — 55% 🟡"]
+end
+subgraph R2[" "]
+  direction LR
+  payments["S4 Payment Rails — 0% 🔴 CRITICAL"]
+  compliance["S5 Compliance/AML — 65% 🟡"]
+  safeguarding["S6 Safeguarding — 43% 🟠 7 May 2026"]
+end
+subgraph R3[" "]
+  direction LR
+  ai["S7 AI HITL — 95% 🟢"]
+  infra["S8 Infrastructure — 59% 🟡"]
+  emiready["S9 EMI Readiness — 35% 🔴"]
+end
+subgraph R4[" "]
+  direction LR
+  components["S10 Components — 50% 🟡"]
+  layers["S11 Layers — 50% 🟡"]
+  gaps["S12 Gap Analysis — 100% 🟢"]
+end
+subgraph R5[" "]
+  direction LR
+  govmech["S13 Governance — 65% 🟡"]
+  roadmap["S14 Roadmap — 44% 🟡"]
+  deadlines["S15 Deadlines — tracked 🟡"]
+end
+R1 ~~~ R2 ~~~ R3 ~~~ R4 ~~~ R5
+style payments fill:#ff6b6b
+style emiready fill:#ff6b6b
+style safeguarding fill:#ffa94d
 ```
 
 ---
