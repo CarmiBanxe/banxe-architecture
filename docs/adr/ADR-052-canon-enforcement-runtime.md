@@ -1,6 +1,6 @@
 # ADR-052 — Canon Enforcement Runtime
 
-**Status:** Proposed (awaiting operator sanction)
+**Status:** Accepted (operator sanction 2026-06-07)
 **Date:** 2026-06-07
 **Authors:** Perplexity Factory Terminal
 **Invariants:** I-27, I-71, I-74, I-75, I-76, I-77, I-78
@@ -35,3 +35,8 @@ Upon operator sanction, the factory (zone Terminal A) wires Enforcer + Superviso
 ## References
 
 ADR-044, ADR-047, ADR-051, §19 (Canon Enforcement Agents), I-27, I-74, I-75, I-76, I-77, I-78, IL-129.
+
+
+## Sanctioned Decision (operator, 2026-06-07)
+
+**ACCEPTED.** The enforcement runtime is sanctioned. Terminal A (factory) is authorized to wire Canon Enforcer (I-76/I-77) and Enforcement Supervisor (I-78) into the existing guardian check pipeline (`guardian-factory`, `guardian-project`) as a dual-PASS, fail-closed gate, with HITL override via I-27. No bypass of branch protections. Provenance of every run recorded to the Instruction Ledger (I-74/I-75). Ledger: IL-131.
