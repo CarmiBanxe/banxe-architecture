@@ -10138,3 +10138,11 @@ Self-audit note
 - Artifact: docs/adr/ADR-EXCHANGEPORT-2026-06-07.md
 - Source-spec: docs/refactor/legacy/exchange-port-CONTRACT-SPEC-2026-06-06.md
 - Status: Proposed (best-solution + sequential canon)
+
+## IL-111-R0-ADR-EXCHANGEPORT-2026-06-07
+- Anchor: I-29
+- Scope: BANXE-only
+- Claim: IL-110 claim 5 (ExchangePort) UNBLOCKED -> ADR Proposed
+- Artifact: docs/adr/ADR-EXCHANGEPORT-2026-06-07.md
+- Source-spec: docs/refactor/legacy/exchange-port-CONTRACT-SPEC-2026-06-06.md
+- Status: Proposed (best-solution + sequential canon)
