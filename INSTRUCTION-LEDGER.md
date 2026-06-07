@@ -10357,3 +10357,17 @@ Self-audit note
 - **Deviation:** нет
 - **Blocker:** —
 - **Инвариант:** I-28; санкция роли оператора получена
+
+### IL-136: crypto-ops spec-repo-map — request к Terminal B (3 SPEC + 2 repo path/SHA)
+- **Источник:** CEO / оператор → фабрика (Sub-terminal A), 2026-06-08
+- **Инструкция:** оформить формальный запрос недостающих артефактов для разблокировки PARKED-патча spec-repo-map.tsv.
+- **Запрошено у Terminal B (требуется реальный Proof — пути + git SHA):**
+  1. SPEC crypto-ops-monitor — путь + SHA — ожидается
+  2. SPEC banxe-portfolio — путь + SHA — ожидается
+  3. SPEC banxe-news — путь + SHA — ожидается
+  4. repo #1 — path + commit SHA — ожидается
+  5. repo #2 — path + commit SHA — ожидается
+- **Статус:** BLOCKED
+- **Proof:** — (появится после ответа Terminal B с реальными SHA)
+- **Deviation:** нет
+- **Blocker:** Terminal B ещё не предоставил 3 SPEC и 2 repo path/SHA; патч spec-repo-map.tsv не применяется до получения реальных хэшей. Фабрикация SHA запрещена (I-28, 100% трассируемость).
