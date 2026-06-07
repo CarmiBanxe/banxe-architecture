@@ -10130,3 +10130,11 @@ Self-audit note
 - Scope: docs-only; no code, no production zones; archive read-only (listing, never extracted to disk).
 - Next: ADR draft ExchangePort (HollaEx/CCXT feasibility); MIGRATION_DASHBOARD domain coverage from real 12-group inventory; IL-111 sprint backlog.
 - Refs: docs/project/UNVERIFIED-CLAIMS-LEGACY-DISCOVERY.md; docs/sprints/SPRINT-PLAN-PHASE-B-F-2026-06-06.md; NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; House rules 10-12.
+
+## IL-111-R0-ADR-EXCHANGEPORT-2026-06-07
+- Anchor: I-29
+- Scope: BANXE-only
+- Claim: IL-110 claim 5 (ExchangePort) UNBLOCKED -> ADR Proposed
+- Artifact: docs/adr/ADR-EXCHANGEPORT-2026-06-07.md
+- Source-spec: docs/refactor/legacy/exchange-port-CONTRACT-SPEC-2026-06-06.md
+- Status: Proposed (best-solution + sequential canon)
