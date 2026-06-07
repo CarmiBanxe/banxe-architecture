@@ -14,7 +14,44 @@ Deepen SPEC #6 CRMPort into an executable contract. This is the final port contr
 
 ## Contract types + operations
 
-See SPEC #6 fiat-backend-utils for the CRMPort interface (registerReferral, resolveReferralCode, getUser, updateUserTier). This CONTRACT freezes the semantics below.
+The canonical CRMPort interface (TS source of truth, per ADR-021 / parent SPEC #6
+fiat-backend-utils-SPEC-2026-05-23.md) is inlined here verbatim so this CONTRACT is
+self-sufficient. This CONTRACT freezes the semantics below; the surface itself is frozen
+and any change requires a CONTRACT revision.
+
+```typescript
+export type CRMUserId = string;
+export type ReferralCode = string;
+
+export interface ReferralEvent {
+  referrer: CRMUserId;
+  referee: CRMUserId;
+  code: ReferralCode;
+  occurredAt: string;
+  metadata?: Record<string, unknown>;
+}
+
+export interface CRMUser {
+  userId: CRMUserId;
+  tier?: string;
+  attributes?: Record<string, unknown>;
+}
+
+export interface CRMPort {
+  registerReferral(event: ReferralEvent): Promise<{ accepted: boolean; reason?: string }>;
+  resolveReferralCode(code: ReferralCode): Promise<CRMUserId | null>;
+  getUser(userId: CRMUserId): Promise<CRMUser | null>;
+  updateUserTier(userId: CRMUserId, tier: string): Promise<void>;
+}
+```
+
+Python target naming: the emi-stack contract surface is named `CRMProviderPort` in
+`services/crm/crm_provider_port.py`. This mirrors the KYC and Notification precedent
+(KYCProviderPort / kyc_provider_port.py, NotificationProviderPort /
+notification_provider_port.py), keeps the provider-facing CRM boundary distinct from the
+existing legacy referral logic (services/referral/*, untouched), and is a pure TS->Python
+surface translation (snake_case methods, async def, frozen dataclasses, StrEnum where a
+closed set applies). No new semantics are introduced by the translation.
 
 ## Operation semantics
 
