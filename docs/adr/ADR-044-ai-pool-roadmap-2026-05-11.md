@@ -4,7 +4,7 @@
 **Date:** 2026-05-11
 **Authors:** Banxe Sub-terminal A
 **Invariants:** I-71, I-72, I-73, I-74
-**Amendments:** amendment-30.N, amendment-B.11.N+2
+**Amendments:** amendment-30.N, amendment-B.11.N+2, amendment-2026-06-07 (ADR-051 hybrid coding-primary + ADR-052 enforcement runtime; see IL-131)
 
 ---
 
@@ -112,3 +112,12 @@ Steps 7–10 require explicit operator confirmation before execution.
 - **No production model mutation in this ADR cycle.** Steps 7–10 are roadmap items for future execution after operator confirmation.
 - **No evo2 access from Legion.** Dev traffic must not reach `evo2:*` at any point during steps 1–6.
 - **No scope expansion.** This ADR does not authorise any infrastructure change beyond what is listed in the 10-step table.
+
+
+## Amendment 2026-06-07 (operator sanction; ADR-051 / ADR-052)
+
+Per ADR-051 (Accepted, P0-A hybrid), the coding-primary policy is clarified: **local-first via LiteLLM for regulated workloads (KYC/AML/transactions)** to satisfy data-residency, with **Claude as fallback / non-regulated development only**. The local Legion/evo coder-stack is **retained** (not retired), consistent with this roadmap's hardware pool.
+
+Per ADR-052 (Accepted), enforcement of this policy is bound by the Canon Enforcement Runtime: Canon Enforcer (I-76/I-77) + Enforcement Supervisor (I-78) as a dual-PASS, fail-closed CI gate, HITL override via I-27. `spec-build` routing through LiteLLM is mandatory; direct Anthropic calls bypassing the shim are a FAIL condition.
+
+Ledger: IL-131.
