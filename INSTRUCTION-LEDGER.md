@@ -10239,3 +10239,20 @@ Self-audit note
 | Deviation | Прямой коммит в main не использован (branch protection); всё через PR + dual guardian checks — без bypass. |
 | Blocker | None. ADR-051 статус Proposed — ждёт operator sanction P0-A (Claude vs Local hybrid) до перевода в Accepted. ADR-052 статус Proposed — ждёт sanction для wiring в zone Terminal A. |
 | anchors | ADR-044, ADR-047, ADR-051, ADR-052, §19, I-27, I-74, I-75, I-76, I-77, I-78, IL-129. |
+
+---
+
+## IL-131 — ADR-051 + ADR-052 ACCEPTED + ADR-044 amended (P0-A hybrid sanction)
+
+| Поле | Значение |
+|------|----------|
+| IL-NNN | IL-131 |
+| Источник | CEO (операторская санкция: «раздели на спринты и выполни на 100%») |
+| Дата | 2026-06-07T23:30:00+02:00 |
+| Инструкция | Разделить оставшуюся governance-работу на спринты и выполнить на 100% по канону best-solution. |
+| Шаги | S1: ADR-051 → Accepted (P0-A hybrid). S2: ADR-052 → Accepted (enforcement runtime sanctioned). S3: ADR-044 amended (coding-primary clause + enforcement binding). S4: IL-131 запись. S5: crypto-ops handoff-doc для Terminal A. S6: финальный аудит. |
+| Статус | ✅ DONE |
+| Proof | PR #345 merged (ADR-051 Accepted); PR #346 merged (ADR-052 Accepted); PR #347 merged (ADR-044 amendment). Всё в main через squash + dual guardian checks. |
+| Deviation | Нет. P0-A разрешён как hybrid (рекомендация Factory Terminal); любой иной выбор (чистый Claude / чистый Local) правится одной строкой статуса ADR-051. |
+| Blocker | None в зоне документации. Остаётся реализация в zone Terminal A: wiring Enforcer/Supervisor в guardian-pipeline + spec-build routing через LiteLLM. |
+| anchors | ADR-044, ADR-047, ADR-051, ADR-052, §19, I-27, I-71, I-74, I-75, I-76, I-77, I-78, IL-129, IL-130. |
