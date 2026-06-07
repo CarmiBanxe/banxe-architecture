@@ -10204,3 +10204,21 @@ Self-audit note
 | Proof | OPERATOR-PLAYBOOK.md committed in b2e5b042f3241403bdb970401a45c91cc1171f3f (9 parts, operator playbook); SESSION-HANDOFF-2026-06-07.md present (130 lines); this IL append commit. |
 | Deviation | None. |
 | Blocker | None. Prior session halted on Perplexity length limit; resumed via handoff package. |
+
+
+---
+
+## IL-129
+
+| Поле | Значение |
+|---|---|
+| IL-NNN | IL-129 |
+| Источник | CEO (операторская директива, повторная между сессиями) |
+| Дата | 2026-06-07T22:30:00+02:00 |
+| Инструкция | (1) Аудит узлов вести через оператора (shell/Claude Code), закрепить в канон. (2) 100% решение задач комбинацией браузер/shell/Claude Code по «лучшему решению», всегда подробно описывать операторские действия. (3) Добавить гарантированное исполнение канона: AI-enforcer + AI-supervisor. |
+| Шаги | 1. §17 Compute Audit Protocol + I-75 (PR #338). 2. §18 Best-Solution Operator Combination + I-76 (PR #339). 3. §19 Canon Enforcement Agents + I-77/I-78 (PR #340). 4. IL-129. |
+| Статус | ✅ DONE |
+| Proof | PR #338 merged (§17/I-75); PR #339 merged (§18/I-76); PR #340 merged (§19/I-77/I-78). Все в main через squash. |
+| Deviation | Прямой коммит в main не использован (branch protection); всё через PR — без bypass rules. |
+| Blocker | None. |
+| anchors | §16, §17, §18, §19, I-24, I-27, I-28, I-75, I-76, I-77, I-78, ADR-044. |
