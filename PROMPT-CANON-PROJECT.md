@@ -304,3 +304,22 @@ Read-only + canon append операции выполняются автомат�
 - amendment-B.11.N+2 Статья 3 (sanctioned block — единственный exception path)
 - PROMPT-CANON-PROJECT §15 Multi-terminal discipline (§71-§74 — self-resolve per halt rule)
 - Operator directive 2026-05-11 05:00 CEST
+
+
+## 17. Compute Audit Protocol (BINDING)
+
+### 17.1 Принцип
+Аудит вычислительных узлов (Legion / evo1 / evo2: HW, RAM, GPU/VRAM, Ollama, LiteLLM, сеть, загрузка моделей) НИКОГДА не выполняется агентом напрямую. Perplexity/Comet — T1 Read-Augmented Coordinator (§14) и НЕ имеет shell-доступа к узлам. Весь compute-аудит проводится ИСКЛЮЧИТЕЛЬНО через оператора: либо готовой shell-командой (read-only), либо промптом в Claude Code (Sub-terminal B, read-only по §15.1).
+
+### 17.2 Обязательный порядок (I-75)
+1. Агент формирует ГОТОВЫЙ аудит-блок одной пастой (read-only, без дробления — cat-heredoc/base64-доставка per CANON-DEVELOPER §1/§6).
+2. Оператор исполняет блок в shell или через Claude Code и возвращает вывод.
+3. Агент интерпретирует фактический вывод и формирует отчёт. Выводы без фактического вывода команды ЗАПРЕЩЕНЫ (никаких «по канону/вероятно» вместо измерения).
+4. Результат фиксируется в INSTRUCTION-LEDGER.md с Proof (команда + вывод) и anchors.
+
+### 17.3 Границы
+- Только read-only: git log/status/diff, grep, cat, ssh read-only, ollama ps/list, curl :11434/:4000, free -h, nvidia-smi/rocm-smi. Запись/рестарт сервисов/загрузка моделей — НЕ аудит, требуют отдельного privileged-санкционирования (I-27 HITL L4).
+- Production-инференс evo2 (загрузка 235b) — подтверждение оператора (ADR-044 шаги 7-10).
+
+### I-75 (BINDING)
+Compute Audit via Operator: любой аудит/диагностика вычислительных узлов исполняется оператором (shell read-only / Claude Code Sub-terminal B), агент выдаёт готовый блок и опирается только на фактический вывод. Cross-ref: §14 (Tiers), §15.1 (Sub-terminal B), I-24/I-27, ADR-044.
