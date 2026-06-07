@@ -2,7 +2,7 @@
 
 - Family: exchangeport-contract
 - Target: banxe-payment-core / exchange contract
-- Scope: src/exchangeport/**, tests/exchangeport/**
+- Scope: src/exchangeport/**
 
 Date: 2026-06-06
 Status: CONTRACT SPEC (contract-only; defines ExchangePort interface, types, semantics, and conformance requirements for NEW capability C6 trading)
@@ -97,7 +97,7 @@ All errors MUST carry correlationId + clientOrderId. All errors MUST be persiste
 
 ## Conformance test suite (one suite, all adapters)
 
-Any adapter claiming ExchangePort conformance MUST pass all 11 tests:
+Any adapter claiming ExchangePort conformance MUST pass all 11 tests. Conformance tests are specified here as contract requirements; their implementation under tests/exchangeport/** is a separate contract-tests output task.
 
 1. getRate(valid pair) -> bid/ask present; ttlSeconds > 0.
 2. getRate then wait past ttl -> StaleRate on reuse (no stale trade).
