@@ -12,9 +12,14 @@ Client-Facing Agent Masks, 2026-06-07, the L1 + L1→L2 client-surface spec of A
 
 This index covers BOTH ADR catalogues. After Sprint D3.2d.1 collision renumber,
 the two catalogues are non-colliding: `decisions/` holds ADR-001..035, ADR-036,
-ADR-038, ADR-074..077 (38 files); `docs/adr/` holds ADR-039..049 (11 files;
+ADR-038, ADR-074..077 (38 files); `docs/adr/` holds ADR-039..053 (15 files;
 factory / agent governance scope). Numbers ADR-021, ADR-023, ADR-031, ADR-037,
-ADR-050..073, ADR-078+ are unassigned (see §"MISSING / unassigned").
+ADR-054..073, ADR-078+ are unassigned (see §"MISSING / unassigned").
+Correction (2026-06-08, IL-137): the prior free-block line read "ADR-050..073
+unassigned (24 free)", but ADR-050 (Crypto-Ops Subgroup Delivery Model),
+ADR-051 (Coding Execution Decision) and ADR-052 (Canon Enforcement Runtime)
+were authored by parallel sessions and ADR-053 is added here — so the real
+free block is **ADR-054..073 (20 numbers)**.
 
 Status values are parsed verbatim from each ADR's `**Status:**` line. Where no
 `**Status:**` line exists at the top of the file, the row shows `UNKNOWN` and
@@ -70,7 +75,7 @@ and is now 4 (placeholder-only).
 | ADR-076 | RAILGUN Integration Decision Gate                                                                    | PENDING LEGAL REVIEW                            | —          | [decisions/ADR-076-railgun-integration-decision-gate.md](../../decisions/ADR-076-railgun-integration-decision-gate.md) |
 | ADR-077 | Guardian -> GitHub webhook auth: GitHub App vs PAT | ACCEPTED | 2026-05-22 | [decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md](../../decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md) |
 
-## Real ADR files in `docs/adr/` (factory governance, 11 files)
+## Real ADR files in `docs/adr/` (factory governance, 15 files)
 
 | Number  | Title                                                                                              | Status   | Date       | Path |
 |---------|----------------------------------------------------------------------------------------------------|----------|------------|------|
@@ -85,6 +90,10 @@ and is now 4 (placeholder-only).
 | ADR-047 | AI Cost Governance Policy (per-agent budgets & cost caps) for EMI BANXE AI BANK                      | Accepted | 2026-06-07 | [./ADR-047-ai-cost-governance-policy.md](./ADR-047-ai-cost-governance-policy.md) |
 | ADR-048 | S13-00 Business Process Repository (canonize banxe-business-processes) for EMI BANXE AI BANK         | Accepted | 2026-06-07 | [./ADR-048-business-process-repository.md](./ADR-048-business-process-repository.md) |
 | ADR-049 | Intent Layer & Client-Facing Agent Masks (L1 spec & the L1→L2 client surface) for EMI BANXE AI BANK   | Accepted | 2026-06-07 | [./ADR-049-intent-layer-client-facing-agent-masks.md](./ADR-049-intent-layer-client-facing-agent-masks.md) |
+| ADR-050 | Crypto-Ops Subgroup Delivery Model                                                                  | Proposed | —          | [./ADR-050-crypto-ops-subgroup-delivery-model.md](./ADR-050-crypto-ops-subgroup-delivery-model.md) |
+| ADR-051 | Coding Execution Decision (Claude vs Local)                                                         | Accepted | 2026-06-07 | [./ADR-051-coding-execution-decision.md](./ADR-051-coding-execution-decision.md) |
+| ADR-052 | Canon Enforcement Runtime                                                                           | Accepted | 2026-06-07 | [./ADR-052-canon-enforcement-runtime.md](./ADR-052-canon-enforcement-runtime.md) |
+| ADR-053 | Client-Facing Mask Catalogue Extensibility & the Mask↔Domain-Agent Governance Boundary (extends ADR-049) | Proposed | 2026-06-08 | [./ADR-053-client-facing-mask-extensibility-and-domain-agent-boundary.md](./ADR-053-client-facing-mask-extensibility-and-domain-agent-boundary.md) |
 
 ## MISSING / unassigned ADR numbers
 
@@ -99,7 +108,11 @@ and is now 4 (placeholder-only).
 | ADR-047          | AI Cost Governance Policy (per-agent budgets & cost caps) (ACCEPTED 2026-06-07; docs/adr/; ADR-045 §D7.2). |
 | ADR-048          | S13-00 Business Process Repository — canonize banxe-business-processes (ACCEPTED 2026-06-07; docs/adr/; ADR-045 §D7.3 — final §D7 sibling; §D7 backlog now CLOSED). |
 | ADR-049          | Intent Layer & Client-Facing Agent Masks (ACCEPTED 2026-06-07; docs/adr/; specifies ADR-045 L1 + the L1→L2 client surface; NOT a §D7 sibling). |
-| ADR-050..073     | UNASSIGNED block — 24 free numbers between docs/adr/ and Ghost-Mode set. |
+| ADR-050          | Crypto-Ops Subgroup Delivery Model (PROPOSED; docs/adr/; parallel session). |
+| ADR-051          | Coding Execution Decision (Claude vs Local) (ACCEPTED 2026-06-07, P0-A hybrid; docs/adr/; IL-131). |
+| ADR-052          | Canon Enforcement Runtime (ACCEPTED 2026-06-07; docs/adr/; IL-131). |
+| ADR-053          | Client-Facing Mask Catalogue Extensibility & the Mask↔Domain-Agent Governance Boundary (PROPOSED 2026-06-08; docs/adr/; extends ADR-049; adds Cards C22 mask; IL-137). |
+| ADR-054..073     | UNASSIGNED block — 20 free numbers between docs/adr/ and Ghost-Mode set. |
 | ADR-077          | Guardian -> GitHub webhook auth: GitHub App vs PAT (ACCEPTED 2026-05-22, App default).
 | ADR-078+         | UNASSIGNED — next free after ADR-077 (Guardian webhook auth).                     |
 
