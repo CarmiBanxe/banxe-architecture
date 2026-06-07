@@ -4,13 +4,13 @@ Generated: 2026-05-12 (regenerated 2026-05-14 per Sprint D3.2d.3-FU)
 Generator: Sprint D3.2d.3 (rewrite from D2 single-catalogue scope to unified scope);
 Sprint D3.2d.3-FU (ADR Status backfill — 20 UNKNOWN → Accepted)
 Source: `decisions/ADR-*.md` (canonical catalogue, 37 files) + `docs/adr/ADR-*.md`
-(factory ADRs post-D3.2d.1 renumber, 6 files)
+(factory ADRs post-D3.2d.1 renumber, 7 files incl. ADR-045 Intent-First, 2026-06-07)
 
 This index covers BOTH ADR catalogues. After Sprint D3.2d.1 collision renumber,
 the two catalogues are non-colliding: `decisions/` holds ADR-001..035, ADR-036,
-ADR-038, ADR-074..077 (38 files); `docs/adr/` holds ADR-039..044 (6 files;
+ADR-038, ADR-074..077 (38 files); `docs/adr/` holds ADR-039..045 (7 files;
 factory / agent governance scope). Numbers ADR-021, ADR-023, ADR-031, ADR-037,
-ADR-045..073, ADR-078+ are unassigned (see §"MISSING / unassigned").
+ADR-046..073, ADR-078+ are unassigned (see §"MISSING / unassigned").
 
 Status values are parsed verbatim from each ADR's `**Status:**` line. Where no
 `**Status:**` line exists at the top of the file, the row shows `UNKNOWN` and
@@ -66,7 +66,7 @@ and is now 4 (placeholder-only).
 | ADR-076 | RAILGUN Integration Decision Gate                                                                    | PENDING LEGAL REVIEW                            | —          | [decisions/ADR-076-railgun-integration-decision-gate.md](../../decisions/ADR-076-railgun-integration-decision-gate.md) |
 | ADR-077 | Guardian -> GitHub webhook auth: GitHub App vs PAT | ACCEPTED | 2026-05-22 | [decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md](../../decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md) |
 
-## Real ADR files in `docs/adr/` (factory governance, 6 files)
+## Real ADR files in `docs/adr/` (factory governance, 7 files)
 
 | Number  | Title                                                                                              | Status   | Date       | Path |
 |---------|----------------------------------------------------------------------------------------------------|----------|------------|------|
@@ -76,6 +76,7 @@ and is now 4 (placeholder-only).
 | ADR-042 | ufw Perimeter Posture per Host                                                                       | Accepted | 2026-05-03 | [./ADR-042-ufw-perimeter.md](./ADR-042-ufw-perimeter.md) |
 | ADR-043 | Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`                                              | Accepted | 2026-05-03 | [./ADR-043-aider-routes.md](./ADR-043-aider-routes.md) |
 | ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Proposed | —          | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
+| ADR-045 | Intent-First Banking Architecture for EMI BANXE AI BANK                                              | Accepted | 2026-06-07 | [./ADR-045-intent-first-banking-architecture.md](./ADR-045-intent-first-banking-architecture.md) |
 
 ## MISSING / unassigned ADR numbers
 
@@ -85,7 +86,8 @@ and is now 4 (placeholder-only).
 | ADR-023          | UNASSIGNED — no file in either catalogue.                                |
 | ADR-031          | UNASSIGNED — no file in either catalogue.                                |
 | ADR-037          | UNASSIGNED — free for next factory or product ADR.                       |
-| ADR-045..073     | UNASSIGNED block — 29 free numbers between docs/adr/ and Ghost-Mode set. |
+| ADR-045          | Intent-First Banking Architecture for EMI BANXE AI BANK (ACCEPTED 2026-06-07; docs/adr/). |
+| ADR-046..073     | UNASSIGNED block — 28 free numbers between docs/adr/ and Ghost-Mode set. |
 | ADR-077          | Guardian -> GitHub webhook auth: GitHub App vs PAT (ACCEPTED 2026-05-22, App default).
 | ADR-078+         | UNASSIGNED — next free after ADR-077 (Guardian webhook auth).                     |
 

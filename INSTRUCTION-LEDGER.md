@@ -10116,3 +10116,15 @@ Self-audit note
 - Scope: docs-only (markdown SPECs); no code, no production zones.
 - Exit condition: same as Part A (guardian-factory + guardian-project in statusCheckRollup on main).
 - Refs: BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md; NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; 270/270 legacy NEW-driven swept; House rules 1-12.
+
+## IL-122-INTENT-FIRST-CANON-2026-06-07
+- Date: 2026-06-07 CEST
+- Phase (GSD): SPEC/DESIGN — durable governance artefact (CONCEPT ONLY).
+- Type: governance-canon (docs-only; no code, no production zones; no KYC/Notification/CRM).
+- Status: Accepted (best-solution + sequential canon).
+- Scope: BANXE-only.
+- Decision: EMI BANXE AI BANK is an Intent-First / AI-agent-first product — conversational intent layer is the primary interface, not a banking app retrofitted with AI. Four-layer model: L1 Intent (client conversational), L2 Execution (agents), L3 Governance & Compliance (guardrails, audit, Decision Lineage, cost-policy), L4 Data & Intelligence. Factory REQUIRED for all project code; Central produces project code ONLY through the factory; Terminal A builds the factory; Terminal B is NOT an exception (same Intent-First concept + factory/governance model).
+- Form chosen: paired ADR + dated canon doc.
+- Artifacts: docs/adr/ADR-045-intent-first-banking-architecture.md; docs/canon/INTENT-FIRST-CANON-2026-06-07.md; docs/adr/INDEX.md (ADR-045 registered).
+- Open gaps named as FUTURE ADRs (not implemented here): (1) Decision Lineage Schema / AgentDecisionRecord; (2) AI cost governance policy; (3) S13-00 Business Process Repository.
+- Refs: ADR-040; ADR-039; operator-canon-2026-05.md; software-factory-canon-v1.md; UNIVERSAL-CANON-FACTORY-ROLLOUT-CONSUMER-2026-06-06.md (House rule 13); CLAUDE.md §10/§11.
