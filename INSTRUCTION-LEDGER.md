@@ -10325,3 +10325,22 @@ Self-audit note
 | Blocker | None. |
 | Successor | crypto-ops спринт PARKED (ждёт Terminal B: 3 SPEC + repos banxe-portfolio/banxe-news). |
 | anchors | ADR-044, ADR-051, ADR-052, §19, I-27, I-71, I-74, I-75, IL-131, IL-133. |
+
+---
+
+## IL-135-AGENT-LINEAGE-COST-PRIMITIVES-DRY-CONSOLIDATION-2026-06-08
+- Date: 2026-06-08 CEST
+- Phase (GSD): CLOSE — milestone anchor recording that the L2 agent governance-primitive increment is COMPLETE in CODE across both code repos. Docs-only IL entry; no code/tests/ADR bodies touched by this entry.
+- Type: governance-MILESTONE (factory-delivered code, recorded here; this entry itself is append-only governance).
+- Status: DONE.
+- Scope: BANXE-only.
+- Milestone: agent lineage/cost primitives consolidated (DRY) into a single canonical module per repo + ADR-046 §D5 instrumentation fields added — across both code repos. Removes the duplicated per-agent local copies of the lineage/cost dataclasses; behavior-preserving (every existing test passes unchanged).
+- banxe-payment-core: PR #14 (SHA f463847) — created src/agents/_lineage.py as the canonical home for ProcessRef[ADR-048], RequestCost/CostCap/CostWindow[ADR-047], AgentDecisionRecord[ADR-046], AgentOutcome, DecisionRecorder, and the supporting enums; migrated PaymentsAgent / FXExchangeAgent / WalletAgent off their duplicated local copies onto the shared module; all 262 existing tests pass unchanged (behavior-preserving).
+- banxe-emi-stack: PR #154 (SHA 2772737) — mirror increment: created services/agents/_lineage.py; migrated KYCOnboardingAgent / NotificationAgent / CRMAgent; all 114 existing tests pass unchanged. Documented divergence: emi-stack _lineage retains an extra `escalated_to` field (MLRO/DPO/AML escalation) absent in payment-core — a deliberate, recorded divergence reflecting emi compliance-escalation semantics, NOT drift.
+- ADR-046 §D5 additive fields added to AgentDecisionRecord in BOTH repos: `immutable_storage_ref: str|None=None`, `input_tokens: int|None=None`, `output_tokens: int|None=None` (default None → non-breaking additive change; input/output token counts refine the authoritative `cost_tokens` total, they do not replace it).
+- Coverage: _lineage module 100% in both repos; migrated agents 100%; real CI green on both PRs (#14, #154).
+- DELIBERATELY DEFERRED (recorded, not done):
+  * (a) splitting the >300-line agent files — REJECTED as cosmetic churn on green, fully-tested, cohesive agents (canon-guardian PASSed them as-is; all methods <50 lines). Not a defect; revisit only if a real change requires it.
+  * (b) wiring the §D5 fields to real values (ClickHouse `immutable_storage_ref`, actual input/output token counts) — requires live LLM-orchestration (AGENT_ROUTING_ENABLED, Terminal-A infra per ADR-049 §D6). The additive field scaffolding is ready and will populate when that infra is live; no client surface is opened by this entry.
+- Note on IL number: prior milestone IL-132 recorded the L2 layer complete; origin/main subsequently advanced (parallel sessions) through IL-133 (OPERATOR-PLAYBOOK/SESSION-HANDOFF registration) and IL-134 (ADR-044 Proposed→Accepted); IL-135 is the genuine next free number (append-only, no collision).
+- Refs: ADR-046 (AgentDecisionRecord — §D5 instrumentation fields added here); ADR-047 (cost caps / RequestCost / CostCap / CostWindow); ADR-048 (ProcessRef intent→process_ref resolution); ADR-049 (Intent Layer & Client-Facing Agent Masks — the 6 L2 agents these primitives back; §D6 the infra §D5 live-wiring is gated on); IL-132 (L2 Execution layer complete — this increment hardens its lineage/cost primitives); .claude/rules/agents.md (HITL bands; AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §11 (production-state mutation gate — code-complete, not a production green light).
