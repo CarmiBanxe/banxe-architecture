@@ -1,7 +1,8 @@
 # ADR-044 — AI Pool Roadmap 2026-05-11
 
-**Status:** Proposed
+**Status:** Accepted (design; Steps 7–10 gated on separate operator sanction)
 **Date:** 2026-05-11
+**Accepted:** 2026-06-08
 **Authors:** Banxe Sub-terminal A
 **Invariants:** I-71, I-72, I-73, I-74
 **Amendments:** amendment-30.N, amendment-B.11.N+2, amendment-2026-06-07 (ADR-051 hybrid coding-primary + ADR-052 enforcement runtime; see IL-131)
