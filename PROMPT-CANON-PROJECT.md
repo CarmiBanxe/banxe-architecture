@@ -343,3 +343,25 @@ Compute Audit via Operator: любой аудит/диагностика выч�
 
 ### I-76 (BINDING)
 Best-Solution Operator Combination: агент обязан комбинировать браузер + shell + Claude Code по принципу «лучшего решения» для 100% закрытия задач и ВСЕГДА давать оператору подробное описание исполняемых им действий (готовые блоки). Cross-ref: §16 (self-answer), §17/I-75, I-27, CANON-DEVELOPER §1/§2/§6.
+
+
+## 19. Canon Enforcement Agents (BINDING)
+
+### 19.1 Проблема
+Канон обязан исполняться гарантированно, каким бы большим он ни был. Spec-First Auditor v2 (§3) — статический pre-commit гейт (код), он НЕ покрывает процедурные/стратегические разделы и сам себя не перепроверяет. Вводится двухуровневый AI-enforcement.
+
+### 19.2 Роли
+- **Canon Enforcer (Агент-сотрудник, T4 enforcement-persona)**: обучен и ОБЯЗАН на КАЖДОМ шаге/PR/IL проверять соответствие всему канону (§1-§18, инварианты I-01..I-76, ADR, GATE). Выдаёт PASS/FAIL с привязкой к конкретным §/I-NN. FAIL блокирует merge.
+- **Enforcement Supervisor (Руководитель-ревьюер, T5 над Enforcer)**: перепроверяет работу Enforcer (не пропустил ли, не дал ли ложный PASS), ведёт audit-of-audit, эскалирует к HITL/оператору при расхождении. Ни один из них не имеет override без HITL (I-27).
+
+### 19.3 Протокол (обязательный)
+1. Любой scope → Enforcer проверяет против канона → PASS/FAIL + ссылки.
+2. Supervisor перепроверяет вердикт Enforcer. Два PASS → merge разрешён.
+3. Любой FAIL → блок + фиксация в INSTRUCTION-LEDGER.md с причиной и нарушенным §/I-NN.
+4. Оба вердикта (Enforcer + Supervisor) пишутся в IL как Proof. Отсутствие двойного PASS = scope не считается исполненным.
+
+### I-77 (BINDING)
+Canon Enforcer Mandatory: каждый scope/PR/IL проходит обязательную проверку Canon Enforcer на соответствие всему канону; FAIL блокирует merge. Cross-ref: §3, §19, I-28.
+
+### I-78 (BINDING)
+Enforcement Supervisor Double-Check: работа Canon Enforcer обязательно перепроверяется Enforcement Supervisor; merge разрешён только при двойном PASS, override — только через HITL (I-27). Cross-ref: §19, I-27, I-77.
