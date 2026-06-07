@@ -10128,3 +10128,15 @@ Self-audit note
 - Artifacts: docs/adr/ADR-045-intent-first-banking-architecture.md; docs/canon/INTENT-FIRST-CANON-2026-06-07.md; docs/adr/INDEX.md (ADR-045 registered).
 - Open gaps named as FUTURE ADRs (not implemented here): (1) Decision Lineage Schema / AgentDecisionRecord; (2) AI cost governance policy; (3) S13-00 Business Process Repository.
 - Refs: ADR-040; ADR-039; operator-canon-2026-05.md; software-factory-canon-v1.md; UNIVERSAL-CANON-FACTORY-ROLLOUT-CONSUMER-2026-06-06.md (House rule 13); CLAUDE.md §10/§11.
+
+## IL-123-DECISION-LINEAGE-SCHEMA-2026-06-07
+- Date: 2026-06-07 CEST
+- Phase (GSD): SPEC/DESIGN — durable governance artefact (CONCEPT / SCHEMA ONLY; no migrations, no DDL execution, no agent code).
+- Type: governance-ADR (docs-only; no code, no production zones; no KYC/Notification/CRM).
+- Status: Proposed (first of the three future ADRs named in ADR-045 §D7).
+- Scope: BANXE-only.
+- Decision: define the canonical, ClickHouse-storable `AgentDecisionRecord` schema/contract capturing every consequential L2 agent decision for FCA/DORA 2026 agentic-AI auditability — decision lineage is the first artefact an FCA audit of agent transactions checks. Fields (≥): record_id, timestamp, agent_id, triggering_event, intent, policies_evaluated[], compliance_result, reasoning_summary, confidence_score (HITL-aligned), action_taken, human_reviewed_by (nullable HITL), correlation_id, immutable_storage_ref. Stored append-only/immutable in the ClickHouse audit trail, correlated with guardian_audit_events and bound to ADR-027 durability/tamper-evidence. Lineage via correlation_id + triggering_event (optional parent_record_id deferred as additive). Emitting a record is a precondition for an L2 action of consequence to be considered complete (binds to ADR-045 L3 enforcement plane). Schema-only: implementation (DDL, ingestion, instrumentation) deferred to a factory-produced sprint.
+- Form chosen: standalone ADR (PROPOSED) — closes ADR-045 §D7.1 gap only.
+- Artifacts: docs/adr/ADR-046-decision-lineage-schema.md (new); docs/adr/INDEX.md (ADR-046 registered, ADR-047..073 now the free block); INSTRUCTION-LEDGER.md (this anchor, append-only).
+- Sibling future ADRs still PENDING (ADR-045 §D7): (D7.2) AI cost governance policy; (D7.3) S13-00 Business Process Repository.
+- Refs: ADR-045 (§D2 L3 Governance, §D7.1 names this ADR); ADR-027 (audit-trail durability); ADR-025; ADR-016 (PII/AML routing for reasoning_summary); ADR-040; R-COMP-FCA-02; .claude/rules/agents.md (HITL AUTO/REVIEW/BLOCK); docs/runbooks/hitl-decision-recording.md; CLAUDE.md §10/§11.
