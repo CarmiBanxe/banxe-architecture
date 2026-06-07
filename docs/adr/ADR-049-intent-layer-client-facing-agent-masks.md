@@ -1,8 +1,9 @@
 ---
 id: ADR-049
 title: Intent Layer & Client-Facing Agent Masks (L1 specification & the L1→L2 client surface) for EMI BANXE AI BANK
-status: PROPOSED
+status: ACCEPTED
 date: 2026-06-07
+accepted: 2026-06-07
 supersedes: []
 related:
   - "ADR-045-intent-first-banking-architecture.md (Intent-First Banking — defines L1 Intent Layer & the four-layer model; this ADR specifies HOW L1 intents surface as governed L2 agent actions)"

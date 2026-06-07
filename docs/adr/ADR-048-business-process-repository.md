@@ -1,8 +1,9 @@
 ---
 id: ADR-048
 title: S13-00 Business Process Repository (canonize banxe-business-processes) for EMI BANXE AI BANK
-status: PROPOSED
+status: ACCEPTED
 date: 2026-06-07
+accepted: 2026-06-07
 supersedes: []
 related:
   - "ADR-045-intent-first-banking-architecture.md (Intent-First Banking — L1→L2 translation & L4 Data/Intelligence; names this as future ADR D7.3)"
