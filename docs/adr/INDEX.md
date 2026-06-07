@@ -81,10 +81,10 @@ and is now 4 (placeholder-only).
 | ADR-043 | Aider/Continue Routes — `ai` / `ai-heavy` / `reasoning`                                              | Accepted | 2026-05-03 | [./ADR-043-aider-routes.md](./ADR-043-aider-routes.md) |
 | ADR-044 | AI Pool Roadmap 2026-05-11                                                                           | Proposed | —          | [./ADR-044-ai-pool-roadmap-2026-05-11.md](./ADR-044-ai-pool-roadmap-2026-05-11.md) |
 | ADR-045 | Intent-First Banking Architecture for EMI BANXE AI BANK                                              | Accepted | 2026-06-07 | [./ADR-045-intent-first-banking-architecture.md](./ADR-045-intent-first-banking-architecture.md) |
-| ADR-046 | Decision Lineage Schema (AgentDecisionRecord) for EMI BANXE AI BANK                                  | Proposed | 2026-06-07 | [./ADR-046-decision-lineage-schema.md](./ADR-046-decision-lineage-schema.md) |
-| ADR-047 | AI Cost Governance Policy (per-agent budgets & cost caps) for EMI BANXE AI BANK                      | Proposed | 2026-06-07 | [./ADR-047-ai-cost-governance-policy.md](./ADR-047-ai-cost-governance-policy.md) |
-| ADR-048 | S13-00 Business Process Repository (canonize banxe-business-processes) for EMI BANXE AI BANK         | Proposed | 2026-06-07 | [./ADR-048-business-process-repository.md](./ADR-048-business-process-repository.md) |
-| ADR-049 | Intent Layer & Client-Facing Agent Masks (L1 spec & the L1→L2 client surface) for EMI BANXE AI BANK   | Proposed | 2026-06-07 | [./ADR-049-intent-layer-client-facing-agent-masks.md](./ADR-049-intent-layer-client-facing-agent-masks.md) |
+| ADR-046 | Decision Lineage Schema (AgentDecisionRecord) for EMI BANXE AI BANK                                  | Accepted | 2026-06-07 | [./ADR-046-decision-lineage-schema.md](./ADR-046-decision-lineage-schema.md) |
+| ADR-047 | AI Cost Governance Policy (per-agent budgets & cost caps) for EMI BANXE AI BANK                      | Accepted | 2026-06-07 | [./ADR-047-ai-cost-governance-policy.md](./ADR-047-ai-cost-governance-policy.md) |
+| ADR-048 | S13-00 Business Process Repository (canonize banxe-business-processes) for EMI BANXE AI BANK         | Accepted | 2026-06-07 | [./ADR-048-business-process-repository.md](./ADR-048-business-process-repository.md) |
+| ADR-049 | Intent Layer & Client-Facing Agent Masks (L1 spec & the L1→L2 client surface) for EMI BANXE AI BANK   | Accepted | 2026-06-07 | [./ADR-049-intent-layer-client-facing-agent-masks.md](./ADR-049-intent-layer-client-facing-agent-masks.md) |
 
 ## MISSING / unassigned ADR numbers
 
@@ -95,10 +95,10 @@ and is now 4 (placeholder-only).
 | ADR-031          | UNASSIGNED — no file in either catalogue.                                |
 | ADR-037          | UNASSIGNED — free for next factory or product ADR.                       |
 | ADR-045          | Intent-First Banking Architecture for EMI BANXE AI BANK (ACCEPTED 2026-06-07; docs/adr/). |
-| ADR-046          | Decision Lineage Schema (AgentDecisionRecord) (PROPOSED 2026-06-07; docs/adr/; ADR-045 §D7.1). |
-| ADR-047          | AI Cost Governance Policy (per-agent budgets & cost caps) (PROPOSED 2026-06-07; docs/adr/; ADR-045 §D7.2). |
-| ADR-048          | S13-00 Business Process Repository — canonize banxe-business-processes (PROPOSED 2026-06-07; docs/adr/; ADR-045 §D7.3 — final §D7 sibling; §D7 backlog now CLOSED). |
-| ADR-049          | Intent Layer & Client-Facing Agent Masks (PROPOSED 2026-06-07; docs/adr/; specifies ADR-045 L1 + the L1→L2 client surface; NOT a §D7 sibling). |
+| ADR-046          | Decision Lineage Schema (AgentDecisionRecord) (ACCEPTED 2026-06-07; docs/adr/; ADR-045 §D7.1). |
+| ADR-047          | AI Cost Governance Policy (per-agent budgets & cost caps) (ACCEPTED 2026-06-07; docs/adr/; ADR-045 §D7.2). |
+| ADR-048          | S13-00 Business Process Repository — canonize banxe-business-processes (ACCEPTED 2026-06-07; docs/adr/; ADR-045 §D7.3 — final §D7 sibling; §D7 backlog now CLOSED). |
+| ADR-049          | Intent Layer & Client-Facing Agent Masks (ACCEPTED 2026-06-07; docs/adr/; specifies ADR-045 L1 + the L1→L2 client surface; NOT a §D7 sibling). |
 | ADR-050..073     | UNASSIGNED block — 24 free numbers between docs/adr/ and Ghost-Mode set. |
 | ADR-077          | Guardian -> GitHub webhook auth: GitHub App vs PAT (ACCEPTED 2026-05-22, App default).
 | ADR-078+         | UNASSIGNED — next free after ADR-077 (Guardian webhook auth).                     |

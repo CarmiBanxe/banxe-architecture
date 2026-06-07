@@ -1,8 +1,9 @@
 ---
 id: ADR-047
 title: AI Cost Governance Policy (per-agent budgets & cost caps) for EMI BANXE AI BANK
-status: PROPOSED
+status: ACCEPTED
 date: 2026-06-07
+accepted: 2026-06-07
 supersedes: []
 related:
   - "ADR-045-intent-first-banking-architecture.md (Intent-First Banking — L3 Governance layer; names this as future ADR D7.2)"
