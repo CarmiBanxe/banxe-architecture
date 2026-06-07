@@ -1,6 +1,6 @@
 # ADR-051 — Coding Execution Decision (Claude vs Local)
 
-**Status:** Proposed (awaiting operator sanction) **Date:** 2026-06-07 **Authors:** Perplexity Factory Terminal **Invariants:** I-28, I-71, I-74, I-75, I-76 **Amendments:** TBD
+**Status:** Accepted (operator sanction 2026-06-07, P0-A hybrid) **Date:** 2026-06-07 **Authors:** Perplexity Factory Terminal **Invariants:** I-28, I-71, I-74, I-75, I-76 **Amendments:** ADR-044 (coding-primary clause) — see IL-131
 
 ## Context
 Аудит Central (2026-06-07) выявил архитектурный дрейф: фабрика (spec-build.sh) вызывает `claude --` (Anthropic) напрямую, в обход LiteLLM-шва (§1.bis). Local coding-стек (Legion qwen2.5-coder 14B/7B; evo qwen3-coder-next:q4_K_M 51.7GB) простаивает. Это противоречит ADR-044 (Anthropic = fallback, primary = evo) и ADR-047 (cost-governance).
@@ -25,3 +25,8 @@
 
 ## Consequences
 После санкции — amendment к ADR-044 + обновление spec-build routing. До санкции — статус Proposed, ремонт P0-B/P1 подготавливает инфраструктуру для обеих опций.
+
+
+## Sanctioned Decision (operator, 2026-06-07)
+
+**P0-A hybrid is ACCEPTED:** Option A (local-first via LiteLLM) for regulated workloads (KYC/AML/transactions) to satisfy data-residency; Claude permitted only for non-regulated development and as fallback. Local Legion/evo coder-stack is retained, not retired. This supersedes the pure Option A/Option B alternatives. Implementation lands via ADR-044 amendment and `spec-build` routing update (zone Terminal A). Ledger: IL-131.
