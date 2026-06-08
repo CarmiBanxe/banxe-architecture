@@ -10823,3 +10823,22 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Нет. Номер IL-160 = genuine next free (max=159, подтверждён IL-159).
 - **Blocker:** guardian-ledger / Ledger-coupling gate (ADR-056) упал: PR менял отслеживаемые пути без нового ### IL-NNN блока. Решение: добавлен блок IL-160 в INSTRUCTION-LEDGER.md.
 - **Refs:** ADR-059, ADR-056, IL-159.
+
+
+---
+
+### IL-161 — ADR-059 append-serialization (Sprint 2: генератор INSTRUCTION-LEDGER.md)
+
+- **Источник:** CEO
+- **Дата:** 2026-06-08T20:30:00Z
+- **Инструкция:** Реализовать Sprint 2 ADR-059: генератор, детерминированно собирающий INSTRUCTION-LEDGER.md из пошардовых записей, и CI build step.
+- **Шаги:**
+  1. Создать `ledger/build_ledger.py`: читает `ledger/entries/**/IL-*.md`, парсит YAML front-matter (il_ts, session_id, source, status), сортирует (il_ts → session_id → path), присваивает IL-NNN детерминированно.
+  2. Режим `--check`: сверяет текущий файл с пересборкой (generated==rebuild).
+  3. Добавить workflow `.github/workflows/ledger-build.yml` — запуск генератора в check-only режиме.
+  4. Открыть PR S2 и провести через guardian-гейты.
+- **Статус:** DONE ✅ (генератор + check-only CI; усиление guardian append-only/generated==rebuild — S3, отдельный IL)
+- **Proof:** ветка `feat/adr-059-s2-ledger-generator` (2 коммита: build_ledger.py + ledger-build.yml); PR S2 открывается.
+- **Deviation:** Генератор в S2 работает только в режиме --check (не перезаписывает INSTRUCTION-LEDGER.md), чтобы не конфликтовать с ledger-append-only (ADR-057). Замена gate-логики на generated==rebuild — в S3.
+- **Blocker:** Нет. (Открытый follow-up: guardian.yml ADR-056/ADR-057 всё ещё требуют ручной IL-блок в монолите; перевод на shard-распознавание — S3.)
+- **Refs:** ADR-059, ADR-056, ADR-057, IL-159, IL-160.
