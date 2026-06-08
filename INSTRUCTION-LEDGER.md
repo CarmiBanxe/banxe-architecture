@@ -10921,3 +10921,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Blocker:** Нет (для Central-reachable scope). Live-activation gaps #1/#2/#4/#7/#8 hard-gated on Terminal-A infra (§D6 / audit S1).
 - **Open low-priority follow-ups tracked:** `process_ref` schema duplicate consolidation (IL-159); cross-repo `AgentDecisionRecord` validation in code-repo CI (IL-164); ADR-049 status-hygiene (frontmatter ACCEPTED vs body PROPOSED, IL-152).
 - **Refs:** IL-152 (Intent-First conformity audit + roadmap), IL-155 (gap #10 missing-await), IL-156 (gap #5 S2 schemas), IL-159 (gap #3 BPR resolvable + process_ref dup follow-up), IL-164 (canon-rec E guardian-schemas gate + cross-repo follow-up); ADR-049 §D6 (LLM-orchestration precondition); ADR-056 (ledger-coupling gate); ADR-057 (ledger append-only); ADR-059 (shard serialization — S4, shards still empty).
+
+---
+
+### IL-166: Intent-First repo audit matrix — machine-readable companion to IL-152
+- **Date:** 2026-06-09
+- **Source:** CEO / factory orchestration. Records a new canonical, machine-readable conformity matrix that complements (does NOT duplicate) the IL-152 detailed conformity audit. Where IL-152 (`docs/audit/intent-first-conformity-audit-2026-06-08.md`) is the prose A–E audit of 8 repos, this matrix is the deterministic 11-repo grid: every row's `audit_status`/`next_sprint` is computed by fixed rules from verified diagnostic facts (`repo_status`/`concept_docs`/`code_markers`/`process_linkage`) — no inference, no invented repo state.
+- **Artifact:** `docs/audit/INTENT-FIRST-REPO-AUDIT-MATRIX-2026-06-09.md` (NEW). Header carries a one-line cross-reference to the IL-152 audit as its companion.
+- **Derivation rules (deterministic):** ALIGNED = concept_docs∧code_markers∧process_linkage; PARTIAL = concept_docs∧code_markers∧¬process_linkage; GAP = anything else with repo_status≠MISSING; MISSING = repo_status=MISSING. `next_sprint` maps 1:1 from `audit_status` (protect-and-reuse / add-process-linkage / concept-bootstrap / restore-clone).
+- **Result (11 repos):**
+  - **ALIGNED (2):** banxe-architecture, banxe-business-processes — concept docs + code markers + process linkage all present → protect and reuse.
+  - **PARTIAL (2):** banxe-payment-core, banxe-emi-stack — concept_docs + code_markers present but `process_linkage=NO` → add process linkage.
+  - **GAP (6):** banxe-platform, banxe-ui, banxe-ai-infrastructure, banxe-monitoring, banxe-infra, banxe-lexisnexis-distro — no concept docs/markers → concept bootstrap.
+  - **MISSING (1):** banxe-collaboration — repo_status=MISSING → restore local clone / verify repo existence.
+- **Status:** DONE ✅ (matrix authored, deterministic-derivation documented, cross-referenced as companion to IL-152).
+- **Proof:** `docs/audit/INTENT-FIRST-REPO-AUDIT-MATRIX-2026-06-09.md` (matrix + derivation rules + observed constraints), this IL-166 block. Companion-not-duplicate: IL-152 audit is prose A–E over 8 repos; this is the deterministic 11-repo machine-readable grid — distinct artifacts, distinct method.
+- **Deviation:** Governance doc only — no code, no ADR bodies, no project-code repos touched. Isolated git worktree from origin/main (parallel-session-isolation canon). IL-165 был высшим на origin/main → genuine next free = **IL-166**. Ledger shards остаются пусты (ADR-059 S4 backfill вне скоупа): append к монолиту INSTRUCTION-LEDGER.md сохраняет `build_ledger.py --check` vacuously-OK и удовлетворяет guardian-ledger (ADR-056) / ledger-append-only (ADR-057), как в IL-164/IL-165.
+- **Blocker:** Нет.
+- **Refs:** IL-152 (Intent-First conformity audit — companion prose audit); ADR-045–049 + INTENT-FIRST-CANON-2026-06-07 (concept baseline the matrix scores against); ADR-056 (ledger-coupling gate); ADR-057 (ledger append-only); ADR-059 (shard serialization — S4, shards still empty).
