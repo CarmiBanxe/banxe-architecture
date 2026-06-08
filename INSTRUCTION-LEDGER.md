@@ -10537,3 +10537,19 @@ Self-audit note
 - **Deviation:** PR #367 authored its block as IL-146 and Status PARTIALLY-RESOLVED (non-canonical lifecycle value); that ledger block did not reach origin/main. This entry restores canon: number IL-145 (next free) and Status IN_PROGRESS (gate IL-136 still OPEN). No prior entry rewritten (append-only).
 - **IL-number note:** origin/main highest prior entry block = IL-144; IL-145 is the next genuinely free number (0 tree-wide references to IL-145 confirmed); IL-146 was held by parallel branch PR #367.
 - **Refs:** IL-136 (original crypto-ops factory request, BLOCKED); ADR-050 (Option B delivery model); I-28 (100% traceability, fabrication prohibited).
+
+
+---
+
+### IL-147: Trading Frontend product contour open (Sprint 1 + Sprint 2)
+- **Источник:** CEO / factory orchestration (2026-06-08 CEST)
+- **Инструкция:** Формально открыть продуктовый контур EMI BANXE AI BANK Trading Frontend и подготовить migration baseline легаси-фронта.
+- **Scope:** BANXE-only. Gating: доки-only, AGENT_ROUTING_ENABLED не затрагивается.
+- **Шаги:**
+  1. Sprint 1 — артефакт SPEC-trading-frontend.md: target product = EMI BANXE AI BANK Trading Frontend; target arch = custom React/Next.js shell + composable DeFi stack; banxe-trade-view* — только discovery/реюз; vendored charting_library/** = OUT (подлежит замене). -> DRAFT
+  2. Sprint 2 — артефакт dependency-map-trading-frontend.md: read-only audit legacy frontend из banxe.rar (routes/screens/order-flow/balances/market-data/auth/ws-API/widget-composition); классификация reuse/refactor/rewrite/drop + charting-replacement блок. -> DRAFT
+  3. Discovery: banxe-trade-view* git-репо НЕ НАЙДЕНО (32 репо CarmiBanxe); ближайшие: banxe-ui, factory/ui-sync-core. Трактуется как source-archive (banxe.rar).
+  4. PR #21 (factory P1 onboarding) включён в dependency-map как infra-зависимость (CI/CD pipeline для нового фронта). Verdict: refactor + unblock. Blocked by Guardian (F1-prompt-canon / F4-no-offhand / F7-factory-baseline-locked) + 6 CodeRabbit findings.
+- **Статус:** PROPOSED (контур открыт; оба артефакта — DRAFT, факты dependency-map требуют распаковки banxe.rar)
+- **Deviation:** banxe-trade-view* как git-репо отсутствует — во избежание фабрикации (I-28) источник зафиксирован как source-archive.
+- **Refs:** SPEC-trading-frontend.md, dependency-map-trading-frontend.md, PR #21, ADR-049, ADR-053, ADR-031, IL-145, banxe-ui, factory.
