@@ -10860,3 +10860,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Нет. IL-162 = genuine next free (max=161, подтверждён IL-161).
 - **Blocker:** Нет. (Закрывает follow-up из IL-161: guardian теперь распознаёт шарды; перевод монолита на shard-источник — S4.)
 - **Refs:** ADR-059, ADR-056, ADR-057, IL-159, IL-160, IL-161.
+
+---
+
+### IL-163 — ADR-059 S4 cutover (READ-ONLY реестр; новые записи только в шарды)
+
+- **Источник:** CEO
+- **Дата:** 2026-06-08T21:30:00Z
+- **Инструкция:** Завершить ADR-059 (Sprint S4): перевести ADR в Accepted, зафиксировать `INSTRUCTION-LEDGER.md` как GENERATED read-only артефакт, перевести все НОВЫЕ записи на per-session шарды.
+- **Шаги:**
+  1. ADR-059 `Status: Proposed → Accepted` + раздел Cutover (S4).
+  2. Добавить `ledger/SHARD-WORKFLOW.md` — how-to «новые записи → только шарды».
+  3. Выбран подход «freeze + forward» (Вариант A): IL-001..IL-162 — замороженный архив, не мигрируются (риск детерминированной перенумерации IL-NNN и порчи исторических ссылок).
+  4. Открыть PR S4 и провести через guardian-гейты.
+- **Статус:** DONE ✅ (ADR-059 Accepted; cutover выполнен)
+- **Proof:** ветка `feat/adr-059-s4-cutover`; коммиты: ADR-059→Accepted + SHARD-WORKFLOW.md + этот IL-163; guardian-гейты зелёные.
+- **Deviation:** Нет. Шапка монолита не редактировалась (ADR-057 append-only); read-only-статус зафиксирован здесь и в ADR/README. IL-163 = genuine next free (max=162, подтверждён IL-162).
+- **Blocker:** Нет. (Полный backfill IL-001..IL-162 в шарды — отдельная задача вне скоупа S4: требует заморозки mapping IL→shard и локального прогона --check.)
+- **Refs:** ADR-059, ADR-056, ADR-057, IL-159, IL-160, IL-161, IL-162.
