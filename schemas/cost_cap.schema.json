@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://banxe.internal/schemas/cost_cap.schema.json",
+  "title": "BANXE CostCap (AI Cost Governance)",
+  "description": "Executable contract for the AI cost-governance CostCap configuration (ADR-047 AI Cost Governance Policy). Validates the HARD caps on two axes — per-request and per-time-window — each expressed in BOTH a token dimension and a monetary (cost) dimension, so neither a cheap-but-infinite loop nor one expensive call escapes (ADR-047 D2). Caps are HARD: a breach blocks/halts, it does not merely warn (CLAUDE.md §11). Config-over-hardcoding (CLAUDE.md §10): the VALUES live in repo config as data validated by this schema, never in code or in the ADR. The unit of cost governance is the agent passport (ADR-047 D1) — `per_agent_budget` maps each agent_id to its CostCap; budget magnitude scales with the passport risk_ceiling. All monetary values are DECIMAL STRINGS, never floats (CLAUDE.md money rule). R-SEC: this is a config artefact — it MUST NOT carry secrets, API keys, or LiteLLM credentials; the gateway key/route material lives in the LiteLLM config, not here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["caps"],
+
+  "$defs": {
+    "decimalString": {
+      "type": "string",
+      "pattern": "^-?\\d+(\\.\\d+)?$",
+      "description": "Monetary amount as a decimal string — never a float (CLAUDE.md money rule)."
+    },
+    "costCap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_request_tokens",
+        "max_request_cost",
+        "max_window_tokens",
+        "max_window_cost"
+      ],
+      "properties": {
+        "max_request_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "ADR-047 D2 per-request cap (token dimension). Max tokens (in+out) for a single agent invocation/decision. A request that would exceed this is REFUSED at the LiteLLM gateway before completion. Bounds the blast radius of one runaway call."
+        },
+        "max_request_cost": {
+          "$ref": "#/$defs/decimalString",
+          "description": "ADR-047 D2 per-request cap (monetary dimension), decimal string. Max cost of a single inference request; exceeding it is refused at the gateway."
+        },
+        "max_window_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "ADR-047 D2 per-window cap (token dimension). Max tokens for one agent over a rolling time window. Breach trips the circuit-breaker (ADR-047 D3) and escalation (D4)."
+        },
+        "max_window_cost": {
+          "$ref": "#/$defs/decimalString",
+          "description": "ADR-047 D2 per-window cap (monetary dimension), decimal string. The agent's monetary budget over the window; breach trips the circuit-breaker and HITL escalation."
+        },
+        "window": {
+          "type": "string",
+          "pattern": "^\\d+[smhd]$",
+          "description": "OPTIONAL rolling window length as config-as-data (e.g. 1m, 1h, 1d) over which max_window_* applies (ADR-047 D2 — windows are config-as-data). Omitted = the deployment default window."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$",
+          "description": "OPTIONAL ISO-4217 currency of the *_cost decimal strings (e.g. GBP, USD). Omitted = the config-as-data reporting-currency default (ADR-047 cost_currency)."
+        },
+        "soft_band_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0,
+          "description": "OPTIONAL fraction of a window cap at which budget_breach_flag=WARN is raised before the hard BREACH (ADR-047 D5 WARN band). E.g. 0.8 = warn at 80% of the window budget."
+        }
+      }
+    }
+  },
+
+  "properties": {
+    "caps": {
+      "$ref": "#/$defs/costCap",
+      "description": "Default/global CostCap applied when an agent has no per-agent override. ADR-047 D2 hard caps on both axes."
+    },
+    "per_agent_budget": {
+      "type": "object",
+      "description": "ADR-047 D1 — the agent passport is the unit of cost governance. Maps each agent_id (snake_case, same id space as agent_passport.schema.json / .claude/rules/agents.md roster) to its CostCap. An agent with no budget here AND no `caps` default is, for governance purposes, ungoverned and MUST NOT be promoted past dev (ADR-047 D1 / CLAUDE.md §11).",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]{2,63}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/costCap"
+      }
+    }
+  }
+}

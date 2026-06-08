@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://banxe.internal/schemas/agent_decision_record.schema.json",
+  "title": "BANXE AgentDecisionRecord (Decision Lineage)",
+  "description": "Executable contract for the AgentDecisionRecord emitted by every consequential L2 agent decision (ADR-046 Decision Lineage Schema). Validates the ACTUAL record produced at runtime by the DecisionRecorder (_lineage.py is the field source of truth) — the atomic unit of decision lineage: one consequential decision -> one immutable record, keyed to a client intent and linkable via correlation_id. This schema validates the lineage records of ALL 9 client-facing agents (banxe-payment-core + banxe-emi-stack). RUNTIME-vs-SPEC NOTE: ADR-046 D2 prose marks `immutable_storage_ref` as NOT NULL (required); the code/runtime currently emits it as nullable (default null) because the DecisionRecorder ClickHouse immutable sink is NOT yet live (audit gap #4). This schema deliberately reflects RUNTIME reality (nullable) rather than the ADR target, with a documented path to the ADR-046 D2/D6 target: once the immutable sink is operational (Terminal-A / §D6), `immutable_storage_ref`, `input_tokens`, and `output_tokens` become REQUIRED and non-null and this schema MUST be tightened to match. R-SEC (MANDATORY): NO field of this record may contain secret material (API keys, tokens, credentials, private keys) or raw PII beyond the PII-minimized, regulator-legible summary permitted in `reasoning_summary` per ADR-016 routing. `reasoning_summary` is a durable rationale, NOT raw chain-of-thought and NOT a dump of client personal data.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "timestamp",
+    "agent_id",
+    "triggering_event",
+    "intent",
+    "policies_evaluated",
+    "compliance_result",
+    "reasoning_summary",
+    "confidence_score",
+    "action_taken",
+    "correlation_id",
+    "cost_tokens",
+    "cost_amount",
+    "budget_window_ref",
+    "budget_breach_flag"
+  ],
+
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Primary identity of this decision record (UUID/ULID). Globally unique, immutable, assigned at emit time (ADR-046 D2)."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Instant the decision was finalized by the agent. UTC, RFC 3339 / ISO-8601 date-time, millisecond precision (ADR-046 D2 DateTime64)."
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,63}$",
+      "description": "Canonical snake_case id of the deciding L2 agent (e.g. mlro_agent, aml_check_agent, sanctions_check_agent) per .claude/rules/agents.md roster. Same id space as agent_passport.schema.json agent_id."
+    },
+    "triggering_event": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What caused the decision — event type + reference (e.g. inbound payment id, KYC webhook id, intent submission id). Cross-links to the guardian_audit_events / source event (ADR-046 D2). NO secrets/PII (R-SEC)."
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The client intent this decision serves — natural-language intent text or a stable reference to the L1 Intent Layer intent record (ADR-045 L1). Anchors the decision to what the client asked for. PII-minimized (R-SEC / ADR-016)."
+    },
+    "policies_evaluated": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Ordered list of policy / rule / invariant identifiers evaluated for this decision (e.g. I-02, R-COMP-FCA-02, sanctions ruleset version, AML scenario ids). MAY be empty []; an empty array means no policy gate was applied, itself an auditable fact (ADR-046 D2)."
+    },
+    "compliance_result": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "ESCALATE", "N/A"],
+      "description": "Net compliance outcome of the evaluated policies for this decision (ADR-046 D2)."
+    },
+    "reasoning_summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Concise, human-legible, regulator-facing summary of WHY the agent decided as it did. PII-minimized per ADR-016. NOT raw chain-of-thought, NOT secret material (R-SEC) — a durable, reviewable rationale."
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "The agent's confidence in the decision, on the HITL threshold scale of .claude/rules/agents.md: AUTO > 0.90 / REVIEW 0.70-0.90 / BLOCK < 0.70. Governs the human_reviewed_by obligation below (see allOf if/then)."
+    },
+    "action_taken": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The concrete action the agent took or proposed (e.g. APPROVE_PAYMENT, HOLD_FOR_REVIEW, FILE_SAR, REJECT_KYC) + reference to the executed operation if any (ADR-046 D2)."
+    },
+    "human_reviewed_by": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "HITL reviewer identity (MLRO / CEO / dublёr) when the decision was paused for REVIEW or BLOCK. NULL for AUTO (confidence > 0.90) decisions that required no human. MUST be non-null whenever confidence_score < 0.90 (REVIEW/BLOCK bands) — enforced by the allOf if/then below (ADR-046 D2 + .claude/rules/agents.md HITL thresholds)."
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Cross-cutting trace id tying this decision to the whole intent->execution->audit chain and to sibling records in the same flow. Same correlation_id family used by guardian_audit_events and the ClickHouse audit trail. Also the key per-window cost aggregation (ADR-047 D5) groups on."
+    },
+
+    "cost_tokens": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "ADR-047 D5 cost attribution (default-present). Total tokens (in+out) consumed by this decision's inference, metered at the LiteLLM gateway (ADR-043). Cost is a first-class lineage field, recorded on the same row, not a parallel store."
+    },
+    "cost_amount": {
+      "type": "string",
+      "pattern": "^-?\\d+(\\.\\d+)?$",
+      "description": "ADR-047 D5 (default-present). Monetary cost of the decision's inference, as a DECIMAL STRING — never a float (CLAUDE.md money rule). Reporting currency per config-as-data (ADR-047 cost_currency)."
+    },
+    "budget_window_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ADR-047 D5 (default-present). Reference to the per-window budget bucket this decision counted against (agent + window id). The per-window cap (ADR-047 D2) and circuit-breaker (D3) evaluate the aggregate keyed by this ref + correlation_id."
+    },
+    "budget_breach_flag": {
+      "type": "string",
+      "enum": ["NONE", "WARN", "BREACH"],
+      "description": "ADR-047 D5 (default-present). Whether this decision crossed a cap: NONE within budget, WARN within a configured soft band, BREACH over a hard cap (ADR-047 D2) — tied to the circuit-breaker trip (D3). Itself an auditable fact."
+    },
+
+    "immutable_storage_ref": {
+      "type": ["string", "null"],
+      "default": null,
+      "description": "ADR-046 D2 tamper-evidence anchor (ClickHouse part+offset / WORM object key / hash-chain anchor per ADR-027 durability). SPEC-vs-RUNTIME: ADR-046 prose marks this REQUIRED/NOT-NULL, but the runtime emits it nullable (default null) because the DecisionRecorder immutable ClickHouse sink is NOT yet live (audit gap #4). This schema reflects runtime reality. WHEN THE SINK LANDS (ADR-046 §D6 / Terminal-A): this becomes REQUIRED and non-null — tighten this schema then."
+    },
+    "input_tokens": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "default": null,
+      "description": "ADR-046 §D5 additive (currently OPTIONAL, nullable, default null). Input/prompt tokens consumed (ADR-047 cost_tokens_input). Becomes REQUIRED and non-null once the cost-metering sink is operational (ADR-046 §D6 / Terminal-A)."
+    },
+    "output_tokens": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "default": null,
+      "description": "ADR-046 §D5 additive (currently OPTIONAL, nullable, default null). Output/completion tokens generated (ADR-047 cost_tokens_output). Becomes REQUIRED and non-null once the cost-metering sink is operational (ADR-046 §D6 / Terminal-A)."
+    }
+  },
+
+  "allOf": [
+    {
+      "$comment": "ADR-046 D2 + HITL thresholds: a decision below the AUTO band (confidence_score < 0.90, i.e. REVIEW 0.70-0.90 or BLOCK < 0.70) MUST carry a non-null, non-empty human_reviewed_by.",
+      "if": {
+        "required": ["confidence_score"],
+        "properties": {
+          "confidence_score": { "exclusiveMaximum": 0.9 }
+        }
+      },
+      "then": {
+        "required": ["human_reviewed_by"],
+        "properties": {
+          "human_reviewed_by": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  ]
+}
