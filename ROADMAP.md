@@ -649,7 +649,7 @@ Tag after merge: `checkpoint-2026-05-09-incident-resolved`.
 - [x] F3.2 phase 3 prep (caller migration inventory) — DONE (PR #164)
 - [ ] F3.2 phase 3 execute — DEFERRED (operator approval matrix required)
 - [ ] F3.1 LiteLLM systemd unit — DEFERRED (operator design spec)
-- [ ] F3.3 Spec-First Auditor relocation — DEFERRED (operator decision)
+- [x] F3.3 Spec-First Auditor relocation — DONE 2026-06-08 (canon update, no relocation; auditor canonical at agents/passports/spec_first_auditor.yaml, status ACTIVE; IL-153)
 
 ### Cumulative session state
 - 9 PRs merged on origin/main (633bb6a + 13d9d4d + 5279009 + 85d8582 + 5d495ae + fefcdd8 + 513229d + 20f6bcf + e9a10ed)
