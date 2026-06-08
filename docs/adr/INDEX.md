@@ -12,14 +12,21 @@ Client-Facing Agent Masks, 2026-06-07, the L1 + L1→L2 client-surface spec of A
 
 This index covers BOTH ADR catalogues. After Sprint D3.2d.1 collision renumber,
 the two catalogues are non-colliding: `decisions/` holds ADR-001..035, ADR-036,
-ADR-038, ADR-074..077 (38 files); `docs/adr/` holds ADR-039..053 (15 files;
+ADR-038, ADR-074..077 (38 files); `docs/adr/` holds ADR-039..055 (17 files;
 factory / agent governance scope). Numbers ADR-021, ADR-023, ADR-031, ADR-037,
-ADR-054..073, ADR-078+ are unassigned (see §"MISSING / unassigned").
+ADR-056..073, ADR-078+ are unassigned (see §"MISSING / unassigned").
 Correction (2026-06-08, IL-137): the prior free-block line read "ADR-050..073
 unassigned (24 free)", but ADR-050 (Crypto-Ops Subgroup Delivery Model),
 ADR-051 (Coding Execution Decision) and ADR-052 (Canon Enforcement Runtime)
 were authored by parallel sessions and ADR-053 is added here — so the real
-free block is **ADR-054..073 (20 numbers)**.
+free block was ADR-054..073 (20 numbers).
+Update (2026-06-08, IL-141): ADR-054 (Analytics / Reporting Client-Facing Mask
+C7, extends ADR-049 via ADR-053) is added here — so the real free block is now
+**ADR-055..073 (19 numbers)**.
+Update (2026-06-08, IL-143): ADR-055 (Statements Client-Facing Mask, extends
+ADR-049 via ADR-053; third extended-catalogue entry after Cards C22 and
+Analytics C7; ADR-054 §D5 deferred Statements to it) is added here — so the real
+free block is now **ADR-056..073 (18 numbers)**.
 
 Status values are parsed verbatim from each ADR's `**Status:**` line. Where no
 `**Status:**` line exists at the top of the file, the row shows `UNKNOWN` and
@@ -75,7 +82,7 @@ and is now 4 (placeholder-only).
 | ADR-076 | RAILGUN Integration Decision Gate                                                                    | PENDING LEGAL REVIEW                            | —          | [decisions/ADR-076-railgun-integration-decision-gate.md](../../decisions/ADR-076-railgun-integration-decision-gate.md) |
 | ADR-077 | Guardian -> GitHub webhook auth: GitHub App vs PAT | ACCEPTED | 2026-05-22 | [decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md](../../decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md) |
 
-## Real ADR files in `docs/adr/` (factory governance, 15 files)
+## Real ADR files in `docs/adr/` (factory governance, 17 files)
 
 | Number  | Title                                                                                              | Status   | Date       | Path |
 |---------|----------------------------------------------------------------------------------------------------|----------|------------|------|
@@ -94,6 +101,8 @@ and is now 4 (placeholder-only).
 | ADR-051 | Coding Execution Decision (Claude vs Local)                                                         | Accepted | 2026-06-07 | [./ADR-051-coding-execution-decision.md](./ADR-051-coding-execution-decision.md) |
 | ADR-052 | Canon Enforcement Runtime                                                                           | Accepted | 2026-06-07 | [./ADR-052-canon-enforcement-runtime.md](./ADR-052-canon-enforcement-runtime.md) |
 | ADR-053 | Client-Facing Mask Catalogue Extensibility & the Mask↔Domain-Agent Governance Boundary (extends ADR-049) | Proposed | 2026-06-08 | [./ADR-053-client-facing-mask-extensibility-and-domain-agent-boundary.md](./ADR-053-client-facing-mask-extensibility-and-domain-agent-boundary.md) |
+| ADR-054 | Analytics / Reporting Client-Facing Mask (C7) — second extended-catalogue entry (extends ADR-049 via ADR-053) | Proposed | 2026-06-08 | [./ADR-054-analytics-reporting-client-facing-mask-c7.md](./ADR-054-analytics-reporting-client-facing-mask-c7.md) |
+| ADR-055 | Statements Client-Facing Mask — third extended-catalogue entry (extends ADR-049 via ADR-053) | Proposed | 2026-06-08 | [./ADR-055-statements-client-facing-mask.md](./ADR-055-statements-client-facing-mask.md) |
 
 ## MISSING / unassigned ADR numbers
 
@@ -112,7 +121,9 @@ and is now 4 (placeholder-only).
 | ADR-051          | Coding Execution Decision (Claude vs Local) (ACCEPTED 2026-06-07, P0-A hybrid; docs/adr/; IL-131). |
 | ADR-052          | Canon Enforcement Runtime (ACCEPTED 2026-06-07; docs/adr/; IL-131). |
 | ADR-053          | Client-Facing Mask Catalogue Extensibility & the Mask↔Domain-Agent Governance Boundary (PROPOSED 2026-06-08; docs/adr/; extends ADR-049; adds Cards C22 mask; IL-137). |
-| ADR-054..073     | UNASSIGNED block — 20 free numbers between docs/adr/ and Ghost-Mode set. |
+| ADR-054          | Analytics / Reporting Client-Facing Mask C7 (PROPOSED 2026-06-08; docs/adr/; extends ADR-049 via ADR-053; second extended-catalogue entry after Cards; reads AUTO-with-cap, export REVIEW, PII + data-egress gate; IL-141). |
+| ADR-055          | Statements Client-Facing Mask (PROPOSED 2026-06-08; docs/adr/; extends ADR-049 via ADR-053; third extended-catalogue entry after Cards C22 & Analytics C7; ADR-054 §D5 deferred Statements to it; read/generate AUTO-with-cap, external delivery REVIEW, PII + data-egress gate; statement_agent.py → StatementPort adapter, untouched; IL-143). |
+| ADR-056..073     | UNASSIGNED block — 18 free numbers between docs/adr/ and Ghost-Mode set. |
 | ADR-077          | Guardian -> GitHub webhook auth: GitHub App vs PAT (ACCEPTED 2026-05-22, App default).
 | ADR-078+         | UNASSIGNED — next free after ADR-077 (Guardian webhook auth).                     |
 
