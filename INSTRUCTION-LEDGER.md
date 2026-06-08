@@ -10427,3 +10427,24 @@ Self-audit note
 *   **Proof:** `docs/compliance/ai-data-flow.md` present on main; created by commit `1cc7cbb` (PR #189, ADR-035 session canon 2026-05-11); covers guardrail enforcement (`during_call`), block-list `/compliance/ /kyc/ /aml/ kyc_id aml_flag transaction_id iban national_id`, on-prem hard-rule (evo1/evo2).
 *   **Deviation:** Step 3 artifact pre-existed (ADR-035) but ADR-044 B3 gate was not formally closed in the register; IL-141 closes the traceability gap. Label IL-140 already reserved (Cards client-facing line), so IL-141 used to preserve append-only numbering.
 *   **Blocker:** None for B3. Remaining ADR-044 gates: B4 (Step 4 Redis cache config — artifact pending), B5 (Step 5 OfficeCLI install — artifact pending); Steps 8/9/10 remain T6 operator-gated.
+
+### IL-146: IL-136 crypto-ops orchestration — partial resolution
+- **Date:** 2026-06-08
+- **Source:** CEO / factory orchestration; browser-verified repo status (2026-06-08).
+- **Context:** IL-136 (crypto-ops factory request to Terminal B) requires 3 SPEC paths + repo path/SHA for crypto-ops-monitor, banxe-portfolio, banxe-news before spec-repo-map.tsv rows can be applied. This entry records partial resolution.
+- **Resolved:**
+  - crypto-ops-monitor: CarmiBanxe/crypto-ops-monitor EXISTS. main HEAD = `725dd0a` (PR #9 "feat(rpc): live Bitcoin mempool.space connector, Sprint 34/B4"). Real path and SHA verified in browser.
+  - 3 SPEC drafts generated as work-products:
+    - `docs/refactor/legacy/crypto-ops-monitor-CONTRACT-SPEC-DRAFT-2026-06-08.md` (monitor — domain boundary, RpcGateway contract, conformance requirements)
+    - `docs/refactor/legacy/banxe-portfolio-CONTRACT-SPEC-DRAFT-2026-06-08.md` (portfolio — Python FastAPI, Decimal-only, ADR-050 Q1/Q4 resolutions applied)
+    - `docs/refactor/legacy/banxe-news-CONTRACT-SPEC-DRAFT-2026-06-08.md` (news — FCA promotions compliance, ADR-050 Q3 resolution applied)
+  - All 3 drafts carry Status: DRAFT (not buildable; not gate-closing).
+- **Blocker (remaining):**
+  - banxe-portfolio: CarmiBanxe/banxe-portfolio returns 404 (repo does not exist as of 2026-06-08). Path/SHA NOT fabricated (I-28).
+  - banxe-news: CarmiBanxe/banxe-news returns 404 (repo does not exist as of 2026-06-08). Path/SHA NOT fabricated (I-28).
+  - Gate IL-136 remains OPEN for these 2 repos. Full resolution requires operator/Terminal B to create both repos and report commit SHA.
+- **Status:** PARTIALLY-RESOLVED (1 of 3 repos verified; 3 SPEC drafts delivered; 2 repos missing).
+- **Proof:** browser GET CarmiBanxe/crypto-ops-monitor → 200, HEAD 725dd0a; browser GET CarmiBanxe/banxe-portfolio → 404; browser GET CarmiBanxe/banxe-news → 404.
+- **Deviation:** none (honest traceability; no SHA fabrication for missing repos).
+- **IL-number note:** IL-142/143/144/145 occupied by parallel sessions. IL-146 is the genuine next free number (append-only, no collision; grep confirms 0 prior IL-146 references tree-wide).
+- **Refs:** IL-136 (original crypto-ops factory request, BLOCKED); ADR-050 (Option B delivery model); crypto-ops-subgroup-SPEC-2026-05-25.md (parent SPEC #7); I-28 (100% traceability, fabrication prohibited).
