@@ -10640,3 +10640,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** branch feat/adr-057-ledger-append-only; commits: ADR-057 add + guardian.yml 8463a83 (ledger-append-only job, 89 loc). PR + green guardian checks to be attached on open.
 - **Deviation:** нет.
 - **Blocker:** Required-status-check toggle в branch protection — операторское действие (вне прав сессии).
+
+### IL-151: Trading Frontend (IL-147 Sprint 1/2) — RESOLVED-BY-REUSE
+- **Источник:** CEO / factory orchestration (2026-06-08 CEST). Уточняет IL-147 (НЕ редактирует — ADR-057 immutability).
+- **Инструкция:** Закрыть Sprint 1 (SPEC) и Sprint 2 (dependency-map) Trading Frontend через РЕЮЗ существующих канонических артефактов вместо дублирующей генерации (канон «NEW drives legacy reuse», House rule 10).
+- **Scope:** governance docs-only. Gating: AGENT_ROUTING_ENABLED не затрагивается.
+- **Шаги:**
+  1. Discovery (read-only, вне фабрики): найдены существующие артефакты на origin/main, покрывающие оба спринта. -> DONE
+  2. Sprint 1 (SPEC) = docs/refactor/legacy/trading-ui-group-SPEC-2026-05-23.md (design baseline, Central authors / Terminal B impl). Target arch: banxe-trading-ui + banxe-trading-backend за ExchangePort (ADR-021), Tauri 2 (ADR-016). -> RESOLVED-BY-REUSE
+  3. Sprint 2 (dependency-map / read-only audit banxe.rar) = тот же SPEC + docs/sessions/SESSION-2026-05-06-BANXE-RAR-INVENTORY-PHASE3.md + docs/inventories/BANXE-RAR-CATEGORY-MAP-2026-05-06.md + BANXE-RAR-LISTING-2026-05-06.txt + BANXE-SCREEN-INVENTORY.md. Source: BANXE.RAR /home/banxe/banxe-rar-extracted/ on evo1 (100488 файлов, инвентарь закрыт). -> RESOLVED-BY-REUSE
+  4. Классификация legacy (из SPEC, verbatim verdicts): neuron-bitshares-ui -> EXTRACT-AND-DROP; fast-exchange -> TRANSFORM-INTO-PRIMARY-ADAPTER (drop GraphQL/ADR-019); banxe-trade-view -> DROP (abandoned skeleton); banxe-trade-view-new -> TRANSFORM-INTO-banxe-trading-ui. -> DONE
+  5. Charting replacement: BitShares vendored charting_library/** -> DROP; replace via TradingView lightweight-charts / OSS. -> DONE (per SPEC)
+  6. PR #21 (factory P1 onboarding) — infra-зависимость (CI/CD), verdict refactor+unblock, blocked Guardian F1/F4/F7 + 6 CodeRabbit. -> отдельный спринт.
+  7. Откат offhand: удалена offhand-строка spec-repo-map.tsv (trading-frontend->banxe-ui) и паттерн в spec-build.sh; ветка canon/spec-family-trading-frontend удалена; offhand SPEC (docs/spec-trading-frontend, 32c3e0d) НЕ мержится (дубль). -> DONE
+- **Статус:** RESOLVED-BY-REUSE (новые SPEC/dependency-map НЕ создавались — реюз существующих; дублирование запрещено каноном).
+- **Proof:** origin/main содержит trading-ui-group-SPEC-2026-05-23.md + exchangeport-CONTRACT-SPEC-2026-06-06.md + BANXE-RAR-* inventory (verified via git show origin/main, read-only).
+- **Deviation:** IL-147 описывал создание новых артефактов; по факту они уже существовали — Sprint 1/2 закрыты реюзом. banxe-trade-view* существует в BANXE.RAR (не git-репо CarmiBanxe) — ранняя пометка «не найден» относилась к git-org, скорректирована здесь.
+- **Blocker:** нет.
+- **Refs:** IL-147, trading-ui-group-SPEC-2026-05-23, exchangeport-CONTRACT-SPEC-2026-06-06, ADR-016, ADR-021, BANXE-RAR-INVENTORY-PHASE3, PR #21.
