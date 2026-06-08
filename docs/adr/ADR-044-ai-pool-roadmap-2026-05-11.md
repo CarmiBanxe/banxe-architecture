@@ -5,7 +5,7 @@
 **Accepted:** 2026-06-08
 **Authors:** Banxe Sub-terminal A
 **Invariants:** I-71, I-72, I-73, I-74
-**Amendments:** amendment-30.N, amendment-B.11.N+2, amendment-2026-06-07 (ADR-051 hybrid coding-primary + ADR-052 enforcement runtime; see IL-131)
+**Amendments:** amendment-30.N, amendment-B.11.N+2, amendment-2026-06-07 (ADR-051 hybrid coding-primary + ADR-052 enforcement runtime; see IL-131), amendment-2026-06-08 (Step 7 Q8_0→Q4_K_M retained; infeasible on evo2 RAM; see IL-138/IL-139)
 
 ---
 
@@ -32,7 +32,7 @@ PS25/12 (operational resilience / third-party risk).
 - OfficeCLI not yet installed on Legion
 - `docs/compliance/ai-data-flow.md` does not exist
 - No normalised runbook for Legion LLM setup
-- Qwen3:235b on evo2 runs at Q4_K_M; Q8_0 requantization not yet scheduled
+- Qwen3:235b on evo2 runs at Q4_K_M; Q8_0 requantization CANCELLED — infeasible on 128GB evo2 (see IL-138/IL-139, amendment-2026-06-08)
 - ZAYA1-8B and ZAYA1-74B evaluations pending
 
 ---
@@ -50,7 +50,7 @@ Ten-step roadmap executed sequentially. Each step is a separate atomic action
 | 4 | Redis cache integration in LiteLLM proxy on Legion | infra | Legion |
 | 5 | OfficeCLI install on Legion under `~/banxe-dev/office-workspace` | infra | Legion |
 | 6 | llm-router (LiteLLM proxy) install on Legion; evo1 priority-1, Anthropic fallback-only | infra | Legion |
-| 7 | Controlled requantization of `qwen3:235b` Q4_K_M → Q8_0 on evo2 | model-ops | evo2 |
+| 7 | Step CANCELLED — retain Q4_K_M on evo2; Q8_0 infeasible (Q4 already 142GB > 128GB RAM, no pool node fits, no Q8_0 manifest) — see IL-138/IL-139 | model-ops | evo2 |
 | 8 | `Qwen2.5-0.5B` fraud classifier deployment on evo2 | model-ops | evo2 |
 | 9 | ZAYA1-8B Final — evaluation run and results logged | eval | evo1/evo2 |
 | 10 | ZAYA1-74B Final — observation run under production conditions | eval | evo2 |
@@ -72,12 +72,12 @@ Steps 7–10 require explicit operator confirmation before execution.
 ### Performance
 - Step 4 (Redis cache in LiteLLM) reduces repeated prompt latency on Legion by
   serving cached responses; does not affect evo1/evo2 load.
-- Step 7 (Q8_0 requantization) increases model size ~2× but improves inference
+- Step 7 (Q8_0) WITHDRAWN: ~2× model size exceeds evo2 128GB RAM; quant target remains Q4_K_M (amendment-2026-06-08)
   accuracy for compliance-sensitive tasks; evo2 128GB RAM is sufficient.
 - Steps 9–10 (ZAYA1 evals) are read-only observations; no model weights modified.
 
 ### Ops risk
-- Step 7 requires evo2 maintenance window: model swap is not hot-swappable in Ollama.
+- Step 7 CANCELLED (see above); no maintenance window required. Historical note: model swap was not hot-swappable in Ollama.
   Rolling back means re-pulling Q4_K_M. Estimated downtime: 15–30 min.
 - Step 8 (fraud classifier) must not conflict with existing fraud scoring service
   on evo2. Requires port allocation review before deployment.
