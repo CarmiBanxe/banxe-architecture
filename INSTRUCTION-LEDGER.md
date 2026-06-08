@@ -10495,3 +10495,23 @@ Self-audit note
 - **Proof:** PR #362 merged (commit 453618a); guardian 7/7; SPEC SHA verified.
 - **Deviation:** IL number reassigned (132→141→144); no functional deviation.
 - **Blocker:** none.
+
+---
+
+## IL-145-CLIENT-FACING-EXTENSION-CAPABILITIES-MILESTONE-2026-06-08
+- Date: 2026-06-08 CEST
+- Phase (GSD): CLOSE — milestone anchor recording that three EXTENSION client-facing capabilities are delivered beyond ADR-049's initial 6 masks. Docs-only IL entry; no code/tests/ADR bodies touched by this entry.
+- Type: governance-MILESTONE (factory-delivered code + ADRs, recorded here; this entry itself is append-only governance).
+- Status: DONE.
+- Scope: BANXE-only.
+- Milestone: 3 extension client-facing capabilities delivered beyond ADR-049's initial 6 masks, all via the ADR-053 mask-extensibility mechanism + domain-agent-as-adapter-behind-port boundary. L2 client-facing agents now total 9 (6 initial + 3 extension).
+- Lines completed (each: ADR mask → CONTRACT port → client-facing agent, via the factory; the existing domain service-agent is wired behind the port as an adapter, UNTOUCHED):
+  * Cards (C22): ADR-053 + CardPort (banxe-emi-stack PR #155, e99614f) + CardsAgent (banxe-emi-stack PR #156, 82e9e99). Registered IL-140.
+  * Analytics / Reporting (C7): ADR-054 (#363) + AnalyticsPort (banxe-emi-stack PR #157, c1599be) + AnalyticsClientAgent (banxe-emi-stack PR #158, b18dd26). Registered IL-141.
+  * Statements: ADR-055 (#368) + StatementPort (banxe-emi-stack PR #159, bd75488) + StatementClientAgent (banxe-emi-stack PR #160, 914a165). Registered IL-143.
+- Common pattern (uniform across all 9): Payments/FXExchange/Wallet (banxe-payment-core) + KYC/Notification/CRM/Cards/Analytics/Statements (banxe-emi-stack) each enforce the ADR-049 §D2 gate chain; emit exactly one AgentDecisionRecord (ADR-046) per action; honour the ADR-047 cost-cap; inject the CONTRACT port + DecisionRecorder as interfaces (unit-testable without live infra); share the consolidated `_lineage` helper (DRY / IL-135); 100% module coverage. R-SEC: no secret material and no PII is ever written to lineage — test-proven.
+- Capability coverage now (client-facing-governed): C1/C2/C3/C4/C5/C6/C7/C9/C10/C22 + statements.
+- Remaining ~18 capabilities (savings, tariff C11, news C18, auth C19, account C20, KYB C24, FX-rate C25, EDD C28, settlements C29, support C30, etc.) are extensible via the same proven ADR-mask → port → agent path; further build is a PRODUCT-PRIORITY decision, NOT a technical gap.
+- GATED: live operation (AGENT_ROUTING_ENABLED) remains OFF — depends on Terminal-A LLM-orchestration infra per ADR-049 §D6. This milestone records L2 CODE + governance as complete and enforced, NOT live client exposure; no CONTRACT port is opened to clients by this entry.
+- Note on IL number: on origin/main IL-140 = Cards client-facing line, IL-141 = Analytics mask, IL-143 = Statements mask, IL-144 = crypto-exchange spec-repo-map; IL-142 (docs/il-142) and IL-146 (docs/il-146 crypto-ops) are held by parallel branches. IL-145 is the next genuinely free number (append-only, no collision; 0 tree-wide references to IL-145 on origin/main confirmed). Authored in an isolated git worktree off origin/main (parallel-session-isolation canon, Rule 6) so the parallel sessions' checkouts were left untouched.
+- Refs: ADR-049 (Intent Layer & Client-Facing Agent Masks — the 6 initial §D3 masks + §D2 chain + §D4 thresholds these extend; IL-126 SPEC, IL-132 L2 6/6 code-complete); ADR-053 (mask-extensibility D1 + mask↔domain-agent boundary D2 + add-a-capability path D3 — the mechanism all 3 lines apply); ADR-054 (Analytics / Reporting C7 mask); ADR-055 (Statements mask); ADR-046 (AgentDecisionRecord — one per action, every exit path); ADR-047 (cost caps + AUTO/REVIEW/BLOCK bands); ADR-048 (intent→process_ref resolution); ADR-040 (meta-plane — LLM-orchestration substrate L2 live operation is gated on, Terminal A); the 9 CONTRACT ports (WalletPort/PartnerPort/ExchangePort in banxe-payment-core + KYCProviderPort/NotificationProviderPort/CRMProviderPort + CardPort/AnalyticsPort/StatementPort in banxe-emi-stack); IL-132 (L2 6-mask milestone) + IL-135 (lineage/cost DRY consolidation) + IL-140 (Cards) + IL-141 (Analytics) + IL-143 (Statements); .claude/rules/agents.md (HITL bands; ARL AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §10/§11 (config-over-hardcoding; production-state mutation gate — code-complete, not a production green light).
