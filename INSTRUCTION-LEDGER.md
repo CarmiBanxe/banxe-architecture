@@ -10893,3 +10893,31 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Governance/CI only — no project-code repos, no ADR bodies touched. Isolated git worktree from origin/main (parallel-session-isolation canon). IL-163 был высшим на origin/main → genuine next free = **IL-164**. Ledger shards остаются пусты (ADR-059 S4 backfill вне скоупа), поэтому append к монолиту INSTRUCTION-LEDGER.md (а не shard) сохраняет `build_ledger.py --check` vacuously-OK и удовлетворяет ADR-056/ADR-057.
 - **Blocker:** Нет.
 - **Refs:** canon-rec E; IL-156 (S2 schemas authored); ADR-046/047/048 (lineage/cost/process artefacts); ADR-056 (ledger-coupling gate); ADR-057 (ledger append-only); ADR-059 (shard serialization — S4 cutover, shards still empty); `.github/workflows/guardian.yml` (sibling guardian jobs).
+
+---
+
+### IL-165: Central post-audit work-package CLOSED + honest Central reachability boundary
+- **Date:** 2026-06-09
+- **Source:** CEO / factory orchestration. Records, in one milestone block, that Central has driven to completion every Intent-First conformity-audit gap that is reachable WITHOUT the live LLM-orchestration infra — and states honestly which gaps Central CANNOT close without Terminal-A infra. Closes the "what is done vs what is still blocked" ambiguity left after IL-152..IL-164.
+- **Context:** Following the Intent-First conformity audit (IL-152, `docs/audit/intent-first-conformity-audit-2026-06-08.md`), Central drove — entirely via the factory — every audit gap reachable WITHOUT the live LLM-orchestration infra (ADR-049 §D6, Terminal-A zone).
+
+- **CLOSED by Central (no live-infra dependency):**
+  1. **gap #10 item 1 — missing-await bug class ERADICATED** across 3 httpx adapters (PR #15/#16; IL-155). Items 2/3 reclassified as enhancements, not bugs.
+  2. **gap #5 — governance prose-only → S2 executable JSON-Schemas** (`agent_decision_record` / `cost_cap` / `process_ref` + validator + examples; PR #383; IL-156).
+  3. **gap #3 — BPR not resolvable → S3 resolvable** (27-process registry + intent→process map, 9/9 client capabilities; banxe-business-processes PR #4; IL-159).
+  4. **canon-rec E (enforcement) — guardian-schemas CI hook** enforcing the S2 schemas on every PR (PR #392; IL-164). Schemas now machine-ENFORCED, not just validatable.
+
+- **CENTRAL REACHABILITY BOUNDARY (honest — what Central CANNOT close without Terminal-A infra):**
+  - **gap #1 — LLM-orchestration gateway (LiteLLM + Postgres) NOT deployed** = the hard §D6 precondition. Terminal-A (audit S1).
+  - **gap #4 — DecisionRecorder ClickHouse sink + ClickHouse not running.** Terminal-A (audit S4).
+  - **gap #8 — Intent-First observability** (lineage / cost / compliance dashboards). Terminal-A (audit S6).
+  - **gap #2 — L1 Intent classifier/router:** the DATA layer is now ready (BPR resolvable + schemas + intent-map), but the live router needs §D6. Terminal-A unblock → then Central-buildable.
+  - **gap #7 — chat-first UI (S7/S8):** needs agent HTTP endpoints which need §D6 routing.
+  - **AGENT_ROUTING_ENABLED remains OFF.**
+
+- **Status:** Intent-First **DESIGN + L2 CODE + GOVERNANCE-ENFORCEMENT phase COMPLETE** ✅ (9 ADRs, 9 ports, 9 client-facing agents, machine-enforced governance schemas, resolvable BPR). Next value step = **LIVE ACTIVATION**, hard-gated on Terminal-A infra (§D6 / S1). Central has no further audit gap buildable without that infra; standing by for either **(a)** Terminal-A infra readiness to build the L1 router / live-wire the sink, or **(b)** an operator product-priority for a further capability (the proven ADR-mask → port → agent path).
+- **Proof:** This IL-165 milestone block. Closed-gap proofs: IL-155 (PR #15/#16), IL-156 (PR #383), IL-159 (banxe-business-processes PR #4), IL-164 (PR #392). Audit baseline: `docs/audit/intent-first-conformity-audit-2026-06-08.md` (IL-152).
+- **Deviation:** Governance doc only — no code, no ADR bodies, no project-code repos touched. Isolated git worktree from origin/main (parallel-session-isolation canon). IL-164 был высшим на origin/main → genuine next free = **IL-165**. Ledger shards остаются пусты (ADR-059 S4 backfill вне скоупа): `build_ledger.py --check` остаётся vacuously-OK, поэтому append к монолиту (а не shard) удовлетворяет ledger-build / guardian-ledger-shards и ADR-056/ADR-057. Это согласуется с фактическим CI-green паттерном IL-156..IL-164. The task's literal "commit ONLY INSTRUCTION-LEDGER.md" instruction is honoured AND is, in the current transitional S4 state, the only path that passes all guardian gates (a shard add would break `--check` until the frozen archive is backfilled).
+- **Blocker:** Нет (для Central-reachable scope). Live-activation gaps #1/#2/#4/#7/#8 hard-gated on Terminal-A infra (§D6 / audit S1).
+- **Open low-priority follow-ups tracked:** `process_ref` schema duplicate consolidation (IL-159); cross-repo `AgentDecisionRecord` validation in code-repo CI (IL-164); ADR-049 status-hygiene (frontmatter ACCEPTED vs body PROPOSED, IL-152).
+- **Refs:** IL-152 (Intent-First conformity audit + roadmap), IL-155 (gap #10 missing-await), IL-156 (gap #5 S2 schemas), IL-159 (gap #3 BPR resolvable + process_ref dup follow-up), IL-164 (canon-rec E guardian-schemas gate + cross-repo follow-up); ADR-049 §D6 (LLM-orchestration precondition); ADR-056 (ledger-coupling gate); ADR-057 (ledger append-only); ADR-059 (shard serialization — S4, shards still empty).
