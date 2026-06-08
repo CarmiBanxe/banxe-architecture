@@ -10427,3 +10427,20 @@ Self-audit note
 *   **Proof:** `docs/compliance/ai-data-flow.md` present on main; created by commit `1cc7cbb` (PR #189, ADR-035 session canon 2026-05-11); covers guardrail enforcement (`during_call`), block-list `/compliance/ /kyc/ /aml/ kyc_id aml_flag transaction_id iban national_id`, on-prem hard-rule (evo1/evo2).
 *   **Deviation:** Step 3 artifact pre-existed (ADR-035) but ADR-044 B3 gate was not formally closed in the register; IL-141 closes the traceability gap. Label IL-140 already reserved (Cards client-facing line), so IL-141 used to preserve append-only numbering.
 *   **Blocker:** None for B3. Remaining ADR-044 gates: B4 (Step 4 Redis cache config — artifact pending), B5 (Step 5 OfficeCLI install — artifact pending); Steps 8/9/10 remain T6 operator-gated.
+
+
+---
+
+### IL-142: ADR-044 Steps 4 & 5 (B4, B5) — LiteLLM Redis cache + OfficeCLI registered DONE
+*   **Источник:** CEO / factory orchestration (2026-06-08).
+*   **Инструкция:** Close B4 (Step 4 Redis cache in LiteLLM proxy) and B5 (Step 5 OfficeCLI install) gates of ADR-044 by registering pre-existing config-as-code artifacts.
+*   **Шаги:**
+    1. Verify B4 artifact `docs/runbooks/legion-litellm-cache.md` on main → ✅
+    2. Verify B5 artifact `docs/runbooks/legion-officecli-setup.md` on main → ✅
+    3. Register both gates as DONE (append-only) → ✅
+*   **Статус:** DONE (B4 + B5).
+*   **Proof:**
+    - B4: `docs/runbooks/legion-litellm-cache.md`, commit `dd71184` (PR #193, ADR-035 part2). LiteLLM `:8080` wired to Redis on evo1 `100.68.102.48:6379`; `litellm_settings.cache: true`, `cache_params{type: redis, ttl: 3600}`; verification = repeat call shows `x-litellm-response-duration-ms < 1ms` (cache hit). Invariants I-24 (cache only, no audit data), I-27 (no autonomous flush).
+    - B5: `docs/runbooks/legion-officecli-setup.md`, commit `50d3ee9` (PR #197, ADR-035 part3). OfficeCLI v0.2.52 installed on Legion, workspace `~/banxe-dev/office-workspace`, `OFFICECLI_WORKSPACE` set in `~/.bashrc`; dev-only, sandboxed, no API key configured.
+*   **Deviation:** B4/B5 artifacts pre-existed (ADR-035 part2/part3) but ADR-044 gates B4/B5 were not formally closed in the register; IL-142 closes the traceability gap. Runtime re-confirmation (live cache-hit header / `officecli --version` on Legion) is a relay one-command check, deferred to operator if fresh proof is required.
+*   **Blocker:** None for B4/B5. Remaining ADR-044 gates: Steps 8/9/10 remain T6 production-only, operator-gated via relay (amendment-30.N / B.11.N+2).
