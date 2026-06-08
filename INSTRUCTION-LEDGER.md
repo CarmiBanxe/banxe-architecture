@@ -10786,3 +10786,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** governance doc only; no project-code repos touched from this entry. Во время rebase IL-158 оказался занят параллельной сессией (Two-Role Operating Playbook, запись выше) → наша запись перенумерована IL-158 → **IL-159** (genuine next free на origin/main, grep-confirmed max=158; IL-155 payment-core await fix, IL-156 S2 governance schemas, IL-157 Trading Frontend Sprint 3, IL-158 Two-Role Playbook — все заняты параллельными треками). Работа выполнена в изолированном git worktree от origin/main (parallel-session-isolation canon).
 - **Blocker:** нет (open follow-up is a low-priority consolidation, not a blocker; L1 router remains gated on ADR-046 §D6 / Terminal-A — separate track).
 - **Refs:** audit gap #3 (BPR not resolvable — now CLOSED); `banxe-business-processes` PR #4 (merge `1820ea7`); ADR-048 (S13-00 Business Process Repository / `process_ref`); IL-156 / S2 PR #383 (canonical `process_ref.schema.json` 2160b); ADR-046 (Decision Lineage, §D6 sink gate); #376 (positive-claim gh-api verification precedent); ADR-057 / I-28 (append-only).
+
+
+---
+
+### IL-159 — ADR-059 append-serialization (Sprint 0: фиксация концепции)
+
+- **Источник:** CEO
+- **Дата:** 2026-06-08T21:00:00Z
+- **Инструкция:** Чтобы не было коллизий при одновременной работе нескольких сессий — внедрить append-serialization для IL (per-session IL-файлы с merge вместо одного общего append-файла). Разбить на спринты и выполнить, зафиксировав концепцию.
+- **Шаги:**
+  1. Сформулировать концепцию (shard-файлы per-session + детерминированная сборка generated INSTRUCTION-LEDGER.md).
+  2. Зафиксировать как ADR-059 (Status: Proposed).
+  3. Разбить rollout на спринты S0..S4.
+- **Статус:** DONE ✅ (S0 — фиксация концепции; сама реализация S1..S4 — отдельными IL)
+- **Proof:** `docs/adr/ADR-059-il-append-serialization-per-session-shards.md` добавлен (Status: Proposed); PR #387 открыт; guardian-ledger требует этот IL-блок в INSTRUCTION-LEDGER.md (ADR-056) — блок добавлен.
+- **Deviation:** Нет. Номер IL-159 = genuine next free (max=158 на origin/main, подтверждён в IL-158).
+- **Blocker:** Нет. (Open follow-up: S1..S4 — реализация shard-механизма, после чего ADR-059 → Accepted.)
+- **Refs:** ADR-059 (Proposed); связано с ADR-056 (ledger-coupling gate), ADR-057 (append-only immutability), I-28.
