@@ -10397,3 +10397,20 @@ Self-audit note
 - **Proof:** ollama list (2×142GB), pull error (нет Q8_0 manifest), ADR-044 hardware table (evo2=128GB) — IL-138; данный регистр фиксирует resolution-пути.
 - **Deviation:** Step 7 target-квант пересматривается (Q8_0→Q4_K_M) отдельным amendment — отклонение от исходной формулировки ADR-044, обоснованное физическим лимитом RAM.
 - **Blocker:** остаточные B3/B4/B5 требуют реальных входных данных оператора/Terminal B; не разрешимы фабрикой без фабрикации (запрещено).
+
+### IL-141: crypto-exchange spec-repo-map patch — SPEC-1 factory delivery (ADR-051/052)
+- **Date:** 2026-06-08
+- **Source:** VERIFIED discovery (/tmp/disc-cx.sh on evo1, 2026-06-08); SPEC-crypto-exchange.md (SHA d56e6d6e…bb82b)
+- **Action:** spec-repo-map.tsv patch applied — 3 new rows for crypto-exchange capability:
+  - `crypto-api-exchange-contract` → CarmiBanxe/crypto-api-exchange, service-code, src/**, ADR-051
+  - `fast-exchange-contract` → CarmiBanxe/fast-exchange, service-code, src/**,migrations/**, ADR-051
+  - `crypto-exchange-api-contract` → CarmiBanxe/crypto-exchange-api, service-code, src/trade/**,src/local-crypto-exchange/**, ADR-051
+- **Scope-out:** neuron-exchange-admin-2 (S5, no inbound refs), neuron-exchange-backend (S6, no inbound refs) — excluded per discovery triage.
+- **Factory commit:** 453618a (PR #362 merged to banxe-architecture; handoff doc for CarmiBanxe/factory:config/spec-repo-map.tsv).
+- **Guardian:** dual-guardian 7/7 PASS (Enforcer I-76/I-77 + Supervisor I-78).
+- **Governed by:** ADR-051, ADR-052 (LiteLLM routing enforced; direct Anthropic = FAIL).
+- **IL-number note:** originally planned as IL-132, reassigned to IL-141 because IL-132 is occupied (ADR-049/053 masks L2-code). IL uniqueness invariant preserved (append-only, no collision; grep confirms 0 prior IL-141 references tree-wide).
+- **Status:** DONE
+- **Proof:** PR #362 merged (commit 453618a); guardian 7/7; SPEC SHA verified.
+- **Deviation:** IL number reassigned (132→141); no functional deviation.
+- **Blocker:** none.
