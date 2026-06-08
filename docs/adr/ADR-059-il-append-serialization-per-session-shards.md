@@ -1,6 +1,6 @@
 # ADR-059: Append-Serialization для IL через per-session shards
 
-- Status: Proposed
+- Status: Accepted (S4 cutover 2026-06-08; INSTRUCTION-LEDGER.md → generated read-only artifact)
 - Date: 2026-06-08
 - Deciders: CEO, CTIO
 - Related: ADR-056 (ledger-coupling merge gate), ADR-057 (ledger append-only immutability), I-28
@@ -89,3 +89,14 @@ Minusy / trade-offs:
 ## Open question
 
 session-id privyazka: imya vetki | rol terminala (A/B) | per-run UUID. Vliyaet na tie-break i chitaemost shard-kataloga. Reshaetsya v S1.
+
+## Cutover (S4) — 2026-06-08
+
+ADR-059 pereveden v **Accepted**. Realizovan podhod "freeze + forward" (Variant A):
+
+- `INSTRUCTION-LEDGER.md` (IL-001..IL-162) zafiksirovan kak istoricheskij append-only arhiv. Eti bloki NE migriruyutsya v shard'y, chtoby ne riskovat determinirovannoj perenumeraciej IL-NNN i ne lomat istoricheskie ssylki (sm. Consequences, tie-break).
+- S S4 vse NOVYE zapisi sozdayutsya tolko kak shard-fajly v `ledger/entries/<session-id>/IL-<ISO8601Z>--<sid6>.md`. Ruchnaya pravka monolita zapreshchena (krome cutover-bloka IL-163).
+- `build_ledger.py` (S2) + guardian gates (S3) prodolzhayut garantirovat generated == rebuild i append-only po shard'am.
+- Polnyj backfill istoricheskih blokov v shard'y — otdelnaya zadacha (trebuet zamorozki mapping IL->shard i lokalnogo progona --check); v skoup S4 ne vhodit.
+
+Reshenie i obosnovanie zafiksirovany v IL-163.
