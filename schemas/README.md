@@ -65,15 +65,41 @@ samples in [`examples/`](examples/). It:
 ```console
 $ python3 schemas/validate_schemas.py
 PASS  agent_decision_record.schema.json        <- agent_decision_record.example.json
+SKIP  agent_passport.schema.json               (example-exempt, pre-S2)
 PASS  cost_cap.schema.json                     <- cost_cap.example.json
 PASS  process_ref.schema.json                  <- process_ref.example.json
+SKIP  scenario_registry.schema.json            (example-exempt, pre-S2)
 PASS  agent_decision_record if/then     <- confidence<0.9 requires human_reviewed_by
 PASS  agent_decision_record if/then     <- confidence<0.9 + reviewer accepted
 
 All governance-schema proofs passed.
 ```
 
-**Limitation:** the proof runs on demand (and in any environment with `jsonschema`
-installed); it is **not yet wired into `.github/workflows/ci.yml`** because this change
-set is scoped to `schemas/*` + the IL entry only. Adding a `schema-validate` CI job is a
-follow-up (noted as an open item in IL-156).
+## CI enforcement — `guardian-schemas` gate (IL-164)
+
+The **`guardian-schemas`** job in [`.github/workflows/guardian.yml`](../.github/workflows/guardian.yml)
+runs `python3 schemas/validate_schemas.py` on **every PR and every push to `main`**, so
+these schemas are now **machine-enforced**, not just provable on demand. The validator
+auto-discovers `schemas/*.schema.json`, so a **new schema added without a passing
+`examples/<name>.example.json` FAILS the gate** (pre-S2 schemas without examples are
+grandfathered in `validate_schemas.py:EXAMPLE_EXEMPT`).
+
+> **Branch protection:** `guardian-schemas` is **not yet a required status context** on
+> `main` — the operator promotes it to required via repo branch-protection settings once
+> it has been observed green. Until promoted, it runs and reports but does not block merge.
+
+### Future follow-up — cross-repo enforcement (NOT done here)
+
+This gate enforces the **architecture-side schema integrity only** (the schemas are valid
+and example-backed in `banxe-architecture`). It does **not** validate the records the
+agents actually emit. The follow-up, owned by the consuming repos:
+
+- the 9 client-facing agents in **`banxe-payment-core`** and **`banxe-emi-stack`** must
+  validate every emitted `AgentDecisionRecord` against
+  [`agent_decision_record.schema.json`](agent_decision_record.schema.json) in **THEIR**
+  CI / runtime (vendoring or referencing this schema as the contract);
+- likewise `CostCap` config against [`cost_cap.schema.json`](cost_cap.schema.json) and the
+  resolved handle against [`process_ref.schema.json`](process_ref.schema.json).
+
+That cross-repo wiring is tracked as an open item in `INSTRUCTION-LEDGER.md` (IL-164) and
+is intentionally out of scope for this architecture-repo hook.
