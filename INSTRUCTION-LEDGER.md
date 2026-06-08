@@ -10711,3 +10711,20 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Originally planned as IL-153, reassigned to IL-154 (IL-153 occupied by F3.3 Spec-First Auditor). IL-147/IL-151 not edited (append-only, I-28).
 - **Blocker:** Charting replacement decision (TradingView license vs Lightweight Charts) requires operator input.
 - **Refs:** trading-ui-group-SPEC-2026-05-23.md (SPEC #4); ADR-016 (trading-ui migration); ADR-021 (ExchangePort); exchangeport-CONTRACT-SPEC-2026-06-06.md; ADR-057 (append-only, I-28); IL-147/IL-151 (Trading Frontend reuse, parallel branch).
+
+
+---
+
+### IL-156: Two-Role Operating Playbook — CEO/CTIO handoff model
+- **Date:** 2026-06-08
+- **Source:** CEO / factory orchestration (canonical Track D)
+- **Action:** Document the two-role operating model governing the ADR/IL lifecycle: CEO (intent + acceptance gate) and CTIO/Claude Code (execution + append-only ledger). Codifies handoff boundaries, who may merge, and operator-only decisions.
+- **Roles:**
+  - CEO: issues intent, verifies Proof before accept, owns operator-only decisions (license, branch deletion, merges past gates).
+  - CTIO/Claude Code: executes one atomic step per command, appends ledger after EACH step, never bypasses guardian gates, never signs in or acts on assumptions.
+- **Invariants reaffirmed:** Append-only (I-28); one-command-per-step; guardian gates (7-10) gating; no fabricated SHAs/paths; operator confirmation for irreversible actions.
+- **Status:** IN-PROGRESS (playbook drafted; pending guardian gates + operator accept)
+- **Proof:** this ledger entry + PR to main on branch docs/il-156-two-role-playbook
+- **Deviation:** Originally targeted IL-155; reassigned to IL-156 because IL-155 was claimed by a concurrent branch (feat/il-155-missing-await-era, PR #380). Append-only preserved; no existing lines edited (I-28).
+- **Blocker:** none
+- **Refs:** IL-149/IL-150 (guardian-ledger + append-only gates); IL-154 (prior tail); ADR-056/ADR-057.
