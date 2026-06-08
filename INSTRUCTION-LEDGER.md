@@ -10693,3 +10693,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** ROADMAP первоначально ссылался на IL-151; IL-151 занят параллельной сессией (Trading Frontend reuse, ветка il-147-reuse-update) — ссылка скорректирована на IL-152 (fix-commit f218508). IL-153 — следующий genuinely free номер (0 tree-wide ссылок подтверждено).
 - **Blocker:** нет.
 - **Refs:** ROADMAP.md F3.3; agents/passports/spec_first_auditor.yaml; ADR-057 (append-only immutability, I-28); operator decision queue item 6; IL-151 (Trading Frontend, parallel branch — номерная развязка).
+
+### IL-154: Trading Frontend Sprint 2/2 — dependency map & migration inventory
+- **Date:** 2026-06-08
+- **Source:** CEO / factory orchestration (Sprint 2, read-only audit of BANXE.RAR trading frontend).
+- **Action:** Produced `docs/specs/dependency-map-trading-frontend.md` (269 строк) — full legacy inventory of banxe-trade-view + banxe-trade-view-new across 8 axes: routes, screens, order flow, balances, market data, auth, websocket/API, widget composition. Includes charting replacement analysis (TradingView license OPEN DECISION).
+- **Inventory summary:**
+  - banxe-trade-view: DROP (2 commits, abandoned skeleton).
+  - banxe-trade-view-new: 316 TS/TSX source files, React + MobX + TradingView charting.
+  - REUSE candidates: OrderBookStream.ts (WS diffs), typeOfOrdersCalculators/ (margin/PNL math), TradeProxy URL map, DepthChart config.
+  - DROP: auth (Keycloak ADR-017), GraphQL queries (ADR-019 → REST).
+  - REWRITE: UI components (new design system), routes, balances.
+  - REFACTOR: order flow logic, MobX stores → Zustand, page composition patterns.
+  - REPLACE: TradingView charting library (vendored, outdated; license check required).
+- **Status:** DONE (dependency map delivered; next steps gated on operator confirmation).
+- **Proof:** docs/specs/dependency-map-trading-frontend.md on branch il-154-dependency-map-trading-frontend.
+- **Deviation:** Originally planned as IL-153, reassigned to IL-154 (IL-153 occupied by F3.3 Spec-First Auditor). IL-147/IL-151 not edited (append-only, I-28).
+- **Blocker:** Charting replacement decision (TradingView license vs Lightweight Charts) requires operator input.
+- **Refs:** trading-ui-group-SPEC-2026-05-23.md (SPEC #4); ADR-016 (trading-ui migration); ADR-021 (ExchangePort); exchangeport-CONTRACT-SPEC-2026-06-06.md; ADR-057 (append-only, I-28); IL-147/IL-151 (Trading Frontend reuse, parallel branch).
