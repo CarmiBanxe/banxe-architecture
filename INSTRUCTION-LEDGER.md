@@ -10711,3 +10711,25 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Originally planned as IL-153, reassigned to IL-154 (IL-153 occupied by F3.3 Spec-First Auditor). IL-147/IL-151 not edited (append-only, I-28).
 - **Blocker:** Charting replacement decision (TradingView license vs Lightweight Charts) requires operator input.
 - **Refs:** trading-ui-group-SPEC-2026-05-23.md (SPEC #4); ADR-016 (trading-ui migration); ADR-021 (ExchangePort); exchangeport-CONTRACT-SPEC-2026-06-06.md; ADR-057 (append-only, I-28); IL-147/IL-151 (Trading Frontend reuse, parallel branch).
+
+### IL-155: Missing-await bug class ERADICATED — banxe-payment-core httpx adapters
+- **Date:** 2026-06-08
+- **Source:** CEO / factory orchestration. Materialization of audit gap #10 (item 1) eradication — the only confirmed break of the three listed items.
+- **Milestone:** Critical **missing-`await` bug class fully ERADICATED** in `banxe-payment-core`. Full sweep of every httpx call site in `src/` confirms NO remaining un-awaited calls.
+- **Root cause (SYSTEMIC — 3 adapters, not 1):** all 3 httpx-backed adapters — `HyperswitchAdapter`, `MidazAdapter`, `PaymentologyAdapter` — invoked `httpx.AsyncClient` `post`/`get`/`patch` **without `await`** → a coroutine was returned instead of a response → `raise_for_status()` raised `AttributeError` → payments / ledger / cards silently broken. Hidden by a lenient `MagicMock`-based test mock that let un-awaited calls pass green.
+- **Fix:**
+  - PR #15 (merge `9d72e79`) — Hyperswitch, 5 `await`s added.
+  - PR #16 (merge `c522deb`) — Midaz (4 `await`s) + Paymentology (4 `await`s).
+  - Test mocks migrated to strict `AsyncMock` via `_make_strict_async_client_mock`, which asserts `assert_awaited_once` and FAILS on a missing `await`.
+- **Empirical proof:** strict tests failed **12** (Hyperswitch) / **21** (Midaz+Paymentology) against the broken code; **all pass** after the fix. src/-wide httpx call-site sweep: 0 remaining un-awaited calls → bug class fully eradicated.
+- **Audit gap #10 RECLASSIFIED (honesty correction):** only "missing await" was a real break. The other two listed items are NOT bugs:
+  * (a) PaymentsAgent "no idempotency" — `idempotency_key` IS used and logged; only server-side replay-dedup is absent = a reliability **ENHANCEMENT**, not a break.
+  * (b) CostWindow "race" — theoretical concurrency risk on a per-mask mutable accumulator, **UNPROVEN** under the actual single-action usage = not a confirmed bug.
+  Both deferred as optional future enhancements, NOT fixes.
+- **Lesson recorded:** every audit/factory report is VERIFIED against `gh api` / source before acting. #376 merge-report and the gap#10 bug-claims were both independently confirmed (or corrected) by direct inspection before action. Verify-before-fix prevented churn on the 2 non-bugs and surfaced that the 1 real bug was SYSTEMIC (3 adapters).
+- **Status:** DONE (bug class eradicated; PRs #15 + #16 merged).
+- **Proof:** merges `9d72e79` (PR #15) + `c522deb` (PR #16) in banxe-payment-core; strict-AsyncMock regression (12 + 21 fail-before / pass-after); src/-wide un-awaited-call sweep = 0.
+- **Deviation:** нет (governance doc only; no code in banxe-architecture).
+- **Blocker:** нет.
+- **IL-number note:** на origin/main высший = IL-154 (merged #379). Наш прежний IL-152 был продвинут параллельными сессиями (IL-153 F3.3, IL-154 Trading Frontend Sprint 2/2) → genuine next free = **IL-155**. Работа выполнена в изолированном git worktree от origin/main (parallel-session-isolation canon).
+- **Refs:** audit gap #10 (item 1); banxe-payment-core PR #15 / PR #16; #376 (IL-152 audit, merge-report verified); `_make_strict_async_client_mock`; ADR-057 (append-only, I-28).
