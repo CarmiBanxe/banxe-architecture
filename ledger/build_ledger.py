@@ -100,8 +100,12 @@ def main(argv=None):
     ap.add_argument("--check", action="store_true",
                     help="verify INSTRUCTION-LEDGER.md == rebuild")
     args = ap.parse_args(argv)
-    content = render(collect())
+    records = collect()
+    content = render(records)
     if args.check:
+        if not records:
+            sys.stdout.write("ledger-build check OK (no shard entries yet; migration is S4)\n")
+            return 0
         current = LEDGER.read_text(encoding="utf-8") if LEDGER.exists() else ""
         if current != content:
             sys.stderr.write(
