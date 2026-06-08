@@ -1,0 +1,1 @@
+# Keep ledger/entries directory in git. Per-session shards live here (ADR-059).
