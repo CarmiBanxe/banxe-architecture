@@ -10658,3 +10658,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** IL-147 описывал создание новых артефактов; по факту они уже существовали — Sprint 1/2 закрыты реюзом. banxe-trade-view* существует в BANXE.RAR (не git-репо CarmiBanxe) — ранняя пометка «не найден» относилась к git-org, скорректирована здесь.
 - **Blocker:** нет.
 - **Refs:** IL-147, trading-ui-group-SPEC-2026-05-23, exchangeport-CONTRACT-SPEC-2026-06-06, ADR-016, ADR-021, BANXE-RAR-INVENTORY-PHASE3, PR #21.
+
+### IL-152: F3.3 Spec-First Auditor — DEFERRED lifted via canon update
+- **Источник:** CEO / factory orchestration (2026-06-08 CEST). Track C (F3.3 relocation).
+- **Инструкция:** Снять DEFERRED с F3.3 (Spec-First Auditor relocation), приняв operator decision = canon update (не физический relocation).
+- **Decision (operator-canon, best-by-canon):** OPTION 2 — canon update §5/ROADMAP. Relocation НЕ выполняется: аудитор уже канонически зафиксирован как активный паспорт агента; перемещение по гипотетическому пути ~/developer/spec-first/audit/ создало бы риск регрессии работающей интеграции без выигрыша. Spec-First трек: канон описывает фактическое состояние.
+- **Scope:** governance docs-only. AGENT_ROUTING_ENABLED не затрагивается.
+- **Шаги:**
+  1. Discovery (read-only): фактический канонический артефакт аудитора = agents/passports/spec_first_auditor.yaml (agent_id: spec-first-auditor; status: ACTIVE; trust_zone: AMBER; autonomy: L2_REVIEW; version 1.0.0). -> DONE
+  2. ROADMAP.md строка F3.3: [ ] DEFERRED -> [x] DONE 2026-06-08 (canon update, no relocation; путь зафиксирован; ссылка IL-152). -> DONE
+  3. Operator decision queue item 6 (F3.3 relocation OR canon update): закрыт как resolved-by-canon-update. -> DONE
+  4. Этот append-only блок IL-152. -> DONE
+- **Статус:** DONE (DEFERRED снят; relocation отклонён в пользу canon update).
+- **Proof:** agents/passports/spec_first_auditor.yaml status ACTIVE (browser code-search verified); ROADMAP commit на ветке feat/f3.3-canon-update-spec-first-auditor.
+- **Deviation:** ROADMAP первоначально ссылался на IL-151; IL-151 занят параллельной сессией (Trading Frontend reuse, ветка il-147-reuse-update) — ссылка скорректирована на IL-152 (fix-commit f218508). IL-152 — следующий genuinely free номер (0 tree-wide ссылок подтверждено).
+- **Blocker:** нет.
+- **Refs:** ROADMAP.md F3.3; agents/passports/spec_first_auditor.yaml; ADR-057 (append-only immutability, I-28); operator decision queue item 6; IL-151 (Trading Frontend, parallel branch — номерная развязка).
