@@ -10412,3 +10412,18 @@ Self-audit note
 - No-collision proof: ADR-054 absent from both catalogues before this entry. On origin/main, docs/adr/ holds ADR-039..053 (ADR-050/051/052 parallel-session, ADR-053 IL-137); decisions/ holds ADR-001..038 (gaps 021/023/031/037) + ADR-074..077. Grep of docs/adr/ + decisions/ on origin/main confirmed no ADR-054 file/reference pre-existed. ADR-037 left RESERVED, NOT used. Real next free = ADR-054.
 - IL-number note: IL-138 (ADR-044 Step 7 BLOCKED) + IL-139 (blocker register) are on origin/main; IL-140 is held by the Cards client-facing line (commit 489cc58, PR #361 — "IL-140 Cards client-facing line", merged into main; 0 free). IL-141 is the next genuinely free number (append-only, no collision; 0 tree-wide references to IL-141 confirmed). Authored in an isolated git worktree off origin/main (parallel-session-isolation canon, Rule 6).
 - Refs: ADR-053 (extensibility D1 + mask↔domain-agent boundary D2 + add-a-capability path D3 + §D5 names C7 next — the mechanism this ADR applies); ADR-049 (Intent Layer & Client-Facing Agent Masks — the 6 §D3 mask fields, §D2 chain, §D4 thresholds; one mask added under it unchanged); ADR-045 (Intent-First four-layer model; spend-analysis canonical conversational intent); ADR-046 (AgentDecisionRecord — mask lineage_obligation per action); ADR-047 (hard cost caps + AUTO/REVIEW/BLOCK — mask cost_cap; per-request+per-window token caps emphasised); ADR-048 (intent→process_ref resolution); ADR-016 (PII/AML routing — PII overlay for compliance_gate); ADR-025 (agent interaction canon); ADR-040 (meta-plane — LLM-orchestration substrate L2 gated on, Terminal A); the CONTRACT ports (6 initial + ADR-053 CardPort + new AnalyticsPort, future StatementPort); pre-existing domain service-agent services/reporting_analytics/analytics_agent.py (+ data_aggregator/report_builder/export_engine), C7, in banxe-emi-stack (becomes adapter behind AnalyticsPort, untouched); NEW-PROJECT-PRIORITY-MAP-2026-06-06 (C7 = Portfolio analytics, legacy-serves Python rewrite / crypto-api-portfolio SPEC #7); docs/BANXE-UI-UX-SYSTEM.md (spend analysis intent); IL-132 (L2 6-mask code) + IL-135 (lineage/cost primitives) + IL-140 (Cards client-facing line — the pattern AnalyticsAgent mirrors); .claude/rules/agents.md (HITL bands; ARL precondition); R-COMP-FCA-02; UK-GDPR data-egress controls; CLAUDE.md §10/§11 + money rule (Decimal).
+
+
+---
+
+### IL-141: ADR-044 Step 3 (B3) — AI data-flow & residency map registered DONE
+*   **Источник:** CEO / factory orchestration (2026-06-08).
+*   **Инструкция:** Resolve B3 gate of ADR-044 by registering the compliance data-flow artifact.
+*   **Шаги:**
+    1. Verify `docs/compliance/ai-data-flow.md` exists on main → ✅
+    2. Confirm scope coverage (guardrail matrix, KYC/AML block-list, data-residency UK GDPR Art.46 / FCA PS25/12) → ✅
+    3. Register completion in ledger (append-only) → ✅
+*   **Статус:** DONE.
+*   **Proof:** `docs/compliance/ai-data-flow.md` present on main; created by commit `1cc7cbb` (PR #189, ADR-035 session canon 2026-05-11); covers guardrail enforcement (`during_call`), block-list `/compliance/ /kyc/ /aml/ kyc_id aml_flag transaction_id iban national_id`, on-prem hard-rule (evo1/evo2).
+*   **Deviation:** Step 3 artifact pre-existed (ADR-035) but ADR-044 B3 gate was not formally closed in the register; IL-141 closes the traceability gap. Label IL-140 already reserved (Cards client-facing line), so IL-141 used to preserve append-only numbering.
+*   **Blocker:** None for B3. Remaining ADR-044 gates: B4 (Step 4 Redis cache config — artifact pending), B5 (Step 5 OfficeCLI install — artifact pending); Steps 8/9/10 remain T6 operator-gated.
