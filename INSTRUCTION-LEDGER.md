@@ -10658,3 +10658,22 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** IL-147 описывал создание новых артефактов; по факту они уже существовали — Sprint 1/2 закрыты реюзом. banxe-trade-view* существует в BANXE.RAR (не git-репо CarmiBanxe) — ранняя пометка «не найден» относилась к git-org, скорректирована здесь.
 - **Blocker:** нет.
 - **Refs:** IL-147, trading-ui-group-SPEC-2026-05-23, exchangeport-CONTRACT-SPEC-2026-06-06, ADR-016, ADR-021, BANXE-RAR-INVENTORY-PHASE3, PR #21.
+
+---
+
+### IL-152: Intent-First Conformity Audit + Migration Roadmap (materialized) — governance docs
+- **Источник:** CEO / factory orchestration (2026-06-08 CEST). Read-only 8-repo fan-out audit produced this session, materialized as durable governance docs.
+- **Инструкция:** Зафиксировать Intent-First Conformity Audit (A-E) и 8-спринтовый Migration Roadmap как durable governance-документы в banxe-architecture. Только governance-docs, без project-кода.
+- **Scope:** governance docs only. Ровно 2 новых документа + эта IL-запись.
+- **Артефакты (anchored by path):**
+  * `docs/audit/intent-first-conformity-audit-2026-06-08.md` — полный аудит A-E (per-repo conformity, Top-10 gaps, Top-10 reusable assets, per-repo matrix, no-loss migration, 8-sprint table, canon recommendations).
+  * `docs/roadmap/intent-first-migration-roadmap-2026-06-08.md` — no-loss principles, 7 ordering axes, 8-sprint table, per-sprint 3-fact checkpoints, zone ownership (Terminal-A infra vs Central-via-factory).
+- **Verdict:** аудит **READY**; полное Intent-First adoption **NOT READY** — hard-gated by ADR-049 §D6 (LLM-orchestration substrate, Terminal-A infra). `AGENT_ROUTING_ENABLED` остаётся OFF до закрытия S1.
+- **Sprints:** S1 §D6 gateway → S2 executable governance schemas → S3 resolvable BPR → S4 lineage sink + observability → S5 L1 classifier/router + producers + bugfixes → S6 compliance wiring + debt cleanup → S7 UI decision + chat shell → S8 chat-first convergence.
+- **Merge-state (hardened):** [FACT] все 9 CONTRACT ports + 9 client-facing agents + `_lineage.py` присутствуют в `main` обоих репо (banxe-payment-core, banxe-emi-stack), верифицировано через gh contents API 2026-06-08. Conformity-баллы НЕ изменены — отражают runtime-incompleteness, не merge-state.
+- **Open governance item (отдельной задачей, НЕ в этом IL):** ADR-049 status hygiene — frontmatter `ACCEPTED` vs body `PROPOSED`. ADR-049 в этой задаче НЕ редактировался.
+- **IL-number note:** на origin/main высший = IL-150 (IL-148/149/150 заняты). IL-151 зарезервирован параллельной веткой `origin/il-147-reuse-update` (Trading Frontend, commit 205201d, ещё не в main) → genuine next free = **IL-152**. Tree-wide grep подтвердил 0 других IL-152 ссылок. Работа выполнена в изолированном git worktree от origin/main (parallel-session-isolation canon, Rule 6).
+- **Статус:** REVIEW (PR-only; merge оператором после прогона CI).
+- **Proof:** branch feat/il-152-intent-first-audit; commit — 2 docs + эта IL-запись (ровно 3 файла, других репо/файлов не тронуто); PR в main.
+- **Deviation:** нет.
+- **Blocker:** нет (governance docs; CI review → operator merge).
