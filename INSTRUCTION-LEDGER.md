@@ -10398,24 +10398,6 @@ Self-audit note
 - **Deviation:** Step 7 target-квант пересматривается (Q8_0→Q4_K_M) отдельным amendment — отклонение от исходной формулировки ADR-044, обоснованное физическим лимитом RAM.
 - **Blocker:** остаточные B3/B4/B5 требуют реальных входных данных оператора/Terminal B; не разрешимы фабрикой без фабрикации (запрещено).
 
-<<<<<<< HEAD
-### IL-141: crypto-exchange spec-repo-map patch — SPEC-1 factory delivery (ADR-051/052)
-- **Date:** 2026-06-08
-- **Source:** VERIFIED discovery (/tmp/disc-cx.sh on evo1, 2026-06-08); SPEC-crypto-exchange.md (SHA d56e6d6e…bb82b)
-- **Action:** spec-repo-map.tsv patch applied — 3 new rows for crypto-exchange capability:
-  - `crypto-api-exchange-contract` → CarmiBanxe/crypto-api-exchange, service-code, src/**, ADR-051
-  - `fast-exchange-contract` → CarmiBanxe/fast-exchange, service-code, src/**,migrations/**, ADR-051
-  - `crypto-exchange-api-contract` → CarmiBanxe/crypto-exchange-api, service-code, src/trade/**,src/local-crypto-exchange/**, ADR-051
-- **Scope-out:** neuron-exchange-admin-2 (S5, no inbound refs), neuron-exchange-backend (S6, no inbound refs) — excluded per discovery triage.
-- **Factory commit:** 453618a (PR #362 merged to banxe-architecture; handoff doc for CarmiBanxe/factory:config/spec-repo-map.tsv).
-- **Guardian:** dual-guardian 7/7 PASS (Enforcer I-76/I-77 + Supervisor I-78).
-- **Governed by:** ADR-051, ADR-052 (LiteLLM routing enforced; direct Anthropic = FAIL).
-- **IL-number note:** originally planned as IL-132, reassigned to IL-141 because IL-132 is occupied (ADR-049/053 masks L2-code). IL uniqueness invariant preserved (append-only, no collision; grep confirms 0 prior IL-141 references tree-wide).
-- **Status:** DONE
-- **Proof:** PR #362 merged (commit 453618a); guardian 7/7; SPEC SHA verified.
-- **Deviation:** IL number reassigned (132→141); no functional deviation.
-- **Blocker:** none.
-=======
 ---
 
 ## IL-141-ANALYTICS-REPORTING-CLIENT-MASK-C7-2026-06-08
@@ -10460,4 +10442,20 @@ Self-audit note
 - No-collision proof: ADR-055 absent from both catalogues before this entry. On origin/main, docs/adr/ holds ADR-039..054 (ADR-050/051/052 parallel-session, ADR-053 IL-137, ADR-054 IL-141); decisions/ holds ADR-001..038 (gaps 021/023/031/037) + ADR-074..077. Grep of docs/adr/ + decisions/ on origin/main confirmed no ADR-055 file/reference pre-existed (only the INDEX free-block line mentioned ADR-055 as unassigned). ADR-037 left RESERVED, NOT used. Real next free = ADR-055.
 - IL-number note: on origin/main the highest IL is IL-141 (IL-140 = Cards client-facing line, IL-141 = Analytics mask + a duplicate-labelled ADR-044 Step 3 close). IL-142 is held by a parallel branch (docs/il-142 — ADR-044 Steps 4&5 register) and IL-146 by a parallel branch (docs/il-146 crypto-ops). IL-143 is the next genuinely free number (append-only, no collision; 0 tree-wide references to IL-143 confirmed). Authored in an isolated git worktree off origin/main (parallel-session-isolation canon, Rule 6) so the parallel il-146 session's checkout was left untouched.
 - Refs: ADR-054 (Analytics / Reporting C7 mask — the second extended entry whose §D5 deferred Statements here; same read-side AUTO posture + data-egress gate, here the PRIMARY gate); ADR-053 (extensibility D1 + mask↔domain-agent boundary D2 + add-a-capability path D3 + §D5 names Statements next — the mechanism this ADR applies); ADR-049 (Intent Layer & Client-Facing Agent Masks — the 6 §D3 mask fields, §D2 chain, §D4 thresholds; one mask added under it unchanged); ADR-045 (Intent-First four-layer model; "show me my statement" canonical conversational intent); ADR-046 (AgentDecisionRecord — mask lineage_obligation per action); ADR-047 (hard cost caps + AUTO/REVIEW/BLOCK — mask cost_cap; per-request+per-window token caps emphasised for heavy generation); ADR-048 (intent→process_ref resolution); ADR-016 (PII/AML routing — PII overlay for compliance_gate on transactions/balances); ADR-025 (agent interaction canon); ADR-040 (meta-plane — LLM-orchestration substrate L2 gated on, Terminal A); the CONTRACT ports (6 initial + ADR-053 CardPort + ADR-054 AnalyticsPort + new StatementPort); pre-existing domain service-agent services/client_statements/statement_agent.py (+ statement_generator.py / statement_models.py / internal StatementDataPort) in banxe-emi-stack (becomes adapter behind StatementPort, untouched); NEW-PROJECT-PRIORITY-MAP-2026-06-06 (client statements = reporting/statements, no single Cn per ADR-053 §D5); docs/BANXE-UI-UX-SYSTEM.md ("show me my statement" intent); IL-132 (L2 6-mask code) + IL-135 (lineage/cost primitives) + IL-140 (Cards client-facing line) + IL-141 (Analytics mask — the pattern StatementAgent mirrors); .claude/rules/agents.md (HITL bands; ARL precondition); R-COMP-FCA-02; UK-GDPR data-egress controls; CLAUDE.md §10/§11 + money rule (Decimal).
->>>>>>> origin/main
+
+### IL-144: crypto-exchange spec-repo-map patch — SPEC-1 factory delivery (ADR-051/052)
+- **Date:** 2026-06-08
+- **Source:** VERIFIED discovery (/tmp/disc-cx.sh on evo1, 2026-06-08); SPEC-crypto-exchange.md (SHA d56e6d6e…bb82b)
+- **Action:** spec-repo-map.tsv patch applied — 3 new rows for crypto-exchange capability:
+  - `crypto-api-exchange-contract` → CarmiBanxe/crypto-api-exchange, service-code, src/**, ADR-051
+  - `fast-exchange-contract` → CarmiBanxe/fast-exchange, service-code, src/**,migrations/**, ADR-051
+  - `crypto-exchange-api-contract` → CarmiBanxe/crypto-exchange-api, service-code, src/trade/**,src/local-crypto-exchange/**, ADR-051
+- **Scope-out:** neuron-exchange-admin-2 (S5, no inbound refs), neuron-exchange-backend (S6, no inbound refs) — excluded per discovery triage.
+- **Factory commit:** 453618a (PR #362 merged to banxe-architecture; handoff doc for CarmiBanxe/factory:config/spec-repo-map.tsv).
+- **Guardian:** dual-guardian 7/7 PASS (Enforcer I-76/I-77 + Supervisor I-78).
+- **Governed by:** ADR-051, ADR-052 (LiteLLM routing enforced; direct Anthropic = FAIL).
+- **IL-number note:** originally planned as IL-132, reassigned to IL-141 (IL-132 occupied by ADR-049/053 masks L2-code), then to IL-144 (IL-141 collision with ADR-054 ANALYTICS-REPORTING-CLIENT-MASK-C7 on main). IL uniqueness invariant preserved (append-only, no collision).
+- **Status:** DONE
+- **Proof:** PR #362 merged (commit 453618a); guardian 7/7; SPEC SHA verified.
+- **Deviation:** IL number reassigned (132→141→144); no functional deviation.
+- **Blocker:** none.
