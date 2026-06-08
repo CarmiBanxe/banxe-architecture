@@ -57,3 +57,33 @@ jobs:
             echo "FAIL: $LEDGER must be append-only (Invariant I-28); deletions detected:"; echo "$DELETED"; exit 1
           fi
           echo "guardian-ledger OK"
+  ledger-append-only:
+    name: ledger-append-only
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ledger append-only immutability (ADR-057)
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: |
+          set -e
+          LEDGER=INSTRUCTION-LEDGER.md
+          if [ "$EVENT" = "pull_request" ]; then
+            BASE="$PR_BASE"; HEAD="$PR_HEAD"
+          else
+            BASE="$PUSH_BEFORE"; HEAD="$PUSH_AFTER"
+          fi
+          if ! git cat-file -e "$BASE" 2>/dev/null; then
+            echo "Base $BASE unavailable (new branch/first push); skipping immutability check"; echo "ledger-append-only OK"; exit 0
+          fi
+          REMOVED=$(git diff "$BASE" "$HEAD" -- "$LEDGER" | grep -E '^-[^-]' || true)
+          if [ -n "$REMOVED" ]; then
+            echo "FAIL: existing $LEDGER lines were removed or modified (Invariant I-28, ADR-057). Corrections must be a NEW appended IL block, never an edit of prior history:"; echo "$REMOVED"; exit 1
+          fi
+          echo "ledger-append-only OK"
