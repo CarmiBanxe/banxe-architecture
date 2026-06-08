@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://banxe.internal/schemas/process_ref.schema.json",
+  "title": "BANXE process_ref (Business Process Repository reference)",
+  "description": "Executable contract for the `process_ref` resolvable handle that names a canonical, versioned business-process definition in the S13-00 Business Process Repository (ADR-048). A process_ref is the stable {process_id, version} handle an L1 intent resolves to BEFORE any consequential L2 action (ADR-048 D3), and the shared key that ADR-046 decision lineage and ADR-047 cost attribution carry to attribute a decision / its cost to a specific governed process version (ADR-048 D5). This schema fixes the FORMAT that S3 / banxe-business-processes (the canonized CarmiBanxe/banxe-business-processes ArchiMate 3.2 repo) MUST produce so a process_ref always resolves to exactly one canonical process version. An intent that resolves to NO process is a governance event, not improvisation (ADR-048 D3 / CLAUDE.md §11). R-SEC: a process_ref is a non-sensitive identifier pair — it MUST NOT embed secrets or PII.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["process_id", "version"],
+
+  "properties": {
+    "process_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9._-]{1,127}$",
+      "description": "Stable, unique identifier of the canonical business-process definition in the S13-00 repository (ADR-048 D1/D3). Names the process (e.g. a KYC-onboarding / payment-execution / safeguarding-reconciliation process) independent of version. Source of truth: CarmiBanxe/banxe-business-processes (ArchiMate 3.2)."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Specific, resolvable version of the process definition (ADR-048 D4 — every definition is versioned; a process_ref always names ONE version). Older versions remain resolvable so a past decision's lineage (ADR-046) can be replayed against the version that actually ran. Concrete versioning grammar (semver vs revision tag) is S3/config work; this schema requires a non-empty stable token."
+    }
+  }
+}

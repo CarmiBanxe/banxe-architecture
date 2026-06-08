@@ -1,0 +1,21 @@
+{
+  "record_id": "01J9ZX8Q7K3M2N4P5R6S7T8V9W",
+  "timestamp": "2026-06-08T14:32:05.412Z",
+  "agent_id": "aml_check_agent",
+  "triggering_event": "inbound_payment:pay_8f2c1a90",
+  "intent": "Send £250 to a saved UK payee for rent",
+  "policies_evaluated": ["I-02", "R-COMP-FCA-02", "aml-scenario:AMLTRIX-2026-Q2"],
+  "compliance_result": "PASS",
+  "reasoning_summary": "Sanctions and PEP screens clear; amount and payee within established behaviour; no AML scenario triggered.",
+  "confidence_score": 0.96,
+  "action_taken": "APPROVE_PAYMENT:pay_8f2c1a90",
+  "human_reviewed_by": null,
+  "correlation_id": "corr_7d3e9b21-rent-jun08",
+  "cost_tokens": 0,
+  "cost_amount": "0",
+  "budget_window_ref": "aml_check_agent:window:unset",
+  "budget_breach_flag": "NONE",
+  "immutable_storage_ref": null,
+  "input_tokens": null,
+  "output_tokens": null
+}

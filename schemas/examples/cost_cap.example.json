@@ -1,0 +1,30 @@
+{
+  "caps": {
+    "max_request_tokens": 32000,
+    "max_request_cost": "0.50",
+    "max_window_tokens": 500000,
+    "max_window_cost": "10.00",
+    "window": "1h",
+    "currency": "GBP",
+    "soft_band_fraction": 0.8
+  },
+  "per_agent_budget": {
+    "aml_check_agent": {
+      "max_request_tokens": 16000,
+      "max_request_cost": "0.25",
+      "max_window_tokens": 200000,
+      "max_window_cost": "4.00",
+      "window": "1h",
+      "currency": "GBP"
+    },
+    "mlro_agent": {
+      "max_request_tokens": 64000,
+      "max_request_cost": "1.50",
+      "max_window_tokens": 1000000,
+      "max_window_cost": "25.00",
+      "window": "1d",
+      "currency": "GBP",
+      "soft_band_fraction": 0.75
+    }
+  }
+}
