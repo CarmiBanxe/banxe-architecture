@@ -10754,3 +10754,20 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ### IL-157: Trading Frontend Sprint 3/N (target frontend-repo bootstrap / HANDOFF)
 Артефакт: docs/specs/HANDOFF-target-frontend-repo-bootstrap.md. Рекомендация: новый repo banxe-trading-frontend из banxe-repo-template (НЕ reuse banxe-ui как target). Зафиксировано: НОВЫЙ banking frontend, НЕ revive Binance-style legacy; legacy banxe-trade-view* = только reuse-источник по IL-154. Разделы: target repo, branch policy, directory layout (FSD), package baseline (React+TS+Vite+pnpm+Zustand, Decimal I-01), CI hooks (guardian: ledger/append-only + ADR + secrets). Создание repo и branch protection = operator signal (Step 2, не исполнено). Примечание: IL-155/IL-156 заняты параллельными треками (payment-core await fix; S2 governance schemas). ADR-057/I-28 append-only preserved; IL-147..156 не изменены.
+
+
+---
+
+### IL-158: Two-Role Operating Playbook — CEO/CTIO handoff model
+- **Дата:** 2026-06-08
+- **Источник:** CEO / factory orchestration (canonical Track D)
+- **Инструкция:** Задокументировать каноническую двухролевую модель ADR/IL-жизненного цикла: CEO (намерение + гейт акцепта) и CTIO/Claude Code (исполнение + append-only реестр).
+- **Шаги:**
+  - CEO: выдаёт намерение, проверяет Proof перед акцептом, владеет operator-only решениями (лицензии, удаление веток, слияния после гейтов).
+  - CTIO/Claude Code: выполняет один атомарный шаг на команду, обновляет реестр после КАЖДОГО шага, не обходит guardian-гейты, не логинится и не действует на предположениях.
+- **Подтверждённые инварианты:** Append-only (I-28); один шаг — одна команда; guardian-гейты (7-10); без фабрикации SHA/путей; подтверждение оператора для необратимых действий.
+- **Статус:** IN-PROGRESS (плейбук подготовлен; ожидаются guardian-гейты + акцепт оператора)
+- **Proof:** эта запись реестра + PR в main с ветки docs/il-158-two-role-playbook
+- **Deviation:** Изначально IL-155, затем IL-156 — оба заняты параллельными сессиями (PR #380, #383); IL-157 также занят. Переномеровано на IL-158 (следующий свободный). PR #382 закрыт без слияния во избежание дубликата IL. Append-only сохранён (I-28).
+- **Blocker:** нет
+- **Refs:** IL-149/IL-150 (guardian-ledger + append-only гейты); IL-157 (предыдущий хвост); ADR-056/ADR-057.
