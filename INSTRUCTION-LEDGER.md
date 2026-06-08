@@ -10804,3 +10804,22 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Нет. Номер IL-159 = genuine next free (max=158 на origin/main, подтверждён в IL-158).
 - **Blocker:** Нет. (Open follow-up: S1..S4 — реализация shard-механизма, после чего ADR-059 → Accepted.)
 - **Refs:** ADR-059 (Proposed); связано с ADR-056 (ledger-coupling gate), ADR-057 (append-only immutability), I-28.
+
+
+---
+
+### IL-160 — ADR-059 append-serialization (Sprint 1: структура ledger/entries + spec)
+
+- **Источник:** CEO
+- **Дата:** 2026-06-08T20:00:00Z
+- **Инструкция:** Реализовать Sprint 1 ADR-059: создать структуру per-session shards `ledger/entries/`, зафиксировать политику session-id и добавить README реестра.
+- **Шаги:**
+  1. Выбрать политику session-id = slug имени ветки (уникальный, читаемый, tie-break).
+  2. Создать `ledger/README.md` (структура шардов, идентификаторы записей, формат файла шарда, инвариант I-28, rollout).
+  3. Создать `ledger/entries/.gitkeep` для сохранения директории шардов в git.
+  4. Открыть PR #388 и провести через guardian-гейты.
+- **Статус:** DONE ✅ (S1 = структура + spec; генератор INSTRUCTION-LEDGER.md из шардов — S2, отдельный IL)
+- **Proof:** PR #388 открыт; ветка `feat/adr-059-s1-ledger-shards` (2 коммита: README.md + .gitkeep); guardian-ledger требовал IL-блок по ADR-056 — блок добавлен этим коммитом.
+- **Deviation:** Нет. Номер IL-160 = genuine next free (max=159, подтверждён IL-159).
+- **Blocker:** guardian-ledger / Ledger-coupling gate (ADR-056) упал: PR менял отслеживаемые пути без нового ### IL-NNN блока. Решение: добавлен блок IL-160 в INSTRUCTION-LEDGER.md.
+- **Refs:** ADR-059, ADR-056, IL-159.
