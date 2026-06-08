@@ -15,8 +15,8 @@ jobs:
       - name: Factory invariants
         run: |
           set -e
-          test -d agents/souls && test -d agents/passports || { echo "Реестр агентов фабрики отсутствует"; exit 1; }
-          test -d .claude/agents || { echo "Контроллеры фабрики отсутствуют"; exit 1; }
+          test -d agents/souls && test -d agents/passports || { echo "factory agent registry missing"; exit 1; }
+          test -d .claude/agents || { echo "factory controllers missing"; exit 1; }
           echo "guardian-factory OK"
   guardian-project:
     name: guardian-project
@@ -26,5 +26,34 @@ jobs:
       - name: Project invariants (BANXE)
         run: |
           set -e
-          test -f README.md || { echo "README отсутствует"; exit 1; }
+          test -f README.md || { echo "README missing"; exit 1; }
           echo "guardian-project OK"
+  guardian-ledger:
+    name: guardian-ledger
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ledger-coupling gate (ADR-056)
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -e
+          LEDGER=INSTRUCTION-LEDGER.md
+          CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          echo "Changed files:"; echo "$CHANGED"
+          NONLEDGER=$(echo "$CHANGED" | grep -v "^$LEDGER$" || true)
+          if [ -n "$NONLEDGER" ]; then
+            ADDED_IL=$(git diff "$BASE_SHA" "$HEAD_SHA" -- "$LEDGER" | grep -E '^\+### IL-[0-9]+' || true)
+            if [ -z "$ADDED_IL" ]; then
+              echo "FAIL: PR changes tracked paths but adds no new ### IL-NNN block in $LEDGER (ADR-056)"; exit 1
+            fi
+          fi
+          DELETED=$(git diff "$BASE_SHA" "$HEAD_SHA" -- "$LEDGER" | grep -E '^-[^-]' || true)
+          if [ -n "$DELETED" ]; then
+            echo "FAIL: $LEDGER must be append-only (Invariant I-28); deletions detected:"; echo "$DELETED"; exit 1
+          fi
+          echo "guardian-ledger OK"

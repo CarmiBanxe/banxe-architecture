@@ -10553,3 +10553,21 @@ Self-audit note
 - **Статус:** PROPOSED (контур открыт; оба артефакта — DRAFT, факты dependency-map требуют распаковки banxe.rar)
 - **Deviation:** banxe-trade-view* как git-репо отсутствует — во избежание фабрикации (I-28) источник зафиксирован как source-archive.
 - **Refs:** SPEC-trading-frontend.md, dependency-map-trading-frontend.md, PR #21, ADR-049, ADR-053, ADR-031, IL-145, banxe-ui, factory.
+
+
+---
+
+### IL-149: Ledger-Coupling Merge Gate (Sprint A) — guardian-ledger + ADR-056
+- **Источник:** CEO / factory orchestration (2026-06-08 CEST)
+- **Инструкция:** Реализовать Sprint A: добавить required CI-гейт, блокирующий мерж кода/SPEC/ADR/agents без соответствующей append-only записи IL-NNN в INSTRUCTION-LEDGER.md; закрыть класс сбоя IL-145 / PR #367.
+- **Scope:** governance + CI. Docs+code (guardian.yml job). AGENT_ROUTING_ENABLED не затрагивается.
+- **Шаги:**
+  1. Verify anchors: highest ADR in docs/adr = ADR-055 → next free ADR-056; highest IL on main = IL-147; IL-148 reserved by PR #372 → next free IL-149. -> DONE
+  2. ADR-056 (Ledger-Coupling Merge Gate) authored at docs/adr/ADR-056-ledger-coupling-merge-gate.md (Status: Proposed). -> DONE
+  3. guardian.yml: add job guardian-ledger (pull_request only) — if PR changes non-ledger tracked paths, require a new "### IL-NNN" added in ledger; enforce append-only (no deletions, Invariant I-28). -> DONE
+  4. Open atomic PR (ADR-056 + guardian.yml + this IL-149). -> IN_PROGRESS
+  5. Operator action: mark guardian-ledger as required status check in main branch protection. -> PENDING (operator)
+- **Статус:** IN_PROGRESS
+- **Proof:** branch feat/adr-056-ledger-coupling-gate; commits: ADR-056 add + guardian.yml d9690fd (guardian-ledger job, 59 loc). PR + green guardian checks to be attached on open.
+- **Deviation:** IL-148 пропущен в этой ветке намеренно — зарезервирован параллельной сессией session-closure (PR #372), во избежание коллизии хвоста реестра.
+- **Blocker:** Required-status-check toggle в branch protection — операторское действие (вне прав сессии).
