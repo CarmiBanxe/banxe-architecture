@@ -10571,3 +10571,54 @@ Self-audit note
 - **Proof:** branch feat/adr-056-ledger-coupling-gate; commits: ADR-056 add + guardian.yml d9690fd (guardian-ledger job, 59 loc). PR + green guardian checks to be attached on open.
 - **Deviation:** IL-148 пропущен в этой ветке намеренно — зарезервирован параллельной сессией session-closure (PR #372), во избежание коллизии хвоста реестра.
 - **Blocker:** Required-status-check toggle в branch protection — операторское действие (вне прав сессии).
+
+---
+
+## IL-148-SESSION-CLOSURE-INTENT-FIRST-L1-L4-PLUS-L2-AGENT-LAYER-MILESTONE-2026-06-08
+- Date: 2026-06-08 CEST
+- Phase (GSD): CLOSE — session-closure fixation point. Docs-only governance milestone; no code, tests, or ADR bodies are touched by this entry. Records, for the ledger record, that the Intent-First Banking L1–L4 design plus the L2 client-facing agent layer are COMPLETE (DESIGN + L2 CODE phase), all produced via the factory with Central as consumer.
+- Type: governance-MILESTONE (factory-delivered code + ADRs across the session, recorded here; this entry itself is append-only governance).
+- Status: DONE (records design+code completeness; NOT a live-operation green light — see GATED below).
+- Scope: BANXE-only.
+
+### Milestone
+Intent-First Banking four-layer model (L1 client intent → L2 client-facing agent masks → L3 domain service-agents behind ports → L4 ledger/infra) is DESIGN-complete, and the L2 client-facing agent layer is CODE-complete and governance-enforced via the factory. L2 client-facing agents now total 9.
+
+### Delivered this session (all via factory; Central = consumer)
+- Concept + governance (banxe-architecture, ACCEPTED):
+  * ADR-045 — Intent-First model + INTENT-FIRST-CANON.
+  * ADR-046 — Decision Lineage (AgentDecisionRecord).
+  * ADR-047 — AI Cost Governance (hard cost caps + AUTO/REVIEW/BLOCK bands).
+  * ADR-048 — S13-00 Business Process Repository (intent→process_ref resolution).
+  * ADR-049 — Intent Layer + client-facing masks (initial 6).
+  * ADR-053 — mask extensibility + domain-agent-as-adapter-behind-port boundary.
+  * ADR-054 — Analytics mask.
+  * ADR-055 — Statements mask.
+- CONTRACT ports (code):
+  * banxe-payment-core: WalletPort, PartnerPort, ExchangePort.
+  * banxe-emi-stack: KYCProviderPort, NotificationProviderPort, CRMProviderPort, CardPort, AnalyticsPort, StatementPort.
+- L2 client-facing agents (9, code):
+  * banxe-payment-core: Payments, FXExchange, Wallet.
+  * banxe-emi-stack: KYC, Notification, CRM, Cards, Analytics, Statements.
+  * Uniform per agent: ADR-049 §D2 gate chain (process_ref → scope → band → cost_cap → compliance → step-up → port); exactly one AgentDecisionRecord (ADR-046) per action; ADR-047 cost-cap honoured; CONTRACT port + DecisionRecorder injected as interfaces (unit-testable without live infra); shared consolidated `_lineage` helper (DRY / IL-135) + ADR-046 §D5 fields; 100% module coverage; R-SEC — no secret material and no PII ever written to lineage (test-proven); the existing domain service-agents are wired BEHIND ports as adapters (UNTOUCHED).
+- Infra/quality fixes: factory hardening (origin-base, selective staging, preflight); coverage-omit policy in both repos; ruff / bandit / defusedxml; PSD2 py3.12 test fix.
+
+### Capability coverage now (client-facing-governed)
+C1/C2/C3/C4/C5/C6/C7/C9/C10/C22 + statements — 10 of 30 capabilities.
+
+### Canon established this session (in ~/.claude/CLAUDE.md, operator-recorded)
+- Central produces ALL project code ONLY through the factory; read-only diagnostics may be run directly.
+- Central NEVER waits for Terminal A (Terminal A builds/improves the factory independently and in parallel).
+- Terminal B operates under the same Intent-First + factory model.
+
+### STILL GATED / DEFERRED (honest)
+- Live operation: AGENT_ROUTING_ENABLED remains OFF — depends on Terminal-A LLM-orchestration infra (LiteLLM + Postgres, evo2 GPU) per ADR-049 §D6 and the compute-audit findings. The 9 agents are governance-complete and fully tested, but NOT yet live-connected; no CONTRACT port is opened to clients by this entry.
+- ADR-046 §D5 live-wiring (real immutable_storage_ref / input–output token split) — needs a live LLM; additive scaffolding is ready.
+- Remaining ~18 capabilities (savings, tariff C11, news C18, auth C19, account C20, KYB C24, FX-rate C25, EDD C28, settlements C29, support C30, …) — extensible via the proven ADR-mask → port → agent path; this is a PRODUCT-PRIORITY decision, NOT a technical gap.
+- Compute audit delivered to Terminal A (LiteLLM No-DB, evo2-235b on CPU/idle, model duplication, factory-on-Claude-vs-local) — Terminal A's zone; the banxe-architecture guardian-webhook has started reporting green (one audit item progressed).
+
+### Next real value step
+Either live activation (Terminal-A infra) OR a product-prioritised next capability via the proven ADR-mask → port → agent path.
+
+- IL-number note: IL-148 was explicitly reserved for this PR (#372) by the parallel session — see IL-149 above (PR #373), which records "IL-148 reserved by PR #372 → next free IL-149". On the now-current origin/main two parallel entries landed after this PR was cut: IL-147 (merged via PR #371) and IL-149 (Ledger-Coupling Merge Gate, merged via PR #373). On rebase, this IL-148 block was INTEGRATED — appended AFTER the latest parallel entry (IL-149) per append-only canon (no prior entry rewritten, I-28), discarding nothing; the resulting file order is IL-147, IL-149, IL-148. The numeric gap (148 after 149) is intentional and follows merge-chronological append order, not numeric reordering. No renumber was needed (IL-148 reserved; tree-wide grep across origin/main confirms 0 other IL-148 references). Authored/rebased in an isolated git worktree off origin/main (parallel-session-isolation canon, Rule 6) so the parallel sessions' checkouts were left untouched.
+- Refs: ADR-045 (Intent-First four-layer model + INTENT-FIRST-CANON); ADR-046 (Decision Lineage — AgentDecisionRecord, §D5 fields/live-wiring); ADR-047 (AI Cost Governance — hard caps + AUTO/REVIEW/BLOCK); ADR-048 (S13-00 Business Process Repository — intent→process_ref); ADR-049 (Intent Layer + client-facing masks, initial 6; §D2 gate chain; §D6 AGENT_ROUTING_ENABLED precondition); ADR-053 (mask extensibility + domain-agent-as-adapter-behind-port boundary); ADR-054 (Analytics mask); ADR-055 (Statements mask); ADR-040 (meta-plane — LLM-orchestration substrate L2 live operation is gated on, Terminal A); the 9 CONTRACT ports (WalletPort/PartnerPort/ExchangePort in banxe-payment-core + KYCProviderPort/NotificationProviderPort/CRMProviderPort/CardPort/AnalyticsPort/StatementPort in banxe-emi-stack); IL-132 (L2 initial 6-mask code-complete) + IL-135 (lineage/cost DRY consolidation) + IL-140 (Cards) + IL-141 (Analytics) + IL-143 (Statements) + IL-145-CLIENT-FACING-EXTENSION (3 extension masks → 9 agents milestone); .claude/rules/agents.md (HITL bands; ARL AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §10/§11 (config-over-hardcoding; production-state mutation gate — code-complete, NOT a production green light).
