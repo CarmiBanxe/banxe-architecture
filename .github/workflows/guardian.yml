@@ -7,6 +7,21 @@ on:
 permissions:
   contents: read
 jobs:
+  guardian-schemas:
+    name: guardian-schemas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Enforce S2 governance JSON-Schemas (IL-156 schemas, IL-164 gate)
+        run: |
+          set -e
+          pip install jsonschema
+          python3 schemas/validate_schemas.py
+          echo "guardian-schemas OK"
   guardian-factory:
     name: guardian-factory
     runs-on: ubuntu-latest
