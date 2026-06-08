@@ -10842,3 +10842,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Генератор в S2 работает только в режиме --check (не перезаписывает INSTRUCTION-LEDGER.md), чтобы не конфликтовать с ledger-append-only (ADR-057). Замена gate-логики на generated==rebuild — в S3.
 - **Blocker:** Нет. (Открытый follow-up: guardian.yml ADR-056/ADR-057 всё ещё требуют ручной IL-блок в монолите; перевод на shard-распознавание — S3.)
 - **Refs:** ADR-059, ADR-056, ADR-057, IL-159, IL-160.
+
+---
+
+### IL-162 — ADR-059 append-serialization (Sprint 3: усиление guardian — shard append-only + generated==rebuild)
+
+- **Источник:** CEO
+- **Дата:** 2026-06-08T21:00:00Z
+- **Инструкция:** Усилить guardian.yml: добавить gate append-only для `ledger/entries/` (запрет D/R/M шардов) и проверку «generated file == rebuild» через `python ledger/build_ledger.py --check`.
+- **Шаги:**
+  1. Добавить job `guardian-ledger-shards` в `.github/workflows/guardian.yml`.
+  2. Shard append-only: `git diff --name-status` по `ledger/entries/`, fail при D/R/M (инвариант I-28).
+  3. Generated==rebuild: запуск `build_ledger.py --check` (детерминированная пересборка из шардов).
+  4. Открыть PR #390 и провести через guardian-гейты.
+- **Статус:** DONE ✅ (guardian теперь сквозно гарантирует детерминированную сборку реестра)
+- **Proof:** ветка `feat/adr-059-s3-guardian-shard-gate`; PR #390; job `guardian-ledger-shards` зелёный (shard append-only OK + ledger-build check OK).
+- **Deviation:** Нет. IL-162 = genuine next free (max=161, подтверждён IL-161).
+- **Blocker:** Нет. (Закрывает follow-up из IL-161: guardian теперь распознаёт шарды; перевод монолита на shard-источник — S4.)
+- **Refs:** ADR-059, ADR-056, ADR-057, IL-159, IL-160, IL-161.
