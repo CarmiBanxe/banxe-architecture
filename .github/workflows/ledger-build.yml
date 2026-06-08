@@ -1,0 +1,25 @@
+name: ledger-build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ledger-build:
+    name: ledger-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Verify INSTRUCTION-LEDGER.md is rebuildable from shards (ADR-059, S2)
+        run: |
+          set -e
+          python ledger/build_ledger.py --check
+          echo "ledger-build OK"
