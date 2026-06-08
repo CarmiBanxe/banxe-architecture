@@ -10515,3 +10515,25 @@ Self-audit note
 - GATED: live operation (AGENT_ROUTING_ENABLED) remains OFF — depends on Terminal-A LLM-orchestration infra per ADR-049 §D6. This milestone records L2 CODE + governance as complete and enforced, NOT live client exposure; no CONTRACT port is opened to clients by this entry.
 - Note on IL number: on origin/main IL-140 = Cards client-facing line, IL-141 = Analytics mask, IL-143 = Statements mask, IL-144 = crypto-exchange spec-repo-map; IL-142 (docs/il-142) and IL-146 (docs/il-146 crypto-ops) are held by parallel branches. IL-145 is the next genuinely free number (append-only, no collision; 0 tree-wide references to IL-145 on origin/main confirmed). Authored in an isolated git worktree off origin/main (parallel-session-isolation canon, Rule 6) so the parallel sessions' checkouts were left untouched.
 - Refs: ADR-049 (Intent Layer & Client-Facing Agent Masks — the 6 initial §D3 masks + §D2 chain + §D4 thresholds these extend; IL-126 SPEC, IL-132 L2 6/6 code-complete); ADR-053 (mask-extensibility D1 + mask↔domain-agent boundary D2 + add-a-capability path D3 — the mechanism all 3 lines apply); ADR-054 (Analytics / Reporting C7 mask); ADR-055 (Statements mask); ADR-046 (AgentDecisionRecord — one per action, every exit path); ADR-047 (cost caps + AUTO/REVIEW/BLOCK bands); ADR-048 (intent→process_ref resolution); ADR-040 (meta-plane — LLM-orchestration substrate L2 live operation is gated on, Terminal A); the 9 CONTRACT ports (WalletPort/PartnerPort/ExchangePort in banxe-payment-core + KYCProviderPort/NotificationProviderPort/CRMProviderPort + CardPort/AnalyticsPort/StatementPort in banxe-emi-stack); IL-132 (L2 6-mask milestone) + IL-135 (lineage/cost DRY consolidation) + IL-140 (Cards) + IL-141 (Analytics) + IL-143 (Statements); .claude/rules/agents.md (HITL bands; ARL AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §10/§11 (config-over-hardcoding; production-state mutation gate — code-complete, not a production green light).
+
+
+### IL-145: IL-136 crypto-ops orchestration — partial resolution
+- **Date:** 2026-06-08 CEST
+- **Source:** CEO / factory orchestration; browser-verified repo status (Terminal-A, 2026-06-08).
+- **Context:** IL-136 (crypto-ops factory request to Terminal B) required 3 SPEC paths + repo path/SHA. This entry records the partial resolution in the ledger (the IL-146-numbered block from PR #367 did not land on origin/main during conflict resolution; this canonical entry uses the next free number IL-145).
+- **Resolved:**
+  - crypto-ops-monitor: CarmiBanxe/crypto-ops-monitor EXISTS. main HEAD = `725dd0a` (PR #9). Real path and SHA verified in browser (HTTP 200).
+  - 3 SPEC drafts merged to banxe-architecture via PR #367 (merge commit `7ddfe52`):
+    - `docs/refactor/legacy/crypto-ops-monitor-CONTRACT-SPEC-DRAFT-2026-06-08.md`
+    - `docs/refactor/legacy/banxe-portfolio-CONTRACT-SPEC-DRAFT-2026-06-08.md`
+    - `docs/refactor/legacy/banxe-news-CONTRACT-SPEC-DRAFT-2026-06-08.md`
+  - All 3 drafts carry Status: DRAFT (not buildable; not gate-closing).
+- **Blocker (remaining):**
+  - banxe-portfolio: CarmiBanxe/banxe-portfolio returns 404 (repo does not exist as of 2026-06-08). Path/SHA NOT fabricated (I-28).
+  - banxe-news: CarmiBanxe/banxe-news returns 404 (repo does not exist as of 2026-06-08). Path/SHA NOT fabricated (I-28).
+  - Gate IL-136 remains OPEN for these 2 repos. Full resolution requires operator/Terminal B to create both repos and report commit SHA.
+- **Status:** IN_PROGRESS (1 of 3 repos verified; 3 SPEC drafts delivered; 2 repos missing).
+- **Proof:** browser GET CarmiBanxe/crypto-ops-monitor → 200 (HEAD `725dd0a`); browser GET CarmiBanxe/banxe-portfolio → 404; browser GET CarmiBanxe/banxe-news → 404; PR #367 merged (commit `7ddfe52`, guardian 7/7).
+- **Deviation:** PR #367 authored its block as IL-146 and Status PARTIALLY-RESOLVED (non-canonical lifecycle value); that ledger block did not reach origin/main. This entry restores canon: number IL-145 (next free) and Status IN_PROGRESS (gate IL-136 still OPEN). No prior entry rewritten (append-only).
+- **IL-number note:** origin/main highest prior entry block = IL-144; IL-145 is the next genuinely free number (0 tree-wide references to IL-145 confirmed); IL-146 was held by parallel branch PR #367.
+- **Refs:** IL-136 (original crypto-ops factory request, BLOCKED); ADR-050 (Option B delivery model); I-28 (100% traceability, fabrication prohibited).
