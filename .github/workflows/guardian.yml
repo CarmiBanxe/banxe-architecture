@@ -87,3 +87,34 @@ jobs:
             echo "FAIL: existing $LEDGER lines were removed or modified (Invariant I-28, ADR-057). Corrections must be a NEW appended IL block, never an edit of prior history:"; echo "$REMOVED"; exit 1
           fi
           echo "ledger-append-only OK"
+  guardian-ledger-shards:
+    name: guardian-ledger-shards
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Shard append-only invariant (ADR-059 S3, I-28)
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -e
+          SHARDS='ledger/entries/'
+          MUTATED=$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- "$SHARDS" | grep -E '^(D|R|M)' || true)
+          if [ -n "$MUTATED" ]; then
+            echo "FAIL: shards under $SHARDS are append-only (Invariant I-28, ADR-059 S3). Only NEW shard files may be added; deletions/renames/edits are forbidden:"
+            echo "$MUTATED"
+            exit 1
+          fi
+          echo "shard append-only OK"
+      - name: Generated artifact == rebuild (ADR-059 S3)
+        run: |
+          set -e
+          python ledger/build_ledger.py --check
+          echo "guardian-ledger-shards OK"
