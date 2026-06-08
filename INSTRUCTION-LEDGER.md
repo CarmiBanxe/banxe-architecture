@@ -10622,3 +10622,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 - IL-number note: IL-148 was explicitly reserved for this PR (#372) by the parallel session — see IL-149 above (PR #373), which records "IL-148 reserved by PR #372 → next free IL-149". On the now-current origin/main two parallel entries landed after this PR was cut: IL-147 (merged via PR #371) and IL-149 (Ledger-Coupling Merge Gate, merged via PR #373). On rebase, this IL-148 block was INTEGRATED — appended AFTER the latest parallel entry (IL-149) per append-only canon (no prior entry rewritten, I-28), discarding nothing; the resulting file order is IL-147, IL-149, IL-148. The numeric gap (148 after 149) is intentional and follows merge-chronological append order, not numeric reordering. No renumber was needed (IL-148 reserved; tree-wide grep across origin/main confirms 0 other IL-148 references). Authored/rebased in an isolated git worktree off origin/main (parallel-session-isolation canon, Rule 6) so the parallel sessions' checkouts were left untouched.
 - Refs: ADR-045 (Intent-First four-layer model + INTENT-FIRST-CANON); ADR-046 (Decision Lineage — AgentDecisionRecord, §D5 fields/live-wiring); ADR-047 (AI Cost Governance — hard caps + AUTO/REVIEW/BLOCK); ADR-048 (S13-00 Business Process Repository — intent→process_ref); ADR-049 (Intent Layer + client-facing masks, initial 6; §D2 gate chain; §D6 AGENT_ROUTING_ENABLED precondition); ADR-053 (mask extensibility + domain-agent-as-adapter-behind-port boundary); ADR-054 (Analytics mask); ADR-055 (Statements mask); ADR-040 (meta-plane — LLM-orchestration substrate L2 live operation is gated on, Terminal A); the 9 CONTRACT ports (WalletPort/PartnerPort/ExchangePort in banxe-payment-core + KYCProviderPort/NotificationProviderPort/CRMProviderPort/CardPort/AnalyticsPort/StatementPort in banxe-emi-stack); IL-132 (L2 initial 6-mask code-complete) + IL-135 (lineage/cost DRY consolidation) + IL-140 (Cards) + IL-141 (Analytics) + IL-143 (Statements) + IL-145-CLIENT-FACING-EXTENSION (3 extension masks → 9 agents milestone); .claude/rules/agents.md (HITL bands; ARL AGENT_ROUTING_ENABLED=false precondition); CLAUDE.md §10/§11 (config-over-hardcoding; production-state mutation gate — code-complete, NOT a production green light).
+
+
+---
+
+### IL-150: Ledger Append-Only Immutability (Sprint B) — ledger-append-only + ADR-057
+- **Источник:** CEO / factory orchestration (2026-06-08 CEST)
+- **Инструкция:** Реализовать Sprint B: независимая анти-регрессия append-only для INSTRUCTION-LEDGER.md — запрет удаления/перезаписи уже зафиксированных IL-блоков (инвариант I-28), действующая на pull_request И push в main.
+- **Scope:** governance + CI. Docs+code (guardian.yml job). Независимо от guardian-ledger (ADR-056).
+- **Шаги:**
+  1. Verify anchors: высший ADR = ADR-056 (Sprint A) → next free ADR-057; высший IL = IL-149 (IL-148 и IL-149 на main) → next free IL-150. -> DONE
+  2. ADR-057 (Ledger Append-Only Immutability) authored at docs/adr/ADR-057-ledger-append-only-immutability.md (Status: Proposed). -> DONE
+  3. guardian.yml: add job ledger-append-only (pull_request + push) — FAIL если в diff реестра есть удалённые/изменённые строки (только добавления). -> DONE
+  4. Open atomic PR (ADR-057 + guardian.yml + this IL-150). -> IN_PROGRESS
+  5. Operator action: добавить ledger-append-only в required status checks main (рядом с guardian-ledger). -> PENDING (operator)
+- **Статус:** IN_PROGRESS
+- **Proof:** branch feat/adr-057-ledger-append-only; commits: ADR-057 add + guardian.yml 8463a83 (ledger-append-only job, 89 loc). PR + green guardian checks to be attached on open.
+- **Deviation:** нет.
+- **Blocker:** Required-status-check toggle в branch protection — операторское действие (вне прав сессии).
