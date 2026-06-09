@@ -11010,7 +11010,7 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-170: ADR-060 multi-actor orchestration stack — merge_group + branch namespace + concurrency + shard bridge
+### IL-171: ADR-060 multi-actor orchestration stack — merge_group + branch namespace + concurrency + shard bridge
 - **Date:** 2026-06-09
 - **Source:** CEO / factory orchestration. PR #173 lands the ADR-060 orchestration stack: `guardian.yml` + `ledger-build.yml` gain `merge_group` trigger support, agent/factory branch-namespace awareness, concurrency groups, and the ADR-060 ledger shard bridge wired through the ADR-056 ledger-coupling gate.
 - **Steps:**
