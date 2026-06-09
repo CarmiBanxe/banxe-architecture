@@ -11018,3 +11018,11 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** branch protection deferred (plan limit), not applied this step; recorded as blocker per canon.
 - **Blocker:** GitHub plan (Pro/Team) required for private-repo branch protection / rulesets — operator decision (upgrade vs public).
 - **Refs:** IL-157 (HANDOFF target frontend-repo bootstrap); IL-154 (dependency map / reuse candidates); banxe-repo-template; ADR-057/I-28 (append-only); HANDOFF-target-frontend-repo-bootstrap.md §2 (branch policy) / §5 (CI hooks).
+
+### IL-171 — Sprint-45 CFO Office Agents (FPAAgent + BIAgent)
+- **What:** FPAAgent (injects `LedgerPort`, read-only GL — budget vs actuals) + BIAgent (injects `AnalyticsPort`, read-only ClickHouse OLAP — dashboards + KPI alerts). ORG-STRUCTURE §2.5.2 / §2.5.5, both L1 Auto. PROPOSED → IMPLEMENTED.
+- **How:** full ADR-049 §D2 gate-chain (process_ref → scope → band → cost_cap → compliance → [step-up N/A] → port) + one ADR-046 `AgentDecisionRecord` per action; read-only AUTO-only (below-AUTO → re-check halt, no money movement); ports + DecisionRecorder constructor-injected; shared primitives from `services/agents/_lineage.py`. R-SEC-NEW-01: only opaque handles in lineage, never balances/PII.
+- **Proof:** `banxe-emi-stack` PR #166 MERGED (SHA ecede803, squash, `--admin` under the documented R3 non-reporting-guardian exception — `guardian-factory`/`guardian-project` are external-webhook contexts with no repo workflow, perpetually unreported; `enforce_admins=false`; all 13 real checks GREEN). 63/63 tests, 100% coverage on both new modules.
+- **Deferred → sprint-46 / ADR-078:** TreasuryAgent (NOSTRO reconciliation + FX exposure) + ForecastAgent (liquidity forecasting) — no injectable port CONTRACT yet; remain `(PROPOSED)` in ORG §2.5. Fabricating ports would violate I-10.
+- **Deviation:** governance doc-sync only (no code in this banxe-architecture commit). Companion file `instruction-ledger/sprint-45/IL-FPA-01-cfo-agents.md`; `docs/ORG-STRUCTURE.md` §2.5 `(PROPOSED)` removed on FPAAgent + BIAgent only.
+- **Refs:** IL-FPA-01 (sprint-45 ledger file); ADR-049 (§D2 masks); ADR-046 (lineage); ADR-056 (ledger-coupling gate); ADR-057 (append-only); ADR-078 (deferred CFO ports — sprint-46); banxe-emi-stack PR #166.
