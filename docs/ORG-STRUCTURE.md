@@ -170,13 +170,13 @@ CFO must approve any ledger adjustment >£10,000.
 | Agent | Task | Autonomy |
 |-------|------|----------|
 | `FPAAgent` | Budget vs actuals reporting | L1 Auto |
-| `ForecastAgent` (PROPOSED) | Liquidity forecasting | L2 Review |
+| `ForecastAgent` | Liquidity forecasting | L2 Review |
 
 #### 2.5.3 Treasury
 
 | Agent | Task | Autonomy |
 |-------|------|----------|
-| `TreasuryAgent` (PROPOSED) | NOSTRO reconciliation, FX exposure | L2 Review |
+| `TreasuryAgent` | NOSTRO reconciliation, FX exposure | L2 Review |
 
 Treasury decisions >£100k require CFO sign-off.
 
