@@ -425,3 +425,10 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - [2026-04-19] 7816c87 — refactor(auth): add application service seam for thin router migration
 - [2026-05-03] 3adf76b — feat(infra): Keycloak realm banxe-emi — compose stack + realm export + runbook (pre-GATE-A; G-IAM-01..05,07 prep)
 - [2026-05-04] 76dd1e3 — feat(guardian-shim): claude-code pre-bash enforcer v0.1 + Strategy-S1 native hook (audit default)
+
+### Sprint 45 — IL-FPA-01 CFO Office Agents (FP&A + BI)
+- **FPAAgent** (ORG §2.5.2, L1 Auto) — budget vs actuals; injects `LedgerPort` (read-only GL). Soul: budget-agent.
+- **BIAgent** (ORG §2.5.5, L1 Auto) — dashboard + KPI alerts; injects `AnalyticsPort` (read-only ClickHouse). Soul: finance-bi-agent.
+- Both: ADR-049 §D2 gate-chain + ADR-046 lineage, AUTO-only read-only, ports+recorder injected, R-SEC opaque-handles-only. 63/63 tests, 100% cov.
+- Merged via banxe-emi-stack PR #166 (squash, SHA ecede803) — `--admin` under documented R3 non-reporting-guardian exception (guardian-factory/guardian-project unreported, enforce_admins=false, 13 real checks green).
+- **DEFERRED → sprint-46/ADR-078:** TreasuryAgent (NOSTRO recon + FX exposure) + ForecastAgent (liquidity) — no port CONTRACT yet; remain (PROPOSED) in ORG §2.5.

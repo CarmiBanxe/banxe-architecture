@@ -169,7 +169,7 @@ CFO must approve any ledger adjustment >£10,000.
 
 | Agent | Task | Autonomy |
 |-------|------|----------|
-| `FPAAgent` (PROPOSED) | Budget vs actuals reporting | L1 Auto |
+| `FPAAgent` | Budget vs actuals reporting | L1 Auto |
 | `ForecastAgent` (PROPOSED) | Liquidity forecasting | L2 Review |
 
 #### 2.5.3 Treasury
@@ -194,7 +194,7 @@ Treasury decisions >£100k require CFO sign-off.
 
 | Agent | Task | Autonomy |
 |-------|------|----------|
-| `BIAgent` (PROPOSED) | Dashboard generation, KPI alerts | L1 Auto |
+| `BIAgent` | Dashboard generation, KPI alerts | L1 Auto |
 
 ---
 
