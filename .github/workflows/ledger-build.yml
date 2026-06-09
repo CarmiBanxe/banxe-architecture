@@ -5,9 +5,13 @@ on:
     branches: [main]
   push:
     branches: [main]
+  merge_group:
 
 permissions:
   contents: read
+concurrency:
+  group: ledger-projection-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false  
 
 jobs:
   ledger-build:
