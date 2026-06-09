@@ -4,6 +4,7 @@ on:
     branches: [main]
   push:
     branches: [main]
+      merge_group:
 permissions:
   contents: read
 jobs:
@@ -133,3 +134,25 @@ jobs:
           set -e
           python ledger/build_ledger.py --check
           echo "guardian-ledger-shards OK"
+  guardian-branch-naming:
+    name: guardian-branch-naming
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Branch namespace convention (ADR-060)
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -e
+          echo "Head branch: $BRANCH"
+          # Canonical namespace: agent/<actor>/<id>/<slug>
+          # actor in {central|right|factory}; id = ULID/UUID/session; slug = kebab-case
+          PATTERN='^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$'
+          # Allow-list legacy/maintenance prefixes (non-actor automation)
+          if echo "$BRANCH" | grep -qE '^(dependabot|renovate|revert)/'; then
+            echo "guardian-branch-naming OK (allow-listed prefix)"; exit 0
+          fi
+          if ! echo "$BRANCH" | grep -qE "$PATTERN"; then
+            echo "FAIL: branch '$BRANCH' violates ADR-060 namespace agent/<actor>/<id>/<slug> (actor=central|right|factory)"; exit 1
+          fi
+          echo "guardian-branch-naming OK"
