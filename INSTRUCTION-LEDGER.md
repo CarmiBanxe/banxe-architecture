@@ -11044,3 +11044,12 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** `banxe-emi-stack` PR (sprint-47 branch) — 39 tests, 100% coverage on both new modules; ruff + semgrep clean.
 - **Doc-sync (this PR):** ADR-079; ORG §2.2 `(PROPOSED)` removed + L1/L3 clarifying note; companion `instruction-ledger/sprint-47/IL-RISK-01-cro-risk-oversight.md`; MEMORY sprint-47 block.
 - **Refs:** ADR-079 (this port + contradiction resolution); ADR-049 §D2; ADR-046; ADR-078 (sibling read-only-port-first, sprint-46); ADR-056 (ledger-coupling); I-10 (no fake integrations); EU AI Act Art.14.
+
+### IL-174 — Sprint-48 CTO DataQualityAgent (ADR-080 DataQualityPort, L1 read-only)
+- **What:** ORG §2.7.1 CTO (SMF26) `DataQualityAgent` — data drift detection. PROPOSED → IMPLEMENTED. L1-Auto read-only detection/reporting.
+- **ADR-080 (port-first):** `services/data_quality/data_quality_port.py` — read-only `DataQualityPort` (abc.ABC + InMemory + PortError): drift score, quality report (null-rate / schema-conformance / freshness / drift), dataset list, freshness. Decimal (I-01). **No** mutate/trigger/retrain method exists — detection/reporting surface only. Preserves I-27 (no autonomous model updates) and I-10 (no fake integrations).
+- **Agent:** `services/agents/data_quality_agent.py` — full ADR-049 §D2 chain (process_ref → scope → band → cost_cap → compliance(DATA_QUALITY) → port), 1 ADR-046 record/action, port+recorder injected, R-SEC opaque-handles-only (dataset names only). **INVARIANT (enforced + tested):** never triggers retrain/pipeline/write — detection/reporting only; any such op out-of-scope/refused.
+- **Scope:** ONLY DataQualityAgent this sprint. `MLPipelineAgent` (§2.7.1, L3, I-27) + `DeployAgent` (§2.7.2, L2/L3) remain `(PROPOSED)` — deferred.
+- **Proof:** `banxe-emi-stack` PR #169 — 54 tests, 100% coverage on both new modules; ruff + semgrep clean; full suite 10614 passed / 0 failed.
+- **Doc-sync (this PR):** ADR-080; ORG §2.7.1 `(PROPOSED)` removed on DataQualityAgent only; companion `instruction-ledger/sprint-48/IL-DQ-01-data-quality.md`; MEMORY sprint-48 block.
+- **Refs:** ADR-080 (this port); ADR-049 §D2; ADR-046; ADR-079 (sibling read-only-port-first, sprint-47); ADR-056 (ledger-coupling); I-27 (no autonomous model updates); I-10 (no fake integrations).
