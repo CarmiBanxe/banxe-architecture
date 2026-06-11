@@ -432,3 +432,10 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - Both: ADR-049 §D2 gate-chain + ADR-046 lineage, AUTO-only read-only, ports+recorder injected, R-SEC opaque-handles-only. 63/63 tests, 100% cov.
 - Merged via banxe-emi-stack PR #166 (squash, SHA ecede803) — `--admin` under documented R3 non-reporting-guardian exception (guardian-factory/guardian-project unreported, enforce_admins=false, 13 real checks green).
 - **DEFERRED → sprint-46/ADR-078:** TreasuryAgent (NOSTRO recon + FX exposure) + ForecastAgent (liquidity) — no port CONTRACT yet; remain (PROPOSED) in ORG §2.5.
+
+### Sprint 46 — IL-172 / ADR-078 CFO Treasury & Forecast (the 2 deferred from sprint-45)
+- **ADR-078 ports** (`services/treasury/`, read-only): `FXExposurePort` (no trade execution), `NOSTROReconPort` (read+compare, no transfers), `LiquidityForecastPort` (inputs only, no ML). abc.ABC + InMemory + PortError, Decimal.
+- **TreasuryAgent** (ORG §2.5.3, L2 Review) — FX exposure + NOSTRO recon; §D2 step-up = **>£100k → CFO HITL**. **ForecastAgent** (§2.5.2, L2 Review) — rolling liquidity; below-AUTO → Head-of-FP&A HITL.
+- Both: ADR-049 §D2 + ADR-046 lineage, ports+recorder injected, R-SEC opaque-handles-only. 77 tests, 100% cov. banxe-emi-stack PR #167.
+- Name coexistence: `services/agents/treasury_agent.py:TreasuryAgent` (mask) vs pre-existing `services/treasury/treasury_agent.py` (domain) — distinct packages, full suite green.
+- **CFO office §2.5 now fully implemented** (FPA/BI sprint-45 + Treasury/Forecast sprint-46).
