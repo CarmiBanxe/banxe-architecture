@@ -471,3 +471,8 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - Second MASK_ONLY: thin §D2 mask `services/agents/credit_scoring_agent.py` delegating to existing `services/lending/` (CreditScorer + LoanOriginator) via injected handle Protocol — NO domain rewrite/port.
 - Actions: score_customer/get_latest_score (AUTO reads) + decide. **⭐ Regulatory invariant (tested): credit REJECTION never finalized autonomously** — proposed DECLINED → force step-up to human regardless of confidence; no reviewer → HOLD, domain.decide never called, escalate→CREDIT_OFFICER (EU AI Act Art.14 / FCA CONC / I-27). ValueError = provider-error. R-SEC: no income/score/PII in lineage. 100% cov on mask.
 - No new ADR (existing §D2). banxe-emi-stack PR (sprint-51). Remaining MASK_ONLY: Contract→agreement, NPS→support/feedback_analytics.
+
+### Sprint 52 — IL-182 ContractAgent (MASK_ONLY over agreement)
+- Third MASK_ONLY: thin §D2 mask `services/agents/contract_agent.py` delegating to existing `services/agreement/` via injected `AgreementPort` (already a Protocol — reused directly, no new port). NO domain rewrite.
+- ORG §2.9 Legal, L2 Review, gate Legal Counsel. create_agreement/record_signature → Legal Counsel review step-up (no reviewer → HOLD, domain not called); get_agreement → AUTO read. ADR-049 §D2 + ADR-046 lineage; AgreementError = provider-error (emit+reraise). R-SEC: no terms/PII in lineage. 100% cov on mask.
+- No new ADR (existing §D2). banxe-emi-stack PR (sprint-52). Remaining MASK_ONLY: NPS→support/feedback_analytics (last of Tier-2).
