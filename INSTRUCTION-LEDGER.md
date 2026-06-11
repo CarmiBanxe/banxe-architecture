@@ -11053,3 +11053,15 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** `banxe-emi-stack` PR #169 — 54 tests, 100% coverage on both new modules; ruff + semgrep clean; full suite 10614 passed / 0 failed.
 - **Doc-sync (this PR):** ADR-080; ORG §2.7.1 `(PROPOSED)` removed on DataQualityAgent only; companion `instruction-ledger/sprint-48/IL-DQ-01-data-quality.md`; MEMORY sprint-48 block.
 - **Refs:** ADR-080 (this port); ADR-049 §D2; ADR-046; ADR-079 (sibling read-only-port-first, sprint-47); ADR-056 (ledger-coupling); I-27 (no autonomous model updates); I-10 (no fake integrations).
+
+### IL-175: Trading Frontend Sprint 3 Step 2.2 — branch protection APPLIED (blocker closed)
+- **Date:** 2026-06-09
+- **Source:** CEO / operator signal (b): make `banxe-trading-frontend` PUBLIC to unblock protection (IL-170 recorded the plan-limit blocker).
+- **Action:** (1) Secret-scan preflight on new repo tree → no .env/secret-like files. (2) `gh repo edit --visibility public` → repo now PUBLIC. (3) Branch protection PUT on `main`: enforce_admins=true, required PR reviews=1 (dismiss_stale), no force-push, no deletion, required_linear_history=true, required_conversation_resolution=true. Verified actual==expected on all fields.
+- **required_status_checks:** intentionally `null` for now — real `guardian`/`factory-guard` matrix check names unknown until first workflow run; wiring them is a separate follow-up (lesson from banxe-architecture PR #384, do not guess contexts → would permanently block PRs).
+- **Status:** DONE — IL-157 Step 2.1 (repo) + Step 2.2 (branch protection) both complete. Repo visibility = PUBLIC (operator decision b).
+- **Open / next (IL-157 §Step 2.3–2.5, factory tasks):** scaffold §3 FSD layout + §4 baseline (React+TS+Vite+pnpm+Zustand+Vitest); after first workflow run, wire `guardian`/`factory-guard` as required status checks; extract IL-154 reuse candidates (OrderBookStream, calculators, TradeProxy URL map) into src/shared & src/features; charting license decision (IL-154 OPEN) → ADR.
+- **Proof:** branch-protection GET → {admins:true, reviews:1, force:false, del:false, linear:true, conv:true, checks:null}; `gh repo view ... --json visibility` → PUBLIC.
+- **Deviation:** chose visibility=public (operator signal b) over Pro-upgrade to enable protection on free plan.
+- **Blocker:** none (plan-limit blocker from IL-170 resolved).
+- **Refs:** IL-170 (blocker record), IL-157 (HANDOFF), IL-154 (reuse candidates), banxe-repo-template, ADR-056/057, I-28.
