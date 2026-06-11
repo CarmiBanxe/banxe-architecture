@@ -11114,3 +11114,12 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Doc-sync (this PR):** ORG line ~406 `(PROPOSED)` removed on CreditScoringAgent only; companion `instruction-ledger/sprint-51/IL-CREDIT-01-credit-scoring-agent.md`; MEMORY sprint-51 block. NO new ADR (existing ADR-049 §D2).
 - **Note:** rebased after main took IL-179 (PR #408 trading-frontend) → renumbered IL-179→IL-180 (next free), append-only over main's ledger (I-28).
 - **Refs:** ADR-049 §D2; ADR-046; ADR-081 (deploy prod→CTO step-up analogue, here reject→human); audit IL-176 (MASK_ONLY); I-27 (FCA CONC); EU AI Act Art.14.
+
+### IL-181: Charting License ADR — adopt lightweight-charts (Apache-2.0), close IL-154 OPEN
+- **Date:** 2026-06-11
+- **ADR:** ADR-082 (`docs/adr/ADR-082-charting-license-lightweight-charts.md`) — ACCEPTED.
+- **Decision:** Adopt `lightweight-charts` (TradingView, Apache-2.0) as the charting library for banxe-trading-frontend. Legacy `charting_library` (proprietary) is permanently OUT — do not vendor or import. Custom D3 rejected for now (cost/delay).
+- **Rationale:** Apache-2.0 license compatible with public repo; purpose-built for financial data (candlestick, OHLCV); ~45 kB gzipped; TypeScript-first; zero dependencies.
+- **Scope:** `widgets/depth-chart/` and future candlestick widgets in banxe-trading-frontend. Drawing tools / indicator overlays deferred to future ADR if needed.
+- **Closes:** IL-154 OPEN item (charting license decision).
+- **Refs:** IL-154 (reuse candidates), IL-157 (HANDOFF §5), ADR-082, ADR-056 (ledger coupling).
