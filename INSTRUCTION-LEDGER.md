@@ -11010,7 +11010,7 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-171: ADR-060 multi-actor orchestration stack — merge_group + branch namespace + concurrency + shard bridge
+### IL-172: ADR-060 multi-actor orchestration stack — merge_group + branch namespace + concurrency + shard bridge
 - **Date:** 2026-06-09
 - **Source:** CEO / factory orchestration. PR #173 lands the ADR-060 orchestration stack: `guardian.yml` + `ledger-build.yml` gain `merge_group` trigger support, agent/factory branch-namespace awareness, concurrency groups, and the ADR-060 ledger shard bridge wired through the ADR-056 ledger-coupling gate.
 - **Steps:**
@@ -11022,3 +11022,22 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Governance/CI doc commit only — no code, no project-code repos touched in THIS ledger commit. Append-only per Invariant I-28; previous entry was IL-169 (genuine numeric anchor; IL-202/IL-2026 are false `IL-2026-…` timestamp matches, not numeric anchors), so genuine next free = IL-170.
 - **Blocker:** None.
 - **Refs:** ADR-056 (ledger-coupling gate); ADR-057 (ledger-append-only); ADR-060 (multi-actor orchestration); IL-164/165/166/167/168 (prior CI/ledger coupling commits carried only `INSTRUCTION-LEDGER.md`); IL-169 (S8 complete, intent-first migration done). Ledger shards under `ledger/entries/` remain empty (ADR-059 S4 backfill out of scope); this block appends to the monolith per `build_ledger.py --check` vacuously-OK path.
+### IL-170: Trading Frontend Sprint 3 Step 2 — target repo bootstrapped (operator-gated)
+- **Date:** 2026-06-09
+- **Source:** CEO / operator signal (Step 2 of IL-157 HANDOFF). Operator-gated repo creation + branch protection.
+- **Action:** Created **`CarmiBanxe/banxe-trading-frontend`** (PRIVATE, createdAt 2026-06-08T22:13:47Z) from template **`banxe-repo-template`** (isTemplate=true). Guardian baseline inherited: `.github/workflows/{factory-guard.yml,guardian.yml,claude.yml}` present; default branch = `main`.
+- **Branch protection — BLOCKED (plan limit, NOT silenced):** classic branch protection AND rulesets both return HTTP 403 "Upgrade to GitHub Pro or make this repository public" for a private repo on the current free plan. Per HANDOFF §"no skip flags / fix at root cause", protection is NOT faked. Two canonical resolutions, operator-gated: (a) upgrade account to GitHub Pro/Team (keeps private), or (b) make repo public (audience expansion — banking source, requires explicit operator decision). NOT executed here.
+- **Status:** PARTIAL — repo bootstrapped (DONE); branch protection BLOCKED on plan; required-status-checks (`guardian`/`guard` job contexts) to be wired after first PR run, once GitHub registers real check names.
+- **Open / next (factory tasks, IL-157 §Step 2.3–2.5):** scaffold Section 3 FSD layout + Section 4 baseline (React+TS+Vite+pnpm+Zustand+Vitest); wire Section 5 CI as required checks; extract IL-154 reuse candidates (OrderBookStream, calculators, TradeProxy URL map) into `src/shared`/`src/features`; charting license decision (IL-154 OPEN) → ADR.
+- **Proof:** `gh repo view CarmiBanxe/banxe-trading-frontend` → PRIVATE, from banxe-repo-template; `gh api .../contents/.github/workflows` → claude.yml, factory-guard.yml, guardian.yml; branch-protection PUT + ruleset POST → HTTP 403 (plan limit).
+- **Deviation:** branch protection deferred (plan limit), not applied this step; recorded as blocker per canon.
+- **Blocker:** GitHub plan (Pro/Team) required for private-repo branch protection / rulesets — operator decision (upgrade vs public).
+- **Refs:** IL-157 (HANDOFF target frontend-repo bootstrap); IL-154 (dependency map / reuse candidates); banxe-repo-template; ADR-057/I-28 (append-only); HANDOFF-target-frontend-repo-bootstrap.md §2 (branch policy) / §5 (CI hooks).
+
+### IL-171 — Sprint-45 CFO Office Agents (FPAAgent + BIAgent)
+- **What:** FPAAgent (injects `LedgerPort`, read-only GL — budget vs actuals) + BIAgent (injects `AnalyticsPort`, read-only ClickHouse OLAP — dashboards + KPI alerts). ORG-STRUCTURE §2.5.2 / §2.5.5, both L1 Auto. PROPOSED → IMPLEMENTED.
+- **How:** full ADR-049 §D2 gate-chain (process_ref → scope → band → cost_cap → compliance → [step-up N/A] → port) + one ADR-046 `AgentDecisionRecord` per action; read-only AUTO-only (below-AUTO → re-check halt, no money movement); ports + DecisionRecorder constructor-injected; shared primitives from `services/agents/_lineage.py`. R-SEC-NEW-01: only opaque handles in lineage, never balances/PII.
+- **Proof:** `banxe-emi-stack` PR #166 MERGED (SHA ecede803, squash, `--admin` under the documented R3 non-reporting-guardian exception — `guardian-factory`/`guardian-project` are external-webhook contexts with no repo workflow, perpetually unreported; `enforce_admins=false`; all 13 real checks GREEN). 63/63 tests, 100% coverage on both new modules.
+- **Deferred → sprint-46 / ADR-078:** TreasuryAgent (NOSTRO reconciliation + FX exposure) + ForecastAgent (liquidity forecasting) — no injectable port CONTRACT yet; remain `(PROPOSED)` in ORG §2.5. Fabricating ports would violate I-10.
+- **Deviation:** governance doc-sync only (no code in this banxe-architecture commit). Companion file `instruction-ledger/sprint-45/IL-FPA-01-cfo-agents.md`; `docs/ORG-STRUCTURE.md` §2.5 `(PROPOSED)` removed on FPAAgent + BIAgent only.
+- **Refs:** IL-FPA-01 (sprint-45 ledger file); ADR-049 (§D2 masks); ADR-046 (lineage); ADR-056 (ledger-coupling gate); ADR-057 (append-only); ADR-078 (deferred CFO ports — sprint-46); banxe-emi-stack PR #166.
