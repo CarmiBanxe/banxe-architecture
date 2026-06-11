@@ -11084,3 +11084,13 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Doc-sync (this PR):** ADR-081; ORG §2.7.2 `(PROPOSED)` removed on both DeployAgent rows; companion `instruction-ledger/sprint-49/IL-DEPLOY-01-deploy-agent.md`; MEMORY sprint-49 block.
 - **Note:** IL-175 (PR #404) and IL-176 (reconciliation audit, PR #405) were taken before this; sprint-49 lands as IL-177 (the next free number was re-verified after the audit merged). The MLPipelineAgent (I-27) deferral reuses this token-gated pattern (audit IL-176 Tier-4).
 - **Refs:** ADR-081 (this port); ADR-049 §D2; ADR-046; ADR-078 (£100k→CFO step-up — the analogue reused here as prod→CTO step-up); ADR-056 (ledger-coupling); I-10; EU AI Act Art.14.
+
+### IL-178 — Sprint-50 COO ChargebackAgent (MASK_ONLY over dispute_resolution domain)
+- **What:** ORG §2.6.1 COO (SMF24) `ChargebackAgent` — dispute handling, L2 Review, gate COO. PROPOSED → IMPLEMENTED. First MASK_ONLY sprint (audit IL-176 Tier-2): a thin §D2 client-facing mask over the EXISTING `services/dispute_resolution/` domain — NO domain rewrite, NO new heavy port.
+- **Mask:** `services/agents/chargeback_agent.py` delegates to the dispute/chargeback domain via an injected handle (narrow `Protocol` for DI; the real `ChargebackBridge` conforms). Actions: initiate_chargeback + submit_representment (L2 → COO review step-up; no reviewer → HOLD_FOR_REVIEW, domain NOT called) and get_chargeback_status (AUTO read). Full ADR-049 §D2 chain + 1 ADR-046 record/action; handle + DecisionRecorder injected.
+- **Provider-error:** the domain raises `ValueError` (unknown scheme / non-positive amount / not-found) → mask emits lineage (executed=False) then re-raises (precise catch, no blind except).
+- **R-SEC:** only opaque handles (chargeback_id / dispute_id) in lineage — never amounts/PII/customer data; domain dict return rides on AgentOutcome.result only.
+- **Domain reused (untouched):** `services/dispute_resolution/{chargeback_bridge,dispute_agent,dispute_intake,escalation_manager,investigation_engine,resolution_engine,models}.py` — precedent: §D2 TreasuryAgent mask coexists with domain treasury_agent.
+- **Proof:** `banxe-emi-stack` PR (sprint-50) — tests 100% coverage on the new mask module; ruff check + format clean; semgrep clean; full suite green.
+- **Doc-sync (this PR):** ORG §2.6.1 `(PROPOSED)` removed on ChargebackAgent only; companion `instruction-ledger/sprint-50/IL-CHARGEBACK-01-chargeback-agent.md`; MEMORY sprint-50 block. NO new ADR (operates under existing ADR-049 §D2; no new port/contract).
+- **Refs:** ADR-049 §D2; ADR-046; audit `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md` (IL-176, verdict MASK_ONLY); ADR-078 (£100k→CFO step-up analogue, here →COO).
