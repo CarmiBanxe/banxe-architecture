@@ -11142,3 +11142,11 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Supersedes:** Per-PR lower-then-restore pattern from IL-179. Factory no longer toggles branch protection per merge; protection is now stable.
 - **Reversible:** To be restored to ≥1 when a second reviewer joins the project.
 - **Refs:** IL-179 (prior bootstrap pattern), IL-175 (initial branch protection), IL-157 (HANDOFF).
+
+### IL-184: Trading Frontend Sprint 4 Feature #2 — order-entry form with live calculators
+- **Date:** 2026-06-11
+- **Repo:** CarmiBanxe/banxe-trading-frontend PR #4 (merged SHA 6334783d)
+- **What:** Vertical slice: order-entry form with Zustand store, pure validation (price/qty positive, leverage 1–125), live-computed margin/PNL/liquidation via existing Decimal calculators (§2.4). React widget renders form with prefill from best bid/ask, validation errors, computed readout. Wired alongside order-book widget on trading page.
+- **Canon:** Decimal everywhere (I-01), no auth/Keycloak (ADR-017), no GraphQL (ADR-019), Zustand only, no charting (ADR-082 deferred).
+- **Proof:** 76 tests (11 files), typecheck clean; required checks guard/guardian-factory/guardian-project all green.
+- **Refs:** IL-157 (HANDOFF), IL-154 (calculators reuse), ADR-082 (charting deferred).
