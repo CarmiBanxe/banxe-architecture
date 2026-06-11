@@ -231,7 +231,7 @@ Treasury decisions >£100k require CFO sign-off.
 | `PaymentRouterAgent` | FPS/SEPA/CHAPS routing | L1 Auto | — |
 | `PaymentRouterAgent` | Payment >£50k | L2 Review | COO/CFO |
 | `MassPaymentAgent` | Bulk payroll | L2 Review | CFO |
-| `ChargebackAgent` (PROPOSED) | Dispute handling | L2 Review | COO |
+| `ChargebackAgent` | Dispute handling | L2 Review | COO |
 
 **PSR 2017 Reg.71:** Strong auth required >£30 (automated, no HITL).
 

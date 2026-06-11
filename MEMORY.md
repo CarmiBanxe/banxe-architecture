@@ -461,3 +461,8 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - **DeployAgent** (ORG §2.7.2): staging L2 (CTO review token), production L3 (force CTO step-up; execute only with valid token; without → HALT, port.execute never called). ADR-049 §D2 + ADR-046 lineage; port+recorder injected.
 - **⭐ Safety invariant (tested):** no autonomous prod deploy — prod@confidence=1.0 w/o token HALTs, port.execute never called (spy). R-SEC: token never in lineage. 54 tests, 100% cov.
 - First state-changing mask. ONLY DeployAgent built; MonitoringAgent + MLPipelineAgent stay (PROPOSED). banxe-emi-stack PR (sprint-49).
+
+### Sprint 50 — IL-178 ChargebackAgent (MASK_ONLY over dispute_resolution)
+- First MASK_ONLY sprint (audit Tier-2): thin §D2 mask `services/agents/chargeback_agent.py` delegating to existing `services/dispute_resolution/` domain (ChargebackBridge) via injected handle Protocol — NO domain rewrite, NO new port.
+- ORG §2.6.1 COO, L2 Review, gate COO. initiate_chargeback/submit_representment → COO review step-up (no reviewer → HOLD, domain not called); get_chargeback_status → AUTO read. ADR-049 §D2 + ADR-046 lineage; ValueError = provider-error (emit+reraise). R-SEC opaque-handles-only. 100% cov on mask.
+- No new ADR (existing §D2). banxe-emi-stack PR (sprint-50). Pattern for remaining MASK_ONLY: CreditScoring→lending, Contract→agreement, NPS→support/feedback_analytics.
