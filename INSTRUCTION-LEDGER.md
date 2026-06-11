@@ -11134,3 +11134,11 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Doc-sync (this PR):** ORG §2.9 line ~362 `(PROPOSED)` removed on ContractAgent only (HRAgent stays PROPOSED; AgreementAgent already implemented, distinct); companion `instruction-ledger/sprint-52/IL-CONTRACT-01-contract-agent.md`; MEMORY sprint-52 block. NO new ADR (existing ADR-049 §D2).
 - **Note:** rebased after main took IL-181 (PR #411 ADR-082 charting license) → renumbered IL-181→IL-182 (next free), append-only over main's ledger (I-28).
 - **Refs:** ADR-049 §D2; ADR-046; audit `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md` (IL-176, MASK_ONLY); ADR-078 (step-up analogue, here →Legal Counsel).
+
+### IL-183: Trading Frontend — required reviews set to 0 (operator-approved bootstrap)
+- **Date:** 2026-06-11
+- **Repo:** CarmiBanxe/banxe-trading-frontend
+- **Decision:** Operator explicitly approved setting `required_approving_review_count` to 0 on main branch protection during single-operator bootstrap period. All other protections remain intact: enforce_admins=true, required_status_checks=[guard, guardian-factory, guardian-project] strict=true, no force-push, no deletion, required_linear_history=true, required_conversation_resolution=true.
+- **Supersedes:** Per-PR lower-then-restore pattern from IL-179. Factory no longer toggles branch protection per merge; protection is now stable.
+- **Reversible:** To be restored to ≥1 when a second reviewer joins the project.
+- **Refs:** IL-179 (prior bootstrap pattern), IL-175 (initial branch protection), IL-157 (HANDOFF).
