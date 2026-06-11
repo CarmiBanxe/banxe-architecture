@@ -455,3 +455,9 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - ORG `(PROPOSED)` list drifted from code: ~60 domain `services/*/*_agent.py` exist but only 12 §D2 masks (`services/agents/`). `(PROPOSED)` = "no §D2 mask yet", not "no domain code".
 - Remaining work: MASK_ONLY (Chargeback→dispute_resolution, CreditScoring→lending, Contract→agreement, NPS→support/feedback_analytics) → BUILD (Churn, Lead, Campaign, Incident, HR) → DEFER/GATED (DeployAgent in-flight, MLPipeline I-27).
 - ORG-STRUCTURE now carries a scope-note: tables = client-facing §D2 masks only. See docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md.
+
+### Sprint 49 — IL-177 / ADR-081 CTO DeployAgent (L2 staging / L3 prod, token-gated)
+- **DeployPort** (`services/deploy/`): prepare/request (read/propose) + execute_deployment(plan, approval_token) which RAISES without a valid CTO token (prod mandatory). No autonomous-execute path. abc.ABC + InMemory + PortError.
+- **DeployAgent** (ORG §2.7.2): staging L2 (CTO review token), production L3 (force CTO step-up; execute only with valid token; without → HALT, port.execute never called). ADR-049 §D2 + ADR-046 lineage; port+recorder injected.
+- **⭐ Safety invariant (tested):** no autonomous prod deploy — prod@confidence=1.0 w/o token HALTs, port.execute never called (spy). R-SEC: token never in lineage. 54 tests, 100% cov.
+- First state-changing mask. ONLY DeployAgent built; MonitoringAgent + MLPipelineAgent stay (PROPOSED). banxe-emi-stack PR (sprint-49).

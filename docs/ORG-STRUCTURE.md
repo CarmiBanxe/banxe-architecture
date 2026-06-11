@@ -279,8 +279,8 @@ Treasury decisions >£100k require CFO sign-off.
 
 | Agent | Task | Autonomy | Gate |
 |-------|------|----------|------|
-| `DeployAgent` (PROPOSED) | Staging deploys | L2 Review | CTO |
-| `DeployAgent` (PROPOSED) | Production deploys | L3 | CTO must approve |
+| `DeployAgent` | Staging deploys | L2 Review | CTO |
+| `DeployAgent` | Production deploys | L3 | CTO must approve |
 | `MonitoringAgent` | Health checks, alerting | L1 Auto | — |
 
 #### 2.7.3 Integrations
