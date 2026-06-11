@@ -403,7 +403,7 @@ High-risk AI systems (AML, KYC, fraud scoring, credit assessment) must allow:
 - `AML-Analyst-v1` — HITL required on SAR_REQUIRED, STRUCTURING, VELOCITY_DAILY
 - `KYC-Specialist-v2` — HITL required on HIGH/PROHIBITED risk
 - `SanctionsScreeningAgent` — AUTO BLOCK; reversal requires MLRO
-- `CreditScoringAgent` (PROPOSED) — HITL required on all rejections
+- `CreditScoringAgent` — HITL required on all rejections
 
 ---
 
