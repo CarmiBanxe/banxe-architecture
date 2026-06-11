@@ -445,3 +445,8 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - **RiskMetricsPort** (`services/risk/`, read-only): aggregate exposure, fraud/AML counters, Consumer Duty PS22/9 signals, dashboard. abc.ABC + InMemory + PortError; no mutate/approve/threshold method. Decimal.
 - **RiskOversightAgent** (ORG §2.2, L1 Auto) — read-only dashboard via RiskMetricsPort; ADR-049 §D2 + ADR-046 lineage; **invariant (tested): never emits approve/threshold/decision** — any such op out-of-scope/refused. R-SEC opaque-handles-only. 39 tests, 100% cov.
 - banxe-emi-stack PR (sprint-47). CRO §2.2 dashboard agent now implemented.
+
+### Sprint 48 — IL-174 / ADR-080 CTO DataQualityAgent (L1 read-only drift detection)
+- **DataQualityPort** (`services/data_quality/`, read-only): drift score, quality report (null-rate/schema-conformance/freshness/drift), datasets, freshness. abc.ABC + InMemory + PortError; Decimal. No mutate/trigger/retrain method (I-27/I-10).
+- **DataQualityAgent** (ORG §2.7.1, L1 Auto) — detect + report drift via the port; ADR-049 §D2 + ADR-046 lineage; **invariant (tested): never triggers retrain/pipeline/write** — any such op out-of-scope/refused. R-SEC opaque-handles-only. 54 tests, 100% cov.
+- ONLY DataQualityAgent this sprint; MLPipelineAgent + DeployAgent stay (PROPOSED). banxe-emi-stack PR #169.
