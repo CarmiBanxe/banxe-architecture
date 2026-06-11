@@ -11123,3 +11123,14 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Scope:** `widgets/depth-chart/` and future candlestick widgets in banxe-trading-frontend. Drawing tools / indicator overlays deferred to future ADR if needed.
 - **Closes:** IL-154 OPEN item (charting license decision).
 - **Refs:** IL-154 (reuse candidates), IL-157 (HANDOFF §5), ADR-082, ADR-056 (ledger coupling).
+
+### IL-182 — Sprint-52 ContractAgent (MASK_ONLY over agreement domain)
+- **What:** ORG §2.9 Legal `ContractAgent` — L2 Review, gate Legal Counsel. PROPOSED → IMPLEMENTED. Third MASK_ONLY (audit IL-176 Tier-2): thin §D2 mask over the EXISTING `services/agreement/` domain — NO domain rewrite, NO new port (AgreementPort already injectable, reused directly).
+- **Mask:** `services/agents/contract_agent.py` delegates to the agreement domain via the injected `AgreementPort` Protocol. Actions: create_agreement + record_signature (L2 → Legal Counsel review step-up; no reviewer → HOLD_FOR_REVIEW, domain NOT called, escalate→LEGAL_COUNSEL) and get_agreement (AUTO read). Full ADR-049 §D2 chain + 1 ADR-046 record/action; handle + DecisionRecorder injected.
+- **Provider-error:** domain raises `AgreementError` (code/message) → mask emits lineage (executed=False) then re-raises (precise catch).
+- **R-SEC:** only opaque handles (agreement_id / customer_id / product_type) in lineage — never terms content / signature data / PII; the domain Agreement rides on AgentOutcome.result only.
+- **Domain reused (untouched):** `services/agreement/{agreement_port,agreement_service}.py`.
+- **Proof:** `banxe-emi-stack` PR #173 — 52 tests, 100% coverage on the new mask; ruff check + format clean; semgrep clean; full suite 10781 passed / 0 failed.
+- **Doc-sync (this PR):** ORG §2.9 line ~362 `(PROPOSED)` removed on ContractAgent only (HRAgent stays PROPOSED; AgreementAgent already implemented, distinct); companion `instruction-ledger/sprint-52/IL-CONTRACT-01-contract-agent.md`; MEMORY sprint-52 block. NO new ADR (existing ADR-049 §D2).
+- **Note:** rebased after main took IL-181 (PR #411 ADR-082 charting license) → renumbered IL-181→IL-182 (next free), append-only over main's ledger (I-28).
+- **Refs:** ADR-049 §D2; ADR-046; audit `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md` (IL-176, MASK_ONLY); ADR-078 (step-up analogue, here →Legal Counsel).
