@@ -11182,3 +11182,16 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Tests (vitest):** cumulativeDepth correctness + edge cases (empty book, single level, crossed book, Decimal precision 0.1+0.2===0.3 no float drift); widget mounts via mocked adapter, loading/empty states, pushes cumulative depth to chart handle, destroys on unmount (mocked store + mocked adapter — NO real canvas).
 - **Proof:** `pnpm typecheck` exit 0; `pnpm test` → 91 passed (15 files, +10 new), 0 errors. Required checks guard/guardian-factory/guardian-project all green; squash-merged, branch deleted. No branch protection toggled.
 - **Refs:** ADR-082 (charting license — lightweight-charts Apache-2.0), IL-181 (ADR-082 decision, closes IL-154 OPEN), IL-185 (Sprint 4 #3 feed), IL-184 (Sprint 4 #2), IL-157/IL-154 (HANDOFF, charting_library OUT).
+
+### IL-187 — Sprint-53 NPSAgent (MASK_ONLY over support feedback domain; L1 read-only)
+- **What:** ORG §2.8 Front Office `NPSAgent` — NPS/CSAT reporting, L1 Auto, no gate (CRO quarterly review per §2.8.1). PROPOSED → IMPLEMENTED. **Fourth and LAST** MASK_ONLY of audit IL-176 Tier-2: thin §D2 mask over the EXISTING `services/support/` feedback domain — NO domain rewrite, NO new port.
+- **Distinction:** NPSAgent (the L1 client-facing mask, §2.8) is distinct from the existing `FeedbackAnalyticsAgent` (§2.8.1 domain agent doing NPS/CSAT + Consumer Duty PS22/9). The mask delegates to that domain agent's read surface.
+- **Mask:** `services/agents/nps_agent.py` delegates to the support feedback domain via an injected handle Protocol (real `FeedbackAnalyticsAgent` conforms). Action: get_feedback_metrics (AUTO read → `FeedbackAnalyticsAgent.get_metrics`, NPS + CSAT aggregate). L1 read-only: below-AUTO → HALT_REVIEW_DEFERRED. Full ADR-049 §D2 chain + 1 ADR-046 record/action; handle + DecisionRecorder injected.
+- **INVARIANT (L1 read-only, tested):** mask scope = the read op only; the write `submit_csat` is out-of-scope/refused. compliance non-PASS → BLOCK + escalate→CRO.
+- **Provider-error:** domain `ValueError` → emit(executed=False)+reraise. **R-SEC:** only opaque handles (survey_id / cohort / period_days) in lineage — never raw customer feedback text / CSAT comments / PII (support is RED trust zone); FeedbackMetrics rides on AgentOutcome.result only.
+- **Domain reused (untouched):** `services/support/{feedback_analytics_agent,support_models}.py`.
+- **Proof:** `banxe-emi-stack` PR #174 — 29 tests, 100% coverage on the new mask; ruff check + format clean; semgrep clean; full suite 10810 passed / 0 failed.
+- **Doc-sync (this PR):** ORG §2.8 line ~315 `(PROPOSED)` removed on NPSAgent only; companion `instruction-ledger/sprint-53/IL-NPS-01-nps-agent.md`; MEMORY sprint-53 block. NO new ADR (existing ADR-049 §D2).
+- **Note:** rebased after main took IL-183, IL-184, IL-185 and IL-186 (trading-frontend) → renumbered to IL-187 (next free), append-only over main's ledger (I-28).
+- **Milestone:** completes audit IL-176 **Tier-2 (MASK_ONLY) — all 4 done** (Chargeback IL-178, CreditScoring IL-180, Contract IL-182, NPS IL-187). Remaining: Tier-3 BUILD (Churn/Lead/Campaign/Incident/HR) + Tier-4 MLPipeline (I-27).
+- **Refs:** ADR-049 §D2; ADR-046; audit IL-176 (MASK_ONLY); FCA Consumer Duty PS22/9.
