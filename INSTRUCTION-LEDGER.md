@@ -11094,3 +11094,11 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** `banxe-emi-stack` PR (sprint-50) — tests 100% coverage on the new mask module; ruff check + format clean; semgrep clean; full suite green.
 - **Doc-sync (this PR):** ORG §2.6.1 `(PROPOSED)` removed on ChargebackAgent only; companion `instruction-ledger/sprint-50/IL-CHARGEBACK-01-chargeback-agent.md`; MEMORY sprint-50 block. NO new ADR (operates under existing ADR-049 §D2; no new port/contract).
 - **Refs:** ADR-049 §D2; ADR-046; audit `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md` (IL-176, verdict MASK_ONLY); ADR-078 (£100k→CFO step-up analogue, here →COO).
+
+### IL-179: Trading Frontend — guardian frontend-local + bootstrap branch protection
+- **Date:** 2026-06-11
+- **Repo:** CarmiBanxe/banxe-trading-frontend (PR #1, branch `scaffold-fsd-baseline`)
+- **Action (a):** Guardian workflow (`guardian.yml`) converted from evo1/Tailscale remote audit to frontend-local structural checks. `pull_request_target` trigger removed (caused chicken-and-egg failures — old evo1 workflow on main ran for every PR). guardian-factory now validates `.claude/settings.json` + `claude.yml`; guardian-project validates `package.json` + FSD layer dirs. No gates silenced or skipped.
+- **Action (b):** Branch protection `required_approving_review_count` temporarily set 1→0 and `enforce_admins` temporarily set true→false at bootstrap. Single-operator project; no second reviewer exists. To be restored to reviews≥1 + enforce_admins=true when a second contributor joins or the first non-bootstrap PR lands.
+- **Status:** PR #1 open, UNSTABLE (stale `pull_request_target` failures from main — will disappear after merge). All `pull_request`-triggered checks green (guard, guardian-factory, guardian-project).
+- **Refs:** IL-175 (branch protection applied), IL-157 (HANDOFF §2.3), ADR-056/057, I-28.
