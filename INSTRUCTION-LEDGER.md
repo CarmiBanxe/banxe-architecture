@@ -11065,3 +11065,11 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** chose visibility=public (operator signal b) over Pro-upgrade to enable protection on free plan.
 - **Blocker:** none (plan-limit blocker from IL-170 resolved).
 - **Refs:** IL-170 (blocker record), IL-157 (HANDOFF), IL-154 (reuse candidates), banxe-repo-template, ADR-056/057, I-28.
+
+### IL-176 — ORG-STRUCTURE ↔ code reconciliation audit (PROPOSED-list drift)
+- **What:** read-only audit reconciling ORG-STRUCTURE §2.x `(PROPOSED)` agents against actual banxe-emi-stack code, so remaining work targets only what is genuinely missing (no re-building of existing domain services).
+- **Finding:** the repo has ~60 domain `services/*/*_agent.py` but only 12 §D2 client-facing masks (`services/agents/`). A `(PROPOSED)` row usually means "no §D2 mask yet", not "no domain code" — precedent: §D2 TreasuryAgent mask coexists with domain `services/treasury/treasury_agent.py`. None of the 11 `(PROPOSED)` agents has a mask yet.
+- **Verdicts:** MASK_ONLY (domain exists, thin mask needed) — ChargebackAgent (dispute_resolution), CreditScoringAgent (lending; HITL-on-reject), ContractAgent (agreement), NPSAgent (support/feedback_analytics, partial). BUILD (no domain) — ChurnPrediction, LeadScoring, Campaign, IncidentResponse, HR. DEFER/GATED — DeployAgent (in-flight sprint-49, ADR-081, prod-L3 CTO token), MLPipelineAgent (I-27 no autonomous model updates).
+- **Doc-sync (this PR):** `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md` (the matrix + reverse chart-gap list + prioritized plan); ORG-STRUCTURE.md top scope-note (client-facing §D2 masks only; domain services tracked separately) to stop the drift recurring. NO `(PROPOSED)` marker removed (that happens per-agent in later sprints). NO code touched.
+- **Note:** IL-175 was taken by PR #404 (banxe-trading-frontend); this audit uses IL-176, and the in-flight sprint-49 DeployAgent doc-sync must also use the next free number (≥ IL-177), not IL-175.
+- **Refs:** ADR-049 §D2 (mask gate-chain); ADR-046 (lineage); ADR-056 (ledger-coupling); ADR-078/079/080/081 (CFO/CRO/CTO port-first agents); the audit doc.

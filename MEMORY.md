@@ -450,3 +450,8 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - **DataQualityPort** (`services/data_quality/`, read-only): drift score, quality report (null-rate/schema-conformance/freshness/drift), datasets, freshness. abc.ABC + InMemory + PortError; Decimal. No mutate/trigger/retrain method (I-27/I-10).
 - **DataQualityAgent** (ORG §2.7.1, L1 Auto) — detect + report drift via the port; ADR-049 §D2 + ADR-046 lineage; **invariant (tested): never triggers retrain/pipeline/write** — any such op out-of-scope/refused. R-SEC opaque-handles-only. 54 tests, 100% cov.
 - ONLY DataQualityAgent this sprint; MLPipelineAgent + DeployAgent stay (PROPOSED). banxe-emi-stack PR #169.
+
+### Audit (2026-06-11) — ORG ↔ code reconciliation (IL-176)
+- ORG `(PROPOSED)` list drifted from code: ~60 domain `services/*/*_agent.py` exist but only 12 §D2 masks (`services/agents/`). `(PROPOSED)` = "no §D2 mask yet", not "no domain code".
+- Remaining work: MASK_ONLY (Chargeback→dispute_resolution, CreditScoring→lending, Contract→agreement, NPS→support/feedback_analytics) → BUILD (Churn, Lead, Campaign, Incident, HR) → DEFER/GATED (DeployAgent in-flight, MLPipeline I-27).
+- ORG-STRUCTURE now carries a scope-note: tables = client-facing §D2 masks only. See docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md.

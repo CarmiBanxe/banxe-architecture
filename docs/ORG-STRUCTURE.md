@@ -6,6 +6,15 @@
 > Machine-readable version: `../HITL-MATRIX.yaml`
 > Enforcement layer: `banxe-emi-stack/services/hitl/org_roles.py`
 
+> **Scope note (IL-176, 2026-06-11).** The agent tables below enumerate **client-facing §D2 mask
+> agents** — `banxe-emi-stack/services/agents/<x>_agent.py` that run the ADR-049 §D2 gate-chain and
+> emit an ADR-046 `AgentDecisionRecord` per action. They do **not** enumerate the ~60 **domain
+> services** (`banxe-emi-stack/services/*/*_agent.py`), which are tracked separately. A `(PROPOSED)`
+> marker therefore means **"no §D2 mask yet"**, NOT "no domain code" — many proposed agents already
+> have a full, tested domain service (precedent: the §D2 `TreasuryAgent` mask coexists with the
+> domain `services/treasury/treasury_agent.py`). See `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md`
+> for the per-agent reconciliation matrix.
+
 ---
 
 ## 1. Organisational Chart
