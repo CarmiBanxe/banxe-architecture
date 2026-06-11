@@ -11102,3 +11102,15 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Action (b):** Branch protection `required_approving_review_count` temporarily set 1→0 and `enforce_admins` temporarily set true→false at bootstrap. Single-operator project; no second reviewer exists. To be restored to reviews≥1 + enforce_admins=true when a second contributor joins or the first non-bootstrap PR lands.
 - **Status:** PR #1 open, UNSTABLE (stale `pull_request_target` failures from main — will disappear after merge). All `pull_request`-triggered checks green (guard, guardian-factory, guardian-project).
 - **Refs:** IL-175 (branch protection applied), IL-157 (HANDOFF §2.3), ADR-056/057, I-28.
+
+### IL-180 — Sprint-51 CreditScoringAgent (MASK_ONLY over lending domain; HITL-on-reject)
+- **What:** ORG (Risk/Credit) `CreditScoringAgent` — HITL required on all rejections (EU AI Act Art.14 high-risk; FCA Consumer Duty / CONC). PROPOSED → IMPLEMENTED. Second MASK_ONLY (audit IL-176 Tier-2): thin §D2 mask over the EXISTING `services/lending/` domain — NO domain rewrite, NO new port.
+- **Mask:** `services/agents/credit_scoring_agent.py` delegates to lending via an injected handle Protocol (real `CreditScorer` + `LoanOriginator` conform). Actions: score_customer + get_latest_score (AUTO reads) and decide.
+- **⭐ REGULATORY INVARIANT (enforced + tested):** a credit REJECTION can NEVER be finalized autonomously — a proposed DECLINED outcome forces step-up (force_review + requires_step_up) regardless of confidence; no reviewer → HOLD_FOR_REVIEW, domain.decide NEVER called, escalate→CREDIT_OFFICER. `test_decide_rejection_no_reviewer_hold_for_review_domain_never_called` proves reject@confidence=1.0 HALTs with decide never invoked (call-spy). APPROVED/REFERRED follow the band. Composes with the domain's own I-27 HITL_REQUIRED wrapping.
+- **Provider-error:** domain `ValueError` (not-found / not-PENDING) → emit(executed=False)+reraise.
+- **R-SEC:** only opaque handles (customer_id / application_id) in lineage — never income/score/aml_risk/PII; domain return rides on AgentOutcome.result only.
+- **Domain reused (untouched):** `services/lending/{credit_scorer,loan_originator,lending_agent,models,...}.py`.
+- **Proof:** `banxe-emi-stack` PR #172 — 32 tests, 100% coverage on the new mask; ruff check + format clean; semgrep clean; full suite 10729 passed / 0 failed.
+- **Doc-sync (this PR):** ORG line ~406 `(PROPOSED)` removed on CreditScoringAgent only; companion `instruction-ledger/sprint-51/IL-CREDIT-01-credit-scoring-agent.md`; MEMORY sprint-51 block. NO new ADR (existing ADR-049 §D2).
+- **Note:** rebased after main took IL-179 (PR #408 trading-frontend) → renumbered IL-179→IL-180 (next free), append-only over main's ledger (I-28).
+- **Refs:** ADR-049 §D2; ADR-046; ADR-081 (deploy prod→CTO step-up analogue, here reject→human); audit IL-176 (MASK_ONLY); I-27 (FCA CONC); EU AI Act Art.14.

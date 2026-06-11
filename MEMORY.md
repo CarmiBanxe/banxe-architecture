@@ -466,3 +466,8 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - First MASK_ONLY sprint (audit Tier-2): thin §D2 mask `services/agents/chargeback_agent.py` delegating to existing `services/dispute_resolution/` domain (ChargebackBridge) via injected handle Protocol — NO domain rewrite, NO new port.
 - ORG §2.6.1 COO, L2 Review, gate COO. initiate_chargeback/submit_representment → COO review step-up (no reviewer → HOLD, domain not called); get_chargeback_status → AUTO read. ADR-049 §D2 + ADR-046 lineage; ValueError = provider-error (emit+reraise). R-SEC opaque-handles-only. 100% cov on mask.
 - No new ADR (existing §D2). banxe-emi-stack PR (sprint-50). Pattern for remaining MASK_ONLY: CreditScoring→lending, Contract→agreement, NPS→support/feedback_analytics.
+
+### Sprint 51 — IL-180 CreditScoringAgent (MASK_ONLY over lending; HITL-on-reject)
+- Second MASK_ONLY: thin §D2 mask `services/agents/credit_scoring_agent.py` delegating to existing `services/lending/` (CreditScorer + LoanOriginator) via injected handle Protocol — NO domain rewrite/port.
+- Actions: score_customer/get_latest_score (AUTO reads) + decide. **⭐ Regulatory invariant (tested): credit REJECTION never finalized autonomously** — proposed DECLINED → force step-up to human regardless of confidence; no reviewer → HOLD, domain.decide never called, escalate→CREDIT_OFFICER (EU AI Act Art.14 / FCA CONC / I-27). ValueError = provider-error. R-SEC: no income/score/PII in lineage. 100% cov on mask.
+- No new ADR (existing §D2). banxe-emi-stack PR (sprint-51). Remaining MASK_ONLY: Contract→agreement, NPS→support/feedback_analytics.
