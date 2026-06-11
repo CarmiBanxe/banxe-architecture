@@ -74,7 +74,7 @@ Board of Directors
 |-----------|-------|
 | **FCA Role** | SMF4 — Risk function |
 | **Scope** | 1st-line operational risk + AI risk governance |
-| **AI Agent** | `RiskOversightAgent` (PROPOSED) |
+| **AI Agent** | `RiskOversightAgent` |
 | **Human Double** | CRO (or delegated Risk Manager) |
 | **Trust Zone** | 🔴 RED |
 | **Autonomy** | L3 — CRO sign-off required |
@@ -93,6 +93,15 @@ Board of Directors
 | `AMLPipelineAgent` | Transaction monitoring | L2 Review | On threshold change |
 | `ConsumerDutyAgent` | PS22/9 outcomes | L2 Review | Quarterly review |
 | `RiskOversightAgent` | Risk dashboard | L1 Auto | No |
+
+> **Autonomy clarification (ADR-079 / IL-173).** The header **Autonomy: L3 — CRO sign-off
+> required / 🔴 RED** applies to the **CRO function as a whole** — the consequential decisions in
+> *Responsibilities* above (AI model risk assessment, fraud/AML **threshold approval**, material-risk
+> Board escalation), which remain **L3, human CRO** (EU AI Act Art.14 human oversight).
+> `RiskOversightAgent` itself is **L1 Auto, read-only**: it aggregates and **displays** risk metrics
+> only and MUST NOT approve models, change thresholds, or make any risk decision (enforced + tested —
+> any approve/threshold op is out-of-scope). This resolves the header(L3)-vs-table(L1) contradiction:
+> monitoring/read = L1; decision = L3. See ADR-079.
 
 ---
 

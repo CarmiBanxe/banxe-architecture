@@ -439,3 +439,9 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - Both: ADR-049 §D2 + ADR-046 lineage, ports+recorder injected, R-SEC opaque-handles-only. 77 tests, 100% cov. banxe-emi-stack PR #167.
 - Name coexistence: `services/agents/treasury_agent.py:TreasuryAgent` (mask) vs pre-existing `services/treasury/treasury_agent.py` (domain) — distinct packages, full suite green.
 - **CFO office §2.5 now fully implemented** (FPA/BI sprint-45 + Treasury/Forecast sprint-46).
+
+### Sprint 47 — IL-173 / ADR-079 CRO RiskOversightAgent (L1 read-only dashboard)
+- **ADR-079** resolves the ORG §2.2 L1-vs-L3 contradiction: dashboard agent = **L1 read-only**; CRO model/threshold approval stays **L3/human** (EU AI Act Art.14).
+- **RiskMetricsPort** (`services/risk/`, read-only): aggregate exposure, fraud/AML counters, Consumer Duty PS22/9 signals, dashboard. abc.ABC + InMemory + PortError; no mutate/approve/threshold method. Decimal.
+- **RiskOversightAgent** (ORG §2.2, L1 Auto) — read-only dashboard via RiskMetricsPort; ADR-049 §D2 + ADR-046 lineage; **invariant (tested): never emits approve/threshold/decision** — any such op out-of-scope/refused. R-SEC opaque-handles-only. 39 tests, 100% cov.
+- banxe-emi-stack PR (sprint-47). CRO §2.2 dashboard agent now implemented.
