@@ -11165,3 +11165,20 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Tests (vitest, fake timers + mock socket):** controller applies snapshot then diffs into store; status connecting→open→reconnecting→open; disconnect closes socket + resets store + stops reconnecting; deterministic mock feed drives store; page renders with mock feed (loading→live rows + open indicator).
 - **Proof:** `pnpm typecheck` exit 0; `pnpm test` → 81 passed (13 files, +5 new). Required checks guard/guardian-factory/guardian-project all green; squash-merged, branch deleted. No branch protection toggled.
 - **Refs:** IL-157 (HANDOFF), IL-154 (ws-client + pure snapshot/diff reuse), IL-184 (Sprint 4 #2 order-entry), ADR-082 (charting deferred).
+
+### IL-186: Trading Frontend Sprint 4 Feature #4 — DepthChart widget (lightweight-charts; closes §2.4 TODO under ADR-082)
+- **Date:** 2026-06-12
+- **Repo:** CarmiBanxe/banxe-trading-frontend PR #6 (merged SHA 3084175d371fc4880fe76f900274c40776c2c26e)
+- **Closes:** the deferred §2.4 DepthChart `TODO(charting-license-ADR)` placeholder in `widgets/depth-chart/`, under **ADR-082** (lightweight-charts adopted; proprietary `charting_library` permanently OUT).
+- **Charting lib:** `lightweight-charts@5.2.0` — license **Apache-2.0** (verified from installed package). Pinned exactly in package.json + pnpm-lock.yaml. NO proprietary charting_library added/vendored (`grep charting_library src/` → none).
+- **What:** Vertical slice. New PURE `cumulativeDepth(snapshot)` in entities/order-book: bids descending / asks ascending cumulative quantities → typed points `{price:number, cumulative:number}`. All accumulation is Decimal (I-01); conversion to number happens ONLY at the chart boundary. `DepthChartWidget` consumes the order-book store, computes the series via the pure fn, and renders area series through a thin INJECTABLE adapter (`chart-adapter.ts` — the only module importing lightweight-charts, so the lib is fully mockable). Loading/empty states handled; placeholder + TODO text removed. Wired into the Trading page alongside order-book + order-entry using the existing mock feed.
+- **Files per FSD layer:**
+  - entities: `order-book/{types,pure,index}.ts` (DepthPoint/DepthSeries + cumulativeDepth)
+  - widgets: `depth-chart/{DepthChartWidget.tsx,chart-adapter.ts,index.ts}` (placeholder replaced), `widgets/index.ts` (barrel)
+  - pages: `order-book/OrderBookPage.tsx` (DepthChartWidget wired in)
+  - shared/build: `package.json` + `pnpm-lock.yaml` (lightweight-charts 5.2.0), `tests/setup.ts` (global lightweight-charts stub → no real canvas in CI)
+  - tests: `tests/unit/order-book-depth.test.ts`, `tests/unit/depth-chart-widget.test.tsx`
+- **Canon:** Decimal everywhere internally (I-01), number only at chart boundary; Zustand only (no MobX); no auth/Keycloak (ADR-017); no GraphQL — REST/WS only (ADR-019); lightweight-charts only (no legacy charting_library) per ADR-082.
+- **Tests (vitest):** cumulativeDepth correctness + edge cases (empty book, single level, crossed book, Decimal precision 0.1+0.2===0.3 no float drift); widget mounts via mocked adapter, loading/empty states, pushes cumulative depth to chart handle, destroys on unmount (mocked store + mocked adapter — NO real canvas).
+- **Proof:** `pnpm typecheck` exit 0; `pnpm test` → 91 passed (15 files, +10 new), 0 errors. Required checks guard/guardian-factory/guardian-project all green; squash-merged, branch deleted. No branch protection toggled.
+- **Refs:** ADR-082 (charting license — lightweight-charts Apache-2.0), IL-181 (ADR-082 decision, closes IL-154 OPEN), IL-185 (Sprint 4 #3 feed), IL-184 (Sprint 4 #2), IL-157/IL-154 (HANDOFF, charting_library OUT).
