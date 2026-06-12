@@ -11274,3 +11274,16 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Milestone:** advances audit IL-176 **Tier-3 BUILD** (Churn + Lead + Campaign done; remaining: Incident/HR + Tier-4 MLPipeline I-27). First Tier-3 BUILD with a publish/write surface and a mandatory-HITL regulatory gate.
 - **Note:** main raced — it took IL-192 (banxe-trading-backend guardian backend-local conversion, Sprint 5 §3) → renumbered IL-192→IL-193 (next free), append-only union over main's ledger (I-28).
 - **Refs:** ADR-049 §D2; ADR-046; ADR-021 (R-SEC); ORG §2.8.2 COBS 4; audit IL-176 (BUILD); IL-191 LeadScoringAgent; IL-189 ChurnPredictionAgent; kyc_onboarding_agent (mandatory-HITL pattern).
+
+### IL-194: banxe-trading-backend ADR-021 skeleton — ExchangePort REST/WS transport + MarketDataPort [Sprint 5 §4]
+- **Date:** 2026-06-12
+- **Repo:** CarmiBanxe/banxe-trading-backend PR #2 (merged SHA 0b0accb20f1bbad27d9842af72ea603d0658656c)
+- **What:** First code in the (previously empty) backend repo — a compiling, tested FastAPI **skeleton** per ADR-021 + HANDOFF IL-188. In-memory mocks only; NO live exchange, NO real market-data provider.
+- **Files by module:**
+  - descriptor: `pyproject.toml` (pinned `fastapi==0.115.6`, `uvicorn[standard]==0.34.0`, `pydantic==2.10.4`, `pydantic-settings==2.7.1`, `websockets==14.1`; dev extra: `pytest`, `httpx`, `ruff`, `mypy`) + `requirements.txt` (runtime mirror); `.gitignore` hardened (egg-info/pycache/caches).
+  - `src/banxe_trading_backend/`: `app.py` (FastAPI factory + `/healthz`, wires routers onto ports), `config.py` (env-only `BANXE_` settings, no secrets), `models.py` (pydantic v2 wire types; money = decimal string, **I-01**; floats rejected at the boundary), `ports/` (`ExchangePort` + new `MarketDataPort` Protocols + in-memory mock adapters), `api/` (orders/rate/symbols REST stubs per ADR-021 §D3), `ws/` (order-book snapshot+diff envelope per §D2 from the mock source).
+  - `tests/`: `test_healthz`, `test_rest_stubs` (typed shapes + idempotency + I-01 float-reject), `test_ws_orderbook` (snapshot then diff, strictly-increasing sequence), `test_ports` (Protocol conformance, mock feed, idempotent place_order).
+  - REST surface: `POST/DELETE/GET /api/v1/orders*`, `GET /api/v1/rate`, `GET /api/v1/symbols`, `GET /api/v1/instruments/{symbol}`; WS `/ws/orderbook/{symbol}`.
+- **Canon:** REST/WS only (no GraphQL); no Keycloak — auth is a documented `AuthPort` seam (backend-issued opaque token), not implemented; Decimal/I-01 for all money end-to-end; env-only secrets. Governance-gated TODOs marked in code: MarketDataPort provider, ExchangePort binding to payment-core, auth mechanism, and the data source for symbols, positions and balances.
+- **Proof:** local gate green — `ruff check .` pass, `mypy` Success (14 files), `pytest` 16 passed. Required checks `guard` + `guardian-factory` + `guardian-project` all green on the PR; `guardian-project` now takes the descriptor path (pyproject.toml + `src/` present), no longer bootstrap-exempt. Squash-merged, branch deleted. No protection toggled, no visibility change (repo already PUBLIC + protected per operator).
+- **Refs:** ADR-021 (decisions/ADR-021-exchangeport-network-transport.md), IL-188 (integration HANDOFF), IL-192 (backend guardian-local), exchangeport-CONTRACT-SPEC-2026-06-06.
