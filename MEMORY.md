@@ -476,3 +476,8 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - Third MASK_ONLY: thin §D2 mask `services/agents/contract_agent.py` delegating to existing `services/agreement/` via injected `AgreementPort` (already a Protocol — reused directly, no new port). NO domain rewrite.
 - ORG §2.9 Legal, L2 Review, gate Legal Counsel. create_agreement/record_signature → Legal Counsel review step-up (no reviewer → HOLD, domain not called); get_agreement → AUTO read. ADR-049 §D2 + ADR-046 lineage; AgreementError = provider-error (emit+reraise). R-SEC: no terms/PII in lineage. 100% cov on mask.
 - No new ADR (existing §D2). banxe-emi-stack PR (sprint-52). Remaining MASK_ONLY: NPS→support/feedback_analytics (last of Tier-2).
+
+### Sprint 53 — IL-187 NPSAgent (MASK_ONLY over support feedback) — Tier-2 COMPLETE
+- Fourth/LAST MASK_ONLY: thin §D2 mask `services/agents/nps_agent.py` (ORG §2.8 Front Office, L1 Auto) delegating to existing `services/support/feedback_analytics_agent.py` (get_metrics: NPS+CSAT aggregate) via injected handle Protocol — NO domain rewrite/port. Distinct from the existing FeedbackAnalyticsAgent domain agent.
+- Action: get_feedback_metrics (AUTO read). L1 read-only invariant: write submit_csat out-of-scope/refused (tested). ADR-049 §D2 + ADR-046 lineage; ValueError = provider-error; compliance→CRO. R-SEC: no feedback text/PII in lineage (RED zone). 100% cov on mask.
+- No new ADR (existing §D2). banxe-emi-stack PR (sprint-53). **Audit Tier-2 (MASK_ONLY) all 4 complete** (Chargeback/CreditScoring/Contract/NPS). Next: Tier-3 BUILD (Churn/Lead/Campaign/Incident/HR), Tier-4 MLPipeline (I-27).

@@ -312,7 +312,7 @@ Treasury decisions >£100k require CFO sign-off.
 | Sales | `LeadScoringAgent` (PROPOSED) | L1 Auto |
 | Marketing | `CampaignAgent` (PROPOSED) | L1 Auto |
 | Customer Success | `CustomerSupportAgent` | L1 Auto |
-| NPS | `NPSAgent` (PROPOSED) | L1 Auto |
+| NPS | `NPSAgent` | L1 Auto |
 
 No HITL gates required for Front Office (no regulatory obligations attach directly).
 Consumer Duty PS22/9 outputs are monitored by CRO.
