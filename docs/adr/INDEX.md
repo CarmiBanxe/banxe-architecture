@@ -108,7 +108,7 @@ and is now 4 (placeholder-only).
 
 | Number(s)        | Status                                                                  |
 |------------------|-------------------------------------------------------------------------|
-| ADR-021          | UNASSIGNED — no file in either catalogue.                                |
+| ADR-021          | ExchangePort Network Transport — `banxe-trading-backend` + MarketDataPort (ACCEPTED 2026-06-12; `decisions/ADR-021-exchangeport-network-transport.md`; IL-190). |
 | ADR-023          | UNASSIGNED — no file in either catalogue.                                |
 | ADR-031          | UNASSIGNED — no file in either catalogue.                                |
 | ADR-037          | UNASSIGNED — free for next factory or product ADR.                       |
