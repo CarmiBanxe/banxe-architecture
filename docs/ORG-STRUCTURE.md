@@ -358,7 +358,7 @@ Consumer Duty PS22/9 outputs are monitored by CRO.
 
 | Sub-block | Agent | Autonomy | Gate |
 |-----------|-------|----------|------|
-| HR | `HRAgent` (PROPOSED) | L1 Auto | CEO (hiring SMF holders) |
+| HR | `HRAgent` | L1 Auto | CEO (hiring SMF holders) |
 | Legal | `ContractAgent` | L2 Review | Legal Counsel |
 | Compliance Admin | `AgreementAgent` | L2 Review | MLRO (regulated docs) |
 
