@@ -252,7 +252,7 @@ Treasury decisions >£100k require CFO sign-off.
 |-------|------|----------|------|
 | `CustomerLifecycleAgent` | Onboarding → offboarding | L2 Review | COO on block |
 | `CustomerSupportAgent` | Ticket routing, FAQ | L1 Auto | — |
-| `ChurnPredictionAgent` (PROPOSED) | At-risk customer alerts | L1 Auto | — |
+| `ChurnPredictionAgent` | At-risk customer alerts | L1 Auto | — |
 
 ---
 
