@@ -11150,3 +11150,18 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Canon:** Decimal everywhere (I-01), no auth/Keycloak (ADR-017), no GraphQL (ADR-019), Zustand only, no charting (ADR-082 deferred).
 - **Proof:** 76 tests (11 files), typecheck clean; required checks guard/guardian-factory/guardian-project all green.
 - **Refs:** IL-157 (HANDOFF), IL-154 (calculators reuse), ADR-082 (charting deferred).
+
+### IL-185: Trading Frontend Sprint 4 Feature #3 — live order-book feed controller (replaces mock)
+- **Date:** 2026-06-12
+- **Repo:** CarmiBanxe/banxe-trading-frontend PR #5 (merged SHA 8e6e13b7c1eeed47f052b77712dd75858291c256)
+- **What:** Vertical slice wiring a live data-flow controller in place of the page's hard-coded MOCK snapshot. `OrderBookFeedController` connects the existing `OrderBookWsClient` (shared/api, reconnect/backoff) to the order-book store (entities): snapshot→applySnapshot, diff→applyDiff. Exposes connection status (connecting|open|reconnecting|closed) + connect()/disconnect(); socket factory stays injectable so dev/CI use a deterministic in-memory mock (NO live socket). Order-book widget gains a small connection-status indicator handling reconnecting/closed gracefully. Page defaults to the mock factory and uses a real `VITE_ORDERBOOK_WS_URL` when present (no secrets).
+- **Files per FSD layer:**
+  - `features/order-book-feed/{controller,status-store,mock-socket,index}.ts` (new feature) + `features/index.ts` (barrel)
+  - `widgets/order-book/OrderBookWidget.tsx` (connection indicator)
+  - `pages/order-book/OrderBookPage.tsx` (mock snapshot removed → controller)
+  - `src/vite-env.d.ts` (typed `VITE_ORDERBOOK_WS_URL`, strict, no `any`)
+  - tests: `tests/unit/order-book-feed-controller.test.ts`, `tests/unit/order-book-feed-page.test.tsx`
+- **Canon:** Decimal everywhere (I-01), no auth/Keycloak (ADR-017), no GraphQL — REST/WS only (ADR-019), Zustand only (no MobX), charting deferred (ADR-082, not started).
+- **Tests (vitest, fake timers + mock socket):** controller applies snapshot then diffs into store; status connecting→open→reconnecting→open; disconnect closes socket + resets store + stops reconnecting; deterministic mock feed drives store; page renders with mock feed (loading→live rows + open indicator).
+- **Proof:** `pnpm typecheck` exit 0; `pnpm test` → 81 passed (13 files, +5 new). Required checks guard/guardian-factory/guardian-project all green; squash-merged, branch deleted. No branch protection toggled.
+- **Refs:** IL-157 (HANDOFF), IL-154 (ws-client + pure snapshot/diff reuse), IL-184 (Sprint 4 #2 order-entry), ADR-082 (charting deferred).
