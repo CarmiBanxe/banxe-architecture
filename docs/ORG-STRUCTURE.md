@@ -310,7 +310,7 @@ Treasury decisions >£100k require CFO sign-off.
 | Sub-block | Agent | Autonomy |
 |-----------|-------|----------|
 | Sales | `LeadScoringAgent` | L1 Auto |
-| Marketing | `CampaignAgent` (PROPOSED) | L1 Auto |
+| Marketing | `CampaignAgent` | L1 Auto |
 | Customer Success | `CustomerSupportAgent` | L1 Auto |
 | NPS | `NPSAgent` | L1 Auto |
 
