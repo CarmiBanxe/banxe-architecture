@@ -269,7 +269,7 @@ Treasury decisions >£100k require CFO sign-off.
 
 | Agent | Task | Autonomy | Gate |
 |-------|------|----------|------|
-| `MLPipelineAgent` (PROPOSED) | Model retraining proposals | L3 | CRO + CTO |
+| `MLPipelineAgent` | Model retraining proposals | L3 | CRO + CTO |
 | `FeedbackLoopAnalyser` | Threshold proposals (I-27) | L3 | CRO must approve |
 | `DataQualityAgent` | Data drift detection | L1 Auto | — |
 
