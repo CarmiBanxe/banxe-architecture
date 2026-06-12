@@ -299,7 +299,7 @@ Treasury decisions >£100k require CFO sign-off.
 |-------|------|----------|------|
 | `SecurityAgent` | Keycloak OIDC, device fingerprint | L3 | CTO + CEO |
 | `IAMAgent` | Role provisioning (SM&CR aligned) | L2 Review | CTO |
-| `IncidentResponseAgent` (PROPOSED) | Security incident triage | L2 | CTO + CEO (CRITICAL) |
+| `IncidentResponseAgent` | Security incident triage | L2 | CTO + CEO (CRITICAL) |
 
 **Security incident CRITICAL: CEO must be notified within 2h (FCA SYSC 8.1).**
 
