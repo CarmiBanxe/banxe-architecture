@@ -11436,3 +11436,25 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Canon:** REST only (no GraphQL), no Keycloak, Decimal/I-01, env-only config with safe disabled defaults, no vendored code, no real keys, ids, or endpoints (only the generic public `li.quest/v1` base URL); fake placeholders confined to tests. No protection toggled, no visibility change.
 - **OPERATOR DECISION REQUIRED (go-live revenue share / private routing):** `BANXE_LIFI_INTEGRATOR` + `BANXE_LIFI_FEE_BPS` (fee collection), and optionally `BANXE_LIFI_API_KEY` (higher rate limits) — env-only, never in code.
 - **Refs:** ADR-083 (QuotePort, Composable DeFi Stack), HANDOFF IL-188, IL-204 (dYdX submission), exchangeport-CONTRACT-SPEC-2026-06-06.
+
+### IL-206 — FU-1 GUARDIAN NON-REPORTING FIXED (BANXE-EMI-STACK)
+- **Date:** 2026-06-14
+- **Source:** CEO / factory orchestration. FU-1 (guardian/branch-protection follow-up) on `CarmiBanxe/banxe-emi-stack`, functionally complete; this block records the infra/governance change only.
+- **Context:**
+  - Problem: emi-stack PRs (#166–180) routinely required `--admin` merges because branch protection on `main` listed non-reporting contexts `guardian-factory` and `guardian-project` as required checks. Those contexts were never produced by any CI workflow (guardian existed only as a local PreToolUse shim posting to LAN services), so every PR sat in “Expected — waiting for status”.
+  - Side-effect: docs-only PRs could hit a gap where required Semgrep gates self-skipped but protection state was not codified, making enforcement opaque and drift-prone.
+- **Action:**
+  - FU-1 Phase 1–3 analysed and corrected branch protection on `main` for CarmiBanxe/banxe-emi-stack:
+    - Removed phantom required contexts `guardian-factory` and `guardian-project`.
+    - Established a 9-gate required set, all emitted by GitHub Actions (app 15368): `Smoke Gate (mock tier)`, `Pytest (coverage >= 80%)`, `Ruff lint + format`, `Semgrep (banxe-rules)`, `Semgrep security rules`, `Semgrep OSS`, `Gitleaks - Secrets Scan`, `Biome lint + format (Frontend)`, `Vitest (frontend)`.
+    - Kept `strict: true`, `enforce_admins: false`.
+    - Closed the docs-only Semgrep gap via #182 (“FU-1 Phase 3: docs-only Semgrep gap + codify branch protection”): workflows now always emit statuses for Semgrep gates, with an explicit docs-only short-circuit to success; `.github/settings.yml` codifies the same 9-gate protection as the live API.
+- **Outcome:**
+  - Code PRs are now enforced by 9 real gates and can be merged without `--admin`; phantom guardian contexts no longer block merges.
+  - Docs-only PRs are clean: Semgrep gates report a successful short-circuit instead of silently disappearing, so required contexts always resolve.
+  - Guardian is explicitly defined as a local/conversation-level shim, not a CI status check; all CI enforcement is carried by the 9 github-actions gates.
+  - Residual quality issues (Ruff `format --check` failures and full-repo Semgrep OSS findings on `main`) are tracked separately as FU-Q1 (quality/config), not as part of guardian/protection infra.
+- **Deviation:** Governance/infra documentation only — no code, no workflows, no other docs, no project-code repos touched in THIS ledger commit (the FU-1 changes landed in banxe-emi-stack PR #182). Append-only per Invariant I-28 / ADR-057; genuine prior numeric anchor on `origin/main` = IL-205, so genuine next free = IL-206. Ledger shards under `ledger/entries/` remain empty (ADR-059 S4 backfill out of scope); this block appends to the monolith per the `build_ledger.py --check` vacuously-OK path, satisfying guardian-ledger (ADR-056).
+- **Blocker:** None.
+- **Notes:** This IL entry documents the infra/governance change only. Any future tightening (e.g. enabling `enforce_admins: true` or adjusting the 9-gate set) must be done via a new FU and IL entry.
+- **Refs:** banxe-emi-stack PR #182 (FU-1 Phase 3: docs-only Semgrep gap + codify branch protection); FU-Q1 (residual Ruff/Semgrep OSS quality follow-up); ADR-056 (ledger-coupling gate); ADR-057/I-28 (ledger append-only); ADR-059 (shard serialization — S4, shards still empty); IL-205 (prior numeric anchor); IL-171 (prior emi-stack `--admin` R3 non-reporting-guardian exception now superseded by this fix).
