@@ -92,6 +92,16 @@ operator/MLRO completes (YES / NO / PHASED + conditions + date + signer).
   follow-up ADR (flipping or superseding this one) plus a new IL, the relevant
   licence in force, and credentials provisioned out-of-band by the operator.
 - **No change to code, endpoints, contracts, or providers** results from this ADR.
+- **G1 decision-lineage logging is factory-buildable and has been built** (sprint
+  G1L, banxe-trading-backend) as an **inert, mock-safe** scaffold: an append-only
+  audit logger over the advisory seams that **activates no provider, holds no keys,
+  makes no network call, adds no endpoint, changes no `/v1` contract, and is
+  fail-closed** (a logging error never affects business behaviour). It is permitted
+  ahead of ratification precisely because it activates nothing; it is not a legally
+  sufficient audit — the final store / retention / PII policy remains an
+  OPERATOR / MLRO decision (a `Ratify` cell above). Built in banxe-trading-backend
+  PR #29 (merged `eaf4451d0a21199008fa0aaf344acf95ef722cff`); technical follow-up to
+  IL-236 / IL-238, no new IL required.
 
 ## OPERATOR DECISION REQUIRED
 
