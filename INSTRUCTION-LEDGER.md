@@ -11587,23 +11587,32 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **OPERATOR DECISION REQUIRED (gated, NOT in T8.2):** wiring these metrics or logs to a real monitoring or alerting backend in production; exposing the internal endpoints beyond the ops or cluster network; enabling BANXE_DSE_BAAS_SANDBOX_ENABLED on production or partner environments; moving to live providers or production scoring; introducing billing, partner tiering or rate limits; any auto-execution or non-advisory behaviour.
 - **Refs:** ADR-086, ADR-085, ADR-084; IL-214 (T7.8), IL-215 (T8.1); BANXE BaaS Partner API Layer and DSE master-plan roadmap, SLA-readiness (informational only).
 
-### IL-217: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (re-PR of #432, #449)
+### IL-217: T8.3 DSE provider-layer wiring & live-provider safety-rails (mock-default) — within ADR-084/085/086 [Sprint T8.3]
 - **Date:** 2026-06-14
-- **Source:** Architect/operator diagnostics; clean re-PR off current main (#432 pull_request CI dispatch was stuck).
-- **Action:** (1) `SERVICE-MAP.md` actualized — mark-legion; LiteLLM stateless+aliases; 11 evo2 models; MiroFish fix (`factory-mid`+`172.17.0.1` replacing failed `host.docker.internal`); Watchman `/v2/search?name=`; ClickHouse `:8123`. (2) New `AGENT-ORG-STRUCTURE.md` (4 partners + 19 agents, governance, EMI fork, MetaClaw). (3) `workflow_dispatch:` added to guardian/ledger-build/ci (additive).
-- **Status:** DONE ✅ (ledger-coupling via this IL-217 block).
-- **Proof:** PR #449; guardian-ledger (ADR-056) needs a new `### IL-NNN`; append-only (ADR-057/I-28) respected — NO prior lines removed (main merged in, then appended).
-- **Deviation:** Docs/governance only. Supersedes stale drafts IL-173/203/209/210/214/215/216 — main repeatedly advanced and consumed those numbers; true next-free after main's IL-216 = IL-217.
-- **Blocker:** None for guardian-ledger. See IL-218 (historical secrets).
-- **Refs:** ADR-056; ADR-057/I-28; IL-216 (prior main anchor); SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+- **Repos:** banxe-architecture (this PR — Data providers & modes section + ledger) + banxe-trading-backend PR #19 (merged SHA 60f1a1da38adcdeb37350710371fa8477393e36e).
+- **What:** DSE provider-layer wiring and configuration for future live providers across four data-source domains (market or risk, sentiment, stress, earn or yield), mock-default, with no live keys, no live API calls, no behaviour change, no new public endpoints and no BaaS-contract change. A pure wiring and safety-layer step: it adds the configuration and architectural seams to select a future live implementation, but the only implemented value is mock and the default everywhere remains mock. Any non-mock provider or mode is an OPERATOR DECISION (ODR), not set this sprint; the service refuses to start with a non-mock configuration.
+- **ADR:** no new ADR. Provider-layer wiring for the advisory DSE stays within the boundaries of ADR-084, ADR-085 and ADR-086 and the existing DeFi or BaaS ADRs.
+- **Provider-layer (backend `dse/provider_layer.py`):** `ProviderMode` enum (mock, sandbox-live, prod-live; only mock wired), `ProviderProfile` (a safe, NON-secret descriptor that carries provider names and mode only — never keys or endpoints), `provider_profile()` builder, and `assert_mock_only()` startup safety-rail that refuses any non-mock mode or provider with a `LiveProviderNotWiredError`. The existing per-domain build selectors already reject non-mock; this adds a unified mode-level gate and a safe observability descriptor.
+- **Config seams (backend `config.py`):** new `dse_provider_mode` (default mock) and `dse_market_provider` (default mock); the sentiment, stress, risk and earn provider seams already existed. New EMPTY placeholder live key and base-url seams per domain (market, sentiment, stress, earn) — `BANXE_DSE_<DOMAIN>_API_KEY` and `BANXE_DSE_<DOMAIN>_BASE_URL` — all empty by default, never set in code; any real value is OPERATOR DECISION (ODR) plus compliance (MiCA or BaaS).
+- **Observability (prep for live):** the structured log now carries a safe `providerMode` plus a `providerProfile` (domain to mode map, no secrets); the internal health check reports `providerMode`; a new metric `dse_baas_requests_by_mode_total{provider_mode}` distinguishes mock versus a future live. All environments remain mock this sprint. No secrets or endpoints are exposed.
+- **Spec and docs:** `dse-baas-api.yaml` and the backend sandbox guide gain a "Data providers & modes" section listing the provider domains (mock versus future live) and DSE modes (sandbox or internal versus future prod), with NO change to the request or response schemas and NO provider-specific fields; the contract is identical across modes. This devportal component gains a matching "Data providers & modes" section with the ODR boundary.
+- **App startup:** `create_app` calls `assert_mock_only(settings)` so a not-yet-wired live configuration fails fast, and stores the safe provider profile in app state for observability.
+- **Proof:** backend `ruff check .` and `mypy` clean; `pytest` 194 passed (provider-mode enum, mock defaults and empty key seams, safety-rail refuses non-mock mode and non-mock provider and unknown mode and create_app refusal, safe no-secret profile, providerMode in metrics and health and the structured log, default behaviour and ranking unchanged). All no network, mock-only. Backend PR #19 required checks guard, guardian-factory, guardian-project plus CodeRabbit green; no unresolved review threads; squash-merged with branch deleted.
+- **Canon:** Spec-first (public OpenAPI gains only a descriptive providers-and-modes note; no schema change), ADR-governed (within ADR-084/085/086, no new ADR), Decimal and I-01, self-custodial advisory-only (no execution, no signing, no keys), mock and sandbox by default (no live providers, no network), env-only config (new seams default mock or empty), compliance-first (no secrets or PII in logs, metrics or the provider profile; ODR gate documented for any non-mock value). No protection toggled, no visibility change, no repo created.
+- **OPERATOR DECISION REQUIRED (gated, NOT in T8.3, no env value set this sprint):** setting `BANXE_DSE_PROVIDER_MODE` to `sandbox-live` or `prod-live`; setting any of `BANXE_DSE_MARKET_PROVIDER`, `BANXE_DSE_SENTIMENT_PROVIDER`, `BANXE_DSE_STRESS_PROVIDER`, `BANXE_DSE_RISK_PROVIDER`, `BANXE_DSE_EARN_PROVIDER`, `BANXE_RISK_GREEKS_PROVIDER` or `BANXE_EARN_RATES_PROVIDER` to a non-mock value; setting any `BANXE_DSE_<DOMAIN>_API_KEY` or `_BASE_URL`; moving to production scoring; introducing billing, partner tiering or rate limits. Each requires formal operator decision plus compliance (MiCA or BaaS).
+- **Refs:** ADR-086, ADR-085, ADR-084; IL-215 (T8.1), IL-216 (T8.2); BANXE BaaS Partner API Layer and the DeFi engine math or architecture roadmap (informational only).
 
-### IL-218: SECURITY — gitleaks обнаружил исторические секреты (тикет на ротацию; без правки истории/allowlist)
+### IL-218: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (re-PR of #432, PR #449)
 - **Date:** 2026-06-14
-- **Source:** Secrets Scan (gitleaks-action@v2).
-- **Action:** Операторский тикет, значения REDACTED. Находки: `INSTRUCTION-LEDGER.md:6317` | curl-auth-header | e9a10ed; `docs/ops/phase-f-execution-2026-05-06.md:50` | generic-api-key | f3c5c2d; + др. (SARIF 7622623803).
-- **Status:** OPEN — операторские действия.
-- **OPERATOR DECISION REQUIRED:** (a) СРОЧНО ротировать/отозвать оба credential; (b) удаление из истории (filter-repo/BFG) — высокий риск, по решению оператора; (c) после ротации — gitleaks baseline.
-- **Proof:** Secrets Scan на PR-прогонах; SARIF 7622623803.
-- **Deviation:** Находки ПРЕДСУЩЕСТВУЮТ PR (коммиты мая 2026). Секреты не маскируются автоматически. Документ-онли.
-- **Blocker:** `CI — Architecture Docs` может падать до ротации; ортогонально guardian/ledger-build.
-- **Refs:** IL-217; ADR-057/I-28; gitleaks-action@v2; SARIF 7622623803.
+- **Action:** SERVICE-MAP (mark-legion, LiteLLM stateless+aliases, 11 evo2, MiroFish factory-mid/172.17.0.1, Watchman /v2/search?name=, ClickHouse :8123); new AGENT-ORG-STRUCTURE.md (4 partners + 19 agents); workflow_dispatch added to guardian/ledger-build/ci.
+- **Status:** DONE (ledger-coupling via this IL-218 block).
+- **Proof:** PR #449; guardian-ledger ADR-056; append-only ADR-057/I-28 — main merged then appended, 0 deletions.
+- **Deviation:** Docs only; supersedes stale IL-173/203/209/210/214..2026 after repeated main races; next-free after IL-217 = IL-218.
+- **Refs:** ADR-056; ADR-057/I-28; SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+
+### IL-219: SECURITY — gitleaks historical secrets (rotation ticket; no history rewrite/allowlist)
+- **Date:** 2026-06-14
+- **Action:** Operator ticket, values REDACTED. Findings: INSTRUCTION-LEDGER.md:6317|curl-auth-header|e9a10ed; docs/ops/phase-f-execution-2026-05-06.md:50|generic-api-key|f3c5c2d (SARIF 7622623803).
+- **Status:** OPEN — operator action.
+- **OPERATOR DECISION REQUIRED:** (a) rotate/revoke both credentials urgently; (b) history removal (filter-repo/BFG) operator-gated; (c) gitleaks baseline after rotation.
+- **Refs:** IL-218; ADR-057/I-28; gitleaks-action@v2.
