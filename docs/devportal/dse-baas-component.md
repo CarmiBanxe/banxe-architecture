@@ -327,6 +327,21 @@ is **OPERATOR DECISION REQUIRED**). No new public BaaS endpoint; the `/v1` facad
 and CORE contracts are unchanged. See IL-225 and backend
 `docs/specs/fee-engine-sandbox.md`.
 
+## Quant-moat seam (S14 / X9.3, ADR-091) — INTERNAL, advisory analytics
+
+An **optional** moat seam: a `QuantEnginePort` emitting **advisory quant signals**
+(fair-value gap, stress scenario, volatility regime, flash-crash / inventory flags)
+to enrich the DSE / preview / fees / mm flows. Exposed only on the **internal**
+`POST /api/v1/quant/preview` (terminal; **404** on the external `/v1` facade).
+**Strictly mock-safe** — **no live quant models** (no Heston / rough-Heston /
+Remizov / FNO / deep hedging), no live price feeds, no keys, no network, no trading
+decisions; `mode:sandbox-mock`, deterministic. The signals are **additive metadata,
+never a critical input** — every CORE endpoint works unchanged if no quant provider
+is present. **Mock by default; a non-mock `BANXE_QUANT_PROVIDER` fails closed at
+startup** (a live quant stack is **OPERATOR DECISION REQUIRED**). No new public
+BaaS endpoint; the `/v1` facade and CORE contracts are unchanged. See IL-226 and
+backend `docs/specs/quant-engine-sandbox.md`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
