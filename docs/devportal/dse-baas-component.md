@@ -357,6 +357,27 @@ endpoint; the `/v1` facade and CORE contracts are unchanged. A live / public
 marketplace, revenue-share, subscriptions or entitlement is **OPERATOR DECISION
 REQUIRED**. See IL-227 and backend `docs/specs/marketplace-sandbox.md`.
 
+## Multi-venue execution-preview hardening (S16, ADR-093) — INTERNAL, unsigned
+
+An **additive** broadening of the T9.1 execution-intent bridge: the same internal
+`POST /api/v1/execution/intent-preview` now also returns a **multi-venue /
+multi-product** preview. When the request carries `venues` / `productType` /
+`intentType`, it answers with a normalized ranked `candidates` set and a
+deterministic `bestCandidate` (spot, perp, earn) over the existing self-custodial
+unsigned-intent seam; the **legacy single-venue shape and behaviour are unchanged**.
+**Strictly advisory and mock-safe** — `signed:false` and `submitted:false` at the
+top level **and per candidate**, descriptive fields only (expected price, fee,
+slippage, ETA, confidence), deterministic mock heuristics, **no network, no real
+quotes / orderbooks / gas, no signing, no submission, no live chain, no keys**. The
+request model is `extra="forbid"`, so any `submit` / `sign` / `live` flag and any
+non-`preview-only` `executionMode` **fail closed (422)**; the provider seam
+`BANXE_EXECUTION_PREVIEW_PROVIDER` defaults to `mock` and **fails closed at startup**
+on any other value. **404** on the external `/v1` facade; no new public BaaS endpoint
+and no `/v1` partner-contract change. Real signing, submission, live routing and
+venue keys remain the **OPERATOR DECISION REQUIRED** go-live track. This composes
+with the fee, quant, market-making and marketplace seams (all advisory, mock-safe,
+internal). See IL-236 and backend `docs/specs/execution-intent-sandbox.md`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
