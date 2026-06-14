@@ -298,6 +298,19 @@ DSE recommendation (or manual: asset + actionType + notionalUsd)
   no billing, tiering, or rate-limits. See IL-220 and backend
   `docs/specs/execution-intent-sandbox.md` (FE use-cases).
 
+## Market-making advisory seam (S12 / X9.1, ADR-089) — INTERNAL, mock-only
+
+The first **moat** seam: a market-making *strategy* abstraction (`MarketMakingPort`)
+over the existing self-custodial `QuotePort` / `ExchangePort`, anchored by ADR-083
+(Hummingbot as a *future strategy sidecar, not a port*). Exposed only on the
+**internal** `POST /api/v1/mm/preview` (terminal; **404** on the external `/v1`
+facade). It returns an **advisory unsigned quote ladder** around a mid
+(`signed:false`, `submitted:false`) — nothing is signed, submitted, or executed,
+no keys, no live venue. **Mock by default; a non-mock `BANXE_MM_PROVIDER` fails
+closed at startup** (a live strategy host is **OPERATOR DECISION REQUIRED**). No
+new public BaaS endpoint; `POST /v1/dss/recommend` and the execution-intent preview
+are unchanged. See IL-223 and backend `docs/specs/market-making-sandbox.md`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
