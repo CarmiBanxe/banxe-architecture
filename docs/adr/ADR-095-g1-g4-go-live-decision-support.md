@@ -100,8 +100,8 @@ operator/MLRO completes (YES / NO / PHASED + conditions + date + signer).
   ahead of ratification precisely because it activates nothing; it is not a legally
   sufficient audit — the final store / retention / PII policy remains an
   OPERATOR / MLRO decision (a `Ratify` cell above). Built in banxe-trading-backend
-  PR #29 (merged `eaf4451d0a21199008fa0aaf344acf95ef722cff`); technical follow-up to
-  IL-236 / IL-238, no new IL required.
+  PR #29 (merged `eaf4451d0a21199008fa0aaf344acf95ef722cff`); recorded as IL-239
+  (technical follow-up to IL-236 / IL-238).
 
 ## OPERATOR DECISION REQUIRED
 
