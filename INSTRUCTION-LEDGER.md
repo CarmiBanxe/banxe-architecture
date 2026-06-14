@@ -11602,17 +11602,28 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **OPERATOR DECISION REQUIRED (gated, NOT in T8.3, no env value set this sprint):** setting `BANXE_DSE_PROVIDER_MODE` to `sandbox-live` or `prod-live`; setting any of `BANXE_DSE_MARKET_PROVIDER`, `BANXE_DSE_SENTIMENT_PROVIDER`, `BANXE_DSE_STRESS_PROVIDER`, `BANXE_DSE_RISK_PROVIDER`, `BANXE_DSE_EARN_PROVIDER`, `BANXE_RISK_GREEKS_PROVIDER` or `BANXE_EARN_RATES_PROVIDER` to a non-mock value; setting any `BANXE_DSE_<DOMAIN>_API_KEY` or `_BASE_URL`; moving to production scoring; introducing billing, partner tiering or rate limits. Each requires formal operator decision plus compliance (MiCA or BaaS).
 - **Refs:** ADR-086, ADR-085, ADR-084; IL-215 (T8.1), IL-216 (T8.2); BANXE BaaS Partner API Layer and the DeFi engine math or architecture roadmap (informational only).
 
-### IL-218: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (re-PR of #432, PR #449)
+### IL-218: T8.4 DSE live-providers ODR options — candidates per domain, env-matrix, risks (no live code, mock-only enforced) — within ADR-084/085/086 [Sprint T8.4]
 - **Date:** 2026-06-14
-- **Action:** SERVICE-MAP (mark-legion, LiteLLM stateless+aliases, 11 evo2, MiroFish factory-mid/172.17.0.1, Watchman /v2/search?name=, ClickHouse :8123); new AGENT-ORG-STRUCTURE.md (4 partners + 19 agents); workflow_dispatch added to guardian/ledger-build/ci.
-- **Status:** DONE (ledger-coupling via this IL-218 block).
-- **Proof:** PR #449; guardian-ledger ADR-056; append-only ADR-057/I-28 — main merged then appended, 0 deletions.
-- **Deviation:** Docs only; supersedes stale IL-173/203/209/210/214..2026 after repeated main races; next-free after IL-217 = IL-218.
+- **Repos:** banxe-architecture only (options design-doc + devportal link + ledger). No banxe-trading-backend change — no code that could enable a live provider, no new secrets, keys or endpoints.
+- **What:** A complete OPERATOR DECISION (ODR) options package for selecting the first live DSE providers, prepared without enabling any live provider in code and without setting any key. For each data-source domain (market or risk, sentiment, stress, earn or yield) it compares two realistic live-source candidates on technical and compliance criteria, formalizes the env values and ProviderMode required per option, and records the risks, limitations and MiCA aspects. The DSE remains mock-only this sprint; the T8.3 safety-rail assert_mock_only() still forbids any non-mock configuration.
+- **ADR:** no new ADR. The options doc references and stays within ADR-084 (DSE advisory foundation), ADR-085 (Risk & Earn advisory scope) and ADR-086 (read-only sandbox); selecting or enabling any candidate is a future ODR plus compliance decision, not taken here.
+- **Options doc (`docs/specs/dse-live-providers-options.md`):** structured per domain with two candidates each, pros and cons, technical and legal or MiCA risks, monitoring and SLA requirements, and DSE BaaS impact; an env-variable to ProviderMode to mode matrix; an explicit ODR decision-points list; and the future code or infrastructure steps that are NOT done now. Candidate summary per domain: Market or risk — A Kaiko centralized institutional market data versus B dYdX v4 Indexer exchange-native public API (recommend dYdX for sandbox-live, Kaiko for prod-live breadth). Sentiment — A Santiment on-chain plus social versus B LunarCrush social-first (recommend Santiment; hard rule: ingest aggregate scores only, never raw social content or PII). Stress — A Deribit implied-vol surface public data versus B a DeFi risk-analytics vendor such as Gauntlet or Chaos Labs (recommend Deribit first). Earn or yield — A StakeKit or yield.xyz read-only rates versus B DefiLlama Yields open data (recommend DefiLlama for sandbox-live, StakeKit for prod-live; read-only rates only, never staking or execution).
+- **Env / ProviderMode matrix:** documents per-domain BANXE_DSE_<DOMAIN>_PROVIDER, BANXE_DSE_<DOMAIN>_API_KEY and BANXE_DSE_<DOMAIN>_BASE_URL plus the overall BANXE_DSE_PROVIDER_MODE (mock today, then sandbox-live and prod-live), and recommends additional future-spec flags for safe mock or sandbox-live or prod-live separation (a BANXE_DSE_LIVE_ALLOWED master switch, optional per-domain mode override, secrets-vault indirection, egress allow-list, per-provider timeout, rate-limit and circuit-breaker, and data-retention or PII-scrub flags for MiCA and GDPR). All values are illustrative only; NONE are set in code or config this sprint.
+- **Devportal:** the Data providers & modes section gains a short link to the options doc with an explicit note that until the ODR decision all environments stay mock and assert_mock_only() blocks any live setting.
+- **Invariants / safety:** public API unchanged; no live providers connected and none can be enabled (mock-only enforced by the T8.3 safety-rail); no new secrets, keys or endpoints added to code or config; no execution, signing, staking, gamification or billing changes; this is a documentation and options-only sprint.
+- **Proof:** banxe-architecture PR (this) — ADR Validation, Secrets Scan, ledger-append-only, guardian-factory, guardian-project, guardian-ledger, guardian-schemas, Markdown Link Check and Mermaid checks green; no unresolved review threads; squash-merged with branch deleted. No backend PR. No protection toggled, no visibility change, no repo created.
+- **OPERATOR DECISION REQUIRED (the subject of this doc; NOT taken this sprint):** per-domain candidate selection and contracts or licenses; enabling any non-mock ProviderMode (sandbox-live then prod-live); setting any provider API key or base URL via the secret store; MiCA or CASP review confirming each source is an advisory data vendor and not an execution or custody dependency; sentiment PII handling sign-off; redistribution terms for any raw figures surfaced to partners.
+- **Refs:** `docs/specs/dse-live-providers-options.md`; ADR-086, ADR-085, ADR-084; IL-217 (T8.3 provider-layer wiring), IL-216 (T8.2), IL-215 (T8.1); BANXE BaaS Partner API Layer and Composable DeFi Stack roadmap (informational only).
+
+### IL-2027: Sprint 2 docs — SERVICE-MAP + AGENT-ORG-STRUCTURE (re-PR #449)
+- **Date:** 2026-06-14
+- **Action:** SERVICE-MAP (mark-legion, LiteLLM aliases, evo2, MiroFish factory-mid/172.17.0.1, Watchman /v2/search?name=, ClickHouse :8123); new AGENT-ORG-STRUCTURE.md; workflow_dispatch added to guardian/ledger-build/ci.
+- **Status:** DONE (ledger-coupling via IL-2027).
+- **Proof:** PR #449; ADR-056; append-only ADR-057/I-28 (0 deletions).
 - **Refs:** ADR-056; ADR-057/I-28; SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
 
-### IL-219: SECURITY — gitleaks historical secrets (rotation ticket; no history rewrite/allowlist)
+### IL-2028: SECURITY — gitleaks historical secrets (rotation ticket; no rewrite/allowlist)
 - **Date:** 2026-06-14
-- **Action:** Operator ticket, values REDACTED. Findings: INSTRUCTION-LEDGER.md:6317|curl-auth-header|e9a10ed; docs/ops/phase-f-execution-2026-05-06.md:50|generic-api-key|f3c5c2d (SARIF 7622623803).
-- **Status:** OPEN — operator action.
-- **OPERATOR DECISION REQUIRED:** (a) rotate/revoke both credentials urgently; (b) history removal (filter-repo/BFG) operator-gated; (c) gitleaks baseline after rotation.
-- **Refs:** IL-218; ADR-057/I-28; gitleaks-action@v2.
+- **Action:** Operator ticket (REDACTED): INSTRUCTION-LEDGER.md:6317|curl-auth-header|e9a10ed; docs/ops/phase-f-execution-2026-05-06.md:50|generic-api-key|f3c5c2d (SARIF 7622623803).
+- **Status:** OPEN — operator must rotate/revoke; history removal operator-gated.
+- **Refs:** IL-2027; ADR-057/I-28.
