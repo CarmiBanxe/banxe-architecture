@@ -219,6 +219,15 @@ are set this sprint. The request/response **contract is identical across modes**
 (currently `mock`) so a future mock-vs-live switch is visible in logs/metrics
 without exposing secrets. See IL-217 and `dse/provider_layer.py`.
 
+**Choosing the first live providers (T8.4, DECISION PENDING):** the per-domain
+candidate evaluation, env / `ProviderMode` matrix, and MiCA/compliance risks for a
+future live rollout are written up in
+[`docs/specs/dse-live-providers-options.md`](../specs/dse-live-providers-options.md).
+That is an **ODR options package only** — until an operator + compliance decision
+is signed, **all environments stay `mock`** and `assert_mock_only()` refuses any
+live provider, mode, or key at startup. No live source is selected, configured, or
+enabled here. See IL-218.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
