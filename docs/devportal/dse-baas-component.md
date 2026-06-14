@@ -311,6 +311,22 @@ closed at startup** (a live strategy host is **OPERATOR DECISION REQUIRED**). No
 new public BaaS endpoint; `POST /v1/dss/recommend` and the execution-intent preview
 are unchanged. See IL-223 and backend `docs/specs/market-making-sandbox.md`.
 
+## Dynamic fee engine seam (S13 / X9.2, ADR-090) — INTERNAL, analytics-only
+
+The next **moat** seam: a `FeeEnginePort` that returns a fee **attribution
+decomposition** (metadata) for a candidate action — separating pricing/analytics
+from **billing**. Exposed only on the **internal** `POST /api/v1/fees/preview`
+(terminal; **404** on the external `/v1` facade). It is **analytics-only** —
+**no real charges, invoices, payments, or billing**, no Lago/Orb/Stripe, no
+on-chain hooks; `mode:sandbox-mock`, `signed:false`, `submitted:false`. Components:
+`integrator_fee` (LI.FI), `builder_code_fee` (dYdX), `referral_fee` (GMX),
+`performance_fee` (StakeKit), `maker_rebate` (negative), `bid_ask_spread_capture`,
+with a partner-tier **discount** on platform-take fees. **Mock by default; a
+non-mock `BANXE_FEE_PROVIDER` fails closed at startup** (a live fee/billing source
+is **OPERATOR DECISION REQUIRED**). No new public BaaS endpoint; the `/v1` facade
+and CORE contracts are unchanged. See IL-225 and backend
+`docs/specs/fee-engine-sandbox.md`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
