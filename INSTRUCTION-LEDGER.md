@@ -11572,23 +11572,38 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **OPERATOR DECISION REQUIRED (gated, NOT in T8.1):** enabling BANXE_DSE_BAAS_SANDBOX_ENABLED on any production or partner environment; moving to live providers or production scoring models; introducing billing, partner tiering or rate limits; adding any auto-execution hooks or tight coupling to trading endpoints; adding any further endpoints or non-advisory behaviour.
 - **Refs:** ADR-086, ADR-085, ADR-084; IL-213 (T7.7), IL-214 (T7.8); BANXE BaaS Partner API Layer and DSE master-plan roadmap (informational only).
 
-### IL-216: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (clean re-PR of #432)
+### IL-216: T8.2 DSE BaaS observability & readiness (internal-only) — within ADR-084/085/086 [Sprint T8.2]
 - **Date:** 2026-06-14
-- **Source:** Architect/operator diagnostics 2026-06-13/14; clean re-PR off current main (#432's pull_request CI dispatch was stuck).
-- **Action:** (1) `SERVICE-MAP.md` actualized — mark-legion; LiteLLM stateless+aliases; 11 evo2 models; MiroFish fix (`factory-mid` + `172.17.0.1` replacing failed `host.docker.internal`); Watchman `/v2/search?name=`; ClickHouse `:8123`. (2) New `AGENT-ORG-STRUCTURE.md` (4 partners + 19 agents, governance, EMI fork, MetaClaw). (3) Added `workflow_dispatch:` to guardian/ledger-build/ci (additive).
-- **Status:** DONE ✅ (ledger-coupling via this IL-216 block).
-- **Proof:** PR (banxe-architecture); guardian-ledger (ADR-056) needs a new `### IL-NNN`; append-only (ADR-057/I-28) respected — NO prior lines removed.
-- **Deviation:** Docs/governance only. Supersedes stale drafts IL-173/203/209/210/214/215 — main repeatedly advanced and consumed those numbers; true next-free after main's IL-215 = IL-216.
-- **Blocker:** None for guardian-ledger. See IL-217 for historical secrets.
-- **Refs:** ADR-056; ADR-057/I-28; IL-215 (prior main anchor); SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+- **Repos:** banxe-architecture (this PR — internal ops-runbook section + ledger) + banxe-trading-backend PR #18 (merged SHA 35c12f2d7fec87f290bd600ec4df28a633f314e1).
+- **What:** Add a purely internal observability and readiness layer for the sandbox DSE BaaS facade to prepare a future production rollout, without entering any ODR zone. Internal metrics, a sanitized structured log, and an internal health/readiness endpoint. No public-contract change (POST /v1/dss/recommend is byte-for-byte the same), no new public endpoints (the new endpoints are internal-only and excluded from the OpenAPI), no billing or tiering, no execution, no gamification, no live providers or keys. utility and ranking unchanged.
+- **ADR:** no new ADR. Internal observability and readiness for the advisory DSE BaaS stays within the boundaries of ADR-084, ADR-085 and ADR-086.
+- **Metrics (backend `observability/baas.py`, Prometheus text exposition):** `dse_baas_requests_total{asset,risk_profile,status}` (status includes 422 engine-validation and 503 sandbox-disabled), `dse_baas_request_latency_ms_sum` and `dse_baas_request_latency_count{asset,risk_profile}`, `dse_baas_top_action_total{action_type}` (top-recommendation actionType distribution, e.g. HOLD or WAIT versus BUY or OPEN_LONG), and `dse_baas_debug_requests_total` (debug or decisionTrace opt-in rate). Format and labels are documented for export to Prometheus, StatsD or a log stream; no external system is configured. Labels are low-cardinality and non-sensitive.
+- **Structured log (`log_baas_event`, one sanitized JSON line per call on logger `banxe.dse.baas`):** traceId, asset, riskProfile, status, latencyMs, the includeSentiment and includeStressTests flags, and the response summary (topActionType, topDriver, topUtilityScore, enrichmentApplied, decisionTraceEmitted). It contains NO amounts, NO positions, NO secrets, NO keys, NO KYC or personal data — verified by a leak test.
+- **Health/readiness (internal-only):** GET /internal/health/dse-baas checks BANXE_DSE_BAAS_SANDBOX_ENABLED and runs a no-network mock dry-run of the internal DSE, returning an aggregated status (OK, DEGRADED when the facade is gated off, or ERROR mapped to 503) with a short summary and checks. GET /internal/metrics/dse-baas serves the Prometheus exposition. Both are registered with include_in_schema false, so they are excluded from the public OpenAPI and are intended to be fenced to ops or cluster networks at the ingress layer; they are documented in this internal runbook, not in the public BaaS spec.
+- **Backend:** `observability/baas.py` (BaasMetrics, log_baas_event, dse_baas_health); `api/internal.py` (internal router, include_in_schema false); `api/baas_dss.py` records metrics and emits the structured log around the facade (covering 200, 422 and 503) with no change to the response; `app.py` builds app.state.baas_metrics and registers the internal router.
+- **Docs:** this devportal component gains a "DSE BaaS Observability & Readiness (T8.2) — INTERNAL / OPS" section: the metric table and interpretation (error ratio, latency, actionType distribution, cardinality caveat), the health-endpoint semantics for alerts and pre-prod and prod checklists, and how to use the structured logs with traceId and decisionTrace for incident investigation.
+- **Proof:** backend `ruff check .` and `mypy` clean (43 source files); `pytest` 176 passed (metrics recording and Prometheus exposition, label escaping, 503 and debug counters, sanitized structured log with no amounts or positions leaking, health OK and DEGRADED and ERROR-to-503, internal endpoints excluded from the OpenAPI, public facade contract unchanged). All no network, mock-only. Backend PR #18 required checks guard, guardian-factory, guardian-project plus CodeRabbit green; no unresolved review threads; squash-merged with branch deleted.
+- **Canon:** Spec-first (public OpenAPI unchanged; internal endpoints deliberately out of schema), ADR-governed (within ADR-084/085/086, no new ADR), Decimal and I-01, self-custodial advisory-only (no execution, no signing, no keys), mock and sandbox by default (no live providers, no network), env-only config, compliance-first (no secrets or PII in logs or metrics, no gamification, no billing). No protection toggled, no visibility change, no repo created.
+- **OPERATOR DECISION REQUIRED (gated, NOT in T8.2):** wiring these metrics or logs to a real monitoring or alerting backend in production; exposing the internal endpoints beyond the ops or cluster network; enabling BANXE_DSE_BAAS_SANDBOX_ENABLED on production or partner environments; moving to live providers or production scoring; introducing billing, partner tiering or rate limits; any auto-execution or non-advisory behaviour.
+- **Refs:** ADR-086, ADR-085, ADR-084; IL-214 (T7.8), IL-215 (T8.1); BANXE BaaS Partner API Layer and DSE master-plan roadmap, SLA-readiness (informational only).
 
-### IL-217: SECURITY — gitleaks обнаружил исторические секреты (тикет на ротацию; без правки истории/allowlist)
+### IL-217: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (re-PR of #432, #449)
 - **Date:** 2026-06-14
-- **Source:** Secrets Scan (gitleaks-action@v2) на PR-прогонах.
-- **Action:** Операторский тикет, значения REDACTED. Находки (file:line | RuleID | commit): `INSTRUCTION-LEDGER.md:6317` | curl-auth-header | e9a10ed; `docs/ops/phase-f-execution-2026-05-06.md:50` | generic-api-key | f3c5c2d; + др. (SARIF Artifact 7622623803).
-- **Status:** OPEN — операторские действия (НЕ закрыто PR).
+- **Source:** Architect/operator diagnostics; clean re-PR off current main (#432 pull_request CI dispatch was stuck).
+- **Action:** (1) `SERVICE-MAP.md` actualized — mark-legion; LiteLLM stateless+aliases; 11 evo2 models; MiroFish fix (`factory-mid`+`172.17.0.1` replacing failed `host.docker.internal`); Watchman `/v2/search?name=`; ClickHouse `:8123`. (2) New `AGENT-ORG-STRUCTURE.md` (4 partners + 19 agents, governance, EMI fork, MetaClaw). (3) `workflow_dispatch:` added to guardian/ledger-build/ci (additive).
+- **Status:** DONE ✅ (ledger-coupling via this IL-217 block).
+- **Proof:** PR #449; guardian-ledger (ADR-056) needs a new `### IL-NNN`; append-only (ADR-057/I-28) respected — NO prior lines removed (main merged in, then appended).
+- **Deviation:** Docs/governance only. Supersedes stale drafts IL-173/203/209/210/214/215/216 — main repeatedly advanced and consumed those numbers; true next-free after main's IL-216 = IL-217.
+- **Blocker:** None for guardian-ledger. See IL-218 (historical secrets).
+- **Refs:** ADR-056; ADR-057/I-28; IL-216 (prior main anchor); SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+
+### IL-218: SECURITY — gitleaks обнаружил исторические секреты (тикет на ротацию; без правки истории/allowlist)
+- **Date:** 2026-06-14
+- **Source:** Secrets Scan (gitleaks-action@v2).
+- **Action:** Операторский тикет, значения REDACTED. Находки: `INSTRUCTION-LEDGER.md:6317` | curl-auth-header | e9a10ed; `docs/ops/phase-f-execution-2026-05-06.md:50` | generic-api-key | f3c5c2d; + др. (SARIF 7622623803).
+- **Status:** OPEN — операторские действия.
 - **OPERATOR DECISION REQUIRED:** (a) СРОЧНО ротировать/отозвать оба credential; (b) удаление из истории (filter-repo/BFG) — высокий риск, по решению оператора; (c) после ротации — gitleaks baseline.
-- **Proof:** Secrets Scan conclusion=failure; SARIF Artifact 7622623803.
-- **Deviation:** Находки ПРЕДСУЩЕСТВУЮТ PR (коммиты мая 2026). Секреты не маскируются автоматически — тикет на ротацию. Документ-онли.
-- **Blocker:** `CI — Architecture Docs` (gitleaks) может падать до ротации; ортогонально guardian/ledger-build.
-- **Refs:** IL-216; ADR-057/I-28; gitleaks-action@v2; SARIF 7622623803.
+- **Proof:** Secrets Scan на PR-прогонах; SARIF 7622623803.
+- **Deviation:** Находки ПРЕДСУЩЕСТВУЮТ PR (коммиты мая 2026). Секреты не маскируются автоматически. Документ-онли.
+- **Blocker:** `CI — Architecture Docs` может падать до ротации; ортогонально guardian/ledger-build.
+- **Refs:** IL-217; ADR-057/I-28; gitleaks-action@v2; SARIF 7622623803.
