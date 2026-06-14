@@ -11398,3 +11398,13 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Canon:** REST/WS only (no GraphQL), no Keycloak (SIWE session), Decimal/I-01, env-only config with safe no-op defaults, API-only (no vendored AGPL), no real keys, no live submission. No protection toggled, no visibility change.
 - **OPERATOR DECISION REQUIRED (S6.3b, gated):** real dYdX subaccount/wallet submission endpoint (node URL) + Builder Codes builder_address/fee — needed to go live.
 - **Refs:** ADR-083 §D3 (`docs/adr/ADR-083-composable-defi-stack.md`), ADR-021 (`decisions/ADR-021-exchangeport-network-transport.md`), IL-201 (SIWE wallet auth), IL-199 (dYdX MarketDataPort), exchangeport-CONTRACT-SPEC-2026-06-06 (7-class error model).
+
+### IL-203: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (PR #432 ledger-coupling close)
+- **Date:** 2026-06-14
+- **Source:** Architect/operator diagnostics session 2026-06-13/14 (PR #432 guardian-ledger ADR-056 gate failure).
+- **Action:** (1) `SERVICE-MAP.md` actualized — mark-legion node; LiteLLM stateless+aliases; 11 evo2 models; MiroFish fix (`factory-mid` model alias + bridge `172.17.0.1` replacing failed `host.docker.internal` DNS); Watchman sanctions API `/v2/search?name=`; ClickHouse `:8123` reachability flag. (2) New `AGENT-ORG-STRUCTURE.md` — 4 partners + 19 domain agents, governance, EMI fork, MetaClaw note.
+- **Status:** DONE ✅ (ledger-coupling closed via this IL-203 block).
+- **Proof:** PR #432 `banxe-architecture`; guardian-ledger (ADR-056) previously failed only because the PR changed tracked paths (`SERVICE-MAP.md`, `AGENT-ORG-STRUCTURE.md`) without appending a new `### IL-NNN` block. This block satisfies the gate; workflow logic unchanged (correct as written). Other 11 checks GREEN (CodeRabbit, CI — Architecture, guardian/*, ledger-build). MiroFish/Watchman fixes Proof-verified in Sprint 3 diagnostics.
+- **Deviation:** Governance/docs commit only — no code, no project-code repos touched. Append-only per Invariant I-28. Earlier draft mis-numbered IL-173 (built on a stale ledger base where latest anchor was IL-172); the PR branch's ledger is far ahead (genuine anchors through IL-202, zero false IL-2026 timestamps), so true next-free = IL-203. The stale IL-173 draft commit (501aa6c on orchestration-stack worktree) is abandoned, NOT pushed.
+- **Blocker:** None.
+- **Refs:** ADR-056 (ledger-coupling gate); ADR-057/I-28 (append-only); IL-170 (prior identical gate-close pattern); IL-202 (prior numeric anchor); SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
