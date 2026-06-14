@@ -11742,3 +11742,13 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Canon:** Spec-first (internal spec doc; no public OpenAPI change), ADR-governed (ADR-092), Decimal and I-01 where applicable, self-custodial advisory-only (read-only, no execution, no keys), mock and sandbox by default (static fixtures, no network), compliance-first (read-only catalog, no entitlement or billing or revenue mechanics, no gamification). No protection toggled, no visibility change, no repo created.
 - **OPERATOR DECISION REQUIRED (gated, NOT in S15):** a live or public marketplace, revenue-share, subscriptions or pay-per-use; partner entitlement, tiering or billing; any click-to-trade activation; any external /v1 exposure of the registry or /v1 partner-contract change.
 - **Refs:** ADR-092, ADR-083 (Composable DeFi Stack), ADR-089 and ADR-090 and ADR-091 (sibling moat seams); IL-223 (S12), IL-225 (S13), IL-226 (S14); backend docs/specs/marketplace-sandbox.md.
+
+### IL-235: Ledger errata — нумерация IL-2027/IL-2028 (typo) + реестр исторических дублей (frozen per I-28) [Sprint S15]
+- **Date:** 2026-06-15
+- **Action:** Канонизация номеров без ретро-правки (append-only I-28). Read-as: `IL-2027` → **IL-228** (docs Sprint 2 re-PR #449, коммит 23d19a60); `IL-2028` → **IL-229** (SECURITY gitleaks rotation, коммит 23d19a60). Исходные строки НЕ изменяются. Номер этого errata-блока взят с буфером (IL-235) из-за активной параллельной номерной гонки (IL-226 quant-moat ADR-091, IL-227 marketplace ADR-092 заняты параллельной сессией).
+- **Frozen duplicates (известны, не исправляются ретроактивно per I-28):** IL-032, IL-033, IL-034, IL-052, IL-159 — повторяющиеся заголовки; блок IL-097…IL-109 в обратном порядке; IL-027 после IL-078; IL-045 перед IL-043. Source of truth = порядок появления + текст заголовка, не голый номер.
+- **Status:** DONE для канонизации номеров. ВНИМАНИЕ: IL-229 (ex-IL-2028) остаётся OPEN — операторская ротация секретов не выполнена этим блоком.
+- **Proof:** аудит grep/blame в main (commit 23d19a60); ledger append-only (0 deletions, I-28); ledger-coupling ADR-056 удовлетворён.
+- **Canon:** docs-first, append-only ledger (I-28), ADR-056, ADR-057. No protection toggled, no visibility change, no repo created.
+- **OPERATOR DECISION REQUIRED:** (1) ротация секретов из IL-229/ex-IL-2028; (2) опционально CI-guard `ledger-numbering` против новых дублей/гонок.
+- **Refs:** ADR-056, ADR-057/I-28; IL-2027/IL-228, IL-2028/IL-229; PR #449, PR #461.
