@@ -94,6 +94,15 @@ additive fields `recommendations[].utilityBreakdown` (signed terms that sum to
 decomposes the existing math). Informational/advisory only. See IL-213 and the
 sandbox guide "Explainability & traceability" section.
 
+**Decision trace (T7.8, DEV-ONLY, no surface change):** for sandbox debugging the
+endpoint can attach an optional `decisionTrace` that reconstructs the whole mock
+decision path (inputs → normalized features → `utilityBreakdown` → enrichment) by
+`traceId`. **Double-gated and OFF by default** — operator env flag
+`BANXE_DSE_DEBUG_ENABLED` **and** per-request header `X-Banxe-Dse-Debug: true`;
+**production partners never receive it** (null/absent). Carries **no secrets**
+(only request-derived data, mock metadata, provider class names); utility and
+ranking unchanged. See IL-214 and the sandbox guide "Decision trace" section.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
