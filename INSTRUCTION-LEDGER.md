@@ -11614,3 +11614,16 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** banxe-architecture PR (this) — ADR Validation, Secrets Scan, ledger-append-only, guardian-factory, guardian-project, guardian-ledger, guardian-schemas, Markdown Link Check and Mermaid checks green; no unresolved review threads; squash-merged with branch deleted. No backend PR. No protection toggled, no visibility change, no repo created.
 - **OPERATOR DECISION REQUIRED (the subject of this doc; NOT taken this sprint):** per-domain candidate selection and contracts or licenses; enabling any non-mock ProviderMode (sandbox-live then prod-live); setting any provider API key or base URL via the secret store; MiCA or CASP review confirming each source is an advisory data vendor and not an execution or custody dependency; sentiment PII handling sign-off; redistribution terms for any raw figures surfaced to partners.
 - **Refs:** `docs/specs/dse-live-providers-options.md`; ADR-086, ADR-085, ADR-084; IL-217 (T8.3 provider-layer wiring), IL-216 (T8.2), IL-215 (T8.1); BANXE BaaS Partner API Layer and Composable DeFi Stack roadmap (informational only).
+
+### IL-2027: Sprint 2 docs — SERVICE-MAP + AGENT-ORG-STRUCTURE (re-PR #449)
+- **Date:** 2026-06-14
+- **Action:** SERVICE-MAP (mark-legion, LiteLLM aliases, evo2, MiroFish factory-mid/172.17.0.1, Watchman /v2/search?name=, ClickHouse :8123); new AGENT-ORG-STRUCTURE.md; workflow_dispatch added to guardian/ledger-build/ci.
+- **Status:** DONE (ledger-coupling via IL-2027).
+- **Proof:** PR #449; ADR-056; append-only ADR-057/I-28 (0 deletions).
+- **Refs:** ADR-056; ADR-057/I-28; SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+
+### IL-2028: SECURITY — gitleaks historical secrets (rotation ticket; no rewrite/allowlist)
+- **Date:** 2026-06-14
+- **Action:** Operator ticket (REDACTED): INSTRUCTION-LEDGER.md:6317|curl-auth-header|e9a10ed; docs/ops/phase-f-execution-2026-05-06.md:50|generic-api-key|f3c5c2d (SARIF 7622623803).
+- **Status:** OPEN — operator must rotate/revoke; history removal operator-gated.
+- **Refs:** IL-2027; ADR-057/I-28.
