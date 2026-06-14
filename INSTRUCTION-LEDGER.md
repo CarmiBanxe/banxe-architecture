@@ -11571,3 +11571,24 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Canon:** Spec-first (OpenAPI updated then code; conformance-tested), ADR-governed (within ADR-084/085/086, no new ADR), Decimal and I-01, self-custodial advisory-only (no execution, no signing, no keys), mock and sandbox by default (no live providers or network), env-only config (the sandbox flag is an env seam, default off), compliance-first (MiCA and EMI advice-without-execution framing, no gamification, no billing). No protection toggled, no visibility change, no repo created.
 - **OPERATOR DECISION REQUIRED (gated, NOT in T8.1):** enabling BANXE_DSE_BAAS_SANDBOX_ENABLED on any production or partner environment; moving to live providers or production scoring models; introducing billing, partner tiering or rate limits; adding any auto-execution hooks or tight coupling to trading endpoints; adding any further endpoints or non-advisory behaviour.
 - **Refs:** ADR-086, ADR-085, ADR-084; IL-213 (T7.7), IL-214 (T7.8); BANXE BaaS Partner API Layer and DSE master-plan roadmap (informational only).
+
+### IL-216: Sprint 2 docs — actualize SERVICE-MAP + add AGENT-ORG-STRUCTURE (clean re-PR of #432)
+- **Date:** 2026-06-14
+- **Source:** Architect/operator diagnostics 2026-06-13/14; clean re-PR off current main (#432's pull_request CI dispatch was stuck).
+- **Action:** (1) `SERVICE-MAP.md` actualized — mark-legion; LiteLLM stateless+aliases; 11 evo2 models; MiroFish fix (`factory-mid` + `172.17.0.1` replacing failed `host.docker.internal`); Watchman `/v2/search?name=`; ClickHouse `:8123`. (2) New `AGENT-ORG-STRUCTURE.md` (4 partners + 19 agents, governance, EMI fork, MetaClaw). (3) Added `workflow_dispatch:` to guardian/ledger-build/ci (additive).
+- **Status:** DONE ✅ (ledger-coupling via this IL-216 block).
+- **Proof:** PR (banxe-architecture); guardian-ledger (ADR-056) needs a new `### IL-NNN`; append-only (ADR-057/I-28) respected — NO prior lines removed.
+- **Deviation:** Docs/governance only. Supersedes stale drafts IL-173/203/209/210/214/215 — main repeatedly advanced and consumed those numbers; true next-free after main's IL-215 = IL-216.
+- **Blocker:** None for guardian-ledger. See IL-217 for historical secrets.
+- **Refs:** ADR-056; ADR-057/I-28; IL-215 (prior main anchor); SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+
+### IL-217: SECURITY — gitleaks обнаружил исторические секреты (тикет на ротацию; без правки истории/allowlist)
+- **Date:** 2026-06-14
+- **Source:** Secrets Scan (gitleaks-action@v2) на PR-прогонах.
+- **Action:** Операторский тикет, значения REDACTED. Находки (file:line | RuleID | commit): `INSTRUCTION-LEDGER.md:6317` | curl-auth-header | e9a10ed; `docs/ops/phase-f-execution-2026-05-06.md:50` | generic-api-key | f3c5c2d; + др. (SARIF Artifact 7622623803).
+- **Status:** OPEN — операторские действия (НЕ закрыто PR).
+- **OPERATOR DECISION REQUIRED:** (a) СРОЧНО ротировать/отозвать оба credential; (b) удаление из истории (filter-repo/BFG) — высокий риск, по решению оператора; (c) после ротации — gitleaks baseline.
+- **Proof:** Secrets Scan conclusion=failure; SARIF Artifact 7622623803.
+- **Deviation:** Находки ПРЕДСУЩЕСТВУЮТ PR (коммиты мая 2026). Секреты не маскируются автоматически — тикет на ротацию. Документ-онли.
+- **Blocker:** `CI — Architecture Docs` (gitleaks) может падать до ротации; ортогонально guardian/ledger-build.
+- **Refs:** IL-216; ADR-057/I-28; gitleaks-action@v2; SARIF 7622623803.
