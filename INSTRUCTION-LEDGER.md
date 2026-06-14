@@ -11482,3 +11482,14 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Deviation:** Governance/docs commit only — no code, no project-code repos touched. Append-only per Invariant I-28. Re-numbered to IL-209 after merging current origin/main, which had advanced and itself consumed IL-203 (dYdX S6.3b PREP) through IL-208; earlier stale drafts IL-173/IL-203 are abandoned, NOT pushed. True next-free after main's IL-208 = IL-209.
 - **Blocker:** None.
 - **Refs:** ADR-056 (ledger-coupling gate); ADR-057/I-28 (append-only); IL-208 (prior numeric anchor on main); SERVICE-MAP.md; AGENT-ORG-STRUCTURE.md.
+
+### IL-210: SECURITY — gitleaks обнаружил 4 исторических секрета (тикет на ротацию; без правки истории/allowlist)
+- **Date:** 2026-06-14
+- **Source:** PR #432 ручной прогон `CI — Architecture Docs` (workflow_dispatch) → шаг Secrets Scan (gitleaks/gitleaks-action@v2), `leaks found: 4`, 743 коммита просканировано.
+- **Action:** Зафиксировано как операторский тикет. Значения НЕ раскрываются (REDACTED). Находки (file:line | RuleID | commit-fingerprint, без секретов): (1) `INSTRUCTION-LEDGER.md:6317` | curl-auth-header | e9a10ed (2026-05-09); (2) `docs/ops/phase-f-execution-2026-05-06.md:50` | generic-api-key (`banxe-compliance-api uuid=…`) | f3c5c2d (2026-05-06); (3)+(4) ещё 2 находки в том же прогоне (полный SARIF-артефакт `gitleaks-results.sarif.zip`, Artifact ID 7622623803).
+- **Status:** OPEN — требует операторских действий (НЕ закрыто этим PR).
+- **OPERATOR DECISION REQUIRED:** (a) СРОЧНО отозвать/ротировать оба идентифицированных credential (Authorization-токен и `banxe-compliance-api` ключ) в системах-эмитентах — независимо от репозитория; (b) удаление из git-истории (git filter-repo/BFG) — переписывание защищённой ветки, высокий риск, только по явному решению и с координацией команды; (c) только ПОСЛЕ ротации — при необходимости gitleaks baseline по уже отозванным значениям, чтобы чек не падал на безопасных исторических заглушках.
+- **Proof:** прогон ci.yml (workflow_dispatch) на head e07a1bd → Secrets Scan conclusion=failure; `##[warning] Leaks detected`; SARIF Artifact ID 7622623803.
+- **Deviation:** Находки ПРЕДСУЩЕСТВУЮТ PR #432 (коммиты мая 2026, не из этого PR); чек падает, т.к. gitleaks сканирует всю историю. По канону безопасности секреты НЕ маскируются и НЕ забеливаются автоматически — фиксируется тикет на ротацию. Документ-онли запись, кода/истории не трогаем.
+- **Blocker:** `CI — Architecture Docs` остаётся red, пока секреты не отозваны/удалены оператором (ортогонально guardian/ledger-build, которые GREEN).
+- **Refs:** IL-209 (Sprint 2 docs + workflow_dispatch патч); ADR-057/I-28 (append-only); gitleaks-action@v2; SARIF Artifact 7622623803; (примечание) CodeRabbit сообщает об исчерпании предоплаченных кредитов организации — биллинг-действие уровня аккаунта.
