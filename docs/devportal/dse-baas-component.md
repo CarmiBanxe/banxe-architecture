@@ -378,6 +378,20 @@ venue keys remain the **OPERATOR DECISION REQUIRED** go-live track. This compose
 with the fee, quant, market-making and marketplace seams (all advisory, mock-safe,
 internal). See IL-236 and backend `docs/specs/execution-intent-sandbox.md`.
 
+## Roadmap status (S17, ADR-094) — scope closed for 2026
+
+The Phase-A moat sprints **S12–S16** (ADR-089…ADR-093, IL-223…IL-236) close the
+mock-safe moat layer — market-making, dynamic fee engine, quant-moat, ecosystem /
+marketplace, and multi-venue unsigned execution-preview hardening — on top of the
+delivered DSE / BaaS / preview / provider-foundation / product surface. With that,
+the S6–T8 spine plus moat is considered **complete for 2026**.
+
+The four legacy roadmap labels **`S6.6`, `S6.7`, `T7.9`, `T8.0`** are officially
+**DROPPED (out-of-scope for 2026)** by **ADR-094**: they carry no ADR, IL, or spec,
+and are **neither open nor awaiting implementation**. They are not endpoints and add
+no surface here. Any future work on those themes would require a dedicated new ADR
+and IL entry. See IL-237.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
