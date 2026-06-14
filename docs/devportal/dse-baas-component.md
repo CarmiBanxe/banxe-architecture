@@ -238,6 +238,17 @@ at startup. Runtime stays mock-first; `POST /v1/dss/recommend` is **unchanged**
 (utility/ranking identical), and per-domain provenance (tier + source, no secrets)
 is exposed **internally only** (BaaS log + `/internal/health/dse-baas`). See IL-221.
 
+**Partner/product surface (S11, ADR-088):** `POST /v1/dss/recommend` can return an
+**opt-in, non-breaking** `product` metadata block for partner/terminal UIs —
+populated only when the request supplies `partnerContext` (`null` otherwise; ranking
+and utility unchanged). It surfaces safe provenance (`mock` · `stub` ·
+`inert-live-ready`), normalized model/versions, the explainability model, advisory /
+self-custodial flags, and a `requestId` (= `traceId`, correlation only). The
+`partnerContext` seam (`partnerId` / `clientRef` / `mode`) is **advisory,
+metering-READY only** — opaque, bounded, **no auth, no billing, no entitlement**;
+only `mode: "sandbox"` is supported and any other value **fails closed** (`422`,
+OPERATOR DECISION REQUIRED). See IL-222.
+
 ## Execution intent preview (T9.1) — INTERNAL, sandbox/mock-only
 
 The end-to-end trajectory is **advice → unsigned intent → execution**. T9.1 adds the
