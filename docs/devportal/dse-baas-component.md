@@ -78,6 +78,14 @@ Production Risk and Earn APIs and any execution (the remaining Risk
 `var` / `stress` / `pnl` endpoints and earn stake / unstake) remain **future
 Phase 2 / 3**, each under a separate ADR and legal review (see ADR-086).
 
+**Internal enrichment (T7.6, no surface change):** `POST /v1/dss/recommend` now
+**internally** consumes the sandbox Risk Greeks and Earn rates analytics to make
+its advisory reasoning richer. This adds **no new endpoint** — the response gains
+only **optional, additive, sandbox-mock-derived** fields (`analyticsContext`,
+`recommendations[].riskNotes`, `recommendations[].alternatives`). Partners treat
+these as **informational only** (no auto-execution). See ADR-086 follow-up
+(IL-212) and the sandbox guide "Analytics enrichment" section.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are

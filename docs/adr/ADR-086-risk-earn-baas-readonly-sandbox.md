@@ -98,6 +98,33 @@ review. This ADR covers only the two read-only sandbox endpoints above.
   unstake / orders) — separate ADR + legal review.
 - Any gamification / VRRS / leaderboards / AgentFi / autotrading — separate ODR/ADR.
 
+## Follow-up — T7.6 (IL-212): internal-only analytics enrichment, no public API change
+
+T7.6 enriches the existing advisory `POST /v1/dss/recommend` by consuming the
+T7.5 sandbox Risk Greeks and Earn rates services as **internal, in-process
+dependencies** (via `DseAnalyticsEnrichmentService`). This is recorded here as a
+follow-up note — **no new ADR is needed** because it stays entirely within the
+advisory boundary fixed above and **does not expand the public surface**:
+
+- **No new public endpoints**; the partner-facing BaaS surface is unchanged
+  (count and paths identical to after T7.5).
+- **DSS contract changed additively only**: optional, backward-compatible response
+  fields (`analyticsContext.greeksSummary` / `earnAlternatives`,
+  `recommendations[].riskNotes` / `alternatives`, `analyticsContext.analyticsVersion`).
+  Previously-valid requests stay valid; existing fields are unchanged.
+- **Composition only, no HTTP self-calls**: DSS calls the provider/service layer
+  directly (no calling its own public endpoints), no circular coupling, no
+  duplicated mock logic.
+- **Explanation-only**: enrichment surfaces explainable notes/alternatives and
+  does **not** silently re-rank — the established utility framework is unchanged.
+- **Advisory boundary intact**: sandbox/mock default, no execution, no signing, no
+  stake/unstake, no gamification, and no live providers, keys, or network.
+
+Any move from internal mock enrichment to live providers or production scoring
+inputs, any non-additive DSS change/new public endpoint, or any blend with
+gamification/execution remains **OPERATOR DECISION REQUIRED** (per the section
+above).
+
 ## References
 
 - `banxe-trading-backend/docs/specs/risk-api.yaml` (GET /v1/risk/greeks)
@@ -105,4 +132,5 @@ review. This ADR covers only the two read-only sandbox endpoints above.
 - `banxe-trading-backend/src/banxe_trading_backend/risk/greeks.py`, `api/risk.py`
 - `banxe-trading-backend/src/banxe_trading_backend/earn/rates.py`, `api/earn.py`
 - `banxe-trading-backend/docs/specs/dse-baas-sandbox-guide.md` (Risk/Earn sections)
-- ADR-085 (Risk/Earn advisory content), ADR-084 (DSE foundation); IL-209/210 (T7.3/T7.4)
+- `banxe-trading-backend/src/banxe_trading_backend/services/dss_analytics_enrichment.py` (T7.6)
+- ADR-085 (Risk/Earn advisory content), ADR-084 (DSE foundation); IL-209/210 (T7.3/T7.4); IL-211/212 (T7.5/T7.6)
