@@ -186,6 +186,39 @@ Investigate by joining the log's `traceId` to the response `traceId`; when the
 debug gate was on, pull the full `decisionTrace` from the captured response for a
 step-by-step reconstruction. See IL-216 and `observability/baas.py`.
 
+## Data providers & modes (T8.3)
+
+The DSE reads through a **provider-layer** over four data-source domains, with an
+env-selectable seam per domain plus an overall mode. **Today only `mock` is
+implemented and is the default everywhere** — T8.3 adds the configuration and
+architectural seams + safety-rails, but activates **no** live provider and changes
+**no** behaviour or contract.
+
+| Domain | Provider env | Today | Future (ODR) |
+|---|---|---|---|
+| Market / risk (vol, VaR, drawdown, liquidity) | `BANXE_DSE_MARKET_PROVIDER` | `mock` | live market data |
+| Sentiment (news / on-chain / social) | `BANXE_DSE_SENTIMENT_PROVIDER` | `mock` | live sentiment |
+| Stress-test data | `BANXE_DSE_STRESS_PROVIDER` | `mock` | live stress |
+| Earn / yield | `BANXE_DSE_EARN_PROVIDER` | `mock` | live yields |
+| **Overall mode** | `BANXE_DSE_PROVIDER_MODE` | `mock` | `sandbox-live` / `prod-live` |
+
+Empty placeholder seams exist for future live credentials/endpoints
+(`BANXE_DSE_<DOMAIN>_API_KEY`, `BANXE_DSE_<DOMAIN>_BASE_URL`) — **empty by default,
+never set in code**.
+
+**Modes:** `mock` (today — deterministic fixtures, no network/keys),
+`sandbox-live` and `prod-live` (future). The app **refuses to start** with any
+non-mock provider or mode (a fast `LiveProviderNotWiredError`), so live cannot be
+switched on accidentally.
+
+**ODR boundary.** Any value other than `mock` — for any domain provider, the
+overall mode, or any API key / endpoint — is an **OPERATOR DECISION (ODR)**
+requiring formal operator sign-off **and** compliance review (MiCA / BaaS). None
+are set this sprint. The request/response **contract is identical across modes**
+(no provider-specific fields). Observability carries a safe `providerMode`
+(currently `mock`) so a future mock-vs-live switch is visible in logs/metrics
+without exposing secrets. See IL-217 and `dse/provider_layer.py`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
