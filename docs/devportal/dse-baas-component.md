@@ -64,6 +64,20 @@ spec:
 3. Render the recommendations plus Risk and Earn metrics; **let the user confirm
    each order manually** in their own self-custodial flow.
 
+## Sandbox surface (read-only)
+
+The component currently exposes, all **sandbox read-only, mock data** (T7.5):
+
+| Capability | Endpoint | Status |
+|---|---|---|
+| Decision support (advisory) | `POST /v1/dss/recommend` | sandbox, mock |
+| Risk Analytics — portfolio Greeks | `GET /v1/risk/greeks` | sandbox read-only, mock |
+| Earn Rates — yield comparison | `GET /v1/earn/rates` | sandbox read-only, mock |
+
+Production Risk and Earn APIs and any execution (the remaining Risk
+`var` / `stress` / `pnl` endpoints and earn stake / unstake) remain **future
+Phase 2 / 3**, each under a separate ADR and legal review (see ADR-086).
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
@@ -78,5 +92,7 @@ Production tier, Kong gateway, k8s deployment, real partner keys, production rat
 limits, live execution, and real Risk or Earn data providers are **OPERATOR
 DECISION REQUIRED** — env-only, out of scope for this sandbox component.
 
-**Refs:** ADR-084 (DSE BaaS foundation), ADR-085 (DSE Risk and Earn scope);
-backend `docs/specs/dse-baas-sandbox-guide.md`; IL-210 (T7.4).
+**Refs:** ADR-084 (DSE BaaS foundation), ADR-085 (DSE Risk and Earn scope),
+ADR-086 (Risk and Earn read-only sandbox); backend
+`docs/specs/dse-baas-sandbox-guide.md`, `risk-api.yaml`, `earn-api.yaml`;
+IL-210 (T7.4), IL-211 (T7.5).
