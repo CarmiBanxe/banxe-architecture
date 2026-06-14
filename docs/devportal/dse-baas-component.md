@@ -103,6 +103,37 @@ decision path (inputs → normalized features → `utilityBreakdown` → enrichm
 (only request-derived data, mock metadata, provider class names); utility and
 ranking unchanged. See IL-214 and the sandbox guide "Decision trace" section.
 
+## DSE BaaS Sandbox (T8.1)
+
+`POST /v1/dss/recommend` is now served externally as a **thin, advisory-only,
+mock-only** BaaS facade over the same internal DSE engine. It is **flag-gated and
+OFF by default** — production environments serve **no external DSE BaaS**.
+
+- **Sandbox gate:** `BANXE_DSE_BAAS_SANDBOX_ENABLED` (default `false`). When off,
+  every request returns **`503` "DSE BaaS sandbox is disabled"**. Deployments
+  additionally fence the route to sandbox/dev at the **ingress/host** layer.
+- **No keys needed:** sandbox uses **mock data / fixtures** only — no partner API
+  keys, no live market data, no DeFi provider calls.
+- **Advisory-only:** ranks and explains; **no execution, signing, staking** or
+  wallet action (self-custodial). **No SLA, no billing, no partner tiering, no
+  rate limits** — those are future ODR, not implemented here.
+
+Example (sandbox enabled):
+
+```bash
+curl -sS -X POST "https://sandbox.api.banxe.example/v1/dss/recommend" \
+  -H "content-type: application/json" \
+  -d '{"asset":"BTCUSDT","portfolioValueUsd":"10000","riskProfile":"balanced"}'
+# -> 200: { "recommendations": [...], "traceId": "dss-...", "disclaimer": "Advisory only ...", ... }
+# (flag off -> 503 {"detail":"DSE BaaS sandbox is disabled"})
+```
+
+The response is the standard DSE advisory payload (recommendations + utility +
+`analyticsContext` enrichment + `utilityBreakdown`/`traceId`; `decisionTrace` only
+when the separate debug gate is also on). **Usage limits / rate-limits are future
+ODR** — not enforced in this sandbox. See IL-215 and the backend sandbox guide
+"Enabling the DSE BaaS sandbox facade".
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
@@ -120,4 +151,4 @@ DECISION REQUIRED** — env-only, out of scope for this sandbox component.
 **Refs:** ADR-084 (DSE BaaS foundation), ADR-085 (DSE Risk and Earn scope),
 ADR-086 (Risk and Earn read-only sandbox); backend
 `docs/specs/dse-baas-sandbox-guide.md`, `risk-api.yaml`, `earn-api.yaml`;
-IL-210 (T7.4), IL-211 (T7.5).
+IL-210 (T7.4), IL-211 (T7.5), IL-215 (T8.1 — DSE BaaS sandbox facade).
