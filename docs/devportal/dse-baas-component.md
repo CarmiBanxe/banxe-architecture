@@ -342,6 +342,21 @@ startup** (a live quant stack is **OPERATOR DECISION REQUIRED**). No new public
 BaaS endpoint; the `/v1` facade and CORE contracts are unchanged. See IL-226 and
 backend `docs/specs/quant-engine-sandbox.md`.
 
+## Ecosystem / marketplace seam (S15 / X9.4, ADR-092) — INTERNAL, read-only
+
+A separate **read-only registry** ("vitrine") of ecosystem providers / strategies
+/ agents over the existing providers (LI.FI, dYdX, GMX, StakeKit, Hummingbot-MM,
+quant). Exposed only on the **internal** read-only endpoints
+`GET /api/v1/marketplace/providers` and `/strategies` (+ `/strategies/{id}`;
+**404** on the external `/v1` facade). **Strictly read-only and mock-safe** — **no
+purchases / subscriptions / activations, no tokens / revenue-share / payouts, no
+entitlement, billing, partner-tiers, keys, or limits**; static fixtures, no
+network; **"click → trade" is NOT wired**. Cards carry descriptive fields only and
+at most link to the already-existing advisory endpoints. No new public BaaS
+endpoint; the `/v1` facade and CORE contracts are unchanged. A live / public
+marketplace, revenue-share, subscriptions or entitlement is **OPERATOR DECISION
+REQUIRED**. See IL-227 and backend `docs/specs/marketplace-sandbox.md`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
