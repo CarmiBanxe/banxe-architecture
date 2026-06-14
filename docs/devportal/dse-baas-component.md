@@ -228,6 +228,26 @@ is signed, **all environments stay `mock`** and `assert_mock_only()` refuses any
 live provider, mode, or key at startup. No live source is selected, configured, or
 enabled here. See IL-218.
 
+## Execution intent preview (T9.1) — INTERNAL, sandbox/mock-only
+
+The end-to-end trajectory is **advice → unsigned intent → execution**. T9.1 adds the
+middle link: an **internal** terminal endpoint
+`POST /api/v1/execution/intent-preview` that maps a DSE advisory action onto an
+**UNSIGNED** execution intent via the existing self-custodial `ExchangePort`
+(mock by default). It is **not** part of this partner BaaS surface and is **not**
+exposed on the external `/v1/...` facade.
+
+- **Nothing is signed, submitted, or executed** — preview only; the backend holds
+  no keys and the client wallet signs client-side (out of scope). Response always
+  `mode: sandbox-mock`, `signed: false`, `submitted: false`.
+- Tradable actions (BUY / SELL / OPEN_LONG / OPEN_SHORT / CLOSE) map to an
+  unsigned order; advisory-only actions (STAKE / HEDGE / HOLD / WAIT / REBALANCE /
+  ADJUST_SL / SWAP) return `tradable: false` with no intent.
+- **Mock/sandbox default, no live chain, no keys**; DSE live-providers remain
+  PENDING/ODR and are untouched; **no SLA, no billing, no rate-limits**;
+  client-side signing, submission/execution and multi-venue routing are **future,
+  ODR-gated**. See IL-219 and backend `docs/specs/execution-intent-sandbox.md`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
