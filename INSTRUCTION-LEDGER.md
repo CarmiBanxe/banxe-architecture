@@ -11696,3 +11696,12 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Canon:** Spec-first (internal spec doc; no public OpenAPI change), ADR-governed (ADR-089), Decimal and I-01, self-custodial advisory-only (no execution, no signing, no keys, no live venue), mock and sandbox by default (no network, fail-closed non-mock), compliance-first (advisory and pre-production, no billing, no gamification). No protection toggled, no visibility change, no repo created.
 - **OPERATOR DECISION REQUIRED (gated, NOT in S12):** a live strategy host (Hummingbot sidecar) and real venue keys or endpoints; client-side signing, submission or execution, multi-venue routing, live quoting; any SLA, billing or partner-tiering for a market-making product.
 - **Refs:** ADR-089, ADR-083 (Composable DeFi Stack), ADR-087 (mock-default and fail-closed pattern); IL-219 and IL-220 (execution-intent bridge and UI), IL-221 (S10), IL-222 (S11); backend docs/specs/market-making-sandbox.md.
+
+### IL-224: docs(infra) fix AGENT-ORG-STRUCTURE agent count 19→20 (CodeRabbit #432 follow-up) — [Sprint S12]
+- **Date:** 2026-06-14
+- **Repos:** banxe-architecture (PR #461).
+- **What:** Исправлен off-by-one в AGENT-ORG-STRUCTURE.md: перечисление уровня Б даёт 2+9+1+5+3=20, но заголовок и строка «Итого» указывали 19. Обновлены оба места 19→20 («20+4»). Нормализованы blanks вокруг заголовков/таблиц (MD058/MD022). Замечание CodeRabbit из закрытого PR #432 утекло в main через merged PR #449 и не было применено; этот PR его закрывает.
+- **Proof:** markdownlint MD058/MD022 чисто; CodeRabbit review completed, 0 unresolved threads; diff минимальный (1 файл, только агрегаты счётчика + spacing). guardian-ledger (ADR-056) удовлетворён добавлением этого блока.
+- **Canon:** Spec/docs-first, append-only ledger (I-28), ADR-056 ledger-coupling. No protection toggled, no visibility change, no repo created.
+- **OPERATOR DECISION REQUIRED / follow-ups (NOT in this PR):** (1) md-lint cleanup AGENT-ORG-STRUCTURE.md MD013/line-length + MD060/table-column-style (~40 pre-existing); (2) role-guard — добавить/исправить `.TERMINAL-ROLE` anchor (WARN при commit e5ffd5b); (3) ledger numbering cleanup — аномалии IL-2027/IL-2028 и дубль IL-223.
+- **Refs:** ADR-056; PR #432 (closed), PR #449 (merged), PR #461 (this); IL-223, IL-222, IL-221.
