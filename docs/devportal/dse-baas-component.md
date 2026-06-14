@@ -248,6 +248,35 @@ exposed on the external `/v1/...` facade.
   client-side signing, submission/execution and multi-venue routing are **future,
   ODR-gated**. See IL-219 and backend `docs/specs/execution-intent-sandbox.md`.
 
+## Execution Intent Preview UI (T9.2) — INTERNAL TERMINAL ONLY
+
+The terminal (`banxe-trading-frontend`) surfaces the T9.1 bridge as a read-only
+**Execution Intent Preview** widget — the visual link between a DSE decision and a
+*potential* order. It is **internal terminal only** (not a partner BaaS surface)
+and stays **sandbox/mock-only**; it adds no new endpoint and no contract change.
+
+**Flow (from recommendation to preview):**
+
+```
+DSE recommendation (or manual: asset + actionType + notionalUsd)
+   → [Preview unsigned intent]  (POST /api/v1/execution/intent-preview)
+   → Execution Preview panel:
+        ⚠ PREVIEW ONLY — NOT EXECUTED  (unsigned · not submitted · mock/sandbox)
+        venue · side · size · order type · reduce-only
+        unsigned intent · signed:false · submitted:false
+        self-custodial disclaimer
+```
+
+- The user sees the mapped order (venue, side, size, order type, reduce-only) and
+  the unsigned-intent summary; advisory-only actions show "not directly tradable".
+- **No auto-execution:** there is **no Execute/Submit button** and no call to any
+  execution endpoint — nothing is signed or sent (the backend holds no keys; the
+  client wallet would sign client-side, which is out of scope). The UI client is
+  **mock by default** (`VITE_EXECUTION_PROVIDER=mock`, no network in CI).
+- DSE `providerMode` stays `mock`; DSE live-providers remain PENDING/ODR (IL-218);
+  no billing, tiering, or rate-limits. See IL-220 and backend
+  `docs/specs/execution-intent-sandbox.md` (FE use-cases).
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
