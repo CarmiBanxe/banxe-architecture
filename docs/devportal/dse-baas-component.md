@@ -228,6 +228,16 @@ is signed, **all environments stay `mock`** and `assert_mock_only()` refuses any
 live provider, mode, or key at startup. No live source is selected, configured, or
 enabled here. See IL-218.
 
+**Provider foundation (S10, ADR-087):** each market, sentiment, and stress domain
+now resolves through an explicit provider abstraction with a per-domain **tier**
+`BANXE_DSE_<DOMAIN>_TIER` ∈ `mock` (default) · `stub` · `live-ready`. `live-ready`
+is a **CI-safe inert scaffold** (no network, no credentials, mock-equivalent
+output); real activation needs `BANXE_DSE_LIVE_ALLOWED` + credentials + a wired
+adapter (none exist — **OPERATOR DECISION REQUIRED**) and otherwise **fails closed**
+at startup. Runtime stays mock-first; `POST /v1/dss/recommend` is **unchanged**
+(utility/ranking identical), and per-domain provenance (tier + source, no secrets)
+is exposed **internally only** (BaaS log + `/internal/health/dse-baas`). See IL-221.
+
 ## Execution intent preview (T9.1) — INTERNAL, sandbox/mock-only
 
 The end-to-end trajectory is **advice → unsigned intent → execution**. T9.1 adds the
