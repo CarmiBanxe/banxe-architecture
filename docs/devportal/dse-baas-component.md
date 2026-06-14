@@ -86,6 +86,14 @@ only **optional, additive, sandbox-mock-derived** fields (`analyticsContext`,
 these as **informational only** (no auto-execution). See ADR-086 follow-up
 (IL-212) and the sandbox guide "Analytics enrichment" section.
 
+**Explainability & traceability (T7.7, no surface change):** the same endpoint now
+also exposes **why** each recommendation got its score and a deterministic id —
+additive fields `recommendations[].utilityBreakdown` (signed terms that sum to
+`utilityScore`), `recommendations[].topDriver`, `traceId`, and
+`explanationVersion`. **utility and ranking are unchanged** (the breakdown
+decomposes the existing math). Informational/advisory only. See IL-213 and the
+sandbox guide "Explainability & traceability" section.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
