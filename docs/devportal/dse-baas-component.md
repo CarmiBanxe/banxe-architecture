@@ -134,6 +134,58 @@ when the separate debug gate is also on). **Usage limits / rate-limits are futur
 ODR** — not enforced in this sandbox. See IL-215 and the backend sandbox guide
 "Enabling the DSE BaaS sandbox facade".
 
+## DSE BaaS Observability & Readiness (T8.2) — INTERNAL / OPS
+
+> **Internal-only.** The endpoints and signals below are **not** part of the
+> partner BaaS surface, are **excluded from the public OpenAPI**
+> (`include_in_schema=false`), and MUST be fenced to ops/cluster networks at the
+> ingress layer. They add **no public-contract change** and carry **no
+> secrets/PII**. This is readiness tooling for a future prod rollout.
+
+### Metrics — `GET /internal/metrics/dse-baas` (Prometheus text)
+
+| Metric | Type | Labels | Meaning |
+|---|---|---|---|
+| `dse_baas_requests_total` | counter | `asset`, `risk_profile`, `status` | facade requests; `status` includes **422** (engine validation) and **503** (sandbox disabled) |
+| `dse_baas_request_latency_ms_sum` | counter | `asset`, `risk_profile` | summed latency (ms); divide by the count for an average |
+| `dse_baas_request_latency_count` | counter | `asset`, `risk_profile` | request count per label |
+| `dse_baas_top_action_total` | counter | `action_type` | top-recommendation actionType mix (e.g. HOLD/WAIT vs BUY/OPEN_LONG) |
+| `dse_baas_debug_requests_total` | counter | — | requests that opted into the debug/decisionTrace gate |
+
+Interpretation: watch the **error ratio** (`status="4xx"/"5xx"` over total — a spike
+in 503 means the sandbox flag is off where it shouldn't be; 422 means malformed
+advisory requests), **latency** (sum/count per asset/profile), and the
+**actionType distribution** (a sanity signal on advisory behaviour). Labels are
+intentionally low-cardinality; in prod, bound the `asset` label set (allow-list)
+to control series cardinality. The text format ships as-is to Prometheus; it can
+equally be relayed to StatsD or a log stream. **No external system is configured
+here** — only the format/labels are defined.
+
+### Health / readiness — `GET /internal/health/dse-baas`
+
+Returns an aggregated `status` + short `summary` + `checks`:
+
+- `OK` (200) — sandbox flag on **and** a no-network mock dry-run of the DSE
+  returned recommendations (`"DSE sandbox enabled, mock providers healthy"`).
+- `DEGRADED` (200) — internal engine healthy but the BaaS facade is gated off
+  (flag false). The component is alive; the partner facade simply returns 503.
+- `ERROR` (503) — the internal engine dry-run failed.
+
+Use in **alerts / pre-prod & prod checklists**: gate readiness on `OK` (or
+`OK|DEGRADED` if you only need the component alive), page on `ERROR`. The dry-run
+is mock and makes **no network call**.
+
+### Structured logs (incident investigation)
+
+Each facade call emits one sanitized JSON line on logger `banxe.dse.baas`:
+`traceId`, `asset`, `riskProfile`, `status`, `latencyMs`, the
+`includeSentiment`/`includeStressTests` flags, and the response **summary**
+(`topActionType`, `topDriver`, `topUtilityScore`, `enrichmentApplied`,
+`decisionTraceEmitted`). It contains **no amounts, no positions, no secrets/PII**.
+Investigate by joining the log's `traceId` to the response `traceId`; when the
+debug gate was on, pull the full `decisionTrace` from the captured response for a
+step-by-step reconstruction. See IL-216 and `observability/baas.py`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are
