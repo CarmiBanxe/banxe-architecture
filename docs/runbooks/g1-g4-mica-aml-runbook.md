@@ -47,6 +47,13 @@ Artifacts it ties together:
   **partner-framed demonstrations and training**. It is **not G2 onboarding** — there
   is no KYB, billing, tiering, or keys. **Live partner onboarding requires a separate
   G2 ratification** (an ADR-095 cell + operator/MLRO decision + dedicated ADR).
+- **Sandbox educational gamification** — ADR-100 / IL-245 (SBOX-5): badges, a learning
+  streak, and scenario/replay achievements over the demo flows
+  (`/api/v1/sandbox/gamification`). It is **permitted as part of training** and does
+  **not** touch real trading — no real money, tokens, near-miss, or variable-ratio
+  mechanics, and no link to real balances/volumes/PnL. It does **not** replace the
+  future **G4 gamification policy**, which stays **PROPOSED / blocked until G4
+  ratification** (an ADR-095 cell + dedicated ADR).
 
 ## Regulatory context (MiCA / AML / TFR — high level, not legal advice)
 
