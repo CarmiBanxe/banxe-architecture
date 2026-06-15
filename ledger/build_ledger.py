@@ -22,6 +22,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ENTRIES = ROOT / "ledger" / "entries"
 LEDGER = ROOT / "INSTRUCTION-LEDGER.md"
+FROZEN = ROOT / "ledger" / "FROZEN-ARCHIVE.md"
 
 HEADER = (
     "# INSTRUCTION-LEDGER.md - Reestr instrukcij CEO/CTIO\n\n"
@@ -79,8 +80,11 @@ def collect():
 
 
 def render(records):
-    out = [HEADER]
-    for i, r in enumerate(records, start=1):
+    frozen = FROZEN.read_text(encoding="utf-8") if FROZEN.exists() else HEADER
+    nums = [int(m) for m in re.findall(r"IL-(\d{3})", frozen)]
+    offset = max(nums) if nums else 0
+    out = [frozen.rstrip("\n") + "\n"]
+    for i, r in enumerate(records, start=offset + 1):
         num = "IL-{:03d}".format(i)
         out.append(
             "\n---\n\n### " + num + " - " + r["session_id"]
@@ -103,9 +107,6 @@ def main(argv=None):
     records = collect()
     content = render(records)
     if args.check:
-        if not records:
-            sys.stdout.write("ledger-build check OK (no shard entries yet; migration is S4)\n")
-            return 0
         current = LEDGER.read_text(encoding="utf-8") if LEDGER.exists() else ""
         if current != content:
             sys.stderr.write(
