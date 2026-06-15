@@ -422,6 +422,14 @@ external `/v1` facade; no contract change. Real partner onboarding stays **G2-ga
 (an ADR-095 ratify cell + operator/MLRO decision). See IL-244 and backend
 `services/sandbox_partner_profiles.py`.
 
+## Sandbox portal / UX shell (SBOX-6, ADR-101) — INTERNAL, read-only
+
+An internal demo shell that composes the SBOX-1..5 surfaces (status, scenarios,
+sessions/replay, partners, educational gamification) into one screen with a
+persistent "Sandbox / No live execution" banner. Read-only over the internal sandbox
+API; no live action, keys, billing, or KYB; dev/sandbox-only, no public rollout. See
+`docs/devportal/sandbox-portal.md`, ADR-101, and IL-246.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are

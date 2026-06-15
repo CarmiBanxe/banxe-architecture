@@ -54,6 +54,12 @@ Artifacts it ties together:
   mechanics, and no link to real balances/volumes/PnL. It does **not** replace the
   future **G4 gamification policy**, which stays **PROPOSED / blocked until G4
   ratification** (an ADR-095 cell + dedicated ADR).
+- **Sandbox portal / UX shell** — ADR-101 / IL-246 (SBOX-6): an internal, read-only
+  demo shell composing SBOX-1..5 (`docs/devportal/sandbox-portal.md`) with a
+  persistent "no live execution" banner. It is a **visual interface over the existing
+  sandbox functions** — it does **not** change the regulatory status (still
+  advisory/mock-only) and exposes no live action; a public/live portal is a separate
+  ADR + G-ratification.
 
 ## Regulatory context (MiCA / AML / TFR — high level, not legal advice)
 
