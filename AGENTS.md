@@ -109,6 +109,26 @@ When syncing components TO a project, that project's local files take precedence
 
 ---
 
+## HARD RULE — No smart refactor without repo-wide duplication verification
+
+A STOP-barrier for Claude Code, MetaClaw/OpenClaw, and every code-changing agent
+(ADR-102). Before ANY structural change — restructuring, moving modules, deleting
+code, or deduplication — complete the **Duplication Audit** and record it in the
+task/ADR artefact; no structural change merges without it:
+
+1. Repo-wide (semantic + textual) search for duplicate implementations, interfaces,
+   DTOs, helpers, SQL, migration fragments, and docs — across all in-scope repos.
+2. Identify the source-of-truth and every consumer of each duplicate.
+3. No delete/merge until the absence of hidden dependencies is positively confirmed.
+4. Attach a **"Duplication Audit"** section: matches, decision (keep / merge / delete),
+   risks.
+5. If in doubt → **fail-closed and escalate to a human.**
+
+Full protocol: `.claude/rules/agents.md` and
+`docs/adr/ADR-102-no-smart-refactor-without-duplication-verification.md`.
+
+---
+
 ## Repository structure
 
 ```

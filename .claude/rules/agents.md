@@ -220,3 +220,33 @@ For agent execution that needs LLM inference, use canonical LiteLLM aliases (per
 - IL-FA-02-DRAFT (PR #81) — factory-mid/heavy/coder + project-reason aliases
 - IL-FA-03-CLOSE (PR #83) — Ruflo reclassified as in-fleet Review Agent
 - docs/canon/operator-canon-2026-05.md — Principle 1 (HW-first), Principle 4 (factory unblocked)
+
+---
+
+## HARD RULE — No smart refactor without repo-wide duplication verification (ADR-102)
+
+> STOP-barrier for Claude Code, MetaClaw/OpenClaw, and every code-changing agent.
+> Violating it = canon violation. This sits at invariant priority (alongside the
+> "no skip flags" / fail-closed barriers), above local agent discretion.
+
+**Rule:** "No smart refactor without repo-wide duplication verification."
+
+Before ANY structural change — restructuring, moving modules, deleting code, or
+deduplication — complete the **Duplication Audit** and record it in the task/ADR
+artefact. No structural change merges without it.
+
+**Mandatory Duplication Audit protocol (all five steps):**
+
+1. **Repo-wide search** (semantic + textual) for duplicate implementations,
+   interfaces, DTOs, helpers, SQL, migration fragments, and docs related to the
+   target — across all in-scope repos, not just the edited file.
+2. **Identify the source-of-truth** and **every consumer** of each duplicate.
+3. **No delete/merge** until the absence of hidden dependencies is positively
+   confirmed (consumers enumerated and checked).
+4. **Attach a "Duplication Audit" section** to the task/ADR: matches found, decision
+   per match (**keep / merge / delete**), and risks.
+5. **If in doubt → fail-closed and escalate to a human.** Uncertainty about a hidden
+   consumer blocks the refactor.
+
+A refactor PR without a "Duplication Audit" section is incomplete and is rejected.
+See `docs/adr/ADR-102-no-smart-refactor-without-duplication-verification.md`.
