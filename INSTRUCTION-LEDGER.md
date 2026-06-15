@@ -11007,6 +11007,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Blocker:** Нет (для Central-reachable scope). Live client-serving gated on operator runtime activation (4 steps: S1 gateway up, ClickHouse + ClickHouseDecisionRecorder, INTENT_LAYER_ENABLED + L3 adapters, cross-repo live dispatch).
 - **Refs:** IL-152 (intent-first repo audit ~45% — this roadmap closes the design+code+wiring gap across all layers); IL-166 (machine-readable audit matrix companion to IL-152); IL-167 (S5 — L1 router + producers closing gap #6 + idempotency/CostWindow); IL-168 (S6 — SAR→NCA + recon-core + cost-cap TOCTOU #1; atomic-claim #2 carried forward here); IL-156 (S2 governance schemas — used by composition root); IL-159 (S3 BPR registry — deterministic classification source; process_ref dedup follow-up); ADR-021 (`AGENT_ROUTING_ENABLED` — distinct from `INTENT_LAYER_ENABLED`, stays OFF); ADR-049 §D6 (LLM-orchestration precondition + status-hygiene follow-up); ADR-056 (ledger-coupling gate); ADR-057 (ledger append-only); ADR-059 (shard serialization — S4, shards still empty); intent-first-migration-roadmap-2026-06-08 (the 8-sprint roadmap — now COMPLETE).
 
+
+---
+
+### IL-172: ADR-060 multi-actor orchestration stack — merge_group + branch namespace + concurrency + shard bridge
+- **Date:** 2026-06-09
+- **Source:** CEO / factory orchestration. PR #173 lands the ADR-060 orchestration stack: `guardian.yml` + `ledger-build.yml` gain `merge_group` trigger support, agent/factory branch-namespace awareness, concurrency groups, and the ADR-060 ledger shard bridge wired through the ADR-056 ledger-coupling gate.
+- **Steps:**
+  1. `guardian.yml` — add `merge_group:` trigger and namespace-aware ledger-coupling gate (ADR-056, ADR-060 shard bridge).
+  2. `ledger-build.yml` — concurrency group + shard-aware build so `ledger/entries/` shards and the monolith `INSTRUCTION-LEDGER.md` stay reconciled.
+  3. `docs/adr/ADR-060-multi-actor-orchestration.md` — document the multi-actor orchestration model.
+- **Status:** DONE ✅ (gate-coupling closed via this IL-170 ledger block)
+- **Proof:** PR #173 `banxe-architecture`; guardian-ledger gate now resolves because this PR appends a new `### IL-170` block to `INSTRUCTION-LEDGER.md`, satisfying ADR-056 / ADR-060 ledger coupling. Workflow files unchanged by this fix — gate logic is correct; the PR previously failed only because no IL block was appended.
+- **Deviation:** Governance/CI doc commit only — no code, no project-code repos touched in THIS ledger commit. Append-only per Invariant I-28; previous entry was IL-169 (genuine numeric anchor; IL-202/IL-2026 are false `IL-2026-…` timestamp matches, not numeric anchors), so genuine next free = IL-170.
+- **Blocker:** None.
+- **Refs:** ADR-056 (ledger-coupling gate); ADR-057 (ledger-append-only); ADR-060 (multi-actor orchestration); IL-164/165/166/167/168 (prior CI/ledger coupling commits carried only `INSTRUCTION-LEDGER.md`); IL-169 (S8 complete, intent-first migration done). Ledger shards under `ledger/entries/` remain empty (ADR-059 S4 backfill out of scope); this block appends to the monolith per `build_ledger.py --check` vacuously-OK path.
 ### IL-170: Trading Frontend Sprint 3 Step 2 — target repo bootstrapped (operator-gated)
 - **Date:** 2026-06-09
 - **Source:** CEO / operator signal (Step 2 of IL-157 HANDOFF). Operator-gated repo creation + branch protection.
