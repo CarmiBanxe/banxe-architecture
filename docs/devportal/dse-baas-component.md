@@ -392,6 +392,22 @@ and are **neither open nor awaiting implementation**. They are not endpoints and
 no surface here. Any future work on those themes would require a dedicated new ADR
 and IL entry. See IL-237.
 
+## Unified sandbox-mode surface (SBOX-1, ADR-096) — INTERNAL, read-only
+
+One internal handle on the sandbox posture, over the delivered advisory seams.
+`GET /api/v1/sandbox/status` returns a descriptive snapshot — `mode: "sandbox-demo"`,
+`advisoryModules` (dss, mm-preview, fees-preview, quant-preview,
+execution-intent-preview, marketplace), `executionMode: "unsigned-preview-only"`,
+`liveProvidersEnabled`, `billingEnabled`, `kybEnabled`, `lineageEnabled`, and a
+`disclaimer`. Flags are **derived from config**: `liveProvidersEnabled` is `false`
+in sandbox (a non-mock provider fails closed at startup), `lineageEnabled` follows
+the G1L flag, and `billingEnabled` / `kybEnabled` are `false` (no such capability
+exists). **Strictly descriptive** — no provider/keys/network/billing/KYB activated,
+**404** on the external `/v1` facade, no contract changed (the optional per-endpoint
+`sandboxMode` marker is intentionally omitted). This is the **default safe
+environment** that sits below the ADR-095 G1–G4 go-live gates and the G1R MiCA/AML
+runbook. See IL-241 and backend `services/sandbox_profile.py`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are

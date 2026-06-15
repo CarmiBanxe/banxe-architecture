@@ -29,6 +29,10 @@ Artifacts it ties together:
 - **G1L decision-lineage logging** — IL-239: an inert, mock-safe, fail-closed audit
   logger over the advisory seams (the one safe-to-build-now item from ADR-095). It
   activates nothing.
+- **Unified sandbox-mode surface** — ADR-096 / IL-241 (SBOX-1): the internal
+  `GET /api/v1/sandbox/status` endpoint reports the sandbox posture (advisory-only,
+  unsigned, no live providers / billing / KYB). It is the **default safe environment**
+  this runbook governs the exits from; it activates nothing.
 
 ## Regulatory context (MiCA / AML / TFR — high level, not legal advice)
 
