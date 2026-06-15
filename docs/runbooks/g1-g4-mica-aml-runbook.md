@@ -37,6 +37,11 @@ Artifacts it ties together:
   demo journeys (`GET /api/v1/sandbox/scenarios`). These are the **recommended way to
   train operators and partners** on the advisory product (recommendation → previews →
   marketplace) **without any live risk** — no live execution, orders, keys, or network.
+- **Sandbox sessions** — ADR-098 / IL-243 (SBOX-3): the internal
+  `/api/v1/sandbox/sessions` API ties a demo run's steps and its G1L lineage events
+  into one replayable trace. It is the recommended way to run **demonstrations and
+  trainings without live risk** and a source of **audit traces** for those runs;
+  it activates nothing and adds no new PII.
 
 ## Regulatory context (MiCA / AML / TFR — high level, not legal advice)
 
