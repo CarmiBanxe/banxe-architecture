@@ -11,7 +11,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: ledger-projection-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ledger-projection-${{ github.workflow }}-${{ github.base_ref || github.ref_name }}
   cancel-in-progress: false  
 
 jobs:
