@@ -33,6 +33,10 @@ Artifacts it ties together:
   `GET /api/v1/sandbox/status` endpoint reports the sandbox posture (advisory-only,
   unsigned, no live providers / billing / KYB). It is the **default safe environment**
   this runbook governs the exits from; it activates nothing.
+- **Sandbox demo scenarios** — ADR-097 / IL-242 (SBOX-2): deterministic, mock-only
+  demo journeys (`GET /api/v1/sandbox/scenarios`). These are the **recommended way to
+  train operators and partners** on the advisory product (recommendation → previews →
+  marketplace) **without any live risk** — no live execution, orders, keys, or network.
 
 ## Regulatory context (MiCA / AML / TFR — high level, not legal advice)
 
