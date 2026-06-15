@@ -408,6 +408,20 @@ exists). **Strictly descriptive** — no provider/keys/network/billing/KYB activ
 environment** that sits below the ADR-095 G1–G4 go-live gates and the G1R MiCA/AML
 runbook. See IL-241 and backend `services/sandbox_profile.py`.
 
+## Partner sandbox pack (SBOX-4, ADR-099) — INTERNAL, demo-only
+
+A partner-shaped demo layer over the sandbox. `GET /api/v1/sandbox/partners` lists
+hard-wired sample partner profiles (e.g. `foobank-neo` — EU neo-bank, `walletco-demo`
+— wallet, `brokerx-sandbox` — broker), each with a segment, region, use case,
+`enabledModules` (referencing existing advisory/sandbox modules), and a descriptive
+`sampleRateLimitTier`. `GET /api/v1/sandbox/partners/{id}/bundle` returns a demo
+bundle — the profile, the recommended SBOX-2 scenarios, the SBOX-1 status link, an
+SBOX-3 sessions how-to, and disclaimers. **Strictly demo-only:** no KYB, no billing /
+subscriptions, no tier activation, no fee withdrawal, no keys/tokens; **404** on the
+external `/v1` facade; no contract change. Real partner onboarding stays **G2-gated**
+(an ADR-095 ratify cell + operator/MLRO decision). See IL-244 and backend
+`services/sandbox_partner_profiles.py`.
+
 ## Boundaries (compliance)
 
 - Advisory product, separate from any execution API. Recommendations are

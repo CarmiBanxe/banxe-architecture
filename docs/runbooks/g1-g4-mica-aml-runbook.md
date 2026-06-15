@@ -42,6 +42,11 @@ Artifacts it ties together:
   into one replayable trace. It is the recommended way to run **demonstrations and
   trainings without live risk** and a source of **audit traces** for those runs;
   it activates nothing and adds no new PII.
+- **Partner sandbox pack** — ADR-099 / IL-244 (SBOX-4): the internal
+  `/api/v1/sandbox/partners` API offers sample partner profiles + demo bundles for
+  **partner-framed demonstrations and training**. It is **not G2 onboarding** — there
+  is no KYB, billing, tiering, or keys. **Live partner onboarding requires a separate
+  G2 ratification** (an ADR-095 cell + operator/MLRO decision + dedicated ADR).
 
 ## Regulatory context (MiCA / AML / TFR — high level, not legal advice)
 
