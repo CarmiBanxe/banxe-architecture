@@ -93,3 +93,34 @@
 | Проект | Порт | Статус |
 |--------|------|--------|
 | GUIYON | 18794 | Исключён из Banxe — отдельный проект (абсолютный запрет) |
+
+---
+
+## Обновление 2026-06-13 (сессия диагностики фабрики — Proof-verified)
+
+### Третий узел: mark-legion (рабочий/фабрика)
+| Узел | Роль | Ключевые сервисы (localhost) |
+|------|------|------------------------------|
+| mark-legion | vibe-coding / фабрика агентов / MiroFish | LiteLLM gateway :4000, Banxe Compliance RAG :8765, MiroFish :3000/:5001 |
+
+### LiteLLM gateway (:4000, mark-legion)
+- Запуск: systemd `litellm-lan-gateway.service` (pipx venv), конфиг `~/MetaClaw/litellm/litellm-config.v2.yaml`.
+- **Режим без БД (stateless by design):** `/health` и `/v1/models` возвращают `no_db_connection` — это НЕ сбой. Маршрутизация идёт по статическому `model_list`.
+- Валидные алиасы: `banxe-general`, `qwen3-30b`, `qwen3-banxe`, `fast`, `glm-4-flash`, `coding`, `gpt-oss-20b`, `large`, `glm-air`, `ai`, `ai-heavy`, `reasoning`, `reasoning-235b`, `factory-fast`, `factory-mid`, `factory-heavy`, `factory-coder`, `project-reason`, `project-mid`.
+- Проверка: `factory-mid` → HTTP 200, ~8.5s cold start.
+
+### Ollama / evo2 — фактический список моделей (11)
+qwen3:235b-a22b, **qwen3:235b-a22b-banxe**, llama3.3:70b, qwen3-coder-next:q4_K_M, qwen3.5:35b, qwen3:30b-a3b, huihui_ai/glm-4.7-flash-abliterated, gurubot/gpt-oss-derestricted:20b, qwen3.5:latest, qwen3:4b, qwen2.5:0.5b.
+- **qwen3:235b** требует ~121.7 GiB; при занятой памяти (свободно 19.7 GiB) НЕ грузится через Ollama. Рабочий путь для 235B: llama.cpp `:8082`.
+
+### MiroFish (:5001) — ИСПРАВЛЕНО
+- Было: `LLM_MODEL_NAME=gpt-4o-mini` (нет в gateway) + `LLM_BASE_URL=http://host.docker.internal:4000/v1` (не резолвится в контейнере) → симуляции не работали.
+- Стало: `LLM_MODEL_NAME=factory-mid`, `LLM_BASE_URL=http://172.17.0.1:4000/v1`. End-to-end из контейнера: HTTP 200.
+
+### Watchman (:8084, evo1) — API уточнён
+- Рабочий эндпоинт скрининга: `GET /v2/search?name=<имя>` (параметр `name`, НЕ `q`). OFAC активен (проверено: совпадение us_ofac).
+
+### ClickHouse (:8123, evo1) — флаг
+- С mark-legion порт 8123 на evo1 недоступен (HTTP 000), хотя узел пингуется. Требует проверки bind-адреса / firewall для удалённого аудита агентов.
+
+---

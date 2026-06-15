@@ -6,6 +6,15 @@
 > Machine-readable version: `../HITL-MATRIX.yaml`
 > Enforcement layer: `banxe-emi-stack/services/hitl/org_roles.py`
 
+> **Scope note (IL-176, 2026-06-11).** The agent tables below enumerate **client-facing §D2 mask
+> agents** — `banxe-emi-stack/services/agents/<x>_agent.py` that run the ADR-049 §D2 gate-chain and
+> emit an ADR-046 `AgentDecisionRecord` per action. They do **not** enumerate the ~60 **domain
+> services** (`banxe-emi-stack/services/*/*_agent.py`), which are tracked separately. A `(PROPOSED)`
+> marker therefore means **"no §D2 mask yet"**, NOT "no domain code" — many proposed agents already
+> have a full, tested domain service (precedent: the §D2 `TreasuryAgent` mask coexists with the
+> domain `services/treasury/treasury_agent.py`). See `docs/audit/ORG-CODE-RECONCILIATION-2026-06-11.md`
+> for the per-agent reconciliation matrix.
+
 ---
 
 ## 1. Organisational Chart
@@ -74,7 +83,7 @@ Board of Directors
 |-----------|-------|
 | **FCA Role** | SMF4 — Risk function |
 | **Scope** | 1st-line operational risk + AI risk governance |
-| **AI Agent** | `RiskOversightAgent` (PROPOSED) |
+| **AI Agent** | `RiskOversightAgent` |
 | **Human Double** | CRO (or delegated Risk Manager) |
 | **Trust Zone** | 🔴 RED |
 | **Autonomy** | L3 — CRO sign-off required |
@@ -93,6 +102,15 @@ Board of Directors
 | `AMLPipelineAgent` | Transaction monitoring | L2 Review | On threshold change |
 | `ConsumerDutyAgent` | PS22/9 outcomes | L2 Review | Quarterly review |
 | `RiskOversightAgent` | Risk dashboard | L1 Auto | No |
+
+> **Autonomy clarification (ADR-079 / IL-173).** The header **Autonomy: L3 — CRO sign-off
+> required / 🔴 RED** applies to the **CRO function as a whole** — the consequential decisions in
+> *Responsibilities* above (AI model risk assessment, fraud/AML **threshold approval**, material-risk
+> Board escalation), which remain **L3, human CRO** (EU AI Act Art.14 human oversight).
+> `RiskOversightAgent` itself is **L1 Auto, read-only**: it aggregates and **displays** risk metrics
+> only and MUST NOT approve models, change thresholds, or make any risk decision (enforced + tested —
+> any approve/threshold op is out-of-scope). This resolves the header(L3)-vs-table(L1) contradiction:
+> monitoring/read = L1; decision = L3. See ADR-079.
 
 ---
 
@@ -170,13 +188,13 @@ CFO must approve any ledger adjustment >£10,000.
 | Agent | Task | Autonomy |
 |-------|------|----------|
 | `FPAAgent` | Budget vs actuals reporting | L1 Auto |
-| `ForecastAgent` (PROPOSED) | Liquidity forecasting | L2 Review |
+| `ForecastAgent` | Liquidity forecasting | L2 Review |
 
 #### 2.5.3 Treasury
 
 | Agent | Task | Autonomy |
 |-------|------|----------|
-| `TreasuryAgent` (PROPOSED) | NOSTRO reconciliation, FX exposure | L2 Review |
+| `TreasuryAgent` | NOSTRO reconciliation, FX exposure | L2 Review |
 
 Treasury decisions >£100k require CFO sign-off.
 
@@ -213,7 +231,7 @@ Treasury decisions >£100k require CFO sign-off.
 | `PaymentRouterAgent` | FPS/SEPA/CHAPS routing | L1 Auto | — |
 | `PaymentRouterAgent` | Payment >£50k | L2 Review | COO/CFO |
 | `MassPaymentAgent` | Bulk payroll | L2 Review | CFO |
-| `ChargebackAgent` (PROPOSED) | Dispute handling | L2 Review | COO |
+| `ChargebackAgent` | Dispute handling | L2 Review | COO |
 
 **PSR 2017 Reg.71:** Strong auth required >£30 (automated, no HITL).
 
@@ -234,7 +252,7 @@ Treasury decisions >£100k require CFO sign-off.
 |-------|------|----------|------|
 | `CustomerLifecycleAgent` | Onboarding → offboarding | L2 Review | COO on block |
 | `CustomerSupportAgent` | Ticket routing, FAQ | L1 Auto | — |
-| `ChurnPredictionAgent` (PROPOSED) | At-risk customer alerts | L1 Auto | — |
+| `ChurnPredictionAgent` | At-risk customer alerts | L1 Auto | — |
 
 ---
 
@@ -251,9 +269,9 @@ Treasury decisions >£100k require CFO sign-off.
 
 | Agent | Task | Autonomy | Gate |
 |-------|------|----------|------|
-| `MLPipelineAgent` (PROPOSED) | Model retraining proposals | L3 | CRO + CTO |
+| `MLPipelineAgent` | Model retraining proposals | L3 | CRO + CTO |
 | `FeedbackLoopAnalyser` | Threshold proposals (I-27) | L3 | CRO must approve |
-| `DataQualityAgent` (PROPOSED) | Data drift detection | L1 Auto | — |
+| `DataQualityAgent` | Data drift detection | L1 Auto | — |
 
 **I-27: No autonomous model updates. All changes require CRO sign-off.**
 
@@ -261,8 +279,8 @@ Treasury decisions >£100k require CFO sign-off.
 
 | Agent | Task | Autonomy | Gate |
 |-------|------|----------|------|
-| `DeployAgent` (PROPOSED) | Staging deploys | L2 Review | CTO |
-| `DeployAgent` (PROPOSED) | Production deploys | L3 | CTO must approve |
+| `DeployAgent` | Staging deploys | L2 Review | CTO |
+| `DeployAgent` | Production deploys | L3 | CTO must approve |
 | `MonitoringAgent` | Health checks, alerting | L1 Auto | — |
 
 #### 2.7.3 Integrations
@@ -281,7 +299,7 @@ Treasury decisions >£100k require CFO sign-off.
 |-------|------|----------|------|
 | `SecurityAgent` | Keycloak OIDC, device fingerprint | L3 | CTO + CEO |
 | `IAMAgent` | Role provisioning (SM&CR aligned) | L2 Review | CTO |
-| `IncidentResponseAgent` (PROPOSED) | Security incident triage | L2 | CTO + CEO (CRITICAL) |
+| `IncidentResponseAgent` | Security incident triage | L2 | CTO + CEO (CRITICAL) |
 
 **Security incident CRITICAL: CEO must be notified within 2h (FCA SYSC 8.1).**
 
@@ -291,10 +309,10 @@ Treasury decisions >£100k require CFO sign-off.
 
 | Sub-block | Agent | Autonomy |
 |-----------|-------|----------|
-| Sales | `LeadScoringAgent` (PROPOSED) | L1 Auto |
-| Marketing | `CampaignAgent` (PROPOSED) | L1 Auto |
+| Sales | `LeadScoringAgent` | L1 Auto |
+| Marketing | `CampaignAgent` | L1 Auto |
 | Customer Success | `CustomerSupportAgent` | L1 Auto |
-| NPS | `NPSAgent` (PROPOSED) | L1 Auto |
+| NPS | `NPSAgent` | L1 Auto |
 
 No HITL gates required for Front Office (no regulatory obligations attach directly).
 Consumer Duty PS22/9 outputs are monitored by CRO.
@@ -340,8 +358,8 @@ Consumer Duty PS22/9 outputs are monitored by CRO.
 
 | Sub-block | Agent | Autonomy | Gate |
 |-----------|-------|----------|------|
-| HR | `HRAgent` (PROPOSED) | L1 Auto | CEO (hiring SMF holders) |
-| Legal | `ContractAgent` (PROPOSED) | L2 Review | Legal Counsel |
+| HR | `HRAgent` | L1 Auto | CEO (hiring SMF holders) |
+| Legal | `ContractAgent` | L2 Review | Legal Counsel |
 | Compliance Admin | `AgreementAgent` | L2 Review | MLRO (regulated docs) |
 
 ---
@@ -385,7 +403,7 @@ High-risk AI systems (AML, KYC, fraud scoring, credit assessment) must allow:
 - `AML-Analyst-v1` — HITL required on SAR_REQUIRED, STRUCTURING, VELOCITY_DAILY
 - `KYC-Specialist-v2` — HITL required on HIGH/PROHIBITED risk
 - `SanctionsScreeningAgent` — AUTO BLOCK; reversal requires MLRO
-- `CreditScoringAgent` (PROPOSED) — HITL required on all rejections
+- `CreditScoringAgent` — HITL required on all rejections
 
 ---
 
