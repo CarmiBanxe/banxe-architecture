@@ -1200,6 +1200,7 @@ Per MASTER-PLAN-2026-05-05 Track A "Guardian Enforcement Completion" — all ADR
 - [ ] Track F — Security / Secrets Rotation (partially via ADR-032)
 - [ ] Track H — New Architecture Work
 - [ ] Track I — External / Organisational Blockers
+- [ ] Track J — OPEN (Factory Watchdog / NOC)
 
 ### Remaining for Phase 6+ (operator-blocked or production-scope)
 - G-OBS-02 alert CI smoke (Track E)
@@ -1221,6 +1222,7 @@ Per MASTER-PLAN-2026-05-05 Track A "Guardian Enforcement Completion" — all ADR
 - [ ] Track B — IAM Live-Ops (operator-led)
 - [ ] Track H — New Architecture Work
 - [ ] Track I — External / Organisational Blockers
+- [ ] Track J — OPEN (Factory Watchdog / NOC)
 
 ### Remaining open GAPs per track (test-extension items only)
 - G-KYC-04 (Track C): webhook signature + idempotency tests
@@ -1242,6 +1244,38 @@ Per MASTER-PLAN-2026-05-05 Track A "Guardian Enforcement Completion" — all ADR
 - [ ] Track B — OPEN (IAM Live-Ops)
 - [ ] Track H — OPEN (New Architecture)
 - [ ] Track I — OPEN (External Blockers)
+- [ ] Track J — OPEN (Factory Watchdog / NOC)
 
 ### Autonomous progression terminus reached
 All canon-addressable Track work complete. Remaining 3 OPEN Tracks + 4 test-extension GAPs = operator/production scope only.
+
+## Roadmap Block 2026-06-16 — Track J: Factory Watchdog / NOC (NEW WORKSTREAM)
+
+> I-75 proposed. ADR-WDG-01 proposed. No production enablement.
+
+### Factory Watchdog workstream added to MASTER-PLAN
+- [ ] Track J — Factory Watchdog / NOC / Auto-Remediation
+- [ ] ADR-WDG-01 PROPOSED — 3-tier heartbeat + auto-remediation architecture
+- [ ] I-75 PROPOSED — no-signal=incident operational invariant
+- [ ] G-WDG-01..04 OPEN — unified heartbeat, no-signal policy, auto-remediation, critical registry
+
+### Implementation phases (within Track J)
+- [ ] J-Phase 1: Critical entity registry + heartbeat scaffold (ops/watchdog/)
+- [ ] J-Phase 2: 15m heartbeat daemon (HW layer: systemd, docker, disk, RAM, GPU)
+- [ ] J-Phase 3: 30m extended health-check (LLM layer: Ollama, LiteLLM, model routes, latency)
+- [ ] J-Phase 4: 60m full audit snapshot (Agent layer: smoke-tests, drift detection)
+- [ ] J-Phase 5: Auto-remediation engine (safe restarts, route fallback, degraded mode)
+- [ ] J-Phase 6: Alert integration (ADR-033 n8n+Telegram) + escalation matrix
+- [ ] J-Phase 7: Dashboard (ClickHouse metrics sink + health view)
+
+### Tracks status update
+- [x] Track A — COMPLETE ✅
+- [x] Track C — SUBSTANTIALLY-CLOSED ✅
+- [x] Track D — SUBSTANTIALLY-CLOSED ✅
+- [/] Track E — PARTIALLY-CLOSED
+- [/] Track F — PARTIALLY-CLOSED
+- [x] Track G — CLOSED-SANDBOX ✅
+- [ ] Track B — OPEN (IAM Live-Ops)
+- [ ] Track H — OPEN (New Architecture)
+- [ ] Track I — OPEN (External Blockers)
+- [ ] Track J — OPEN (Factory Watchdog / NOC) ← NEW

@@ -184,3 +184,27 @@ The legacy form `KEYCLOAK_URL=http://localhost:8180` (interpreted differently on
 - G-OPS-05 (evo1 keycloak zombie) — open follow-up
 - G-FACTORY-04 (Legion 2x Java) — open follow-up
 - docs/canon/operator-canon-2026-05.md
+
+---
+
+## Factory Watchdog / NOC (ADR-WDG-01 PROPOSED)
+
+> I-75: No-signal = incident. Every critical entity must have owner, heartbeat, smoke-test, remediation policy, escalation path.
+
+### Operational invariants
+1. **No-signal = incident**: missing 2 consecutive heartbeats (30 min) from any critical entity → automatic INCIDENT classification.
+2. **Safe auto-remediation ONLY**: restart systemd/docker, restart Ollama/LiteLLM, route fallback, degraded mode, disable non-critical agent.
+3. **FORBIDDEN without operator**: destructive cleanup, compliance threshold changes, AGENT_ROUTING_ENABLED, payment/compliance production routing, irreversible money/ledger/legal actions.
+4. **Registry mandatory**: every critical entity in ops/watchdog/registry.yaml with owner + heartbeat + smoke-test + remediation + escalation.
+
+### Cadence
+- 15 min: quick heartbeat (connectivity, service up)
+- 30 min: extended health-check (resources, latency, model-route readiness)
+- 60 min: full audit snapshot (state dump, drift detection, agent smoke-tests)
+
+### References
+- ADR: adrs/ADR-WDG-01-factory-watchdog.md
+- Runbook: docs/runbooks/watchdog-noc-runbook.md
+- Registry: ops/watchdog/registry.yaml
+- Config: ops/watchdog/config.yaml
+- Scaffold: ops/watchdog/

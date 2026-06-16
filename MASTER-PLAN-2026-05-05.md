@@ -103,6 +103,20 @@
 
 ---
 
+## Track J — Factory Watchdog / NOC / Auto-Remediation (NEW)
+
+> Infrastructure observability and automated incident response. Covers all 3 layers.
+
+- [ ] ADR-WDG-01: Factory Watchdog architecture decision — 3-tier heartbeat (15m/30m/60m), no-signal=incident, safe auto-remediation policy, critical node registry.
+- [ ] G-WDG-01: Unified heartbeat daemon for HW/LLM/agents (replaces fragmented cron watchdog-watcher.sh).
+- [ ] G-WDG-02: No-signal=incident policy enforcement (I-75).
+- [ ] G-WDG-03: Safe auto-remediation runbook + implementation (restart services, route fallback, degraded mode).
+- [ ] G-WDG-04: Critical entity registry with owner/heartbeat/smoke-test/escalation per node.
+- [ ] Integration with ADR-033 alert routing (n8n + Telegram) for escalation path.
+- [ ] Watchdog dashboard (ClickHouse metrics + health state view).
+
+---
+
 ## CANON SESSION RULES (1..7)
 
 Обязательные правила каждой сессии. Источник: ADR-025 Agent Interaction Canon §14 + §3/§4/§15.

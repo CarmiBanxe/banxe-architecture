@@ -1,0 +1,51 @@
+# Factory Watchdog Configuration
+# ADR-WDG-01 (PROPOSED) | I-75 (PROPOSED)
+# DO NOT deploy to production until ADR-WDG-01 is ACCEPTED
+
+version: "1.0"
+status: scaffold  # scaffold | staging | production
+
+cadence:
+  heartbeat_interval_minutes: 15
+  extended_interval_minutes: 30
+  audit_interval_minutes: 60
+  no_signal_threshold_missed: 2  # 2 missed heartbeats = INCIDENT
+
+timeouts:
+  heartbeat_check_seconds: 30
+  extended_check_seconds: 60
+  audit_check_seconds: 120
+
+thresholds:
+  cpu_warning_percent: 80
+  cpu_critical_percent: 95
+  ram_warning_percent: 85
+  ram_critical_percent: 95
+  disk_warning_percent: 80
+  disk_critical_percent: 90
+  vram_warning_percent: 90
+  vram_critical_percent: 98
+  latency_ollama_warning_ms: 5000
+  latency_ollama_critical_ms: 15000
+  latency_litellm_warning_ms: 3000
+  latency_litellm_critical_ms: 10000
+
+remediation:
+  max_restart_retries: 2
+  restart_cooldown_minutes: 5
+  ollama_restart_cooldown_minutes: 10
+  litellm_restart_cooldown_minutes: 10
+  route_fallback_cooldown_minutes: 15
+
+escalation:
+  info_channel: clickhouse_only
+  warning_channel: telegram
+  critical_channel: telegram_n8n
+  incident_channel: telegram_n8n_all
+  warning_sla_hours: 4
+  critical_sla_minutes: 15
+
+alerts:
+  telegram_bot_token_env: TELEGRAM_BOT_TOKEN
+  telegram_chat_id_env: TELEGRAM_MLRO_CHAT_ID
+  n8n_webhook_url_env: N8N_WATCHDOG_WEBHOOK_URL

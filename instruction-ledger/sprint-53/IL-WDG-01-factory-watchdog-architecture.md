@@ -1,0 +1,13 @@
+### IL-246: Factory Watchdog / NOC / Auto-Remediation — architecture workstream integration — ADR-WDG-01 [Track J]
+- **Date:** 2026-06-16
+- **Repos:** banxe-architecture (this commit — ADR-WDG-01 + I-75 + G-WDG-01..04 + Track J + runbook + scaffold).
+- **Numbering:** next free after IL-245 is IL-246. Append-only, no existing IL edited.
+- **What:** Integrate Factory Watchdog / NOC / Auto-Remediation as a new mandatory workstream (Track J) into the existing MASTER-PLAN, ROADMAP, GAP-REGISTER, and INVARIANTS. Create ADR-WDG-01 (PROPOSED) defining 3-tier heartbeat architecture (15m/30m/60m), no-signal=incident policy (I-75), safe auto-remediation matrix, and critical entity registry. Create operational runbook with monitoring layers (HW/LLM/agents), remediation matrix (allowed vs forbidden), escalation matrix, and degraded mode policies. Create implementation scaffold in ops/watchdog/ (config, registry, systemd units, healthcheck script). No production enablement — all artifacts are PROPOSED/SCAFFOLD status.
+- **ADR:** new ADR-WDG-01 (Status PROPOSED) — Factory Watchdog 3-tier architecture. Covers 3 monitoring layers, safe auto-remediation policy, no-signal=incident invariant, critical entity registry.
+- **Invariant:** I-75 (PROPOSED) — no-signal-equals-incident.
+- **GAPs opened:** G-WDG-01 (unified heartbeat), G-WDG-02 (no-signal policy), G-WDG-03 (auto-remediation), G-WDG-04 (critical registry).
+- **Track:** new Track J in MASTER-PLAN (7 phases: J-Phase 1..7).
+- **Surface:** architecture + operational artifacts only. No systemd units deployed. No services started. No production changes.
+- **Canon:** Spec-first (architecture decision before implementation), operator-gated (ADR PROPOSED, not ACCEPTED), append-only (no existing artifacts modified destructively), safe (no production enablement, no compliance changes, no AGENT_ROUTING_ENABLED).
+- **OPERATOR DECISION REQUIRED:** ADR-WDG-01 ratification (PROPOSED → ACCEPTED) before any Track J implementation begins. I-75 ratification before enforcement.
+- **Refs:** ADR-WDG-01, I-75, G-WDG-01..04, ADR-033 (alert routing), I-37 (layer binding), G-SECURITY-EVO1-XMRIG-CRYPTOMINER (motivation).

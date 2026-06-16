@@ -1,0 +1,239 @@
+# Critical Entity Registry — Factory Watchdog
+# ADR-WDG-01 (PROPOSED) | G-WDG-04
+# Each critical entity MUST have: owner, heartbeat, smoke_test, remediation, escalation
+
+version: "1.0"
+
+hosts:
+  - id: evo1
+    name: "GMKtec EVO-X2 #1"
+    address: 192.168.0.72
+    tailscale: 100.64.x.x  # redacted per I-34
+    owner: operator
+    layer: hardware
+    critical: true
+    heartbeat: ping
+    smoke_test: "ssh evo1 uptime"
+    remediation: manual  # physical access required
+    escalation: critical
+
+  - id: evo2
+    name: "GMKtec EVO-X2 #2"
+    address: 192.168.0.15
+    tailscale: 100.99.208.21
+    owner: operator
+    layer: hardware
+    critical: true
+    heartbeat: ping
+    smoke_test: "ssh evo2 uptime"
+    remediation: manual
+    escalation: critical
+
+  - id: legion
+    name: "Legion (factory host)"
+    address: localhost
+    owner: operator
+    layer: hardware
+    critical: true
+    heartbeat: ping
+    smoke_test: uptime
+    remediation: manual
+    escalation: critical
+
+services:
+  # --- Layer 1: Infrastructure services ---
+  - id: postgresql
+    host: evo1
+    port: 5432
+    owner: operator
+    layer: hardware
+    critical: true
+    heartbeat: tcp_connect
+    smoke_test: "pg_isready -h 192.168.0.72 -p 5432"
+    remediation: operator_only  # primary DB — no auto-restart
+    escalation: incident
+
+  - id: clickhouse
+    host: evo1
+    ports: [8123, 9000]
+    owner: operator
+    layer: hardware
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:8123/ping"
+    smoke_test: "curl -s http://192.168.0.72:8123/ping"
+    remediation: auto_restart
+    restart_command: "systemctl restart clickhouse-server"
+    escalation: critical
+
+  - id: redis
+    host: evo1
+    port: 6379
+    owner: operator
+    layer: hardware
+    critical: true
+    heartbeat: tcp_connect
+    smoke_test: "redis-cli -h 192.168.0.72 ping"
+    remediation: auto_restart
+    restart_command: "systemctl restart redis-stack-server"
+    escalation: critical
+
+  # --- Layer 2: LLM / Routing ---
+  - id: ollama-evo1
+    host: evo1
+    port: 11434
+    owner: operator
+    layer: routing_llm
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:11434/api/tags"
+    smoke_test: "curl -sf http://192.168.0.72:11434/api/tags | python3 -c 'import sys,json; d=json.load(sys.stdin); assert len(d.get(\"models\",[]))>0'"
+    remediation: auto_restart
+    restart_command: "ssh evo1 sudo systemctl restart ollama"
+    escalation: warning
+
+  - id: ollama-evo2
+    host: evo2
+    port: 11434
+    owner: operator
+    layer: routing_llm
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.15:11434/api/tags"
+    smoke_test: "curl -sf http://192.168.0.15:11434/api/tags | python3 -c 'import sys,json; d=json.load(sys.stdin); assert len(d.get(\"models\",[]))>0'"
+    remediation: auto_restart
+    restart_command: "ssh evo2 sudo systemctl restart ollama"
+    escalation: warning
+
+  - id: litellm-gateway
+    host: legion
+    port: 4000
+    owner: operator
+    layer: routing_llm
+    critical: true
+    heartbeat: http_get
+    health_url: "http://localhost:4000/health"
+    smoke_test: "curl -sf http://localhost:4000/health"
+    remediation: auto_restart
+    restart_command: "systemctl restart litellm"
+    escalation: critical
+
+  - id: qwen3-235b-master
+    host: evo2
+    port: 8082
+    owner: operator
+    layer: routing_llm
+    critical: false  # fallback exists via Ollama
+    heartbeat: http_get
+    health_url: "http://192.168.0.15:8082/health"
+    smoke_test: "curl -sf http://192.168.0.15:8082/health"
+    remediation: auto_restart
+    restart_command: "ssh evo2 sudo systemctl restart qwen3-235b-master"
+    escalation: warning
+
+  # --- Layer 3: Agents / Application services ---
+  - id: guardian-factory
+    host: evo1
+    port: 8195
+    owner: operator
+    layer: agents
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:8195/health"
+    smoke_test: "curl -sf http://192.168.0.72:8195/health"
+    remediation: auto_restart
+    restart_command: "ssh evo1 sudo systemctl restart guardian-factory"
+    escalation: critical
+
+  - id: guardian-project
+    host: evo1
+    port: 8196
+    owner: operator
+    layer: agents
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:8196/health"
+    smoke_test: "curl -sf http://192.168.0.72:8196/health"
+    remediation: auto_restart
+    restart_command: "ssh evo1 sudo systemctl restart guardian-project"
+    escalation: critical
+
+  - id: compliance-api
+    host: evo1
+    port: 8093
+    owner: operator
+    layer: agents
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:8093/health"
+    smoke_test: "curl -sf http://192.168.0.72:8093/health"
+    remediation: auto_restart
+    restart_command: "ssh evo1 sudo systemctl restart banxe-compliance-api"
+    escalation: critical
+
+  - id: midaz-ledger
+    host: evo1
+    port: 8095
+    owner: operator
+    layer: agents
+    critical: true
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:8095/health"
+    smoke_test: "curl -sf http://192.168.0.72:8095/health"
+    remediation: operator_only  # CBS — no auto-restart
+    escalation: incident
+
+  - id: keycloak
+    host: legion
+    port: 8180
+    owner: operator
+    layer: agents
+    critical: true
+    heartbeat: http_get
+    health_url: "http://100.101.218.26:8180/health"
+    smoke_test: "curl -sf http://100.101.218.26:8180/realms/banxe-emi"
+    remediation: operator_only  # IAM — no auto-restart per ADR-017
+    escalation: incident
+
+  - id: n8n
+    host: evo1
+    port: 5678
+    owner: operator
+    layer: agents
+    critical: false
+    heartbeat: http_get
+    health_url: "http://192.168.0.72:5678/healthz"
+    smoke_test: "curl -sf http://192.168.0.72:5678/healthz"
+    remediation: auto_restart
+    restart_command: "ssh evo1 docker restart n8n"
+    escalation: warning
+
+llm_routes:
+  - id: factory-fast
+    gateway: litellm-gateway
+    owner: operator
+    critical: true
+    smoke_test: "curl -sf -X POST http://localhost:4000/v1/chat/completions -H 'Authorization: Bearer ${LITELLM_KEY}' -H 'Content-Type: application/json' -d '{\"model\":\"factory-fast\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"max_tokens\":5}'"
+    fallback: factory-mid
+    escalation: warning
+
+  - id: factory-mid
+    gateway: litellm-gateway
+    owner: operator
+    critical: true
+    fallback: factory-heavy
+    escalation: warning
+
+  - id: factory-heavy
+    gateway: litellm-gateway
+    owner: operator
+    critical: true
+    fallback: null  # last resort
+    escalation: critical
+
+  - id: project-reason
+    gateway: litellm-gateway
+    owner: operator
+    critical: false
+    fallback: factory-heavy
+    escalation: warning

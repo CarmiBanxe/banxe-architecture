@@ -1289,3 +1289,20 @@
     Closing IL: TBD (openclo-moa authored + deployed in ~/.claude/agents/ + verified).
     Anchors: IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09,
     bootstrap canon v3 §5 + §10 Phase F2.3, parent G-FACTORY-CLAUDE-SUBAGENTS-MISSING.
+
+## Factory Watchdog / NOC — Infrastructure Observability Gaps
+
+| ID | Пробел | Принцип | Статус |
+|----|--------|---------|--------|
+| G-WDG-01 | Нет unified heartbeat для 3-layer infrastructure (HW/LLM/agents) | Observability, DORA | OPEN |
+| G-WDG-02 | No-signal ≠ incident — отсутствие сигнала не генерирует alert | Fail-safe principle | OPEN |
+| G-WDG-03 | Нет auto-remediation policy для safe service restarts | Operational resilience | OPEN |
+| G-WDG-04 | Нет registry критичных сущностей с owner/heartbeat/smoke-test/escalation | Asset management | OPEN |
+
+**G-WDG-01 примечание:** OPEN. Текущее мониторинг: разрозненные cron (watchdog-watcher.sh */15, SYSTEM-STATE.md */5). Нет единого контура heartbeat → health-check → audit-snapshot с cadence 15m/30m/60m. ADR-WDG-01 PROPOSED.
+
+**G-WDG-02 примечание:** OPEN. Operational invariant "no signal = incident" не формализован. Отсутствие heartbeat сигнала ДОЛЖНО автоматически эскалироваться как incident. ADR-WDG-01 PROPOSED.
+
+**G-WDG-03 примечание:** OPEN. Safe auto-remediation (restart systemd/docker, Ollama/LiteLLM restart, route fallback, degraded mode) не формализована. Запрещённые без оператора: destructive cleanup, compliance threshold changes, production payment routing, irreversible ledger/legal actions. ADR-WDG-01 PROPOSED.
+
+**G-WDG-04 примечание:** OPEN. Каждая критичная сущность (host, service, agent, LLM route) обязана иметь: owner, heartbeat endpoint, smoke-test, remediation policy, escalation path. Registry schema — ops/watchdog/registry.yaml. ADR-WDG-01 PROPOSED.

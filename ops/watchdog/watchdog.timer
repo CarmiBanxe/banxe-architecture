@@ -1,0 +1,11 @@
+[Unit]
+Description=Factory Watchdog Heartbeat Timer (ADR-WDG-01)
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=15min
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

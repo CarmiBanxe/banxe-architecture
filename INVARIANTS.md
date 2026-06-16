@@ -275,3 +275,15 @@ Severity: P1 — process discipline violation.
 Канон: PROMPT-CANON-PROJECT.md §15.4 §74.
 Enforcement: atomic single-block shell pattern (validated 20× в session 2026-05-09 → 2026-05-11).
 Severity: P0 — atomic merge integrity preservation.
+
+**I-75 — No-Signal-Equals-Incident (PROPOSED)**
+Отсутствие heartbeat сигнала от любого критичного узла/сервиса/агента в течение
+2× heartbeat interval (default 2×15m = 30 минут) автоматически классифицируется
+как INCIDENT и эскалируется. Не допускается "тихий сбой" — no signal = incident.
+Каждая критичная сущность обязана иметь: owner, heartbeat endpoint, smoke-test,
+remediation policy, escalation path.
+Канон: ADR-WDG-01 Factory Watchdog.
+Связь: I-37 (factory/project layer binding), ADR-033 (alert routing), G-WDG-01..04.
+Severity: P1 — operational invariant.
+Enforcement: ops/watchdog/ heartbeat daemon + alert routing via ADR-033 channel.
+*PROPOSED — требует явного утверждения CEO перед переводом в обязательный статус.*

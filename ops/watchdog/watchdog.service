@@ -1,0 +1,13 @@
+[Unit]
+Description=Factory Watchdog Heartbeat Check (ADR-WDG-01)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/banxe/watchdog/healthcheck.py --mode heartbeat
+TimeoutStartSec=60
+# Extended check runs at :00 and :30; audit at :00
+ExecStartPost=/bin/bash -c 'M=$(date +%%M); [ "$M" = "00" ] && /usr/bin/python3 /opt/banxe/watchdog/healthcheck.py --mode audit || [ "$((M %% 30))" = "0" ] && /usr/bin/python3 /opt/banxe/watchdog/healthcheck.py --mode extended || true'
+Environment=WATCHDOG_CONFIG=/opt/banxe/watchdog/config.yaml
+Environment=WATCHDOG_REGISTRY=/opt/banxe/watchdog/registry.yaml
