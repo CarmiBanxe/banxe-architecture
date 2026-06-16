@@ -11974,3 +11974,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** python3 ledger/build_ledger.py --check == OK; docs-only; no infra, no code, no secrets, no M0 data moved; required arch checks green.
 - **Deviation:** rolled from a direct INSTRUCTION-LEDGER append (IL-249, pre-rebase) to an S4 shard after the parallel #484 S4 frozen-archive cutover; renders as IL-250.
 - **Refs:** ADR-103 (PART 1 and PART 2), ADR-102 (Duplication Audit), ADR-059-A (shard model); IL-248 (ADR-103); docs/runbooks/server-refactor-workspace.md.
+
+---
+
+### IL-251 - agent-factory-f1-adr060-concurrency-fix @ 2026-06-16T10:28:08Z
+
+- **il_ts:** 2026-06-16T10:28:08Z
+- **session_id:** agent-factory-f1-adr060-concurrency-fix
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f1-adr060-concurrency-fix/IL-2026-06-16T10-28-08Z--f0baa3.md`
+
+### ADR-060 ledger concurrency keys tightened (rebased on main)
+- **Instrukciya:** Stabilize CI concurrency groups so per-PR runs no longer cancel/collide; supersede PR #479.
+- **Shagi:** guardian.yml (guardian-ledger-shards) + ledger-build.yml concurrency group → `${{ github.base_ref || github.ref_name }}`; companion shard satisfies guardian-ledger coupling for tracked .github/** change.
+- **Proof:** diff parity with #479 hunks; python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only.
+- **Refs:** ADR-060, ADR-059-A, ADR-056; supersedes PR #479; rebased on main (post IL-250/#483); il_ts bumped to preserve append-only ordering atop #483.
