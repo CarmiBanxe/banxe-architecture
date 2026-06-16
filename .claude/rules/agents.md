@@ -250,3 +250,28 @@ artefact. No structural change merges without it.
 
 A refactor PR without a "Duplication Audit" section is incomplete and is rejected.
 See `docs/adr/ADR-102-no-smart-refactor-without-duplication-verification.md`.
+
+---
+
+## HARD RULE — Refactoring runs server-only; promotion only via smart refactor (ADR-103)
+
+> STOP-barrier for Claude Code, MetaClaw/OpenClaw, and every factory agent. Two parts,
+> both mandatory.
+
+**PART 1 — Server-only.** All refactoring and legacy-handling (archive unpack,
+snapshot, inventory/mapping M0–Mn, analysis, any code edits), repo clone/edits, and
+secret use run **ONLY on a secured server** (evo1 / dedicated runner) — **never on an
+operator's local machine**. Local machine = thin client (`gh`/`ssh`), with **no** local
+legacy sources, repo working copies, or secrets. No unpacking/processing of legacy
+archives and no refactoring git-operations in the local OS `/tmp`. Secrets live in a
+**server vault / GH Actions secrets** only.
+
+**PART 2 — Smart-refactor promotion gate.** Moving a refactor result into a repo
+happens **only after** the server-side refactoring completes **and only** via the
+smart-refactor discipline — the mandatory **Duplication Audit (ADR-102)** on the
+promotion PR (repo-wide search → source-of-truth + every consumer → no delete/merge
+until hidden deps confirmed → "Duplication Audit" section keep / merge / delete + risks →
+fail-closed + escalate on doubt). **A promotion PR is rejected** if its result was not
+produced by the server-side refactor, or if it lacks the completed Duplication Audit.
+
+See `docs/adr/ADR-103-server-only-refactoring-policy.md`.

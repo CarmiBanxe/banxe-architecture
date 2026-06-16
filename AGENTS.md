@@ -129,6 +129,26 @@ Full protocol: `.claude/rules/agents.md` and
 
 ---
 
+## HARD RULE — Refactoring runs server-only; promotion only via smart refactor
+
+A STOP-barrier (ADR-103), two mandatory parts:
+
+- **PART 1 — Server-only:** all refactoring + legacy-handling (archive unpack,
+  snapshot, inventory/mapping M0–Mn, analysis, any code edits), repo clone/edits, and
+  secret use run **only on a secured server** (evo1 / dedicated runner) — **never on an
+  operator's local machine**. Local = thin client (`gh`/`ssh`), no local sources, no
+  secrets; no legacy unpack or refactor git-ops in local `/tmp`. Secrets live in a
+  server vault / GH Actions secrets only.
+- **PART 2 — Smart-refactor promotion gate:** promote a result into a repo **only
+  after** the server-side refactor completes **and only** via a completed **Duplication
+  Audit (ADR-102)** on the promotion PR. A promotion PR with no server-side refactor, or
+  no Duplication Audit, is **rejected**.
+
+Full policy: `.claude/rules/agents.md` and
+`docs/adr/ADR-103-server-only-refactoring-policy.md`.
+
+---
+
 ## Repository structure
 
 ```
