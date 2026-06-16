@@ -1,0 +1,8 @@
+# Gitleaks configuration — banxe-architecture
+# Allowlist for historical archive files containing documented example commands
+
+[allowlist]
+  description = "Historical ledger archive — documented curl examples with placeholder auth headers"
+  paths = [
+    '''ledger/FROZEN-ARCHIVE\.md''',
+  ]
