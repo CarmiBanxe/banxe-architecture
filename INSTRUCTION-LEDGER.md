@@ -12022,3 +12022,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** Finding — no legacy DSE/quant engine (market-making/fee/quant/execution-preview/sentiment/stress = 0 hits); EMI DSE moat (S12-S16) is greenfield, do NOT migrate (ADR-102 dup). The keyword domain decomposes into AML risk-scoring (scoring-risk-level, 589 LOC, KYC/AML out-of-scope), the earn backend (banxe-crypto-earn, 7020 LOC, 0 tests, no Decimal — the only real DSE-adjacent module → EMI earn-rates seam), dashboard charts (UI), marketing pricing pages, WordPress noise. Recommend RE-SCOPE M1 to crypto-earn→earn-rates (wrap/rewrite) with char-tests + Decimal/I-01 pre-work.
 - **Proof:** evo1 banxe-NucBox-EVO-X1; grounded to snapshot/index; Duplication Audit present; build_ledger --check OK; no re-extract; password server-side only.
 - **Refs:** ADR-103, ADR-102, ADR-084 (DSE), S12-S16 moat; docs/migration/m1-risk-dse-analytics-spec.md; M0 to_emi_mapping + risk_register.
+
+---
+
+### IL-254 - agent-factory-m1-crypto-earn-deepread @ 2026-06-16T12:33:10Z
+
+- **il_ts:** 2026-06-16T12:33:10Z
+- **session_id:** agent-factory-m1-crypto-earn-deepread
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-crypto-earn-deepread/IL-2026-06-16T12-33-10Z--ebf3a3.md`
+
+### M1.1 crypto-earn deep-read + earn-rates port contract spec (server-side, ADR-103)
+- **Instrukciya:** Deep-read banxe-crypto-earn (7020 LOC) server-side on evo1; map to the EMI earn-rates advisory seam; Duplication Audit vs the existing EMI earn-rates; pre-work checklist; promote docs/migration/m1.1-crypto-earn-deepread-spec.md.
+- **Shagi:** 4 entities (earn/earn-config/earn-transaction/earn-transaction-step), GraphQL resolvers, ~30 DTOs, 10 migrations. CORRECTION to M1.0: money IS BigNumber (bignumber.js, 26 files) over DB decimal via BigNumberFieldTransformer — Decimal/I-01 gap is bignumber->Decimal, not from scratch. Live coupling: FastExchange GraphQL (commission/rates), ABS/virtual-abs, RabbitMQ, gRPC -> operator-gated, OUT of M1. Duplication Audit: the EMI earn-rates seam ALREADY EXISTS (earn/providers.py, EarnRatesCatalog/EarnRatesProvider/EarnMetrics, /api/v1/earn/rates + /v1/earn/rates, earn_rates_provider=mock) -> EXTEND/WRAP, do NOT re-implement. M1 = new mock EarnRatesProvider variant surfacing legacy earn-config rates/fees as advisory rates; live invest/withdraw out-of-scope.
+- **Proof:** evo1 banxe-NucBox-EVO-X1; grounded to read files + live banxe-trading-backend clone; Duplication Audit present; build_ledger --check OK; no prod edits; no re-extract; password server-side only.
+- **Refs:** ADR-103, ADR-102, ADR-084 (DSE), T7.5 earn-rates; docs/migration/m1.1-crypto-earn-deepread-spec.md; m1-risk-dse-analytics-spec.md.
