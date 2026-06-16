@@ -11990,3 +11990,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** guardian.yml (guardian-ledger-shards) + ledger-build.yml concurrency group → `${{ github.base_ref || github.ref_name }}`; companion shard satisfies guardian-ledger coupling for tracked .github/** change.
 - **Proof:** diff parity with #479 hunks; python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only.
 - **Refs:** ADR-060, ADR-059-A, ADR-056; supersedes PR #479; rebased on main (post IL-250/#483); il_ts bumped to preserve append-only ordering atop #483.
+
+---
+
+### IL-252 - agent-factory-m0-legacy-inventory-mapping @ 2026-06-16T12:02:37Z
+
+- **il_ts:** 2026-06-16T12:02:37Z
+- **session_id:** agent-factory-m0-legacy-inventory-mapping
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m0-legacy-inventory-mapping/IL-2026-06-16T12-02-37Z--1e81f7.md`
+
+### M0 legacy inventory & mapping (server-side, ADR-103) — promote 3.1 + 3.2-3.4
+- **Instrukciya:** Run M0 (inventory + domain map + EMI mapping + risk register) server-side on evo1 per ADR-103, from the unlocked /srv/banxe-legacy/work/banxe-code snapshot (50806 files), and promote the four migration docs to banxe-architecture/docs/migration via this PR.
+- **Shagi:** server-side re-extract (code/text only, 50806 files, deterministic vs local: index 100488 / classify 44514+4401+1570+28+13348+36627); m0_run 3.1 (inventory + signals, byte-identical to local); analyst pass 3.2-3.4 grounded in the snapshot + m0_signals + BANXE_MASTER_RESEARCH; each analytic doc carries a Duplication Audit (ADR-102) over five hotspots (shared/DTO 243/3431/2999, Apollo 7, money 711+587/0, SQL 74/891, vendored 2316/1012/9611).
+- **Proof:** evo1 host banxe-NucBox-EVO-X1; preflight rc=0; build_ledger.py --check OK; password server-side from .vault via stdin (no argv, no local, no logs); no re-extract; local not used for analysis.
+- **Refs:** ADR-103 (server-only + promotion gate), ADR-102 (Duplication Audit), ADR-059-A (sharded ledger); docs/migration/banxe_legacy_{inventory,domain_map,risk_register}.md + banxe_to_emi_mapping.md.
