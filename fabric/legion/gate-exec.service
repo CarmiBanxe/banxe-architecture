@@ -1,42 +1,50 @@
-# BANXE fabric gate.exec — Legion execution node (ADR-104 §3, F1.5 stage-3) — TEMPLATE
+# BANXE fabric gate.exec — Legion execution node (ADR-104 §3, F1.5 stage-3.1) — TEMPLATE
 #
 # OPERATOR ACTION: the factory does NOT start this prod service. Install + start it on
-# Legion yourself (commands below). It activates REAL execution (GATE_EXEC_ENABLED=true)
-# but ONLY for the low-risk idempotent allow-list (low-risk-allowlist.json); risky actions
-# require a human HITL token and are never auto-executed (see fabric/legion/README.md).
+# Legion yourself (commands below). It runs the long-running stream-CONSUMER that XREADGROUPs
+# verdicts from evo1 gate.policy (fabric:gate:policy) and executes via gate_exec.decide().
+# REAL execution is restricted to the low-risk idempotent allow-list (low-risk-allowlist.json);
+# risky actions require a human HITL token and are REFUSED (see fabric/legion/README.md).
 #
-# This is a TEMPLATE — adjust <USER> / paths to the Legion host, then:
-#   mkdir -p ~/.config/systemd/user ~/banxe-fabric/legion ~/banxe-fabric/hitl
-#   cp gate_exec.py low-risk-allowlist.json ~/banxe-fabric/legion/
-#   cp gate-exec.service ~/.config/systemd/user/   # (edit paths first)
+# Deploy layout (preserve fabric/common alongside fabric/legion):
+#   ~/banxe-fabric/common/fabric_redis.py
+#   ~/banxe-fabric/legion/{gate_exec.py, gate_exec_consumer.py, low-risk-allowlist.json}
+#   ~/banxe-fabric/.vault/redis.pass        (mode 600, operator-provisioned)
+#   ~/banxe-fabric/hitl/                     (human HITL tokens; factory creates none)
+#
+# Install (adjust <USER>/paths first):
+#   mkdir -p ~/.config/systemd/user ~/banxe-fabric/{common,legion,hitl}
+#   cp fabric/common/fabric_redis.py ~/banxe-fabric/common/
+#   cp fabric/legion/{gate_exec.py,gate_exec_consumer.py,low-risk-allowlist.json} ~/banxe-fabric/legion/
+#   cp fabric/legion/gate-exec.service ~/.config/systemd/user/     # edit <USER>/paths
 #   loginctl enable-linger <USER>
 #   systemctl --user daemon-reload
-#   systemctl --user enable --now gate-exec.service   # <-- operator activates real execution
-#
-# fabric:exec audit on Legion needs a Legion-side redis vault (~/banxe-fabric/.vault/redis.pass,
-# mode 600) provisioned by the operator (same server-side way), OR route audit via evo1.
-# The factory never transfers the secret.
+#   systemctl --user enable --now gate-exec.service   # <-- operator activates the consumer
 
 [Unit]
-Description=BANXE fabric gate.exec (ADR-104 §3 F1.5 stage-3: Legion execution gate, low-risk allow-list, risky->HITL)
-Documentation=https://github.com/CarmiBanxe/banxe-architecture/blob/main/docs/runbooks/gate-exec-stage3-2026-06-17.md
+Description=BANXE fabric gate.exec consumer (ADR-104 §3 F1.5 stage-3.1: Legion execution gate, low-risk allow-list, risky->HITL)
+Documentation=https://github.com/CarmiBanxe/banxe-architecture/blob/main/docs/runbooks/gate-exec-stage3.1-consumer-2026-06-17.md
 After=network-online.target
 
 [Service]
-Type=oneshot
-RemainAfterExit=no
+Type=simple
 WorkingDirectory=/home/<USER>/banxe-fabric/legion
-# Activation: REAL execution ON, but narrowed to the low-risk idempotent allow-list.
+# Activation: REAL execution ON, narrowed to the low-risk idempotent allow-list.
 Environment=GATE_EXEC_ENABLED=true
 Environment=LOW_RISK_ALLOWLIST=/home/<USER>/banxe-fabric/legion/low-risk-allowlist.json
 Environment=HITL_TOKEN_DIR=/home/<USER>/banxe-fabric/hitl
-Environment=EXEC_HEALTH_URL=http://127.0.0.1:9108/health
-Environment=EXEC_STATUS_URL=http://127.0.0.1:9108/status
-Environment=EXEC_PING_URL=http://100.99.208.21:9208/health
-# gate.exec consumes a verdict on stdin (or wire it to the fabric:gate / fabric:exec stream
-# consumer per the runbook). As a oneshot it processes one verdict; for a long-running
-# consumer use Type=simple with the stream-consumer entrypoint (OPERATOR ACTION / stage-3.1).
-ExecStart=/usr/bin/python3 /home/<USER>/banxe-fabric/legion/gate_exec.py
+# evo1 redis over tailscale; password read from the Legion vault (no-argv, never logged).
+Environment=REDIS_HOST=100.68.102.48
+Environment=REDIS_PORT=6379
+Environment=REDIS_PASS_FILE=/home/<USER>/banxe-fabric/.vault/redis.pass
+Environment=POLICY_STREAM=fabric:gate:policy
+Environment=EXEC_STREAM=fabric:exec
+Environment=EXEC_GROUP=gate-exec
+Environment=EXEC_CONSUMER=legion-1
+# Idempotent-read endpoints the executor calls are in low-risk-allowlist.json (exec_config).
+ExecStart=/usr/bin/python3 /home/<USER>/banxe-fabric/legion/gate_exec_consumer.py
+Restart=always
+RestartSec=5
 
 [Install]
 WantedBy=default.target
