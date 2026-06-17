@@ -4,22 +4,54 @@ Code that runs on the **Legion** node — the fabric's **only execution gate** p
 Authored server-side via the factory (ADR-103) and promoted here so it can be **deployed to
 Legion** (the evo1/evo2 node code lives on its own host under `~/banxe-fabric/`).
 
-## `gate_exec.py` — the execution gate (DRY-RUN by default)
+## `gate_exec.py` — the execution gate (F1.5 stage-3: real low-risk execution)
 
-- Accepts a proposed action + an evo1 `gate.policy` verdict (+ optional HITL confirmation)
-  and decides whether it **would** execute. **`execute_enabled` defaults to `false`** →
-  it logs `WOULD EXECUTE: …` and runs **nothing**.
-- **fail-closed REFUSE** when: no valid policy verdict, `correlation_id` missing/invalid or
-  mismatched, verdict not `allowed`/`compliant`, or `requires_hitl` without confirmation.
-- **Real execution is F1.5** (HITL-activated) and is intentionally **not implemented** —
-  even with `execute_enabled=true` this module refuses to run a real action (defense in depth).
-- Self-contained stdlib (zero deps); the canonical `correlation_id` format lives in evo1
-  `fabric_common` and is validated here, not imported (cross-node, no shared FS — §4).
+- Acts **only** on an evo1 `gate.policy` verdict (+ `correlation_id`); it never self-initiates.
+- **`GATE_EXEC_ENABLED` defaults to `false`** (DRY-RUN: `WOULD_EXECUTE`, runs nothing). When
+  the operator sets it `true` (via the systemd unit), **real execution is restricted to the
+  idempotent low-risk allow-list** (`low-risk-allowlist.json`: `read.health`, `status.read`,
+  `fabric.ping`).
+- **Risky actions** (payment/withdraw/trade/transfer/custody/key-ops) carry `requires_hitl`
+  from gate.policy and are **never auto-executed**: without a human **HITL token** → REFUSE;
+  even **with** a token → REFUSE (not in the low-risk allow-list — risky real execution is a
+  later stage). Defense in depth: the executor allow-list is a hard gate independent of policy.
+- **fail-closed REFUSE** when: no valid verdict, `correlation_id` missing/invalid or
+  mismatched, verdict not `allowed`/`compliant`, fabric degraded (policy returns
+  `allowed=false`), or a handler error.
+- Every decision is audited to the `fabric:exec` stream (via an injected sink;
+  `correlation_id` carried).
+- Self-contained stdlib (zero deps); `correlation_id` format validated, not imported
+  (cross-node, no shared FS — §4).
+
+### HITL confirm channel
+
+A human approval = a token file `<HITL_TOKEN_DIR>/<correlation_id>.confirm` created **by a
+human** on Legion. **The factory never creates tokens.** Example (operator, after reviewing):
+
+```bash
+echo '{"approver":"MLRO","ts":"<utc>"}' > ~/banxe-fabric/hitl/<correlation_id>.confirm
+```
+
+(In stage-3 a risky action still REFUSEs even with a token — the allow-list blocks it. The
+token mechanism is wired now; risky real execution is a later, separately-authorized stage.)
 
 ## OPERATOR ACTION — activation (NOT done by the factory)
 
-1. Deploy `gate_exec.py` to the Legion execution node and run it as the `gate.exec` receiver.
-2. Wire `gate.exec` to the shared bus (Redis streams — needs `REDIS_PASS`, operator-gated).
-3. Flipping `execute_enabled=true` + implementing the real executor = **F1.5**, HITL-gated.
+The factory does **not** start a prod service on Legion. Install + activate yourself with the
+template `gate-exec.service` (adjust `<USER>`/paths):
 
-Until F1.5, this is **decision/dry-run only** — it executes no production action.
+```bash
+mkdir -p ~/.config/systemd/user ~/banxe-fabric/legion ~/banxe-fabric/hitl
+cp gate_exec.py low-risk-allowlist.json ~/banxe-fabric/legion/
+cp gate-exec.service ~/.config/systemd/user/        # edit <USER>/paths first
+loginctl enable-linger "$USER"
+systemctl --user daemon-reload
+systemctl --user enable --now gate-exec.service     # <-- activates GATE_EXEC_ENABLED=true
+```
+
+`fabric:exec` audit on Legion needs a Legion-side redis vault
+(`~/banxe-fabric/.vault/redis.pass`, mode 600) provisioned by the operator the same
+server-side way, **or** route audit via evo1. The factory never transfers the secret.
+
+This closes/begins **GAP-G3** (Legion = sole execution gate) — see
+`docs/runbooks/gate-exec-stage3-2026-06-17.md`.

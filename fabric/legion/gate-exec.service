@@ -1,0 +1,42 @@
+# BANXE fabric gate.exec — Legion execution node (ADR-104 §3, F1.5 stage-3) — TEMPLATE
+#
+# OPERATOR ACTION: the factory does NOT start this prod service. Install + start it on
+# Legion yourself (commands below). It activates REAL execution (GATE_EXEC_ENABLED=true)
+# but ONLY for the low-risk idempotent allow-list (low-risk-allowlist.json); risky actions
+# require a human HITL token and are never auto-executed (see fabric/legion/README.md).
+#
+# This is a TEMPLATE — adjust <USER> / paths to the Legion host, then:
+#   mkdir -p ~/.config/systemd/user ~/banxe-fabric/legion ~/banxe-fabric/hitl
+#   cp gate_exec.py low-risk-allowlist.json ~/banxe-fabric/legion/
+#   cp gate-exec.service ~/.config/systemd/user/   # (edit paths first)
+#   loginctl enable-linger <USER>
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now gate-exec.service   # <-- operator activates real execution
+#
+# fabric:exec audit on Legion needs a Legion-side redis vault (~/banxe-fabric/.vault/redis.pass,
+# mode 600) provisioned by the operator (same server-side way), OR route audit via evo1.
+# The factory never transfers the secret.
+
+[Unit]
+Description=BANXE fabric gate.exec (ADR-104 §3 F1.5 stage-3: Legion execution gate, low-risk allow-list, risky->HITL)
+Documentation=https://github.com/CarmiBanxe/banxe-architecture/blob/main/docs/runbooks/gate-exec-stage3-2026-06-17.md
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+WorkingDirectory=/home/<USER>/banxe-fabric/legion
+# Activation: REAL execution ON, but narrowed to the low-risk idempotent allow-list.
+Environment=GATE_EXEC_ENABLED=true
+Environment=LOW_RISK_ALLOWLIST=/home/<USER>/banxe-fabric/legion/low-risk-allowlist.json
+Environment=HITL_TOKEN_DIR=/home/<USER>/banxe-fabric/hitl
+Environment=EXEC_HEALTH_URL=http://127.0.0.1:9108/health
+Environment=EXEC_STATUS_URL=http://127.0.0.1:9108/status
+Environment=EXEC_PING_URL=http://100.99.208.21:9208/health
+# gate.exec consumes a verdict on stdin (or wire it to the fabric:gate / fabric:exec stream
+# consumer per the runbook). As a oneshot it processes one verdict; for a long-running
+# consumer use Type=simple with the stream-consumer entrypoint (OPERATOR ACTION / stage-3.1).
+ExecStart=/usr/bin/python3 /home/<USER>/banxe-fabric/legion/gate_exec.py
+
+[Install]
+WantedBy=default.target

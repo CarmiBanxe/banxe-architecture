@@ -1,0 +1,18 @@
+{
+  "version": "f1.5-stage3",
+  "note": "REAL execution is restricted to these idempotent read/health actions ONLY. Anything not listed (or not idempotent) is REFUSED. Risky classes (payment/withdraw/trade/transfer/custody/key-ops) carry requires_hitl from gate.policy and are NEVER auto-executed in stage-3.",
+  "exec_config": {
+    "timeout_s": 6,
+    "allowed_url_schemes": ["http", "https"],
+    "endpoints": {
+      "read.health": "http://127.0.0.1:9108/health",
+      "status.read": "http://127.0.0.1:9108/status",
+      "fabric.ping": "http://100.99.208.21:9208/health"
+    }
+  },
+  "low_risk_allowlist": {
+    "read.health": {"idempotent": true, "desc": "GET fabric control health"},
+    "status.read": {"idempotent": true, "desc": "GET fabric status"},
+    "fabric.ping": {"idempotent": true, "desc": "GET evo2 reasoning health"}
+  }
+}
