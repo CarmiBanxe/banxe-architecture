@@ -63,6 +63,42 @@ Audit finding: the M-track (M0–M1.2) ran on a single evo1 with direct commands
 
 **Verdict:** current contour is **pre-fabric** — functional for M-track delivery under ADR-103 (server-only on evo1), but **not** the ADR-104 fabric. The above are tracked as pre-fabric debt; closing them = the operator stand-up (§4). This is acknowledged, not masked.
 
+> The table above is the **original audit snapshot** (kept as the historical record). The
+> **current** closure status is below.
+
+### 3a. GAP closure status — UPDATED 2026-06-17 (record: ADR-105)
+
+The fabric was built and verified server-side across **F1.1–F1.5 stage-3.1** (all merged).
+Closure status per GAP (full record + evidence: `docs/adr/ADR-105-three-node-fabric-complete.md`):
+
+| # | Status | Closed by |
+|---|---|---|
+| G1 | **CLOSED** | three live nodes — F1.1/F1.2/F1.3+3.1 (IL-257, IL-259, IL-260, IL-265, IL-266) |
+| G2 | **CLOSED** | evo2 Vulkan reasoning + LiteLLM :4000 + health :9208 (IL-257) |
+| G3 | **CLOSED for low-risk; risky = HITL-gated** | Legion `gate.exec` dry-run→activation→consumer (IL-260, IL-265, IL-266) |
+| G4 | **CLOSED** | evo1 `gate.policy` :9110 deny-by-default (IL-260) |
+| G5 | **CLOSED** | `correlation_id` end-to-end (IL-257, IL-259) |
+| G6 | **CLOSED** | control-plane + Redis-streams bus + heartbeat (IL-259, IL-264) |
+| G7 | **CLOSED** | Redis-streams controlled bus, no cross-node drift (IL-264) |
+
+### 3b. Residual — operator/HITL-gated (NOT auto-closed)
+
+1. **Persistent Legion `gate.exec` consumer** — built + unit-templated + server-side-tested,
+   but the **real prod start on Legion is an OPERATOR ACTION** (`systemctl --user enable --now
+   gate-exec.service` + Legion-side vault). G3 is closed *in capability*, not *running in prod*.
+2. **Risky execution** — payment/withdraw/trade/transfer/custody/key-ops real execution is
+   **NOT enabled**; requires a **separate operator authorization + HITL per action**
+   (`.claude/rules/agents.md` AUTO>90 / REVIEW 70–90 / BLOCK<70). Stage-3 restricts real
+   execution to the low-risk idempotent allow-list by design.
+
+## Completion
+
+The ADR-104 fabric is **IMPLEMENTED AND ACTIVE** for the low-risk path; risky execution and
+the persistent Legion consumer start remain operator/HITL-gated (§3b). The authoritative
+completion + GAP-closure record is **`docs/adr/ADR-105-three-node-fabric-complete.md`**
+(ACCEPTED). This runbook remains the *deployment plan*; ADR-104 the *decision*; the contract
+runbook the *interface*.
+
 ## 4. OPERATOR ACTIONS (human / infra-gated — the factory cannot self-provision these)
 
 1. **evo2 GPU restore** — execute `fa-evo2-gpu-stack.md` (ROCm+Vulkan; G-INFRA-EVO2-GPU-STACK) so qwen3-235b runs GPU-offloaded, not CPU ~5 tok/s.
