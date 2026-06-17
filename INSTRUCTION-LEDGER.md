@@ -12173,3 +12173,23 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Proof:** python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only; nothing installed/enabled; AGENT_ROUTING_ENABLED unchanged (false); agents.md/openclo.md not edited; I-37 :4000 unchanged. il_ts bumped on rebase to preserve append-only ordering atop merged shards (main max IL-261).
 - **Canon:** each PROPOSED item needs own ADR + Duplication Audit (ADR-102) + security review before adoption; sandbox-first; Ruflo mandatory for compliance-adjacent use; QClaw rejected (full-PC access near keys, autonomous finance, unverified CN source for FCA EMI, exfil channels, duplicates OpenClaw).
 - **Refs:** ADR-102, ADR-RUFLO-01, ADR-046, I-37, I-08, I-24/I-25/I-28, BUG-007, CLAUDE.md DO-NOT list.
+
+---
+
+### IL-263 - agent-factory-f1-adr-fusion-01 @ 2026-06-17T11:58:13Z
+
+- **il_ts:** 2026-06-17T11:58:13Z
+- **session_id:** agent-factory-f1-adr-fusion-01
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f1-adr-fusion-01/IL-2026-06-17T11-58-13Z--ce5845.md`
+
+### ADR-FUSION-01 MoA judge+synthesizer over openclo-moa drafted (PROPOSED, F-MOA-1)
+- **Instrukciya:** Draft ADR adding an OpenRouter-Fusion-style judge+synthesizer layer as an EXTENSION of openclo-moa (no new agent, no canon duplication); PR for review only.
+- **Shagi:** New docs/adr/ADR-FUSION-01-moa-judge-synthesizer.md (status PROPOSED, namespaced like ADR-WDG-01/ADR-RUFLO-01, numeric alias ADR-105); companion shard satisfies guardian-ledger coupling for the tracked docs/adr/** change.
+- **Decision:** judge (scores N candidates) + synthesizer (one fused answer) on openclo-moa; prod on :4000 only (I-37), reuse factory-mid+factory-heavy+project-reason aliases, judge=project-reason, no new route; Ruflo MANDATORY post-step (ADR-RUFLO-01) + HITL bands (BUG-007); cost via ADR-047, lineage via ADR-046, process_ref via ADR-048; AGENT_ROUTING_ENABLED stays false; sandbox-first :8080 (PR #277).
+- **Sprints (all GATED):** F-MOA-1 ADR+spec (this); F-MOA-2 :8080 prototype [sandbox-only]; F-MOA-3 spec-build integration + mandatory Ruflo + divergence-rate metric [AGENT_ROUTING conditions + MLRO/HITL + I-37 :4000 promotion].
+- **Proof:** python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only; agents.md + openclo.md NOT edited; no port opened; no LiteLLM route/services/arl created; external Fusion/MoA benchmark claims marked [НЕИЗВЕСТНО], non-load-bearing.
+- **Note:** il_ts bumped on rebase to preserve append-only ordering atop merged shards (main max IL-262); openclo-moa now operates within the merged three-node fabric (ADR-104) — this judge+synthesizer extends it, gated.
+- **Duplication Audit (ADR-102):** openclo-moa/gateway-moa, factory-*/project-reason aliases, ADR-046/047/048 schemas, Ruflo rule → keep/extend, not merge/delete.
+- **Refs:** ADR-FUSION-01, ADR-046, ADR-047, ADR-048, ADR-043, ADR-RUFLO-01, ADR-104, I-37, AGENT_ROUTING_ENABLED gate, openclo.md, PR #277.
