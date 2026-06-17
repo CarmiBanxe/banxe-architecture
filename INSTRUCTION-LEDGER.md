@@ -12086,3 +12086,21 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** GPU = AMD Radeon 8060S (RADV GFX1151) already accelerated via Vulkan (OLLAMA_VULKAN=1; ollama ps 100% GPU) — ROCm not required. LiteLLM 1.89.1 in user venv, config fronts keyless ollama :11434 (no secrets), canonical aliases reused (reasoning-model/project-reason/reasoning-235b + reasoning-fast), :4000 /health/liveliness OK, end-to-end gen on Vulkan GPU verified. evo2_health.py on :9208 — /health {status up|degraded|down, components, correlation_id} + heartbeat.evo2 every 15s, correlation_id fab-<utc-iso>-<6hex>, acts_on nothing. Status doc docs/runbooks/evo2-reasoning-node-bringup-2026-06-17.md.
 - **Proof:** Duplication Audit (ADR-102): no duplicate — evo2 :4000 is node-local reasoning gateway (distinct from Legion :4000 router), aliases reused; fa-evo2-gpu-stack ROCm path superseded-in-practice by Vulkan; keep all, no merge/delete. build_ledger --check OK. OPERATOR ACTIONS: systemd persistence, optional ROCm, :4000 auth-harden, shared bus, :8082 key — all sudo/secret/HITL, NOT executed. no sudo run; secrets not leaked; full fabric not activated; prod untouched.
 - **Refs:** ADR-104, ADR-040, ADR-103, ADR-102; docs/runbooks/evo2-reasoning-node-bringup-2026-06-17.md, three-node-fabric-bootstrap.md, three-node-execution-fabric-contract.md, factory-routing-map.md, fa-02-litellm-canonical-aliases.md, fa-evo2-gpu-stack.md.
+
+---
+
+### IL-258 - agent-factory-f1-adr-ruflo-dual-role @ 2026-06-17T10:18:33Z
+
+- **il_ts:** 2026-06-17T10:18:33Z
+- **session_id:** agent-factory-f1-adr-ruflo-dual-role
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f1-adr-ruflo-dual-role/IL-2026-06-17T10-18-33Z--b0b21a.md`
+
+### ADR-RUFLO-01 Ruflo dual-role drafted (PROPOSED) — FA-3 ↔ §0.5 reconciliation
+- **Instrukciya:** Draft ADR reconciling FA-3 (Ruflo identity = in-fleet Review Agent) with §0.5/§1.bis (Ruflo MANDATORY placement on regulated routes) via a dual-role classification; PR for review only.
+- **Shagi:** New docs/adr/ADR-RUFLO-01-dual-role.md (status PROPOSED, namespaced like ADR-WDG-01, numeric alias ADR-104); companion shard satisfies guardian-ledger coupling for the tracked docs/adr/** change.
+- **Proof:** python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only; agents.md NOT edited; ledger reconciliation status NOT flipped (stays PENDING-WG-CONFIRMATION); AGENT_ROUTING_ENABLED unchanged.
+- **GATED (out of scope):** enabling ARL, deploying Ruflo (Phase F1), services/arl, editing agents.md — all gated on WG-confirm + CEO ratification (INVARIANTS:249) + Terminal-A infra.
+- **Note:** il_ts bumped on rebase to preserve append-only ordering atop merged shards (current main max IL-257). numeric_alias ADR-104 in the ADR predates the parallel-session ADR-104 merge; the canonical three-node fabric ADR is the merged ADR-104 — this ADR-RUFLO-01 is independent (Ruflo dual-role), unaffected.
+- **Refs:** ADR-RUFLO-01, IL-FA-03-CLOSE, IL-CANON-RUFLO-2026-05-06, §0.5/§1.bis, INVARIANTS I-32/I-33/I-37, ledger:6934-6935, ROADMAP Phase F1.
