@@ -275,3 +275,36 @@ fail-closed + escalate on doubt). **A promotion PR is rejected** if its result w
 produced by the server-side refactor, or if it lacks the completed Duplication Audit.
 
 See `docs/adr/ADR-103-server-only-refactoring-policy.md`.
+
+---
+
+## HARD REQUIREMENT — Three-Node Execution Fabric (evo1 / evo2 / Legion) — ADR-FABRIC-01 (PROPOSED)
+
+> STATUS: **PROPOSED** — becomes binding only on CEO/WG ratification (CLAUDE.md §1.9/§1.11). Until
+> then this is the required *design target* for all factory and Claude Code agent execution.
+> Deployment is **GATED on Terminal-A infra**; `AGENT_ROUTING_ENABLED` stays `false`.
+
+evo2 hosts the powerful reasoning model (the **compute brain**, qwen3-235b :8082) but **never in
+isolation**: it operates in **one end-to-end process** with evo1 and Legion as a single
+**three-node execution fabric**.
+
+- **evo1 = Control / Orchestration plane** — task lifecycle authority + **policy gate** (Keycloak,
+  guardian services, Ruflo regulated-route checkpoint per ADR-RUFLO-01, HITL bands BUG-007).
+- **evo2 = Heavy Inference / Planning plane** — reasoning/planning brain; **does NOT** perform
+  critical production actions directly.
+- **Legion = Execution / Ops / Tooling plane** — LiteLLM :4000 entrypoint (I-37) + **execution gate**.
+
+**Six mandatory invariants (I-FAB-1..6, PROPOSED):**
+1. **I-FAB-1** — unified task lifecycle + ONE `correlation_id` (reuses ADR-046) across all three nodes.
+2. **I-FAB-2** — shared task/event queue + heartbeat/health protocol (config-as-data thresholds).
+3. **I-FAB-3** — role separation: evo2 prod actions pass **evo1 policy gate THEN Legion execution gate**.
+4. **I-FAB-4** — shared memory/context ONLY via controlled, versioned, correlation-tagged sync layer;
+   **no implicit state drift**.
+5. **I-FAB-5** — failover fail-closed: evo2 down ⇒ evo1 degrades to lightweight reasoning + Legion
+   **blocks risky actions**.
+6. **I-FAB-6** — all agent/refactor/migration tasks are **three-node by default**; single-node is a
+   logged exception.
+
+Runtime contract: `docs/contracts/runtime-contract-evo1-evo2-legion.md`.
+ADR: `docs/adr/ADR-FABRIC-01-three-node-execution-fabric.md`. Extends I-37 (two-layer binding),
+reuses ADR-043/046/047/RUFLO-01 (no new route, no new trace schema — ADR-102 audit: keep/extend).

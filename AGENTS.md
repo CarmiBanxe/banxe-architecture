@@ -5,6 +5,17 @@
 **Purpose:** Shared components, templates, and configurations distributed across all projects  
 **Architecture:** Four-Partner Swarm v2.0 (Claude Code + Ruflo + Aider CLI + MiroFish)
 
+> **Execution substrate (PROPOSED, ADR-FABRIC-01):** all factory/Claude Code agent execution
+> targets the **Three-Node Execution Fabric** — **evo1** (control/orchestration + policy gate),
+> **evo2** (heavy-inference/planning compute brain, qwen3-235b), **Legion** (execution/ops/tooling
+> + execution gate) — running as **one end-to-end process**, never isolated nodes. Six mandatory
+> invariants **I-FAB-1..6** (unified lifecycle + correlation-id; shared queue + heartbeat; evo2
+> double-gate; controlled context sync; fail-closed failover; fabric-by-default). Binding only on
+> CEO/WG ratification; deployment GATED on Terminal-A infra; `AGENT_ROUTING_ENABLED=false`.
+> Canon: `.claude/rules/agents.md` (Three-Node Execution Fabric section) ·
+> `docs/adr/ADR-FABRIC-01-three-node-execution-fabric.md` ·
+> `docs/contracts/runtime-contract-evo1-evo2-legion.md`.
+
 ---
 
 ## Core mission

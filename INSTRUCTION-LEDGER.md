@@ -12038,3 +12038,22 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** 4 entities (earn/earn-config/earn-transaction/earn-transaction-step), GraphQL resolvers, ~30 DTOs, 10 migrations. CORRECTION to M1.0: money IS BigNumber (bignumber.js, 26 files) over DB decimal via BigNumberFieldTransformer — Decimal/I-01 gap is bignumber->Decimal, not from scratch. Live coupling: FastExchange GraphQL (commission/rates), ABS/virtual-abs, RabbitMQ, gRPC -> operator-gated, OUT of M1. Duplication Audit: the EMI earn-rates seam ALREADY EXISTS (earn/providers.py, EarnRatesCatalog/EarnRatesProvider/EarnMetrics, /api/v1/earn/rates + /v1/earn/rates, earn_rates_provider=mock) -> EXTEND/WRAP, do NOT re-implement. M1 = new mock EarnRatesProvider variant surfacing legacy earn-config rates/fees as advisory rates; live invest/withdraw out-of-scope.
 - **Proof:** evo1 banxe-NucBox-EVO-X1; grounded to read files + live banxe-trading-backend clone; Duplication Audit present; build_ledger --check OK; no prod edits; no re-extract; password server-side only.
 - **Refs:** ADR-103, ADR-102, ADR-084 (DSE), T7.5 earn-rates; docs/migration/m1.1-crypto-earn-deepread-spec.md; m1-risk-dse-analytics-spec.md.
+
+---
+
+### IL-255 - agent-factory-f1-adr-three-node-fabric @ 2026-06-17T09:06:01Z
+
+- **il_ts:** 2026-06-17T09:06:01Z
+- **session_id:** agent-factory-f1-adr-three-node-fabric
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f1-adr-three-node-fabric/IL-2026-06-17T09-06-01Z--c5f18d.md`
+
+### ADR-FABRIC-01 Three-Node Execution Fabric (evo1/evo2/Legion) — hard architectural requirement (PROPOSED)
+- **Instrukciya:** Formalize evo2 as the factory compute brain operating in one end-to-end process with evo1 + Legion as a single three-node execution fabric; issue as ADR + AGENTS.md update + runtime contract.
+- **Shagi:** New docs/adr/ADR-FABRIC-01-three-node-execution-fabric.md (PROPOSED, namespaced; numeric alias ADR-106); new docs/contracts/runtime-contract-evo1-evo2-legion.md; AGENTS.md update in .claude/rules/agents.md (Three-Node Execution Fabric section) + root AGENTS.md pointer; companion shard for guardian-ledger coupling.
+- **Planes:** evo1 = control/orchestration + policy gate; evo2 = heavy inference/planning compute brain (qwen3-235b :8082); Legion = execution/ops/tooling + execution gate (LiteLLM :4000, I-37).
+- **Invariants I-FAB-1..6 (PROPOSED):** unified lifecycle + correlation-id (reuses ADR-046); shared queue + heartbeat; evo2 double-gate (evo1 policy → Legion exec); controlled context sync (no drift); fail-closed failover (evo2 down ⇒ evo1 lightweight + Legion blocks risky); fabric-by-default for all agent/refactor/migration tasks.
+- **Proof:** python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only; AGENT_ROUTING_ENABLED unchanged (false); no LiteLLM route / services/arl created; all deployment GATED on Terminal-A infra + CEO/WG ratification.
+- **Duplication Audit (ADR-102):** correlation_id (ADR-046), :4000 route (ADR-043/I-37), node mapping (factory-routing-map.md), Ruflo policy gate (ADR-RUFLO-01), cost caps (ADR-047), two-layer binding (I-37) → all keep/extend, not merge/delete.
+- **Refs:** ADR-FABRIC-01, I-37, §0.1/§0.5/§1.bis, ADR-040/043/046/047/051/RUFLO-01/102/103, BUG-007, factory-routing-map.md, CLAUDE.md §1.9/§1.11/§10.
