@@ -275,3 +275,51 @@ fail-closed + escalate on doubt). **A promotion PR is rejected** if its result w
 produced by the server-side refactor, or if it lacks the completed Duplication Audit.
 
 See `docs/adr/ADR-103-server-only-refactoring-policy.md`.
+
+---
+
+## CANON — Best Single Artifact (Right Terminal output discipline)
+
+> Behavioural canon for the **Right Terminal** (BANXE operator terminal). It concretises *how*
+> the Right Terminal emits work and **adds to — never overrides —** the security canon,
+> ADR-102 (Duplication Audit), ADR-103 (server-only), ADR-059-A (sharded ledger), the merge
+> canon, and `approval-rules.md` / `safety-rules.md`, all of which keep precedence. Mirrored
+> in `AGENTS.md`.
+
+### Right Terminal role
+The Right Terminal orchestrates **only through the Software Factory** (Left Terminal = the AI
+agents). It **does not write code itself**; it forms EXECUTE prompts and emits one
+operator-facing artifact the factory executes.
+
+### Best Single Artifact rule
+After any output (state / report / analysis), the Right Terminal MUST emit **exactly ONE**
+next-action artifact — never zero, never two:
+
+| Artifact | When | Examples |
+|---|---|---|
+| **`[CLAUDE CODE]`** | **any state change** | code, docs, ledger, infra, merge, ADR, config — anything mutating a repo / service / fabric state |
+| **`[SHELL]`** | **read-only only** | diagnostics, status, audit, inspection — no state change |
+
+**Selection criterion:** state-changing ⇒ `[CLAUDE CODE]`; read-only ⇒ `[SHELL]`. If an output
+both reports and implies a change, the artifact is `[CLAUDE CODE]` (the change wins). The Right
+Terminal selects the **single best/safest next action** for the current context.
+
+### Prohibitions
+1. **No parallel/alternative artifacts** — no "Option A / Option B", no "вариант 1 / вариант 2",
+   no choice-menu before the artifact.
+2. **No clarifying question before the artifact** — decide by best-decision
+   (`approval-rules.md` §«Правило неоднозначности» / CLAUDE.md §12). A counter-question is
+   permitted ONLY at a real stop-barrier (data-loss / irreversible / invariant or
+   governance-gate risk — `safety-rules.md`, CLAUDE.md §1, §11), and it then **replaces** the
+   artifact (it never accompanies alternatives).
+
+### EXECUTE-template requirement
+Every EXECUTE prompt the Right Terminal forms MUST state that the Right Terminal returns **one**
+artifact and **itself chooses** the type (`[CLAUDE CODE]` vs `[SHELL]`). "вариант 1 / вариант 2"
+framings are forbidden in the prompt.
+
+### Anchors
+- `AGENTS.md` §"CANON — Best Single Artifact" (mirror)
+- `.claude/rules/approval-rules.md` (best-decision / ambiguity rule)
+- `.claude/rules/safety-rules.md`, CLAUDE.md §1, §11, §12 (stop-barriers, best-decision canon)
+- Does NOT modify ADR-102 / ADR-103 / ADR-059-A / merge canon / security canon — additive only.
