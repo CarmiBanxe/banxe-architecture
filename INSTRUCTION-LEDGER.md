@@ -12054,3 +12054,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ADR-104 (node roles evo1 control / evo2 heavy inference-planning / Legion execution; 6 invariants — unified lifecycle+correlation_id, shared queue+heartbeat, evo2->evo1 policy gate->Legion execution gate, controlled sync layer no drift, failover evo2-down -> evo1 lightweight + Legion blocks risky, three-node by default). Runtime contract docs/runbooks/three-node-execution-fabric-contract.md. AGENTS.md hard-requirement block.
 - **Proof:** Duplication Audit (ADR-102): no duplicate; ADR-040 source-of-truth for planes, ADR-104 extends (re-maps node roles + adds fabric/gates/sync/failover). build_ledger --check OK. Docs-only; infra stand-up operator-gated.
 - **Refs:** ADR-104, ADR-040 (planes), ADR-060 (orchestration), ADR-103 (server-only), ADR-102 (Duplication Audit); AGENTS.md; docs/runbooks/three-node-execution-fabric-contract.md.
+
+---
+
+### IL-256 - agent-factory-f1-fabric-bootstrap @ 2026-06-17T09:31:00Z
+
+- **il_ts:** 2026-06-17T09:31:00Z
+- **session_id:** agent-factory-f1-fabric-bootstrap
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f1-fabric-bootstrap/IL-2026-06-17T09-31-00Z--c7e512.md`
+
+### Three-node fabric bootstrap & current-state GAP (ADR-104 implementation plan) — docs-only
+- **Instrukciya:** Author a concrete ADR-104 implementation plan (what to deploy on evo1/evo2/Legion), an honest current-state GAP (single-evo1, evo2 idle, no fabric process), operator/infra-gated stand-up actions, and an M-track migration note — docs-only, no infra, no prod change.
+- **Shagi:** New docs/runbooks/three-node-fabric-bootstrap.md — evo1 control (lifecycle/queue/heartbeat/policy gate, stays ADR-103 refactor host), evo2 reasoning (LiteLLM + qwen3-235b, health/heartbeat, acts on nothing), Legion execution gate (sole prod executor). Cross-cutting: correlation_id fab-<utc-iso>-<6hex>, heartbeat/health, no-state-drift sync layer, gate chain reasoning->policy->execution, failover (evo2 down -> evo1 lightweight + Legion blocks risky). Current-state GAP G1..G7 as pre-fabric debt. OPERATOR ACTIONS 1..7 (evo2 GPU restore, LiteLLM up, reasoning model, queue/heartbeat, gate services, network/secrets, activation). Migration: evo1 stays refactor host, no re-do, new steps run the chain.
+- **Proof:** Duplication Audit (ADR-102): no duplicate bootstrap runbook; contract runbook = source-of-truth interface, this realizes it; LiteLLM/evo2-GPU/redis runbooks referenced not duplicated; keep all, no merge/delete. build_ledger --check OK. Docs-only; fabric stand-up operator-gated (separate step).
+- **Refs:** ADR-104, ADR-040, ADR-103, ADR-060, ADR-102; docs/runbooks/three-node-fabric-bootstrap.md, three-node-execution-fabric-contract.md, fa-evo2-gpu-stack.md, fa-02-litellm-canonical-aliases.md, redis-evo1-setup.md.
