@@ -1245,3 +1245,25 @@ Per MASTER-PLAN-2026-05-05 Track A "Guardian Enforcement Completion" — all ADR
 
 ### Autonomous progression terminus reached
 All canon-addressable Track work complete. Remaining 3 OPEN Tracks + 4 test-extension GAPs = operator/production scope only.
+
+---
+
+## Roadmap Block 2026-06-17 — Track K: Three-Node Fabric Operationalization (PROPOSED)
+
+Operationalizes canonical merged **ADR-104** (three-node execution fabric: evo1 control / evo2
+reasoning / Legion execution) + six fabric invariants F1..F6 (= `I-FAB-1..6` of PROPOSED #492).
+Full track + reality audit table in `MASTER-PLAN-2026-05-05.md` → **Track K**.
+
+**Reality (designed vs running):** substrate is up (evo1+evo2+Legion nodes, qwen3-235b brain
+`evo2:8082` ✅, Legion LiteLLM `:4000`, USB4 link, `:9100` metrics); **coordination layer is
+designed-only** (unified lifecycle, queue, heartbeat protocol, policy/exec gates, sync, failover).
+
+**Gated sprints:** K-1 ratify ADR-104+F1..F6 [GATED] → K-2 lifecycle+correlation_id (F1, reuse
+ADR-046) → K-3 queue+heartbeat (F2, **↔ Track J/ADR-WDG-01**) → K-4 evo1 policy + Legion exec gates
+(F3, **dep Phase F1/Ruflo + ADR-RUFLO-01**) [GATED] → K-5 context-sync (F4, **↔ Memoir/CMS
+BL-SCRIPT-01**) → K-6 fail-closed failover (F5) → K-7 fabric-by-default + flip
+`AGENT_ROUTING_ENABLED` (F6) — LAST [GATED on K-1..K-6 + Terminal-A infra].
+
+**Activates nothing.** `AGENT_ROUTING_ENABLED=false`; all build/enable GATED on Terminal-A infra +
+CEO/WG ratification. Convergence note: #492 (ADR-FABRIC-01) duplicates merged ADR-104 → recommend
+closing #492 as superseded (operator decision, not actioned here).

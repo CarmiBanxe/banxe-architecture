@@ -103,6 +103,56 @@
 
 ---
 
+## Track K — Three-Node Fabric Operationalization (PROPOSED, ADR-104)
+
+> Status: **PROPOSED — planning only. Activates nothing.** Operationalizes the canonical merged
+> **ADR-104** (three-node execution fabric: evo1 control / evo2 reasoning / Legion execution) +
+> its six fabric invariants F1..F6 (= the `I-FAB-1..6` labels in the PROPOSED ADR-FABRIC-01, #492 —
+> see convergence note). `AGENT_ROUTING_ENABLED` stays `false`; every build/enable step is **GATED**
+> on Terminal-A infra + CEO/WG ratification.
+
+### Reality audit (designed vs running — read-only, 2026-06-17)
+
+| Inv | Designed (ADR-104) | Running on infra? | Blocker | Gated-on / sprint |
+|---|---|---|---|---|
+| **F1** unified task lifecycle + `correlation_id` | yes (reuses ADR-046) | ❌ no — `correlation_id` schema exists (ADR-046) but no unified 3-node task lifecycle | no fabric lifecycle/orchestrator service | K-2 |
+| **F2** shared queue + heartbeat/health | yes | ⚠️ partial — evo2 `:8082 /health` 200, `node_exporter :9100`, RabbitMQ `:3004` on evo1; **no** unified cross-node task/event queue + fabric heartbeat protocol | no fabric queue + heartbeat daemon | K-3 (↔ Track J / ADR-WDG-01) |
+| **F3** evo1 policy gate + Legion exec gate | yes | ❌ no — Ruflo not deployed (`G-FACTORY-RUFLO-NOT-DEPLOYED` P0 OPEN); `AGENT_ROUTING_ENABLED=false` | Phase F1 Ruflo deploy + ADR-RUFLO-01 ratify | K-4 |
+| **F4** controlled context-sync (no drift) | yes | ❌ no — no sync layer; context flows ad-hoc | no sync-layer build | K-5 (↔ Memoir/CMS, BL-SCRIPT-01) |
+| **F5** fail-closed failover | yes | ❌ no — nodes independently healthy, no cross-node failover logic | no failover controller | K-6 |
+| **F6** fabric-by-default + `AGENT_ROUTING` flip | yes | ❌ no — `AGENT_ROUTING_ENABLED=false`; tasks single-node by default | K-1..K-6 + Terminal-A infra | K-7 (last) |
+
+> **Substrate is up, coordination layer is not.** Nodes evo1 (`192.168.0.72`) + evo2
+> (`192.168.0.15`, REGISTERED) + Legion, the qwen3-235b reasoning brain (`evo2:8082`, ✅ healthy),
+> the Legion LiteLLM `:4000` gateway, the USB4 evo1↔evo2 link, and `:9100` metrics are **running**.
+> The fabric **coordination layer** (unified lifecycle, queue, heartbeat protocol, policy/exec gates,
+> sync layer, failover) is **designed-only**.
+
+### Gated sprints
+
+- **K-1 — Ratify ADR-104 + F1..F6** (CEO/WG). **[GATED]** Precondition for all build sprints.
+- **K-2 — Unified task lifecycle + `correlation_id`** (F1, reuse ADR-046; no new trace schema). **[build, sandbox-first]**
+- **K-3 — Shared queue + heartbeat/health** (F2). **CONVERGES with Watchdog Track J / ADR-WDG-01** (the watchdog heartbeat is the fabric heartbeat — single implementation, not two). **[build, sandbox-first]**
+- **K-4 — evo1 policy gate + Legion execution gate** (F3). **Depends on Phase F1 (Ruflo deploy) + ADR-RUFLO-01.** **[GATED]**
+- **K-5 — Controlled context-sync layer** (F4). **CONVERGES with Memoir/CMS (BL-SCRIPT-01)** — context-sync reuses the memory candidate, subject to its own ADR + dup-audit. **[build, sandbox-first]**
+- **K-6 — Fail-closed failover** (F5): evo2 down ⇒ evo1 lightweight reasoning + Legion blocks risky actions. **[build]**
+- **K-7 — Fabric-by-default + flip `AGENT_ROUTING_ENABLED`** (F6) — **LAST.** **[GATED on K-1..K-6 + Terminal-A infra + the four AGENT_ROUTING enable-conditions]**
+
+### Dependencies & convergence
+
+- **Phase F1** (Ruflo deployment, `G-FACTORY-RUFLO-NOT-DEPLOYED` P0) — hard dependency for K-4.
+- **Track J** (watchdog, ADR-WDG-01) — the heartbeat/health implementation is shared with K-3.
+- **Memoir/CMS** (BL-SCRIPT-01, backlog #493) — candidate substrate for K-5 context-sync.
+- **Terminal-A infra** — all node-side stand-up (queue daemon, sync layer, gate wiring) is Terminal A's domain (CLAUDE.md NO-WAIT rule).
+- **Convergence note (ADR-102):** the merged **ADR-104** and the still-open **#492 (ADR-FABRIC-01)** are
+  near-duplicates (same six invariants; ADR-104 contract `docs/runbooks/three-node-execution-fabric-contract.md`
+  vs #492 `docs/contracts/runtime-contract-evo1-evo2-legion.md`). **ADR-104 is canonical (merged).**
+  Recommendation (operator decision, NOT actioned here): close #492 as **superseded by ADR-104**.
+
+Track K **activates nothing** — planning artifact only.
+
+---
+
 ## CANON SESSION RULES (1..7)
 
 Обязательные правила каждой сессии. Источник: ADR-025 Agent Interaction Canon §14 + §3/§4/§15.
