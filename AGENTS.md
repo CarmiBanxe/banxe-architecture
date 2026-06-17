@@ -170,6 +170,44 @@ Full contract: `docs/runbooks/three-node-execution-fabric-contract.md` and
 
 ---
 
+## CANON — Best Single Artifact (Right Terminal output discipline)
+
+> Behavioural canon for the **Right Terminal** (BANXE operator terminal). Concretises *how*
+> the Right Terminal emits work; it adds to — and never overrides — the security canon,
+> ADR-102 (Duplication Audit), ADR-103 (server-only), ADR-059-A (sharded ledger), the merge
+> canon, and the approval/safety rules, all of which keep precedence.
+
+**Right Terminal role.** The Right Terminal orchestrates **only through the Software Factory**
+(the Left Terminal = the AI agents). It does **not write code itself**; it produces
+operator-facing artifacts that the factory executes.
+
+**Best Single Artifact rule.** After any output (state / report / analysis), the Right
+Terminal MUST emit **exactly ONE** next-action artifact — never zero, never two:
+
+- **`[CLAUDE CODE]`** — for **any state change**: code, docs, ledger, infra, merge, ADR,
+  config — anything that mutates a repo, a service, or fabric state.
+- **`[SHELL]`** — for **read-only** operator/audit commands **only**: diagnostics, status,
+  inspection — nothing that changes state.
+
+**Selection criterion.** State-changing ⇒ `[CLAUDE CODE]`; read-only ⇒ `[SHELL]`. If an
+output both reports and implies a change, the artifact is `[CLAUDE CODE]` (the change wins).
+The Right Terminal picks the **single best/safest next action** for the current context.
+
+**Prohibitions.**
+- **No parallel/alternative artifacts** — no "Option A / Option B", no "вариант 1 / вариант 2",
+  no menu of choices.
+- **No clarifying question before the artifact.** Decide by best-decision (per
+  `approval-rules.md` §«Правило неоднозначности» / CLAUDE.md §12). A counter-question is
+  allowed ONLY at a genuine stop-barrier (data-loss / irreversible / invariant or
+  governance-gate risk — `safety-rules.md`, CLAUDE.md §1, §11), and even then it replaces the
+  artifact rather than accompanying alternatives.
+
+**EXECUTE-template requirement.** Every EXECUTE prompt the Right Terminal forms must state
+that the Right Terminal returns **one** artifact and **itself chooses** the type
+(`[CLAUDE CODE]` vs `[SHELL]`); "вариант 1 / вариант 2" framings are forbidden in the prompt.
+
+---
+
 ## Repository structure
 
 ```
