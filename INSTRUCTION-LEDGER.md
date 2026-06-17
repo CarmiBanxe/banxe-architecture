@@ -12038,3 +12038,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** 4 entities (earn/earn-config/earn-transaction/earn-transaction-step), GraphQL resolvers, ~30 DTOs, 10 migrations. CORRECTION to M1.0: money IS BigNumber (bignumber.js, 26 files) over DB decimal via BigNumberFieldTransformer — Decimal/I-01 gap is bignumber->Decimal, not from scratch. Live coupling: FastExchange GraphQL (commission/rates), ABS/virtual-abs, RabbitMQ, gRPC -> operator-gated, OUT of M1. Duplication Audit: the EMI earn-rates seam ALREADY EXISTS (earn/providers.py, EarnRatesCatalog/EarnRatesProvider/EarnMetrics, /api/v1/earn/rates + /v1/earn/rates, earn_rates_provider=mock) -> EXTEND/WRAP, do NOT re-implement. M1 = new mock EarnRatesProvider variant surfacing legacy earn-config rates/fees as advisory rates; live invest/withdraw out-of-scope.
 - **Proof:** evo1 banxe-NucBox-EVO-X1; grounded to read files + live banxe-trading-backend clone; Duplication Audit present; build_ledger --check OK; no prod edits; no re-extract; password server-side only.
 - **Refs:** ADR-103, ADR-102, ADR-084 (DSE), T7.5 earn-rates; docs/migration/m1.1-crypto-earn-deepread-spec.md; m1-risk-dse-analytics-spec.md.
+
+---
+
+### IL-255 - agent-factory-fabric-adr104-three-node @ 2026-06-17T09:06:00Z
+
+- **il_ts:** 2026-06-17T09:06:00Z
+- **session_id:** agent-factory-fabric-adr104-three-node
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-fabric-adr104-three-node/IL-2026-06-17T09-06-00Z--d5425b.md`
+
+### Three-node execution fabric (evo1 control / evo2 reasoning / Legion execution) — ADR-104
+- **Instrukciya:** Issue a hard architectural requirement that evo1+evo2+Legion run as one end-to-end execution fabric (evo2 = reasoning brain, not isolated); as ADR + AGENTS.md update + runtime contract.
+- **Shagi:** ADR-104 (node roles evo1 control / evo2 heavy inference-planning / Legion execution; 6 invariants — unified lifecycle+correlation_id, shared queue+heartbeat, evo2->evo1 policy gate->Legion execution gate, controlled sync layer no drift, failover evo2-down -> evo1 lightweight + Legion blocks risky, three-node by default). Runtime contract docs/runbooks/three-node-execution-fabric-contract.md. AGENTS.md hard-requirement block.
+- **Proof:** Duplication Audit (ADR-102): no duplicate; ADR-040 source-of-truth for planes, ADR-104 extends (re-maps node roles + adds fabric/gates/sync/failover). build_ledger --check OK. Docs-only; infra stand-up operator-gated.
+- **Refs:** ADR-104, ADR-040 (planes), ADR-060 (orchestration), ADR-103 (server-only), ADR-102 (Duplication Audit); AGENTS.md; docs/runbooks/three-node-execution-fabric-contract.md.

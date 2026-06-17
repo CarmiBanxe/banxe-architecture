@@ -149,6 +149,27 @@ Full policy: `.claude/rules/agents.md` and
 
 ---
 
+## HARD REQUIREMENT — Three-node execution fabric (ADR-104)
+
+`evo1`, `evo2`, and `Legion` run as **one end-to-end execution fabric**, not three
+isolated boxes. `evo2` is the **reasoning brain** but never acts in isolation:
+
+- **Node roles:** **evo1** = control/orchestration (task lifecycle + policy gate + queue/
+  heartbeat); **evo2** = heavy inference/planning (reasoning brain — plans, never acts);
+  **Legion** = execution/ops/tooling (the only node that runs actions).
+- **Invariants:** (1) one task lifecycle + a single `correlation_id` across all three
+  nodes; (2) shared task/event queue + heartbeat/health; (3) `evo2` reaches a prod action
+  ONLY via the **evo1 policy gate → Legion execution gate** (reason → policy → execute);
+  (4) shared context only through a controlled **sync layer**, no implicit drift; (5)
+  **failover** — evo2 down → evo1 degrades to lightweight reasoning + Legion blocks risky
+  actions (no split-brain); (6) **all agent, refactor, and migration tasks are three-node by
+  default**.
+
+Full contract: `docs/runbooks/three-node-execution-fabric-contract.md` and
+`docs/adr/ADR-104-three-node-execution-fabric.md`.
+
+---
+
 ## Repository structure
 
 ```
