@@ -12070,3 +12070,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** New docs/runbooks/three-node-fabric-bootstrap.md — evo1 control (lifecycle/queue/heartbeat/policy gate, stays ADR-103 refactor host), evo2 reasoning (LiteLLM + qwen3-235b, health/heartbeat, acts on nothing), Legion execution gate (sole prod executor). Cross-cutting: correlation_id fab-<utc-iso>-<6hex>, heartbeat/health, no-state-drift sync layer, gate chain reasoning->policy->execution, failover (evo2 down -> evo1 lightweight + Legion blocks risky). Current-state GAP G1..G7 as pre-fabric debt. OPERATOR ACTIONS 1..7 (evo2 GPU restore, LiteLLM up, reasoning model, queue/heartbeat, gate services, network/secrets, activation). Migration: evo1 stays refactor host, no re-do, new steps run the chain.
 - **Proof:** Duplication Audit (ADR-102): no duplicate bootstrap runbook; contract runbook = source-of-truth interface, this realizes it; LiteLLM/evo2-GPU/redis runbooks referenced not duplicated; keep all, no merge/delete. build_ledger --check OK. Docs-only; fabric stand-up operator-gated (separate step).
 - **Refs:** ADR-104, ADR-040, ADR-103, ADR-060, ADR-102; docs/runbooks/three-node-fabric-bootstrap.md, three-node-execution-fabric-contract.md, fa-evo2-gpu-stack.md, fa-02-litellm-canonical-aliases.md, redis-evo1-setup.md.
+
+---
+
+### IL-257 - agent-factory-f1-evo2-reasoning-bringup @ 2026-06-17T10:05:34Z
+
+- **il_ts:** 2026-06-17T10:05:34Z
+- **session_id:** agent-factory-f1-evo2-reasoning-bringup
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f1-evo2-reasoning-bringup/IL-2026-06-17T10-05-34Z--b8d422.md`
+
+### evo2 reasoning-node bring-up (GPU/Vulkan + LiteLLM :4000 + health/heartbeat) — F1.1, ADR-104
+- **Instrukciya:** Bring up evo2 as the fabric reasoning node per ADR-104 / three-node-fabric-bootstrap.md: GPU acceleration, a LiteLLM gateway fronting ollama, and a health/heartbeat emitter; reasoning-only (acts on nothing); no full-fabric activation; no sudo (operator hard-stops listed).
+- **Shagi:** GPU = AMD Radeon 8060S (RADV GFX1151) already accelerated via Vulkan (OLLAMA_VULKAN=1; ollama ps 100% GPU) — ROCm not required. LiteLLM 1.89.1 in user venv, config fronts keyless ollama :11434 (no secrets), canonical aliases reused (reasoning-model/project-reason/reasoning-235b + reasoning-fast), :4000 /health/liveliness OK, end-to-end gen on Vulkan GPU verified. evo2_health.py on :9208 — /health {status up|degraded|down, components, correlation_id} + heartbeat.evo2 every 15s, correlation_id fab-<utc-iso>-<6hex>, acts_on nothing. Status doc docs/runbooks/evo2-reasoning-node-bringup-2026-06-17.md.
+- **Proof:** Duplication Audit (ADR-102): no duplicate — evo2 :4000 is node-local reasoning gateway (distinct from Legion :4000 router), aliases reused; fa-evo2-gpu-stack ROCm path superseded-in-practice by Vulkan; keep all, no merge/delete. build_ledger --check OK. OPERATOR ACTIONS: systemd persistence, optional ROCm, :4000 auth-harden, shared bus, :8082 key — all sudo/secret/HITL, NOT executed. no sudo run; secrets not leaked; full fabric not activated; prod untouched.
+- **Refs:** ADR-104, ADR-040, ADR-103, ADR-102; docs/runbooks/evo2-reasoning-node-bringup-2026-06-17.md, three-node-fabric-bootstrap.md, three-node-execution-fabric-contract.md, factory-routing-map.md, fa-02-litellm-canonical-aliases.md, fa-evo2-gpu-stack.md.
