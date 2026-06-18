@@ -1,0 +1,54 @@
+agent_id: channel_c_sepa_orchestrator
+name: "ChannelCSepaOrchestrator"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Channel C SEPA orchestration agent. Routes SEPA Credit Transfer (SCT) and
+  SEPA Instant (SCT Inst) payment intents to the EXISTING production adapter in
+  banxe-emi-stack (services/payment/production/modulr_sepa_adapter.py) and tracks
+  settlement status. PROPOSES only (I-27); Channel C is NOT activated until a
+  separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-04-PAYMENT
+autonomy: L2_REVIEW
+capabilities:
+  - sepa_ct_orchestration
+  - sepa_instant_orchestration
+  - payment_rail_routing
+  - settlement_status_track
+department: "Payments / Channel C"
+human_double: "CTIO"
+non_goals:
+  - "Do NOT reimplement services/payment/production/modulr_sepa_adapter.py — SEPA CT + SEPA Instant already DONE in banxe-emi-stack"
+  - "Do NOT reimplement services/payment/legacy/legacy_sepa_adapter.py"
+  - "Do NOT reimplement payment_service / payment_port / modulr_client (existing code repo)"
+  - "Do NOT activate Channel C execution — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: PaymentIntentPort
+      description: Receives SEPA CT / Instant payment intents
+  outbound:
+    - port: PaymentRailPort
+      description: Routes to existing modulr_sepa_adapter (banxe-emi-stack) — orchestration only
+    - port: AuditPort
+      description: Immutable log of orchestration decisions (I-08)
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — execution gated, Channel C not activated
+  - I-08  # log all payment-orchestration decisions
+governance:
+  change_class: CLASS_B
+  owner: "CTIO"
+  review_cycle: annually
+  last_reviewed: "2026-06-19"
+  approvers:
+    - CTIO
+    - COO
+fca_references:
+  - "EPC SCT Rulebook — SEPA Credit Transfer scheme"
+  - "EPC SCT Inst Rulebook — SEPA Instant Credit Transfer scheme"
+  - "FCA / PSRs 2017 — payment services"
