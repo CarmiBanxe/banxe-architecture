@@ -13174,3 +13174,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - Shagi: set GAP-041 -> IN PROGRESS; add agents/passports/m_gateway_api_governor.yaml (PROPOSED); ledger shard; build_ledger.
 - Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; append-only del=0; our IL last.
 - Refs: docs/GAP-REGISTER.md (GAP-041); agents/passports/m_gateway_api_governor.yaml; banxe-emi-stack services/api_gateway + GAP-023; I-27; I-28; ADR-102.
+
+---
+
+### IL-324 - agent-factory-archstack002-sp16-fatca-crs-gap037 @ 2026-06-19T03:15:00Z
+
+- **il_ts:** 2026-06-19T03:15:00Z
+- **session_id:** agent-factory-archstack002-sp16-fatca-crs-gap037
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp16-fatca-crs-gap037/IL-2026-06-19T03-15-00Z--60c2ea.md`
+
+### SP-16 — reconcile GAP-037 (F-fatca FATCA/CRS tax reporting) OPEN -> IN PROGRESS + reporting governance residual
+- Instrukciya: Reconcile GAP-037. Read-only audit: FATCA/CRS is implemented in banxe-emi-stack (services/fatca_crs: self_cert_engine, hmrc_models, fatca_agent). Chosen from P2-Operational OPEN cluster as highest-readiness/lowest-risk self-contained gap (vs GAP-034 pricing residual-scattered, GAP-042 mocks-scattered, GAP-038/039 no dedicated module). Residual: one PROPOSED FATCA/CRS reporting governance passport (I-27, human_double Head of Compliance, NOT activated); non_goals exclude reimplementing existing code (dedup-safe).
+- Shagi: set GAP-037 -> IN PROGRESS; add agents/passports/fatca_crs_reporting_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; append-only del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-037); agents/passports/fatca_crs_reporting_governor.yaml; banxe-emi-stack services/fatca_crs; I-27; I-28; ADR-102.
