@@ -594,3 +594,46 @@
 ---
 
 *Document maintained by: Perplexity Computer + Claude Code | IL-071 | 2026-04-12 | I-29 (Documentation Standard)*
+
+
+## Regulatory Gap Agents (SP-10, PROPOSED — GAP-056..059)
+
+### DPO / Privacy (GAP-056)
+
+| Field | Value |
+|-------|-------|
+| **Title** | Data Protection Officer (DPO) |
+| **AI Agent** | PrivacyComplianceAgent (PROPOSED, L2 AMBER) |
+| **Human Double** | Head of Compliance |
+| **HITL Decision** | DSAR / DPIA outcomes proposed by agent, decided by Head of Compliance (I-27) |
+| **References** | UK GDPR Art.37-39; DPA 2018 |
+
+### Wind-Down Planning (GAP-057)
+
+| Field | Value |
+|-------|-------|
+| **Title** | Wind-Down Planning Lead |
+| **AI Agent** | WindDownPlanningAgent (PROPOSED, L2 AMBER) |
+| **Human Double** | CFO |
+| **HITL Decision** | Run-off scenarios proposed by agent, adopted by CFO + Board (I-27) |
+| **References** | FCA Approach Document 2026; WDPG |
+
+### Annual Safeguarding Audit (GAP-058)
+
+| Field | Value |
+|-------|-------|
+| **Title** | Safeguarding Audit Lead |
+| **AI Agent** | SafeguardingAuditAgent (PROPOSED, L2 RED) |
+| **Human Double** | Head of Internal Audit |
+| **HITL Decision** | Audit findings proposed by agent, signed off by Head of Internal Audit (I-27, I-28) |
+| **References** | PS25/12; CASS 15 |
+
+### Operational Resilience / DORA (GAP-059)
+
+| Field | Value |
+|-------|-------|
+| **Title** | Operational Resilience Lead |
+| **AI Agent** | ResilienceAgent (PROPOSED, L2 AMBER) |
+| **Human Double** | CTIO |
+| **HITL Decision** | DR/BCP + incident response proposed by agent, decided by CTIO + COO (I-27) |
+| **References** | DORA (EU 2022/2554); FCA SYSC 15A |

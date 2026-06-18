@@ -1,0 +1,45 @@
+agent_id: resilience_agent
+name: "ResilienceAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Operational resilience support agent (DORA). Maintains DR/BCP scenarios,
+  incident-response runbooks and ICT third-party risk tracking. PROPOSES only
+  (I-27) — resilience decisions remain with CTIO + COO.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+autonomy: L2_REVIEW
+capabilities:
+  - dr_bcp_scenario_modelling
+  - incident_response_triage
+  - ict_thirdparty_risk_tracking
+  - resilience_gap_flagging
+department: "Technology / Operational Resilience"
+human_double: "CTIO"
+ports:
+  inbound:
+    - port: ResilienceRequestPort
+      description: Receives DR/BCP and incident-response requests
+  outbound:
+    - port: NotificationPort
+      description: Escalates incidents to CTIO + COO (HITL)
+    - port: AuditPort
+      description: Immutable log of resilience assessments
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — CTIO + COO decide
+governance:
+  change_class: CLASS_B
+  owner: "CTIO"
+  review_cycle: annually
+  last_reviewed: "2026-06-18"
+  approvers:
+    - CTIO
+    - COO
+fca_references:
+  - "DORA (EU 2022/2554) — ICT operational resilience"
+  - "FCA SYSC 15A — operational resilience (DR/BCP, incident response)"

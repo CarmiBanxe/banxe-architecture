@@ -1,0 +1,46 @@
+agent_id: wind_down_planning_agent
+name: "WindDownPlanningAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Wind-down planning support agent. Models run-off scenarios and maintains the
+  wind-down trigger framework per the FCA Approach Document (2026). PROPOSES
+  only (I-27) — adoption requires CFO + Board.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-10-REPORTING
+autonomy: L2_REVIEW
+capabilities:
+  - run_off_scenario_modelling
+  - wind_down_trigger_tracking
+  - resource_estimate_build
+  - solvency_wind_down_flagging
+department: "Finance / Recovery & Resolution"
+human_double: "CFO"
+ports:
+  inbound:
+    - port: WindDownRequestPort
+      description: Receives scenario / trigger evaluation requests
+  outbound:
+    - port: ReportingPort
+      description: Produces wind-down pack drafts for CFO + Board (HITL)
+    - port: AuditPort
+      description: Immutable log of wind-down assessments
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - reporting_agent
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — CFO + Board decide
+governance:
+  change_class: CLASS_B
+  owner: "CFO"
+  review_cycle: annually
+  last_reviewed: "2026-06-18"
+  approvers:
+    - CFO
+    - Board
+fca_references:
+  - "FCA Approach Document (2026) — wind-down planning"
+  - "FCA WDPG — Wind-Down Planning Guide (run-off scenarios)"
