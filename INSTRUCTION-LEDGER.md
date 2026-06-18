@@ -12628,3 +12628,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.10-instruments-list-plan (PR #522) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.10-instruments-advisory-list.md (код+IL M1.10 уже на main, IL-275).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.10 (IL-275); build_ledger --check exit 0.
 - **Refs:** PR #522; docs/migration/M1.10-instruments-advisory-list.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-275.
+
+---
+
+### IL-290 - agent-factory-m1-m1-11-instrument-asset-xref-plan @ 2026-06-18T19:45:00Z
+
+- **il_ts:** 2026-06-18T19:45:00Z
+- **session_id:** agent-factory-m1-m1-11-instrument-asset-xref-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-11-instrument-asset-xref-plan/IL-2026-06-18T19-45-00Z--b1c8d7.md`
+
+### M1.11 plan doc promotion — instrument↔asset cross-reference advisory view (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #524 (M1.11 instrument↔asset xref plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.11-instrument-asset-xref-plan (PR #524) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.11-instrument-asset-xref.md (код+IL M1.11 уже на main, IL-277).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.11 (IL-277); build_ledger --check exit 0.
+- **Refs:** PR #524; docs/migration/M1.11-instrument-asset-xref.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-277.
