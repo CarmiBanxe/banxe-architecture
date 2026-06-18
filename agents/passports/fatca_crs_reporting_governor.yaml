@@ -1,0 +1,55 @@
+agent_id: fatca_crs_reporting_governor
+name: "FatcaCrsReportingGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  FATCA / CRS tax-reporting governance agent. Reviews self-certification, tax
+  residency classification and HMRC AEOI report orchestration — routing to the
+  EXISTING services/fatca_crs implementation in banxe-emi-stack (self_cert_engine,
+  hmrc_models, fatca_agent). PROPOSES only (I-27); NOT activated until a separate
+  operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - fatca_crs_self_cert_review
+  - tax_residency_classification_review
+  - hmrc_aeoi_report_orchestration
+  - crs_exchange_governance
+department: "Compliance / Tax Reporting"
+human_double: "Head of Compliance"
+non_goals:
+  - "Do NOT reimplement services/fatca_crs/* (self_cert_engine, hmrc_models, fatca_agent) — already DONE in banxe-emi-stack"
+  - "Do NOT reimplement customer_lifecycle self-certification capture"
+  - "Do NOT duplicate any existing banxe-emi-stack FATCA/CRS passport"
+  - "Do NOT activate the reporting channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: TaxReportIntentPort
+      description: Receives FATCA/CRS self-cert / classification / report-run requests
+  outbound:
+    - port: FatcaCrsServicePort
+      description: Routes to existing services/fatca_crs (banxe-emi-stack) — governance/orchestration only
+    - port: AuditPort
+      description: Immutable log of tax-reporting governance decisions (I-08)
+allowed_callers:
+  - admin_panel
+  - customer_lifecycle_agent
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — reporting gated, not activated
+  - I-08  # log all tax-reporting governance decisions
+governance:
+  change_class: CLASS_B
+  owner: "Head of Compliance"
+  review_cycle: annually
+  last_reviewed: "2026-06-19"
+  approvers:
+    - Head of Compliance
+    - CFO
+fca_references:
+  - "FATCA — US-UK Intergovernmental Agreement (IGA)"
+  - "CRS — OECD Common Reporting Standard"
+  - "HMRC AEOI — Automatic Exchange of Information reporting"
