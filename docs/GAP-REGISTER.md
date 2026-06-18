@@ -74,7 +74,7 @@
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
 | GAP-034 | B-pricing: Pricing rules, fee schedules | Sprint 13 | CEO | ❌ OPEN |
-| GAP-035 | C-swift: SWIFT MT/MX | Sprint 14 | CTIO | ❌ OPEN |
+| GAP-035 | C-swift: SWIFT MT/MX (code DONE in banxe-emi-stack services/swift_correspondent, ADR-013; residual: Channel C orchestration governance) | Sprint 14 | CTIO | 🔄 IN PROGRESS |
 | GAP-036 | E-treasury: Treasury / FX / ALM — services/treasury+fx implemented (code repo, IL-097/099); residual here = ALM orchestration + PROPOSED passport (OSEM/QuantLib, covenant monitor) | Sprint 14 | CEO | ⚠️ IN PROGRESS |
 | GAP-037 | F-fatca: FATCA/CRS tax reporting | Sprint 13 | CEO | ❌ OPEN |
 | GAP-038 | H-crm: CRM + DSAR | Sprint 14 | CEO | ❌ OPEN |
