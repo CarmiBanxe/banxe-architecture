@@ -13046,3 +13046,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - Open items deferred to operator track: IL-OPS-G-INFRA-EVO2-RAM-VISIBILITY-VERIFIED; IL-OPS-S13-8-LEGION-8180-COLLISION-VERIFY; IL-OPS-S14-1-CLICKHOUSE-AUDIT-RETENTION-VERIFY.
 - Proof: scripts/il-check.sh read — advisory; authoritative gate = CI guardian.yml + ledger-build.yml.
 - Refs: I-28; ADR-056; ADR-057; ADR-060.
+
+---
+
+### IL-316 - agent-factory-archstack002-sp12-treasury-alm-gap036 @ 2026-06-19T01:15:00Z
+
+- **il_ts:** 2026-06-19T01:15:00Z
+- **session_id:** agent-factory-archstack002-sp12-treasury-alm-gap036
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp12-treasury-alm-gap036/IL-2026-06-19T01-15-00Z--f5d683.md`
+
+### SP-12 — GAP-036 Treasury/FX/ALM: reconcile + PROPOSED treasury_alm_agent passport
+- Instrukciya: Reconcile GAP-036 (services/treasury+fx already implemented in code repo IL-097/099; Frankfurter deployed IL-010). Residual in architecture repo = ALM orchestration + 1 PROPOSED passport formalizing existing SOUL drafts.
+- Shagi: reconcile GAP-036 row (OPEN->IN PROGRESS); create treasury_alm_agent passport (I-27 human_double=Head of Treasury, Channel C NOT activated); append JD; ledger shard; build_ledger.
+- Proof: build_ledger.py --check OK; grep GAP-036; dedup vs services/treasury, services/fx_exchange, agents/souls/*.
+- Refs: docs/GAP-REGISTER.md; agents/passports/treasury_alm_agent.yaml; docs/JOB-DESCRIPTIONS.md; I-01; I-02; I-24; I-27; I-28; ADR-060; ADR-102.

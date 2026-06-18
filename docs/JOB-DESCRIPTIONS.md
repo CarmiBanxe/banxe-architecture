@@ -644,3 +644,9 @@
 - **Scope:** FA-03 dbt models (→ FIN060), FA-19 Airbyte PSP→ClickHouse ELT, FA-10/FA-15 CDC streaming, FA-18 OpenMetadata lineage for FCA, FA-20 Airflow batch DAGs.
 - **Non-goals:** direct ClickHouse audit writes (clickhouse_writer), BI dashboards (L-bi).
 - **Agent passport:** `agents/passports/data_lake_elt_agent.yaml` (PROPOSED, human_double, Channel C NOT activated).
+
+## Treasury / ALM Engineer (GAP-036, E-treasury)
+- **Owner:** CEO | **Human Double:** Head of Treasury | **OSS Stack:** Frankfurter (ECB FX) + QuantLib + OSEM + Blnk
+- **Mission:** ALM orchestration (yield curves, liquidity stress, covenant monitoring, FX exposure) on top of implemented services/treasury + services/fx_exchange.
+- **Non-goals:** reimplement existing treasury/fx services (IL-097/099); sweep execute stays L4 HITL (I-27).
+- **Agent passport:** `agents/passports/treasury_alm_agent.yaml` (PROPOSED, Channel C NOT activated).
