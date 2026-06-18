@@ -12997,3 +12997,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.20-accounts-breakdown-plan (PR #551) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.20-accounts-breakdown.md (код+IL M1.20 уже на main, IL-311).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.20 (IL-311); build_ledger --check exit 0.
 - **Refs:** PR #551; docs/migration/M1.20-accounts-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-311.
+
+---
+
+### IL-313 - agent-factory-m1-summary-refresh-m1-20 @ 2026-06-19T01:00:00Z
+
+- **il_ts:** 2026-06-19T01:00:00Z
+- **session_id:** agent-factory-m1-summary-refresh-m1-20
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-summary-refresh-m1-20/IL-2026-06-19T01-00-00Z--e2f8a5.md`
+
+### M1 advisory-surface summary refresh → M1.18–M1.20 (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only summary-refresh PR #555 (обновление canonical anchor до M1.18–M1.20). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/summary-refresh-m1-20 (PR #555) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md additively расширен: substep map → M1.1–M1.20, endpoint inventory (17), derived-SoT строки (instruments/symbols/accounts breakdown; Midaz LedgerPort untouched), frozen-список, §candidate next (breakdown grid SATURATED, next требует honest deep-read; earn↔rates/fee-descriptor deferred), spec-fidelity. Сверено с кодом main 58cbd8f + ledger IL-306/307/311.
+- **Proof:** docs-only; append-only; build_ledger --check exit 0; фактологично. Завершает batch-merge накопленных docs-only M-track PR'ов M1.18–M1.20.
+- **Refs:** PR #555; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-306/307/311.
