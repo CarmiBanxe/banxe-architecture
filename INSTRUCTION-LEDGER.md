@@ -12276,7 +12276,24 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-269 - agent-factory-m1-earn-status-taxonomy @ 2026-06-18T13:45:00Z
+### IL-269 - agent-factory-arch-stack-002-adr-106-execution-channel-selection @ 2026-06-18T01:16:13Z
+
+- **il_ts:** 2026-06-18T01:16:13Z
+- **session_id:** agent-factory-arch-stack-002-adr-106-execution-channel-selection
+- **source:** Operator
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-arch-stack-002-adr-106-execution-channel-selection/IL-2026-06-18T01-16-13Z--ba2b09.md`
+
+### ADR-106 Execution Channel Selection Gate for ADR-078 drafted (PROPOSED)
+- **Instrukciya:** Add ADR-106 gating new ADR/ledger CLAUDE CODE write-actions for ADR-078 until an execution channel is explicitly selected.
+- **Shagi:** New docs/adr/ADR-106-execution-channel-selection-for-adr-078.md (status PROPOSED); companion shard satisfies guardian-ledger coupling for the tracked docs/adr/** change.
+- **Decision:** First write-action lands via Channel A/C (operator env, as in #508/#509); Channel B is explicitly-authorized last resort only; Central read-only until channel confirmed.
+- **Proof:** python3 ledger/build_ledger.py --check == OK; diff vs origin/main = additions only; no existing ADR/IL/shard modified.
+- **Refs:** ADR-106, ADR-078, ADR-014, PR #508, PR #509.
+
+---
+
+### IL-270 - agent-factory-m1-earn-status-taxonomy @ 2026-06-18T13:45:00Z
 
 - **il_ts:** 2026-06-18T13:45:00Z
 - **session_id:** agent-factory-m1-earn-status-taxonomy
@@ -12292,7 +12309,7 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-270 - agent-factory-m1-earn-analytics-m1-5 @ 2026-06-18T14:00:00Z
+### IL-271 - agent-factory-m1-earn-analytics-m1-5 @ 2026-06-18T14:00:00Z
 
 - **il_ts:** 2026-06-18T14:00:00Z
 - **session_id:** agent-factory-m1-earn-analytics-m1-5
@@ -12308,7 +12325,7 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-271 - agent-factory-m1-earn-statement-m1-6 @ 2026-06-18T14:15:00Z
+### IL-272 - agent-factory-m1-earn-statement-m1-6 @ 2026-06-18T14:15:00Z
 
 - **il_ts:** 2026-06-18T14:15:00Z
 - **session_id:** agent-factory-m1-earn-statement-m1-6
@@ -12324,7 +12341,7 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-272 - agent-factory-m1-accounts-metadata-m1-7 @ 2026-06-18T14:30:00Z
+### IL-273 - agent-factory-m1-accounts-metadata-m1-7 @ 2026-06-18T14:30:00Z
 
 - **il_ts:** 2026-06-18T14:30:00Z
 - **session_id:** agent-factory-m1-accounts-metadata-m1-7
@@ -12340,7 +12357,7 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-273 - agent-factory-m1-assets-catalog-m1-8 @ 2026-06-18T14:45:00Z
+### IL-274 - agent-factory-m1-assets-catalog-m1-8 @ 2026-06-18T14:45:00Z
 
 - **il_ts:** 2026-06-18T14:45:00Z
 - **session_id:** agent-factory-m1-assets-catalog-m1-8
