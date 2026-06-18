@@ -13094,3 +13094,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.21-network-breakdown-plan (PR #556) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.21-network-breakdown.md (код+IL M1.21 уже на main, IL-317).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.21 (IL-317); build_ledger --check exit 0.
 - **Refs:** PR #556; docs/migration/M1.21-network-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-317.
+
+---
+
+### IL-319 - agent-factory-archstack002-sp13-sepa-ct-gap016 @ 2026-06-19T01:50:00Z
+
+- **il_ts:** 2026-06-19T01:50:00Z
+- **session_id:** agent-factory-archstack002-sp13-sepa-ct-gap016
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp13-sepa-ct-gap016/IL-2026-06-19T01-50-00Z--89a44b.md`
+
+### SP-13 — reconcile GAP-016 (C-sepa) OPEN -> IN PROGRESS + Channel C SEPA orchestration residual
+- Instrukciya: Reconcile GAP-016. Read-only audit confirms SEPA CT + SEPA Instant are already implemented in banxe-emi-stack (services/payment/production/modulr_sepa_adapter.py, _SEPA_RAILS = SEPA_CT + SEPA_INSTANT; tests + eu_sepa_retail_v1 playbook). Residual is architecture-level: one PROPOSED Channel C SEPA orchestration passport (I-27, human_double CTIO, NOT activated) + non_goals excluding reimplementation of existing code services (dedup-safe).
+- Shagi: set GAP-016 -> IN PROGRESS; add agents/passports/channel_c_sepa_orchestrator.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; dedup-safe (non_goals).
+- Refs: docs/GAP-REGISTER.md (GAP-016); agents/passports/channel_c_sepa_orchestrator.yaml; banxe-emi-stack services/payment/production/modulr_sepa_adapter.py; I-27; I-28; ADR-102.

@@ -37,7 +37,7 @@
 | GAP-013 | A-kyb: KYB business — get Companies House API key (BT-005) | Sprint 13 | CTIO | ❌ BLOCKED |
 | GAP-014 | B-emi: EMI product definitions (e-money, cards, IBAN) | Sprint 12 | CEO | ✅ DONE |
 | GAP-015 | C-fps: UK Faster Payments FPS (needs Modulr) | Sprint 12 | CTIO | ❌ BLOCKED |
-| GAP-016 | C-sepa: SEPA CT + SEPA Instant | Sprint 13 | CTIO | ❌ OPEN |
+| GAP-016 | C-sepa: SEPA CT + SEPA Instant (code CT+Instant DONE in banxe-emi-stack; residual: Channel C orchestration governance) | Sprint 13 | CTIO | 🔄 IN PROGRESS |
 | GAP-017 | D-gl: General Ledger — complete GL reconciliation (5% done) | Sprint 12 | CTIO | ✅ DONE |
 | GAP-018 | D-fin: Financial Reporting (P&L, balance sheet) | Sprint 12 | CEO | ❌ OPEN |
 | GAP-019 | D-fee: Fee Engine & billing | Sprint 12 | CTIO | ✅ DONE |
