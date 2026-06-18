@@ -12660,3 +12660,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.12-markets-bundle-plan (PR #527) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.12-markets-advisory-bundle.md (код+IL M1.12 уже на main, IL-278).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.12 (IL-278); build_ledger --check exit 0.
 - **Refs:** PR #527; docs/migration/M1.12-markets-advisory-bundle.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-278.
+
+---
+
+### IL-292 - agent-factory-m1-m1-13-asset-markets-xref-plan @ 2026-06-18T20:15:00Z
+
+- **il_ts:** 2026-06-18T20:15:00Z
+- **session_id:** agent-factory-m1-m1-13-asset-markets-xref-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-13-asset-markets-xref-plan/IL-2026-06-18T20-15-00Z--d3e0f9.md`
+
+### M1.13 plan doc promotion — asset→markets reverse cross-reference (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #529 (M1.13 asset→markets reverse-xref plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.13-asset-markets-xref-plan (PR #529) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.13-asset-markets-reverse-xref.md (код+IL M1.13 уже на main, IL-279).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.13 (IL-279); build_ledger --check exit 0.
+- **Refs:** PR #529; docs/migration/M1.13-asset-markets-reverse-xref.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-279.
