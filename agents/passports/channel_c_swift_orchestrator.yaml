@@ -1,0 +1,54 @@
+agent_id: channel_c_swift_orchestrator
+name: "ChannelCSwiftOrchestrator"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Channel C SWIFT correspondent orchestration agent. Routes SWIFT MT/MX
+  (incl. MT103, ISO 20022 MX / CBPR+) correspondent-banking message intents to
+  the EXISTING services/swift_correspondent implementation in banxe-emi-stack and
+  tracks nostro settlement. PROPOSES only (I-27); Channel C is NOT activated until
+  a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-04-PAYMENT
+autonomy: L2_REVIEW
+capabilities:
+  - swift_mt_mx_orchestration
+  - correspondent_routing
+  - nostro_settlement_track
+  - iso20022_mx_mapping_review
+department: "Payments / Correspondent Banking"
+human_double: "Head of Treasury"
+non_goals:
+  - "Do NOT reimplement services/swift_correspondent/* (swift_agent, charges_calculator, nostro_reconciler) — already DONE in banxe-emi-stack (ADR-013)"
+  - "Do NOT reimplement api/routers/swift_correspondent.py"
+  - "Do NOT duplicate the existing banxe-emi-stack swift_correspondent passport"
+  - "Do NOT activate Channel C execution — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: SwiftIntentPort
+      description: Receives SWIFT MT/MX correspondent message intents
+  outbound:
+    - port: CorrespondentRailPort
+      description: Routes to existing swift_correspondent service (banxe-emi-stack) — orchestration only
+    - port: AuditPort
+      description: Immutable log of orchestration decisions (I-08)
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — execution gated, Channel C not activated
+  - I-08  # log all SWIFT-orchestration decisions
+governance:
+  change_class: CLASS_B
+  owner: "CTIO"
+  review_cycle: annually
+  last_reviewed: "2026-06-19"
+  approvers:
+    - CTIO
+    - Head of Treasury
+fca_references:
+  - "SWIFT MT/MX scheme — correspondent banking messaging"
+  - "ISO 20022 / CBPR+ — MX migration (MT103 -> pacs.008)"
+  - "FCA / PSRs 2017 — payment services"
