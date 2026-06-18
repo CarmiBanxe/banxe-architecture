@@ -79,7 +79,7 @@
 | GAP-037 | F-fatca: FATCA/CRS tax reporting | Sprint 13 | CEO | ❌ OPEN |
 | GAP-038 | H-crm: CRM + DSAR | Sprint 14 | CEO | ❌ OPEN |
 | GAP-039 | H-support: Support ticketing + SLA | Sprint 14 | CEO | ❌ OPEN |
-| GAP-040 | L-lake: ClickHouse Data Lake (30% done → 100%) | Sprint 12 | CTIO | ⚠️ IN PROGRESS |
+| GAP-040 | L-lake: ClickHouse Data Lake — schema/audit layer DONE; residual = ELT/streaming/lineage (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow) | Sprint 12 | CTIO | ⚠️ IN PROGRESS |
 | GAP-041 | M-gateway: Public REST API + OpenAPI spec | Sprint 14 | CTIO | ❌ OPEN |
 | GAP-042 | M-sandbox: Sandbox + mock payment rails | Sprint 14 | CTIO | ❌ OPEN |
 

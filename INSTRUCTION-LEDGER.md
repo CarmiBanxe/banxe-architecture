@@ -12981,3 +12981,36 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** banxe-trading-backend ветка agent/factory/m1/accounts-breakdown-m1-20 от main c298a90 (isolated worktree /tmp/wt-m120c). meta/breakdown.py: добавлены AccountDimensionCount(key, count) + AccountsBreakdown(by_account_type, by_ledger_nature, by_account_status, total, source) + accounts_breakdown() (count account_type/ledger_nature/account_status над account_metadata().accounts; deterministic sorted order; total=len(accounts); lazy SANDBOX_MOCK; import account_metadata). api/catalogue.py: новый GET /catalogue/accounts-breakdown на catalogue_router (distinct path; /accounts/metadata unchanged, no shadow); существующие endpoints не тронуты. docs/specs/catalogue-api.yaml: additive /v1/catalogue/accounts-breakdown path + AccountsBreakdown/AccountDimensionCount schemas; AccountDimensionCount.key = type:string non-exhaustive (canonical INTERNAL/ACTIVE/SYSTEM примеры в description, без hard enum — урок M1.16). Reuse account_metadata — без второго registry/counter/account-map. Midaz LedgerPort (ADR-013) НЕ вызван (0 refs в breakdown.py); balances/postings отсутствуют; supported_assets/capabilities (list-valued) исключены. Тесты tests/test_accounts_breakdown.py (+6): characterization (by_account_type/by_ledger_nature/by_account_status == group-by all 3 dims, total==len==sum каждого, deterministic order), contract (/accounts/metadata + AccountAdvisoryMetadata(6)/AccountMetadataResponse(3) frozen + /catalogue/* unchanged + supportedAssets/capabilities не surfaced + balance/posting/amount absent), fail-closed (no fabricated categories). Валидация (main venv via PYTHONPATH): ruff clean, mypy strict clean (85 files), pytest 471 passed (465+6); smoke GET /catalogue/accounts-breakdown 200 {byAccountType EXTERNAL:1/INTERNAL:1/SYSTEM:1, byLedgerNature ACTIVE:2/PASSIVE:1, byAccountStatus ACTIVE:3, total 3, source sandbox-mock}, /accounts/metadata 200 unchanged. Promotion-PR banxe-trading-backend #53 OPEN (no merge). IL-shard в banxe-architecture isolated worktree.
 - **Proof:** Duplication Audit (ADR-102): account_metadata/AccountAdvisoryMetadata (M1.7) reuse — 3 категориала counted, no second registry/account-map; Midaz LedgerPort (ADR-013) = live account/balance SoT — НЕ вызван, НЕ дублирован (0 refs в breakdown.py); meta/breakdown.py (M1.16–M1.19) reuse module same pattern; AccountsBreakdown/AccountDimensionCount = derived summary, НЕ data SoT; AccountAdvisoryMetadata/AccountMetadataResponse/breakdown DTO не мутированы (frozen); FeeEnginePort/earn rates untouched. Verdict: zero data duplicates, derived summary only, keep/extend, no merge/delete. build_ledger --check exit 0. Numeric (I-01): только integer meta counts (per-type/per-nature/per-status/total), НЕ balances/amounts/positions/ledger postings/prices/APY/computed fees; no money Decimal/BigNumber/float; no balance/posting surface, no fee computation. Activation Safety: read-only/advisory/mock-safe derived summary; no live orders/execution/balances/positions/ledger postings/payments/wallet-custody/fund movement; NO live Midaz LedgerPort calls; NO infra/secret/PII/ops metrics; no network/keys; fail-closed (counts из fail-closed account_metadata; только реальные категории, no fabricated). Spec-fidelity: key non-exhaustive string, без hard enum. Out-of-scope: P0/regulated/live (orders/execution/real balances/positions/ledger postings/wallet-custody/payments/live Midaz LedgerPort), APY/yield/rates re-surface, fee computation/billing, KYC/AML, cards, crypto-wallet ops, internal/ops/infra metrics/secrets/PII, list-valued dims (supported_assets/capabilities), мутация frozen DTO, новый registry/counter source, user/DB migrations, live state machines, contract-breaking. Server-only в isolated worktree (Rule 1/6, Factory-Only Execution); fabric/prod/secrets/emi-stack/governance вне M1.20 не тронуты; чужие/parallel-session ветки/untracked не тронуты; branch protection не обойдён; merge не делал.
 - **Refs:** banxe-trading-backend PR #53 (agent/factory/m1/accounts-breakdown-m1-20); src/banxe_trading_backend/meta/breakdown.py (accounts_breakdown), api/catalogue.py (GET /catalogue/accounts-breakdown), docs/specs/catalogue-api.yaml, tests/test_accounts_breakdown.py; reuse accounts/metadata.py account_metadata/AccountAdvisoryMetadata (M1.7 IL-272), meta/breakdown.py M1.16–M1.19 pattern (IL-299/IL-301/IL-306/IL-307); ADR-013 (Midaz LedgerPort live SoT, untouched), ADR-102, ADR-103, ADR-059-A, I-01; docs/migration/M1.20-accounts-breakdown.md (plan, PR #551).
+
+---
+
+### IL-312 - agent-factory-archstack002-sp11-data-lake-gap040 @ 2026-06-19T00:35:00Z
+
+- **il_ts:** 2026-06-19T00:35:00Z
+- **session_id:** agent-factory-archstack002-sp11-data-lake-gap040
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp11-data-lake-gap040/IL-2026-06-19T00-35-00Z--31f8e7.md`
+
+### SP-11 — GAP-040 ClickHouse Data Lake: residual ELT/streaming/lineage scope + PROPOSED passport
+- Instrukciya: Reconcile GAP-040 (schema/audit layer DONE; residual = ELT/streaming/lineage). Add 1 PROPOSED passport data_lake_elt_agent (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow). Append JD row (Data Platform / Analytics Engineer).
+- Shagi: reconcile GAP-040 row; create passport (I-27 PROPOSES-only, human_double, Channel C NOT activated); append JD; ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger.py --check OK; grep GAP-040; dedup vs clickhouse_writer.yaml (write-path excluded).
+- Refs: docs/GAP-REGISTER.md; agents/passports/data_lake_elt_agent.yaml; docs/JOB-DESCRIPTIONS.md; I-08; I-24; I-27; I-28; ADR-060; ADR-102.
+
+---
+
+### IL-313 - agent-factory-archstack002-sp11-i28-scoped-exception @ 2026-06-19T00:40:00Z
+
+- **il_ts:** 2026-06-19T00:40:00Z
+- **session_id:** agent-factory-archstack002-sp11-i28-scoped-exception
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp11-i28-scoped-exception/IL-2026-06-19T00-40-00Z--5e90b2.md`
+
+### SP-11 — I-28 scoped exception (traceable, non-bypass)
+- Instrukciya: Record a scoped, auditable I-28 exception so SP-11 (own shard DONE, independent) may proceed while 3 historic IL-OPS verify-pending entries remain on a separate operator track.
+- Obosnovanie: il-check.sh is advisory; the 3 blocking entries are operator/hardware verify-pending dated 2026-05-07..13, unrelated to SP-11 ELT/lineage scope.
+- Open items deferred to operator track: IL-OPS-G-INFRA-EVO2-RAM-VISIBILITY-VERIFIED; IL-OPS-S13-8-LEGION-8180-COLLISION-VERIFY; IL-OPS-S14-1-CLICKHOUSE-AUDIT-RETENTION-VERIFY.
+- Proof: scripts/il-check.sh read — advisory; authoritative gate = CI guardian.yml + ledger-build.yml.
+- Refs: I-28; ADR-056; ADR-057; ADR-060.
