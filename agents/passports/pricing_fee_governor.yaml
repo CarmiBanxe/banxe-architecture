@@ -1,0 +1,53 @@
+agent_id: pricing_fee_governor
+name: "PricingFeeGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Pricing-rules & fee-schedule governance agent. Reviews pricing rules, fee
+  schedules, tariff changes and fee disclosure — routing to the EXISTING
+  services/fee_management implementation in banxe-emi-stack. PROPOSES only
+  (I-27); NOT activated until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+autonomy: L2_REVIEW
+capabilities:
+  - pricing_rule_curation
+  - fee_schedule_review
+  - tariff_change_governance
+  - fee_disclosure_check
+department: "Commercial / Finance"
+human_double: "CFO"
+non_goals:
+  - "Do NOT reimplement services/fee_management/* — fee engine & management already DONE in banxe-emi-stack (GAP-019)"
+  - "Do NOT reimplement api/routers/fee_management.py or charges_calculator"
+  - "Do NOT duplicate any existing banxe-emi-stack fee/pricing passport"
+  - "Do NOT activate the pricing channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: PricingIntentPort
+      description: Receives pricing-rule / fee-schedule / tariff-change review requests
+  outbound:
+    - port: FeeManagementPort
+      description: Routes to existing services/fee_management (banxe-emi-stack) — governance/orchestration only
+    - port: AuditPort
+      description: Immutable log of pricing-governance decisions (I-08)
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — pricing changes gated, not activated
+  - I-08  # log all pricing-governance decisions
+governance:
+  change_class: CLASS_B
+  owner: "CFO"
+  review_cycle: annually
+  last_reviewed: "2026-06-19"
+  approvers:
+    - CFO
+    - CEO
+fca_references:
+  - "FCA Consumer Duty — price & value (fair value) outcome"
+  - "FCA COBS — fee / charge disclosure to clients"
+  - "PSRs 2017 — transparency of charges"
