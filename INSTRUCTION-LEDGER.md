@@ -12727,3 +12727,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **BOUNDARY:** ports are read+compare only; no money movement, no trade execution, no ledger posting (I-10 safe). Live adapters out of scope.
 - **ADR-106 EFFECT:** channel-selection gate for the first ADR-078 work item closed; Channel C non-M1 execution confirmed in practice.
 - **RUNTIME_STATUS:** DONE.
+
+---
+
+### IL-296 - agent-factory-governance-factory-only-execution @ 2026-06-18T21:30:00Z
+
+- **il_ts:** 2026-06-18T21:30:00Z
+- **session_id:** agent-factory-governance-factory-only-execution
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-factory-only-execution/IL-2026-06-18T21-30-00Z--a7c4e1.md`
+
+### Factory-Only Execution canon — output-discipline subpoint (docs-only governance, guardian-ledger coupling)
+- **Instrukciya:** Закрепить канон «Factory-Only Execution» в output-discipline (AGENTS.md + .claude/rules/agents.md, зеркально), additive к Best Single Artifact: все state-changes ТОЛЬКО через фабрику = [CLAUDE CODE]; [SHELL] исключительно для read-only аудита/диагностики/верификации; запрет state-changing shell в обход фабрики. Не менять ADR-102/103/059-A/merge canon/security canon/Best Single Artifact. Coupling IL-shard (ADR-056/060, I-28) для tracked governance-путей; append-only (ADR-059-A), il_ts строго выше re-fetched max. Server-side isolated worktree (Rule 1); без --admin.
+- **Shagi:** banxe-architecture ветка agent/factory/governance/factory-only-execution от свежего origin/main. AGENTS.md: добавлен подпункт **Factory-Only Execution** после EXECUTE-template (в §CANON Best Single Artifact). .claude/rules/agents.md: добавлен ### Factory-Only Execution перед ### Anchors + anchor-bullet. Зеркально; существующие Anchors сохранены. Diff = 2 governance-доки + этот shard + регенерированный ledger.
+- **Proof:** docs-only governance (никакого кода/ADR/prod/fabric/emi-stack). Additive: Best Single Artifact / ADR-102 / ADR-103 / ADR-059-A / merge canon / security canon не изменены. Append-only: существующие IL не правились; build_ledger --check exit 0; il_ts строго выше актуального re-fetched max (timestamp, не numeric IL-max из-за legacy IL-2027/2028).
+- **Refs:** PR (factory-only-execution); AGENTS.md §"CANON — Best Single Artifact" / .claude/rules/agents.md §"CANON — Best Single Artifact"; IL-268 (Best Single Artifact); ADR-056, ADR-060, ADR-059-A, I-28.
