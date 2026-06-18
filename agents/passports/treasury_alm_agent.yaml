@@ -1,0 +1,41 @@
+# Banxe Agent Passport — PROPOSED (Channel C NOT activated)
+# Scope: Treasury / ALM orchestration. Formalizes existing SOUL drafts
+# (cash-position, forecast, fx-exposure) into a passport. Does NOT duplicate
+# the implemented services/treasury + services/fx_exchange (code repo).
+apiVersion: banxe.dev/v1
+kind: AgentPassport
+metadata:
+  name: treasury_alm_agent
+  status: PROPOSED
+  owner: CEO
+  human_double: Head of Treasury
+  gap: GAP-036
+  adr: [ADR-060, ADR-102]
+spec:
+  mission: >-
+    Orchestrate Treasury/ALM: cash position (CASS 15.6), liquidity forecast,
+    FX exposure (Frankfurter ECB), covenant monitoring, ALM models (OSEM/QuantLib).
+    Builds on existing SOUL drafts; sweep/execute stays L4 HITL (I-27).
+  channel: C
+  activation:
+    enabled: false
+    requires: human_double
+  capabilities:
+    - cash_position_monitor      # CASS 15.6
+    - liquidity_forecast         # 7/14/30d
+    - fx_exposure_analysis       # Frankfurter ECB rates
+    - covenant_monitor
+    - alm_modelling              # OSEM / QuantLib (research)
+  invariants:
+    - I-01   # Decimal for all FX/balance amounts
+    - I-02   # blocked currencies
+    - I-24   # append-only audit
+    - I-27   # HITL on FX >=£50k / sweep execute
+    - I-28   # append-only ledger
+  souls:
+    - agents/souls/cash-position-agent.md
+    - agents/souls/forecast-agent.md
+    - agents/souls/fx-exposure-agent.md
+  non_goals:
+    - reimplement_services_treasury   # already in code repo (IL-097)
+    - reimplement_services_fx         # already in code repo (IL-099)
