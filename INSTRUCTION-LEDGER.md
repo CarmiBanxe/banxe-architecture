@@ -12933,3 +12933,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.18-instruments-breakdown-plan (PR #546) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.18-instruments-breakdown.md (код+IL M1.18 уже на main, IL-306).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.18 (IL-306); build_ledger --check exit 0.
 - **Refs:** PR #546; docs/migration/M1.18-instruments-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-306.
+
+---
+
+### IL-309 - agent-factory-m1-m1-19-symbols-breakdown-plan @ 2026-06-19T00:15:00Z
+
+- **il_ts:** 2026-06-19T00:15:00Z
+- **session_id:** agent-factory-m1-m1-19-symbols-breakdown-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-19-symbols-breakdown-plan/IL-2026-06-19T00-15-00Z--b8f3c2.md`
+
+### M1.19 plan doc promotion — symbols breakdown (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #548 (M1.19 symbols breakdown plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.19-symbols-breakdown-plan (PR #548) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.19-symbols-breakdown.md (код+IL M1.19 уже на main, IL-307).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.19 (IL-307); build_ledger --check exit 0.
+- **Refs:** PR #548; docs/migration/M1.19-symbols-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-307.
