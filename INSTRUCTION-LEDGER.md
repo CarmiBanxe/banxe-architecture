@@ -12676,3 +12676,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.13-asset-markets-xref-plan (PR #529) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.13-asset-markets-reverse-xref.md (код+IL M1.13 уже на main, IL-279).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.13 (IL-279); build_ledger --check exit 0.
 - **Refs:** PR #529; docs/migration/M1.13-asset-markets-reverse-xref.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-279.
+
+---
+
+### IL-293 - agent-factory-m1-m1-14-catalogue-meta-plan @ 2026-06-18T20:30:00Z
+
+- **il_ts:** 2026-06-18T20:30:00Z
+- **session_id:** agent-factory-m1-m1-14-catalogue-meta-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-14-catalogue-meta-plan/IL-2026-06-18T20-30-00Z--e4f1a0.md`
+
+### M1.14 plan doc promotion — read-only catalogue meta surface (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #531 (M1.14 catalogue meta plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin. CodeRabbit header-nit разрешён как governance false-positive (формат совпадает с sibling merged plan-доками).
+- **Shagi:** ветка agent/factory/m1/m1.14-catalogue-meta-plan (PR #531) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.14-catalogue-meta-surface.md (код+IL M1.14 уже на main, IL-280).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.14 (IL-280); build_ledger --check exit 0; 0 unresolved threads (CodeRabbit nit resolved).
+- **Refs:** PR #531; docs/migration/M1.14-catalogue-meta-surface.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-280.
