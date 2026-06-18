@@ -12984,13 +12984,29 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-312 - agent-factory-archstack002-sp11-data-lake-gap040 @ 2026-06-19T00:35:00Z
+### IL-312 - agent-factory-m1-m1-20-accounts-breakdown-plan @ 2026-06-19T00:45:00Z
 
-- **il_ts:** 2026-06-19T00:35:00Z
+- **il_ts:** 2026-06-19T00:45:00Z
+- **session_id:** agent-factory-m1-m1-20-accounts-breakdown-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-20-accounts-breakdown-plan/IL-2026-06-19T00-45-00Z--d1e7f4.md`
+
+### M1.20 plan doc promotion — accounts breakdown (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #551 (M1.20 accounts breakdown plan). Coupling IL-shard (ADR-056/060, I-28) для docs/migration tracked-пути; append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.20-accounts-breakdown-plan (PR #551) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.20-accounts-breakdown.md (код+IL M1.20 уже на main, IL-311).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.20 (IL-311); build_ledger --check exit 0.
+- **Refs:** PR #551; docs/migration/M1.20-accounts-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-311.
+
+---
+
+### IL-313 - agent-factory-archstack002-sp11-data-lake-gap040 @ 2026-06-19T00:50:00Z
+
+- **il_ts:** 2026-06-19T00:50:00Z
 - **session_id:** agent-factory-archstack002-sp11-data-lake-gap040
 - **source:** CTIO
 - **status:** DONE
-- **shard:** `ledger/entries/agent-factory-archstack002-sp11-data-lake-gap040/IL-2026-06-19T00-35-00Z--31f8e7.md`
+- **shard:** `ledger/entries/agent-factory-archstack002-sp11-data-lake-gap040/IL-2026-06-19T00-50-00Z--31f8e7.md`
 
 ### SP-11 — GAP-040 ClickHouse Data Lake: residual ELT/streaming/lineage scope + PROPOSED passport
 - Instrukciya: Reconcile GAP-040 (schema/audit layer DONE; residual = ELT/streaming/lineage). Add 1 PROPOSED passport data_lake_elt_agent (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow). Append JD row (Data Platform / Analytics Engineer).
@@ -13000,13 +13016,13 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 
 ---
 
-### IL-313 - agent-factory-archstack002-sp11-i28-scoped-exception @ 2026-06-19T00:40:00Z
+### IL-314 - agent-factory-archstack002-sp11-i28-scoped-exception @ 2026-06-19T00:55:00Z
 
-- **il_ts:** 2026-06-19T00:40:00Z
+- **il_ts:** 2026-06-19T00:55:00Z
 - **session_id:** agent-factory-archstack002-sp11-i28-scoped-exception
 - **source:** CTIO
 - **status:** DONE
-- **shard:** `ledger/entries/agent-factory-archstack002-sp11-i28-scoped-exception/IL-2026-06-19T00-40-00Z--5e90b2.md`
+- **shard:** `ledger/entries/agent-factory-archstack002-sp11-i28-scoped-exception/IL-2026-06-19T00-55-00Z--5e90b2.md`
 
 ### SP-11 — I-28 scoped exception (traceable, non-bypass)
 - Instrukciya: Record a scoped, auditable I-28 exception so SP-11 (own shard DONE, independent) may proceed while 3 historic IL-OPS verify-pending entries remain on a separate operator track.
@@ -13014,3 +13030,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - Open items deferred to operator track: IL-OPS-G-INFRA-EVO2-RAM-VISIBILITY-VERIFIED; IL-OPS-S13-8-LEGION-8180-COLLISION-VERIFY; IL-OPS-S14-1-CLICKHOUSE-AUDIT-RETENTION-VERIFY.
 - Proof: scripts/il-check.sh read — advisory; authoritative gate = CI guardian.yml + ledger-build.yml.
 - Refs: I-28; ADR-056; ADR-057; ADR-060.
+
+---
+
+### IL-315 - agent-factory-m1-summary-refresh-m1-20 @ 2026-06-19T01:00:00Z
+
+- **il_ts:** 2026-06-19T01:00:00Z
+- **session_id:** agent-factory-m1-summary-refresh-m1-20
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-summary-refresh-m1-20/IL-2026-06-19T01-00-00Z--e2f8a5.md`
+
+### M1 advisory-surface summary refresh → M1.18–M1.20 (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only summary-refresh PR #555 (обновление canonical anchor до M1.18–M1.20). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/summary-refresh-m1-20 (PR #555) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md additively расширен: substep map → M1.1–M1.20, endpoint inventory (17), derived-SoT строки (instruments/symbols/accounts breakdown; Midaz LedgerPort untouched), frozen-список, §candidate next (breakdown grid SATURATED, next требует honest deep-read; earn↔rates/fee-descriptor deferred), spec-fidelity. Сверено с кодом main 58cbd8f + ledger IL-306/307/311.
+- **Proof:** docs-only; append-only; build_ledger --check exit 0; фактологично. Завершает batch-merge накопленных docs-only M-track PR'ов M1.18–M1.20.
+- **Refs:** PR #555; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-306/307/311.
