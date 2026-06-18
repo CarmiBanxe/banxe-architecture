@@ -12466,3 +12466,53 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** banxe-trading-backend ветка agent/factory/m1/catalogue-meta-m1-14 от main 61b5342 (isolated worktree /tmp/wt-m114c). Новый src/banxe_trading_backend/meta/catalogue.py: CatalogueMeta DTO (symbols_count/instruments_count/markets_count/assets_count: int, version, source) + catalogue_meta(market_data) (derive counts: len(market_data.list_symbols()), len(list_instruments()), len(list_instrument_asset_xref()), len(asset_catalog(market_data).assets); version=__version__; source=SANDBOX_MOCK lazy). meta/__init__.py exports. api/catalogue.py: новый GET /catalogue/meta (public), wired additively в api/__init__.py (catalogue_router) + app.py (include_router prefix=api). docs/specs/catalogue-api.yaml: новый additive public spec (CatalogueMeta schema; internal ops НЕ документируются). Второго version-источника/счётчика/реестра нет. Internal observability (/internal/health/dse-baas, /internal/metrics/dse-baas, BaasMetrics, dse_baas_health) не тронуты, остаются include_in_schema=False (infra-fenced). Тесты tests/test_catalogue_meta.py (+6): characterization (counts == mock universe: symbols 2/instruments 2/markets 2/assets 3, version == __version__, source sandbox-mock), positive-int, endpoint 200 + camelCase shape (no balance/amount), single version source, internal /internal/* НЕ в public OpenAPI schema (meta в schema), существующие public endpoints unchanged. Валидация (main venv via PYTHONPATH): ruff clean, mypy strict clean (83 files), pytest 432 passed (426+6); smoke GET /catalogue/meta 200 {symbolsCount 2, instrumentsCount 2, marketsCount 2, assetsCount 3, version 0.1.0, source sandbox-mock}, version==__version__, internal fenced (none in schema), существующие 200. Promotion-PR banxe-trading-backend #47 OPEN (no merge). IL-shard в banxe-architecture isolated worktree.
 - **Proof:** Duplication Audit (ADR-102): list_symbols/list_instruments/list_instrument_asset_xref/asset_catalog reuse — counts derived, no second counter store; __version__ reuse — single version source, no second constant; _INSTRUMENT_PARAMS/_ASSET_META/SymbolInfo reuse транзитивно — no second registry/catalogue; CatalogueMeta = derived summary DTO (как AnalyticsContext), НЕ data SoT; internal ops (/internal/*, BaasMetrics, dse_baas_health) keep untouched, не экспонированы; FeeEnginePort untouched. Verdict: zero data duplicates, derived summary only, keep/extend, no merge/delete. build_ledger --check OK. Numeric (I-01): только integer meta counts (cardinalities каталогов), НЕ balances/amounts/positions/prices/computed fees; version/source strings; no money Decimal/BigNumber/float; no fee computation. Activation Safety: read-only/advisory/mock-safe derived summary; no live orders/execution/balances/positions/payments/fee computation/fund movement; NO infra/secret/PII/ops metrics; no network/keys; fail-closed (counts наследуют fail-closed list-функции; no fabricated count). Out-of-scope: P0/regulated/live (orders/execution/balances/positions/payments), fee computation/billing/preview, KYC/AML, cards, crypto-wallet ops, internal/ops/infra metrics/readiness/Prometheus/secrets/PII, новый каталог/реестр/второй version-источник, enrichment frozen DTO, user/DB migrations, live state machines, contract-breaking. Server-only в isolated worktree (Rule 1/6); fabric/prod/secrets/emi-stack/governance-ADR не тронуты; internal ops endpoints infra-fenced/untouched; чужие ветки/untracked не тронуты; branch protection не обойдён; merge не делал.
 - **Refs:** banxe-trading-backend PR #47 (agent/factory/m1/catalogue-meta-m1-14); src/banxe_trading_backend/meta/catalogue.py, meta/__init__.py, api/catalogue.py (GET /catalogue/meta), api/__init__.py, app.py, docs/specs/catalogue-api.yaml, tests/test_catalogue_meta.py; reuse __init__.py __version__, instruments/params.py list_instruments (M1.10 IL-275), instruments/xref.py list_instrument_asset_xref (M1.12 IL-278), assets/catalog.py asset_catalog (M1.8 IL-272), ports/market_data_port.py list_symbols; api/internal.py (untouched, infra-fenced); ADR-102, ADR-103, ADR-059-A; I-01; docs/migration/M1.14-catalogue-meta-surface.md (plan, PR #531).
+
+---
+
+### IL-281 - agent-factory-archstack002-channel-c-approval-adr-078 @ 2026-06-18T17:30:00Z
+
+- **il_ts:** 2026-06-18T17:30:00Z
+- **session_id:** agent-factory-archstack002-channel-c-approval-adr-078
+- **source:** auto
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-channel-c-approval-adr-078/IL-2026-06-18T17-30-00Z--3eb2e8.md`
+
+### IL-PARITY-BANXE-UI-PREVIEW-VS-PROD-2026-06-18
+- **CONTEXT:** read-only parity review of /preview/* (@banxe/ui) vs production web-next routes.
+- **I-05_FIX:** DONE — production /transfers amount validation no longer uses parseFloat/Number (string Decimal zero-check). Applied to:
+  - apps/web-next/app/transfers/page.tsx
+  - apps/mobile/app/(tabs)/transfers.tsx
+  COMMIT: ce49bdf "fix(ui): remove numeric parsing from transfers amount validation" on main.
+- **PARITY_MAP:**
+  - dashboard: production superior (API-wired); preview adds AIInsightCard idea only.
+  - transfers/send: production superior (3-step, IBAN, PSD2 consent); preview-only otherwise.
+  - settings/profile: partial overlap; merge candidate, not replace.
+  - transactions: NO production page; production /dashboard "View all" links to /transactions -> 404 (real defect).
+  - wallets: NO production page (net-new).
+  - ai: NO production page (net-new; needs real backend + audit logging).
+- **OPEN_GATED_SUBTASKS (NOT auto-executed):**
+  1. Broken nav: /dashboard -> /transactions 404. Options: build minimal production /transactions OR disable dead link until ready. (operator decision)
+  2. Promote net-new screens transactions/wallets/ai: requires theme reconciliation (.banxe-preview bridge -> production tokens) + data wiring; /ai also needs backend + audit logging. (governance gate each)
+  3. profile<->settings merge (additive). (governance gate)
+- **KNOWN_BLOCKERS (separate):** @banxe/shared ".js"->".ts" resolution (Option C recommended, web-next next.config.ts); @storybook deferred.
+- **RUNTIME_STATUS:** WORKING_WITH_DEFERRALS.
+
+---
+
+### IL-282 - agent-factory-archstack002-channel-c-approval-adr-078 @ 2026-06-18T17:30:05Z
+
+- **il_ts:** 2026-06-18T17:30:05Z
+- **session_id:** agent-factory-archstack002-channel-c-approval-adr-078
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-channel-c-approval-adr-078/IL-2026-06-18T17-30-05Z--3eb2e8.md`
+
+### ADR-106 — Channel C Operator Confirmation (ADR-078 gate)
+
+- **Instrukciya:** Owner/operator of Channel C (CarmiBanxe / Moriel Carmi <mmber@banxe.ai>) confirms ADR-106 §Decision (1–3), satisfying the channel-selection gate for the first ADR-078 PR.
+- **LAUNCH MECHANISM:** Channel C is a Claude Code terminal session on node Legion (mmber@mark-legion), acting under identity CarmiBanxe. All irreversible git actions (commit/push/gh pr create) are operator-gated. Not a bot, scheduler, or GitHub-native automation.
+- **INPUT/TRIGGER:** operator pastes a factory-worker task brief into the Claude Code session after checking out the target agent/factory/<track>/<slug> branch. No queue/webhook/file-watcher trigger.
+- **NON-M1 SCOPE:** CONFIRMED — Channel C executes arbitrary agent/factory/<track>/<slug> tasks, including arch-stack-002 / ADR-078, not only M1-line work.
+- **Effect:** ADR-106 channel-selection gate satisfied for the first ADR-078 pull request. Channel C is APPROVED by the owner as the controlled execution path for ADR-078.
+- **Proof:** operator confirmation pasted into Channel C session (artifact A); recorded as ledger shard (no ADR file edited).
+- **Refs:** ADR-106 (execution channel selection), ADR-078 (arch-stack-002), ADR-059 (shard ledger).
