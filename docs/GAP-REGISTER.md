@@ -77,7 +77,7 @@
 | GAP-035 | C-swift: SWIFT MT/MX (code DONE in banxe-emi-stack services/swift_correspondent, ADR-013; residual: Channel C orchestration governance) | Sprint 14 | CTIO | 🔄 IN PROGRESS |
 | GAP-036 | E-treasury: Treasury / FX / ALM — services/treasury+fx implemented (code repo, IL-097/099); residual here = ALM orchestration + PROPOSED passport (OSEM/QuantLib, covenant monitor) | Sprint 14 | CEO | ⚠️ IN PROGRESS |
 | GAP-037 | F-fatca: FATCA/CRS tax reporting (code DONE in banxe-emi-stack services/fatca_crs: self_cert_engine, hmrc_models, fatca_agent; residual: reporting governance) | Sprint 13 | CEO | 🔄 IN PROGRESS |
-| GAP-038 | H-crm: CRM + DSAR | Sprint 14 | CEO | ❌ OPEN |
+| GAP-038 | H-crm: CRM + DSAR (CRM code in banxe-emi-stack services/crm; residual: DSAR/consent/retention governance) | Sprint 14 | CEO | 🔄 IN PROGRESS |
 | GAP-039 | H-support: Support ticketing + SLA | Sprint 14 | CEO | ❌ OPEN |
 | GAP-040 | L-lake: ClickHouse Data Lake — schema/audit layer DONE; residual = ELT/streaming/lineage (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow) | Sprint 12 | CTIO | ⚠️ IN PROGRESS |
 | GAP-041 | M-gateway: Public REST API + OpenAPI spec (gateway infra DONE in banxe-emi-stack services/api_gateway, GAP-023; residual: unified Public-API governance) | Sprint 14 | CTIO | 🔄 IN PROGRESS |
