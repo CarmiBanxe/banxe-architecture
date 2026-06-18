@@ -12708,3 +12708,22 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1-advisory-summary (PR #534) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md — фактологическая карта перенесённых advisory-доменов M1.1–M1.14 (endpoints/DTO/SoT/frozen/operator-gated + candidate next domains), сверена с кодом banxe-trading-backend main 9a0c6eb и ledger IL-253..IL-280.
 - **Proof:** docs-only (summary + coupling shard + regenerated ledger); никакого кода/ADR/prod/fabric. Append-only; build_ledger --check exit 0. Завершает batch-merge накопленных docs-only M-track plan-PR'ов.
 - **Refs:** PR #534; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-253/254/269..280.
+
+---
+
+### IL-295 - agent-factory-archstack002-adr-078-execution-closure @ 2026-06-18T21:00:00Z
+
+- **il_ts:** 2026-06-18T21:00:00Z
+- **session_id:** agent-factory-archstack002-adr-078-execution-closure
+- **source:** auto
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-adr-078-execution-closure/IL-2026-06-18T21-00-00Z--3eb2e8.md`
+
+### IL-ADR-078-EXECUTION-CLOSURE-VIA-CHANNEL-C-2026-06-18
+- **CONTEXT:** Channel C (ADR-106 gate satisfied, PR #533 merged into banxe-architecture@1027ee7) executed/validated ADR-078 CFO Treasury read-only ports in banxe-emi-stack.
+- **SCOPE:** ADR-078 D1 FXExposurePort, D2 NOSTROReconPort, D3 LiquidityForecastPort (read-only Protocol/ABC + InMemory impls), D4 consumer TreasuryAgent.
+- **STATE:** Implementation present and tracked on banxe-emi-stack@98df2c3 (main); no new code required.
+- **VALIDATION:** pytest of the three port test modules PASS (100%); per-file coverage 100% (fx_exposure 34/34, liquidity_forecast 33/33, nostro_recon 37/37); suite coverage gate met (37.80% >= 35%).
+- **BOUNDARY:** ports are read+compare only; no money movement, no trade execution, no ledger posting (I-10 safe). Live adapters out of scope.
+- **ADR-106 EFFECT:** channel-selection gate for the first ADR-078 work item closed; Channel C non-M1 execution confirmed in practice.
+- **RUNTIME_STATUS:** DONE.
