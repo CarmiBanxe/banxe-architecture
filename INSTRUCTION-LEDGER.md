@@ -12869,3 +12869,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.17-markets-breakdown-plan (PR #543) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.17-markets-breakdown.md (код+IL M1.17 уже на main, IL-301).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.17 (IL-301); build_ledger --check exit 0.
 - **Refs:** PR #543; docs/migration/M1.17-markets-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-301.
+
+---
+
+### IL-305 - agent-factory-m1-summary-refresh-m1-17 @ 2026-06-18T23:15:00Z
+
+- **il_ts:** 2026-06-18T23:15:00Z
+- **session_id:** agent-factory-m1-summary-refresh-m1-17
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-summary-refresh-m1-17/IL-2026-06-18T23-15-00Z--b4d1e8.md`
+
+### M1 advisory-surface summary refresh → M1.15–M1.17 (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only summary-refresh PR #545 (обновление canonical anchor до M1.15–M1.17). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/summary-refresh-m1-17 (PR #545) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md additively расширен: substep map → M1.1–M1.17, endpoint inventory (14), derive/describe SoT-строки (earn taxonomy/catalogue breakdown/markets breakdown), frozen-список, §candidate next (instruments breakdown next; earn↔rates xref/fee-descriptor/KYC-AML deferred), spec-fidelity note (урок M1.16). Сверено с кодом main 038aff9 + ledger IL-297/299/301.
+- **Proof:** docs-only; append-only; build_ledger --check exit 0; фактологично (без секретов/инфра-метрик). Завершает batch-merge накопленных docs-only M-track план/summary PR'ов M1.15–M1.17.
+- **Refs:** PR #545; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-297/299/301.
