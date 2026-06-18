@@ -12548,3 +12548,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** banxe-architecture ветка agent/factory/m1/m1.5-earn-analytics-plan (PR #510) rebased на origin/main; добавлен coupling-shard; ledger регенерирован; build_ledger --check OK. Plan-doc docs/migration/M1.5-earn-advisory-analytics.md — единственный контентный файл (код+IL M1.5 уже на main, IL-270).
 - **Proof:** docs-only (plan doc + coupling shard + regenerated ledger); никакого кода/ADR/prod/fabric. Append-only: существующие IL не правились. Соответствует смерженному M1.5 коду (IL-270). build_ledger --check exit 0.
 - **Refs:** PR #510; docs/migration/M1.5-earn-advisory-analytics.md; ADR-056, ADR-060, ADR-059-A, I-28; related code shard IL-270.
+
+---
+
+### IL-285 - agent-factory-m1-m1-6-earn-statements-plan @ 2026-06-18T18:30:00Z
+
+- **il_ts:** 2026-06-18T18:30:00Z
+- **session_id:** agent-factory-m1-m1-6-earn-statements-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-6-earn-statements-plan/IL-2026-06-18T18-30-00Z--c6d3e2.md`
+
+### M1.6 plan doc promotion — earn advisory read-only statement/summary (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #512 (M1.6 earn statement plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.6-earn-statements-plan (PR #512) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.6-earn-advisory-statements.md (код+IL M1.6 уже на main, IL-271).
+- **Proof:** docs-only; append-only (существующие IL не правились); соответствует смерженному M1.6 (IL-271); build_ledger --check exit 0.
+- **Refs:** PR #512; docs/migration/M1.6-earn-advisory-statements.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-271.
