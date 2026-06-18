@@ -13013,3 +13013,36 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/summary-refresh-m1-20 (PR #555) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md additively расширен: substep map → M1.1–M1.20, endpoint inventory (17), derived-SoT строки (instruments/symbols/accounts breakdown; Midaz LedgerPort untouched), frozen-список, §candidate next (breakdown grid SATURATED, next требует honest deep-read; earn↔rates/fee-descriptor deferred), spec-fidelity. Сверено с кодом main 58cbd8f + ledger IL-306/307/311.
 - **Proof:** docs-only; append-only; build_ledger --check exit 0; фактологично. Завершает batch-merge накопленных docs-only M-track PR'ов M1.18–M1.20.
 - **Refs:** PR #555; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-306/307/311.
+
+---
+
+### IL-314 - agent-factory-archstack002-sp11-data-lake-gap040 @ 2026-06-19T01:05:00Z
+
+- **il_ts:** 2026-06-19T01:05:00Z
+- **session_id:** agent-factory-archstack002-sp11-data-lake-gap040
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp11-data-lake-gap040/IL-2026-06-19T01-05-00Z--31f8e7.md`
+
+### SP-11 — GAP-040 ClickHouse Data Lake: residual ELT/streaming/lineage scope + PROPOSED passport
+- Instrukciya: Reconcile GAP-040 (schema/audit layer DONE; residual = ELT/streaming/lineage). Add 1 PROPOSED passport data_lake_elt_agent (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow). Append JD row (Data Platform / Analytics Engineer).
+- Shagi: reconcile GAP-040 row; create passport (I-27 PROPOSES-only, human_double, Channel C NOT activated); append JD; ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger.py --check OK; grep GAP-040; dedup vs clickhouse_writer.yaml (write-path excluded).
+- Refs: docs/GAP-REGISTER.md; agents/passports/data_lake_elt_agent.yaml; docs/JOB-DESCRIPTIONS.md; I-08; I-24; I-27; I-28; ADR-060; ADR-102.
+
+---
+
+### IL-315 - agent-factory-archstack002-sp11-i28-scoped-exception @ 2026-06-19T01:10:00Z
+
+- **il_ts:** 2026-06-19T01:10:00Z
+- **session_id:** agent-factory-archstack002-sp11-i28-scoped-exception
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp11-i28-scoped-exception/IL-2026-06-19T01-10-00Z--5e90b2.md`
+
+### SP-11 — I-28 scoped exception (traceable, non-bypass)
+- Instrukciya: Record a scoped, auditable I-28 exception so SP-11 (own shard DONE, independent) may proceed while 3 historic IL-OPS verify-pending entries remain on a separate operator track.
+- Obosnovanie: il-check.sh is advisory; the 3 blocking entries are operator/hardware verify-pending dated 2026-05-07..13, unrelated to SP-11 ELT/lineage scope.
+- Open items deferred to operator track: IL-OPS-G-INFRA-EVO2-RAM-VISIBILITY-VERIFIED; IL-OPS-S13-8-LEGION-8180-COLLISION-VERIFY; IL-OPS-S14-1-CLICKHOUSE-AUDIT-RETENTION-VERIFY.
+- Proof: scripts/il-check.sh read — advisory; authoritative gate = CI guardian.yml + ledger-build.yml.
+- Refs: I-28; ADR-056; ADR-057; ADR-060.

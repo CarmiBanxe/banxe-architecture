@@ -637,3 +637,10 @@
 | **Human Double** | CTIO |
 | **HITL Decision** | DR/BCP + incident response proposed by agent, decided by CTIO + COO (I-27) |
 | **References** | DORA (EU 2022/2554); FCA SYSC 15A |
+
+## Data Platform / Analytics Engineer (GAP-040, L-lake residual)
+- **Owner:** CTIO | **OSS Stack:** dbt-clickhouse + Airbyte + Debezium/Kafka + OpenMetadata + Airflow
+- **Mission:** Build the ELT/streaming/lineage layer on top of the existing ClickHouse schema (audit/recon layer already DONE).
+- **Scope:** FA-03 dbt models (→ FIN060), FA-19 Airbyte PSP→ClickHouse ELT, FA-10/FA-15 CDC streaming, FA-18 OpenMetadata lineage for FCA, FA-20 Airflow batch DAGs.
+- **Non-goals:** direct ClickHouse audit writes (clickhouse_writer), BI dashboards (L-bi).
+- **Agent passport:** `agents/passports/data_lake_elt_agent.yaml` (PROPOSED, human_double, Channel C NOT activated).

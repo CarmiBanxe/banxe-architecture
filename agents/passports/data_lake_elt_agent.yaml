@@ -1,0 +1,34 @@
+# Banxe Agent Passport — PROPOSED (Channel C NOT activated)
+# Scope: ELT / streaming / lineage orchestration for the ClickHouse Data Lake.
+# Explicitly DOES NOT own the write path (see clickhouse_writer.yaml) nor BI (L-bi).
+apiVersion: banxe.dev/v1
+kind: AgentPassport
+metadata:
+  name: data_lake_elt_agent
+  status: PROPOSED            # I-27: requires human_double approval before activation
+  owner: CTIO
+  gap: GAP-040
+  adr: [ADR-060, ADR-102]
+spec:
+  mission: >-
+    Orchestrate the residual ~70% of the ClickHouse Data Lake: dbt models,
+    Airbyte ELT (PSP -> ClickHouse), Debezium/Kafka CDC streaming, and
+    OpenMetadata data lineage for FCA traceability. Does not write audit rows
+    directly (delegated to clickhouse_writer) and does not build dashboards (L-bi).
+  channel: C
+  activation:
+    enabled: false           # Channel C agents NOT activated
+    requires: human_double   # I-27
+  capabilities:
+    - dbt_core_models          # FA-03
+    - airbyte_elt              # FA-19
+    - debezium_kafka_cdc       # FA-10 / FA-15
+    - openmetadata_lineage     # FA-18
+    - airflow_batch_dags       # FA-20
+  invariants:
+    - I-08   # ClickHouse TTL retention must not be reduced
+    - I-24   # AuditPort append-only (write path remains clickhouse_writer)
+    - I-28   # append-only ledger
+  non_goals:
+    - direct_clickhouse_writes   # owned by clickhouse_writer.yaml
+    - bi_dashboards              # L-bi, separate gap/owner (CEO, Sprint 13)
