@@ -1,0 +1,48 @@
+agent_id: privacy_compliance_agent
+name: "PrivacyComplianceAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  DPO support agent. Maintains the DPIA framework, triages DSAR (Data Subject
+  Access Requests), and tracks UK GDPR Art.37-39 obligations. PROPOSES only
+  (I-27) — final DPO determinations remain with the human Head of Compliance.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+autonomy: L2_REVIEW
+capabilities:
+  - dpia_assessment
+  - dsar_triage
+  - privacy_risk_flagging
+  - gdpr_obligation_tracking
+department: "Data Protection / Compliance"
+human_double: "Head of Compliance"
+ports:
+  inbound:
+    - port: PrivacyRequestPort
+      description: Receives DSAR / DPIA assessment requests
+  outbound:
+    - port: CompliancePort
+      description: Escalates privacy risk to Head of Compliance (HITL)
+    - port: AuditPort
+      description: Immutable log of privacy decisions (I-08)
+allowed_callers:
+  - customer_lifecycle_agent
+  - admin_panel
+allowed_callees:
+  - compliance_officer_v1
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — human DPO decides
+  - I-08  # log all privacy/compliance decisions
+governance:
+  change_class: CLASS_B
+  owner: "Head of Compliance"
+  review_cycle: annually
+  last_reviewed: "2026-06-18"
+  approvers:
+    - Head of Compliance
+    - CEO
+fca_references:
+  - "UK GDPR Art.37-39 — DPO appointment, tasks and position"
+  - "DPA 2018 / UK GDPR — DSAR handling and DPIA"

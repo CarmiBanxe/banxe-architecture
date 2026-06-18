@@ -4,7 +4,7 @@
 > **Per Sprint S5 F4 reconciliation 2026-05-09:** Two GAP-REGISTER.md files coexist with distinct purposes. Не duplicate. See IL-OPS-SPRINT-S5-F4-DOCUMENTATION-RECONCILIATION-2026-05-09.
 
 > **Status:** MANDATORY — enforced by GapTrackerAgent
-> **Last Audit:** 2026-04-13
+> **Last Audit:** 2026-06-18 (SP-10: +GAP-056..059)
 > **Enforcer:** `agents/passports/gap_tracker_agent.yaml`
 > **Rule:** Every session MUST begin by running `python3 scripts/gap-tracker.py --status`
 >           Even if work diverges, return to this list before closing session.
@@ -47,6 +47,10 @@
 | GAP-023 | I-api: API Gateway — developer-facing endpoints | Sprint 12 | CTIO | ✅ DONE |
 | GAP-024 | K-fscs: FSCS reporting | Sprint 16 | CEO | Q3 2026 | ❌ OPEN |
 | GAP-025 | K-nca: NCA SARs automated filing | Sprint 13 | CTIO | ❌ OPEN |
+| GAP-056 | DPO appointment + DPIA framework (UK GDPR Art.37-39, DSAR) | Sprint 13 | CEO | ❌ OPEN |
+| GAP-057 | Wind-Down Planning (FCA Approach Doc 2026; run-off scenarios) | Sprint 14 | CFO+Board | ❌ OPEN |
+| GAP-058 | Annual Safeguarding Audit (PS25/12; relevant funds >£100k) | Sprint 13 | Internal Audit | ❌ OPEN |
+| GAP-059 | Operational Resilience / DORA (DR/BCP, incident response) | Sprint 14 | CTIO+COO | ❌ OPEN |
 
 ---
 

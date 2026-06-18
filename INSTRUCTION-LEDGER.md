@@ -12949,3 +12949,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.19-symbols-breakdown-plan (PR #548) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.19-symbols-breakdown.md (код+IL M1.19 уже на main, IL-307).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.19 (IL-307); build_ledger --check exit 0.
 - **Refs:** PR #548; docs/migration/M1.19-symbols-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-307.
+
+---
+
+### IL-310 - agent-factory-archstack002-sp10-regulatory-gaps @ 2026-06-19T00:16:00Z
+
+- **il_ts:** 2026-06-19T00:16:00Z
+- **session_id:** agent-factory-archstack002-sp10-regulatory-gaps
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp10-regulatory-gaps/IL-2026-06-19T00-16-00Z--661d74.md`
+
+### SP-10 — 4 regulatory gaps: DPO/DPIA, Wind-Down, Annual Safeguarding Audit, DORA
+- Instrukciya: Add GAP-056..059 to GAP-REGISTER + 4 PROPOSED agent passports (privacy_compliance, wind_down_planning, safeguarding_audit, resilience) + JOB-DESCRIPTIONS rows (AI agent + human double + HITL).
+- Shagi: append GAP rows; create 4 passports (I-27 PROPOSES-only, human_double); append JD; ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; grep GAP-05[6-9].
+- Refs: docs/GAP-REGISTER.md; agents/passports/*; docs/JOB-DESCRIPTIONS.md; I-27; ADR-102.
