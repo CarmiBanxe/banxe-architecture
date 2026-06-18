@@ -4,13 +4,13 @@
 
 ## Purpose
 
-Factual consolidation of the M1 **advisory, mock-safe** migration lane (M1.1–M1.14) as actually
+Factual consolidation of the M1 **advisory, mock-safe** migration lane (M1.1–M1.17) as actually
 **merged into code** (`banxe-trading-backend` main) and recorded in the **sharded ledger**
 (`banxe-architecture`). This is a read-only checkpoint: an anchor for the next planning step and a
 guard against a second source-of-truth. **No code, no ADR, no ledger shard.** Verified against
 `banxe-trading-backend` main `9a0c6eb` and `banxe-architecture` main (IL-280).
 
-## 1. Substep map (M1.1–M1.14)
+## 1. Substep map (M1.1–M1.17)
 
 | Substep | Advisory domain | Key DTO(s) / SoT | Endpoint(s) (prefix `/api/v1`) | IL shard |
 |---|---|---|---|---|
@@ -28,6 +28,9 @@ guard against a second source-of-truth. **No code, no ADR, no ledger shard.** Ve
 | M1.12 | markets **bundle** (xref list) | `list_instrument_asset_xref()` | `GET /markets` | IL-278 |
 | M1.13 | asset→markets **reverse-xref** | `markets_for_asset()` | `GET /assets/{asset}/markets` | IL-279 |
 | M1.14 | catalogue **meta** (counts+version) | `CatalogueMeta`/`catalogue_meta` | `GET /catalogue/meta` | IL-280 |
+| M1.15 | earn **taxonomy reference** | `EarnTaxonomy`/`earn_taxonomy` (over `RiskBand`/`EarnAdvisoryStatus`) | `GET /earn/taxonomy` | IL-297 |
+| M1.16 | catalogue **breakdown** (asset-class) | `CatalogueBreakdown`/`catalogue_breakdown` | `GET /catalogue/breakdown` | IL-299 |
+| M1.17 | markets **breakdown** (per-base/quote) | `MarketsBreakdown`/`markets_breakdown` | `GET /markets/breakdown` | IL-301 |
 
 > The per-substep **plan** docs (`M1.4`…`M1.14`, plus the M1.1–M1.6/M1.7 plan #514) remain as
 > **open, unmerged docs-only PRs** (operator-gated); only the **code + IL** pairs were merged. On
@@ -37,8 +40,9 @@ guard against a second source-of-truth. **No code, no ADR, no ledger shard.** Ve
 ### Endpoint inventory (verified on code main)
 `GET /earn/rates` · `GET /earn/statement` · `GET /accounts/metadata` · `GET /assets/metadata` ·
 `GET /assets/{asset}/markets` · `GET /symbols` · `GET /instruments` · `GET /instruments/{symbol}` ·
-`GET /instruments/{symbol}/assets` · `GET /markets` · `GET /catalogue/meta`. All read-only,
-advisory, sandbox-mock, fail-closed.
+`GET /instruments/{symbol}/assets` · `GET /markets` · `GET /markets/breakdown` ·
+`GET /catalogue/meta` · `GET /catalogue/breakdown` · `GET /earn/taxonomy`. All read-only,
+advisory, sandbox-mock, fail-closed. (14 advisory endpoints verified on code main.)
 
 ## 2. Canonical source-of-truth (one per domain — do NOT duplicate)
 
@@ -54,13 +58,18 @@ advisory, sandbox-mock, fail-closed.
 | Symbol universe | `models.py` `SymbolInfo` + `ports/market_data_port.py` `MarketDataPort` + `split_symbol` | symbol/pair source |
 | Instrument↔asset xref / markets | `instruments/xref.py` (`InstrumentAssetXref`, `instrument_asset_xref`, `list_instrument_asset_xref`, `markets_for_asset`) | composition views over the above |
 | Catalogue meta | `meta/catalogue.py` (`CatalogueMeta`, `catalogue_meta`) | **derived** counts; version = `__version__` (single source) |
+| Earn taxonomy (reference) | `earn/taxonomy.py` (`EarnTaxonomy`, `earn_taxonomy`) | **derive/describe** over `RiskBand`/`EarnAdvisoryStatus`; NOT a 2nd rates/status/analytics source |
+| Catalogue breakdown | `meta/breakdown.py` (`CatalogueBreakdown`, `catalogue_breakdown`) | **derived** per-`asset_class` counts from `asset_catalog`; `CatalogueMeta` untouched |
+| Markets breakdown | `meta/breakdown.py` (`MarketsBreakdown`, `markets_breakdown`) | **derived** per-base/quote counts from `list_instrument_asset_xref`; not a 2nd registry/counter |
 | Fees | `ports/fee_engine_port.py` (`FeeEnginePort`) + `/fees/preview` | fee computation SoT — advisory surfaces carry only `fee_schedule_ref` string, never duplicate |
 
 ### Frozen contracts (must not break in future M-track work)
 `EarnMetrics` (6 fields), `AnalyticsContext` (4), `EarnRatesResponse` (4), `EarnStatementResponse`
 (4), `AccountMetadataResponse` (3), `AccountAdvisoryMetadata`, `CryptoAssetMetadata` (6),
 `AssetCatalogResponse` (3), `SymbolInfo` (6), `InstrumentInfo` (5), `InstrumentAssetXref` (4),
-`CatalogueMeta` (6), `EarnAdvisoryStatus`, `MarketDataPort`, `FeeEnginePort`, `__version__`.
+`CatalogueMeta` (6), `EarnAdvisoryStatus`, `MarketDataPort`, `FeeEnginePort`, `__version__`,
+`EarnTaxonomy` (4 — risk_bands/advisory_statuses/lockup_tenors/source), `CatalogueBreakdown` (3),
+`MarketsBreakdown` (4), `AssetClassCount` (2), `MarketAssetCount` (2).
 
 ## 3. Operator-gated / out-of-scope (deliberately NOT migrated in M1 advisory lane)
 
@@ -78,15 +87,24 @@ All numeric advisory fields are `DecimalString` config / descriptive values or i
 
 ## 4. Candidate next read-only advisory domains (no code selection here)
 
-1. **Earn taxonomy/meta extension** — read-only advisory descriptors over the existing earn SoT
-   (e.g. risk-band/lockup reference metadata), composing `earn/rates.py`/`status.py` without a
-   second rates/analytics source.
-2. **Fee-schedule descriptor (reference-only)** — surface descriptive metadata for the
-   `fee_schedule_ref` values (which schedules exist, descriptive labels) **strictly as
-   reference/metadata**, with **no fee computation** (FeeEnginePort remains the fee SoT). Higher
-   caution (fee-adjacent) — admissible only as pure reference.
-3. **Catalogue meta enrichment** — extend `CatalogueMeta` consumers (e.g. per-domain breakdown,
-   asset-class counts) derived from existing list functions; no new registry/version source.
+> **Delivered since the last refresh** (were candidates, now DONE): earn taxonomy reference (M1.15,
+> IL-297), catalogue breakdown (M1.16, IL-299), markets breakdown (M1.17, IL-301).
+
+1. **Instruments breakdown** *(next, lowest-blast-radius)* — per-status / per-precision counts from
+   `list_instruments`, integer meta, a direct analogue of M1.16/M1.17. Spec enumerables MUST be
+   **non-exhaustive strings** (see §spec-fidelity).
+2. **earn taxonomy↔rates xref** — band→rate-card reference mapping composing `earn_taxonomy` +
+   `earn_rates`. **Yield-adjacent** (re-surfaces `RateCard` APY) — **DEFERRED until explicit
+   operator risk acceptance.**
+3. **Fee-schedule descriptor (reference-only)** — descriptive metadata for `fee_schedule_ref` values
+   **strictly as reference**, no fee computation (FeeEnginePort stays the fee SoT). **DEFERRED**
+   (fee-adjacent).
+
+### Spec-fidelity (M1.16 lesson)
+Any enumerable field in an OpenAPI spec MUST be a **non-exhaustive `type: string`** (canonical
+values in the description), **never a hard `enum`**, when the runtime set can grow — spec must match
+runtime. (Per the M1.16 CodeRabbit finding where a hard `enum` on `assetClass` diverged from
+runtime; applied again in M1.17 `MarketAssetCount.asset`.)
 
 ### Explicitly deferred (P0 / regulated)
 Live execution/order management, balances/ledger postings (Midaz), wallet/custody, payments,
