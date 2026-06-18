@@ -318,8 +318,21 @@ Every EXECUTE prompt the Right Terminal forms MUST state that the Right Terminal
 artifact and **itself chooses** the type (`[CLAUDE CODE]` vs `[SHELL]`). "вариант 1 / вариант 2"
 framings are forbidden in the prompt.
 
+### Factory-Only Execution
+Concretises the selection criterion (additive; does not override it):
+1. **Every state change runs ONLY through the Software Factory** — code, docs, ledger, infra,
+   merge, ADR, config — emitted as a single **`[CLAUDE CODE]`** artifact the factory executes.
+   The Right Terminal never mutates state directly.
+2. **`[SHELL]` is permitted EXCLUSIVELY for read-only audit / diagnostics / verification**
+   (reading state, status checks, inspection) and MUST NOT change state.
+3. **Prohibition:** no state-changing operation may be issued directly via shell, bypassing the
+   factory — a direct shell mutation is a canon violation.
+4. **Relation to Best Single Artifact:** the artifact type is still exactly one; this clarifies
+   state-change ⇒ factory (`[CLAUDE CODE]`), read-only ⇒ shell (`[SHELL]`). Additive only.
+
 ### Anchors
 - `AGENTS.md` §"CANON — Best Single Artifact" (mirror)
 - `.claude/rules/approval-rules.md` (best-decision / ambiguity rule)
 - `.claude/rules/safety-rules.md`, CLAUDE.md §1, §11, §12 (stop-barriers, best-decision canon)
 - Does NOT modify ADR-102 / ADR-103 / ADR-059-A / merge canon / security canon — additive only.
+- Factory-Only Execution subpoint: state-change ⇒ factory (`[CLAUDE CODE]`), read-only ⇒ shell (`[SHELL]`); additive to Best Single Artifact.
