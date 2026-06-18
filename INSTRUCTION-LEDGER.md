@@ -12596,3 +12596,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.8-crypto-assets-plan (PR #516) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.8-crypto-asset-advisory-metadata.md (код+IL M1.8 уже на main, IL-273).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.8 (IL-273); build_ledger --check exit 0.
 - **Refs:** PR #516; docs/migration/M1.8-crypto-asset-advisory-metadata.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-273.
+
+---
+
+### IL-288 - agent-factory-m1-m1-9-instrument-advisory-plan @ 2026-06-18T19:15:00Z
+
+- **il_ts:** 2026-06-18T19:15:00Z
+- **session_id:** agent-factory-m1-m1-9-instrument-advisory-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-9-instrument-advisory-plan/IL-2026-06-18T19-15-00Z--f9a6b5.md`
+
+### M1.9 plan doc promotion — instrument advisory trading-parameters (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #519 (M1.9 instrument params plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.9-instrument-advisory-plan (PR #519) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.9-instrument-advisory-params.md (код+IL M1.9 уже на main, IL-274).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.9 (IL-274); build_ledger --check exit 0.
+- **Refs:** PR #519; docs/migration/M1.9-instrument-advisory-params.md; ADR-021, ADR-056, ADR-060, ADR-059-A, I-28; IL-274.
