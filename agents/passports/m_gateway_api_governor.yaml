@@ -1,0 +1,54 @@
+agent_id: m_gateway_api_governor
+name: "MGatewayApiGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Public REST API / M-gateway governance agent. Curates the unified public API
+  surface, reviews OpenAPI publication and versioning policy, and oversees PSD2
+  endpoint exposure — routing to the EXISTING services/api_gateway implementation
+  in banxe-emi-stack (GAP-023 DONE). PROPOSES only (I-27); NOT activated until a
+  separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-01
+autonomy: L2_REVIEW
+capabilities:
+  - public_api_surface_curation
+  - openapi_publication_review
+  - api_versioning_governance
+  - psd2_endpoint_oversight
+department: "Platform / API Governance"
+human_double: "CTIO"
+non_goals:
+  - "Do NOT reimplement services/api_gateway/* (api_key_manager, rate_limiter, quota_manager, ip_filter, request_logger, gateway_agent) — DONE in banxe-emi-stack (GAP-023)"
+  - "Do NOT reimplement api/routers/api_gateway.py, api_versioning.py, psd2_gateway.py"
+  - "Do NOT duplicate existing banxe-emi-stack gateway / api_versioning / psd2_gateway passports"
+  - "Do NOT activate the gateway governance channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: ApiGovernancePort
+      description: Receives public-API surface / OpenAPI / versioning review requests
+  outbound:
+    - port: GatewayPort
+      description: Routes to existing api_gateway (banxe-emi-stack) — governance/orchestration only
+    - port: AuditPort
+      description: Immutable log of API-governance decisions (I-08)
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — execution/publication gated, not activated
+  - I-08  # log all API-governance decisions
+governance:
+  change_class: CLASS_B
+  owner: "CTIO"
+  review_cycle: annually
+  last_reviewed: "2026-06-19"
+  approvers:
+    - CTIO
+    - COO
+fca_references:
+  - "FCA / PSRs 2017 + PSD2 RTS — dedicated interface / API exposure"
+  - "OpenAPI 3.x — public REST API specification publication"
+  - "FCA Open Banking standards — API versioning & change management"
