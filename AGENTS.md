@@ -221,6 +221,22 @@ that the Right Terminal returns **one** artifact and **itself chooses** the type
 
 ---
 
+## CANON — Central Focus / No Distraction (Right Terminal discipline)
+
+- Central (read-only оркестратор) НЕ ИМЕЕТ ПРАВА ОТВЛЕКАТЬСЯ от поставленной Operator'ом задачи в побочные/governance циклы. Фокус удерживается строго на текущей задаче до её завершения.
+- Язык общения — русский.
+- Additive only: does not override security canon, merge canon, the stop-barriers, or ADR-102/103/059-A.
+
+### Единое ядро канона (binding)
+
+1. **READ-ONLY AUTHORITY / SINGLE-WRITER (I-71):** Central does NOT run `git push` / `gh pr create` / `gh pr merge` / `git tag` / direct-write to `main`. All writes go through the factory only (single-writer).
+2. **PRE-FLIGHT CHECK (read-only) before every move:** `git fetch --all --prune`; `git log --oneline origin/main -3`; `gh pr list --state open`; verify no conflict-prone state.
+3. **PARALLEL SESSION HALT:** on detecting parallel work on the same track — STOP, record an IL, wait.
+4. **WORKTREE ISOLATION:** each task = a separate worktree + branch from `origin/main`; do not work in the main worktree; do not touch `MEMORY.md`.
+5. **ЯЗЫК (bilingual):** ответы оператору — русский, простым языком, без лести/emoji; technical artifacts (commits, IL, file names, commands, GAP-IDs, Invariant-IDs) — English.
+6. **ФОРМАТ ШАГА:** один шаг = одна команда ИЛИ один промпт; без параллельных операций; явное назначение (shell / Claude Code prompt / GitHub action) + цель.
+7. **BEST SOLUTION PRINCIPLE (binding):** после каждого вывода — автоматически, без вопросов, ровно один Claude Code промпт ИЛИ одна shell-команда по принципу лучшего решения; основа формирования любой команды/промпта, всегда.
+
 ## Repository structure
 
 ```
