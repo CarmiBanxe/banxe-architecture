@@ -13254,3 +13254,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.23-supported-asset-breakdown-plan (PR #564) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.23-supported-asset-breakdown.md (код+IL M1.23 уже на main, IL-325; dedup-consistency IL-327).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.23 (IL-325); build_ledger --check exit 0.
 - **Refs:** PR #564; docs/migration/M1.23-supported-asset-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-325.
+
+---
+
+### IL-329 - agent-factory-archstack002-sp18-crm-gap038 @ 2026-06-19T04:50:00Z
+
+- **il_ts:** 2026-06-19T04:50:00Z
+- **session_id:** agent-factory-archstack002-sp18-crm-gap038
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp18-crm-gap038/IL-2026-06-19T04-50-00Z--9fb688.md`
+
+### SP-18 — reconcile GAP-038 (H-crm CRM + DSAR) OPEN -> IN PROGRESS + CRM/DSAR governance residual
+- Instrukciya: Reconcile GAP-038. CRM module exists in banxe-emi-stack (services/crm). Residual: one PROPOSED CRM/DSAR governance passport (I-27, human_double Head of Compliance, NOT activated) over DSAR SLA / consent registry / lawful basis / retention / CRM audit trail. non_goals exclude reimplementing services/crm and duplicating privacy_compliance_agent DSAR triage (dedup-safe).
+- Shagi: set GAP-038 -> IN PROGRESS; add agents/passports/crm_dsar_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-038); agents/passports/crm_dsar_governor.yaml; banxe-emi-stack services/crm; I-27; I-28; ADR-102.

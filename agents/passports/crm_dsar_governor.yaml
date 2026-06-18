@@ -1,0 +1,55 @@
+agent_id: crm_dsar_governor
+name: "CrmDsarGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  CRM + DSAR governance agent. Governs DSAR fulfilment SLA, consent registry,
+  lawful-basis review, retention and CRM audit trail — routing to the EXISTING
+  services/crm implementation in banxe-emi-stack. PROPOSES only (I-27); NOT
+  activated until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - dsar_sla_tracking
+  - consent_registry_governance
+  - lawful_basis_review
+  - crm_retention_governance
+  - crm_audit_trail_review
+department: "Compliance / Customer"
+human_double: "Head of Compliance"
+non_goals:
+  - "Do NOT reimplement services/crm/* — CRM already exists in banxe-emi-stack"
+  - "Do NOT duplicate privacy_compliance_agent DSAR legal triage (SP-10) — this agent governs DSAR SLA/registry/retention, not the DPO determination"
+  - "Do NOT duplicate any existing banxe-emi-stack CRM passport"
+  - "Do NOT activate the CRM/DSAR channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: CrmGovernancePort
+      description: Receives DSAR / consent / retention / CRM-audit review requests
+  outbound:
+    - port: CrmServicePort
+      description: Routes to existing services/crm (banxe-emi-stack) — governance/orchestration only
+    - port: AuditPort
+      description: Immutable log of CRM/DSAR governance decisions (I-08)
+allowed_callers:
+  - admin_panel
+  - customer_lifecycle_agent
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27  # agent PROPOSES only — CRM/DSAR actions gated, not activated
+  - I-08  # log all CRM/DSAR governance decisions
+governance:
+  change_class: CLASS_B
+  owner: "Head of Compliance"
+  review_cycle: annually
+  last_reviewed: "2026-06-19"
+  approvers:
+    - Head of Compliance
+    - CEO
+fca_references:
+  - "UK GDPR Art.15 — Data Subject Access Request (DSAR) + statutory SLA"
+  - "UK GDPR Art.6 — lawful basis; Art.5(1)(e) — storage limitation / retention"
+  - "FCA Consumer Duty — consumer communications / consent"
