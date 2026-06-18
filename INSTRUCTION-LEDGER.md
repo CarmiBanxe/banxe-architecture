@@ -12837,3 +12837,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.15-earn-taxonomy-plan (PR #536) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.15-earn-taxonomy-reference.md (код+IL M1.15 уже на main, IL-297).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.15 (IL-297); build_ledger --check exit 0.
 - **Refs:** PR #536; docs/migration/M1.15-earn-taxonomy-reference.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-297.
+
+---
+
+### IL-303 - agent-factory-m1-m1-16-catalogue-breakdown-plan @ 2026-06-18T22:45:00Z
+
+- **il_ts:** 2026-06-18T22:45:00Z
+- **session_id:** agent-factory-m1-m1-16-catalogue-breakdown-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-16-catalogue-breakdown-plan/IL-2026-06-18T22-45-00Z--f2b9c6.md`
+
+### M1.16 plan doc promotion — catalogue breakdown (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #540 (M1.16 catalogue breakdown plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.16-catalogue-breakdown-plan (PR #540) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.16-catalogue-breakdown.md (код+IL M1.16 уже на main, IL-299).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.16 (IL-299); build_ledger --check exit 0.
+- **Refs:** PR #540; docs/migration/M1.16-catalogue-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-299.
