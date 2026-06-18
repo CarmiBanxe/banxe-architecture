@@ -12692,3 +12692,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.14-catalogue-meta-plan (PR #531) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.14-catalogue-meta-surface.md (код+IL M1.14 уже на main, IL-280).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.14 (IL-280); build_ledger --check exit 0; 0 unresolved threads (CodeRabbit nit resolved).
 - **Refs:** PR #531; docs/migration/M1.14-catalogue-meta-surface.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-280.
+
+---
+
+### IL-294 - agent-factory-m1-m1-advisory-summary @ 2026-06-18T20:45:00Z
+
+- **il_ts:** 2026-06-18T20:45:00Z
+- **session_id:** agent-factory-m1-m1-advisory-summary
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-advisory-summary/IL-2026-06-18T20-45-00Z--f5a2b1.md`
+
+### M1 advisory-surface summary checkpoint promotion (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track checkpoint-PR #534 (M1 advisory-surface summary, консолидация M1.1–M1.14). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1-advisory-summary (PR #534) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md — фактологическая карта перенесённых advisory-доменов M1.1–M1.14 (endpoints/DTO/SoT/frozen/operator-gated + candidate next domains), сверена с кодом banxe-trading-backend main 9a0c6eb и ledger IL-253..IL-280.
+- **Proof:** docs-only (summary + coupling shard + regenerated ledger); никакого кода/ADR/prod/fabric. Append-only; build_ledger --check exit 0. Завершает batch-merge накопленных docs-only M-track plan-PR'ов.
+- **Refs:** PR #534; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-253/254/269..280.
