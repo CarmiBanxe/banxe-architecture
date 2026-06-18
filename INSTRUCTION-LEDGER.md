@@ -13158,3 +13158,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.22-capability-breakdown-plan (PR #560) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.22-capability-breakdown.md (код+IL M1.22 уже на main, IL-321).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.22 (IL-321); build_ledger --check exit 0.
 - **Refs:** PR #560; docs/migration/M1.22-capability-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-321.
+
+---
+
+### IL-323 - agent-factory-archstack002-sp15-public-api-gap041 @ 2026-06-19T02:30:00Z
+
+- **il_ts:** 2026-06-19T02:30:00Z
+- **session_id:** agent-factory-archstack002-sp15-public-api-gap041
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp15-public-api-gap041/IL-2026-06-19T02-30-00Z--6649b2.md`
+
+### SP-15 — reconcile GAP-041 (M-gateway Public REST API + OpenAPI) OPEN -> IN PROGRESS + Public-API governance residual
+- Instrukciya: Reconcile GAP-041. Read-only audit: gateway infra is DONE in banxe-emi-stack (services/api_gateway: api_key_manager, rate_limiter, quota_manager, ip_filter, request_logger, gateway_agent; api/routers/api_gateway+api_versioning+psd2_gateway; tests; openapi.yml; emi passports; GAP-023 DONE). Residual is intentionally minimal self-contained: one PROPOSED M-gateway / Public-API governance passport (I-27, human_double CTIO, NOT activated) curating the unified public API surface + OpenAPI publication + versioning + PSD2 oversight. non_goals exclude reimplementing existing gateway code (dedup-safe).
+- Shagi: set GAP-041 -> IN PROGRESS; add agents/passports/m_gateway_api_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; append-only del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-041); agents/passports/m_gateway_api_governor.yaml; banxe-emi-stack services/api_gateway + GAP-023; I-27; I-28; ADR-102.
