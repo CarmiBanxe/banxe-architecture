@@ -12644,3 +12644,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.11-instrument-asset-xref-plan (PR #524) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.11-instrument-asset-xref.md (код+IL M1.11 уже на main, IL-277).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.11 (IL-277); build_ledger --check exit 0.
 - **Refs:** PR #524; docs/migration/M1.11-instrument-asset-xref.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-277.
+
+---
+
+### IL-291 - agent-factory-m1-m1-12-markets-bundle-plan @ 2026-06-18T20:00:00Z
+
+- **il_ts:** 2026-06-18T20:00:00Z
+- **session_id:** agent-factory-m1-m1-12-markets-bundle-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-12-markets-bundle-plan/IL-2026-06-18T20-00-00Z--c2d9e8.md`
+
+### M1.12 plan doc promotion — markets advisory bundle (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #527 (M1.12 markets bundle plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.12-markets-bundle-plan (PR #527) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.12-markets-advisory-bundle.md (код+IL M1.12 уже на main, IL-278).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.12 (IL-278); build_ledger --check exit 0.
+- **Refs:** PR #527; docs/migration/M1.12-markets-advisory-bundle.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-278.
