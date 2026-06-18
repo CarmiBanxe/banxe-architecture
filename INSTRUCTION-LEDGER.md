@@ -12564,3 +12564,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.6-earn-statements-plan (PR #512) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.6-earn-advisory-statements.md (код+IL M1.6 уже на main, IL-271).
 - **Proof:** docs-only; append-only (существующие IL не правились); соответствует смерженному M1.6 (IL-271); build_ledger --check exit 0.
 - **Refs:** PR #512; docs/migration/M1.6-earn-advisory-statements.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-271.
+
+---
+
+### IL-286 - agent-factory-m1-m1-7-wallets-ledgerport-plan @ 2026-06-18T18:45:00Z
+
+- **il_ts:** 2026-06-18T18:45:00Z
+- **session_id:** agent-factory-m1-m1-7-wallets-ledgerport-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-7-wallets-ledgerport-plan/IL-2026-06-18T18-45-00Z--d7e4f3.md`
+
+### M1.7 plan doc promotion — wallets/accounts advisory metadata (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #514 (M1.7 wallets/accounts advisory metadata plan; также фиксирует earn advisory-complete M1.1–M1.6). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.7-wallets-ledgerport-plan (PR #514) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.7-wallets-advisory-metadata.md (код+IL M1.7 уже на main, IL-272; Midaz LedgerPort = live SoT, не дублируется).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.7 (IL-272); build_ledger --check exit 0.
+- **Refs:** PR #514; docs/migration/M1.7-wallets-advisory-metadata.md; ADR-013, ADR-056, ADR-060, ADR-059-A, I-28; IL-272.
