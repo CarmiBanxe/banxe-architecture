@@ -12532,3 +12532,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** banxe-architecture ветка agent/factory/m1/m1.4-status-taxonomy-plan (PR #508) rebased на свежий origin/main; добавлен этот coupling-shard; ledger регенерирован; build_ledger --check OK. Plan-doc docs/migration/M1.4-crypto-earn-status-taxonomy.md — единственный контентный файл (код+IL M1.4 уже на main, IL-269).
 - **Proof:** docs-only (plan doc + coupling shard + regenerated ledger); никакого кода/ADR/prod/fabric. Append-only: существующие IL не правились. Соответствует уже-смерженному M1.4 коду (banxe-trading-backend, IL-269). build_ledger --check exit 0.
 - **Refs:** PR #508; docs/migration/M1.4-crypto-earn-status-taxonomy.md; ADR-056, ADR-060, ADR-059-A, I-28; related code shard IL-269.
+
+---
+
+### IL-284 - agent-factory-m1-m1-5-earn-analytics-plan @ 2026-06-18T18:15:00Z
+
+- **il_ts:** 2026-06-18T18:15:00Z
+- **session_id:** agent-factory-m1-m1-5-earn-analytics-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-5-earn-analytics-plan/IL-2026-06-18T18-15-00Z--b5c2d1.md`
+
+### M1.5 plan doc promotion — earn advisory analytics/summary layer (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #510 (M1.5 earn analytics plan). Coupling IL-shard (ADR-056/060, I-28) для docs/migration tracked-пути; append-only (ADR-059-A), il_ts строго выше main-max. Server-side evo1 isolated worktree (Rule 1); branch protection без --admin.
+- **Shagi:** banxe-architecture ветка agent/factory/m1/m1.5-earn-analytics-plan (PR #510) rebased на origin/main; добавлен coupling-shard; ledger регенерирован; build_ledger --check OK. Plan-doc docs/migration/M1.5-earn-advisory-analytics.md — единственный контентный файл (код+IL M1.5 уже на main, IL-270).
+- **Proof:** docs-only (plan doc + coupling shard + regenerated ledger); никакого кода/ADR/prod/fabric. Append-only: существующие IL не правились. Соответствует смерженному M1.5 коду (IL-270). build_ledger --check exit 0.
+- **Refs:** PR #510; docs/migration/M1.5-earn-advisory-analytics.md; ADR-056, ADR-060, ADR-059-A, I-28; related code shard IL-270.
