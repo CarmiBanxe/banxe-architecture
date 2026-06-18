@@ -12853,3 +12853,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.16-catalogue-breakdown-plan (PR #540) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.16-catalogue-breakdown.md (код+IL M1.16 уже на main, IL-299).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.16 (IL-299); build_ledger --check exit 0.
 - **Refs:** PR #540; docs/migration/M1.16-catalogue-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-299.
+
+---
+
+### IL-304 - agent-factory-m1-m1-17-markets-breakdown-plan @ 2026-06-18T23:00:00Z
+
+- **il_ts:** 2026-06-18T23:00:00Z
+- **session_id:** agent-factory-m1-m1-17-markets-breakdown-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-17-markets-breakdown-plan/IL-2026-06-18T23-00-00Z--a3c0d7.md`
+
+### M1.17 plan doc promotion — markets breakdown (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only M-track plan-PR #543 (M1.17 markets breakdown plan). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/m1.17-markets-breakdown-plan (PR #543) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.17-markets-breakdown.md (код+IL M1.17 уже на main, IL-301).
+- **Proof:** docs-only; append-only; соответствует смерженному M1.17 (IL-301); build_ledger --check exit 0.
+- **Refs:** PR #543; docs/migration/M1.17-markets-breakdown.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-301.
