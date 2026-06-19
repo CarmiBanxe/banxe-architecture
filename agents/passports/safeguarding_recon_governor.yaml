@@ -1,0 +1,15 @@
+id: safeguarding_recon_governor
+status: PROPOSED
+gap: GAP-005
+domain: E-safeguard
+title: Segregated client accounts daily reconciliation governor
+owner: CEO+CTIO
+sprint: 23
+created: 2026-06-19T06:50:00Z
+responsibilities:
+  - Daily reconciliation of segregated client money accounts
+  - Detect and alert on safeguarding shortfalls/excesses
+  - Produce auditable daily recon report (PS25/12 aligned)
+invariants:
+  - relevant_funds_fully_segregated
+  - daily_recon_completed_before_cutoff
