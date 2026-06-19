@@ -13510,3 +13510,19 @@ Instrukciya: Consolidate SBOM (SP-26) + SCA + license-audit (SP-28) + FCA third-
 Shagi: (1) docs/policies/OSS-SUPPLY-CHAIN-POLICY.md created; (2) GAP-067 IN PROGRESS; (3) license tiers AGPL/SSPL/BSL/Fair-code documented.
 Proof: policy untracked, GAP-067 inserted, license counts AGPL=22/SSPL=7/Fair-code=6/BSL=3 verified, del check pending, schemas pending.
 Refs: GAP-067, ACCESS-AND-SECRETS (IL-AccessPolicy-01), DORA GAP-059, EBA-GL-2019-02.
+
+---
+
+### IL-345 - archstack002-sp-cc @ 2026-06-19T16:31:00Z
+
+- **il_ts:** 2026-06-19T16:31:00Z
+- **session_id:** archstack002-sp-cc
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-cc-crypto-aml-graph/IL-2026-06-19T16-31-00Z--spcc.md`
+
+### SP-CC — Crypto-AML graph-analytics (GAP-068, ADR-111)
+Instrukciya: Add graph-analytics layer (clustering + GNN + blacklist feeds) on existing AML foundation (Marble/Jube/Watchman/Yente).
+Shagi: (1) ADR-111 PROPOSED; (2) GAP-068 IN PROGRESS; (3) extends OPEN GAP-021/022/025; (4) Travel Rule gate ADR-036 noted.
+Proof: ADR-111 untracked, GAP-068 inserted, graph-AML absence verified (GraphSense=1/Neo4j=1/clustering=0), del check pending, schemas pending.
+Refs: ADR-111, ADR-036, ADR-109, GAP-021/022/025/068, Marble/Jube foundation.
