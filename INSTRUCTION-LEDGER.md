@@ -13478,3 +13478,19 @@ Instrukciya: Resolve crypto-ops-monitor definition conflict — code=Python (run
 Shagi: (1) ADR-109 PROPOSED; (2) GAP-065 IN PROGRESS; (3) ADR-050 boundary update noted; (4) old CONTRACT-SPEC marked SUPERSEDED (in ADR-109 text).
 Proof: ADR-109 untracked, GAP-065 inserted, runtime audit pyproject.toml confirmed Python, del check pending, schemas pending.
 Refs: ADR-109, ADR-050, ADR-021, ADR-036, GAP-065, crypto-ops-monitor-CONTRACT-SPEC-DRAFT (superseded).
+
+---
+
+### IL-343 - archstack002-sp-br @ 2026-06-19T15:43:00Z
+
+- **il_ts:** 2026-06-19T15:43:00Z
+- **session_id:** archstack002-sp-br
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-br-braslina-reg/IL-2026-06-19T15-43-00Z--spbr.md`
+
+### SP-BR — braslina merchant-onboarding registration (GAP-066, ADR-110)
+Instrukciya: Register production braslina v1.0.0 (separate repo) in banxe-architecture. ADR-110 placement PROPOSED.
+Shagi: (1) ADR-110 PROPOSED; (2) GAP-066 IN PROGRESS; (3) port note n8n 5680 vs 5678; (4) partial GAP-013 KYB (BT-005 still blocked).
+Proof: ADR-110 untracked, GAP-066 inserted, braslina v1.0.0 facts from release-report, del check pending, schemas pending.
+Refs: ADR-110, GAP-066, GAP-013 (KYB), ACCESS-AND-SECRETS, Ballerine, customer_lifecycle_agent.
