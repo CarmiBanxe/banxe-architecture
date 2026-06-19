@@ -54,6 +54,7 @@
 | GAP-064 | A-edd: Adverse-media screening (MLR 2017 Reg.28 EDD; negative-news entity match into Ballerine/Marble EDD flow) | Sprint 13 | MLRO+CTIO | Q2 2026 | 🟡 IN PROGRESS |
 | GAP-065 | crypto-ops-monitor Python platform (ADR-109 supersedes stale NestJS spec; SP-CO2 hardening in repo) | Sprint 14 | CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-066 | braslina merchant-onboarding service registration (ADR-110; standalone repo, partial KYB GAP-013; port note n8n 5680) | Sprint 14 | CTIO+MLRO | Q3 2026 | 🟡 IN PROGRESS |
+| GAP-067 | OSS supply-chain & license governance (SBOM+SCA+license-audit+third-party register; AGPL/SSPL/BSL/Fair-code tiers) | Sprint 15 | CTIO+Compliance | Q3 2026 | 🟡 IN PROGRESS |
 
 ---
 

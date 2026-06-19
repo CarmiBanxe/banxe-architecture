@@ -13494,3 +13494,19 @@ Instrukciya: Register production braslina v1.0.0 (separate repo) in banxe-archit
 Shagi: (1) ADR-110 PROPOSED; (2) GAP-066 IN PROGRESS; (3) port note n8n 5680 vs 5678; (4) partial GAP-013 KYB (BT-005 still blocked).
 Proof: ADR-110 untracked, GAP-066 inserted, braslina v1.0.0 facts from release-report, del check pending, schemas pending.
 Refs: ADR-110, GAP-066, GAP-013 (KYB), ACCESS-AND-SECRETS, Ballerine, customer_lifecycle_agent.
+
+---
+
+### IL-344 - archstack002-sp-2628 @ 2026-06-19T16:08:00Z
+
+- **il_ts:** 2026-06-19T16:08:00Z
+- **session_id:** archstack002-sp-2628
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-2628-oss-supplychain/IL-2026-06-19T16-08-00Z--sp2628.md`
+
+### SP-26/27/28 — OSS supply-chain & license governance (GAP-067)
+Instrukciya: Consolidate SBOM (SP-26) + SCA + license-audit (SP-28) + FCA third-party register (SP-27) into one policy.
+Shagi: (1) docs/policies/OSS-SUPPLY-CHAIN-POLICY.md created; (2) GAP-067 IN PROGRESS; (3) license tiers AGPL/SSPL/BSL/Fair-code documented.
+Proof: policy untracked, GAP-067 inserted, license counts AGPL=22/SSPL=7/Fair-code=6/BSL=3 verified, del check pending, schemas pending.
+Refs: GAP-067, ACCESS-AND-SECRETS (IL-AccessPolicy-01), DORA GAP-059, EBA-GL-2019-02.
