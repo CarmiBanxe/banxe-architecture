@@ -1,0 +1,15 @@
+id: regulatory_returns_governor
+status: PROPOSED
+gap: GAP-006
+domain: K-gabriel
+title: FCA Gabriel/RegData regulatory returns governor
+owner: CEO
+sprint: 24
+created: 2026-06-19T07:27:00Z
+responsibilities:
+  - Scheduled FCA Gabriel/RegData return preparation and submission
+  - Deadline tracking and pre-submission validation
+  - Submission audit trail and sign-off record
+invariants:
+  - returns_submitted_before_fca_deadline
+  - submission_data_validated_and_signed_off
