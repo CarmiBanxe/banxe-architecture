@@ -13414,3 +13414,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.25-schema-inventory-plan (PR #577) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.25-schema-inventory.md (код+IL M1.25 уже на main, IL-337).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.25 (IL-337); build_ledger --check exit 0.
 - **Refs:** PR #577; docs/migration/M1.25-schema-inventory.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-337.
+
+---
+
+### IL-339 - agent-factory-archstack002-sp23-safeguard-gap005 @ 2026-06-19T07:12:00Z
+
+- **il_ts:** 2026-06-19T07:12:00Z
+- **session_id:** agent-factory-archstack002-sp23-safeguard-gap005
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp23-safeguard-gap005/IL-2026-06-19T07-12-00Z--sp23safe.md`
+
+### SP-23 — reconcile GAP-005 (E-safeguard Segregated client accounts daily recon) OPEN -> IN PROGRESS + safeguarding recon governance residual
+- Instrukciya: Reconcile GAP-005 (FCA safeguarding, PS25/12; due 7 May 2026, overdue). Core ledger/banking recon tooling exists in banxe-emi-stack. Residual: one PROPOSED safeguarding reconciliation governance passport (I-27, human_double Head of Finance Ops, NOT activated) over daily segregated client-money reconciliation / shortfall+excess detection / auditable daily recon report / before-cutoff completion. non_goals exclude reimplementing ledger/banking core and duplicating financial-reporting governance (GAP-018) (dedup-safe).
+- Shagi: set GAP-005 -> IN PROGRESS; add agents/passports/safeguarding_recon_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-005); agents/passports/safeguarding_recon_governor.yaml; banxe-emi-stack ledger/banking core; I-27; I-28; ADR-102.
