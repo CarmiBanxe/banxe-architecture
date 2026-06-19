@@ -90,7 +90,7 @@
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
 | GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) | Sprint 15 | CTIO | 🔄 IN PROGRESS |
-| GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | ❌ OPEN |
+| GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | 🔄 IN PROGRESS |
 | GAP-045 | B-pricing tier 2 expansion | Sprint 15 | CEO | ❌ OPEN |
 
 ---
