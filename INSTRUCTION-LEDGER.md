@@ -13366,3 +13366,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/summary-refresh-m1-24 (PR #575) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md additively расширен до M1.1–M1.24: substep map (+M1.21 network/M1.22 capability/M1.23 supported-asset breakdown flatten dedup-per-entity, IL-327 норм., M1.24 advisory-surface manifest), endpoint inventory (21 advisory endpoints на backend main 3ba510c), canonical SoT (derived breakdowns + manifest config-as-data, Midaz LedgerPort/FeeEnginePort не вызываются), dedup-per-entity контракт, meta/inventory класс + fence, frozen-список, §candidate next (оба grid + первый meta/inventory закрыты), spec-fidelity.
 - **Proof:** docs-only; append-only; фактологично сверено с кодом main 3ba510c + ledger IL-317/321/325/327/332. build_ledger --check exit 0.
 - **Refs:** PR #575; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-317/321/325/327/332.
+
+---
+
+### IL-336 - agent-factory-archstack002-sp22-sdk-gap044 @ 2026-06-19T06:35:00Z
+
+- **il_ts:** 2026-06-19T06:35:00Z
+- **session_id:** agent-factory-archstack002-sp22-sdk-gap044
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp22-sdk-gap044/IL-2026-06-19T06-35-00Z--sp22sdk.md`
+
+### SP-22 — reconcile GAP-044 (M-sdk Python + JS client SDK) OPEN -> IN PROGRESS + SDK release governance residual
+- Instrukciya: Reconcile GAP-044. SDK build/codegen tooling exists in banxe-emi-stack. Residual: one PROPOSED SDK release governance passport (I-27, human_double Head of Platform Engineering, NOT activated) over SDK semver / deprecation + backward-compat / artifact publication (PyPI/npm) / no-secrets-in-SDK / release audit trail. non_goals exclude reimplementing SDK tooling and duplicating Public-API governance (GAP-041) and sandbox governance (GAP-042) (dedup-safe).
+- Shagi: set GAP-044 -> IN PROGRESS; add agents/passports/sdk_release_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-044); agents/passports/sdk_release_governor.yaml; banxe-emi-stack SDK; I-27; I-28; ADR-102.

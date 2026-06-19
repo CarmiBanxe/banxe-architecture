@@ -1,0 +1,31 @@
+agent_id: sdk_release_governor
+name: "SdkReleaseGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Client SDK (Python + JS) release governance agent. Governs SDK semantic
+  versioning, deprecation + backward-compat policy, artifact publication
+  (PyPI/npm) governance, no-secrets-in-SDK enforcement, and SDK release
+  audit trail — routing to the EXISTING SDK build tooling in banxe-emi-stack.
+  PROPOSES only (I-27); NOT activated until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-09-DEVPLATFORM
+autonomy: L2_REVIEW
+capabilities:
+  - sdk_semver_governance
+  - deprecation_backward_compat_policy
+  - artifact_publication_governance
+  - no_secrets_in_sdk_enforcement
+  - sdk_release_audit_trail_review
+department: "Engineering / Developer Platform"
+human_double: "Head of Platform Engineering"
+non_goals:
+  - "Do NOT reimplement SDK build/codegen tooling — it already exists in banxe-emi-stack"
+  - "Do NOT duplicate api_public_governor Public-API/OpenAPI governance (GAP-041) — this agent governs client SDK release, not the gateway contract"
+  - "Do NOT duplicate sandbox_rails_governor sandbox governance (GAP-042)"
+  - "Do NOT activate the SDK release channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: SdkGovernancePort
+      description: Receives SDK-semver / deprecation / publication / no-secrets / release-audit review requests
