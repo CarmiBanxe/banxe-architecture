@@ -13286,3 +13286,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - Shagi: set GAP-039 -> IN PROGRESS; add agents/passports/support_sla_governor.yaml (PROPOSED); ledger shard; build_ledger.
 - Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
 - Refs: docs/GAP-REGISTER.md (GAP-039); agents/passports/support_sla_governor.yaml; banxe-emi-stack services/support; I-27; I-28; ADR-102.
+
+---
+
+### IL-331 - agent-factory-archstack002-sp20-sandbox-gap042 @ 2026-06-19T05:20:00Z
+
+- **il_ts:** 2026-06-19T05:20:00Z
+- **session_id:** agent-factory-archstack002-sp20-sandbox-gap042
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp20-sandbox-gap042/IL-2026-06-19T05-20-00Z--sp20sb.md`
+
+### SP-20 — reconcile GAP-042 (M-sandbox Sandbox + mock payment rails) OPEN -> IN PROGRESS + sandbox governance residual
+- Instrukciya: Reconcile GAP-042. Sandbox + mock-rail tooling exists in banxe-emi-stack. Residual: one PROPOSED sandbox governance passport (I-27, human_double Head of Platform Engineering, NOT activated) over sandbox isolation / mock-rail config policy / no-production-data enforcement / lifecycle + quota / sandbox audit trail. non_goals exclude reimplementing sandbox tooling and duplicating Public-API governance (GAP-041) (dedup-safe).
+- Shagi: set GAP-042 -> IN PROGRESS; add agents/passports/sandbox_rails_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-042); agents/passports/sandbox_rails_governor.yaml; banxe-emi-stack sandbox; I-27; I-28; ADR-102.

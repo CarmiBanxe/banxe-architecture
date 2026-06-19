@@ -1,0 +1,31 @@
+agent_id: sandbox_rails_governor
+name: "SandboxRailsGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Sandbox + mock payment-rails governance agent. Governs sandbox environment
+  isolation, mock-rail configuration policy, no-production-data enforcement,
+  ephemeral lifecycle + quota, and sandbox audit trail — routing to the
+  EXISTING sandbox tooling in banxe-emi-stack. PROPOSES only (I-27); NOT
+  activated until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-09-DEVPLATFORM
+autonomy: L2_REVIEW
+capabilities:
+  - sandbox_isolation_governance
+  - mock_rail_config_policy
+  - no_production_data_enforcement
+  - sandbox_lifecycle_quota_governance
+  - sandbox_audit_trail_review
+department: "Engineering / Developer Platform"
+human_double: "Head of Platform Engineering"
+non_goals:
+  - "Do NOT reimplement sandbox/mock-rail tooling — it already exists in banxe-emi-stack"
+  - "Do NOT duplicate api_public_governor Public-API governance (GAP-041) — this agent governs sandbox isolation + mock rails, not the public gateway"
+  - "Do NOT touch production payment rails — sandbox/mock scope only"
+  - "Do NOT activate the sandbox channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: SandboxGovernancePort
+      description: Receives sandbox-isolation / mock-rail / lifecycle-quota / sandbox-audit review requests
