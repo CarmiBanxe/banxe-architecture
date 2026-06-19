@@ -13526,3 +13526,19 @@ Instrukciya: Add graph-analytics layer (clustering + GNN + blacklist feeds) on e
 Shagi: (1) ADR-111 PROPOSED; (2) GAP-068 IN PROGRESS; (3) extends OPEN GAP-021/022/025; (4) Travel Rule gate ADR-036 noted.
 Proof: ADR-111 untracked, GAP-068 inserted, graph-AML absence verified (GraphSense=1/Neo4j=1/clustering=0), del check pending, schemas pending.
 Refs: ADR-111, ADR-036, ADR-109, GAP-021/022/025/068, Marble/Jube foundation.
+
+---
+
+### IL-346 - archstack002-sp-vc @ 2026-06-19T16:54:00Z
+
+- **il_ts:** 2026-06-19T16:54:00Z
+- **session_id:** archstack002-sp-vc
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-vc-voice-ai/IL-2026-06-19T16-54-00Z--spvc.md`
+
+### SP-VC — Voice AI support channel (GAP-069, ADR-112)
+Instrukciya: Add voice AI channel as extension on Chatwoot/ticketing + reuse Presidio for audio-PII. Compliance-heavy (recording/retention).
+Shagi: (1) ADR-112 PROPOSED; (2) GAP-069 IN PROGRESS; (3) reuse Presidio(14)+Chatwoot(4); (4) ties GAP-038/039.
+Proof: ADR-112 untracked, GAP-069 inserted, voice absence verified, del check pending, schemas pending.
+Refs: ADR-112, ADR-049, GAP-038/039/069, Presidio, Chatwoot, Consumer-Duty PS22/9.
