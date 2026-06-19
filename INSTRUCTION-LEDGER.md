@@ -13542,3 +13542,19 @@ Instrukciya: Add voice AI channel as extension on Chatwoot/ticketing + reuse Pre
 Shagi: (1) ADR-112 PROPOSED; (2) GAP-069 IN PROGRESS; (3) reuse Presidio(14)+Chatwoot(4); (4) ties GAP-038/039.
 Proof: ADR-112 untracked, GAP-069 inserted, voice absence verified, del check pending, schemas pending.
 Refs: ADR-112, ADR-049, GAP-038/039/069, Presidio, Chatwoot, Consumer-Duty PS22/9.
+
+---
+
+### IL-347 - archstack002-sp-qt @ 2026-06-19T17:19:00Z
+
+- **il_ts:** 2026-06-19T17:19:00Z
+- **session_id:** archstack002-sp-qt
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-qt-quant-advisory/IL-2026-06-19T17-19-00Z--spqt.md`
+
+### SP-QT — Quant pricing/risk advisory engine (GAP-070, ADR-113)
+Instrukciya: Add quant pricing/risk as advisory-seam (feeds DSE + ADR-079 risk-port), NOT live execution (MiCA). Reuse QuantLib+DSE.
+Shagi: (1) ADR-113 PROPOSED; (2) GAP-070 IN PROGRESS; (3) advisory-only (ADR-089/090/091/093 pattern); (4) ties GAP-036/020.
+Proof: ADR-113 untracked, GAP-070 inserted, quant-models absence verified (SABR/Bates/MM minimal), QuantLib=9 reused, del check pending, schemas pending.
+Refs: ADR-113, ADR-085(DSE), ADR-079, ADR-089/090/091/093, GAP-036/020/070.
