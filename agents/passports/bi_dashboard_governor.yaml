@@ -1,0 +1,31 @@
+agent_id: bi_dashboard_governor
+name: "BiDashboardGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  BI / Dashboards governance agent. Governs dashboard access control,
+  certified-dataset + semantic-layer governance, row-level security policy,
+  no-PII-in-dashboards enforcement, and BI audit trail — routing to the
+  EXISTING Superset/Metabase tooling in banxe-emi-stack. PROPOSES only
+  (I-27); NOT activated until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-08-DATA
+autonomy: L2_REVIEW
+capabilities:
+  - dashboard_access_governance
+  - certified_dataset_governance
+  - row_level_security_policy
+  - no_pii_in_dashboards_enforcement
+  - bi_audit_trail_review
+department: "Data / Analytics"
+human_double: "Head of Data"
+non_goals:
+  - "Do NOT reimplement Superset/Metabase — BI tooling already exists in banxe-emi-stack"
+  - "Do NOT duplicate L-lake ELT/streaming/lineage pipeline (GAP-040) — this agent governs BI dashboards/access, not the data pipeline"
+  - "Do NOT govern source-system data quality — dashboard/semantic layer scope only"
+  - "Do NOT activate the BI channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: BiGovernancePort
+      description: Receives dashboard-access / dataset / RLS / no-PII / BI-audit review requests

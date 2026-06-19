@@ -13334,3 +13334,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - **Shagi:** ветка agent/factory/m1/m1.24-advisory-surface-manifest-plan (PR #570) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Plan-doc docs/migration/M1.24-advisory-surface-manifest.md (код+IL M1.24 уже на main, IL-332).
 - **Proof:** docs-only; append-only; соответствует смерженному M1.24 (IL-332); build_ledger --check exit 0.
 - **Refs:** PR #570; docs/migration/M1.24-advisory-surface-manifest.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-332.
+
+---
+
+### IL-334 - agent-factory-archstack002-sp21-bi-gap043 @ 2026-06-19T06:05:00Z
+
+- **il_ts:** 2026-06-19T06:05:00Z
+- **session_id:** agent-factory-archstack002-sp21-bi-gap043
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp21-bi-gap043/IL-2026-06-19T06-05-00Z--sp21bi.md`
+
+### SP-21 — reconcile GAP-043 (L-bi BI/Dashboards Superset/Metabase) OPEN -> IN PROGRESS + BI governance residual
+- Instrukciya: Reconcile GAP-043. Superset/Metabase BI tooling exists in banxe-emi-stack. Residual: one PROPOSED BI governance passport (I-27, human_double Head of Data, NOT activated) over dashboard access / certified datasets + semantic layer / row-level security / no-PII-in-dashboards / BI audit trail. non_goals exclude reimplementing Superset/Metabase and duplicating L-lake ELT/lineage pipeline (GAP-040) (dedup-safe).
+- Shagi: set GAP-043 -> IN PROGRESS; add agents/passports/bi_dashboard_governor.yaml (PROPOSED); ledger shard; build_ledger.
+- Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
+- Refs: docs/GAP-REGISTER.md (GAP-043); agents/passports/bi_dashboard_governor.yaml; banxe-emi-stack Superset/Metabase; I-27; I-28; ADR-102.
