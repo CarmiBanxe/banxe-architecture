@@ -13558,3 +13558,19 @@ Instrukciya: Add quant pricing/risk as advisory-seam (feeds DSE + ADR-079 risk-p
 Shagi: (1) ADR-113 PROPOSED; (2) GAP-070 IN PROGRESS; (3) advisory-only (ADR-089/090/091/093 pattern); (4) ties GAP-036/020.
 Proof: ADR-113 untracked, GAP-070 inserted, quant-models absence verified (SABR/Bates/MM minimal), QuantLib=9 reused, del check pending, schemas pending.
 Refs: ADR-113, ADR-085(DSE), ADR-079, ADR-089/090/091/093, GAP-036/020/070.
+
+---
+
+### IL-348 - archstack002-sp-pr1 @ 2026-06-19T17:43:00Z
+
+- **il_ts:** 2026-06-19T17:43:00Z
+- **session_id:** archstack002-sp-pr1
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-pr1-distribution-adr/IL-2026-06-19T17-43-00Z--sppr1.md`
+
+### SP-PR1 — Payment distribution model ADR (GAP-071, ADR-108)
+Instrukciya: Document Neuronext->Paybis migration; BANXE=distribution agent (Tompay fiat + Paybis CASP). ADR-108 DRAFT->PROPOSED.
+Shagi: (1) ADR-108 PROPOSED; (2) GAP-071 IN PROGRESS; (3) 2 open-items (settlement/custody) pending operator; (4) supersedes Owner-Control Neuronext refs (SP-PR2).
+Proof: ADR-108 untracked, GAP-071 inserted, strategy confirmed via Paybis guide, del check pending, schemas pending.
+Refs: ADR-108, ADR-015, ADR-036(Travel Rule), GAP-071, Owner-Control SNAPSHOT, Paybis-guide, rails-v4.
