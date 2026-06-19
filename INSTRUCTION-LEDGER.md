@@ -13350,3 +13350,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - Shagi: set GAP-043 -> IN PROGRESS; add agents/passports/bi_dashboard_governor.yaml (PROPOSED); ledger shard; build_ledger.
 - Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
 - Refs: docs/GAP-REGISTER.md (GAP-043); agents/passports/bi_dashboard_governor.yaml; banxe-emi-stack Superset/Metabase; I-27; I-28; ADR-102.
+
+---
+
+### IL-335 - agent-factory-m1-summary-refresh-m1-24 @ 2026-06-19T06:20:00Z
+
+- **il_ts:** 2026-06-19T06:20:00Z
+- **session_id:** agent-factory-m1-summary-refresh-m1-24
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-summary-refresh-m1-24/IL-2026-06-19T06-20-00Z--a3f8d1.md`
+
+### M1 advisory-surface summary refresh → M1.18–M1.24 (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance batch-merge docs-only summary-refresh PR #575 (canonical anchor до M1.18–M1.24). Coupling IL-shard (ADR-056/060, I-28) для docs/migration tracked-пути; append-only (ADR-059-A), il_ts строго выше re-fetched max по timestamp. Isolated worktree (Rule 1); без --admin.
+- **Shagi:** ветка agent/factory/m1/summary-refresh-m1-24 (PR #575) rebased на origin/main; coupling-shard добавлен; ledger регенерирован; --check OK. Doc docs/migration/M1-advisory-surface-summary.md additively расширен до M1.1–M1.24: substep map (+M1.21 network/M1.22 capability/M1.23 supported-asset breakdown flatten dedup-per-entity, IL-327 норм., M1.24 advisory-surface manifest), endpoint inventory (21 advisory endpoints на backend main 3ba510c), canonical SoT (derived breakdowns + manifest config-as-data, Midaz LedgerPort/FeeEnginePort не вызываются), dedup-per-entity контракт, meta/inventory класс + fence, frozen-список, §candidate next (оба grid + первый meta/inventory закрыты), spec-fidelity.
+- **Proof:** docs-only; append-only; фактологично сверено с кодом main 3ba510c + ledger IL-317/321/325/327/332. build_ledger --check exit 0.
+- **Refs:** PR #575; docs/migration/M1-advisory-surface-summary.md; ADR-056, ADR-060, ADR-059-A, I-28; IL-317/321/325/327/332.
