@@ -13446,3 +13446,19 @@ Either live activation (Terminal-A infra) OR a product-prioritised next capabili
 - Shagi: set GAP-006 -> IN PROGRESS; add agents/passports/regulatory_returns_governor.yaml (PROPOSED); ledger shard; build_ledger.
 - Proof: schemas/validate_schemas.py PASS; build_ledger --check OK; del=0; our IL last.
 - Refs: docs/GAP-REGISTER.md (GAP-006); agents/passports/regulatory_returns_governor.yaml; banxe-emi-stack reporting; I-27; I-28; ADR-102.
+
+---
+
+### IL-341 - archstack002-sp-os1 @ 2026-06-19T14:23:00Z
+
+- **il_ts:** 2026-06-19T14:23:00Z
+- **session_id:** archstack002-sp-os1
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-os1-adverse-media/IL-2026-06-19T14-23-00Z--sposadm.md`
+
+### SP-OS1 — Adverse-media screening (GAP-064, MLR 2017 Reg.28 EDD)
+Instrukciya: Doustanovka adverse-media layer onto existing EDD/screening (reuse aml_orchestrator, Ballerine, Marble, ClickHouse).
+Shagi: (1) passport adverse_media_governor.yaml PROPOSED; (2) doc docs/compliance/ADVERSE-MEDIA-EDD.md; (3) GAP-064 OPEN->IN PROGRESS.
+Proof: passport+doc untracked, GAP-064 inserted line 54, del check pending, schemas pending.
+Refs: GAP-064, MLR-2017-Reg-28, ADR (Ballerine EDD flow), I-04 EDD thresholds, GAP-011/012/013.

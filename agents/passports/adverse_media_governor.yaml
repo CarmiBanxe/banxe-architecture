@@ -1,0 +1,26 @@
+id: adverse_media_governor
+version: 0.1.0
+status: PROPOSED
+zone: compliance
+authority: T2
+change_class: CLASS-B
+capabilities:
+  - adverse_media_screening
+  - negative_news_entity_match
+  - edd_enrichment
+consumes:
+  - aml_orchestrator
+  - ballerine_kyc_kyb_flow
+produces:
+  - marble_case_on_adverse_hit
+  - clickhouse_audit_append_only
+hitl:
+  gate: MLRO
+  trigger: adverse_media_hit
+  rule: no_auto_clear_of_adverse_flag
+compliance:
+  - MLR_2017_Reg_28_EDD
+  - FCA_high_risk_PEP_EDD
+non_goals:
+  - structured_sanctions_screening (covered by watchman/yente)
+  - transaction_monitoring (covered by tx_monitor/jube)
