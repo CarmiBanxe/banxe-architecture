@@ -1,0 +1,31 @@
+agent_id: support_sla_governor
+name: "SupportSlaGovernor"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Support ticketing + SLA governance agent. Governs ticket prioritisation,
+  SLA timers and escalation, breach metrics, support retention and audit
+  trail — routing to the EXISTING services/support implementation in
+  banxe-emi-stack. PROPOSES only (I-27); NOT activated until a separate
+  operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - ticket_prioritisation_governance
+  - sla_timer_escalation_governance
+  - sla_breach_metrics_review
+  - support_retention_governance
+  - support_audit_trail_review
+department: "Customer Operations / Support"
+human_double: "Head of Customer Operations"
+non_goals:
+  - "Do NOT reimplement services/support/* — support tooling already exists in banxe-emi-stack"
+  - "Do NOT duplicate crm_dsar_governor DSAR SLA/registry/retention (SP-18) — this agent governs support-ticket SLA, not DSAR"
+  - "Do NOT duplicate privacy_compliance_agent DSAR legal triage (SP-10)"
+  - "Do NOT activate the support channel — PROPOSED only, gated"
+ports:
+  inbound:
+    - port: SupportGovernancePort
+      description: Receives ticket-SLA / escalation / breach-metric / support-audit review requests
