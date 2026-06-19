@@ -13462,3 +13462,19 @@ Instrukciya: Doustanovka adverse-media layer onto existing EDD/screening (reuse 
 Shagi: (1) passport adverse_media_governor.yaml PROPOSED; (2) doc docs/compliance/ADVERSE-MEDIA-EDD.md; (3) GAP-064 OPEN->IN PROGRESS.
 Proof: passport+doc untracked, GAP-064 inserted line 54, del check pending, schemas pending.
 Refs: GAP-064, MLR-2017-Reg-28, ADR (Ballerine EDD flow), I-04 EDD thresholds, GAP-011/012/013.
+
+---
+
+### IL-342 - archstack002-sp-co1 @ 2026-06-19T15:17:00Z
+
+- **il_ts:** 2026-06-19T15:17:00Z
+- **session_id:** archstack002-sp-co1
+- **source:** claude-code
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-co1-crypto-ops-adr/IL-2026-06-19T15-17-00Z--spco1.md`
+
+### SP-CO1 — crypto-ops-monitor Python ADR (GAP-065, ADR-109)
+Instrukciya: Resolve crypto-ops-monitor definition conflict — code=Python (runtime-verified), NestJS spec stale. ADR-109 PROPOSED supersedes CONTRACT-SPEC-DRAFT.
+Shagi: (1) ADR-109 PROPOSED; (2) GAP-065 IN PROGRESS; (3) ADR-050 boundary update noted; (4) old CONTRACT-SPEC marked SUPERSEDED (in ADR-109 text).
+Proof: ADR-109 untracked, GAP-065 inserted, runtime audit pyproject.toml confirmed Python, del check pending, schemas pending.
+Refs: ADR-109, ADR-050, ADR-021, ADR-036, GAP-065, crypto-ops-monitor-CONTRACT-SPEC-DRAFT (superseded).

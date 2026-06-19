@@ -52,6 +52,7 @@
 | GAP-058 | Annual Safeguarding Audit (PS25/12; relevant funds >£100k) | Sprint 13 | Internal Audit | ❌ OPEN |
 | GAP-059 | Operational Resilience / DORA (DR/BCP, incident response) | Sprint 14 | CTIO+COO | ❌ OPEN |
 | GAP-064 | A-edd: Adverse-media screening (MLR 2017 Reg.28 EDD; negative-news entity match into Ballerine/Marble EDD flow) | Sprint 13 | MLRO+CTIO | Q2 2026 | 🟡 IN PROGRESS |
+| GAP-065 | crypto-ops-monitor Python platform (ADR-109 supersedes stale NestJS spec; SP-CO2 hardening in repo) | Sprint 14 | CTIO | Q3 2026 | 🟡 IN PROGRESS |
 
 ---
 
