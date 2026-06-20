@@ -13894,3 +13894,23 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Delivered:** docs/audit/FEATURE-INSTALLATION-AUDIT-METHODOLOGY + ROADMAP (2026-06-20) + ## Audit Verdicts section; GAP-075 DONE.
 - **Proof:** build_ledger --check OK; validate_schemas PASS; del=0. Operator sanction = audit-finalize 2026-06-20.
 - **Refs:** GAP-075; GAP-064..074; ADR-052. No secrets.
+
+---
+
+### IL-366 - agent-factory-mig-m1-audit-cycle-governance @ 2026-06-20T16:24:00Z
+
+- **il_ts:** 2026-06-20T16:24:00Z
+- **session_id:** agent-factory-mig-m1-audit-cycle-governance
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mig-m1-audit-cycle-governance/IL-2026-06-20T16-24-00Z--c6b9f4.md`
+
+### MIG-M1.x audit-cycle CLOSED — consolidated governance log (BANXE.RAR → EMI, IL-only)
+- **Instrukciya:** Governance batch-merge MIG docs-only PR #603(M1.5)→#604(M1.6)→#605(M1.7) в монотонном il_ts-порядке + consolidated итог. Isolated worktree (Rule 1/6); append-only (ADR-059-A), il_ts строго выше re-fetched max; squash-merge без --admin; build_ledger --check green; fail-closed.
+- **Batch-merge результат (порядок + SHA + IL/il_ts):** MIG-M1.5 sepa-split #603 → main f98b124 (IL-362 @ 14:35); MIG-M1.6 platform/reference/config #604 → main a483b3f (IL-363 @ 14:50); MIG-M1.7 frontend/crypto-earn #605 → main c0eb4f2 (IL-364 @ 15:05). Все squash-merge без --admin, ветки удалены. il_ts строго монотонна 14:35<14:50<15:05; append-only соблюдён; build_ledger --check exit 0 на финальном origin/main.
+- **MIG-M1.x audit-цикл ПОЛНОСТЬЮ ЗАКРЫТ (merged):** M1.1 open-banking (IL-352) · M1.2 abs-integration (IL-353) · M1.3 payments+accounts (IL-359) · M1.4 identity/auth (IL-354) · M1.4.1 auth-dup (IL-360) · M1.5 sepa-split (IL-362) · M1.6 platform/reference/config (IL-363) · M1.7 frontend/crypto-earn (IL-364). + governance-логи IL-355/IL-358 (batch-merge records). Ledger консистентен, il_ts монотонна.
+- **Resolved target-matrix (из M1.x):** open-banking → banxe-emi-stack (canonical top-level, nested merge-then-retire); abs → banxe-emi-stack (operational nested) + top-level AbsBifrostPort adapter (layered); payments → banxe-payment-core, accounts SoT → banxe-emi-stack (payments accounts = projection); identity-core → banxe-emi-stack (KYC/KYB carve-out operator-gated), auth → banxe-platform (canonical banxe-auth-backend; auth-api retire); sepa core/rails → banxe-payment-core, reporting → banxe-emi-stack; platform-core+connector-mesh → banxe-platform, currencies/rates/dictionary → banxe-platform, ATM → banxe-emi-stack, config → infra; frontends → banxe-ui (admin-panel-new canonical + manual-payments; dashboard customer; tompayment/banxe_auth modules), crypto-earn backend → banxe-emi-stack (advisory earn-lane stays trading-backend).
+- **Остаётся перед M2:** только MIG-M1.8 acceptance (сводный checkpoint + resolved target-matrix формализация + M2-preconditions). M2-предусловия: KYC/KYB/AML carve-out operator/governance sign-off (M1.4); connector contract-tests (auth-/identity-/payments-/accounts-/transaction-/defi-invest-/@abs/common/RMQ/gql-transport.proto + apollo federation) перед M2.1–M2.8; platform-core/gateway мигрирует первым (M2.7); accounts SoT перед payments (M2.2 перед M2.1).
+- **Накопленные CSV-v0 discrepancy (рекомендация обновить mapping v0):** banxe-auth-backend (auth dup pair, canonical), banxe_auth (frontend→banxe-ui), banxe-identity-config-manager (config), @abs/common (ABS shared contract lib), banxe-manual-payments (frontend→banxe-ui), tompayment-web/banxe-tompayment (frontend→banxe-ui), transfer_accounts (backend transfer micro-service), banxe-apollo-gateway (platform GraphQL federation), grpc-proxy-server (platform), banxe-shared-libs (consolidated core+common — dedup-audit vs banxe-core/banxe-common), banxe-admin-panel-new/banxe-admin-panel (canonical admin frontend).
+- **Proof:** IL-only governance log; никаких изменений кода legacy/EMI; append-only (il_ts 15:20 > re-fetched max); build_ledger --check exit 0; docs-only/IL-only PR без merge; worktrees clean; чужие/parallel-session ветки не тронуты.
+- **Refs:** PR #603 (f98b124), #604 (a483b3f), #605 (c0eb4f2); IL-362/363/364; docs/migration/MIG-M1.1..M1.7 + MIG-M1.4.1; ADR-102, ADR-103, ADR-059-A, I-28; MIG-M1/M2 roadmap; /tmp/banxe-migration-mapping-v0.claude.txt.
