@@ -1,6 +1,6 @@
 # ADR-108: Payment Distribution Model — Tompay + Paybis (Neuronext superseded)
 
-**Status:** PROPOSED (2 open-items pending operator confirmation; strategy Neuronext->Paybis confirmed via Paybis distribution guide)
+**Status:** ACCEPTED (2026-06-20, operator sanction via Paybis distribution guide; both open-items resolved — strategy Neuronext->Paybis confirmed)
 **Date:** 2026-06-19
 **Supersedes:** Owner-Control SNAPSHOT BANXE.COM=TOMPAY+NEURONEXT (Neuronext crypto VASP retired)
 
@@ -11,8 +11,8 @@ BANXE.COM = distribution front for two regulated providers. Crypto arm migrates 
 - Tompay (UK EMI, FCA): GBP/UK fiat rail, 100% fiat margin.
 - Paybis (MiCA CASP): all crypto (on/off-ramp, custody, execution); BANXE distribution fee 30-40%.
 - BANXE: distribution agent + technical front; not CASP, no MiCAR/custody liability.
-- [OPEN-ITEM 1 — SETTLEMENT, pending operator]: Paybis fiat settlement via Tompay (per Paybis guide) OR Papaya EU-SEPA rail (per rails-v4) OR both (Tompay GBP / Papaya EUR)? Confirm.
-- [OPEN-ITEM 2 — CUSTODY, pending operator]: Confirm crypto model is now NON-CUSTODIAL (Paybis/client wallet) vs Neuronext custodial. Confirm.
+- [RESOLVED — SETTLEMENT, operator 2026-06-20]: Paybis fiat settlement via Tompay dedicated IBAN (GBP); Papaya remains EU-SEPA rail for EUR per rails-v4.
+- [RESOLVED — CUSTODY, operator 2026-06-20]: NON-CUSTODIAL (Paybis/client wallet; client crypto stays off BANXE balance); Neuronext custodial model retired.
 
 ## Compliance
 - MiCAR/CASP/custody liability on Paybis (distribution model). T&C CASP disclosure by 2026-07-01.

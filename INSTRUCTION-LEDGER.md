@@ -13682,3 +13682,21 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** advisory-only (docs/migration/MIG-M1.4-identity-auth-boundary.md, 7 секций); shell audit-only (ls/grep по /tmp/bx-legacy, read-only); никаких мутаций legacy/EMI-кода; append-only IL (il_ts 10:15 > re-fetched max 2026-06-20T10:02:00Z (поднят при batch-merge для монотонности после MIG-M1.2)); build_ledger --check exit 0; docs-only PR (doc + coupling-shard), без merge. CSV-v0 discrepancy зафиксирован; рекомендация — обновить mapping v0 (добавить banxe-auth-backend/banxe_auth/banxe-identity-config-manager).
 - **Предусловия MIG-M2.3:** (1) MIG-M1.4 accepted + IL; (2) auth dup-audit (banxe-auth vs banxe-auth-backend) → single canonical; (3) operator/governance sign-off на KYC/KYB/AML carve-out; (4) auth-connector + identity-connector gRPC контракты в contract-tests; (5) MIG-M2.3 scaffold identity-core→emi-stack + auth→platform (advisory/read-only first, behind connectors) — no merge.
 - **Refs:** docs/migration/MIG-M1.4-identity-auth-boundary.md; /tmp/banxe-migration-mapping-v0.claude.txt; legacy (read-only) banxe-fiat-backend/banxe-identity + banxe-auth + banxe-fiat-backend/banxe-auth-backend + banxe_auth + banxe-identity-config-manager + banxe-common/lib/graphql-through-grpc-connectors/{auth,identity}-connector; ADR-102, ADR-103, ADR-059-A, I-28; MIG-M1/M2 roadmap; MIG-M1.1 (PR #593).
+
+---
+
+### IL-355 - agent-factory-archstack002-sp-pr2-adr108-paybis @ 2026-06-20T11:09:11Z
+
+- **il_ts:** 2026-06-20T11:09:11Z
+- **session_id:** agent-factory-archstack002-sp-pr2-adr108-paybis
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-pr2-adr108-paybis/IL-2026-06-20T11-09-11Z--781071.md`
+
+### SP-PR2 — finalize ADR-108 (Neuronext->Paybis) + reconcile owner-control snapshot (GAP-071)
+- **Instrukciya:** Reconcile repo to the operator-confirmed Neuronext->Paybis distribution model and finalize ADR-108. Source of truth = Paybis distribution guide (operator-provided real data).
+- **ADR-108 ACCEPTED (2026-06-20, operator sanction):** open-item 1 SETTLEMENT resolved -> Paybis fiat settlement via Tompay dedicated IBAN (GBP); Papaya remains EU-SEPA rail for EUR (rails-v4). Open-item 2 CUSTODY resolved -> NON-CUSTODIAL (Paybis/client wallet, crypto off BANXE balance); Neuronext custodial model retired.
+- **Reconciled:** docs/sessions/SNAPSHOT-2026-05-06-owner-control-agent-block.md — added reconciliation note: BANXE.COM = TOMPAY (fiat EMI) + PAYBIS (crypto CASP distribution); NEURONEXT superseded/retired (history retained, not deleted).
+- **GAP-071:** updated to reflect ADR-108 ACCEPTED + resolved open-items.
+- **Residual (not in scope here):** Paybis go-live, CASP T&C disclosure by 2026-07-01, Travel Rule (ADR-036).
+- **Refs:** GAP-071; ADR-108; ADR-015; ADR-036; ADR-052; Paybis distribution guide (operator). No secrets (I-SEC).
