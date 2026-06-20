@@ -13936,3 +13936,21 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Acceptance statement:** MIG-M1.x audit-цикл (M1.1–M1.7 + M1.4.1) ЗАКРЫТ; каждый legacy bounded context имеет confirmed canonical EMI-таргет; ledger консистентен (build_ledger --check exit 0), il_ts монотонна; no code/legacy/EMI mutation (advisory-only). M1 ПРИНЯТ. M2 может стартовать при выполнении preconditions (§3). Ни один M2-подшаг не делает banxe-fiat-backend lift-and-shift или live mutation (operator-gated).
 - **Proof:** advisory-only (docs/migration/MIG-M1.8-acceptance.md, 7 секций); никаких мутаций legacy/EMI-кода; append-only IL (il_ts 16:34 > re-fetched max 2026-06-20T16:19:01Z); build_ledger --check exit 0; docs-only PR (doc + coupling-shard), без merge.
 - **Refs:** docs/migration/MIG-M1.8-acceptance.md + MIG-M1.1..M1.7 + MIG-M1.4.1; /tmp/banxe-migration-mapping-v0.claude.txt; IL-352/353/354/358/359/360/362/363/364/365; ADR-102, ADR-103, ADR-059-A, CLAUDE.md §10/30.N+1.9, I-01, I-28; MIG-M1/M2 roadmap; PR #607.
+
+---
+
+### IL-368 - agent-factory-archstack002-sp-impl-roadmap-l1l3 @ 2026-06-20T17:22:07Z
+
+- **il_ts:** 2026-06-20T17:22:07Z
+- **session_id:** agent-factory-archstack002-sp-impl-roadmap-l1l3
+- **source:** CTIO
+- **status:** PLANNED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-impl-roadmap-l1l3/IL-2026-06-20T17-22-07Z--b08401.md`
+
+### SP — IMPLEMENTATION ROADMAP L1→L3 for 4 ADR-without-code features (GAP-076)
+- **Instrukciya:** Publish the implementation roadmap that drives the 4 implementation-delta features (audit 2026-06-20) from L1 to L2/L3 in banxe-emi-stack. Roadmap doc only — the 4 IMPL sprints are NOT executed here.
+- **Sprints:** IMPL-1 adverse-media (GAP-064, MLR Reg.28 EDD, FIRST), IMPL-2 crypto-AML-graph (GAP-068), IMPL-3 voice-AI (GAP-069), IMPL-4 quant advisory (GAP-070, advisory-only MiCA).
+- **Delivered:** docs/audit/IMPLEMENTATION-ROADMAP-L1-TO-L3-2026-06-20.md + GAP-076 (PLANNED).
+- **Method per sprint:** spec→code(emi-stack)→ruff/mypy/pytest→PR→IL shard ref GAP→guardian green→sign-on-merge (operator approves each merge).
+- **Guardrails:** ADR-052; HITL on compliance; advisory-only quant; no secrets. del=0.
+- **Refs:** GAP-076; GAP-064/068/069/070; ADR-111/112/113; ADR-052.

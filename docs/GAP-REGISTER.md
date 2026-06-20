@@ -63,6 +63,7 @@
 | GAP-073 | Execution channel ACCEPTED — Channel C = Ruflo factory (ADR-106; launch start-ruflo.sh, scope arch-stack-002); Claude-Code-via-factory UNBLOCKED | Sprint 14 | CEO+CTIO | NOW | ✅ DONE |
 | GAP-074 | Acquiring/issuing registration — banxe-payment-core (Hyperswitch :8096-8098 + Paymentology issuer + Midaz :8095 + IPM settlement) per ADR-015; code DONE + 297 tests green, registered in SAD §3.7; go-live BLOCKED on Modulr key BT-001 + Paymentology sandbox key | Sprint 14 | CTIO | Q3 2026 | ❌ BLOCKED |
 | GAP-075 | Feature-installation audit — 3-level model (L1/L2/L3) + roadmap AU-1..AU-7 for GAP-064..074; **verdicts recorded 2026-06-20**: code-installed L2/L3=4, governance-only=3, implementation-delta=4; read-only, no code changes | Sprint 14 | CTIO | Q3 2026 | ✅ DONE |
+| GAP-076 | Implementation roadmap L1→L3 for the 4 ADR-without-code features (IMPL-1 adverse-media/GAP-064, IMPL-2 crypto-AML-graph/GAP-068, IMPL-3 voice-AI/GAP-069, IMPL-4 quant/GAP-070); regulatory priority IMPL-1 first (MLR Reg.28 EDD); code lands in banxe-emi-stack; roadmap doc only (impls not executed here) | Sprint 14 | CTIO | Q3 2026 | 📋 PLANNED |
 
 ---
 
