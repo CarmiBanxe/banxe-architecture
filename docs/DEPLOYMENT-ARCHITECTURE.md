@@ -5,6 +5,10 @@
 **Status:** LIVING DOCUMENT — updated each sprint
 **Scope:** GMKtec EVO-X2 primary compute node (192.168.0.72)
 
+> **Superseded in part by ADR-117 (perimeter/hardware); Mandate: ADR-116.** RECONCILED 2026-06-21 — see `docs/governance/CANON-RECONCILIATION-ADR117.md`.
+> Per ADR-117: **Factory** = Legion (64 GB, model `qwen2.5-coder:14b-banxe-factory`, software-delivery only); **Project** = cluster evo1/evo2 (128 GB each), which lends compute to the factory during code-design.
+> The GMKtec-node ↔ evo1/evo2 mapping and migration of the GMKtec service inventory are NOT asserted by ADR-117 and **await operator decision** (registry).
+
 ---
 
 ## 1. Hardware
@@ -23,15 +27,15 @@
 | OS | Ubuntu 24.04 LTS |
 | Role | All services, AI inference, compliance stack, data storage |
 
-### 1.2 Legion Pro 5 — Developer Terminal
+### 1.2 Legion Pro 5 — Factory Node (per ADR-117)
 
 | Spec | Value |
 |------|-------|
 | CPU | Intel i7-14700HX |
-| RAM | 16 GB |
+| RAM | 64 GB |
 | OS | Windows 11 + WSL2 Ubuntu 24.04 |
-| Role | Developer terminal only — Claude Code, git, SSH to GMKtec |
-| Constraint | No production services run here |
+| Role | Factory node (ADR-117) — software-delivery orchestration: Claude Code, git, factory model `qwen2.5-coder:14b-banxe-factory` |
+| Constraint | Software-delivery only; no project/domain workloads or live banking services |
 
 **Important:** All production services, AI models, and data reside exclusively on GMKtec. The Legion is a thin terminal. This satisfies FCA DORA data residency obligations — no customer data leaves the regulated compute perimeter.
 
@@ -76,9 +80,12 @@
 
 | Model | Size | Role | Agent |
 |-------|------|------|-------|
+| qwen2.5-coder:14b-banxe-factory | 14b | factory code-delivery (Legion) | Factory (ADR-117) |
 | qwen3-banxe-v2 | ~30b-a3b | supervisor, kyc, compliance, risk, crypto | MLRO bot (primary) |
 | glm-4.7-flash-abliterated | — | client-service, operations, it-devops | CTIO bot |
 | gpt-oss-derestricted:20b | — | analytics, finance | Analytics agent |
+
+> **ADR-117 reconciliation:** the factory model (`qwen2.5-coder:14b-banxe-factory`, on Legion) is added above. The PROJECT model set (on evo1/evo2) per ADR-117 additionally includes `qwen3:235b-a22b`, `llama3.3:70b`, `qwen3-coder-next`, `qwen3.5/30b/4b` — names per ADR-117; exact sizes/roles/host await operator (registry).
 
 ---
 

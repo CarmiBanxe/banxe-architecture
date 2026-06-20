@@ -3,6 +3,9 @@
 **Создан:** 2026-06-13 | **Источники:** il188-emi/AGENTS.md, il188-emi/.ai/registries/agent-map.md, SERVICE-MAP.md
 **Назначение:** функции, обученность, должности и зоны ответственности агентов фабрики и проекта EMI BANXE AI BANK.
 
+> **Superseded in part by ADR-117 (perimeter/hardware/org); Mandate: ADR-116.** RECONCILED 2026-06-21 — см. `docs/governance/CANON-RECONCILIATION-ADR117.md`.
+> Per ADR-117: Factory = Legion (64 GB, `qwen2.5-coder:14b-banxe-factory`, software-delivery only); Project = evo1/evo2 (128 GB each). Ёмкость разработки удвоена (ADR-117: ≥2×, ранее один Aider CLI) — точный состав ожидает решения оператора (реестр).
+
 ---
 
 ## Уровень А — «Сотрудники фабрики» (Four-Partner Swarm)
@@ -11,7 +14,7 @@
 |---------|--------------------------|---------|-------------|
 | Claude Code | Архитектор + Тимлид + Ревьюер | проектирование, ревью, оркестрация | внешняя LLM (Claude) |
 | Ruflo | PM / оркестратор процессов | ведение многошаговых флоу | оркестратор (не модель) |
-| Aider CLI | Единственный разработчик | пишет/правит код | через LiteLLM gateway :4000 |
+| Aider CLI (+ ADR-117: ≥2×) | Разработчики — удвоенная ёмкость (ADR-117; ранее один Aider) | пишут/правят код | через LiteLLM gateway :4000 |
 | MiroFish | QA / контролёр | прогон banking/FCA/fraud-сценариев | factory-mid (исправлено 2026-06-13) |
 
 ### Контроль/governance
@@ -54,10 +57,13 @@ Monthly Compliance Review, Quarterly Board Report, Daily Recon.
 
 ## Обученность (модели → роли) — SERVICE-MAP
 
+- qwen2.5-coder:14b-banxe-factory → factory code-delivery (Legion, ADR-117)
 - qwen3-banxe-v2 (~30b) → supervisor/kyc/compliance/risk/crypto (главная)
 - glm-4.7-flash-abliterated → client-service/operations/it-devops
 - gpt-oss-derestricted:20b → analytics/finance
 - qwen3-235b-master :8082 → тяжёлое рассуждение
+
+> **ADR-117 reconciliation:** factory model `qwen2.5-coder:14b-banxe-factory` (Legion) добавлен. PROJECT-набор (evo1/evo2) по ADR-117 дополнительно включает `qwen3:235b-a22b`, `llama3.3:70b`, `qwen3-coder-next`, `qwen3.5/30b/4b` — имена по ADR-117; точные размеры/роли/хост ожидают оператора (реестр).
 
 ## Форк EMI BANXE AI BANK
 
