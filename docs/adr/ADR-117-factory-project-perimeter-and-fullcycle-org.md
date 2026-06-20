@@ -1,8 +1,8 @@
-# ADR-116 — Factory / Project Perimeter & Full-Cycle Org Model
+# ADR-117 — Factory / Project Perimeter & Full-Cycle Org Model
 
 - Status: PROPOSED
 - Date: 2026-06-20
-- Relates: ADR-115, ADR-053, ADR-RUFLO-01
+- Relates: ADR-116, ADR-115, ADR-053, ADR-RUFLO-01
 - Supersedes: the hardware/perimeter parts of DEPLOYMENT-ARCHITECTURE (2026-04-06) and AGENT-ORG-STRUCTURE
 
 ## Supremacy
