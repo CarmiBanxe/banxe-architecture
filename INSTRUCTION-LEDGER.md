@@ -13877,3 +13877,20 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** advisory-only (docs/migration/MIG-M1.7-frontend-crypto-earn.md, 7 секций); shell audit-only (ls/grep по /tmp/bx-legacy, read-only); никаких мутаций legacy/EMI-кода; append-only IL (il_ts 15:05 > re-fetched max 2026-06-20T14:30:00Z и выше собственных незамёрженных M1.5 14:35 / M1.6 14:50); build_ledger --check exit 0; docs-only PR (doc + coupling-shard), без merge. CSV-v0 discrepancy (4 extra frontends: admin-panel-new/banxe_auth/manual-payments/tompayment) — рекомендация обновить mapping v0.
 - **Предусловия MIG-M2.8:** (1) MIG-M1.7 accepted + IL; (2) первый FE slice = unified admin shell (admin-panel-new canonical → banxe-ui, behind apollo-gateway GraphQL contract, advisory/read-only; manual-payments fold next; customer dashboard + tompayment далее); (3) platform/gateway first (depends MIG-M2.7 — gateway GraphQL contract в contract-tests до FE-миграции); (4) crypto-earn backend boundary: operational earn → emi-stack via defi-invest-connector; trading-backend advisory earn-lane untouched (no surface dup); (5) no secrets в FE, ProWallet keys client-side, auth via gateway/auth-connector; (6) no lift-and-shift, no live mutation в M2 (operator-gated), FE per shell behind gateway contracts.
 - **Refs:** docs/migration/MIG-M1.7-frontend-crypto-earn.md; /tmp/banxe-migration-mapping-v0.claude.txt; legacy (read-only) banxe-dashboard + banxe-admin-panel-new + banxe_auth + banxe-manual-payments + tompayment-web + banxe-crypto-earn; banxe-apollo-gateway + banxe-common/defi-invest-connector + auth-connector; ADR-102, ADR-103, ADR-059-A, I-01, I-28; MIG-M1/M2 roadmap; MIG-M1.4.1 (auth canonical), MIG-M1.6 (platform/gateway); banxe-trading-backend advisory earn-lane (M1.1–M1.26).
+
+---
+
+### IL-365 - agent-factory-archstack002-sp-feature-install-audit @ 2026-06-20T16:19:01Z
+
+- **il_ts:** 2026-06-20T16:19:01Z
+- **session_id:** agent-factory-archstack002-sp-feature-install-audit
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-feature-install-audit/IL-2026-06-20T16-19-01Z--95e701.md`
+
+### SP — FEATURE-INSTALLATION-AUDIT methodology + roadmap + verdicts (GAP-075)
+- **Instrukciya:** Publish 3-level installation-audit methodology + AU-1..AU-7 roadmap for GAP-064..074, and record the read-only audit verdicts. No feature code changed.
+- **Verdicts (2026-06-20):** code-installed L2/L3 = 4 (GAP-065 crypto-ops L3, GAP-066 braslina L2, GAP-073 factory L3-live, GAP-074 acquiring L2/L3-blocked-on-keys); governance-only correct = 3 (GAP-067/071/072); implementation-delta = 4 (GAP-064 adverse-media, GAP-068 crypto-AML-graph, GAP-069 voice-AI, GAP-070 quant). Code-installed ~31% of 13-feature roadmap; governance 100%.
+- **Delivered:** docs/audit/FEATURE-INSTALLATION-AUDIT-METHODOLOGY + ROADMAP (2026-06-20) + ## Audit Verdicts section; GAP-075 DONE.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0. Operator sanction = audit-finalize 2026-06-20.
+- **Refs:** GAP-075; GAP-064..074; ADR-052. No secrets.
