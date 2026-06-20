@@ -1,6 +1,6 @@
 # ADR-106: Execution Channel Selection Gate for ADR-078
 
-**Status:** PROPOSED  
+**Status:** ACCEPTED (operator sanction 2026-06-20)  
 **Date:** 2026-06-18  
 **Deciders:** Operator, Central  
 **Trust Zone:** AMBER  
@@ -63,3 +63,13 @@ The operator should resolve Channel C in the following order:
 - ADR-014 — Composable Financial Stack.
 - PR #508 and PR #509 — evidence that Channel C can create branches and PRs under the `agent/factory/m1/m1.4-*` naming pattern.
 - Execution-governance principle: approval must attach to the actual execution path before side effects are allowed.
+
+## Operator Resolution (2026-06-20)
+
+Operator confirmed Channel C parameters:
+- **Owner/identity:** CarmiBanxe (confirmed via PR #508/#509 pattern).
+- **Entrypoint (launch):** Ruflo factory via `./ruflo/start-ruflo.sh`.
+- **Trigger/input:** spec/IL artifacts + Claude Code prompts orchestrated by Ruflo.
+- **Scope:** accepts arbitrary `agent/factory/<track>/<slug>` tasks INCLUDING `arch-stack-002` (not M1-only).
+
+**Decision: Channel C = Ruflo factory APPROVED as execution channel.** Claude-Code-via-factory execution is UNBLOCKED. ADR-052 enforcement-runtime (Accepted) governs guardrails. Shell remains audit-only per operator canon 2026-06-20.
