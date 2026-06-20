@@ -58,7 +58,7 @@
 | GAP-068 | Crypto-AML graph-analytics (ADR-111; GraphSense+Neo4j clustering, GraphSAGE/Elliptic ML, blacklist feeds; extends GAP-021/022/025) | Sprint 15 | CTIO+MLRO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-069 | Voice AI support channel (ADR-112; LiveKit/Pipecat/Whisper/TTS, reuse Presidio+Chatwoot; compliance-heavy: recording/retention/audio-PII) | Sprint 16 | COO+Compliance | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-070 | Quant pricing/risk advisory engine (ADR-113; Heston/SABR/Bates + Avellaneda MM + Greeks/VaR; advisory-seam, no live exec; reuses QuantLib+DSE+ADR-079) | Sprint 16 | CTIO+CRO | Q4 2026 | 🟡 IN PROGRESS |
-| GAP-071 | Payment distribution model — Tompay+Paybis, Neuronext superseded (ADR-108 PROPOSED; 2 open-items: settlement path + custody model) | Sprint 14 | CEO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
+| GAP-071 | Payment distribution model — Tompay+Paybis, Neuronext superseded (ADR-108 **ACCEPTED 2026-06-20**; open-items resolved: settlement=Paybis via Tompay GBP IBAN + Papaya EUR-SEPA, custody=NON-CUSTODIAL; residual: Paybis go-live, CASP T&C by 2026-07-01, Travel Rule) | Sprint 14 | CEO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-072 | Travel Rule responsibility (ADR-114; Paybis CASP = TR-provider option-a + BANXE MLRO oversight option-b; resolves ADR-036 gate) | Sprint 14 | MLRO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-073 | Execution channel ACCEPTED — Channel C = Ruflo factory (ADR-106; launch start-ruflo.sh, scope arch-stack-002); Claude-Code-via-factory UNBLOCKED | Sprint 14 | CEO+CTIO | NOW | ✅ DONE |
 

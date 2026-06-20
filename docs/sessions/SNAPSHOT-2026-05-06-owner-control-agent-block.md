@@ -1,5 +1,7 @@
 # SNAPSHOT — Owner Control Agent 1.0: KPI/Compliance/Ops Pulse for BANXE.COM Holding (TOMPAY + NEURONEXT)
 
+> **Reconciliation note (2026-06-20, SP-PR2 / ADR-108 ACCEPTED):** BANXE.COM = **TOMPAY** (UK FCA EMI — fiat) + **PAYBIS** (MiCA CASP — crypto distribution, NON-CUSTODIAL). **NEURONEXT (own VASP/custodial) is SUPERSEDED / RETIRED** — the crypto arm migrated to Paybis distribution (BANXE = distribution agent, not CASP; client crypto off BANXE balance). Historical NEURONEXT references below are retained for history; for current state read NEURONEXT -> PAYBIS and custodial -> non-custodial. See ADR-108, GAP-071.
+
 **Тип:** Roadmap Block  
 **Дата:** 2026-05-06 (CEST)  
 **Базовый чекпоинт:** `checkpoint-2026-05-06-oss-sumsub-replacement-block`  
