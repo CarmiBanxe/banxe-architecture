@@ -14144,3 +14144,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** Duplication Audit (ADR-102): payment_switch_port (Hyperswitch live execution) = KEEP, не called/dup (PaymentEnginePort = advisory orchestration/state-machine, не live switch); ledger_port + midaz_adapter (Midaz live ADR-013) = KEEP, не called (0 imports — fence); FeeEnginePort не called; accounts SoT (M2.2 banxe-emi-stack) = consume as projection (account_ref, no 2nd balance store M1.3); PaymentEnginePort = single advisory payment engine. Verdict: single engine, projection over accounts SoT, live switch/ledger/fee untouched, no dup, no 2nd balance store; existing ports unchanged. Numeric (I-05): amount_minor int minor units never float (sandbox rejects float TypeError); no balances held. Activation Safety: advisory/read-only/sandbox-mock; NO live execution/fund movement/Midaz LedgerPort/Hyperswitch PaymentSwitch/FeeEngine calls/RMQ publish (status-consistency surface only); idempotency dedup; fail-closed; operator-gated ADR-103 PART 2. Out-of-scope: live execution/fund movement, fee computation, balances/postings, SEPA rail (M2.6), KYC/AML, banxe-fiat-backend lift-and-shift, 2nd balance store. Валидация (evo1 isolated worktree): ruff check + ruff format --check clean (repo config); pytest tests/test_payment_engine.py 7 passed (isolated addopts override); py_compile + import sanity OK. ПОЛНЫЙ mypy + pytest --cov>=80% + semgrep + gitleaks — в CI (модульный тест прогнан изолированно локально; coverage/mypy/full-suite впервые в CI — честно flagged). Backend-PR banxe-payment-core #19 OPEN (no merge). Server-only isolated worktree (Rule 1/6); чужие/parallel-session ветки не тронуты; merge не делал.
 - **Status:** payments engine scaffold готов; advisory/read-only; no live execution; honest CI-status (ruff+module-pytest локально green, full mypy/coverage/semgrep впервые в CI). Предусловие для MIG-M2.6 (sepa = payment-core rail-consumer над payment engine).
 - **Refs:** banxe-payment-core PR #19 (agent/factory/mig-m2.1-payments-engine-scaffold); src/ports/payment_engine_port.py + src/payments/sandbox_engine.py + src/payments/__init__.py + tests/test_payment_engine.py; reuse-not-dup src/ports/ledger_port.py + payment_switch_port.py + midaz_adapter.py; consume accounts SoT (MIG-M2.2 banxe-emi-stack #201/IL-374); ADR-102, ADR-103, ADR-013, ADR-015, ADR-059-A, I-05, I-28; MIG-M1.3 (payments/accounts boundary), MIG-M2.2; MIG-M1/M2 roadmap.
+
+---
+
+### IL-379 - agent-factory-governance-adr-116-factory-mandate @ 2026-06-21T09:30:00Z
+
+- **il_ts:** 2026-06-21T09:30:00Z
+- **session_id:** agent-factory-governance-adr-116-factory-mandate
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr-116-factory-mandate/IL-2026-06-21T09-30-00Z--32683f.md`
+
+### ADR-116 Factory Mandate & Scope Boundary — governance canon publication (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Publish ADR-116 (PROPOSED) as a persistent factory mandate / scope-boundary artifact (in-scope, out-of-scope, boundary rule, operational rule, consequences). Same mandate text as ADR-115 (operator-directed). Coupling IL-shard (ADR-056/060, I-28) for docs/adr tracked path; append-only (ADR-059-A), il_ts strictly above origin/main max.
+- **Shagi:** branch agent/factory/governance/adr-116 from origin/main; docs/adr/ADR-116-factory-mandate-scope-boundary.md created (ADR-115 body verbatim, H1 number swapped); coupling shard added; ledger regenerated; build_ledger --check OK.
+- **Proof:** docs-only (ADR + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T09:30:00Z > main-max 2026-06-20T21:10:00Z. build_ledger --check exit 0.
+- **Refs:** docs/adr/ADR-116-factory-mandate-scope-boundary.md; ADR-115 (same mandate text), ADR-053, ADR-RUFLO-01, ADR-056, ADR-060, ADR-059-A, I-28.
