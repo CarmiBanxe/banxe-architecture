@@ -14070,3 +14070,23 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** Duplication Audit (ADR-102): api/models/ledger.py + services/ledger (Midaz CBS live balances, ADR-013) = live balance SoT — KEEP, НЕ called/duplicated (account_sot balance-free, 0 ledger/midaz imports — fence test; ledger.py unchanged); account_sot = new single advisory account-metadata SoT (не второй balance store); payments-side accounts (M1.3) = future projection-consumer; accounts-connector (@banxe/common) = consume contract proto-level (no re-impl). Verdict: single advisory SoT, live balance SoT untouched, no dup, no 2nd balance store. Numeric (I-01): balance-free (нет balance/amount полей; no float). Activation Safety: advisory/read-only/sandbox-mock; NO live balances/Midaz LedgerPort call/postings/payments/fund movement/live mutation (operator-gated ADR-103 PART 2); fail-closed. Out-of-scope: live balances/postings (Midaz untouched), payments engine (M2.1), KYC/AML, live mutation, banxe-fiat-backend lift-and-shift, 2nd balance store. Валидация (evo1 isolated worktree): ruff check + ruff format --check clean (repo pyproject config), py_compile OK; diff = 4 файла (3 new + main.py register), ledger.py 0 в diff. ПОЛНЫЙ mypy/pytest/quality-gate — в CI (lint-python + quality-gate + smoke-gate workflows): project venv не provisioned в server-side clone → local mypy/pytest НЕ запущены, flagged для CI (честно). Backend-PR banxe-emi-stack #201 OPEN (no merge). Server-only isolated worktree (Rule 1/6); чужие/parallel-session ветки не тронуты; merge не делал.
 - **Status:** accounts SoT scaffold готов как предусловие MIG-M2.1 (payments engine = projection-consumer); advisory/read-only; no live mutation; no lift-and-shift.
 - **Refs:** banxe-emi-stack PR #201 (agent/factory/mig-m2.2-accounts-sot-scaffold); api/models/account_sot.py + api/routers/account_sot.py + api/main.py + tests/test_account_sot.py; reuse-not-dup api/models/ledger.py (Midaz live SoT, ADR-013); accounts-connector contract (MIG-M2.0/M2.7 banxe-shared-libs); ADR-102, ADR-103, ADR-013, ADR-059-A, I-01, I-28; MIG-M1.3 (payments/accounts boundary), MIG-M2.0/M2.7; MIG-M1/M2 roadmap.
+
+---
+
+### IL-375 - agent-factory-archstack002-il-impl2-crypto-aml @ 2026-06-20T19:54:43Z
+
+- **il_ts:** 2026-06-20T19:54:43Z
+- **session_id:** agent-factory-archstack002-il-impl2-crypto-aml
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-il-impl2-crypto-aml/IL-2026-06-20T19-54-43Z--d6e9d7.md`
+
+### IMPL-2 — crypto-AML graph analytics as real code (GAP-068, L1→L2)
+- **Instrukciya:** Implement crypto-AML graph-analytics as production code in banxe-emi-stack, fulfilling GAP-068 (ADR-111); extends OPEN GAP-021 (real-time fraud ML).
+- **Delivered (banxe-emi-stack PR #200, merged ff43c3d):** services/crypto_aml_graph/{graphsense_client,neo4j_adapter,clustering,gnn_inference,blacklist_feed,service,models,__init__}.py + api/routers/crypto_aml_graph.py (POST /v1/compliance/crypto-aml/screen) + api/models/crypto_aml_graph.py + tests/test_crypto_aml_graph.py.
+- **Components:** GraphSense client (pluggable, safe-stub, no secrets); Neo4j adapter (InMemory default + lazy real port); CIOH clustering; GraphSAGE stub + peel-chain Random-Forest fallback; ensemble blacklist (0xB10C OFAC + USDT + Scorechain/MistTrack, env-only).
+- **Scoring:** LOW/MED/HIGH/CRITICAL. Auto-BLOCK only on sanctions-match; HIGH/CRITICAL → MANDATORY MLRO HITL (no auto-clear). Travel Rule (ADR-114) flagged ≥ EUR 1000.
+- **Reuse (no reimplementation):** case_management Marble, audit_trail append-only ClickHouse, hitl MLRO, crypto_custody.travel_rule_engine. No secrets (I-SEC).
+- **Proof:** ruff PASS; mypy PASS (10 files); pytest 11 passed; 20/20 CI green. del=0.
+- **Status delta:** GAP-068 L1 → L2 (L3-live on Neo4j/GraphSense provisioning).
+- **Refs:** GAP-068; GAP-021; GAP-076 (IMPL-2); ADR-111; ADR-114; ADR-052. No secrets.
