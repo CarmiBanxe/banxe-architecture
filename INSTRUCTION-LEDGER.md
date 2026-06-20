@@ -14090,3 +14090,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** ruff PASS; mypy PASS (10 files); pytest 11 passed; 20/20 CI green. del=0.
 - **Status delta:** GAP-068 L1 → L2 (L3-live on Neo4j/GraphSense provisioning).
 - **Refs:** GAP-068; GAP-021; GAP-076 (IMPL-2); ADR-111; ADR-114; ADR-052. No secrets.
+
+---
+
+### IL-376 - agent-factory-governance-adr-116-factory-perimeter @ 2026-06-20T20:05:00Z
+
+- **il_ts:** 2026-06-20T20:05:00Z
+- **session_id:** agent-factory-governance-adr-116-factory-perimeter
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr-116-factory-perimeter/IL-2026-06-20T20-05-00Z--85fdaa.md`
+
+### ADR-116 Factory/Project perimeter + full-cycle org model — operator concept as canon (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Materialize the operator's corrected factory concept (supreme over canon) as ADR-116 (PROPOSED): factory/project hardware+model perimeter, full-cycle software-company org roles, quality-gate KPIs, Hermes-as-future-pattern, spec-build pipeline. Supersedes hardware/perimeter parts of DEPLOYMENT-ARCHITECTURE (2026-04-06) + AGENT-ORG-STRUCTURE. Coupling IL-shard (ADR-056/060, I-28) for docs/adr tracked path; append-only (ADR-059-A), il_ts strictly above origin/main max.
+- **Shagi:** banxe-architecture branch agent/factory/governance/adr-116-factory-perimeter from origin/main; created docs/adr/ADR-116-factory-project-perimeter-and-fullcycle-org.md; added this coupling shard; ledger regenerated; build_ledger --check OK. STOP before push (gated; no force-push). Optional companion doc docs/factory/FACTORY-FULLCYCLE-ORG-*.md NOT created — verbatim operator structure text not supplied (no fabrication).
+- **Proof:** docs-only (ADR doc + coupling shard + regenerated ledger); no code/prod/fabric/model changes. Append-only: existing IL untouched; il_ts 2026-06-20T20:05:00Z > origin/main max 2026-06-20T19:10:00Z (re-fetched; brief-stated 18:55:00Z was stale). build_ledger --check exit 0.
+- **Refs:** docs/adr/ADR-116-factory-project-perimeter-and-fullcycle-org.md; ADR-115, ADR-053, ADR-RUFLO-01, ADR-056, ADR-060, ADR-059-A, I-28; DEPLOYMENT-ARCHITECTURE, AGENT-ORG-STRUCTURE (reconcile follow-up).
