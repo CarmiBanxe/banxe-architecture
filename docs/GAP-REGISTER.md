@@ -59,6 +59,7 @@
 | GAP-069 | Voice AI support channel (ADR-112; LiveKit/Pipecat/Whisper/TTS, reuse Presidio+Chatwoot; compliance-heavy: recording/retention/audio-PII) | Sprint 16 | COO+Compliance | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-070 | Quant pricing/risk advisory engine (ADR-113; Heston/SABR/Bates + Avellaneda MM + Greeks/VaR; advisory-seam, no live exec; reuses QuantLib+DSE+ADR-079) | Sprint 16 | CTIO+CRO | Q4 2026 | 🟡 IN PROGRESS |
 | GAP-071 | Payment distribution model — Tompay+Paybis, Neuronext superseded (ADR-108 PROPOSED; 2 open-items: settlement path + custody model) | Sprint 14 | CEO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
+| GAP-072 | Travel Rule responsibility (ADR-114; Paybis CASP = TR-provider option-a + BANXE MLRO oversight option-b; resolves ADR-036 gate) | Sprint 14 | MLRO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 
 ---
 
