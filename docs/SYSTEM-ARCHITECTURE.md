@@ -269,6 +269,21 @@ This document describes the technical architecture of the BANXE AI Bank platform
 
 ---
 
+### 3.7 Payment / Acquiring Layer (ADR-015)
+
+Repo: **banxe-payment-core** (Python; 297 tests, 97% coverage, ruff green). Implements Mastercard acquiring/issuing per ADR-015 (Hyperswitch + Paymentology + Midaz). Ports/adapters (I-20 replaceable contours): PaymentSwitchPort -> HyperswitchAdapter; IssuerPort -> PaymentologyAdapter; LedgerPort -> MidazAdapter.
+
+| Container | Port | License | Purpose |
+|-----------|------|---------|---------|
+| Hyperswitch (Juspay) | 8096-8098 | Apache 2.0 | Payment switch / orchestration, routing, 3DS (acquiring) — `PaymentSwitchPort` |
+| Paymentology | API | Commercial | Card issuer processing, Mastercard Companion API (balance stays in Midaz) — `IssuerPort` |
+| Midaz | 8095 | Apache 2.0 | Double-entry ledger (auth + settlement) — `LedgerPort` (ADR-013/014) |
+| banxe-settlement | — | Proprietary (core, I-20) | Mastercard IPM/T112 settlement parser + reconciler (`IPMParser`, `Reconciler`) |
+
+**Vendor reconcile (SP-BM2 / GAP-074):** actual acquiring/issuing vendors = **Hyperswitch + Paymentology** (ADR-015, ACCEPTED) — NOT Adyen/Worldline. Business-model 'acquiring 0%' superseded by code reality. Adyen/Worldpay appear only as example PSPs the Hyperswitch switch can route to.
+
+**BLOCKED on keys (go-live; I-SEC — no secrets):** Modulr API key (GAP-008/015, BT-001, CEO) + Paymentology sandbox key. Code exists and registered; go-live key-gated.
+
 ## 4. Architecture Principles
 
 ### 4.1 Composable Compliance Architecture
