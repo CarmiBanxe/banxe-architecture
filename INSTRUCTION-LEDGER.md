@@ -14193,3 +14193,24 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Shagi:** branch agent/factory/governance/adr-117 from origin/main; git mv perimeter ADR 116->117 + header edits; coupling shard added; ledger regenerated; build_ledger --check OK. Old perimeter shard on main left untouched (append-only).
 - **Proof:** docs-only (renamed ADR + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T10:00:00Z > main-max 2026-06-21T09:45:00Z. build_ledger --check exit 0. ADR number uniqueness restored.
 - **Refs:** docs/adr/ADR-117-factory-project-perimeter-and-fullcycle-org.md; ADR-116 (mandate), ADR-115, ADR-053, ADR-RUFLO-01, ADR-056, ADR-060, ADR-059-A, I-28.
+
+---
+
+### IL-382 - agent-factory-archstack002-il-impl4-quant-advisory @ 2026-06-21T10:44:43Z
+
+- **il_ts:** 2026-06-21T10:44:43Z
+- **session_id:** agent-factory-archstack002-il-impl4-quant-advisory
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-il-impl4-quant-advisory/IL-2026-06-21T10-44-43Z--bd9fd5.md`
+
+### IMPL-4 (FINAL) — quant pricing/risk advisory as real code (GAP-070, L1→L2)
+- **Instrukciya:** Implement quant pricing/risk advisory as production code in banxe-emi-stack, fulfilling GAP-070 (ADR-113); ties GAP-036 (treasury/QuantLib), GAP-020 (ICARA). Final of the GAP-076 L1→L3 roadmap.
+- **Delivered (banxe-emi-stack PR #203, merged 1a90a41):** services/quant_advisory/{pricing,market_making,risk_metrics,service,__init__}.py + api/routers/quant_advisory.py (GET /v1/quant/{price,vol-surface,greeks,var} + POST /v1/quant/mm-spread) + api/models/quant_advisory.py + tests/test_quant_advisory.py.
+- **Components:** Black-Scholes + Heston (semi-analytic CF, self-contained Simpson integrator, no scipy dep) + Merton/Bates jumps + SABR/SVI vol-surface; Avellaneda-Stoikov optimal spread; Greeks + VaR99 + stress.
+- **Guardrail:** ADVISORY-SEAM ONLY — QUANT_CAN_EXECUTE=False; no order/MM execution path (MiCA broker-dealer avoidance, ADR-089/090/091/093); outputs feed DSE + human decides.
+- **Reuse (no reimplementation):** risk/treasury seams. No secrets (I-SEC).
+- **Proof:** ruff PASS; mypy PASS; pytest 21 passed (quant cov 97-100%); semgrep PASS; full CI 17/17 green. del=0.
+- **Status delta:** GAP-070 L1 → L2 (advisory-only, wired into FastAPI app).
+- **Roadmap:** GAP-076 IMPL-1..IMPL-4 ALL delivered (adverse-media, crypto-AML-graph, voice-AI, quant).
+- **Refs:** GAP-070; GAP-036; GAP-020; GAP-076; ADR-113; ADR-089/090/091/093; ADR-052. No secrets.
