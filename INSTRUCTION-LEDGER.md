@@ -13741,3 +13741,22 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Registered:** SAD docs/SYSTEM-ARCHITECTURE.md §3.7 (Hyperswitch :8096-8098, Paymentology issuer, Midaz :8095, IPM settlement); GAP-074 in GAP-REGISTER.
 - **BLOCKED on keys (go-live):** Modulr API key (GAP-008/015, BT-001, CEO) + Paymentology sandbox key. Code exists; activation key-gated. No secrets (I-SEC).
 - **Refs:** GAP-074; ADR-015; ADR-052 (enforcement-runtime); CarmiBanxe/banxe-payment-core (main).
+
+---
+
+### IL-358 - agent-factory-mig-m1-batch-merge-governance @ 2026-06-20T13:50:00Z
+
+- **il_ts:** 2026-06-20T13:50:00Z
+- **session_id:** agent-factory-mig-m1-batch-merge-governance
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mig-m1-batch-merge-governance/IL-2026-06-20T13-50-00Z--b9f2c5.md`
+
+### Governance batch-merge MIG-M1.1 / MIG-M1.2 / MIG-M1.4 — COMPLETE (BANXE.RAR → EMI, cross-context migration track)
+- **Instrukciya:** Governance batch-merge трёх docs-only MIG audit-PR (#593 MIG-M1.1 open-banking, #597 MIG-M1.2 abs-integration, #596 MIG-M1.4 identity/auth) в порядке монотонного il_ts; rebase на свежий origin/main + regenerate ledger при CONFLICTING; поднять il_ts MIG-M1.4 строго выше MIG-M1.2; squash-merge без --admin; финальная проверка ledger-консистентности и монотонности. Isolated worktree (Rule 1/6); append-only (ADR-059-A); fail-closed.
+- **Результат (merge-порядок + SHA + il_ts):** MIG-M1.1 #593 → main a2157af (IL-352 @ 2026-06-20T09:32:00Z); MIG-M1.2 #597 → main 8b340f2 (IL-353 @ 10:02:00Z); MIG-M1.4 #596 → main cb047e0 (IL-354 @ 10:15:00Z, поднят с 09:47 для строгой монотонности после MIG-M1.2). Все squash-merge без --admin, удалённые ветки удалены.
+- **il_ts-монотонность:** 09:32 < 10:02 < 10:15 — строго возрастающая в фактическом порядке слияния. Append-only соблюдён (существующие IL не правились; INSTRUCTION-LEDGER регенерировался детерминированно при rebase-конфликтах, без правки чужих строк). guardian-ledger / ledger-build / ledger-append-only / guardian-ledger-shards = green на каждом merge; build_ledger.py --check = exit 0 на финальном свежем origin/main.
+- **Заметка по процессу:** после squash-merge базового #593 GitHub выдавал stale CONFLICTING для дочерних #597/#596 несмотря на clean-descendant статус (origin/main = ancestor PR-head, проверено git merge-base + live gh api). Решено one-time empty-commit nudge (схлопывается squash-merge'ем) для форс-пересчёта mergeability — без обхода branch protection, без --admin.
+- **Proof:** docs-only/IL-only governance-запись; никаких изменений кода legacy/EMI; 3 audit-doc (MIG-M1.1/1.2/1.4) + 3 coupling-shard на main; нет оставшихся open MIG-M1.1/1.2/1.4 PR; worktrees clean.
+- **Готовность трека:** MIG-M1.x audit-цикл по open-banking / abs / identity-auth завершён и консистентен в ledger. Открытые предусловия для M2: (1) auth dup-audit (banxe-auth vs banxe-auth-backend) ПЕРЕД MIG-M2.3; (2) operator/governance sign-off на KYC/KYB/AML carve-out (MIG-M1.4); (3) сохранение контрактов — banxe-common auth/identity gRPC connectors (M1.4) + @abs/common + RMQ patterns + ABS error-maps (M1.2); (4) re-point banxe-config (open-banking, M1.1). Остальные M1 audit-подшаги (MIG-M1.3 payments+accounts, M1.5 sepa, M1.6 platform/reference/config, M1.7 frontend+crypto-earn, M1.8 acceptance) — pending. CSV-v0 discrepancy зафиксированы (banxe-auth-backend, banxe_auth→ui, banxe-identity-config-manager, @abs/common) — рекомендация обновить mapping v0.
+- **Refs:** PR #593 (a2157af), #597 (8b340f2), #596 (cb047e0); IL-352/353/354; docs/migration/MIG-M1.1-open-banking-dup-audit.md + MIG-M1.2-abs-dup-audit.md + MIG-M1.4-identity-auth-boundary.md; ADR-059-A, ADR-102, ADR-103, I-28; MIG-M1/M2 roadmap.
