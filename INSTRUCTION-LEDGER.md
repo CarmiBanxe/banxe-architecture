@@ -13974,3 +13974,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** advisory-only (docs/migration/MIG-M2.0-mapping-v0-update-and-shared-libs-dedup.md); shell audit-only (ls/grep по /tmp/bx-legacy, read-only); никаких мутаций legacy/EMI-кода; append-only IL (il_ts 17:30 > re-fetched max 2026-06-20T17:22:07Z (поднят при merge после параллельного churn)); build_ledger --check exit 0; docs-only PR (doc + coupling-shard), без merge.
 - **Предусловия MIG-M2.7 (теперь выполнимы):** (1) canonical platform home выбран = banxe-shared-libs→banxe-platform (two-platform-core resolved); (2) contract-test baseline до scaffold: gql-transport.proto + 25 @banxe/common connectors (1429) + @banxe/core API (88) + @abs/common + @banxe/rabbit-mq + apollo-gateway federation schema; (3) M2.7 scaffold @banxe/* из banxe-shared-libs → banxe-platform (advisory/read-only, за identical package API + proto, no merge, no live mutation operator-gated); (4) mapping-v0 обновлён.
 - **Refs:** docs/migration/MIG-M2.0-mapping-v0-update-and-shared-libs-dedup.md; /tmp/banxe-migration-mapping-v0.claude.txt; legacy (read-only) banxe-shared-libs (packages/core/common/abs-common/bank-common/graphql/rabbit-mq) + banxe-core (@banxe/core 0.0.50) + banxe-common (@banxe/common 0.0.461) + banxe-fiat-backend/abs-common (@abs/common 0.1.112) + banxe-apollo-gateway + grpc-proxy-server; ADR-102, ADR-103, ADR-059-A, I-28; MIG-M1.2/M1.6/M1.8, MIG-M2.7 (next).
+
+---
+
+### IL-370 - agent-factory-governance-adr-115-factory-mandate @ 2026-06-20T17:40:00Z
+
+- **il_ts:** 2026-06-20T17:40:00Z
+- **session_id:** agent-factory-governance-adr-115-factory-mandate
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr-115-factory-mandate/IL-2026-06-20T17-40-00Z--846a4d.md`
+
+### ADR-115 Factory Mandate & Scope Boundary — governance canon publication (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Publish ADR-115 (PROPOSED) as a persistent repository artifact fixing the factory mandate: software design & delivery orchestration only; factory does NOT interpret business/regulatory/financial/go-live meaning. Coupling IL-shard (ADR-056/060, I-28) for the docs/adr tracked path; append-only (ADR-059-A), il_ts strictly above origin/main max.
+- **Shagi:** banxe-architecture branch agent/factory/governance/adr-115-factory-mandate from origin/main; created docs/adr/ADR-115-factory-mandate-scope-boundary.md; added this coupling shard; ledger regenerated; build_ledger --check OK. STOP before push (gated; no force-push).
+- **Proof:** docs-only (ADR doc + coupling shard + regenerated ledger); no code/prod/fabric. Append-only: existing IL untouched; il_ts 2026-06-20T17:40:00Z > origin/main max 2026-06-20T17:22:07Z. build_ledger --check exit 0.
+- **Refs:** docs/adr/ADR-115-factory-mandate-scope-boundary.md; ADR-053, ADR-RUFLO-01, ADR-056, ADR-060, ADR-059-A, I-28.
