@@ -13801,3 +13801,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Proof:** advisory-only (docs/migration/MIG-M1.4.1-auth-dup-audit.md, 7 секций); shell audit-only (ls/grep по /tmp/bx-legacy, read-only); никаких мутаций legacy/EMI-кода; append-only IL (il_ts 13:35 > re-fetched max 2026-06-20T13:19:57Z); build_ledger --check exit 0; docs-only PR (doc + coupling-shard), без merge.
 - **Предусловия MIG-M2.3:** (1) MIG-M1.4.1 accepted + IL → canonical auth = auth-backend → platform; (2) consumer-list (8 auth-backend via auth-connector + auth-api error-namespace consumers); (3) feature-list re-home (SRP/Redis-sessions/tokens/api-keys/login-history/scopes → platform; auth-api JWT facade salvage-or-retire); (4) seam с identity (identity emi-stack via auth-connector; contract-tests auth-connector + identity-connector); (5) auth-api retirement-plan (fail-closed re-grep, error-namespace migrated); (6) MIG-M2.3 scaffold platform auth advisory/read-only behind auth-connector — no merge, no live cutover (operator-gated).
 - **Refs:** docs/migration/MIG-M1.4.1-auth-dup-audit.md; /tmp/banxe-migration-mapping-v0.claude.txt; legacy (read-only) banxe-auth + banxe-fiat-backend/banxe-auth-backend + banxe-common auth-connector (AUTH_BACKEND_SERVICE_NAME) + banxe-common/crypro/shared-libs error maps (auth-api namespace); ADR-102, ADR-103, ADR-059-A, I-28; MIG-M1.4 (merged), MIG-M1/M2 roadmap, precondition MIG-M2.3.
+
+---
+
+### IL-361 - agent-factory-m1-m1-26-advisory-changelog-plan @ 2026-06-20T14:30:00Z
+
+- **il_ts:** 2026-06-20T14:30:00Z
+- **session_id:** agent-factory-m1-m1-26-advisory-changelog-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m1-m1-26-advisory-changelog-plan/IL-2026-06-20T14-30-00Z--bf3fad.md`
+
+### M1.26 plan doc — advisory-surface changelog (static config-as-data) (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Governance docs-only M-track plan-PR #580 (M1.26 advisory-surface changelog). Coupling IL-shard (ADR-056/060, I-28) для docs/migration tracked-пути; append-only (ADR-059-A), il_ts строго выше main-max.
+- **Shagi:** banxe-architecture ветка agent/factory/m1/m1.26-advisory-changelog-plan (PR #580) rebased на origin/main (clean, no conflicts); добавлен coupling-shard; ledger регенерирован; build_ledger --check OK. Plan-doc docs/migration/M1.26-advisory-surface-changelog.md (143 строки) — единственный контентный файл.
+- **Proof:** docs-only (plan doc + coupling shard + regenerated ledger); никакого кода/ADR/prod/fabric. Append-only: существующие IL не правились; il_ts 2026-06-20T14:30:00Z > main-max 2026-06-20T09:17:00Z. build_ledger --check exit 0.
+- **Refs:** PR #580; docs/migration/M1.26-advisory-surface-changelog.md; ADR-056, ADR-060, ADR-059-A, I-28.
