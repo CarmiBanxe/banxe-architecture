@@ -14255,3 +14255,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Status:** MIG-M2.4 blocker (PR #624/IL-381) RESOLVED operator-решением A → reconcile/gap-audit (этот doc). emi-stack PSD2 surface = canonical (KEEP); legacy delta = port-candidate substeps; legacy top-level+nested = retire after port. No scaffold. M2-sequencing correction: M2.4 = reconcile, не scaffold.
 - **Recommended next:** (1) запланировать §3 delta ports как individual HITL-gated additive substeps в emi-stack (M2.4a domestic-scheduled / M2.4b standing-orders / M2.4c file-payments / M2.4d international-scheduled / M2.4e CBPII consent lifecycle — каждый ADR-102+Quality-Gate, consume M2.1/M2.2, paired PR, no merge); ИЛИ (2) перейти к MIG-M2.5 (ABS — LAYERED nested→emi-stack canonical + top-level Bifrost AbsBifrostPort adapter per M1.2) пока delta ports запланированы.
 - **Refs:** docs/migration/MIG-M2.4-RESCOPE-open-banking-gap-audit.md; MIG-M2.4-BLOCKER (IL-381, PR #624); read-only legacy banxe-open-banking (top-level + nested) + emi-stack api/routers/{open_banking,psd2_gateway,consent_management}.py; MIG-M1.1, MIG-M2.1, MIG-M2.2; ADR-102, ADR-103, ADR-059-A, I-01, I-02, I-27, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-385 - agent-factory-governance-reconcile-adr117 @ 2026-06-21T11:15:00Z
+
+- **il_ts:** 2026-06-21T11:15:00Z
+- **session_id:** agent-factory-governance-reconcile-adr117
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-reconcile-adr117/IL-2026-06-21T11-15-00Z--9c3ecc.md`
+
+### Canon reconciliation to ADR-117 — DEPLOYMENT-ARCHITECTURE + AGENT-ORG-STRUCTURE (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Reconcile docs/DEPLOYMENT-ARCHITECTURE.md and AGENT-ORG-STRUCTURE.md to ADR-117 (perimeter/hardware/org), per ADR-117's explicit directive. Publish ALL contradictions in docs/governance/CANON-RECONCILIATION-ADR117.md; correct only ADR-117-asserted facts; disputed items left as AWAITS OPERATOR (no invention). Coupling IL-shard (ADR-056/060, I-28); append-only (ADR-059-A); il_ts strictly above main-max.
+- **Shagi:** branch agent/factory/governance/reconcile-adr117 from origin/main; created reconciliation registry; in both docs added "Superseded in part by ADR-117; Mandate ADR-116 / RECONCILED 2026-06-21" headers; fixed Legion 16GB->64GB; Legion role -> factory node + model qwen2.5-coder:14b-banxe-factory; added factory model + ADR-117 project model names; annotated doubled-dev. ledger regenerated; build_ledger --check OK.
+- **Proof:** docs-only (2 docs + registry + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T11:15:00Z > main-max 2026-06-21T10:44:43Z. build_ledger --check exit 0. Disputed (GMKtec<->evo mapping, service migration, model sizes, exact dev composition) NOT invented — registry marks AWAITS OPERATOR.
+- **Refs:** docs/governance/CANON-RECONCILIATION-ADR117.md; docs/DEPLOYMENT-ARCHITECTURE.md; AGENT-ORG-STRUCTURE.md; ADR-117, ADR-116, ADR-056, ADR-060, ADR-059-A, I-28.
