@@ -14106,3 +14106,23 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Shagi:** banxe-architecture branch agent/factory/governance/adr-116-factory-perimeter from origin/main; created docs/adr/ADR-116-factory-project-perimeter-and-fullcycle-org.md; added this coupling shard; ledger regenerated; build_ledger --check OK. STOP before push (gated; no force-push). Optional companion doc docs/factory/FACTORY-FULLCYCLE-ORG-*.md NOT created — verbatim operator structure text not supplied (no fabrication).
 - **Proof:** docs-only (ADR doc + coupling shard + regenerated ledger); no code/prod/fabric/model changes. Append-only: existing IL untouched; il_ts 2026-06-20T20:05:00Z > origin/main max 2026-06-20T19:10:00Z (re-fetched; brief-stated 18:55:00Z was stale). build_ledger --check exit 0.
 - **Refs:** docs/adr/ADR-116-factory-project-perimeter-and-fullcycle-org.md; ADR-115, ADR-053, ADR-RUFLO-01, ADR-056, ADR-060, ADR-059-A, I-28; DEPLOYMENT-ARCHITECTURE, AGENT-ORG-STRUCTURE (reconcile follow-up).
+
+---
+
+### IL-377 - agent-factory-archstack002-il-impl3-voice-support @ 2026-06-20T20:57:17Z
+
+- **il_ts:** 2026-06-20T20:57:17Z
+- **session_id:** agent-factory-archstack002-il-impl3-voice-support
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-il-impl3-voice-support/IL-2026-06-20T20-57-17Z--e2ad7b.md`
+
+### IMPL-3 — voice-AI support channel as real code (GAP-069, L1→L2/L3)
+- **Instrukciya:** Implement the voice-AI support channel as production code in banxe-emi-stack, fulfilling GAP-069 (ADR-112); ties GAP-038/039 (support).
+- **Delivered (banxe-emi-stack PR #202):** services/voice_support/{gateway,asr,tts,pii,recording,service,models,__init__}.py + api/routers/voice_support.py (POST /v1/support/voice/session +transcript +end) + api/models/voice_support.py + tests/test_voice_support.py.
+- **Components:** LiveKit/Pipecat+SIP gateway (pluggable safe-stub, no secrets); Faster-Whisper ASR (lazy); XTTS/Kokoro TTS; Presidio PII redaction + deterministic regex fallback; consent-gated recording + retention TTL (FCA SYSC/DISP).
+- **Compliance:** consent-to-record MANDATORY (no recording/audio-store without consent); transcript PII-redacted before any persistence (UK GDPR); routes to support ticket (reuse); append-only ClickHouse audit; MLRO HITL on flagged calls (no auto-clear). Advisory/support only — no autonomous financial exec via voice (ADR-049).
+- **Reuse (no reimplementation):** support ticketing, audit_trail append-only ClickHouse, hitl MLRO. No secrets (I-SEC).
+- **Proof:** ruff PASS; mypy PASS (10 files); pytest 11 passed. del=0.
+- **Status delta:** GAP-069 L1 → L2 (code wired into FastAPI app; L3-live on LiveKit/Whisper provisioning).
+- **Refs:** GAP-069; GAP-038; GAP-039; GAP-076 (IMPL-3); ADR-112; ADR-049; ADR-052. No secrets.
