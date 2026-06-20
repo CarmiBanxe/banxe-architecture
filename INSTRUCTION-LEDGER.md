@@ -13990,3 +13990,22 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Shagi:** banxe-architecture branch agent/factory/governance/adr-115-factory-mandate from origin/main; created docs/adr/ADR-115-factory-mandate-scope-boundary.md; added this coupling shard; ledger regenerated; build_ledger --check OK. STOP before push (gated; no force-push).
 - **Proof:** docs-only (ADR doc + coupling shard + regenerated ledger); no code/prod/fabric. Append-only: existing IL untouched; il_ts 2026-06-20T17:40:00Z > origin/main max 2026-06-20T17:22:07Z. build_ledger --check exit 0.
 - **Refs:** docs/adr/ADR-115-factory-mandate-scope-boundary.md; ADR-053, ADR-RUFLO-01, ADR-056, ADR-060, ADR-059-A, I-28.
+
+---
+
+### IL-371 - agent-factory-archstack002-il-impl1-adverse-media @ 2026-06-20T18:33:37Z
+
+- **il_ts:** 2026-06-20T18:33:37Z
+- **session_id:** agent-factory-archstack002-il-impl1-adverse-media
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-il-impl1-adverse-media/IL-2026-06-20T18-33-37Z--a6f175.md`
+
+### IMPL-1 — adverse-media screening as real code (GAP-064, L1→L2/L3)
+- **Instrukciya:** Implement adverse-media / negative-news screening as production code in banxe-emi-stack, fulfilling GAP-064 (passport adverse_media_governor, MLR 2017 Reg.28(3) EDD, FCA SYSC 6.3, I-04).
+- **Delivered (banxe-emi-stack PR #199):** services/adverse_media/{feed,matcher,service,models,__init__}.py + api/routers/adverse_media.py (POST /v1/compliance/adverse-media/screen) + api/models/adverse_media.py + tests/test_adverse_media.py.
+- **Reuse (no reimplementation):** sanctions_screening.fuzzy_matcher (I-01 composite), case_management Marble client, audit_trail append-only ClickHouse, hitl MLRO queue. Feed is pluggable safe-stub with NO secrets (ACCESS-AND-SECRETS I-SEC).
+- **Compliance:** adverse hit → Marble case + append-only audit + MANDATORY MLRO HITL (no auto-clear); advisory output only (no auto-block).
+- **Proof:** ruff PASS; mypy PASS (7 files); pytest 9 passed; coverage 38% ≥ 35% gate. del=0.
+- **Status delta:** GAP-064 L1 → L2/L3 (code wired into FastAPI app). Operator approves merge.
+- **Refs:** GAP-064; GAP-076 (IMPL-1 of roadmap); ADR-052; passport adverse_media_governor. No secrets.
