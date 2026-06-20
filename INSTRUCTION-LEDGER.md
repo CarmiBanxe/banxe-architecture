@@ -13723,3 +13723,21 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Deferred (flagged):** Alembic versioned migrations (deterministic create_all bootstrap in place); signed commits (no signing key in factory env — commit UNSIGNED).
 - **Proof:** crypto-ops-monitor CI on PR #11; ruff/mypy/pytest green locally.
 - **Refs:** GAP-065; ADR-109; ADR-106; CarmiBanxe/crypto-ops-monitor#11; ADR-052 (enforcement-runtime, agents not activated).
+
+---
+
+### IL-357 - agent-factory-archstack002-sp-bm2-acquiring-registration @ 2026-06-20T13:19:57Z
+
+- **il_ts:** 2026-06-20T13:19:57Z
+- **session_id:** agent-factory-archstack002-sp-bm2-acquiring-registration
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-bm2-acquiring-registration/IL-2026-06-20T13-19-57Z--f3b618.md`
+
+### SP-BM2 — register & reconcile existing acquiring/issuing stack (GAP-074)
+- **Instrukciya:** Register and reconcile the ALREADY-implemented card acquiring/issuing stack in CarmiBanxe/banxe-payment-core (per ADR-015). This is registration/reconciliation, NOT build-from-zero.
+- **What exists (read-only verified):** banxe-payment-core — PaymentSwitchPort->HyperswitchAdapter, IssuerPort->PaymentologyAdapter, LedgerPort->MidazAdapter, IPMParser + Reconciler (Mastercard IPM/T112). pytest 297 passed, 97% coverage; ruff green.
+- **Vendor-mismatch resolution:** actual vendors = Hyperswitch + Paymentology (ADR-015 ACCEPTED, source of truth) — NOT Adyen/Worldline. ADR-015 already correct (no edit). Business-model 'acquiring 0%' superseded by code reality; Adyen/Worldpay in business-model are example Hyperswitch-routable PSPs, not Banxe's acquirer.
+- **Registered:** SAD docs/SYSTEM-ARCHITECTURE.md §3.7 (Hyperswitch :8096-8098, Paymentology issuer, Midaz :8095, IPM settlement); GAP-074 in GAP-REGISTER.
+- **BLOCKED on keys (go-live):** Modulr API key (GAP-008/015, BT-001, CEO) + Paymentology sandbox key. Code exists; activation key-gated. No secrets (I-SEC).
+- **Refs:** GAP-074; ADR-015; ADR-052 (enforcement-runtime); CarmiBanxe/banxe-payment-core (main).

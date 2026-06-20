@@ -61,6 +61,7 @@
 | GAP-071 | Payment distribution model — Tompay+Paybis, Neuronext superseded (ADR-108 **ACCEPTED 2026-06-20**; open-items resolved: settlement=Paybis via Tompay GBP IBAN + Papaya EUR-SEPA, custody=NON-CUSTODIAL; residual: Paybis go-live, CASP T&C by 2026-07-01, Travel Rule) | Sprint 14 | CEO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-072 | Travel Rule responsibility (ADR-114; Paybis CASP = TR-provider option-a + BANXE MLRO oversight option-b; resolves ADR-036 gate) | Sprint 14 | MLRO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-073 | Execution channel ACCEPTED — Channel C = Ruflo factory (ADR-106; launch start-ruflo.sh, scope arch-stack-002); Claude-Code-via-factory UNBLOCKED | Sprint 14 | CEO+CTIO | NOW | ✅ DONE |
+| GAP-074 | Acquiring/issuing registration — banxe-payment-core (Hyperswitch :8096-8098 + Paymentology issuer + Midaz :8095 + IPM settlement) per ADR-015; code DONE + 297 tests green, registered in SAD §3.7; go-live BLOCKED on Modulr key BT-001 + Paymentology sandbox key | Sprint 14 | CTIO | Q3 2026 | ❌ BLOCKED |
 
 ---
 
