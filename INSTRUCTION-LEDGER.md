@@ -13606,3 +13606,19 @@ Instrukciya: Resolve ADR-036 TR gate under ADR-108 distribution model — TR = P
 Shagi: (1) ADR-114 PROPOSED; (2) GAP-072 IN PROGRESS; (3) CryptoCompliancePort = seam to Paybis TR data; (4) TR data clause -> SP-PR3 legal agreement.
 Proof: ADR-114 untracked, GAP-072 inserted, follows ADR-036+ADR-108, del check pending, schemas pending.
 Refs: ADR-114, ADR-036, ADR-108, ADR-111, GAP-025/072, SP-PR3.
+
+---
+
+### IL-351 - archstack002-sp-fab @ 2026-06-20T09:17:00Z
+
+- **il_ts:** 2026-06-20T09:17:00Z
+- **session_id:** archstack002-sp-fab
+- **source:** claude-code
+- **status:** ACCEPTED
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-fab-adr106-accept/IL-2026-06-20T09-17-00Z--spfab.md`
+
+### SP-FAB — Execution channel ACCEPTED (GAP-073, ADR-106)
+Instrukciya: Operator confirmed Channel C = Ruflo factory (start-ruflo.sh, scope arch-stack-002). ADR-106 PROPOSED->ACCEPTED.
+Shagi: (1) ADR-106 ACCEPTED operator-sanction 2026-06-20; (2) Operator Resolution block added; (3) GAP-073 DONE; (4) Claude-Code-via-factory unblocked.
+Proof: ADR-106 Status ACCEPTED, Channel C=Ruflo APPROVED, operator confirmed launch+scope, del check pending, schemas pending.
+Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-073.
