@@ -14730,3 +14730,22 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Pending follow-up (tracked):** deploy-key for **push from evo2** (currently read-only HTTPS; push needs 2FA Confirm-access / deploy-key) — separate enablement step.
 - **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs (DEPARTMENT-MAP/ROADMAP/HITL-MATRIX) NOT touched; no service code (gate script + test harness + ledger only).
 - **Refs:** ADR-060 (#647 fc71e2d); install-hooks (#650 e6bbe6b); self-heal (#652 f429a38); guardian.yml guardian-branch-naming. Supersedes the DEFERRED in IL [agent-factory-archstack002-adr060-hook-selfheal]. No secrets.
+
+---
+
+### IL-410 - agent-factory-archstack002-adr060-gate-final @ 2026-06-21T21:55:56Z
+
+- **il_ts:** 2026-06-21T21:55:56Z
+- **session_id:** agent-factory-archstack002-adr060-gate-final
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-adr060-gate-final/IL-2026-06-21T21-55-56Z--9122b9.md`
+
+### ADR-060 gate — FINAL: evo1+evo2 ACTIVATED (correction of #652 DEFERRED) + single open follow-up
+- **CORRECTION (supersedes the DEFERRED in IL [agent-factory-archstack002-adr060-hook-selfheal], PR #652):** evo1 + evo2 are **ACTIVATED**, NOT DEFERRED. The prior "unreachable" finding was WRONG — it used incorrect connection params: SSH port 22 + user `banxe`. Actual reachability from Legion: **evo1 sshd on :2222**, **evo2 user=`moriel-carmi`**. Both are always reachable; the DEFERRED record is corrected here (append-only — prior shard not edited).
+- **evo2 verification:** anonymous HTTPS read-clone OK (HEAD **6a7b1e3**); `bash scripts/install-hooks.sh` OK; ADR-060 gate confirmed by the deterministic case-table (**15/15 GREEN**) AND the real git pre-push STDIN-contract (`agent/factory/archstack-subA/x` → **BLOCKED**, ok). Root-cause STDIN-refs fix (#653, main 6a7b1e3) validated on evo2.
+- **evo1:** ACTIVATED (sshd :2222 reachable; install-hooks + gate active).
+- **SINGLE open follow-up (non-blocking):** push FROM evo2 requires a GitHub **deploy-key (write)** — read-clone works without it; the deploy-key enablement is blocked on **GitHub 2FA "Confirm access" (sudo mode)** which needs the owner's manual 2FA. Status: **OPTIONAL / PENDING-OWNER-2FA** — does NOT block the factory (push routes via Legend/main terminal as today).
+- **Net state:** ADR-060 branch-name gate active + self-healing + deterministic-tested on Legion + evo1 + evo2; server-side guardian-branch-naming unchanged (byte-identical).
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs NOT touched; no service code (ledger only).
+- **Refs:** ADR-060 (#647); install-hooks (#650); self-heal (#652, DEFERRED corrected here); STDIN-refs gate fix (#653, main 6a7b1e3); scripts/test-branch-name-gate.sh. No secrets.
