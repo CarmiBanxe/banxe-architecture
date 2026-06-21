@@ -63,3 +63,37 @@ Read-only code-audit across code-repos (no feature code changed). Source of trut
 - **Implementation-delta (ADR/L1 without code) = 4:** GAP-064 (adverse-media), GAP-068 (crypto-AML graph), GAP-069 (voice-AI), GAP-070 (quant advisory).
 - **Total GAP-064..074 = 11** (4 + 3 + 4).
 - **Installation %:** code-installed L2/L3 ≈ **31%** of the 13-feature roadmap (incl. SP-CO2/SP-BM2/SP-PR2 cross-repo), ≈36% of 11 GAPs; governance L1 = **100%**; **implementation-delta = 4 features** (next build targets).
+
+## Installation Verdicts — Post-IMPL (2026-06-21, SANDBOX)
+
+> **Context:** the project runs in **SANDBOX**, not production. L3-live blockers (API keys /
+> provisioning) are the **EXPECTED sandbox state — not defects**. The meaningful "installed" bar in
+> sandbox is **L2** (code written, tests green, guardrails enforced); **L3-live** is gated on
+> operator/CEO actions deferred until the production cutover.
+
+### Code-installed (L2/L3)
+
+| Feature | Verdict | Evidence | L3-live gate (deferred) |
+|---------|---------|----------|--------------------------|
+| GAP-064 adverse-media | **L2** | emi-stack `services/adverse_media` (IMPL-1, merged #199) | — (L2 complete; live news-feed optional) |
+| GAP-068 crypto-AML graph | **L2** | emi-stack `services/crypto_aml_graph` (IMPL-2, #200) | Neo4j / GraphSense provisioning |
+| GAP-069 voice-AI | **L2** | emi-stack `services/voice_support` (IMPL-3, #202) | LiveKit / Whisper provisioning |
+| GAP-070 quant advisory | **L2** | emi-stack `services/quant_advisory` (IMPL-4, #203) | advisory-only — no live exec by design |
+| GAP-065 crypto-ops-monitor | **L3 wired** | separate repo | — |
+| GAP-074 acquiring | **L2** | payment-core Hyperswitch/Paymentology/Midaz | BT-001 Modulr / Paymentology keys |
+| GAP-066 braslina | **L2** | separate repo, production v1.0.0 | — |
+| Keycloak IAM | **L3 LIVE** | `:8180` (sandbox) | — |
+
+### Governance-only (correct by nature)
+
+GAP-067 OSS-supply-chain · GAP-071 distribution (ADR-108) · GAP-072 Travel-Rule (ADR-114) · GAP-073 factory (ADR-106) · ADR-115 factory-mandate.
+
+### L3-live DEFERRED (sandbox → production cutover; operator/CEO scope)
+
+Modulr BT-001 · Sumsub BT-004 · Companies House BT-002/005 · Jube admin pw · Marble `MARBLE_API_KEY` · Ballerine docker · FCA RegData BT-010 · FX provider · Neo4j/GraphSense · LiveKit/Whisper.
+
+### Summary
+
+**Sandbox installation = COMPLETE at L2 for all roadmap features** — code written, tests green,
+guardrails enforced (MLRO HITL / consent-gate / advisory-only). **L3-live intentionally deferred** to
+the production cutover (keys / provisioning = operator scope). **No code gaps remain in sandbox.**

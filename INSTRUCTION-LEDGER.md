@@ -14271,3 +14271,22 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Shagi:** branch agent/factory/governance/reconcile-adr117 from origin/main; created reconciliation registry; in both docs added "Superseded in part by ADR-117; Mandate ADR-116 / RECONCILED 2026-06-21" headers; fixed Legion 16GB->64GB; Legion role -> factory node + model qwen2.5-coder:14b-banxe-factory; added factory model + ADR-117 project model names; annotated doubled-dev. ledger regenerated; build_ledger --check OK.
 - **Proof:** docs-only (2 docs + registry + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T11:15:00Z > main-max 2026-06-21T10:44:43Z. build_ledger --check exit 0. Disputed (GMKtec<->evo mapping, service migration, model sizes, exact dev composition) NOT invented — registry marks AWAITS OPERATOR.
 - **Refs:** docs/governance/CANON-RECONCILIATION-ADR117.md; docs/DEPLOYMENT-ARCHITECTURE.md; AGENT-ORG-STRUCTURE.md; ADR-117, ADR-116, ADR-056, ADR-060, ADR-059-A, I-28.
+
+---
+
+### IL-386 - agent-factory-archstack002-sp-audit-verdict-sandbox @ 2026-06-21T12:02:17Z
+
+- **il_ts:** 2026-06-21T12:02:17Z
+- **session_id:** agent-factory-archstack002-sp-audit-verdict-sandbox
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-audit-verdict-sandbox/IL-2026-06-21T12-02-17Z--fb4d87.md`
+
+### SP — Feature-installation audit: post-IMPL sandbox verdict update (GAP-075)
+- **Instrukciya:** Append the post-IMPL sandbox installation verdict to the audit methodology. Read-only verdict update — no feature code edited.
+- **Context:** Project is SANDBOX (not production). L3-live blockers (API keys / provisioning) are the EXPECTED sandbox state, not defects. L2 (code + tests green + guardrails) is the meaningful installed bar in sandbox; L3-live deferred to production cutover (operator/CEO scope).
+- **Verdict:** Sandbox installation COMPLETE at L2 for ALL roadmap features — GAP-064/068/069/070 (IMPL-1..4, emi-stack), GAP-065 crypto-ops (L3 wired), GAP-074 acquiring (L2, keys deferred BT-001), GAP-066 braslina (L2 prod), Keycloak IAM (L3 live :8180). Governance-only correct: GAP-067/071/072/073, ADR-115. No code gaps remain in sandbox.
+- **L3-live deferred:** Modulr BT-001, Sumsub BT-004, Companies House BT-002/005, Jube pw, Marble key, Ballerine docker, FCA RegData BT-010, FX provider, Neo4j/GraphSense, LiveKit/Whisper — operator/CEO production-cutover actions.
+- **Delivered:** docs/audit/FEATURE-INSTALLATION-AUDIT-METHODOLOGY-2026-06-20.md — appended "## Installation Verdicts — Post-IMPL (2026-06-21, SANDBOX)".
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0. ADR-052; operator approves merge.
+- **Refs:** GAP-075; GAP-076 (roadmap IMPL-1..4 complete); GAP-064/065/066/068/069/070/074; ADR-052. No secrets.
