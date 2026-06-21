@@ -14331,3 +14331,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Status:** MIG-M2.5 blocker (PR #627/IL-385) RESOLVED operator-решением A → reconcile/gap-audit (этот doc). LegacyAbsPaymentAdapter = canonical operational ABS (KEEP); Bifrost = Wave D adapter за PaymentRailPort; legacy abs-api delta = port/re-home substeps; legacy abs-api top-level+nested+vabs2 = retire after port. No scaffold. Unblocks MIG-M2.3 (identity/auth, gate KYC carve-out). M2-sequencing correction: M2.5 = reconcile, не scaffold.
 - **Recommended next:** (1) MIG-M2.3 (identity/auth, gate KYC carve-out sign-off) — следующий sequencing-кандидат, не блокируется ABS reconcile (abs-customer + user re-home выравнивается с M2.3); ИЛИ (2) MIG-M2.5-BIF (Bifrost Wave D adapter за PaymentRailPort) + per-capability delta ports (scoring/agreement/contract/credential/legal-entity/info-field/process), scheduled, no merge.
 - **Refs:** docs/migration/MIG-M2.5-RESCOPE-abs-gap-audit.md; MIG-M2.5-BLOCKER (IL-385, PR #627); read-only legacy banxe-fiat-backend/abs-api (+top-level abs-api, vabs2, banxe-shared-libs/packages/abs-common) + banxe-emi-stack services/payment/legacy/legacy_abs_payment_adapter.py + services/payment/payment_port.py; MIG-M1.2, MIG-M2.0, MIG-M2.2, MIG-M2.4; ADR-013, ADR-025 §15-16, ADR-102, ADR-103, ADR-059-A, I-01, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-389 - agent-factory-audit-gap-075-execution-roadmap-v2 @ 2026-06-21T12:40:00Z
+
+- **il_ts:** 2026-06-21T12:40:00Z
+- **session_id:** agent-factory-audit-gap-075-execution-roadmap-v2
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-audit-gap-075-execution-roadmap-v2/IL-2026-06-21T12-40-00Z--3d5648.md`
+
+### GAP-075 — Feature-Installation Audit Execution Roadmap v2 (docs-only, guardian-ledger coupling)
+- **Instrukciya:** Publish v2 of the audit execution roadmap: convert unresolved feature-installation findings into a sprint backlog (A–G) and incorporate read-only evidence on LiteLLM LAN gateway v2 model-to-role routing, live evo1/evo2 Ollama inventories, and ADR-117 still PROPOSED. Planning/governance only; no feature code changed. Coupling IL-shard (ADR-056/060, I-28) for docs/audit tracked path; append-only (ADR-059-A); il_ts strictly above main-max.
+- **Shagi:** branch agent/factory/audit/gap-075-roadmap-v2 from origin/main; created docs/audit/FEATURE-INSTALLATION-AUDIT-EXECUTION-ROADMAP-2026-06-21-v2.md; coupling shard added; ledger regenerated; build_ledger --check OK. STOP before push (gated).
+- **Proof:** docs-only (roadmap + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T12:40:00Z > main-max 2026-06-21T12:25:00Z. build_ledger --check exit 0. Routing/model evidence recorded as read-only audit input (config-vs-runtime drift closure tracked as Sprint F).
+- **Refs:** docs/audit/FEATURE-INSTALLATION-AUDIT-EXECUTION-ROADMAP-2026-06-21-v2.md; GAP-075; ADR-117 (PROPOSED), ADR-116, ADR-056, ADR-060, ADR-059-A, I-28; AGENT-ORG-STRUCTURE.
