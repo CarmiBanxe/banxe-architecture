@@ -2,13 +2,13 @@
 
 ## Purpose
 
-This roadmap converts all unresolved findings from the feature-installation audit into an execution backlog. It also incorporates newly confirmed read-only evidence about model-to-role routing in the LiteLLM LAN gateway, live model availability on evo1/evo2, and the still-PROPOSED state of ADR-117.
+This roadmap converts all unresolved findings from the feature-installation audit into an execution backlog. It also incorporates newly reported read-only signals about model-to-role routing in the LiteLLM LAN gateway, model availability on the cluster, and the still-PROPOSED state of ADR-117. Infrastructure-topology claims (GMKtec↔evo1/evo2 mapping, per-node sizing, load-balancing) are treated as **OPEN gap-delta** per `docs/governance/CANON-RECONCILIATION-ADR117.md` (AWAITS OPERATOR) — not as settled facts (ADR-117 is PROPOSED; "Operator = canon, supreme over docs").
 
 This is a planning and governance artifact only. No feature code is changed by this document.
 
 ## Newly incorporated evidence
 
-- LiteLLM LAN gateway v2 config contains explicit model-name routing entries for:
+- LiteLLM LAN gateway v2 config references explicit model-name routing entries for:
   - banxe-general
   - qwen3-30b
   - qwen3-banxe
@@ -16,9 +16,9 @@ This is a planning and governance artifact only. No feature code is changed by t
   - glm-4-flash
   - coding
   - gpt-oss-20b
-- Config shows partial load-balancing across evo1 and evo2 for some routes, while others remain evo1-only.
-- Live Ollama model inventories on evo1/evo2 include multiple models beyond the role-routed set.
-- ADR-117 remains PROPOSED, so governance for persistent role-to-model mapping is not yet closed.
+- **OPEN gap-delta (AWAITS OPERATOR):** the node-level topology — which routes are evo1-only vs load-balanced across evo1/evo2 — is NOT asserted by ADR-117 and is not treated as resolved here; see `docs/governance/CANON-RECONCILIATION-ADR117.md` (GMKtec↔evo1/evo2 mapping & service migration).
+- **OPEN gap-delta (AWAITS OPERATOR):** reported model inventories beyond the role-routed set, plus exact per-node (evo1/evo2) inventory, sizing and roles, remain pending read-only verification (registry AWAITS OPERATOR); no per-node fact is asserted.
+- ADR-117 remains PROPOSED, so governance for persistent role-to-model mapping (incl. doubled-dev composition) is not yet closed — tracked as OPEN gap-delta, not settled.
 
 ## Scope of unresolved work
 
@@ -166,8 +166,9 @@ Definition of done:
 ## Execution rules
 
 - Every sprint is read-only unless a separate delivery ADR/PR explicitly authorizes code changes.
-- Source of truth for L2/L3 is code reality, not governance prose.
+- Source of truth for L2/L3 is code reality, not governance prose — "code reality over governance prose" upgrades L2/L3 ONLY on confirmed read-only evidence.
 - Routing/governance claims must be backed by both config evidence and live inventory evidence.
+- Items marked AWAITS OPERATOR in `docs/governance/CANON-RECONCILIATION-ADR117.md` (GMKtec↔evo1/evo2 mapping & service migration, exact model sizing/roles, load-balancing topology, doubled-dev composition) remain OPEN regardless of prose, until operator decision closes them (ADR-117 PROPOSED).
 - Each sprint must publish repository-backed evidence before any delivery claim is upgraded.
 - One sprint at a time through the factory pipeline.
 
