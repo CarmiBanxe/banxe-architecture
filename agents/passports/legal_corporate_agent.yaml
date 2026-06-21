@@ -1,7 +1,7 @@
 agent_id: legal_corporate_agent
 name: "LegalCorporateAgent"
 version: "0.1.0"
-status: PROPOSED
+status: active
 description: >
   STUB passport (Sprint-2 Staff Matrix). Mandatory **department-head agent** for the
   "HR / Legal / Corporate Services" line of the canonical org chart (governance/CANONICAL-ORG-CHART-v2.md §9).
