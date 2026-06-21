@@ -29,3 +29,11 @@ cp "$SRC" .githooks/pre-push
 chmod +x .githooks/pre-push scripts/pre-push-branch-name.sh 2>/dev/null || true
 
 echo "✓ install-hooks: core.hooksPath=$(git config --get core.hooksPath); .githooks/pre-push installed (ADR-060 branch-name gate)."
+
+# 3. Self-heal self-check — fast, idempotent; safe to call as the FIRST step of EVERY session.
+#    Re-asserts activation (no-op if already correct) and fails loudly if it could not.
+HP="$(git config --get core.hooksPath || true)"
+if [ "$HP" != ".githooks" ] || [ ! -x .githooks/pre-push ]; then
+  echo "✗ install-hooks self-check FAILED (hooksPath=$HP, pre-push exec=$([ -x .githooks/pre-push ] && echo yes || echo no))"; exit 1
+fi
+echo "✓ install-hooks self-check OK (ADR-060 pre-push gate active)"
