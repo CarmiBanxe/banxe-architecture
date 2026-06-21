@@ -96,4 +96,9 @@ grep -c "pending\|⏳\|IN_PROGRESS" /home/mmber/banxe-architecture/INSTRUCTION-L
 ## Quality Hook (BUG-006)
 Activate LucidShark/Semgrep pre-commit: `git config core.hooksPath .githooks`
 
+## Setup — local git hooks (ADR-060, run once per checkout/terminal)
+On every fresh checkout / new terminal bootstrap, run: `bash scripts/install-hooks.sh`
+(idempotent — sets `core.hooksPath .githooks` + installs the pre-push branch-name gate that mirrors
+`guardian-branch-naming`; catches a non-compliant branch `<id>` BEFORE push/PR — see ADR-060 amendment 2026-06-21).
+
 # Агенты: читать INSTRUCTION-LEDGER.md → ACCEPTED → работать → VERIFY → DONE

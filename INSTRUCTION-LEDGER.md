@@ -14677,3 +14677,18 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** MIG-ABS-posting CLOSED (done-by-existing; no scaffold); blocker PR #648 resolved (operator A). GLService = canonical posting seam; Midaz single SoT; legacy abs-posting retire-after. KYC/KYB/AML — только после I-27 sign-off.
 - **Recommended next:** следующий ABS delta — recommend abs-customer re-home → identity (consume существующий mounted customers.py/customer_lifecycle.py identity-core surface; mandatory preflight first — likely covered/reconcile) ИЛИ ABS sub-service port (scoring/agreement/contract — preflight-first). KYC/KYB/AML — только после I-27 sign-off; M2.8 frontend — после roster audit.
 - **Refs:** docs/migration/MIG-ABS-posting-COVERED-gl-service.md; MIG-ABS-posting-BLOCKER (IL-404, PR #648); read-only origin/main banxe-emi-stack services/ledger/{ledger_models,gl_service,posting_rules,posting_models,payment_posting_service,midaz_adapter,ledger_port}.py + api/models/ledger.py + api/routers/ledger.py; MIG-M2.5 (ABS reconcile — abs-posting re-home target), MIG-M2.4a (declare-covered precedent), MIG-M2.4-INT (thin-integration precedent); ADR-013, ADR-102, ADR-103, ADR-059-A, I-01, I-24, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-407 - agent-factory-archstack002-adr060-hook-installer @ 2026-06-21T19:35:41Z
+
+- **il_ts:** 2026-06-21T19:35:41Z
+- **session_id:** agent-factory-archstack002-adr060-hook-installer
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-adr060-hook-installer/IL-2026-06-21T19-35-41Z--0d720e.md`
+
+### ADR-060 hook activation — idempotent installer + bootstrap wiring + terminal self-test
+- scripts/install-hooks.sh (idempotent: core.hooksPath .githooks + pre-push-branch-name.sh → .githooks/pre-push, chmod +x). CLAUDE.md bootstrap setup line.
+- Self-test: LEGION ACTIVATED + SELF-TEST OK (compliant→exit0; hyphen-in-<id>→BLOCKED exit1). evo1 (192.168.0.72) DEFERRED unreachable (SSH refused). evo2 (192.168.0.15) DEFERRED unreachable (publickey denied). Both activate on next checkout via bootstrap line.
+- build_ledger --check OK; validate_schemas PASS; del=0; org-docs NOT touched; no service code. Refs ADR-060 (#647 fc71e2d), IL-403. No secrets.
