@@ -14827,3 +14827,22 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** SRP genuine-gap #3 (final) scaffold готов (advisory/sandbox login-strategy, SECURITY-SENSITIVE, no real secrets). После merge #1+#2+#3 — genuine-gap shortlist полностью закрыт. honest CI-status (ruff+module-pytest+global-fence локально green, full 9-check впервые в CI).
 - **Recommended next:** после pair-merge SRP — сводный coverage-acceptance (genuine-gap shortlist abs-info-field/login-history/SRP закрыт; остаток backlog M2.4c-e OB delta preflight-first, KYC/KYB/AML I-27 gate, M2.8 frontend roster audit). KYC/KYB/AML — только после I-27 sign-off; M2.8 frontend — после roster audit.
 - **Refs:** banxe-emi-stack PR #209 (agent/factory/mig-srp); services/auth/srp.py + tests/test_srp.py; semantic port для legacy banxe-fiat-backend/banxe-auth-backend/src/srp/; coverage-audit MIG-ABS-identity (IL-411/412 — genuine-gap #3); reuse-not-dup AuthApplicationService/ScaApplicationService; siblings abs-info-field (gap #1 IL-412) + login-history (gap #2 IL-413); ADR-102, ADR-103, ADR-059-A, I-01, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-415 - agent-factory-archstack002-sprint1-org-freeze @ 2026-06-21T23:31:29Z
+
+- **il_ts:** 2026-06-21T23:31:29Z
+- **session_id:** agent-factory-archstack002-sprint1-org-freeze
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sprint1-org-freeze/IL-2026-06-21T23-31-29Z--acc346.md`
+
+### Sprint-1 — Canonical Org Freeze: governance/CANONICAL-ORG-CHART-v2.md (normative)
+- **Instrukciya:** Sprint 1 only — freeze the canonical top-level org structure as a normative layer. No Sprint 2 (no staff matrix L3/L4, no dept-head passport creation). Governance-only, append-only, del=0, 0 service-code.
+- **Physical audit basis:** arch + emi-stack (107 services, 34 passports, 3 swarms); ORG-STRUCTURE.md (559), DEPARTMENT-MAP.md (514, §A–§I), COMPLIANCE-MATRIX.md (702), COMPLIANCE-ARCH.md (325), HITL-MATRIX.yaml (278). Attached-analysis files not in repo → repo-only truth.
+- **5 contradictions found + normatively resolved in v2 canon:** (1) banxe_aml_orchestrator dual-head Compliance & MLRO → MLRO head ONLY; (2) MLRO line under-CEO vs independent → independent line to Board; (3) CEO Orchestration / Board Reporting Agent absent in ORG-STRUCTURE → executive contour formalised; (4) safeguarding audit smeared → Annual Safeguarding Audit owned by Internal Audit 3rd line (safeguarding_audit_agent), daily ops under COO; (5) DPO/Wind-Down/DORA owners ambiguous → fixed (privacy_compliance_agent / wind_down_planning_agent / resilience_agent).
+- **Created:** governance/CANONICAL-ORG-CHART-v2.md (158 lines, 12 sections: purpose, principles, 8 departments, independent lines, executive contour, three lines, owners DPO/Wind-Down/Safeguarding-Audit/DORA, Level 0–4, mandatory dept-heads, mandatory human doubles, FIXED-in-Sprint-1, DEFERRED-to-Sprint-2).
+- **Updated (append-only pointers):** docs/ORG-STRUCTURE.md, docs/DEPARTMENT-MAP.md (§J), docs/COMPLIANCE-MATRIX.md, COMPLIANCE-ARCH.md → canon authority + MLRO-dedup. docs/GAP-REGISTER.md → GAP-077 (mandatory dept-head agents deferred to Sprint 2).
+- **HITL-MATRIX.yaml NOT touched** (no new top gate needed in Sprint 1; deferred).
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; 0 service-code; org-docs changed by pointer-lines only (append-only). Refs GAP-077; ORG-STRUCTURE; DEPARTMENT-MAP §A–§J; COMPLIANCE-MATRIX/ARCH; HITL-MATRIX.yaml. No secrets.

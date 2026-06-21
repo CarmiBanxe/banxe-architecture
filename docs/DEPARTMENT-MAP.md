@@ -512,3 +512,11 @@ append-only; read `reports_to = Board (independent line)` as the authoritative v
 ---
 
 *SP-ORGCANON §I — canonical cross-reference to ORG-STRUCTURE.md (authoritative), MLRO-independence correction, missing-delta reference rows, agent name-alignment. Governance-only, append-only (del=0). No duplication of the source of truth.*
+
+
+### J. Canonical authority → governance/CANONICAL-ORG-CHART-v2.md (Sprint-1 Org Freeze)
+The normative org canon is **`governance/CANONICAL-ORG-CHART-v2.md`** (2026-06-21). It supersedes §A–§I
+for top-level structure questions. **Correction to §B:** Dept-6 **MLRO / Financial Crime** (`banxe_aml_orchestrator`)
+is the MLRO head ONLY and is an **independent line to the Board** — it is NOT the Dept-2 Compliance head.
+Compliance 2nd-line monitoring is a distinct function (Head of Compliance) with no SAR/sanctions authority.
+Read §B Dept-2 "Compliance" and Dept-6 "MLRO" as two SEPARATE owners per the canon.

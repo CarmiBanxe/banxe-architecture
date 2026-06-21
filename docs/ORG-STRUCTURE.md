@@ -557,3 +557,14 @@ Full swarm configs: `agents/swarms/accounting-swarm.yaml` (close cycle)
 ---
 
 *Document maintained by: Claude Code | IL-065, IL-066, IL-067 | 2026-04-09 | I-29 (Documentation Standard)*
+
+
+---
+
+## Canonical authority (Sprint-1 Org Freeze, 2026-06-21)
+The normative top-level org structure is frozen in **`governance/CANONICAL-ORG-CHART-v2.md`** — on any
+org-structure conflict, that canon wins; this document remains authoritative for per-agent detail.
+**Structural correction (de-duplication):** MLRO / Financial Crime is a **separate independent line that
+reports to the Board** — it is NOT a sub-function of Compliance and NOT under CFO/COO. The Compliance
+2nd-line monitoring function is distinct from the MLRO (it holds no SAR/sanctions authority). Internal
+Audit is the separate independent 3rd line to the Audit Committee / Board.

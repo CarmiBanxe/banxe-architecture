@@ -323,3 +323,11 @@ Current baseline: `test_suite.py` → 18 pass, 2 warn (KYB pending keys), 0 fail
 | Real-time crypto tx graph | Chainalysis, TRM Labs | Proprietary chain analytics |
 
 These gaps are acceptable for sandbox phase. Production FCA authorisation will require vendor contracts (Dow Jones / LexisNexis / Sumsub — emails pending).
+
+
+---
+
+## Org canon (Sprint-1 Freeze)
+The bank org structure (MLRO independent line, 3-Lines-of-Defence owners of this AML stack) is normatively
+frozen in `governance/CANONICAL-ORG-CHART-v2.md`. The MLRO / Financial-Crime line that owns this AML
+runtime is independent and reports to the Board (not under CFO/COO, not inside Compliance monitoring).
