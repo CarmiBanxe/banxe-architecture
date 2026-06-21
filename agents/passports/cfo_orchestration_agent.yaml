@@ -1,0 +1,32 @@
+agent_id: cfo_orchestration_agent
+name: "CFOOrchestrationAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  STUB passport (Sprint-2 Staff Matrix). Mandatory **department-head agent** for the
+  "CFO Office" line of the canonical org chart (governance/CANONICAL-ORG-CHART-v2.md §9).
+  PROPOSES only (I-27); NOT activated. No service code exists yet — service implementation is
+  deferred to Sprint 3 (see GAP-078). Capabilities are intentionally a stub here.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-10-REPORTING
+autonomy: L2_REVIEW
+capabilities:
+  - department_head_orchestration  # TODO Sprint-3: specify code-derived capabilities
+department: "CFO Office"
+human_double: "CFO (David Goldstein)"
+line_of_defence: "1st/2nd Line — finance"
+smf_function: "SMF2"
+non_goals:
+  - "Do NOT activate — PROPOSED stub only (I-27), gated on operator approval"
+  - "Do NOT implement service code here — deferred to Sprint 3 (GAP-078)"
+governance:
+  change_class: CLASS_B
+  owner: "CFO (David Goldstein)"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CEO
+fca_references:
+  - "SM&CR — Senior Management & Certification Regime (SMF2)"
+parent_canon: "governance/CANONICAL-ORG-CHART-v2.md"
