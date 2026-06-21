@@ -15061,3 +15061,20 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Delivered:** 13 agents/passports/*_agent.yaml + docs/audit/ORG-CODE-RECONCILIATION-v2.md (Matrix A 106 rows + B + C + D).
 - **Proof:** validate_schemas PASS; build_ledger --check OK; del=0; 0 feature-code files. ADR-052; operator approves merge; passports remain PROPOSED until explicit activation.
 - **Refs:** GAP-076; ORG-CODE-RECONCILIATION-2026-06-11; AGENT-ORG-STRUCTURE; docs/ORG-STRUCTURE.md. No secrets.
+
+---
+
+### IL-427 - agent-factory-governance-ledger-merge-queue @ 2026-06-22T04:45:00Z
+
+- **il_ts:** 2026-06-22T04:45:00Z
+- **session_id:** agent-factory-governance-ledger-merge-queue
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-ledger-merge-queue/IL-2026-06-22T04-45-00Z--41603e.md`
+
+### Ledger merge-serialization learning (GAP from #637/#638 race)
+- **Instrukciya:** Зафиксировать governance-learning: при последовательной IL-NNN нумерации + strict «up-to-date» любые КОНКУРЕНТНЫЕ ledger-PR конфликтуют в генерируемом INSTRUCTION-LEDGER.md. Закрепить durable-решение и операционное правило.
+- **Suть:** Новый shard с il_ts раньше main-max при регенерации перенумеровывает чужие IL-NNN → ledger-append-only падает (I-28/ADR-057). Ручной re-mint il_ts > max — Сизиф: main двигают другие ledger-PR (#658→#661+, main ушёл 8+ раз) быстрее, чем успеваешь push/merge → бесконечный DIRTY.
+- **Reshenie:** GitHub **merge queue** на main (Settings→Rules→Rulesets→main: Require merge queue; Merge method = **Squash**; **Build concurrency = 1**; сохранить strict + текущие required checks). Очередь сериализует и авто-ребейзит каждый PR на актуальный main → гонка устранена. Операционное правило: ledger-затрагивающие PR мержить ТОЛЬКО через очередь.
+- **Proof:** docs-only (этот shard + docs/governance/LEDGER-MERGE-QUEUE.md + regenerated ledger); append-only (ADR-059-A), il_ts > main-max (2026-06-22T01:15:00Z > 2026-06-22T00:45:00Z); чужие IL не тронуты. Этот PR сам пойдёт через очередь.
+- **Refs:** PR #637 (sp-thin-reconcile-gap076), #638 (sp-passport-cov); ADR-059, ADR-059-A, ADR-057, ADR-060; guardian-ledger, ledger-append-only, guardian-ledger-shards; docs/governance/LEDGER-MERGE-QUEUE.md.
