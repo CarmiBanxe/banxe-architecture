@@ -156,3 +156,11 @@ jobs:
             echo "FAIL: branch '$BRANCH' violates ADR-060 namespace agent/<actor>/<id>/<slug> (actor=central|right|factory)"; exit 1
           fi
           echo "guardian-branch-naming OK"
+
+  guardian-adr117:
+    name: guardian-adr117
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ADR-117 placeholder gate (ACCEPTED requires all OPERATOR-DECISION filled)
+        run: bash scripts/adr117-gate-check.sh

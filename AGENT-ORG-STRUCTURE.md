@@ -4,7 +4,7 @@
 **Назначение:** функции, обученность, должности и зоны ответственности агентов фабрики и проекта EMI BANXE AI BANK.
 
 > **Superseded in part by ADR-117 (perimeter/hardware/org); Mandate: ADR-116.** RECONCILED 2026-06-21 — см. `docs/governance/CANON-RECONCILIATION-ADR117.md`.
-> Per ADR-117: Factory = Legion (64 GB, `qwen2.5-coder:14b-banxe-factory`, software-delivery only); Project = evo1/evo2 (128 GB each). Ёмкость разработки удвоена (ADR-117: ≥2×, ранее один Aider CLI) — точный состав ожидает решения оператора (реестр).
+> Per ADR-117 (ACCEPTED 2026-06-21): Factory = Legion (64 GB, `qwen2.5-coder:14b-banxe-factory`, software-delivery only); Project = evo1/evo2 (128 GB each, operator-confirmed). **Doubled-dev (operator-confirmed):** Claude Code = Архитектор+Тимлид+Ревьюер (внешняя LLM Claude); Aider CLI ≥2× = разработчики через LiteLLM :4000; client-service/ops/it-devops → `glm-4.7-flash`. Full-cycle роли — см. раздел ниже.
 
 ---
 
@@ -16,6 +16,20 @@
 | Ruflo | PM / оркестратор процессов | ведение многошаговых флоу | оркестратор (не модель) |
 | Aider CLI (+ ADR-117: ≥2×) | Разработчики — удвоенная ёмкость (ADR-117; ранее один Aider) | пишут/правят код | через LiteLLM gateway :4000 |
 | MiroFish | QA / контролёр | прогон banking/FCA/fraud-сценариев | factory-mid (исправлено 2026-06-13) |
+
+### Full-cycle dev-company roles (ADR-117 / ADR-116) — привязка к существующим агентам
+
+Структурные роли полного цикла (без новых людей/хостов; «planned/unassigned» = реальным агентом пока не покрыто).
+
+| Роль (full-cycle) | Привязка (существующий агент/модель/механизм) | Статус |
+|-------------------|-----------------------------------------------|--------|
+| Architect / Tech-Lead / Reviewer | Claude Code (внешняя LLM Claude) | active |
+| Developers (≥2×) | Aider CLI ×2 через LiteLLM :4000 | active |
+| QA / Test | MiroFish + automated quality-gates | active |
+| DevOps / CI | GitHub Actions guardians (guardian-factory/project/ledger), ledger-build | active (CI); infra/release DevOps — planned/unassigned |
+| Security / compliance-reviewer (Controllers) | Multi-level review (pre-commit, SAST/SCA/secrets, 2-reviewer; chapter-lead для payment-core/KYC) + Auto-Verify :8094 + compliance swarm | partial; dedicated security-reviewer agent — planned/unassigned |
+| Release-manager | Ruflo / Channel C (gated merge orchestration) | active (process); formal release-manager — planned/unassigned |
+| Process orchestrator | Ruflo | active |
 
 ### Контроль/governance
 
