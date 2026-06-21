@@ -21,7 +21,7 @@
 | GAP-004 | J-audit: ClickHouse safeguarding audit trail | Sprint 12 | CTIO | **7 May 2026** | ✅ DONE |
 | GAP-005 | E-safeguard: Segregated client accounts daily recon | Sprint 12 | CEO+CTIO | **7 May 2026** | 🟡 IN PROGRESS |
 | GAP-006 | K-gabriel: FCA Gabriel/RegData returns | Sprint 13 | CEO | Q2 2026 | 🟡 IN PROGRESS |
-| GAP-007 | F-finrpt: FCA regulatory returns (FIN-RPT) | Sprint 13 | CEO | Q2 2026 | ❌ OPEN |
+| GAP-007 | F-finrpt: FCA regulatory returns (FIN-RPT) — IN PROGRESS 2026-06-21 — code services/regulatory_reporting (7 .py, ~7 tests); residual: FIN-RPT live submission needs FCA RegData key (BT-010) | Sprint 13 | CEO | Q2 2026 | 🔄 IN PROGRESS |
 | GAP-008 | Activate PaymentRouterAgent — get Modulr API key (BT-001) | Sprint 12 | COO | Sprint 12 | ❌ BLOCKED |
 
 ---
@@ -33,24 +33,24 @@
 | GAP-009 | Appoint CRO (SMF4) — Elena Vasilenko appointed 2026-04-13 | — | CEO | ✅ DONE |
 | GAP-010 | D-recon: Reconciliation Engine (OVERDUE — was Sprint 9) | Sprint 12 | CTIO | ✅ DONE |
 | GAP-011 | A-kyc: KYC individual — get Sumsub API key (BT-004) | Sprint 12 | CTIO | ❌ BLOCKED |
-| GAP-012 | A-idv: IDV pipeline (OCR + biometric) | Sprint 12 | CTIO | ❌ OPEN |
+| GAP-012 | A-idv: IDV pipeline (OCR + biometric) — IN PROGRESS 2026-06-21 — code services/kyc (6 .py, ~41 tests); residual: live IDV OCR/biometric needs Sumsub key (BT-004) | Sprint 12 | CTIO | 🔄 IN PROGRESS |
 | GAP-013 | A-kyb: KYB business — get Companies House API key (BT-005) | Sprint 13 | CTIO | ❌ BLOCKED |
 | GAP-014 | B-emi: EMI product definitions (e-money, cards, IBAN) | Sprint 12 | CEO | ✅ DONE |
 | GAP-015 | C-fps: UK Faster Payments FPS (needs Modulr) | Sprint 12 | CTIO | ❌ BLOCKED |
 | GAP-016 | C-sepa: SEPA CT + SEPA Instant (code CT+Instant DONE in banxe-emi-stack; residual: Channel C orchestration governance) | Sprint 13 | CTIO | 🔄 IN PROGRESS |
 | GAP-017 | D-gl: General Ledger — complete GL reconciliation (5% done) | Sprint 12 | CTIO | ✅ DONE |
-| GAP-018 | D-fin: Financial Reporting (P&L, balance sheet) | Sprint 12 | CEO | ❌ OPEN |
+| GAP-018 | D-fin: Financial Reporting (P&L, balance sheet) — IN PROGRESS 2026-06-21 — code services/reporting_analytics (10 .py, ~12 tests); P&L/BS report code present | Sprint 12 | CEO | 🔄 IN PROGRESS |
 | GAP-019 | D-fee: Fee Engine & billing | Sprint 12 | CTIO | ✅ DONE |
-| GAP-020 | E-capital: FCA ICARA capital adequacy | Sprint 16 | CEO | Q3 2026 | ❌ OPEN |
-| GAP-021 | G-rt: Real-time fraud scoring (Jube ML model) | Sprint 13 | CTIO | ❌ OPEN |
-| GAP-022 | G-device: Device fingerprinting, velocity checks | Sprint 13 | CTIO | ❌ OPEN |
+| GAP-020 | E-capital: FCA ICARA capital adequacy — IN PROGRESS 2026-06-21 — code services/risk_management (8 .py); ICARA capital logic present | Sprint 16 | CEO | Q3 2026 | 🔄 IN PROGRESS |
+| GAP-021 | G-rt: Real-time fraud scoring (Jube ML model) — IN PROGRESS 2026-06-21 — code services/fraud (6 .py, ~13 tests) + services/crypto_aml_graph (IMPL-2); residual: Jube live needs admin pw | Sprint 13 | CTIO | 🔄 IN PROGRESS |
+| GAP-022 | G-device: Device fingerprinting, velocity checks — IN PROGRESS 2026-06-21 — code services/device_fingerprint (7 .py); device/velocity code present | Sprint 13 | CTIO | 🔄 IN PROGRESS |
 | GAP-023 | I-api: API Gateway — developer-facing endpoints | Sprint 12 | CTIO | ✅ DONE |
-| GAP-024 | K-fscs: FSCS reporting | Sprint 16 | CEO | Q3 2026 | ❌ OPEN |
-| GAP-025 | K-nca: NCA SARs automated filing | Sprint 13 | CTIO | ❌ OPEN |
-| GAP-056 | DPO appointment + DPIA framework (UK GDPR Art.37-39, DSAR) | Sprint 13 | CEO | ❌ OPEN |
-| GAP-057 | Wind-Down Planning (FCA Approach Doc 2026; run-off scenarios) | Sprint 14 | CFO+Board | ❌ OPEN |
-| GAP-058 | Annual Safeguarding Audit (PS25/12; relevant funds >£100k) | Sprint 13 | Internal Audit | ❌ OPEN |
-| GAP-059 | Operational Resilience / DORA (DR/BCP, incident response) | Sprint 14 | CTIO+COO | ❌ OPEN |
+| GAP-024 | K-fscs: FSCS reporting → SP-THIN: services/resolution thin (2 .py), FSCS reporting incomplete | Sprint 16 | CEO | Q3 2026 | ❌ OPEN |
+| GAP-025 | K-nca: NCA SARs automated filing — IN PROGRESS 2026-06-21 — code services/sanctions_screening (8 .py, ~13 tests); NCA SARs filing code; live needs NCA channel | Sprint 13 | CTIO | 🔄 IN PROGRESS |
+| GAP-056 | DPO appointment + DPIA framework (UK GDPR Art.37-39, DSAR) — IN PROGRESS 2026-06-21 — code services/consent_management (7 .py, ~16 tests); DPO/DPIA/DSAR consent code present | Sprint 13 | CEO | 🔄 IN PROGRESS |
+| GAP-057 | Wind-Down Planning (FCA Approach Doc 2026; run-off scenarios) → SP-THIN: services/resolution thin (2 .py), Wind-Down incomplete | Sprint 14 | CFO+Board | ❌ OPEN |
+| GAP-058 | Annual Safeguarding Audit (PS25/12; relevant funds >£100k) → SP-THIN: safeguarding audit part thin, Annual Safeguarding Audit incomplete | Sprint 13 | Internal Audit | ❌ OPEN |
+| GAP-059 | Operational Resilience / DORA (DR/BCP, incident response) → SP-THIN: services/incident_response thin (2 .py), DORA DR/BCP incomplete | Sprint 14 | CTIO+COO | ❌ OPEN |
 | GAP-064 | A-edd: Adverse-media screening (MLR 2017 Reg.28 EDD; negative-news entity match into Ballerine/Marble EDD flow) | Sprint 13 | MLRO+CTIO | Q2 2026 | 🟡 IN PROGRESS |
 | GAP-065 | crypto-ops-monitor Python platform (ADR-109 supersedes stale NestJS spec; SP-CO2 hardening in repo) | Sprint 14 | CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-066 | braslina merchant-onboarding service registration (ADR-110; standalone repo, partial KYB GAP-013; port note n8n 5680) | Sprint 14 | CTIO+MLRO | Q3 2026 | 🟡 IN PROGRESS |
@@ -104,7 +104,7 @@
 |---|---|---|---|---|
 | GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) | Sprint 15 | CTIO | 🔄 IN PROGRESS |
 | GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | 🔄 IN PROGRESS |
-| GAP-045 | B-pricing tier 2 expansion | Sprint 15 | CEO | ❌ OPEN |
+| GAP-045 | B-pricing tier 2 expansion — IN PROGRESS 2026-06-21 — code services/fee_management (8 .py, ~25 tests); pricing tier-2 code present | Sprint 15 | CEO | 🔄 IN PROGRESS |
 
 ---
 
