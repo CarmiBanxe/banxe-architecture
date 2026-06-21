@@ -1,0 +1,32 @@
+agent_id: front_office_agent
+name: "FrontOfficeAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  STUB passport (Sprint-2 Staff Matrix). Mandatory **department-head agent** for the
+  "Front Office / Business" line of the canonical org chart (governance/CANONICAL-ORG-CHART-v2.md §9).
+  PROPOSES only (I-27); NOT activated. No service code exists yet — service implementation is
+  deferred to Sprint 3 (see GAP-078). Capabilities are intentionally a stub here.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - department_head_orchestration  # TODO Sprint-3: specify code-derived capabilities
+department: "Front Office / Business"
+human_double: "CCO (Commercial lead)"
+line_of_defence: "1st Line — business/commercial"
+smf_function: "CCO"
+non_goals:
+  - "Do NOT activate — PROPOSED stub only (I-27), gated on operator approval"
+  - "Do NOT implement service code here — deferred to Sprint 3 (GAP-078)"
+governance:
+  change_class: CLASS_B
+  owner: "CCO (Commercial lead)"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CEO
+fca_references:
+  - "SM&CR — Senior Management & Certification Regime (CCO)"
+parent_canon: "governance/CANONICAL-ORG-CHART-v2.md"

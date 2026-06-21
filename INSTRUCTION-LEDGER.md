@@ -14866,3 +14866,22 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** BANXE.RAR → EMI backend migration phase ACCEPTED — M2 core (M2.1–M2.7) + acceptance + M2.4-INT/M2.5-BIF integrations + covered reconciles (M2.4a/b, abs-posting) + 3 genuine-gap scaffolds на main, backend homes resolved, ADR-102/ADR-103/ADR-059-A compliant, регулируемые surfaces + KYC/KYB/AML carve-out intact. Единственные открытые направления: M2.4c-e (preflight-first, вероятно частично covered), KYC/KYB/AML (I-27 gate), M2.8 frontend (roster audit).
 - **Recommended next:** при выполнении gate'ов — M2.4c file-payments OB delta (обязательный preflight, вероятен covered); KYC/KYB/AML только после I-27 HITL-L4 sign-off; M2.8 frontend только после frontend roster audit (banxe-platform vs banxe-ui). Вся работа через фабрику; shell только аудит.
 - **Refs:** docs/migration/MIG-coverage-acceptance.md; genuine-gaps MIG-abs-info-field (IL-412) + MIG-login-history (IL-413) + MIG-srp (IL-414); coverage-audit (IL-411); covered MIG-M2.4a (IL-401/402) + abs-posting (IL-405/406); reconciles M2.4/M2.5/M2.3; M2.8 acceptance (IL-393); M2.4-INT (IL-395), M2.5-BIF (IL-398/399); ADR-013, ADR-025 §15-16, ADR-102, ADR-103, ADR-059-A, I-01, I-05, I-24, I-27, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-417 - agent-factory-archstack002-sprint2-staff-matrix @ 2026-06-22T00:20:41Z
+
+- **il_ts:** 2026-06-22T00:20:41Z
+- **session_id:** agent-factory-archstack002-sprint2-staff-matrix
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sprint2-staff-matrix/IL-2026-06-22T00-20-41Z--d52bfa.md`
+
+### Sprint-2 — Staff Matrix: STAFF-MATRIX-v1 + 10 PROPOSED dept-head passport stubs (governance-only)
+- **Instrukciya:** Sprint 2 only, within canon §12 + GAP-077. Build the staff matrix + create TODO dept-head passport stubs (PROPOSED, NO service code). org_roles.py + service code untouched (Sprint 3).
+- **Created:** governance/STAFF-MATRIX-v1.md (NORMATIVE, child of CANONICAL-ORG-CHART-v2.md) — every dept-head → L1/L2 head agent → L3/L4 sub-agents → human_double (SM&CR) → emi-stack service(s).
+- **10 PROPOSED dept-head passport stubs (status PROPOSED, autonomy L2_REVIEW, I-27, no service code):** ceo_orchestration_agent (L1, CEO SMF1), board_reporting_agent (L1, Board), internal_audit_agent (L1 independent, SMF5), risk_oversight_agent (L2, CRO SMF4), compliance_monitoring_agent (L2, Head of Compliance — distinct from MLRO), cfo_orchestration_agent (L2, CFO SMF2), coo_operations_agent (L2, COO SMF24), cto_platform_agent (L2, CTO SMF26), front_office_agent (L2, CCO), legal_corporate_agent (L2, Legal).
+- **Existing heads (not re-created):** banxe_aml_orchestrator (MLRO Dept 6), privacy_compliance_agent (DPO Dept 8). ~25 L3/L4 sub-agents reused from existing passports.
+- **GAP-077 → DONE** (matrix + passports complete); **GAP-078 opened** (Sprint-3 service-impl + activation).
+- **HITL-MATRIX.yaml NOT touched** (no new Board-report gate needed in Sprint 2). org_roles.py + service code NOT touched.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; 0 service-code (only passports + matrix doc + GAP + ledger). Refs CANONICAL-ORG-CHART-v2 §9/§12; GAP-077/078; ORG-STRUCTURE §2; DEPARTMENT-MAP §A–§J. No secrets.
