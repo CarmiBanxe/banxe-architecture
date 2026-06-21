@@ -14427,3 +14427,21 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Status:** M2 core (M2.1–M2.7) ACCEPTED и на main — backend homes resolved, 3 scaffolds advisory/read-only (no live execution/balances/fund movement), 3 reconciles (no duplicates), 1 re-scope; ADR-102/ADR-103/ADR-059-A compliant; регулируемые surfaces не тронуты beyond advisory scaffolds; KYC/KYB/AML carve-out intact. Preconditions для follow-up/M3: (1) KYC/KYB/AML I-27 HITL-L4 sign-off (blocks identity/KYC follow-ups); (2) frontend roster audit (banxe-platform vs banxe-ui) для M2.8; (3) connector contract-tests (@banxe/*//@abs/common/auth-connector против banxe-shared-libs baseline) перед INT/delta merge; (4) каждый follow-up advisory/server-side/paired-PR/no-merge до прохождения gate.
 - **Recommended next:** первый follow-up substep — MIG-M2.4-INT (integration: wire open_banking PISP → PaymentEnginePort M2.1 + accounts SoT M2.2 projection, mount psd2_gateway/consent_management, no live initiation, server-side, paired PR, no merge); ИЛИ M2.5-BIF (Bifrost Wave-D). KYC/KYB/AML — только после I-27 sign-off. M2.8 — после frontend roster audit.
 - **Refs:** docs/migration/MIG-M2.8-acceptance.md; M2 substep docs + IL (M2.7 IL-373, M2.2 IL-374, M2.1 IL-378, M2.6 IL-380, M2.4 IL-381/384, M2.5 IL-385/388, M2.3 IL-389/392); MIG-M1.8 (M1 acceptance precedent), MIG-M2.0; ADR-013, ADR-025 §15-16, ADR-102, ADR-103, ADR-059-A, I-01, I-05, I-27, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-394 - agent-factory-archstack002-sp-recon @ 2026-06-21T14:45:41Z
+
+- **il_ts:** 2026-06-21T14:45:41Z
+- **session_id:** agent-factory-archstack002-sp-recon
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-recon/IL-2026-06-21T14-45-41Z--0496b5.md`
+
+### SP-RECON — reconcile 13 stale OPEN GAP statuses (GAP-076 roadmap)
+- **Instrukciya:** Governance-only reconcile of stale OPEN GAP statuses in docs/GAP-REGISTER.md, based on VERIFIED code+tests in banxe-emi-stack (2026-06-21). NO feature-code edits (registry-only).
+- **Reconciled OPEN → IN PROGRESS (9):** GAP-007/012/018/020/021/022/025/045/056 with residual + service-path evidence.
+- **Left OPEN, routed → SP-THIN (4 thin):** GAP-024/057/058/059.
+- **Frame:** OPEN statuses were STALE governance metadata, not code-absence. No rows deleted; minimal status edits.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0. ADR-052; operator (Moriel) approved merge.
+- **Refs:** GAP-076; GAP-007/012/018/020/021/022/024/025/045/056/057/058/059. No secrets.
