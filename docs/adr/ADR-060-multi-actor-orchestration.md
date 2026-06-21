@@ -62,3 +62,26 @@ Durable, deterministic ordering with compensations for long-running factory work
 - (+) Consistent with ADR-056/057/059 invariants (I-28 append-only).
 - (-) Merge Queue must be enabled in repo Settings (branch protection) — operational step.
 - (-) Temporal deployment remains a separate infrastructure task.
+
+## Amendment 2026-06-21 — branch `<id>` segment regex (explicit)
+
+> Lesson learned: SP-ORGCANON sub-terminal branch `agent/factory/archstack-subA/sp-orgcanon` failed
+> `guardian-branch-naming` (one round-trip `#644` rejected → renamed → `#646` merged @ `41600c5`).
+
+The enforced pattern (`.github/workflows/guardian.yml`, `guardian-branch-naming`) is:
+
+```
+^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$
+                                ^^^^^^^^^^^^   ^^^^^^^^^^^^^
+                                <id> segment   <slug> segment
+```
+
+- **`<id>` segment = `[A-Za-z0-9]+` — ALPHANUMERIC ONLY. A hyphen (`-`) inside `<id>` is FORBIDDEN.**
+  - ✓ valid:   `agent/factory/archstacksubA/sp-orgcanon`, `agent/factory/archstack002/sp-thin`
+  - ✗ invalid: `agent/factory/archstack-subA/sp-orgcanon` (hyphen in `<id>`)
+- **`<slug>` segment = `[a-z0-9._-]+`** — lowercase; hyphens/dots/underscores ARE allowed here.
+- Sub-terminal / sub-actor identity goes in `<id>` WITHOUT a hyphen (e.g. `archstacksubA`, not
+  `archstack-subA`) or is carried in the `<slug>`.
+
+A local pre-push mirror of this gate (`scripts/pre-push-branch-name.sh`) catches the violation
+BEFORE PR creation so the `#644 → #646` round-trip is not repeated.
