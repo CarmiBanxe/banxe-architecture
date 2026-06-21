@@ -700,3 +700,10 @@ Full governance: `docs/SKILLS-MATRIX.md` + `docs/SKILLS-OPERATING-MODEL.md`.
 | No Banxe IL IDs referenced | PROHIBITED | PROHIBITED |
 | Skills mode | ADVISORY only | ADVISORY only |
 | Output propagation to Banxe planes | PROHIBITED | PROHIBITED |
+
+
+---
+
+## Org canon (Sprint-1 Freeze)
+Top-level organisation is normatively frozen in `governance/CANONICAL-ORG-CHART-v2.md` (8 departments,
+independent MLRO + Internal Audit lines, Level 0–4 model). Compliance/SMF mappings in §1 above defer to it.
