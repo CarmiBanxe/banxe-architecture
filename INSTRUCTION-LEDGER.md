@@ -14603,3 +14603,21 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** MIG-M2.4a + M2.4b COVERED (done-by-existing; no scaffold); blocker PR #643 resolved (operator C). Remaining backlog: ABS delta/re-home (abs-posting→ledger via LedgerPort, scoring/agreement/contract/credential/legal-entity/info-field port, abs-customer→identity); M2.3 auth delta (SRP/JWKS/api-key/scope/session/login-history) + identity re-home; M2.4-INT family (optional OB delta integrations incl thin OB-scheduled-consent); KYC/KYB/AML (pending I-27 HITL-L4 sign-off); M2.8 frontend (после roster audit banxe-platform vs banxe-ui).
 - **Recommended next:** ABS delta/re-home (крупнейший remaining non-regulated backlog: abs-posting→ledger/Midaz via LedgerPort, ABS sub-services port, abs-customer→identity) ИЛИ M2.3 auth delta (SRP/JWKS/api-key port за существующей auth поверхностью). KYC/KYB/AML — только после I-27 sign-off; M2.8 frontend — после roster audit.
 - **Refs:** docs/migration/MIG-M2.4ab-declare-covered.md; MIG-M2.4a-BLOCKER (IL-400, PR #643); read-only banxe-emi-stack api/routers/scheduled_payments.py (IL-SOD-01) + services/scheduled_payments/* + services/open_banking/m24_int_bridge.py (M2.4-INT); MIG-M2.4 (open-banking gap-audit), MIG-M2.4-INT, MIG-M2.8 (acceptance backlog); ADR-102, ADR-103, ADR-059-A, I-27, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-403 - agent-factory-archstack002-adr060-branchid-canon @ 2026-06-21T17:57:23Z
+
+- **il_ts:** 2026-06-21T17:57:23Z
+- **session_id:** agent-factory-archstack002-adr060-branchid-canon
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-adr060-branchid-canon/IL-2026-06-21T17-57-23Z--239bb1.md`
+
+### Canon — ADR-060 branch <id>-segment (no hyphen) + local pre-push gate; SP-ORGCANON merge record
+- **Merge record:** SP-ORGCANON merged via PR #646 → main SHA 41600c5 (DEPARTMENT-MAP §A–§I + ROADMAP follow-ups; HITL-MATRIX byte-identical). Worktree + stale branch cleaned up.
+- **Lesson learned (canon):** sub-terminal branch agent/factory/archstack-subA/sp-orgcanon FAILED guardian-branch-naming — the ADR-060 regex `<id>` segment is `[A-Za-z0-9]+` (ALPHANUMERIC ONLY); a hyphen inside `<id>` is forbidden. Cost one round-trip (#644 rejected → renamed archstacksubA → #646 merged).
+- **Canonized (append-only, del=0):** (1) ADR-060 amendment "branch <id> segment regex (explicit)" — archstacksubA ✓ / archstack-subA ✗; <slug> may keep hyphens. (2) scripts/pre-push-branch-name.sh — local mirror of guardian-branch-naming, blocks the violation BEFORE PR creation (prevents #644→#646 repeat).
+- **Rule:** sub-terminal/sub-actor identity goes in `<id>` WITHOUT a hyphen (archstacksubA) or in the `<slug>`.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs NOT touched (DEPARTMENT-MAP/ROADMAP/HITL-MATRIX); no feature/service code (ADR doc + governance hook script + ledger only).
+- **Refs:** ADR-060; guardian.yml guardian-branch-naming; PR #644 (rejected)/#646 (merged 41600c5); scripts/pre-commit-hook.sh. No secrets.
