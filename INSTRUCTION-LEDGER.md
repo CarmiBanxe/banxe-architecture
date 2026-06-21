@@ -14692,3 +14692,21 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - scripts/install-hooks.sh (idempotent: core.hooksPath .githooks + pre-push-branch-name.sh → .githooks/pre-push, chmod +x). CLAUDE.md bootstrap setup line.
 - Self-test: LEGION ACTIVATED + SELF-TEST OK (compliant→exit0; hyphen-in-<id>→BLOCKED exit1). evo1 (192.168.0.72) DEFERRED unreachable (SSH refused). evo2 (192.168.0.15) DEFERRED unreachable (publickey denied). Both activate on next checkout via bootstrap line.
 - build_ledger --check OK; validate_schemas PASS; del=0; org-docs NOT touched; no service code. Refs ADR-060 (#647 fc71e2d), IL-403. No secrets.
+
+---
+
+### IL-408 - agent-factory-archstack002-adr060-hook-selfheal @ 2026-06-21T20:22:58Z
+
+- **il_ts:** 2026-06-21T20:22:58Z
+- **session_id:** agent-factory-archstack002-adr060-hook-selfheal
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-adr060-hook-selfheal/IL-2026-06-21T20-22-58Z--cd8dd6.md`
+
+### ADR-060 hook self-heal + tracked DEFERRED/tech-debt tails
+- **Instrukciya:** Close two tails of the ADR-060 hook activation. Governance-only (append-only, del=0, no service code).
+- **TAIL 1 — self-healing auto-activation:** install-hooks.sh now ends with a fast idempotent SELF-CHECK (re-asserts core.hooksPath=.githooks + executable pre-push, fails loudly otherwise). CLAUDE.md adds "Session bootstrap — AUTO-activate hooks (FIRST step of EVERY session, self-healing)" — supersedes the "run once" framing; `bash scripts/install-hooks.sh` is now step-0 of every terminal session. Legion: self-check OK.
+- **DEFERRED TODO (tracked, status DEFERRED — NOT done):** activate hooks on **evo1** (192.168.0.72 — SSH :22 connection refused) and **evo2** (192.168.0.15 — SSH publickey denied) at next reachable session. Not fabricated as active; auto-activates via the session-bootstrap step-0 when those terminals run a session.
+- **TECH-DEBT (separate block — DO NOT fix here, scope isolation):** XXE in scripts/import_archimate.py (native xml _etree.parse, semgrep python.lang.security.use-defused-xml-parse, 2 blocking findings at lines 114/117) blocks the local .githooks pre-commit semgrep. Tracked as a separate remediation block (switch to defusedxml). Arch server-side guardian does NOT gate on semgrep-code, so it does not block arch PRs. Status: OPEN tech-debt, owner CTO platform.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs (DEPARTMENT-MAP/ROADMAP/HITL-MATRIX) NOT touched; no service code (installer + CLAUDE.md + ledger only).
+- **Refs:** ADR-060 (#647 fc71e2d); install-hooks.sh (#650 e6bbe6b); scripts/pre-push-branch-name.sh; IL-403/IL-404. No secrets.

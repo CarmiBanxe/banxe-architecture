@@ -101,4 +101,11 @@ On every fresh checkout / new terminal bootstrap, run: `bash scripts/install-hoo
 (idempotent — sets `core.hooksPath .githooks` + installs the pre-push branch-name gate that mirrors
 `guardian-branch-naming`; catches a non-compliant branch `<id>` BEFORE push/PR — see ADR-060 amendment 2026-06-21).
 
+## Session bootstrap — AUTO-activate hooks (FIRST step of EVERY session, self-healing)
+> Supersedes the "run once" framing above: run as the **first step of EVERY terminal session**, not just once.
+**Step 0 of any session / agent bootstrap:** `bash scripts/install-hooks.sh`
+Idempotent + self-healing — it re-asserts `core.hooksPath=.githooks` + the executable pre-push gate and
+self-checks (fails loudly if it could not activate). Cheap to run every session; closes the "manual
+onboarding" gap so the ADR-060 branch-name gate is never silently inactive.
+
 # Агенты: читать INSTRUCTION-LEDGER.md → ACCEPTED → работать → VERIFY → DONE
