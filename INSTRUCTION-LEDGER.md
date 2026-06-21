@@ -14710,3 +14710,23 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **TECH-DEBT (separate block — DO NOT fix here, scope isolation):** XXE in scripts/import_archimate.py (native xml _etree.parse, semgrep python.lang.security.use-defused-xml-parse, 2 blocking findings at lines 114/117) blocks the local .githooks pre-commit semgrep. Tracked as a separate remediation block (switch to defusedxml). Arch server-side guardian does NOT gate on semgrep-code, so it does not block arch PRs. Status: OPEN tech-debt, owner CTO platform.
 - **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs (DEPARTMENT-MAP/ROADMAP/HITL-MATRIX) NOT touched; no service code (installer + CLAUDE.md + ledger only).
 - **Refs:** ADR-060 (#647 fc71e2d); install-hooks.sh (#650 e6bbe6b); scripts/pre-push-branch-name.sh; IL-403/IL-404. No secrets.
+
+---
+
+### IL-409 - agent-factory-archstack002-adr060-gate-fix @ 2026-06-21T21:09:27Z
+
+- **il_ts:** 2026-06-21T21:09:27Z
+- **session_id:** agent-factory-archstack002-adr060-gate-fix
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-adr060-gate-fix/IL-2026-06-21T21-09-27Z--f70c54.md`
+
+### ADR-060 pre-push gate — root-cause bug fix (STDIN refs) + deterministic test; evo1/evo2 ACTIVATED
+- **Bug (found on evo2 self-test):** branch with hyphen in <id> `agent/factory/archstack-subA/x` was NOT blocked locally, though ADR-060 requires block. Legion gave BLOCKED — divergence.
+- **Root cause:** scripts/pre-push-branch-name.sh read `git rev-parse --abbrev-ref HEAD` instead of the refs git hands the pre-push hook on STDIN (`<local ref> <local sha> <remote ref> <remote sha>`). `git push origin <bad-branch>` while HEAD sat on `main` validated `main` (allow-listed) → bad branch passed. Legion happened to have HEAD == the test branch, masking the bug. Regex itself is correct + byte-for-byte identical to guardian.yml.
+- **Fix (scripts/pre-push-branch-name.sh):** read EACH pushed ref from STDIN, normalize refs/heads/ prefix, validate via a pure shared validator is_compliant(); manual/empty-STDIN fallback to current branch; detached-HEAD safe. Deterministic across hosts.
+- **Test added (scripts/test-branch-name-gate.sh):** 15-case PASS/BLOCK table sourcing is_compliant() — no git-state dependence → Legion/evo1/evo2/CI identical. Result: ALL CASES GREEN (15/15); STDIN-contract sim blocks hyphen-id regardless of HEAD.
+- **Terminal status:** evo1 + evo2 hooks **ACTIVATED** (replaces the prior false DEFERRED). evo2: HTTPS read-clone OK (HEAD e6bbe6b), install-hooks OK, host-key fingerprint SHA256:Jtjc…ABk; self-test surfaced+fixed this bug. Legion: ALL CASES GREEN.
+- **Pending follow-up (tracked):** deploy-key for **push from evo2** (currently read-only HTTPS; push needs 2FA Confirm-access / deploy-key) — separate enablement step.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs (DEPARTMENT-MAP/ROADMAP/HITL-MATRIX) NOT touched; no service code (gate script + test harness + ledger only).
+- **Refs:** ADR-060 (#647 fc71e2d); install-hooks (#650 e6bbe6b); self-heal (#652 f429a38); guardian.yml guardian-branch-naming. Supersedes the DEFERRED in IL [agent-factory-archstack002-adr060-hook-selfheal]. No secrets.
