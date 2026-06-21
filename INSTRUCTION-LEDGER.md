@@ -14944,3 +14944,20 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** M2.4d = первый OB-delta GENUINE GAP scaffold (advisory/sandbox intl-scheduled OB surface); 8 covered предшественников показали EMI несёт почти всё, M2.4d — реальный gap (international-specific consent/routing). honest CI-status (ruff+module-pytest+global-fence локально green, full 9-check впервые в CI).
 - **Recommended next:** M2.4e (intl funds-confirmation + CBPII consent lifecycle — финальный OB delta; preflight-first, CBPII partially present per M2.4 reconcile /cbpii/check → вероятно partial/covered). После M2.4e OB-delta backlog исчерпан; остаются gated KYC/KYB/AML (I-27) + M2.8 frontend (roster audit). KYC/KYB/AML — только после I-27 sign-off.
 - **Refs:** banxe-emi-stack PR #210 (agent/factory/mig-m2.4d-intl-scheduled); services/open_banking/intl_scheduled.py + tests/test_intl_scheduled.py; consume services/open_banking/m24_int_bridge.py (M2.4-INT IL-395) + accounts SoT (M2.2); reuse-not-dup scheduled_payments (M2.4a) + payments.py; semantic port для legacy banxe-open-banking/src/international/; MIG-M2.4 (open-banking gap-audit — intl-scheduled delta), MIG-M2.4-INT, MIG-M2.4a/M2.4c (covered precedents); ADR-102, ADR-103, ADR-059-A, I-01, I-05, I-27, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-421 - agent-factory-archstack002-sprint3-gap078-activate @ 2026-06-22T01:45:41Z
+
+- **il_ts:** 2026-06-22T01:45:41Z
+- **session_id:** agent-factory-archstack002-sprint3-gap078-activate
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sprint3-gap078-activate/IL-2026-06-22T01-45-41Z--694440.md`
+
+### Sprint-3 / GAP-078 (arch side) — activate the 10 dept-head agents (PROPOSED → active)
+- **Operator decision (2026-06-21):** activate ONLY the 10 GAP-078 dept-head agents (NOT all 31 PROPOSED). 21 other PROPOSED passports remain gated per their own non_goals + I-27 (channel_c, crm_dsar, sandbox_rails, etc. — 'do not activate until operator gate'). Result: 12 active, 21 PROPOSED.
+- **Flipped PROPOSED → active (10):** ceo_orchestration_agent, board_reporting_agent, internal_audit_agent, risk_oversight_agent, compliance_monitoring_agent, cfo_orchestration_agent, coo_operations_agent, cto_platform_agent, front_office_agent, legal_corporate_agent.
+- **Two-PR cycle (operator decision):** this arch PR #664 = passport activation + STAFF-MATRIX-v2 (already present) + IL; the role→gate wiring (banxe-emi-stack services/hitl/org_roles.py) + tests land in a SEPARATE emi-stack PR.
+- **Invariants honored:** HITL-MATRIX.yaml NOT changed; CANONICAL-ORG-CHART-v2.md + STAFF-MATRIX-v1.md NOT changed (frozen); del=0; no secrets. Role→gate mapping per STAFF-MATRIX-v2 §2 (CEO/CFO/CRO/COO/CTO/COMPLIANCE_OFFICER → HITL-001..017).
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0. Refs GAP-078; STAFF-MATRIX-v2; CANONICAL-ORG-CHART-v2 §9; org_roles.py (emi-stack). No secrets.

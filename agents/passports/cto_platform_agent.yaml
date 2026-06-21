@@ -1,7 +1,7 @@
 agent_id: cto_platform_agent
 name: "CTOPlatformAgent"
 version: "0.1.0"
-status: PROPOSED
+status: active
 description: >
   STUB passport (Sprint-2 Staff Matrix). Mandatory **department-head agent** for the
   "CTO / Technology, Data, AI" line of the canonical org chart (governance/CANONICAL-ORG-CHART-v2.md §9).
