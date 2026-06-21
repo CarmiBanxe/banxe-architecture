@@ -14464,3 +14464,19 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Status:** open-banking integration bridge готов (advisory): PISP→PaymentEngine contract-mirror + accounts SoT projection; mount регулируемых DEFERRED (нет sign-off); live FCA + KYC carve-out не тронуты; honest CI-status (ruff+module-pytest локально green, full 9-check впервые в CI).
 - **Recommended next:** следующий follow-up — M2.5-BIF (Bifrost Wave-D adapter за PaymentRailPort, advisory/sandbox, no live calls) ИЛИ M2.4a (OB delta-port domestic-scheduled, ADR-102+Quality-Gate). Mount psd2_gateway/consent_management + live PISP→PaymentEngine wiring — после governance sign-off / shared-contract client. KYC/KYB/AML — только после I-27 sign-off. M2.8 frontend — после roster audit.
 - **Refs:** banxe-emi-stack PR #204 (agent/factory/mig-m2.4-int-openbanking-wiring); services/open_banking/m24_int_bridge.py + tests/test_open_banking_int.py; consume api/models/account_sot.py (M2.2 #201/IL-374) + PaymentEnginePort contract (M2.1 banxe-payment-core #19/IL-378, cross-repo mirror); reuse-not-modify services/open_banking/{pisp_service,aisp_service} + api/main.py; MIG-M2.4 (open-banking reconcile #625/IL-384), MIG-M2.8 (acceptance IL-393); ADR-013, ADR-102, ADR-103, ADR-059-A, I-01, I-05, I-27, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-396 - agent-factory-audit-gap-075-reconcile-routing @ 2026-06-21T15:15:00Z
+
+- **il_ts:** 2026-06-21T15:15:00Z
+- **session_id:** agent-factory-audit-gap-075-reconcile-routing
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-audit-gap-075-reconcile-routing/IL-2026-06-21T15-15-00Z--90da65.md`
+
+### GAP-075 reconciliation — evo1/evo2 + model-routing claims vs ADR-117 AWAITS-OPERATOR registry (docs-only)
+- **Instrukciya:** Reconcile the v2 audit execution roadmap so no statement treats ADR-117 AWAITS-OPERATOR items as settled fact. evo1/evo2 node-mapping, per-node sizing/roles, load-balancing topology, doubled-dev composition rewritten as OPEN gap-delta referencing docs/governance/CANON-RECONCILIATION-ADR117.md. "Code reality over governance prose" restricted to confirmed read-only evidence. No new facts beyond ADR-117 (PROPOSED). Append-only (ADR-059-A); il_ts strictly above main-max.
+- **Shagi:** PR #630 already MERGED → follow-up changeset on new branch agent/factory/audit/gap-075-reconcile-routing (isolated worktree; main worktree left untouched — held a foreign in-flight ADR-118 rebase). Edited roadmap (Purpose + Newly-incorporated-evidence + Execution-rules); appended this shard; ledger regenerated; build_ledger --check OK. STOP before push (gated).
+- **Proof:** docs-only (roadmap edit + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T15:15:00Z > main-max 2026-06-21T15:00:00Z. build_ledger --check exit 0. Disputed infra items remain AWAITS OPERATOR; nothing invented.
+- **Refs:** docs/audit/FEATURE-INSTALLATION-AUDIT-EXECUTION-ROADMAP-2026-06-21-v2.md; docs/governance/CANON-RECONCILIATION-ADR117.md; GAP-075; ADR-056, ADR-060, ADR-116, ADR-117, ADR-059-A, I-28.
