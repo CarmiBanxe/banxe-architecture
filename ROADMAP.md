@@ -1267,3 +1267,32 @@ BL-SCRIPT-01**) → K-6 fail-closed failover (F5) → K-7 fabric-by-default + fl
 **Activates nothing.** `AGENT_ROUTING_ENABLED=false`; all build/enable GATED on Terminal-A infra +
 CEO/WG ratification. Convergence note: #492 (ADR-FABRIC-01) duplicates merged ADR-104 → recommend
 closing #492 as superseded (operator decision, not actioned here).
+
+## Roadmap Block 2026-06-21 — SP-ORGCANON follow-ups (governance)
+
+Governance-only follow-ups to `docs/DEPARTMENT-MAP.md` Canonical ORG-CHART v1 (§A–§H). All items
+create **PROPOSED** passports / docs only — **no activation** (I-27); single-source with the existing
+SP-THIN and 4× P0 Payments items below. Append-only.
+
+- **Sprint N — 10 dept-head passports (PROPOSED):** `ceo_orchestration_agent`, `risk_oversight_agent`,
+  `internal_audit_agent`, `cfo_orchestration_agent`, `coo_operations_agent`, `cto_platform_agent`,
+  `front_office_agent`, `legal_corporate_agent`, `kyc_specialist_agent`, `fraud_detection_agent`
+  (DEPARTMENT-MAP §B/§D TODO rows). human_double on dept-heads only.
+- **Sprint N+1 — 3 L4 AML workers + control-plane org-placement:** `behavior_agent`, `geo_risk_agent`,
+  `profile_history_agent` (DEPARTMENT-MAP §G, under MLRO, no human_double) + ARL / Swarm Orchestrator /
+  ReasoningBank / MCP Server placement (§H).
+- **Sprint N+2 — close 5 gap-departments:** Treasury/Liquidity (`liquidity_risk_agent`),
+  Account Management (`account_management_agent`), Customer Support/Chatbot (`customer_support_agent`),
+  Credit Risk (`credit_risk_agent`), DPIA/Privacy-Impact (`dpia_agent`) (§H gaps).
+
+**Cross-links (single-source):**
+- **SP-THIN** GAP-024 (FSCS) / GAP-057 (Wind-Down) / GAP-058 (Safeguarding-audit) / GAP-059 (DORA) —
+  emi-stack code merged; residual L3-live deferred.
+- **4× P0 Payments/Treasury** (DEPARTMENT-MAP §F CRITICAL): Payment API (BT-001), ClickHouse payments,
+  Reconciliation cron, CEO-verify/FIN060 — the single largest org-maturity blocker (sandbox-deferred,
+  operator/CEO scope at production cutover).
+
+- **Sprint N name-alignment:** adopt `ORG-STRUCTURE.md` canonical agent names for the 10 TODO dept-heads
+  before passport creation (avoid duplicates) — see DEPARTMENT-MAP §I.4 alignment table.
+
+*SP-ORGCANON · governance-only · append-only (del=0) · no activation.*
