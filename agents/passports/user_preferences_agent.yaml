@@ -1,0 +1,48 @@
+agent_id: user_preferences_agent
+name: "UserPreferencesAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/user_preferences/`
+  (code-derived from its handlers, e.g. ConsentManager). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: GREEN
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - preference_store
+  - consent_management
+  - data_export_dsar
+  - consent_audit
+department: "Customer Operations / Preferences & Consent"
+human_double: "COO"
+non_goals:
+  - "Do NOT reimplement services/user_preferences/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: ConsentPort
+      description: Primary inbound port (code-derived from services/user_preferences)
+  outbound:
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - customer_lifecycle_agent
+  - crm_dsar_governor
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "COO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - COO
+fca_references:
+  - "UK GDPR Art.7 — consent"
+  - "UK GDPR Art.20 — data portability (DSAR)"

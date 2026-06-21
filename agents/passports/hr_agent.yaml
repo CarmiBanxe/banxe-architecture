@@ -1,0 +1,46 @@
+agent_id: hr_agent
+name: "HRAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/hr/`
+  (code-derived from its handlers, e.g. HRPort). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: GREEN
+bounded_context: CTX-08-DATA
+autonomy: L2_REVIEW
+capabilities:
+  - employee_record_read
+  - conduct_attestation
+  - smcr_certification_track
+department: "HR / Legal"
+human_double: "HR/Legal"
+non_goals:
+  - "Do NOT reimplement services/hr/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: HRPort
+      description: Primary inbound port (code-derived from services/hr)
+  outbound:
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "HR/Legal"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - HR/Legal
+fca_references:
+  - "SM&CR — Certification Regime"
+  - "FCA Conduct Rules — attestation"

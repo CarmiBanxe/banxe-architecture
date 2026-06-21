@@ -1,0 +1,51 @@
+agent_id: case_management_agent
+name: "CaseManagementAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/case_management/`
+  (code-derived from its handlers, e.g. CaseManagementService). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: RED
+bounded_context: CTX-01
+autonomy: L2_REVIEW
+capabilities:
+  - case_create
+  - case_lifecycle_track
+  - marble_case_routing
+  - mlro_case_queue
+department: "Compliance / Case Management"
+human_double: "MLRO"
+non_goals:
+  - "Do NOT reimplement services/case_management/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: CaseManagementPort
+      description: Primary inbound port (code-derived from services/case_management)
+  outbound:
+    - port: MarbleCasePort
+      description: derived from services/case_management code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - aml_orchestrator
+  - banxe_aml_orchestrator
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+  - I-12
+governance:
+  change_class: CLASS_B
+  owner: "MLRO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - MLRO
+fca_references:
+  - "FCA SYSC 6 — compliance case handling"
+  - "POCA 2002 — SAR case workflow"

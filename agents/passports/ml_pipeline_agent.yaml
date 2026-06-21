@@ -1,0 +1,45 @@
+agent_id: ml_pipeline_agent
+name: "MlPipelineAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/ml_pipeline/`
+  (code-derived from its handlers, e.g. MLSignalPort). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-03
+autonomy: L2_REVIEW
+capabilities:
+  - model_drift_detection
+  - ml_signal_read
+  - model_registry_signal
+department: "Technology / Data & ML Engineering"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/ml_pipeline/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: MLSignalPort
+      description: Primary inbound port (code-derived from services/ml_pipeline)
+  outbound:
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - resilience_agent
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "EU AI Act Art.15 — accuracy/robustness monitoring (drift)"

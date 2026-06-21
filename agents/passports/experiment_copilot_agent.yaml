@@ -1,0 +1,44 @@
+agent_id: experiment_copilot_agent
+name: "ExperimentCopilotAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/experiment_copilot/`
+  (code-derived from its handlers, e.g. ExperimentConfig). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-03
+autonomy: L2_REVIEW
+capabilities:
+  - experiment_config  # TODO: requires code-derived confirmation (service exposes only ExperimentConfig)
+department: "Technology / Data & ML Engineering"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/experiment_copilot/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+  - "Capabilities require code-derived confirmation — service code is sparse (ExperimentConfig only)"
+ports:
+  inbound:
+    - port: ExperimentPort
+      description: Primary inbound port (code-derived from services/experiment_copilot)
+  outbound:
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - admin_panel
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "EU AI Act Art.14 — human oversight of experiments"
