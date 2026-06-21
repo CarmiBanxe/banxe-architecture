@@ -1,7 +1,7 @@
 # ADR-117 — Factory / Project Perimeter & Full-Cycle Org Model
 
-- Status: PROPOSED
-- Date: 2026-06-20
+- Status: ACCEPTED
+- Date: 2026-06-20 (ACCEPTED 2026-06-21 by operator decision; see docs/governance/CANON-RECONCILIATION-ADR117.md)
 - Relates: ADR-116, ADR-115, ADR-053, ADR-RUFLO-01
 - Supersedes: the hardware/perimeter parts of DEPLOYMENT-ARCHITECTURE (2026-04-06) and AGENT-ORG-STRUCTURE
 

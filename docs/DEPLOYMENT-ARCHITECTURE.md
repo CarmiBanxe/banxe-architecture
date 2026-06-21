@@ -1,31 +1,28 @@
-# Deployment Architecture — Banxe GMKtec Infrastructure
+# Deployment Architecture — Banxe Cluster Infrastructure (evo1/evo2)
 
-**Version:** 1.0
-**Date:** 2026-04-06
+**Version:** 1.1
+**Date:** 2026-06-21
 **Status:** LIVING DOCUMENT — updated each sprint
-**Scope:** GMKtec EVO-X2 primary compute node (192.168.0.72)
+**Scope:** Project cluster evo1/evo2 (per ADR-117 ACCEPTED 2026-06-21); Factory = Legion
 
-> **Superseded in part by ADR-117 (perimeter/hardware); Mandate: ADR-116.** RECONCILED 2026-06-21 — see `docs/governance/CANON-RECONCILIATION-ADR117.md`.
+> **Reconciled to ADR-117 (ACCEPTED 2026-06-21); Mandate: ADR-116.** See `docs/governance/CANON-RECONCILIATION-ADR117.md`.
 > Per ADR-117: **Factory** = Legion (64 GB, model `qwen2.5-coder:14b-banxe-factory`, software-delivery only); **Project** = cluster evo1/evo2 (128 GB each), which lends compute to the factory during code-design.
-> The GMKtec-node ↔ evo1/evo2 mapping and migration of the GMKtec service inventory are NOT asserted by ADR-117 and **await operator decision** (registry).
+> **RESOLVED (operator decision, 2026-06-21):** GMKtec == evo1. evo1 = banxe-NucBox-EVO-X1 (LAN 192.168.0.72, Tailscale 100.68.102.48); evo2 = banxe-NucBox-EVO-X2-2 (LAN 192.168.0.15, Tailscale 100.99.208.21). Service placement = node-per-service (mode B); see §1.1 and §2.
 
 ---
 
 ## 1. Hardware
 
-### 1.1 GMKtec EVO-X2 — AI Brain (Primary Compute)
+### 1.1 Project Cluster — evo1 / evo2 (per ADR-117 ACCEPTED)
 
-| Spec | Value |
-|------|-------|
-| Hostname | gmktec (SSH alias) |
-| IP Address | 192.168.0.72 |
-| SSH Port | 2222 |
-| CPU | AMD Ryzen AI MAX+ 395 (Strix Halo, NPU integrated) |
-| RAM | 128 GB unified memory |
-| Storage | 1.9 TB NVMe |
-| GPU/NPU | AMD Radeon 890M iGPU + Ryzen AI NPU (ROCm capable) |
-| OS | Ubuntu 24.04 LTS |
-| Role | All services, AI inference, compliance stack, data storage |
+| Node | Hostname | LAN IP | Tailscale | SSH | RAM | CPU/NPU | Role |
+|------|----------|--------|-----------|-----|-----|---------|------|
+| evo1 (== former GMKtec) | banxe-NucBox-EVO-X1 | 192.168.0.72 | 100.68.102.48 | :2222 (alias `evo1`) | 128 GB unified (operator-confirmed) | AMD Ryzen AI MAX+ 395 (Strix Halo, NPU) | app / compliance / payments / AI-gateway; banxe-supervisor model `qwen3-banxe-v2` |
+| evo2 | banxe-NucBox-EVO-X2-2 | 192.168.0.15 | 100.99.208.21 | :2222 (ProxyJump evo1) | 128 GB unified (operator-confirmed) | AMD Ryzen AI MAX+ 395 family (NucBox EVO-X) | observability + heavy-inference; `qwen3:235b-a22b(-banxe)` |
+
+- OS: Ubuntu 24.04 LTS; Storage 1.9 TB NVMe per node (evo2 GPU/storage per EVO-X family).
+- Shared models on both nodes: `llama3.3:70b`, `qwen3:30b-a3b`, `qwen3-coder-next`, `glm-4.7-flash`, `gpt-oss:20b`.
+- Factory model `qwen2.5-coder:14b-banxe-factory` runs on **Legion** (factory node, not the cluster).
 
 ### 1.2 Legion Pro 5 — Factory Node (per ADR-117)
 
@@ -37,7 +34,7 @@
 | Role | Factory node (ADR-117) — software-delivery orchestration: Claude Code, git, factory model `qwen2.5-coder:14b-banxe-factory` |
 | Constraint | Software-delivery only; no project/domain workloads or live banking services |
 
-**Important:** All production services, AI models, and data reside exclusively on GMKtec. The Legion is a thin terminal. This satisfies FCA DORA data residency obligations — no customer data leaves the regulated compute perimeter.
+**Important:** Factory = Legion (software-delivery orchestration only, ADR-117); no project/customer data on Legion. Project services, AI models, and data reside on the **Project cluster (evo1/evo2)** per the node-per-service map (§2). FCA DORA data-residency is satisfied by the Project cluster (regulated compute perimeter) — no customer data leaves it.
 
 ---
 
@@ -45,36 +42,49 @@
 
 ### 2.1 Complete Port Map
 
-| Service | Internal Port | External Port | Protocol | License | Status |
-|---------|--------------|--------------|----------|---------|--------|
-| Ollama | 11434 | — (internal) | HTTP | MIT | Active |
-| OpenClaw moa-bot | 18789 | 18789 | Telegram/HTTP | Commercial | Active |
-| OpenClaw ctio-bot | 18791 | 18791 | Telegram/HTTP | Commercial | Active |
-| OpenClaw @mycarmibot | 18793 | 18793 | Telegram/HTTP | Commercial | Active |
-| FastAPI compliance | 8093 | — (nginx) | HTTP | Proprietary | Active |
-| Moov Watchman | 8084 | — (internal) | HTTP | Apache 2.0 | Active |
-| Banxe Screener | 8085 | — (internal) | HTTP | Proprietary | Active |
-| Jube TM | 5001 | — (internal) | HTTP | AGPLv3 | Active |
-| Marble API | 5002 | — (internal) | HTTP | ELv2 | Active |
-| Marble UI | 5003 | — (nginx) | HTTP | ELv2 | Active |
-| ClickHouse (TCP) | 9000 | — (internal) | TCP | Apache 2.0 | Active |
-| ClickHouse (HTTP) | 8123 | — (internal) | HTTP | Apache 2.0 | Active |
-| PostgreSQL (compliance) | 5432 | — (internal) | TCP | PostgreSQL | Active |
-| PostgreSQL (Jube) | 15432 | — (internal) | TCP | PostgreSQL | Active |
-| PostgreSQL (Marble) | 15433 | — (internal) | TCP | PostgreSQL | Active |
-| Redis | 6379 | — (internal) | TCP | BSD | Active |
-| Redis (Jube) | 16379 | — (internal) | TCP | BSD | Active |
-| PII Proxy (Presidio) | 8089 | — (internal) | HTTP | MIT | Active |
-| Deep Search | 8088 | — (internal) | HTTP | Proprietary | Active |
-| Auto-Verify API | 8094 | — (internal) | HTTP | Proprietary | Active |
-| n8n | 5678 | — (nginx) | HTTP | Fair-code | Active |
-| nginx | 443/80 | 443/80 | HTTPS/HTTP | MIT | Active |
-| Firebase Emulator (auth) | 9099 | — (internal) | HTTP | Apache 2.0 | Active |
-| Firebase Emulator (UI) | 4000 | — (internal) | HTTP | Apache 2.0 | Active |
-| Midaz (LerianStudio) | 8095 | — (internal) | HTTP | Apache 2.0 | Deploying |
-| Yente (OpenSanctions) | 8086 | — (internal) | HTTP | MIT | Planned Phase 3 |
+Node placement = mode B (node-per-service, operator audit 2026-06-21). Target-Node column added.
 
-**Excluded:** GUIYON (:18794) — separate project, absolute isolation (I-18).
+| Service | Internal Port | External Port | Protocol | License | Status | Target-Node |
+|---------|--------------|--------------|----------|---------|--------|-------------|
+| Ollama | 11434 | — (internal) | HTTP | MIT | Active | evo1 + evo2 |
+| OpenClaw moa-bot | 18789 | 18789 | Telegram/HTTP | Commercial | Active | evo1 |
+| OpenClaw ctio-bot | 18791 | 18791 | Telegram/HTTP | Commercial | Active | evo1 |
+| OpenClaw @mycarmibot | 18793 | 18793 | Telegram/HTTP | Commercial | Active | evo1 |
+| FastAPI compliance | 8093 | — (nginx) | HTTP | Proprietary | Active | evo1 |
+| Moov Watchman | 8084 | — (internal) | HTTP | Apache 2.0 | Active | evo1 |
+| Banxe Screener | 8085 | — (internal) | HTTP | Proprietary | Active | evo1 |
+| Jube TM | 5001 | — (internal) | HTTP | AGPLv3 | Active | evo1 |
+| Marble API | 5002 | — (internal) | HTTP | ELv2 | Active | evo1 |
+| Marble UI | 5003 | — (nginx) | HTTP | ELv2 | Active | evo1 |
+| ClickHouse (TCP) | 9000 | — (internal) | TCP | Apache 2.0 | Active | evo1 |
+| ClickHouse (HTTP) | 8123 | — (internal) | HTTP | Apache 2.0 | Active | evo1 |
+| PostgreSQL (compliance) | 5432 | — (internal) | TCP | PostgreSQL | Active | evo1 |
+| PostgreSQL (Jube) | 15432 | — (internal) | TCP | PostgreSQL | Active | evo1 |
+| PostgreSQL (Marble) | 15433 | — (internal) | TCP | PostgreSQL | Active | evo1 |
+| Redis | 6379 | — (internal) | TCP | BSD | Active | evo1 |
+| Redis (Jube) | 16379 | — (internal) | TCP | BSD | Active | evo1 |
+| PII Proxy (Presidio) | 8089 | — (internal) | HTTP | MIT | Active | evo1 |
+| Deep Search | 8088 | — (internal) | HTTP | Proprietary | Active | evo1 |
+| Auto-Verify API | 8094 | — (internal) | HTTP | Proprietary | Active | evo1 |
+| n8n | 5678 | — (nginx) | HTTP | Fair-code | Active | evo1 |
+| nginx | 443/80 | 443/80 | HTTPS/HTTP | MIT | Active | evo1 |
+| Firebase Emulator (auth) | 9099 | — (internal) | HTTP | Apache 2.0 | Active | evo1 |
+| Firebase Emulator (UI) | 4000 | — (internal) | HTTP | Apache 2.0 | Active | evo1 |
+| Midaz (LerianStudio) | 8095 | — (internal) | HTTP | Apache 2.0 | Deploying | evo1 |
+| Yente (OpenSanctions) | 8086 | — (internal) | HTTP | MIT | Planned Phase 3 | evo1 |
+| LiteLLM gateway | 4000 | — (LAN) | HTTP | MIT | Active | evo1 (port per operator; verify vs Firebase UI :4000) |
+| banxe-mock-aspsp | 8888 | — (internal) | HTTP | Proprietary | Active | evo1 |
+| Prometheus | 9090 | — (internal) | HTTP | Apache 2.0 | Active | evo2 |
+| Grafana | 3000 | — (internal) | HTTP | AGPLv3 | Active | evo2 |
+| Blackbox exporter | 9115 | — (internal) | HTTP | Apache 2.0 | Active | evo2 |
+
+**GUIYON (:18794) — operator decision 2026-06-21:** compute co-located on **evo1** (node-per-service, see §2.3). I-18 "absolute isolation" is hereby interpreted as **logical / network / data isolation** (not node-exclusivity); GUIYON remains a separate project with its own isolation boundary. **FLAG:** `INVARIANTS.md` I-18 requires a separate formal reconciliation to match this co-location — not edited in this changeset.
+
+### 2.3 Node placement (mode B) — operator audit 2026-06-21 (services without published port above)
+
+- **evo1** (app/compliance/payments/AI-gateway): keycloak, hitl-dashboard, guardian-factory, guardian-project, guiyon-dispatcher, openclaw guiyon (:18794), midaz (ledger / rabbitmq / mongodb), mirofish. Ports not re-asserted where absent from operator audit — to be added when confirmed.
+- **evo2** (observability + heavy-inference): see Prometheus/Grafana/Blackbox above; Ollama heavy-inference (`qwen3:235b-a22b(-banxe)`).
+- GUIYON: co-located on evo1 per operator (2026-06-21); I-18 = logical/network/data isolation (INVARIANTS.md reconciliation flagged separately).
 
 ### 2.2 Ollama Models
 
@@ -85,13 +95,17 @@
 | glm-4.7-flash-abliterated | — | client-service, operations, it-devops | CTIO bot |
 | gpt-oss-derestricted:20b | — | analytics, finance | Analytics agent |
 
-> **ADR-117 reconciliation:** the factory model (`qwen2.5-coder:14b-banxe-factory`, on Legion) is added above. The PROJECT model set (on evo1/evo2) per ADR-117 additionally includes `qwen3:235b-a22b`, `llama3.3:70b`, `qwen3-coder-next`, `qwen3.5/30b/4b` — names per ADR-117; exact sizes/roles/host await operator (registry).
+> **ADR-117 per-node roles (operator-confirmed 2026-06-21):**
+> - **evo2** = heavy-reasoning (`qwen3:235b-a22b`, `qwen3:235b-a22b-banxe`) + observability host.
+> - **evo1** = banxe-supervisor (`qwen3-banxe-v2`) + app/compliance services.
+> - **shared (both)**: `llama3.3:70b`, `qwen3:30b-a3b`, `qwen3-coder-next`, `glm-4.7-flash`, `gpt-oss:20b`.
+> - **Legion (factory)**: `qwen2.5-coder:14b-banxe-factory` — docs-resolved; **runtime unverified (Legion UNREACHABLE via ssh @2026-06-21)**.
 
 ---
 
 ## 3. Storage Layout
 
-All persistent data resides under `/data/` on GMKtec NVMe:
+All persistent app/compliance data resides under `/data/` on **evo1** NVMe (192.168.0.72); per-service node placement per §2.3 (mode B). Observability data (Prometheus/Grafana) resides on evo2:
 
 ```
 /data/
@@ -207,14 +221,15 @@ banxe-cbs-net (deploying):
 
 | Source | Target | Port | Method |
 |--------|--------|------|--------|
-| Legion (WSL2) | GMKtec | 2222 | SSH key, alias `ssh gmktec` |
-| Claude Code | GMKtec | 2222 | Via Legion terminal |
+| Legion (WSL2) | evo1 (192.168.0.72) | 2222 | SSH key, alias `ssh evo1` (was `gmktec`; alias renamed) |
+| Legion (WSL2) | evo2 (192.168.0.15) | 2222 | SSH key, alias `ssh evo2` (ProxyJump evo1) |
+| Claude Code | evo1 / evo2 | 2222 | Via Legion terminal |
 
 ---
 
 ## 5. Process Management
 
-### 5.1 Systemd Services
+### 5.1 Systemd Services (evo1 — app/compliance; observability units on evo2)
 
 | Service | Unit File | User | Managed By |
 |---------|-----------|------|-----------|
@@ -224,7 +239,7 @@ banxe-cbs-net (deploying):
 | FastAPI compliance | banxe-compliance.service | banxe | systemd |
 | PII Proxy | pii-proxy.service | banxe | systemd |
 
-### 5.2 Docker Compose Stacks
+### 5.2 Docker Compose Stacks (evo1 — app/compliance; observability stack on evo2)
 
 | Stack | Directory | Key Services |
 |-------|-----------|-------------|
@@ -234,7 +249,7 @@ banxe-cbs-net (deploying):
 | banxe-n8n | /data/banxe-stack/n8n/ | n8n |
 | banxe-midaz | /data/banxe-stack/midaz/ | Midaz (deploying) |
 
-### 5.3 Cron Jobs (GMKtec)
+### 5.3 Cron Jobs (evo1)
 
 | Schedule | Script | Purpose |
 |----------|--------|---------|
@@ -278,7 +293,7 @@ All compliance data passes through PII Proxy (Presidio :8089) before ClickHouse 
 
 ### 6.4 Secrets Management
 
-- All secrets (API keys, tokens, passwords) stored exclusively in `/data/banxe/.env` on GMKtec
+- All secrets (API keys, tokens, passwords) stored exclusively in `/data/banxe/.env` on evo1 (192.168.0.72)
 - No secrets committed to any git repository (enforced by pre-commit hook via SR-01)
 - Claude Code never reads or commits `.env` files
 

@@ -14621,3 +14621,19 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Rule:** sub-terminal/sub-actor identity goes in `<id>` WITHOUT a hyphen (archstacksubA) or in the `<slug>`.
 - **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs NOT touched (DEPARTMENT-MAP/ROADMAP/HITL-MATRIX); no feature/service code (ADR doc + governance hook script + ledger only).
 - **Refs:** ADR-060; guardian.yml guardian-branch-naming; PR #644 (rejected)/#646 (merged 41600c5); scripts/pre-commit-hook.sh. No secrets.
+
+---
+
+### IL-404 - agent-factory-governance-adr-117-accept @ 2026-06-21T18:30:00Z
+
+- **il_ts:** 2026-06-21T18:30:00Z
+- **session_id:** agent-factory-governance-adr-117-accept
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr-117-accept/IL-2026-06-21T18-30-00Z--d6d2ff.md`
+
+### ADR-117 PROPOSED -> ACCEPTED — perimeter/hardware/org reconciled with operator Q1-Q7 (docs-only)
+- **Instrukciya:** Apply operator decisions; flip ADR-117 ACCEPTED. mode-B node-per-service (GMKtec==evo1; evo1 LAN 192.168.0.72/TS 100.68.102.48; evo2 LAN 192.168.0.15/TS 100.99.208.21; ssh alias gmktec->evo1). RAM 128GB each. Per-node roles (evo2 235b heavy-reasoning; evo1 qwen3-banxe-v2 supervisor; shared set; factory model on Legion). Doubled-dev + full-cycle roles bound to existing agents (planned/unassigned where uncovered). Guard scripts/adr117-gate-check.sh + guardian-adr117 CI.
+- **Shagi:** isolated worktree; edited DEPLOYMENT-ARCHITECTURE.md, AGENT-ORG-STRUCTURE.md, ADR-117 (ACCEPTED); guard+CI; rebased onto origin/main (ledger regenerated, --check OK); gate-check exit 0. STOP before merge.
+- **Proof:** docs-only + CI guard; append-only; il_ts above main-max at mint. FLAG: GUIYON(:18794) co-located on evo1 per operator -> I-18 reinterpreted (logical/network isolation); INVARIANTS.md I-18 reconciliation pending. Legion factory-model runtime unverified (Legion UNREACHABLE @audit).
+- **Refs:** ADR-117, ADR-116, ADR-056, ADR-060, ADR-059-A, I-18, I-28; CANON-RECONCILIATION-ADR117.md.
