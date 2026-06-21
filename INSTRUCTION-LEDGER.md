@@ -14544,3 +14544,21 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** Bifrost Wave-D adapter scaffold готов (advisory/sandbox) за emi-stack PaymentRailPort, consume AbsPaymentStatus; resolves blocker #640 (retarget A). honest CI-status (ruff+module-pytest локально green, full 9-check впервые в CI). Live GCP wiring — Wave-D production (после operator sign-off; no live calls в scaffold). KYC/KYB/AML — pending I-27.
 - **Recommended next:** следующий follow-up — M2.4a (OB delta-port domestic-scheduled → banxe-emi-stack, consume M2.1/M2.2, no live initiation) ИЛИ ABS delta/re-home (abs-posting→ledger via LedgerPort, scoring/agreement/contract port, abs-customer→identity). Bifrost live GCP wiring + mount регулируемых — после governance sign-off. KYC/KYB/AML — только после I-27 sign-off. M2.8 frontend — после roster audit.
 - **Refs:** banxe-emi-stack PR #206 (agent/factory/mig-m2.5-bif-bifrost-wave-d); services/payment/legacy/bifrost_adapter.py + tests/test_bifrost_adapter.py; implement-behind services/payment/payment_port.py (PaymentRailPort) + consume services/payment/legacy/legacy_abs_payment_adapter.py (AbsPaymentStatus, M2.5 IL-388); blocker MIG-M2.5-BIF-BLOCKER (#640/IL-397, target-mismatch); MIG-M2.5 (ABS reconcile), MIG-M2.7 (target-mismatch precedent), MIG-M2.8 (acceptance); ADR-025 §15-16, ADR-013, ADR-102, ADR-103, ADR-059-A, I-24, I-28; /tmp/banxe-migration-mapping-v0.claude.txt.
+
+---
+
+### IL-400 - agent-factory-archstack-subA-sp-orgcanon @ 2026-06-21T16:51:29Z
+
+- **il_ts:** 2026-06-21T16:51:29Z
+- **session_id:** agent-factory-archstack-subA-sp-orgcanon
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack-subA-sp-orgcanon/IL-2026-06-21T16-51-29Z--0f3ff4.md`
+
+### SP-ORGCANON — Canonical ORG-CHART v1 (final): §A–§I DEPARTMENT-MAP extension + roadmap (governance-only, append-only)
+- **Instrukciya:** Governance-only org-structure alignment to Canonical ORG-CHART v1 (Variant A, extend-in-place). ORG-STRUCTURE.md single-source — LINK not duplicate. HITL-MATRIX.yaml untouched (byte-identical).
+- **DEPARTMENT-MAP.md (append-only):** §A 5-level AI hierarchy (human_double on L2 dept-heads + L1 independent only); §B 10 ArchiMate→8 SM&CR roll-up; §C L3/L4 sub-agents; §D dept-head TODO PROPOSED; §E HITL cross-ref; §F maturity (25✅/10🔧/11❌; CRITICAL Payments/Treasury 4×P0); §G L4 AML workers (behavior/geo_risk/profile_history, no human_double); §H AI-Ops control plane (ARL/Swarm/ReasoningBank/MCP) + 5 gap-departments; §I canonical cross-ref → ORG-STRUCTURE.md authoritative + MLRO-independent-from-CFO correction + thresholds/SLA/legal/vendor reference rows + agent name-alignment.
+- **ROADMAP.md (append-only):** Roadmap Block 2026-06-21 SP-ORGCANON follow-ups (Sprint N/N+1/N+2 + name-alignment); cross-linked SP-THIN GAP-024/057/058/059 + 4×P0 Payments.
+- **No passports/agents created** (all PROPOSED candidates / TODO, I-27). No duplication of ORG-STRUCTURE.md. HITL-delta=0; org_roles.py unaffected.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0; org-docs only, 0 feature-code.
+- **Refs:** docs/ORG-STRUCTURE.md (IL-065/066/067 authoritative); DEPARTMENT-MAP IL-031; HITL-MATRIX IL-065; ROADMAP.md; SP-THIN; PR #638. No secrets.
