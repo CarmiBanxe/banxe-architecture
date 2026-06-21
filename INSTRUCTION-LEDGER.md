@@ -14347,3 +14347,22 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Shagi:** branch agent/factory/audit/gap-075-roadmap-v2 from origin/main; created docs/audit/FEATURE-INSTALLATION-AUDIT-EXECUTION-ROADMAP-2026-06-21-v2.md; coupling shard added; ledger regenerated; build_ledger --check OK. STOP before push (gated).
 - **Proof:** docs-only (roadmap + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T12:40:00Z > main-max 2026-06-21T12:25:00Z. build_ledger --check exit 0. Routing/model evidence recorded as read-only audit input (config-vs-runtime drift closure tracked as Sprint F).
 - **Refs:** docs/audit/FEATURE-INSTALLATION-AUDIT-EXECUTION-ROADMAP-2026-06-21-v2.md; GAP-075; ADR-117 (PROPOSED), ADR-116, ADR-056, ADR-060, ADR-059-A, I-28; AGENT-ORG-STRUCTURE.
+
+---
+
+### IL-390 - agent-factory-archstack002-sp-full-project-audit @ 2026-06-21T13:26:29Z
+
+- **il_ts:** 2026-06-21T13:26:29Z
+- **session_id:** agent-factory-archstack002-sp-full-project-audit
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-full-project-audit/IL-2026-06-21T13-26-29Z--541b6e.md`
+
+### SP — Full-project installation audit + sandbox-completion roadmap (GAP-076 reconcile)
+- **Instrukciya:** Publish a read-only full-project L1/L2/L3 audit + 3-sprint roadmap to 100% sandbox. No feature code edited.
+- **Findings (verified 2026-06-21):** emi-stack 104 services / 812 service .py / 618 tests (~76% cov) / 908 FE components; + payment-core, crypto-ops-monitor, braslina. Project ~76% L2. ALL 13 OPEN GAPs have code -> OPEN statuses STALE, not code-absence. NotImplementedError=37 (19 intentional L3-boundary, ~18 thin). Thin: resolution/safeguarding-audit/incident_response. L3-blocked: GAP-008/011/013/015 + 16 BT + 19 Live-providers (sandbox-defer).
+- **Roadmap:** SP-RECON (reconcile 13 stale OPEN GAPs, governance), SP-THIN (complete 4 thin services to L2, code+tests), SP-L3DOC (document Live*/BT as L2-ready/L3-deferred). No rewriting existing code.
+- **Frame:** sandbox L2-installation ~complete; remaining = status-reconcile + 4 thin services, NOT large code gaps. L3-live deferred to production cutover (operator scope).
+- **Delivered:** docs/audit/FULL-PROJECT-INSTALLATION-AUDIT-2026-06-21.md + GAP-076 reconcile note.
+- **Proof:** build_ledger --check OK; validate_schemas PASS; del=0. ADR-052; operator approves merge.
+- **Refs:** GAP-076; GAP-075; GAP-024/057/058/059; ADR-052. No secrets.
