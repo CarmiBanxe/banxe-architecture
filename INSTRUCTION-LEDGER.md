@@ -15018,3 +15018,25 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** Roster banxe-platform vs banxe-ui НЕ выбран (operator gate). M2.8 precondition-аудит готов; canonical target фиксируется отдельным шагом ПОСЛЕ operator-решения.
 - **Recommended next:** Operator roster-решение (A ui canonical / B platform canonical / C split). После выбора — отдельный шаг: зафиксировать canonical frontend target (ADR + ledger) → старт M2.8 frontend track (миграция M1.7 shells, разведение namespace-коллизий, унификация Next). KYC/KYB/AML — независимый gate, только после I-27 HITL-L4 sign-off. parallel-session ветки не трогать.
 - **Refs:** docs/migration/MIG-M2.8-PRE-frontend-roster-audit.md; banxe-platform 80c93c8 (ROADMAP.md); banxe-ui 463fe26 (DESIGN-SYSTEM.md/PRD.md); M2.7 deferral; MIG-M2.8 (M2-cycle acceptance), MIG-M2.4-OB-delta-completion (IL-423); ADR-102, ADR-103, ADR-059-A, I-27, I-28.
+
+---
+
+### IL-425 - agent-factory-archstack002-sp-thin @ 2026-06-22T04:20:00Z
+
+- **il_ts:** 2026-06-22T04:20:00Z
+- **session_id:** agent-factory-archstack002-sp-thin
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-thin/IL-2026-06-22T04-20-00Z--0de87a.md`
+
+### SP-THIN — complete 4 thin services to L2 (GAP-024/057/058/059)
+- **Instrukciya:** Drive the 4 SP-THIN-flagged thin services from 2-.py stubs to full L2 (code + tests) in banxe-emi-stack, then reconcile GAP-REGISTER. Governance PR is registry-only; runtime code in emi-stack PR #205.
+- **Runtime delivered (banxe-emi-stack PR #205):**
+  - GAP-024 FSCS — services/resolution/fscs_scv.py (FSCS Single Customer View, PRA SS18/15; per-depositor aggregation + £85k cap + eligibility) + tests/test_fscs_scv.py.
+  - GAP-057 Wind-Down — services/resolution/wind_down_plan.py (FCA WDPG triggers capital/liquidity/conduct + runway + steps) + tests/test_wind_down_plan.py.
+  - GAP-058 Safeguarding-audit — src/safeguarding/annual_audit.py (Annual Safeguarding Audit, EMR 2011 reg.21; aggregates daily recon → opinion) + tests/test_annual_safeguarding_audit.py.
+  - GAP-059 DORA — services/incident_response/dora_continuity.py (DORA DR/BCP RTO/RPO + ICT major-incident classification) + tests/test_dora_continuity.py.
+- **Reuse (no reimplementation):** resolution_pack repo/builder, daily_reconciliation, incident_signal_port. Decimal for money (I-05). No secrets.
+- **Registry:** GAP-024/057/058/059 OPEN+→SP-THIN → 🔄 IN PROGRESS with residual + service-path evidence.
+- **Proof:** emi-stack ruff/mypy/pytest(25 passed)/semgrep green. arch: build_ledger --check OK; validate_schemas PASS; del=0.
+- **Refs:** GAP-076; GAP-024/057/058/059. ADR-052; operator approves merge. No secrets.
