@@ -1,0 +1,49 @@
+agent_id: document_management_agent
+name: "DocumentManagementAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/document_management/`
+  (code-derived from its handlers, e.g. DocumentAgent). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - document_store
+  - document_access_control
+  - document_search
+  - document_access_audit
+department: "Customer Operations / Documents"
+human_double: "COO"
+non_goals:
+  - "Do NOT reimplement services/document_management/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: DocumentPort
+      description: Primary inbound port (code-derived from services/document_management)
+  outbound:
+    - port: AccessLogPort
+      description: derived from services/document_management code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - customer_lifecycle_agent
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "COO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - COO
+fca_references:
+  - "UK GDPR Art.5 — data minimisation"
+  - "FCA SYSC 9 — record-keeping"

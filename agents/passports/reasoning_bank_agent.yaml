@@ -1,0 +1,46 @@
+agent_id: reasoning_bank_agent
+name: "ReasoningBankAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/reasoning_bank/`
+  (code-derived from its handlers, e.g. ReasoningBankStore). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-03
+autonomy: L2_REVIEW
+capabilities:
+  - decision_memory_store
+  - decision_explain
+  - policy_snapshot
+  - feedback_capture
+department: "Technology / AI Platform"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/reasoning_bank/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: ReasoningBankPort
+      description: Primary inbound port (code-derived from services/reasoning_bank)
+  outbound:
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - banxe_aml_orchestrator
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "EU AI Act Art.13 — transparency / explainability"

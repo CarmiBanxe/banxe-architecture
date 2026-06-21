@@ -1,0 +1,48 @@
+agent_id: design_pipeline_agent
+name: "DesignPipelineAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/design_pipeline/`
+  (code-derived from its handlers, e.g. CodeGeneratorPort). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-09-DEVPLATFORM
+autonomy: L2_REVIEW
+capabilities:
+  - design_to_code
+  - component_catalog
+  - design_token_management
+  - visual_regression_config
+department: "Engineering / Developer Platform"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/design_pipeline/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: DesignSpecPort
+      description: Primary inbound port (code-derived from services/design_pipeline)
+  outbound:
+    - port: CodeGeneratorPort
+      description: derived from services/design_pipeline code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - sandbox_rails_governor
+allowed_callees:
+  - sdk_release_governor
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "FCA SYSC 8 — change management / dev platform"

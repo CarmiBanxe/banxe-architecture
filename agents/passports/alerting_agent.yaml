@@ -1,0 +1,48 @@
+agent_id: alerting_agent
+name: "AlertingAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/alerting/`
+  (code-derived from its handlers, e.g. AlertRouter). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-06-CUSTOMER
+autonomy: L2_REVIEW
+capabilities:
+  - alert_routing
+  - alert_severity_classification
+  - telegram_n8n_dispatch
+department: "Operations / Alerting"
+human_double: "COO"
+non_goals:
+  - "Do NOT reimplement services/alerting/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: AlertRoutingPort
+      description: Primary inbound port (code-derived from services/alerting)
+  outbound:
+    - port: N8nTelegramAlertPort
+      description: derived from services/alerting code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - safeguarding_recon_governor
+  - support_sla_governor
+allowed_callees:
+  - notification_agent
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "COO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - COO
+fca_references:
+  - "FCA SYSC 8.1 — operational alerting / escalation"

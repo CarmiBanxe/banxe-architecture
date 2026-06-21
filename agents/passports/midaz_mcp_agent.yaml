@@ -1,0 +1,49 @@
+agent_id: midaz_mcp_agent
+name: "MidazMcpAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/midaz_mcp/`
+  (code-derived from its handlers, e.g. MidazAgent). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-03
+autonomy: L2_REVIEW
+capabilities:
+  - midaz_ledger_query
+  - account_balance_read
+  - ledger_mcp_bridge
+department: "Technology / Integrations"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/midaz_mcp/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: MidazPort
+      description: Primary inbound port (code-derived from services/midaz_mcp)
+  outbound:
+    - port: MidazClientPort
+      description: derived from services/midaz_mcp code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - treasury_alm_agent
+  - reporting_agent
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+  - I-05
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "FCA CASS 7 — client money ledger integrity"

@@ -15040,3 +15040,24 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Registry:** GAP-024/057/058/059 OPEN+→SP-THIN → 🔄 IN PROGRESS with residual + service-path evidence.
 - **Proof:** emi-stack ruff/mypy/pytest(25 passed)/semgrep green. arch: build_ledger --check OK; validate_schemas PASS; del=0.
 - **Refs:** GAP-076; GAP-024/057/058/059. ADR-052; operator approves merge. No secrets.
+
+---
+
+### IL-426 - agent-factory-archstack002-sp-passport-cov @ 2026-06-22T04:30:00Z
+
+- **il_ts:** 2026-06-22T04:30:00Z
+- **session_id:** agent-factory-archstack002-sp-passport-cov
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-archstack002-sp-passport-cov/IL-2026-06-22T04-30-00Z--b1ad07.md`
+
+### SP-PASSPORT-COV — passport-coverage reconciliation + 100% explicit accounting (13 PROPOSED)
+- **Instrukciya:** Governance-only passport-coverage reconcile. Create PROPOSED owner-passports for the 13 true-orphan runtime services; explicitly map the 3 indirectly-covered ones; explicitly register the 15 infra services as OUT-OF-SCOPE. No feature code (passports + audit doc + ledger only).
+- **Verified pre-flight:** banxe-emi-stack services = 106; passports = 34→47; all 13 orphan dirs present (code-derived capabilities).
+- **Created (13 PROPOSED passports, status PROPOSED / autonomy L2_REVIEW / I-27 — NOT activated):** case_management_agent (MLRO/RED/CTX-01); document_management + user_preferences + alerting (COO/CTX-06); hr (HR-Legal/CTX-08); midaz_mcp + webhook_orchestrator + webhooks + ml_pipeline + experiment_copilot + reasoning_bank (CTO/CTX-03); design_pipeline + multi_tenancy (CTO/CTX-09).
+- **Explicit mapping (was indirect):** payment → payment_router_agent (CTX-04); reporting → reporting_agent (CTX-10); fx_exchange → treasury_alm_agent / fx-exposure (CTX-10). Status MAPPED.
+- **Out-of-scope (Matrix D):** 15 infra services marked OUT-OF-SCOPE, owner CTO platform (no agent).
+- **Coverage:** domain = 106-15 = 91; ALL 91 owned → 100% domain. Total accounting = 91 owned + 15 out-of-scope = 106/106 = 100%. True-orphans = 0.
+- **Delivered:** 13 agents/passports/*_agent.yaml + docs/audit/ORG-CODE-RECONCILIATION-v2.md (Matrix A 106 rows + B + C + D).
+- **Proof:** validate_schemas PASS; build_ledger --check OK; del=0; 0 feature-code files. ADR-052; operator approves merge; passports remain PROPOSED until explicit activation.
+- **Refs:** GAP-076; ORG-CODE-RECONCILIATION-2026-06-11; AGENT-ORG-STRUCTURE; docs/ORG-STRUCTURE.md. No secrets.

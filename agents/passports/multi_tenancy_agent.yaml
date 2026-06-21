@@ -1,0 +1,51 @@
+agent_id: multi_tenancy_agent
+name: "MultiTenancyAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/multi_tenancy/`
+  (code-derived from its handlers, e.g. TenantPort). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-09-DEVPLATFORM
+autonomy: L2_REVIEW
+capabilities:
+  - tenant_isolation
+  - data_isolation_validation
+  - quota_enforcement
+  - tenant_audit
+department: "Engineering / Developer Platform"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/multi_tenancy/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: TenantPort
+      description: Primary inbound port (code-derived from services/multi_tenancy)
+  outbound:
+    - port: QuotaPort
+      description: derived from services/multi_tenancy code
+    - port: TenantAuditPort
+      description: derived from services/multi_tenancy code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - m_gateway_api_governor
+allowed_callees:
+  - clickhouse_writer
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "UK GDPR Art.32 — data isolation/security"
+  - "FCA SYSC 8 — segregation"

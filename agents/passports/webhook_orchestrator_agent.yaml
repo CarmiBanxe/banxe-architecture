@@ -1,0 +1,50 @@
+agent_id: webhook_orchestrator_agent
+name: "WebhookOrchestratorAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Owner agent for the EXISTING banxe-emi-stack runtime service `services/webhook_orchestrator/`
+  (code-derived from its handlers, e.g. DeliveryEngine). PROPOSES only (I-27); created by
+  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
+  until a separate operator gate.
+level: 2
+trust_zone: AMBER
+bounded_context: CTX-03
+autonomy: L2_REVIEW
+capabilities:
+  - webhook_delivery_orchestration
+  - circuit_breaker
+  - dead_letter_queue
+  - event_publish
+department: "Technology / Integrations"
+human_double: "CTO"
+non_goals:
+  - "Do NOT reimplement services/webhook_orchestrator/ — existing code in banxe-emi-stack"
+  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+ports:
+  inbound:
+    - port: EventPublisherPort
+      description: Primary inbound port (code-derived from services/webhook_orchestrator)
+  outbound:
+    - port: DeliveryStorePort
+      description: derived from services/webhook_orchestrator code
+    - port: CircuitBreakerStorePort
+      description: derived from services/webhook_orchestrator code
+    - port: AuditPort
+      description: Immutable audit log (I-08)
+allowed_callers:
+  - m_gateway_api_governor
+allowed_callees:
+  - webhooks
+invariants:
+  - I-27
+  - I-08
+governance:
+  change_class: CLASS_B
+  owner: "CTO"
+  review_cycle: annually
+  last_reviewed: "2026-06-21"
+  approvers:
+    - CTO
+fca_references:
+  - "FCA SYSC 8.1 — outsourcing/integration resilience"
