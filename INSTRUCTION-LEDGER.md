@@ -14480,3 +14480,29 @@ Refs: ADR-106, ADR-052(enforcement-runtime Accepted), ruflo/start-ruflo.sh, GAP-
 - **Shagi:** PR #630 already MERGED → follow-up changeset on new branch agent/factory/audit/gap-075-reconcile-routing (isolated worktree; main worktree left untouched — held a foreign in-flight ADR-118 rebase). Edited roadmap (Purpose + Newly-incorporated-evidence + Execution-rules); appended this shard; ledger regenerated; build_ledger --check OK. STOP before push (gated).
 - **Proof:** docs-only (roadmap edit + coupling shard + regenerated ledger); no code/prod. Append-only: existing IL untouched; il_ts 2026-06-21T15:15:00Z > main-max 2026-06-21T15:00:00Z. build_ledger --check exit 0. Disputed infra items remain AWAITS OPERATOR; nothing invented.
 - **Refs:** docs/audit/FEATURE-INSTALLATION-AUDIT-EXECUTION-ROADMAP-2026-06-21-v2.md; docs/governance/CANON-RECONCILIATION-ADR117.md; GAP-075; ADR-056, ADR-060, ADR-116, ADR-117, ADR-059-A, I-28.
+
+---
+
+### IL-397 - adr117-cluster-evidence-readonly @ 2026-06-21T15:30:00Z
+
+- **il_ts:** 2026-06-21T15:30:00Z
+- **session_id:** adr117-cluster-evidence-readonly
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/adr117-cluster-evidence/IL-2026-06-21T15-30-00Z--fe3e1a.md`
+
+### ADR-117 — read-only cluster evidence (no facts asserted beyond observation)
+
+OBSERVED (ssh, read-only 2026-06-21T15:30:00Z):
+- evo1 host=banxe-NucBox-EVO-X1; evo2 host=banxe-NucBox-EVO-X2-2 (NucBox EVO-X line, not literal "GMKtec EVO-X2")
+- RAM: free -g returned EMPTY on both -> RAM NOT confirmed -> OPEN gap-delta (do not assert 128GB)
+- evo1-only: qwen3-banxe-v2:latest(18G), qwen2.5-coder:7b
+- evo2-only: qwen3:235b-a22b(142G), qwen3:235b-a22b-banxe(142G), qwen2.5:0.5b
+- both: llama3.3:70b, qwen3.5:35b, qwen3:4b, qwen3:30b-a3b, qwen3.5:latest, qwen3-coder-next:q4_K_M, gurubot/gpt-oss-derestricted:20b, huihui_ai/glm-4.7-flash-abliterated
+
+STILL AWAITS OPERATOR (not invented here):
+1. GMKtec(192.168.0.72) rename/replace/decommission + service migration
+2. authoritative per-node model roles/sizing (evidence above is inventory, not role assignment)
+3. doubled-dev composition
+
+Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
