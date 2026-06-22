@@ -15653,3 +15653,27 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/canonfastlane/fast-lane-simplification (off main); new tail shard → IL-456 after final-rebase onto main@b2bde95; no prior entry mutated; il_ts 15:15:00Z strictly > re-fetched main max 15:05:00Z (#696 M1.26 changelog-spec took 15:05Z; our 15:15Z slot stayed free → no bump needed this pass). Earlier churn-loop passes: 14:30→15:15 after #699 MIG-TEMPLATE merged — a live instance of friction #2/#3 this very proposal targets.
 - **Proof:** docs+ledger only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards/guardian-branch-naming/guardian-adr117 green locally; force-with-lease push; NO --admin/bypass; docs-only PR opened, NO merge.
 - **Refs:** docs/governance/CANON-FAST-LANE-SIMPLIFICATION.md; docs/governance/LEDGER-MERGE-QUEUE.md; docs/governance/OPERATOR-ENABLE-MERGE-QUEUE.md; MIG-TEMPLATE §3; ADR-057, ADR-059/059-A, ADR-060, ADR-102, ADR-103; I-21..I-28, I-27 (KYC HOLD).
+
+---
+
+### IL-457 - agent-factory-branch-protection-hardening @ 2026-06-22T15:30:00Z
+
+- **il_ts:** 2026-06-22T15:30:00Z
+- **session_id:** agent-factory-branch-protection-hardening
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-branch-protection-hardening/IL-2026-06-22T15-30-00Z--c9a4f1.md`
+
+### Branch protection hardening — main@CarmiBanxe/banxe-architecture (append-only ledger integrity, auditability, commit integrity)
+- **Date:** 2026-06-22 · **Type:** governance/infra hardening (repo-admin API); additive/idempotent; no guardian-check reset; no code/runtime change.
+- **Instrukciya:** Strengthen `main` branch protection per canon (append-only ledger, auditability, commit integrity) — close the three residual holes found in the protection audit, additively and without losing any existing setting.
+- **Audit (pre):** enforce_admins=true; required_pull_request_reviews count=1, dismiss_stale=true, require_last_push_approval=true; required_status_checks strict=true contexts=[guardian-factory, guardian-project, ledger-append-only, guardian-ledger] (app_id 15368 pinned on the two ledger checks); allow_force_pushes=false, allow_deletions=false, restrictions=null. **Residual holes:** required_conversation_resolution=false, required_linear_history=false, required_signatures=false.
+- **Applied (additive):**
+  - **PUT** `branches/main/protection` — full object re-sent (strict + 4 contexts with app_id pinning preserved, enforce_admins=true, PR reviews as-is, force/deletions=false, restrictions=null) **+ added** `required_conversation_resolution=true`, `required_linear_history=true`.
+  - **POST** `branches/main/protection/required_signatures` (Accept: application/vnd.github+json) — `required_signatures=true` (signed commits mandatory).
+- **Verification (post, gh api re-read):** required_conversation_resolution=**true**; required_linear_history=**true**; required_signatures=**true**; PRESERVED → enforce_admins=true, status strict=true, contexts=[guardian-factory, guardian-project, ledger-append-only, guardian-ledger] (app_id: ledger-append-only/guardian-ledger=15368, guardian-factory/guardian-project=null), PR review count=1, dismiss_stale=true, require_last_push_approval=true, allow_force_pushes=false, allow_deletions=false, lock_branch=false. **ALL GREEN** — three new flags true, zero prior settings lost.
+- **Canon compliance:** idempotent (PUT/POST re-appliable, same result); additive only; no guardian-check removed or loosened; all confirmed by post-audit before this ledger write.
+- **Operational note:** with required_signatures + required_linear_history on, `main` merges continue via PR squash (GitHub signs the squash commit; squash = linear) — established factory workflow unaffected; direct unsigned pushes to main are now blocked (intended).
+- **Coupling/append-only:** branch agent/factory/branchhardening/main-protection (off main@232e846); new tail shard + ### IL-NNN; no prior entry mutated; il_ts 15:30:00Z strictly > re-fetched main max 15:15:00Z; on CONFLICTING → rebase + regenerate + bump per ADR-059-A.
+- **Proof:** build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards/guardian-branch-naming/guardian-adr117 green locally; docs+ledger-only PR; NO --admin/bypass; force-with-lease only.
+- **Refs:** docs/governance/branch-protection.md; docs/governance/LEDGER-MERGE-QUEUE.md; ADR-057 (append-only), ADR-059/059-A (shard ledger), ADR-060 (branch namespace); I-28.
