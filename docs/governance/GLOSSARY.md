@@ -102,8 +102,8 @@ All gates live in `.github/workflows/guardian.yml` (with `guardian-adr117` deleg
 | Term | Definition (repo-grounded) | Source |
 |---|---|---|
 | **Model-risk assessment** | A CRO responsibility: AI model risk assessment before production deployment and fraud/AML threshold approval. | `docs/JOB-DESCRIPTIONS.md` (CRO); `instruction-ledger/sprint-47/IL-RISK-01-cro-risk-oversight.md` |
-| **MRM (Model Risk Management framework)** | **AWAITS OPERATOR** — referenced as a CRO duty (model-risk assessment) but no formal MRM framework document is asserted on `main`. | — |
-| **T1 / T2 / T3 (model-risk tiers)** | **AWAITS OPERATOR** — a model-risk tier *schema* (T1/T2/T3 thresholds and controls) is not asserted on `main`. (Note: "T2" elsewhere denotes a sub-terminal authority level, not a model-risk tier — do not conflate.) | — |
+| **MRM (Model Risk Management framework)** | A structural MRM framework is now asserted on `main`: SR 11-7 / EBA-aligned *structure only* (roles, tiers, open-items register). Binding criticality classifications, thresholds, and validation ownership within it remain **AWAITS OPERATOR**. | `docs/governance/MODEL-RISK-MANAGEMENT.md` |
+| **T1 / T2 / T3 (model-risk tiers)** | A *proposed, non-binding* tier structure is now described in the MRM framework (§4); the **binding** per-model T1/T2/T3 classification + FCA/EBA criticality thresholds remain **AWAITS OPERATOR** (operator/CRO decision, per that doc §8). (Note: "T2" elsewhere denotes a sub-terminal authority level, not a model-risk tier — do not conflate.) | `docs/governance/MODEL-RISK-MANAGEMENT.md` (§4) |
 
 ---
 
@@ -125,11 +125,11 @@ All gates live in `.github/workflows/guardian.yml` (with `guardian-adr117` deleg
 | Term | Definition (repo-grounded) | Source |
 |---|---|---|
 | **DORA (EU regulation)** | Digital Operational Resilience (EU 2022/2554): operational-resilience / BCP-DR / ICT-third-party scope, single-owned by CTO Dept 5 (per the org canon). | `governance/SPRINT-8-COO-DEEP-BUILD.md`; `governance/CANONICAL-ORG-CHART-v2.md` |
-| **DORA (DevOps four keys)** | **AWAITS OPERATOR** — the DevOps-metrics sense (deployment frequency, lead time, change-failure rate, MTTR) is not defined on `main`. | — |
-| **Deployment frequency** | **AWAITS OPERATOR** — not asserted as a defined KPI on `main`. | — |
-| **Lead time (for changes)** | **AWAITS OPERATOR** — not asserted as a defined KPI on `main`. | — |
-| **Change-failure rate** | **AWAITS OPERATOR** — not asserted as a defined KPI on `main`. | — |
-| **MTTR** | Tracked as an operational target (e.g. CTO: zero CRITICAL security incidents unresolved >4h) but not defined as a DORA four-key metric on `main`. | `docs/JOB-DESCRIPTIONS.md` (CTIO) |
+| **DORA (DevOps four keys)** | Now defined *structurally* on `main` as delivery KPIs D-1 Deployment Frequency, D-2 Lead Time, D-3 Change-Failure Rate, D-4 MTTR; **numeric target bands remain AWAITS OPERATOR**. | `docs/governance/KPI-DORA-FRAMEWORK.md` (§2) |
+| **Deployment frequency** | DORA key **D-1** (delivery-velocity panel P-1), defined structurally on `main`; numeric target band **AWAITS OPERATOR**. | `docs/governance/KPI-DORA-FRAMEWORK.md` (§2, §5) |
+| **Lead time (for changes)** | DORA key **D-2** (delivery-velocity panel P-1), defined structurally on `main`; numeric target band **AWAITS OPERATOR**. | `docs/governance/KPI-DORA-FRAMEWORK.md` (§2, §5) |
+| **Change-failure rate** | DORA key **D-3** (delivery-stability panel P-2), defined structurally on `main`; numeric target band **AWAITS OPERATOR**. | `docs/governance/KPI-DORA-FRAMEWORK.md` (§2, §5) |
+| **MTTR** | DORA key **D-4** (delivery-stability panel P-2), defined structurally on `main`; numeric target band **AWAITS OPERATOR**. Also tracked operationally (CTO: zero CRITICAL security incidents unresolved >4h). | `docs/governance/KPI-DORA-FRAMEWORK.md` (§2, §5); `docs/JOB-DESCRIPTIONS.md` (CTIO) |
 
 ---
 
@@ -189,12 +189,12 @@ operator/source-of-truth decision before they can be grounded here:
 
 | Term | Why it awaits operator |
 |---|---|
-| **MRM (framework)** | Model-risk *assessment* is a CRO duty, but no formal MRM framework doc on `main`. |
-| **T1 / T2 / T3 model-risk tiers** | No tier schema (thresholds/controls) asserted on `main`. |
+| **MRM (framework)** | ✅ RECONCILED 2026-06-22 — a structural framework now exists on `main` (`docs/governance/MODEL-RISK-MANAGEMENT.md`). Residual AWAITS OPERATOR: binding criticality classifications, thresholds, validation ownership. |
+| **T1 / T2 / T3 model-risk tiers** | Partially grounded — a *proposed, non-binding* tier structure now exists (MRM §4). Residual AWAITS OPERATOR: binding per-model classification + thresholds/controls. |
 | **cosign** | Referenced generically; no signing policy/spec on `main`. |
 | **SLSA** | Referenced in backlog; no level/definition on `main`. |
-| **DORA (DevOps four keys)** | Only the EU-regulation sense is grounded; the four-key metrics are not defined on `main`. |
-| **Deployment frequency / Lead time / Change-failure rate** | Not asserted as defined KPIs on `main`. |
+| **DORA (DevOps four keys)** | ✅ RECONCILED 2026-06-22 — structurally defined on `main` (`docs/governance/KPI-DORA-FRAMEWORK.md`, D-1..D-4). Residual AWAITS OPERATOR: numeric target bands. |
+| **Deployment frequency / Lead time / Change-failure rate** | ✅ RECONCILED 2026-06-22 — defined as DORA keys D-1/D-2/D-3 on `main`. Residual AWAITS OPERATOR: numeric target bands. |
 
 When an operator supplies (or points to) a source-of-truth artifact for any item above, replace
 its `AWAITS OPERATOR` entry with a grounded definition citing that source — appended via the
