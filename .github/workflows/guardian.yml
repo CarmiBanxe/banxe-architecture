@@ -63,6 +63,10 @@ jobs:
           CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
           echo "Changed files:"; echo "$CHANGED"
           NONLEDGER=$(echo "$CHANGED" | grep -v "^$LEDGER$" || true)
+          # ADR-056 scope-narrowing: coupling required for governance/arch paths only; pure-infra exempt
+          INFRA_RE='^(scripts/|\.github/|ledger/build_ledger\.py$)|\.sh$'
+          NONINFRA=$(echo "$NONLEDGER" | grep -vE "$INFRA_RE" || true)
+          if [ -n "$NONLEDGER" ] && [ -z "$NONINFRA" ]; then echo "guardian-ledger OK (pure-infra/tooling change — coupling not required, ADR-056 scope)"; exit 0; fi
           if [ -n "$NONLEDGER" ]; then
             ADDED_IL=$(git diff "$BASE_SHA" "$HEAD_SHA" -- "$LEDGER" | grep -E '^\+### IL-[0-9]+' || true)
             NEW_SHARD=$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- 'ledger/entries/' | grep -E '^A' | grep -E 'IL-.*\.md$' || true)

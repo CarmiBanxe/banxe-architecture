@@ -15432,3 +15432,21 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** SPRINT-8 COO Resilience-Interface & AI-Gov-of-COO-Ops = governance-only normative NARROWED delta. Op-resilience/DORA single-ownership CTO Dept 5 сохранён. §1 narrow + §4 real delta authored; §2/§3/§5 coverage-note + narrow. Новые стабы PROPOSED-only, dormant до I-27 HITL-L4. Local commit only (NO push, NO PR) — STOP после HARD GATE.
 - **Recommended next:** operator review полного diff; затем (отдельно, по слову оператора) push + PR + CI-gated squash-merge. Активация PROPOSED стабов + STAFF-MATRIX-update — ТОЛЬКО после I-27 HITL-L4 sign-off. Op-resilience реальная работа = CTO Dept 5. Parallel-session ветки не трогать. KYC/M2.8-live не трогать.
 - **Refs:** governance/SPRINT-8-COO-DEEP-BUILD.md (NEW); CANONICAL-ORG-CHART-v2.md (§4 COO SMF24; §7 single-owners Op-Resilience/DORA=CTO Dept5); agents/passports/resilience_agent.yaml + emi-stack services/incident_response/dora_continuity.py; governance/aigf-risk-mapping.yaml; governance/trust-zones.md/.yaml; HITL-MATRIX.yaml + BUG-007; companions SPRINT-4..SPRINT-7; wind_down_planning_agent + emi-stack services/resolution/wind_down_plan.py; ADR-102, ADR-059-A, Rule 1/6, I-25, I-27, I-28; EU AI Act Art.14, DORA EU 2022/2554, FCA SYSC 15A/PS21/3.
+
+---
+
+### IL-446 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
+
+- **il_ts:** 2026-06-22T12:33:26Z
+- **session_id:** agent-factory-guardian-ledger-path-scope
+- **source:** CTIO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-guardian-ledger-path-scope/IL-2026-06-22T12-33-26Z--733391.md`
+
+### guardian-ledger coupling scoped to governance paths (ADR-056) — exempt pure-infra
+- **Instrukciya:** Narrow guardian-ledger coupling gate in .github/workflows/guardian.yml so ledger-coupling is REQUIRED only for governance/architecture paths and EXEMPT for pure-infra/tooling (scripts/, .github/, *.sh, ledger/build_ledger.py). Root-cause fix for self-block on pure-infra PRs (PR #697 install-hooks.sh).
+- **Change:** Added INFRA_RE exemption in the "Ledger-coupling gate" step; early-exit "guardian-ledger OK (pure-infra)" when all non-ledger changed paths match infra patterns. Existing FAIL logic retained for governance/arch paths; append-only DELETED check unchanged.
+- **Invariants preserved:** I-28 append-only (no deletions); ledger-append-only/guardian-ledger-shards/guardian-branch-naming/guardian-adr117 untouched; no admin/force bypass (enforce_admins:false unchanged); no auto-merge. Coupling STILL mandatory for governance/architecture changes (positive control verified).
+- **Verification:** YAML safe_load OK; embedded bash -n OK; positive control (docs/governance path still requires coupling) OK; negative control (scripts/install-hooks.sh exempt) OK.
+- **Status:** DONE — local commit; push/PR/merge ONLY by operator word.
+- **Refs:** .github/workflows/guardian.yml (guardian-ledger job); ADR-056 (ledger-coupling merge gate); ADR-059 (per-session shards); I-28; PR #697 root-cause; PR #698.
