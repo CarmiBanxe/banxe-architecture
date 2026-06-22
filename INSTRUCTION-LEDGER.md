@@ -15376,7 +15376,25 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-443 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
+### IL-443 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T08:30:00Z
+
+- **il_ts:** 2026-06-22T08:30:00Z
+- **session_id:** agent-factory-kpi-dora-s3-kpi-dora-framework
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-kpi-dora-s3-kpi-dora-framework/IL-2026-06-22T08-30-00Z--7b1c2f.md`
+
+### S3: establish KPI/DORA metrics framework (KPI-DORA-FRAMEWORK.md); 4 DORA + 5 ADR-117 KPIs; collection pipeline & targets AWAITS OPERATOR
+
+- **Instrukciya:** S3 — establish KPI/DORA metrics governance (currently PARTIAL: KPI targets declared in ADR-117, NO metric collection). Create `docs/governance/KPI-DORA-FRAMEWORK.md` grounded ONLY in repo-asserted facts + target model §10 KPI Dashboard. Governance-only, no live collection, DO NOT MERGE. New branch from fresh origin/main; ONE append-only tail shard, il_ts strictly > fresh main max.
+- **Shagi:** (1) fetch origin — main moved d9a0812→f6cc30c (S1/S2 merged); (2) re-confirmed fresh max il_ts on origin/main = 2026-06-22T08:15:00Z (08:00/08:15 occupied by mig-m2-8 roster-c shards) → S3 il_ts = next free slot strictly greater = 08:30:00Z; (3) authored KPI-DORA-FRAMEWORK.md (§1 purpose/scope; §2 4 DORA metrics — definitions, target bands AWAITS OPERATOR; §3 5 ADR-117 KPIs verbatim; §4 collection arch — POINTER to ADR-079, pipeline/tooling AWAITS OPERATOR, on-prem residency cited; §5 structural dashboard model, wiring AWAITS OPERATOR; §6 RACI COO asserted / VP Platform Eng + SRE AWAITS OPERATOR; §7 open-items; §8 provenance); (4) append THIS shard; regenerate INSTRUCTION-LEDGER.md via build_ledger.py.
+- **Proof:** `python3 ledger/build_ledger.py` (regenerate) + `--check` exit 0 (generated==rebuild); local guardian replay (guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming) green; `git diff --stat` = exactly new framework doc + new shard + regenerated INSTRUCTION-LEDGER.md.
+- **Deviation:** Operator stated origin/main=d9a0812 & max=07:45:00Z; fresh fetch showed main=f6cc30c & max=08:15:00Z (S1/S2 work merged in between). Per task "if max moved, bump" → S3 il_ts set to 08:30:00Z (next free strictly > 08:15), not 08:00:00Z. Target model §10 confirmed operator-held (not in-repo); 4 DORA names taken from operator task verbatim, numeric bands AWAITS OPERATOR. "VP Platform Eng / SRE" not present in ORG-STRUCTURE.md/JOB-DESCRIPTIONS.md → marked AWAITS OPERATOR (only COO SMF24 asserted). Branch id segment: operator dictated `agent/factory/kpi-dora/...` but ADR-060 guardian-branch-naming requires id=`[A-Za-z0-9]+` (no hyphen) — `kpi-dora` would FAIL the required gate; minimally corrected id to `kpidora` → branch `agent/factory/kpidora/s3-kpi-dora-framework` (gate green, sprint/slug/intent preserved). session_id slug retained as descriptive `agent-factory-kpi-dora-s3-kpi-dora-framework` (no guardian gate binds session_id to branch).
+- **Refs:** docs/governance/KPI-DORA-FRAMEWORK.md (NEW); docs/governance/CANON-RECONCILIATION-ADR117.md (line 26, 5 KPIs); docs/adr/ADR-079-cro-risk-metrics-port.md (read-only risk-metrics port, referenced not duplicated); docs/JOB-DESCRIPTIONS.md §1.5 / docs/ORG-STRUCTURE.md §2.6 (COO SMF24); docs/DEPLOYMENT-ARCHITECTURE.md + docs/compliance/ai-data-flow.md (on-prem evo1/evo2 residency); ADR-056/059/060, ADR-102, ADR-117.
+
+---
+
+### IL-444 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
 
 - **il_ts:** 2026-06-22T08:30:00Z
 - **session_id:** agent-factory-migm28-awaits-decision-brief
@@ -15396,7 +15414,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-444 - agent-factory-migm28-scaffold-plan-skeleton @ 2026-06-22T08:45:00Z
+### IL-445 - agent-factory-migm28-scaffold-plan-skeleton @ 2026-06-22T08:45:00Z
 
 - **il_ts:** 2026-06-22T08:45:00Z
 - **session_id:** agent-factory-migm28-scaffold-plan-skeleton
@@ -15415,7 +15433,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-445 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
+### IL-446 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
 
 - **il_ts:** 2026-06-22T09:00:00Z
 - **session_id:** agent-factory-sprint8-coo-resilience-ai-gov
