@@ -15373,3 +15373,23 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** appended on branch agent/factory/mig-m2.8/roster-c-split-spec (#684) after churn-rebase onto origin/main 948b79f (#683 CFO landed 07:00 → spec shard re-minted 07:00→07:15; this evidence shard 07:30 strictly > main-max). New tail shard + ### IL-NNN; append-only (no prior entry mutated).
 - **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally; il_ts 07:30:00Z > re-fetched main-max 07:00:00Z.
 - **Refs:** docs/migration/MIG-M2.8-roster-c-split-spec.md §6; IL-424/429/431/437 (M2.8-PRE); spec shard 07:15 (same branch); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-443 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
+
+- **il_ts:** 2026-06-22T08:30:00Z
+- **session_id:** agent-factory-migm28-awaits-decision-brief
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-migm28-awaits-decision-brief/IL-2026-06-22T08-30-00Z--302aef.md`
+
+### M2.8 Roster-C AWAITS-OPERATOR decision-brief (#1/#2/#4/#5 consolidated; NO selection — operator gate Rule 11)
+- **Instrukciya:** Consolidate the four remaining M2.8 Roster-C operator gates into a single decision-brief — facts + options + trade-offs — WITHOUT selecting (Rule 11). docs-only; fail-closed; no scaffold/code/file-moves/merge.
+- **Result (single doc):** docs/migration/MIG-M2.8-AWAITS-OPERATOR-decision-brief.md — scope; #1 @banxe/shared (split A / ui-barrel B / platform-barrel C + blast-radius); #2 @banxe/mobile (canonical app-shell + RN0.76.5↔0.76.9 / React18.3.2↔18.3.1 unify); #4 promotion-window (dedup-then-promote vs phased); #5 owners (single vs per-package); dependency-order (#1/#2→dedup→#4; #5 cross-cutting); next-action map (outcome→unblocked scaffold-substep, not executed).
+- **Verified facts (verified-legion; evo1 unavailable):** shared platform16/ui7 (app-data vs view-support, overlap index+types); mobile platform10/ui19 (RN0.76.5/React18.3.2 vs RN0.76.9/React18.3.1; routes cards/sca vs src/screens+theme); both feature-branches (platform factory/ai-onboarding, ui feat/ai-onboarding).
+- **Selects nothing:** canonical/versions/owners/promotion-order all remain AWAITS OPERATOR. Resolving them unblocks scaffold/promotion (fail-closed until then).
+- **Context already on main:** IL-440 web-unify (#687 canonical=web-next), IL-441 Roster-C spec, IL-442 §6 divergence evidence.
+- **Coupling:** branch agent/factory/migm28/awaits-decision-brief; PR (decision-brief). New tail shard + ### IL-NNN; append-only (no prior entry mutated); il_ts 08:30:00Z strictly > re-fetched main max 08:15:00Z.
+- **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
+- **Refs:** docs/migration/MIG-M2.8-AWAITS-OPERATOR-decision-brief.md; IL-440/441/442; MIG-M2.8-roster-c-split-spec.md; ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), Rule 11, I-28.
