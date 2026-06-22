@@ -35,10 +35,10 @@ delivery metrics. **Numeric target bands are NOT asserted in any repo source →
 
 | # | Metric | Definition (standard DORA) | Target band |
 |---|--------|----------------------------|-------------|
-| D-1 | **Deployment Frequency** | How often the platform successfully releases to production. | AWAITS OPERATOR |
-| D-2 | **Lead Time for Changes** | Time from code commit to that code running in production. | AWAITS OPERATOR |
-| D-3 | **Change Failure Rate** | % of deployments causing a failure requiring remediation (rollback/hotfix). | AWAITS OPERATOR |
-| D-4 | **MTTR — Mean Time to Restore** | Time to restore service after a production incident/failure. | AWAITS OPERATOR |
+| D-1 | **Deployment Frequency** | How often the platform successfully releases to production. | ≥ 1 deploy/day per squad — RECONCILED 2026-06-22 (operator-approved via chat) |
+| D-2 | **Lead Time for Changes** | Time from code commit to that code running in production. | < 1 day — RECONCILED 2026-06-22 (operator-approved via chat) |
+| D-3 | **Change Failure Rate** | % of deployments causing a failure requiring remediation (rollback/hotfix). | ≤ 15% — RECONCILED 2026-06-22 (operator-approved via chat) |
+| D-4 | **MTTR — Mean Time to Restore** | Time to restore service after a production incident/failure. | < 1 hour — RECONCILED 2026-06-22 (operator-approved via chat) |
 
 > No numeric DORA target (e.g. "elite/high band" thresholds) is asserted in the repo. The operator
 > must supply target bands before these become enforceable. Until then they are **definitional only**.
