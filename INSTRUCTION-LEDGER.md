@@ -15330,3 +15330,46 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/awaitsop3/web-next-unify; PR (docs-only). New tail shard + ### IL-NNN; append-only (no prior entry mutated); il_ts 07:45:00Z strictly > re-fetched main max 07:15:00Z (and > in-flight #684 evidence 07:30 to avoid future collision).
 - **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
 - **Refs:** docs/migration/AWAITS-OPERATOR-3-web-next-unify.md; docs/migration/MIG-M2.8-roster-c-split-spec.md (#3); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-441 - agent-factory-mig-m2-8-roster-c-split-spec @ 2026-06-22T08:00:00Z
+
+- **il_ts:** 2026-06-22T08:00:00Z
+- **session_id:** agent-factory-mig-m2-8-roster-c-split-spec
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mig-m2-8-roster-c-split-spec/IL-2026-06-22T08-00-00Z--34907b.md`
+
+### M2.8 Roster-C split KICKOFF spec + ADR-102 Duplication Audit (docs-only, NO scaffold; Next/RN unify + @banxe/shared/@banxe/mobile dedup = AWAITS OPERATOR)
+- **Instrukciya:** Operator opened M2.8 frontend gate = Roster C (split: banxe-ui=design-system / banxe-platform=app-shells). KYC gate = HOLD. Produce SPEC + mandatory ADR-102 Duplication Audit BEFORE any structural change; fail-closed (no scaffold/code/file-moves/merge).
+- **Verified (read-only, this session):** banxe-platform@4f0ce18 = {@banxe/shared(43f, dist-built), @banxe/mobile(15f, RN0.76.5), @banxe/web}; banxe-ui@ce49bdf = {@banxe/ui, @banxe/design-tokens, @banxe/storybook, @banxe/mocks, @banxe/shared(10f, src-module), @banxe/mobile(31f, RN0.76.9), @banxe/web-next, @banxe/web-vite}.
+- **ADR-102 Duplication Audit (2 collisions, DIVERGENT not clean-dup):** @banxe/shared — platform(43f: api-client/store/design-tokens/tokens/types, compiled) vs ui(10f: api/hooks/types, type:module); consumers enumerated = platform(web,mobile)+ui(web-next,mobile); decision merge but canonical = AWAITS OPERATOR (straddles design-system↔app-shell, export-surface not byte-compared → fail-closed). @banxe/mobile — platform(15f,RN0.76.5) vs ui(31f,RN0.76.9), both Expo53, leaf apps (no external consumers); decision keep-one in banxe-platform, RN unify = AWAITS OPERATOR.
+- **Target boundary (PROPOSED, no execution):** design-system pkgs → banxe-ui; app-shells (web/web-next/web-vite/mobile) → banxe-platform; @banxe/shared + @banxe/mobile canonical = AWAITS OPERATOR; branch→main promotion = PROPOSED only.
+- **AWAITS OPERATOR (6):** @banxe/shared canonical+home+export-reconcile; @banxe/mobile canonical+RN/Expo unify; Next unify (15.3 vs 16.2 + web-vite retire?); authoritative branch + promotion window (handoff=feature-branches, local read=main); owner assignment; KYC out-of-scope (I-27 HOLD).
+- **Result:** docs/migration/MIG-M2.8-roster-c-split-spec.md (spec+audit). NO scaffold, NO code, NO file moves, NO merge. KYC untouched; parallel-session branches untouched.
+- **Coupling:** branch agent/factory/mig-m2.8/roster-c-split-spec; PR (M2.8 Roster-C split kickoff spec). New tail shard + ### IL-NNN; append-only (no prior entry mutated); il_ts 07:00:00Z strictly > re-fetched main max 06:45:00Z.
+- **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
+- **Refs:** docs/migration/MIG-M2.8-roster-c-split-spec.md; IL-424/429/431/437 (M2.8-PRE); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-442 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T08:15:00Z
+
+- **il_ts:** 2026-06-22T08:15:00Z
+- **session_id:** agent-factory-mig-m2-8-roster-c-divergence-evidence
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mig-m2-8-roster-c-divergence-evidence/IL-2026-06-22T08-15-00Z--cd093a.md`
+
+### M2.8 Roster-C DIVERGENCE evidence @banxe/shared+@banxe/mobile (distinct roles; namespace-dedup required; canonical/versions=AWAITS OPERATOR)
+- **Instrukciya:** Append evidence-addendum to the existing M2.8 Roster-C spec (#684) under AWAITS-OPERATOR #1/#2/#5 — fix verified divergence facts for @banxe/shared + @banxe/mobile. Does NOT choose canonical/versions (Rule 11). fail-closed; no scaffold/code/file-moves.
+- **Provenance:** verified-legion (re-verified read-only on Legion clones banxe-platform@4f0ce18 / banxe-ui@ce49bdf; **evo1 unavailable** → operator-attested-Legion, re-confirm server-side before promotion).
+- **@banxe/shared (distinct role):** platform 16 src (api-client/design-tokens/store/tokens/types/index; export `.`; dist-built) vs ui 7 src (api/hooks/types/index; exports `. ./api ./types ./hooks`; src-module). Overlap=index+types; unique platform={store,api-client,tokens}, unique ui={hooks,granular-api}.
+- **@banxe/mobile (distinct role):** platform 10 src (app/: tabs,auth,cards,sca,kyc; RN0.76.5/React18.3.2) vs ui 19 src (app/: tabs,auth,kyc; src/: components,screens,theme; RN0.76.9/React18.3.1); both Expo~53.
+- **Inventory-only KYC note:** both mobile shells contain app/kyc/ route — recorded as structure inventory ONLY; KYC track stays HOLD (I-27); no KYC surface read-into/modified/scaffolded.
+- **Correction to spec §2 estimates:** §2 used whole-tree find counts (43/10 shared; 31 ui-mobile); this addendum records SOURCE .ts/.tsx counts (16/7 shared; 10/19 mobile). Role conclusions unchanged.
+- **Conclusion:** both = distinct-role-under-one-name (not byte-dup) ⇒ namespace-dedup MANDATORY at split. Canonical pick + merge direction + RN/React unify + owners = AWAITS OPERATOR (#1/#2/#5), NOT selected here.
+- **Coupling:** appended on branch agent/factory/mig-m2.8/roster-c-split-spec (#684) after churn-rebase onto origin/main 948b79f (#683 CFO landed 07:00 → spec shard re-minted 07:00→07:15; this evidence shard 07:30 strictly > main-max). New tail shard + ### IL-NNN; append-only (no prior entry mutated).
+- **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally; il_ts 07:30:00Z > re-fetched main-max 07:00:00Z.
+- **Refs:** docs/migration/MIG-M2.8-roster-c-split-spec.md §6; IL-424/429/431/437 (M2.8-PRE); spec shard 07:15 (same branch); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
