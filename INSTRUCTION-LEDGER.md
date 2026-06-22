@@ -15761,3 +15761,22 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** ADR-119 ACCEPTED (this branch, local). IL-NNN renumber-trap устранён; ручной il_ts re-mint на behind-PR больше не нужен. Files: ledger/build_ledger.py (modified), ledger/IL-SEQUENCE.json (new), docs/adr/ADR-119-stable-frozen-il-numbering.md (new), this shard.
 - **Recommended next:** operator review diff; затем (отдельно, по слову оператора) push + PR + CI-gated squash-merge на agent/factory/ledger/stable-il-numbering. После merge — будущие behind-PR не требуют re-mint (стабильная нумерация). Parallel-session ветки не трогать.
 - **Refs:** docs/adr/ADR-119-stable-frozen-il-numbering.md; ledger/build_ledger.py; ledger/IL-SEQUENCE.json; ADR-059 (sharded ledger), ADR-056 (ledger-coupling, unchanged), ADR-057; I-28.
+
+---
+
+### IL-462 - agent-factory-governance-adr117-canon-sync-q4-q5 @ 2026-06-22T16:15:00Z
+
+- **il_ts:** 2026-06-22T16:15:00Z
+- **session_id:** agent-factory-governance-adr117-canon-sync-q4-q5
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr117-canon-sync-q4-q5/IL-2026-06-22T16-15-00Z--184e99.md`
+
+### ADR-117 canon-reconciliation Q4/Q5 synced to operator-asserted facts (DEPLOYMENT-ARCHITECTURE 2026-06-21, HW-MODEL-UPGRADE-matrix); Q6 remains AWAITS OPERATOR
+- **Instrukciya:** Reconcile an internal canon contradiction: `docs/governance/CANON-RECONCILIATION-ADR117.md` still marked Q4 (GMKtec↔evo1/evo2 node mapping + service migration) and Q5 (model sizes on evo1/evo2) as `AWAITS OPERATOR`, while two other canonical docs already record the operator-asserted facts. Append-only; no facts invented beyond the two cited source docs.
+- **Change (single doc):** Q4 row → RECONCILED (operator 2026-06-21, per DEPLOYMENT-ARCHITECTURE.md §1.1): GMKtec renamed → evo1 (128 GB, 192.168.0.72); evo2 (128 GB, 192.168.0.15); node-per-service mode B. Q5 row → RECONCILED (sizes per docs/canon/HW-MODEL-UPGRADE-matrix.md, referenced not inline-duplicated). Original AWAITS-OPERATOR provenance retained as "supersedes prior …" (history annotated, not deleted).
+- **Source-of-truth:** Q4 = `docs/DEPLOYMENT-ARCHITECTURE.md` §1.1 (operator decision 2026-06-21); Q5 = `docs/canon/HW-MODEL-UPGRADE-matrix.md` (canonical model-size table).
+- **Unchanged:** Q6 (exact doubled-dev composition) remains `AWAITS OPERATOR` — no repo fact asserts it; AGENT-ORG-STRUCTURE.md row untouched.
+- **Coupling:** PR #677 (branch agent/factory/governance/adr117-canon-sync-q4-q5); doc commit f8d4a66. This shard couples the docs-only change to the ledger (ADR-056/060) so guardian-ledger / ledger-append-only / guardian-ledger-shards pass.
+- **Proof:** docs+ledger-only governance entry; no code change; append-only honoured (no prior shard edited/renumbered; INSTRUCTION-LEDGER.md regenerated deterministically via `python3 ledger/build_ledger.py`); build_ledger.py --check = exit 0 on fresh origin/main rebase.
+- **Refs:** PR #677; commit f8d4a66; docs/governance/CANON-RECONCILIATION-ADR117.md; docs/DEPLOYMENT-ARCHITECTURE.md §1.1; docs/canon/HW-MODEL-UPGRADE-matrix.md; ADR-056, ADR-059, ADR-060, ADR-117; I-28.
