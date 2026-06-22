@@ -15547,3 +15547,24 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/openbanking/s5-api-management-canon (from origin/main aaa8d49); PR (governance canon). New tail shard + ### IL-NNN; append-only (no prior entry/shard mutated/renumbered); il_ts re-minted to 13:45:00Z during rebase onto origin/main 7ccbb98 (after PR #698 advanced main), strictly > fresh main max 12:33:26Z and > prior re-mints (S1 12:45 / S2 13:00 / S3 13:15 / S4 13:30) — resolving the ledger renumber-race (prior slots 09:00/10:15 collided with later-merged shards).
 - **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming green locally.
 - **Refs:** docs/governance/OPEN-BANKING-API-MANAGEMENT.md; MIG-M2.4-BLOCKER / MIG-M2.4-RESCOPE / MIG-M1.1; m_gateway_api_governor.yaml; ADR-102, ADR-103, ADR-059-A, ADR-060, I-01, I-02, I-08, I-27, I-28; operator decision 2026-06-21 (A reconcile/gap-audit, not scaffold).
+
+---
+
+### IL-452 - agent-factory-migm28-roster-c-gatelift @ 2026-06-22T14:15:00Z
+
+- **il_ts:** 2026-06-22T14:15:00Z
+- **session_id:** agent-factory-migm28-roster-c-gatelift
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-migm28-roster-c-gatelift/IL-2026-06-22T14-15-00Z--a1c7e3.md`
+
+### M2.8 Roster-C GATE-LIFT — operator gates resolved; readiness (a/b/c/d) CLEARED; frontend scaffold AUTHORIZED (KYC HOLD non-blocking)
+- **Instrukciya:** Record the operator GATE-LIFT for M2.8 Roster-C. DOCS+LEDGER only; NO scaffold/code/target-repo mutation; NO merge; NO KYC touch. Append-only tail shard on a new branch (NO PR, operator opens any record).
+- **Operator decision (chat, attested):** **Roster = C selected.** AWAITS **#1/#2/#4/#5** attested **resolved-by-evidence** (refs IL-452 readiness-evidence; evo1 re-confirm UP @ 2026-06-22T12:07:22Z authoritative /home/banxe/cleanup/carmibanxe-audit/repos/; ADR-102 execution-time re-audit CLEAN; auth-branch reconcile).
+- **Readiness gate status:** (a) operator-selection — **CLEARED** (Roster=C + #1/#2/#4/#5 resolved-by-evidence); (b) #B1 banxe-ui clean — **CLEARED**; (c) evo1 re-confirm — **CLEARED**; (d) ADR-102 re-audit — **CLEARED**. All four (a/b/c/d) **CLEARED**.
+- **KYC I-27:** remains **HOLD** — explicitly **NON-BLOCKER** for the frontend scaffold; KYC surface NOT touched, NOT resolved, NOT scaffolded (fail-closed on KYC retained).
+- **Authorization:** Roster-C **frontend scaffold AUTHORIZED** to proceed to PLAN/dry-run (ADR-103 server-side evo1). Code-generating scaffold remains gated on operator approval of the dry-run PLAN (Phase 2).
+- **Scope guard:** scaffold authorization covers frontend Roster-C only; promotion feature→main and any KYC/KYB/AML work remain OUT of scope and BLOCKED.
+- **Coupling/append-only:** branch agent/factory/migm28/roster-c-gatelift (off main@5d87246); new tail shard + ### IL-NNN; no prior entry mutated; il_ts 14:15:00Z strictly > re-fetched main max 13:45:00Z (openbanking-s5 #693) and > readiness 14:00:00Z (IL-452). ADR-059-A churn-loop (#672).
+- **Proof:** docs+ledger-only; no target-repo mutation; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards/guardian-branch-naming/guardian-adr117 green locally; force-with-lease push, NO --admin/bypass, NO PR, NO merge.
+- **Refs:** IL-452 (readiness-evidence); MIG-M2.8-readiness-evidence.md; MIG-M2.8-roster-c-split-spec.md; IL-440/441/442/443/444; ADR-102, ADR-103, ADR-059-A, ADR-060, Rule 6/7/9/11, I-27 (KYC HOLD), I-28.
