@@ -109,3 +109,48 @@ Both repos default to `main`; M2.8-PRE recorded active work on feature branches.
 - Discipline: ADR-102 (Duplication Audit), ADR-103 (server-only refactoring), ADR-059-A (append-only ledger), ADR-060 (branch namespace).
 
 *No file was moved, created (beyond this spec + its ledger shard), merged, or scaffolded. No canonical implementation was selected where the two repos diverge — those are AWAITS OPERATOR. KYC untouched.*
+
+---
+
+## 6. DIVERGENCE Evidence — `@banxe/shared` & `@banxe/mobile` (addendum)
+
+**Added:** 2026-06-22 · **Provenance:** `verified-legion` (re-verified read-only on Legion clones — **evo1 was unavailable**, so this is operator-attested-Legion, NOT verified-evo1; re-confirm server-side before any promotion). **Decides nothing** — fixes evidence for AWAITS-OPERATOR #1/#2/#5; canonical/versions remain operator's call (Rule 11).
+
+### 6.1 `@banxe/shared` — distinct role under one name
+
+| Aspect | banxe-platform/packages/shared | banxe-ui/packages/shared | Provenance |
+|---|---|---|---|
+| src files (.ts/.tsx) | **16** | **7** | verified-legion |
+| src modules | api-client.ts, design-tokens.ts, store, tokens, types, index.ts | api, hooks, types, index.ts | verified-legion |
+| exports surface | `.` only (single barrel; dist-built `main: dist/index.js`) | `.`, `./api`, `./types`, `./hooks` (granular; src-module) | verified-legion |
+| version | 0.1.0 | 0.1.0 | verified-legion |
+| **overlap** | `index.ts` + `types` | `index.ts` + `types` | verified-legion |
+| **unique** | api-client, **store**, design-tokens, tokens | **hooks**, api (granular) | verified-legion |
+
+### 6.2 `@banxe/mobile` — distinct role under one name
+
+| Aspect | banxe-platform/packages/mobile | banxe-ui/apps/mobile | Provenance |
+|---|---|---|---|
+| src files (.ts/.tsx) | **10** | **19** | verified-legion |
+| `app/` routes | (tabs), auth, cards, sca, kyc | (tabs), auth, kyc | verified-legion |
+| `src/` layers | — | components, screens, theme | verified-legion |
+| React Native | **0.76.5** | **0.76.9** | verified-legion |
+| React | **18.3.2** | **18.3.1** | verified-legion |
+| Expo | ~53.0.0 | ~53.0.0 | verified-legion |
+
+> NB (inventory-only, no action): both mobile shells contain an `app/kyc/` route. This is recorded as structure inventory only — **the KYC/KYB/AML track stays HOLD (I-27); nothing in any KYC surface is read-into, modified, or scaffolded here.** platform/mobile additionally carries `cards` + `sca` routes; ui/mobile carries a `src/screens`+`theme` layer.
+>
+> Correction to §2 estimates: ui/mobile source count = **19** `.ts/.tsx` (verified-legion), vs the earlier whole-tree `find` figure (31) and a 15-file estimate; platform/shared = **16**, ui/shared = **7** source files (the §2.1 "43 vs 10" were whole-tree counts incl. config/dist). Role conclusions are unchanged.
+
+### 6.3 Conclusion
+
+Both collisions are **distinct roles sharing one package name**, not byte-duplicates:
+- `@banxe/shared`: platform = app-data layer (store/api-client/tokens, single barrel, pre-built); ui = view-support layer (hooks/granular-api, source-module). Only `index.ts`+`types` overlap.
+- `@banxe/mobile`: two different Expo apps (different route sets, RN/React patch, src layering).
+
+⇒ **namespace-dedup is MANDATORY at split** (cannot keep two `@banxe/shared` / two `@banxe/mobile` in a unified roster). This addendum does **not** choose the canonical or the merge direction.
+
+### 6.4 AWAITS OPERATOR (sharpened, still operator's call — Rule 11)
+- **#1 `@banxe/shared` canonical + merge-of-uniques:** which barrel is canonical, and where each unique lands — e.g. `store`/`api-client`/`tokens` (app-data) vs `hooks`/granular-`api` (view-support). Note it straddles design-system↔app-shell. **AWAITS OPERATOR — not selected.**
+- **#2 `@banxe/mobile` canonical + RN/React unify:** RN 0.76.5↔0.76.9, React 18.3.2↔18.3.1; which app-shell is canonical; reconcile route sets (cards/sca vs src/screens). **AWAITS OPERATOR — not selected.**
+- **#5 owners:** single owner for the unified `@banxe/shared` + `@banxe/mobile`. **AWAITS OPERATOR.**

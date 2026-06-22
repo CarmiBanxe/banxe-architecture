@@ -15351,3 +15351,25 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/mig-m2.8/roster-c-split-spec; PR (M2.8 Roster-C split kickoff spec). New tail shard + ### IL-NNN; append-only (no prior entry mutated); il_ts 07:00:00Z strictly > re-fetched main max 06:45:00Z.
 - **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
 - **Refs:** docs/migration/MIG-M2.8-roster-c-split-spec.md; IL-424/429/431/437 (M2.8-PRE); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-440 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T07:30:00Z
+
+- **il_ts:** 2026-06-22T07:30:00Z
+- **session_id:** agent-factory-mig-m2-8-roster-c-divergence-evidence
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mig-m2-8-roster-c-divergence-evidence/IL-2026-06-22T07-30-00Z--cd093a.md`
+
+### M2.8 Roster-C DIVERGENCE evidence @banxe/shared+@banxe/mobile (distinct roles; namespace-dedup required; canonical/versions=AWAITS OPERATOR)
+- **Instrukciya:** Append evidence-addendum to the existing M2.8 Roster-C spec (#684) under AWAITS-OPERATOR #1/#2/#5 — fix verified divergence facts for @banxe/shared + @banxe/mobile. Does NOT choose canonical/versions (Rule 11). fail-closed; no scaffold/code/file-moves.
+- **Provenance:** verified-legion (re-verified read-only on Legion clones banxe-platform@4f0ce18 / banxe-ui@ce49bdf; **evo1 unavailable** → operator-attested-Legion, re-confirm server-side before promotion).
+- **@banxe/shared (distinct role):** platform 16 src (api-client/design-tokens/store/tokens/types/index; export `.`; dist-built) vs ui 7 src (api/hooks/types/index; exports `. ./api ./types ./hooks`; src-module). Overlap=index+types; unique platform={store,api-client,tokens}, unique ui={hooks,granular-api}.
+- **@banxe/mobile (distinct role):** platform 10 src (app/: tabs,auth,cards,sca,kyc; RN0.76.5/React18.3.2) vs ui 19 src (app/: tabs,auth,kyc; src/: components,screens,theme; RN0.76.9/React18.3.1); both Expo~53.
+- **Inventory-only KYC note:** both mobile shells contain app/kyc/ route — recorded as structure inventory ONLY; KYC track stays HOLD (I-27); no KYC surface read-into/modified/scaffolded.
+- **Correction to spec §2 estimates:** §2 used whole-tree find counts (43/10 shared; 31 ui-mobile); this addendum records SOURCE .ts/.tsx counts (16/7 shared; 10/19 mobile). Role conclusions unchanged.
+- **Conclusion:** both = distinct-role-under-one-name (not byte-dup) ⇒ namespace-dedup MANDATORY at split. Canonical pick + merge direction + RN/React unify + owners = AWAITS OPERATOR (#1/#2/#5), NOT selected here.
+- **Coupling:** appended on branch agent/factory/mig-m2.8/roster-c-split-spec (#684) after churn-rebase onto origin/main 948b79f (#683 CFO landed 07:00 → spec shard re-minted 07:00→07:15; this evidence shard 07:30 strictly > main-max). New tail shard + ### IL-NNN; append-only (no prior entry mutated).
+- **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally; il_ts 07:30:00Z > re-fetched main-max 07:00:00Z.
+- **Refs:** docs/migration/MIG-M2.8-roster-c-split-spec.md §6; IL-424/429/431/437 (M2.8-PRE); spec shard 07:15 (same branch); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
