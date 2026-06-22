@@ -15435,7 +15435,28 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-446 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
+### IL-446 - agent-factory-migm28-preflight-readiness @ 2026-06-22T09:15:00Z
+
+- **il_ts:** 2026-06-22T09:15:00Z
+- **session_id:** agent-factory-migm28-preflight-readiness
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-migm28-preflight-readiness/IL-2026-06-22T09-15-00Z--fe7348.md`
+
+### M2.8 Roster-C pre-flight readiness — banxe-platform ready(attested) / banxe-ui DIRTY blocker + evo1 re-confirm + ADR-102 re-audit pending; NO scaffold, NO selection
+- **Instrukciya:** Pre-flight readiness gate before M2.8 Roster-C scaffold phase. docs-only; do NOT touch target repos (especially dirty banxe-ui, Rule 6); fail-closed; NO selection (Rule 11).
+- **Readiness matrix (provenance split, Rule 9):** banxe-platform — operator-attested factory/ai-onboarding@68a692a CLEAN/ready; verified-legion main@4f0ce18 DIRTY (turbo.json) → NOT confirmed, evo1 re-confirm required. banxe-ui — operator-attested feat/ai-onboarding@d0eac8d DIRTY; verified-legion main@ce49bdf DIRTY (29 files .agents/skills/...) → BLOCKED (#B1).
+- **Discrepancy flagged:** Legion clones on main (not attested *-ai-onboarding feature branches) and both dirty → authoritative state = server-side evo1; strengthens evo1 re-confirm item. Factory did not reconcile/select — recorded as open.
+- **BLOCKER #B1:** banxe-ui dirty working tree (29 uncommitted) → scaffold cannot start; factory does NOT touch dirty target repo (Rule 6/7 + fail-closed); operator/infra to resolve (commit/stash/discard OR attest parallel-session OR ignore stale clone vs evo1).
+- **Open pre-flight items (from IL-444):** evo1 server-side re-confirm (ADR-103); ADR-102 execution-time re-audit (drift since IL-442); authoritative-branch re-confirm (attested feature vs observed main).
+- **Gate status:** scaffold BLOCKED until (a) operator resolves #1/#2/#4/#5; (b) #B1 banxe-ui dirty resolved; (c) evo1 re-confirmed + branch reconciled; (d) ADR-102 re-audit clean. fail-closed.
+- **Coupling:** branch agent/factory/migm28/preflight-readiness; PR (readiness gate). New tail shard + ### IL-NNN; append-only (no prior entry mutated); il_ts 09:15:00Z strictly > re-fetched main max 09:00:00Z.
+- **Proof:** docs+ledger-only; no target-repo mutation; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
+- **Refs:** docs/migration/MIG-M2.8-preflight-readiness.md; IL-440/441/442/443/444; ADR-102, ADR-103, ADR-059-A, ADR-060, Rule 6/7/9/11, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-447 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
 
 - **il_ts:** 2026-06-22T12:33:26Z
 - **session_id:** agent-factory-guardian-ledger-path-scope
@@ -15453,7 +15474,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-447 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T12:45:00Z
+### IL-448 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T12:45:00Z
 
 - **il_ts:** 2026-06-22T12:45:00Z
 - **session_id:** agent-factory-mrm-s1-model-risk-framework
@@ -15472,7 +15493,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-448 - agent-factory-devsecops-s2-ssdlc-framework @ 2026-06-22T13:00:00Z
+### IL-449 - agent-factory-devsecops-s2-ssdlc-framework @ 2026-06-22T13:00:00Z
 
 - **il_ts:** 2026-06-22T13:00:00Z
 - **session_id:** agent-factory-devsecops-s2-ssdlc-framework
@@ -15492,7 +15513,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-449 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T13:15:00Z
+### IL-450 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T13:15:00Z
 
 - **il_ts:** 2026-06-22T13:15:00Z
 - **session_id:** agent-factory-kpi-dora-s3-kpi-dora-framework
@@ -15510,7 +15531,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-450 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T13:30:00Z
+### IL-451 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T13:30:00Z
 
 - **il_ts:** 2026-06-22T13:30:00Z
 - **session_id:** agent-factory-uiux-s4-design-system-canon
@@ -15531,7 +15552,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-451 - agent-factory-openbanking-s5-api-management-canon @ 2026-06-22T13:45:00Z
+### IL-452 - agent-factory-openbanking-s5-api-management-canon @ 2026-06-22T13:45:00Z
 
 - **il_ts:** 2026-06-22T13:45:00Z
 - **session_id:** agent-factory-openbanking-s5-api-management-canon
@@ -15550,7 +15571,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-452 - agent-factory-terminology-s6-glossary @ 2026-06-22T13:50:00Z
+### IL-453 - agent-factory-terminology-s6-glossary @ 2026-06-22T13:50:00Z
 
 - **il_ts:** 2026-06-22T13:50:00Z
 - **session_id:** agent-factory-terminology-s6-glossary
