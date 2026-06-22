@@ -15253,7 +15253,26 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-437 - agent-factory-mig-m2-8-pre-tompayment-provenance @ 2026-06-22T06:45:00Z
+### IL-437 - agent-factory-governance-adr117-canon-sync-q4-q5 @ 2026-06-22T06:45:00Z
+
+- **il_ts:** 2026-06-22T06:45:00Z
+- **session_id:** agent-factory-governance-adr117-canon-sync-q4-q5
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr117-canon-sync-q4-q5/IL-2026-06-22T06-45-00Z--184e99.md`
+
+### ADR-117 canon-reconciliation Q4/Q5 synced to operator-asserted facts (DEPLOYMENT-ARCHITECTURE 2026-06-21, HW-MODEL-UPGRADE-matrix); Q6 remains AWAITS OPERATOR
+- **Instrukciya:** Reconcile an internal canon contradiction: `docs/governance/CANON-RECONCILIATION-ADR117.md` still marked Q4 (GMKtec↔evo1/evo2 node mapping + service migration) and Q5 (model sizes on evo1/evo2) as `AWAITS OPERATOR`, while two other canonical docs already record the operator-asserted facts. Append-only; no facts invented beyond the two cited source docs.
+- **Change (single doc):** Q4 row → RECONCILED (operator 2026-06-21, per DEPLOYMENT-ARCHITECTURE.md §1.1): GMKtec renamed → evo1 (128 GB, 192.168.0.72); evo2 (128 GB, 192.168.0.15); node-per-service mode B. Q5 row → RECONCILED (sizes per docs/canon/HW-MODEL-UPGRADE-matrix.md, referenced not inline-duplicated). Original AWAITS-OPERATOR provenance retained as "supersedes prior …" (history annotated, not deleted).
+- **Source-of-truth:** Q4 = `docs/DEPLOYMENT-ARCHITECTURE.md` §1.1 (operator decision 2026-06-21); Q5 = `docs/canon/HW-MODEL-UPGRADE-matrix.md` (canonical model-size table).
+- **Unchanged:** Q6 (exact doubled-dev composition) remains `AWAITS OPERATOR` — no repo fact asserts it; AGENT-ORG-STRUCTURE.md row untouched.
+- **Coupling:** PR #677 (branch agent/factory/governance/adr117-canon-sync-q4-q5); doc commit f8d4a66. This shard couples the docs-only change to the ledger (ADR-056/060) so guardian-ledger / ledger-append-only / guardian-ledger-shards pass.
+- **Proof:** docs+ledger-only governance entry; no code change; append-only honoured (no prior shard edited/renumbered; INSTRUCTION-LEDGER.md regenerated deterministically via `python3 ledger/build_ledger.py`); build_ledger.py --check = exit 0 on fresh origin/main rebase.
+- **Refs:** PR #677; commit f8d4a66; docs/governance/CANON-RECONCILIATION-ADR117.md; docs/DEPLOYMENT-ARCHITECTURE.md §1.1; docs/canon/HW-MODEL-UPGRADE-matrix.md; ADR-056, ADR-059, ADR-060, ADR-117; I-28.
+
+---
+
+### IL-438 - agent-factory-mig-m2-8-pre-tompayment-provenance @ 2026-06-22T06:45:00Z
 
 - **il_ts:** 2026-06-22T06:45:00Z
 - **session_id:** agent-factory-mig-m2-8-pre-tompayment-provenance
@@ -15273,7 +15292,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-438 - agent-factory-sprint6-cfo-deep-build @ 2026-06-22T07:00:00Z
+### IL-439 - agent-factory-sprint6-cfo-deep-build @ 2026-06-22T07:00:00Z
 
 - **il_ts:** 2026-06-22T07:00:00Z
 - **session_id:** agent-factory-sprint6-cfo-deep-build
@@ -15293,7 +15312,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-439 - agent-factory-sprint7-coo-deep-build @ 2026-06-22T07:15:00Z
+### IL-440 - agent-factory-sprint7-coo-deep-build @ 2026-06-22T07:15:00Z
 
 - **il_ts:** 2026-06-22T07:15:00Z
 - **session_id:** agent-factory-sprint7-coo-deep-build
@@ -15312,7 +15331,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-440 - agent-factory-awaitsop3-web-next-unify @ 2026-06-22T07:45:00Z
+### IL-441 - agent-factory-awaitsop3-web-next-unify @ 2026-06-22T07:45:00Z
 
 - **il_ts:** 2026-06-22T07:45:00Z
 - **session_id:** agent-factory-awaitsop3-web-next-unify
@@ -15333,7 +15352,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-441 - agent-factory-mig-m2-8-roster-c-split-spec @ 2026-06-22T08:00:00Z
+### IL-442 - agent-factory-mig-m2-8-roster-c-split-spec @ 2026-06-22T08:00:00Z
 
 - **il_ts:** 2026-06-22T08:00:00Z
 - **session_id:** agent-factory-mig-m2-8-roster-c-split-spec
@@ -15354,7 +15373,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-442 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T08:15:00Z
+### IL-443 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T08:15:00Z
 
 - **il_ts:** 2026-06-22T08:15:00Z
 - **session_id:** agent-factory-mig-m2-8-roster-c-divergence-evidence
@@ -15376,7 +15395,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-443 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
+### IL-444 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
 
 - **il_ts:** 2026-06-22T08:30:00Z
 - **session_id:** agent-factory-migm28-awaits-decision-brief
@@ -15396,7 +15415,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-444 - agent-factory-migm28-scaffold-plan-skeleton @ 2026-06-22T08:45:00Z
+### IL-445 - agent-factory-migm28-scaffold-plan-skeleton @ 2026-06-22T08:45:00Z
 
 - **il_ts:** 2026-06-22T08:45:00Z
 - **session_id:** agent-factory-migm28-scaffold-plan-skeleton
@@ -15415,7 +15434,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-445 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
+### IL-446 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
 
 - **il_ts:** 2026-06-22T09:00:00Z
 - **session_id:** agent-factory-sprint8-coo-resilience-ai-gov
@@ -15435,7 +15454,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-446 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
+### IL-447 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
 
 - **il_ts:** 2026-06-22T12:33:26Z
 - **session_id:** agent-factory-guardian-ledger-path-scope
@@ -15453,7 +15472,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-447 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T12:45:00Z
+### IL-448 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T12:45:00Z
 
 - **il_ts:** 2026-06-22T12:45:00Z
 - **session_id:** agent-factory-mrm-s1-model-risk-framework
@@ -15472,7 +15491,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-448 - agent-factory-devsecops-s2-ssdlc-framework @ 2026-06-22T13:00:00Z
+### IL-449 - agent-factory-devsecops-s2-ssdlc-framework @ 2026-06-22T13:00:00Z
 
 - **il_ts:** 2026-06-22T13:00:00Z
 - **session_id:** agent-factory-devsecops-s2-ssdlc-framework
@@ -15492,7 +15511,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-449 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T13:15:00Z
+### IL-450 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T13:15:00Z
 
 - **il_ts:** 2026-06-22T13:15:00Z
 - **session_id:** agent-factory-kpi-dora-s3-kpi-dora-framework
@@ -15510,7 +15529,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-450 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T13:30:00Z
+### IL-451 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T13:30:00Z
 
 - **il_ts:** 2026-06-22T13:30:00Z
 - **session_id:** agent-factory-uiux-s4-design-system-canon
@@ -15531,7 +15550,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-451 - agent-factory-openbanking-s5-api-management-canon @ 2026-06-22T13:45:00Z
+### IL-452 - agent-factory-openbanking-s5-api-management-canon @ 2026-06-22T13:45:00Z
 
 - **il_ts:** 2026-06-22T13:45:00Z
 - **session_id:** agent-factory-openbanking-s5-api-management-canon
@@ -15550,7 +15569,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-452 - agent-factory-terminology-s6-glossary @ 2026-06-22T13:50:00Z
+### IL-453 - agent-factory-terminology-s6-glossary @ 2026-06-22T13:50:00Z
 
 - **il_ts:** 2026-06-22T13:50:00Z
 - **session_id:** agent-factory-terminology-s6-glossary
@@ -15571,7 +15590,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-453 - agent-factory-migm28-preflight-readiness @ 2026-06-22T14:00:00Z
+### IL-454 - agent-factory-migm28-preflight-readiness @ 2026-06-22T14:00:00Z
 
 - **il_ts:** 2026-06-22T14:00:00Z
 - **session_id:** agent-factory-migm28-preflight-readiness
@@ -15592,7 +15611,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-454 - agent-factory-mig-template @ 2026-06-22T15:00:00Z
+### IL-455 - agent-factory-mig-template @ 2026-06-22T15:00:00Z
 
 - **il_ts:** 2026-06-22T15:00:00Z
 - **session_id:** agent-factory-mig-template
@@ -15610,7 +15629,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-455 - agent-factory-m1-m26-changelog-spec @ 2026-06-22T15:05:00Z
+### IL-456 - agent-factory-m1-m26-changelog-spec @ 2026-06-22T15:05:00Z
 
 - **il_ts:** 2026-06-22T15:05:00Z
 - **session_id:** agent-factory-m1-m26-changelog-spec
@@ -15631,7 +15650,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-456 - agent-factory-canon-fast-lane-simplification @ 2026-06-22T15:15:00Z
+### IL-457 - agent-factory-canon-fast-lane-simplification @ 2026-06-22T15:15:00Z
 
 - **il_ts:** 2026-06-22T15:15:00Z
 - **session_id:** agent-factory-canon-fast-lane-simplification
