@@ -15354,13 +15354,13 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-440 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T07:30:00Z
+### IL-442 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T08:15:00Z
 
-- **il_ts:** 2026-06-22T07:30:00Z
+- **il_ts:** 2026-06-22T08:15:00Z
 - **session_id:** agent-factory-mig-m2-8-roster-c-divergence-evidence
 - **source:** CEO
 - **status:** DONE
-- **shard:** `ledger/entries/agent-factory-mig-m2-8-roster-c-divergence-evidence/IL-2026-06-22T07-30-00Z--cd093a.md`
+- **shard:** `ledger/entries/agent-factory-mig-m2-8-roster-c-divergence-evidence/IL-2026-06-22T08-15-00Z--cd093a.md`
 
 ### M2.8 Roster-C DIVERGENCE evidence @banxe/shared+@banxe/mobile (distinct roles; namespace-dedup required; canonical/versions=AWAITS OPERATOR)
 - **Instrukciya:** Append evidence-addendum to the existing M2.8 Roster-C spec (#684) under AWAITS-OPERATOR #1/#2/#5 — fix verified divergence facts for @banxe/shared + @banxe/mobile. Does NOT choose canonical/versions (Rule 11). fail-closed; no scaffold/code/file-moves.
