@@ -41,13 +41,15 @@ logger = logging.getLogger("banxe.archimate.importer")
 
 # ── lxml with stdlib fallback ─────────────────────────────────────────────────
 try:
-    from lxml import etree as _etree  # type: ignore[import-untyped]
+    # XXE-safe parser (defusedxml) over the lxml backend.
+    from defusedxml.lxml import parse as _defused_parse  # type: ignore[import-untyped]
     _USING_LXML = True
-    logger.debug("Using lxml for XML parsing")
+    logger.debug("Using lxml (defusedxml) for XML parsing")
 except ImportError:  # pragma: no cover
-    import xml.etree.ElementTree as _etree  # type: ignore[no-redef]
+    # XXE-safe parser (defusedxml) over the stdlib ElementTree backend.
+    from defusedxml.ElementTree import parse as _defused_parse  # type: ignore[no-redef]
     _USING_LXML = False
-    logger.debug("lxml not available — falling back to xml.etree.ElementTree")
+    logger.debug("lxml not available — falling back to defused xml.etree.ElementTree")
 
 # ── ArchiMate 3.0 Open Exchange namespace ────────────────────────────────────
 _ARCHIMATE_NS = "http://www.opengroup.org/xsd/archimate/3.0/"
@@ -109,13 +111,14 @@ _REGISTRY_DEFAULT = _REPO_ROOT / ".ai" / "registries" / "archimate-map.md"
 
 
 def _etree_parse(xml_path: Path) -> Any:
-    """Parse XML file using whichever etree backend is available."""
-    if _USING_LXML:
-        tree = _etree.parse(str(xml_path))  # noqa: S320
-        return tree.getroot()
-    else:
-        tree = _etree.parse(str(xml_path))
-        return tree.getroot()
+    """Parse an XML file with a defused (XXE-safe) etree backend (defusedxml).
+
+    Backend selected at import time (lxml when available, else stdlib
+    ElementTree); both go through defusedxml's parse, so external entities /
+    DTDs are rejected (closes semgrep S320 / python.lang.security.use-defused-xml-parse).
+    """
+    tree = _defused_parse(str(xml_path))
+    return tree.getroot()
 
 
 def _find(node: Any, tag: str) -> Any | None:
