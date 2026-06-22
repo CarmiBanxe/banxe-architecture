@@ -15589,3 +15589,21 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/migm28/preflight-readiness; PR (readiness gate). New tail shard + ### IL-NNN; append-only (no prior entry mutated); il_ts 09:15:00Z strictly > re-fetched main max 09:00:00Z.
 - **Proof:** docs+ledger-only; no target-repo mutation; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
 - **Refs:** docs/migration/MIG-M2.8-preflight-readiness.md; IL-440/441/442/443/444; ADR-102, ADR-103, ADR-059-A, ADR-060, Rule 6/7/9/11, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-454 - agent-factory-mig-template @ 2026-06-22T15:00:00Z
+
+- **il_ts:** 2026-06-22T15:00:00Z
+- **session_id:** agent-factory-mig-template
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mig-template/IL-2026-06-22T15-00-00Z--83ef81.md`
+
+### MIG-TEMPLATE — canonical structure for migration docs (docs-only, no code)
+- **Instrukciya:** Author one canonical skeleton that every future `docs/migration/MIG-*.md` (BANXE.RAR → EMI) must follow, to remove duplicated boilerplate (mode/discipline/evidence/audit shape). docs-only; 0 code; does NOT introduce or amend any ADR (ADR-102 / ADR-103 / ADR-117 referenced as-is).
+- **Result (single doc):** docs/migration/MIG-TEMPLATE.md — §1 Summary, §2 Scope (repo/rail/service in focus + out-of-scope + legacy↔EMI anchor), §3 Mode (canonical set: advisory-only="read-only, no code, no scaffold, no merge", BLOCKER, AWAITS-OPERATOR, scaffold, reconcile), §4 Discipline (ADR-102 Duplication Audit, ADR-103 server-only, ADR-059-A append-only ledger, ADR-060 branch namespace — each MIG picks the applicable subset), §5 Evidence & Preflight (origin/main, HEAD, grep results, verified-evo1 vs verified-legion provenance), §6 Decision (keep/merge/retire table), §7 What was / was NOT done (Done: read-only preflight + audits; NOT done: no scaffold/no new ports-services/no merge), §8 Next steps / operator gates (IF-gated scaffold-substeps + AWAITS-OPERATOR items), plus a "How to reference" one-line form ("Mode: advisory-only (see MIG-TEMPLATE §3), Discipline: ADR-102, ADR-103, ADR-059-A").
+- **Selects nothing / executes nothing:** template only; copying it changes no repo/service state; no ADR amended; no existing ADR/MIG or parallel-session branch touched.
+- **Coupling:** branch agent/factory/migtemplate/canonical-doc (ADR-060 four-segment namespace); PR #699 (docs-only, no merge). New tail shard → IL-449 after rebase onto origin/main (was IL-447 pre-churn; main governance shards #681 MRM (12:45:00Z)=IL-447 and #686 DevSecOps/SSDLC (13:00:00Z)=IL-448, plus #697 hooks, landed first); append-only (no prior entry mutated); il_ts 15:00:00Z strictly > re-fetched main max shard 13:00:00Z.
+- **Proof:** docs+ledger-only; `python ledger/build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards green locally; no `--admin`/bypass; `--force-with-lease` only.
+- **Refs:** docs/migration/MIG-TEMPLATE.md; ledger/SHARD-WORKFLOW.md; ADR-102, ADR-103, ADR-059-A, ADR-060; I-28; sibling MIG docs (MIG-M2.8-*, MIG-M1.*) whose boilerplate this template unifies.
