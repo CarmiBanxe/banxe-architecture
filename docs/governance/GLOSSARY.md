@@ -113,8 +113,8 @@ All gates live in `.github/workflows/guardian.yml` (with `guardian-adr117` deleg
 |---|---|---|
 | **SBOM** | Software Bill of Materials generated per deploy (CycloneDX/SPDX), tracking all OSS deps + transitive closure; SBOM + SCA + license-check are a mandatory CI gate before prod merge (SP-26). | `docs/policies/OSS-SUPPLY-CHAIN-POLICY.md` (§1) |
 | **STRIDE** | Threat-modeling taxonomy — Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege — used for STRIDE-class threats per service tier; full per-service mapping deferred (`docs/project/security/threat-model.md` MISSING). | `docs/project/security/README.md` (§A.1) |
-| **cosign** | **AWAITS OPERATOR** — artifact-signing tool referenced in general supply-chain context but not defined/specified on `main` (no entry in `OSS-SUPPLY-CHAIN-POLICY.md`). | — |
-| **SLSA** | **AWAITS OPERATOR** — supply-chain assurance levels concept referenced in backlog (OSS supply-chain governance) but no SLSA level/definition asserted on `main`. | — |
+| **cosign** | Artifact/container-signing tool (keyless / OIDC) — **operator-approved to ACTIVATE — RECONCILED 2026-06-22 (via chat)**; the key/identity signing policy detail remains **AWAITS OPERATOR**. | `docs/governance/DEVSECOPS-SSDLC.md` (§4, §5) |
+| **SLSA** | Supply-chain assurance levels — target = **Level 2** (signed build provenance; path to L3 later) — **RECONCILED 2026-06-22 (operator-approved via chat)**. | `docs/governance/DEVSECOPS-SSDLC.md` (§4, §5) |
 
 ---
 
@@ -191,8 +191,8 @@ operator/source-of-truth decision before they can be grounded here:
 |---|---|
 | **MRM (framework)** | Model-risk *assessment* is a CRO duty, but no formal MRM framework doc on `main`. |
 | **T1 / T2 / T3 model-risk tiers** | No tier schema (thresholds/controls) asserted on `main`. |
-| **cosign** | Referenced generically; no signing policy/spec on `main`. |
-| **SLSA** | Referenced in backlog; no level/definition on `main`. |
+| **cosign** | Tool selection **RECONCILED 2026-06-22** (operator-approved to ACTIVATE, keyless/OIDC); residual = key/identity signing policy detail still **AWAITS OPERATOR**. |
+| **SLSA** | **RECONCILED 2026-06-22** — operator-approved target **Level 2** (see `DEVSECOPS-SSDLC.md` §4/§5); no longer awaiting. |
 | **DORA (DevOps four keys)** | Only the EU-regulation sense is grounded; the four-key metrics are not defined on `main`. |
 | **Deployment frequency / Lead time / Change-failure rate** | Not asserted as defined KPIs on `main`. |
 

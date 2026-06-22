@@ -78,16 +78,16 @@ Each gap is registered with a planned control and owner. Owners not asserted in 
 
 | Gap | Current state | Planned control | Tooling | Scaffold landed (S2) | Owner |
 |-----|---------------|-----------------|---------|----------------------|-------|
-| **G-S2-01 SBOM** | none | Generate CycloneDX SBOM per build artifact | **syft → CycloneDX** | `.github/workflows/sbom.yml.template` (inert) | AWAITS OPERATOR (proposed: Head of Security Engineering) |
-| **G-S2-02 Artifact / container signing** | none | Sign release artifacts + container images | **Cosign** (keyless/OIDC) | `.github/workflows/cosign-sign.yml.template` (inert) | AWAITS OPERATOR (key/identity policy) |
+| **G-S2-01 SBOM** | none | Generate CycloneDX SBOM per build artifact | **syft → CycloneDX** | `.github/workflows/sbom.yml.template` — **ACTIVATE** — RECONCILED 2026-06-22 (operator-approved via chat) | AWAITS OPERATOR (proposed owner: Head of Security Engineering) |
+| **G-S2-02 Artifact / container signing** | none | Sign release artifacts + container images | **Cosign** (keyless/OIDC) | `.github/workflows/cosign-sign.yml.template` — **ACTIVATE** — RECONCILED 2026-06-22 (operator-approved via chat) | AWAITS OPERATOR (key/identity policy detail) |
 | **G-S2-03 Threat models** | none documented | STRIDE threat model per service | STRIDE template | `docs/governance/threat-models/THREAT-MODEL-TEMPLATE.md` | AWAITS OPERATOR (per-service instances) |
-| **G-S2-04 SAST** | none asserted | Static analysis on every PR | **AWAITS OPERATOR** (no SAST tool asserted in repo) | — | AWAITS OPERATOR |
-| **G-S2-05 SCA** | none asserted | Dependency CVE scanning | **AWAITS OPERATOR** (no SCA tool asserted in repo) | — | AWAITS OPERATOR |
-| **G-S2-06 DAST** | none asserted | Runtime/dynamic testing | **AWAITS OPERATOR** (no DAST tool asserted in repo) | — | AWAITS OPERATOR |
-| **G-S2-07 Supply-chain (SLSA)** | none | Build provenance attestation | SLSA — **target level AWAITS OPERATOR** | — | AWAITS OPERATOR |
+| **G-S2-04 SAST** | none asserted | Static analysis on every PR | **CodeQL** (GitHub-native, on-prem self-hosted runner; ADR-031 on-prem) — RECONCILED 2026-06-22 (operator-approved via chat) | — | AWAITS OPERATOR |
+| **G-S2-05 SCA** | none asserted | Dependency CVE scanning | **Dependabot + OSV-Scanner** (in-perimeter, no external SaaS) — RECONCILED 2026-06-22 (operator-approved via chat) | — | AWAITS OPERATOR |
+| **G-S2-06 DAST** | none asserted | Runtime/dynamic testing | **OWASP ZAP** (open-source, on-prem) — RECONCILED 2026-06-22 (operator-approved via chat) | — | AWAITS OPERATOR |
+| **G-S2-07 Supply-chain (SLSA)** | none | Build provenance attestation | SLSA — **Level 2** (signed build provenance; path to L3 later) — RECONCILED 2026-06-22 (operator-approved via chat) | — | AWAITS OPERATOR |
 | **G-S2-08 DORA incident reporting** | partial (CRITICAL→CEO ≤2h, SYSC 8.1) | Major-incident reporting workflow (DORA Art. 19) | AWAITS OPERATOR | — | CTO (SMF26) interim; dedicated owner AWAITS OPERATOR |
 
-> **Note on asserted vs. unasserted tools.** `syft`/CycloneDX (SBOM) and `cosign` (signing) are named here because §5.2 target model names them and the S2 scaffolds use them; they are still **inert** until operator activation (§4 scaffolds). SAST/SCA/DAST tools and the SLSA target level are **not asserted anywhere in the repo** and are therefore left as AWAITS OPERATOR — no tool is invented.
+> **Note on asserted vs. unasserted tools.** `syft`/CycloneDX (SBOM) and `cosign` (signing) are named here because §5.2 target model names them and the S2 scaffolds use them; their **activation is now operator-approved (ACTIVATE) — RECONCILED 2026-06-22 (via chat)** — while physical scaffold go-live, the SBOM owner, and the cosign key/identity policy detail remain AWAITS OPERATOR. SAST = **CodeQL**, SCA = **Dependabot + OSV-Scanner**, DAST = **OWASP ZAP**, and SLSA target = **Level 2** are now **operator-approved — RECONCILED 2026-06-22 (via chat)**; no value beyond these operator-approved selections is invented.
 
 ### Scaffolds landed in S2 (non-blocking, inert)
 
@@ -103,12 +103,12 @@ All three carry a `.template` suffix (or live under `docs/`) and are **inert** �
 
 | Control | Tool | Status |
 |---------|------|--------|
-| SBOM | **syft** → **CycloneDX** format | scaffolded inert (S2), activation AWAITS OPERATOR |
-| Artifact / container signing | **Cosign** (keyless / OIDC) | scaffolded inert (S2), key/identity policy AWAITS OPERATOR |
-| SAST | **AWAITS OPERATOR** | not asserted in repo |
-| SCA | **AWAITS OPERATOR** | not asserted in repo |
-| DAST | **AWAITS OPERATOR** | not asserted in repo |
-| Supply-chain provenance | **SLSA** — target level **AWAITS OPERATOR** | not asserted in repo |
+| SBOM | **syft** → **CycloneDX** format | activation APPROVED (ACTIVATE) — RECONCILED 2026-06-22 (operator-approved via chat); scaffold go-live + owner AWAITS OPERATOR |
+| Artifact / container signing | **Cosign** (keyless / OIDC) | activation APPROVED (ACTIVATE) — RECONCILED 2026-06-22 (operator-approved via chat); key/identity policy detail AWAITS OPERATOR |
+| SAST | **CodeQL** (GitHub-native, on-prem self-hosted runner) | RECONCILED 2026-06-22 (operator-approved via chat; ADR-031 on-prem) |
+| SCA | **Dependabot + OSV-Scanner** (in-perimeter, no external SaaS) | RECONCILED 2026-06-22 (operator-approved via chat) |
+| DAST | **OWASP ZAP** (open-source, on-prem) | RECONCILED 2026-06-22 (operator-approved via chat) |
+| Supply-chain provenance | **SLSA Level 2** (signed build provenance; path to L3 later) | RECONCILED 2026-06-22 (operator-approved via chat) |
 | Threat modeling | **STRIDE** (template landed S2) | template landed; per-service instances AWAITS OPERATOR |
 | Secrets scanning | **gitleaks** (already in `ci.yml`) | ACTIVE (existing) |
 

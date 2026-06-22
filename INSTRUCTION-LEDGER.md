@@ -15607,3 +15607,27 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/migtemplate/canonical-doc (ADR-060 four-segment namespace); PR #699 (docs-only, no merge). New tail shard → IL-449 after rebase onto origin/main (was IL-447 pre-churn; main governance shards #681 MRM (12:45:00Z)=IL-447 and #686 DevSecOps/SSDLC (13:00:00Z)=IL-448, plus #697 hooks, landed first); append-only (no prior entry mutated); il_ts 15:00:00Z strictly > re-fetched main max shard 13:00:00Z.
 - **Proof:** docs+ledger-only; `python ledger/build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards green locally; no `--admin`/bypass; `--force-with-lease` only.
 - **Refs:** docs/migration/MIG-TEMPLATE.md; ledger/SHARD-WORKFLOW.md; ADR-102, ADR-103, ADR-059-A, ADR-060; I-28; sibling MIG docs (MIG-M2.8-*, MIG-M1.*) whose boilerplate this template unifies.
+
+---
+
+### IL-455 - agent-factory-governance-reconcile-awaits-operator-pack @ 2026-06-22T15:15:00Z
+
+- **il_ts:** 2026-06-22T15:15:00Z
+- **session_id:** agent-factory-governance-reconcile-awaits-operator-pack
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-reconcile-awaits-operator-pack/IL-2026-06-22T15-15-00Z--542bf1.md`
+
+### Governance reconciliation — replace resolved AWAITS OPERATOR items with operator-decided facts across affected canon docs; preserve true operator-only items
+
+- **Instrukciya:** Execute one focused governance reconciliation sprint that removes delivery-blocking pseudo-unknowns while preserving all real operator-only decisions. Resolve ONLY those `AWAITS OPERATOR` items that now have explicit operator decisions; leave still-unknown items untouched as `AWAITS OPERATOR`. Operator-supreme; invent no facts; append-only ledger (ADR-056/059/060); no guardian bypass; DO NOT MERGE.
+- **Operator-decided facts applied (chat, 2026-06-22 — 7 approved values only):** SAST = **CodeQL** (GitHub-native, on-prem self-hosted runner; ADR-031 on-prem); SCA = **Dependabot + OSV-Scanner** (in-perimeter, no external SaaS); DAST = **OWASP ZAP** (open-source, on-prem); SLSA target = **Level 2** (signed build provenance; path to L3 later); SBOM (syft → CycloneDX) + cosign signing = **ACTIVATE** (owner / key-identity policy detail remain AWAITS OPERATOR); KPI/DORA collection tooling = **Prometheus + Grafana on evo2**. Provenance anchor: prior operator-approved reconciliation shard `IL-2026-06-22T14-15-00Z--828a5b` / commit 479825f (sibling branch, not on main).
+- **Result (docs-only, 3 canon docs):**
+  - `docs/governance/DEVSECOPS-SSDLC.md` — §S2 gap-register table (G-S2-01/02 → ACTIVATE; G-S2-04/05/06 → CodeQL / Dependabot+OSV-Scanner / OWASP ZAP; G-S2-07 → SLSA Level 2), the asserted-vs-unasserted note, and §5 Tooling-stack target table all RECONCILED 2026-06-22.
+  - `docs/governance/KPI-DORA-FRAMEWORK.md` — §4.2 collection pipeline/tooling RECONCILED to Prometheus + Grafana on evo2; residual exporters/retention/cadence kept AWAITS OPERATOR.
+  - `docs/governance/GLOSSARY.md` — §7 entries for **cosign** (tool ACTIVATE-approved; key/identity policy detail residual) and **SLSA** (Level 2) RECONCILED; §12 open-items register marked RECONCILED rather than deleted (SLSA cleared; cosign narrowed to key/identity-policy residual).
+- **Preserved as genuine operator-only (untouched):** SBOM owner (Head of Security Engineering) + cosign key/identity policy + scaffold physical go-live; `.github/workflows/sbom.yml.template` and `cosign-sign.yml.template` AWAITS lines (activation go-live, key/identity, version pinning); DEVSECOPS RACI ownership rows (148–153) and maturity "Gap" column (31–33); DORA numeric target bands + four-key metric definitions (KPI-DORA §2, GLOSSARY §8); per-panel data-source wiring; DORA incident-reporting workflow; threat-model per-service instances; KPI enforcement (ADR-117); VP Platform Eng / SRE staffing. FCA roles, merge-queue activation, and PR merges remain operator-only.
+- **Scope discipline:** no new ADR; no ADR amended; no CI gate added; no guardian weakened; no `.template` activated; no code. Reconciliation applied the same 7 facts wherever they sat as stale AWAITS in the affected canon docs (no broadening beyond the operator-decided set).
+- **Coupling:** branch `agent/factory/governance/reconcile-awaits-operator-pack` (ADR-060 four-segment namespace); one PR for operator review (DO NOT MERGE). New tail shard; append-only (no prior entry mutated); il_ts 15:15:00Z strictly > re-fetched origin/main max shard 15:00:00Z (+15m, no collision).
+- **Proof:** docs+ledger-only; `python3 ledger/build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards green locally; no `--admin`/bypass; `--force-with-lease` only.
+- **Refs:** docs/governance/DEVSECOPS-SSDLC.md; docs/governance/KPI-DORA-FRAMEWORK.md; docs/governance/GLOSSARY.md; ledger/SHARD-WORKFLOW.md; ADR-056/059/060, ADR-117, ADR-031; I-28; prior shard IL-2026-06-22T14-15-00Z--828a5b (commit 479825f, sibling branch).
