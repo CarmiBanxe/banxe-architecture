@@ -15547,3 +15547,25 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/openbanking/s5-api-management-canon (from origin/main aaa8d49); PR (governance canon). New tail shard + ### IL-NNN; append-only (no prior entry/shard mutated/renumbered); il_ts re-minted to 13:45:00Z during rebase onto origin/main 7ccbb98 (after PR #698 advanced main), strictly > fresh main max 12:33:26Z and > prior re-mints (S1 12:45 / S2 13:00 / S3 13:15 / S4 13:30) — resolving the ledger renumber-race (prior slots 09:00/10:15 collided with later-merged shards).
 - **Proof:** docs+ledger-only; build_ledger.py --check exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming green locally.
 - **Refs:** docs/governance/OPEN-BANKING-API-MANAGEMENT.md; MIG-M2.4-BLOCKER / MIG-M2.4-RESCOPE / MIG-M1.1; m_gateway_api_governor.yaml; ADR-102, ADR-103, ADR-059-A, ADR-060, I-01, I-02, I-08, I-27, I-28; operator decision 2026-06-21 (A reconcile/gap-audit, not scaffold).
+
+---
+
+### IL-452 - agent-factory-migm28-readiness-evidence @ 2026-06-22T14:00:00Z
+
+- **il_ts:** 2026-06-22T14:00:00Z
+- **session_id:** agent-factory-migm28-readiness-evidence
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-migm28-readiness-evidence/IL-2026-06-22T14-00-00Z--739cf2.md`
+
+### M2.8 readiness-evidence — gates (c) evo1 / (b) #B1 / (d) ADR-102 CLOSED; operator gates (a/Roster/I-27) remain OPEN (scaffold BLOCKED)
+- **Instrukciya:** Record evidence-closure of pre-flight gates (c)/(b)/(d) for M2.8 Roster-C. DOCS+LEDGER only; NO scaffold/code/target-repo mutation/selection/merge. Branch off main, push branch only (operator opens DO-NOT-MERGE record).
+- **(c) evo1 CLOSED:** evo1 RE-CONFIRMED UP @ 2026-06-22T12:07:22Z; authoritative path /home/banxe/cleanup/carmibanxe-audit/repos/; banxe-platform main@4f0ce18 CLEAN; banxe-ui main@cb7250a CLEAN. Provenance verified-evo1 (operator-attested; recorded on Legion, not independently re-verified).
+- **(b) #B1 RESOLVED:** banxe-ui CLEAN on authoritative evo1; Legion-only stray UNTRACKED .github/workflows/quality-gate.yml.bak (reported, not resolved — Rule 6). Prior "29 dirty files" = stale Legion clone (Rule 9). Gate (b) CLOSED.
+- **(d) ADR-102 CLEAN:** execution-time re-audit — no ai-onboarding duplication hits in banxe-ui/banxe-platform.
+- **Provenance discrepancy reconciled:** banxe-ui authoritative HEAD cb7250a/CLEAN (evo1) supersedes stale Legion ce49bdf/dirty (#694 §2).
+- **REMAINING OPEN (operator, Rule 11):** (a) AWAITS #1/#2/#4/#5 selection; Roster A/B/C selection; (B) KYC I-27 sign-off. Scaffold/promotion stays BLOCKED (fail-closed) despite (b)/(c)/(d) closed.
+- **Result:** docs/migration/MIG-M2.8-readiness-evidence.md (companion to #694 readiness gate, which is unmerged on main). NO PR opened by factory; branch pushed only.
+- **Coupling/append-only:** branch agent/factory/migm28/readiness-evidence; new tail shard + ### IL-NNN; no prior entry mutated; il_ts 14:00:00Z strictly > re-fetched main max 13:45:00Z (final-rebase onto main@5d87246; churn moved max to 13:45Z incl. openbanking-s5 #693 → bumped 13:45→14:00 per ADR-059-A churn-loop; evidence-time label 12:15Z retained in doc heading).
+- **Proof:** docs+ledger-only; no target-repo mutation; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
+- **Refs:** docs/migration/MIG-M2.8-readiness-evidence.md; MIG-M2.8-preflight-readiness.md (#694); IL-440/441/442/443/444; ADR-102, ADR-103, ADR-059-A, Rule 6/7/9/11, I-27 (KYC HOLD), I-28.
