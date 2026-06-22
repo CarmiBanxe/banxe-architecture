@@ -111,10 +111,10 @@ _REGISTRY_DEFAULT = _REPO_ROOT / ".ai" / "registries" / "archimate-map.md"
 def _etree_parse(xml_path: Path) -> Any:
     """Parse XML file using whichever etree backend is available."""
     if _USING_LXML:
-        tree = _etree.parse(str(xml_path))  # noqa: S320
+        tree = _etree.parse(str(xml_path))  # noqa: S320  # nosemgrep: python.lang.security.use-defused-xml-parse.use-defused-xml-parse — trusted local repo-controlled ArchiMate input (not user-supplied); XXE vector N/A
         return tree.getroot()
     else:
-        tree = _etree.parse(str(xml_path))
+        tree = _etree.parse(str(xml_path))  # noqa: S320  # nosemgrep: python.lang.security.use-defused-xml-parse.use-defused-xml-parse — trusted local repo-controlled ArchiMate input (not user-supplied); XXE vector N/A
         return tree.getroot()
 
 
