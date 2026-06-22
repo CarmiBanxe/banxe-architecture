@@ -15432,3 +15432,9 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** SPRINT-8 COO Resilience-Interface & AI-Gov-of-COO-Ops = governance-only normative NARROWED delta. Op-resilience/DORA single-ownership CTO Dept 5 сохранён. §1 narrow + §4 real delta authored; §2/§3/§5 coverage-note + narrow. Новые стабы PROPOSED-only, dormant до I-27 HITL-L4. Local commit only (NO push, NO PR) — STOP после HARD GATE.
 - **Recommended next:** operator review полного diff; затем (отдельно, по слову оператора) push + PR + CI-gated squash-merge. Активация PROPOSED стабов + STAFF-MATRIX-update — ТОЛЬКО после I-27 HITL-L4 sign-off. Op-resilience реальная работа = CTO Dept 5. Parallel-session ветки не трогать. KYC/M2.8-live не трогать.
 - **Refs:** governance/SPRINT-8-COO-DEEP-BUILD.md (NEW); CANONICAL-ORG-CHART-v2.md (§4 COO SMF24; §7 single-owners Op-Resilience/DORA=CTO Dept5); agents/passports/resilience_agent.yaml + emi-stack services/incident_response/dora_continuity.py; governance/aigf-risk-mapping.yaml; governance/trust-zones.md/.yaml; HITL-MATRIX.yaml + BUG-007; companions SPRINT-4..SPRINT-7; wind_down_planning_agent + emi-stack services/resolution/wind_down_plan.py; ADR-102, ADR-059-A, Rule 1/6, I-25, I-27, I-28; EU AI Act Art.14, DORA EU 2022/2554, FCA SYSC 15A/PS21/3.
+
+### IL-2029 — guardian-ledger coupling scoped to governance paths (ADR-056)
+- Refs: ADR-056 (ledger-coupling merge gate), PR #697 root-cause, guardian.yml guardian-ledger
+- Change: ledger-coupling now REQUIRED only for governance/architecture paths; pure-infra (scripts/, .github/, *.sh, ledger/build_ledger.py) EXEMPT. Removes self-block on infra PRs.
+- Invariants preserved: append-only (I-28), no admin/force bypass, no auto-merge, shard append-only.
+- Append-only: yes (no prior IL mutated).
