@@ -15435,7 +15435,28 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-446 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
+### IL-446 - agent-factory-terminology-s6-glossary @ 2026-06-22T09:15:00Z
+
+- **il_ts:** 2026-06-22T09:15:00Z
+- **session_id:** agent-factory-terminology-s6-glossary
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-terminology-s6-glossary/IL-2026-06-22T09-15-00Z--3aa681.md`
+
+### S6 — Canonical terminology GLOSSARY.md (repo-grounded terms; unknowns AWAITS OPERATOR); references completed Merge-Queue artifacts (operator-activated half of S6)
+- **Instrukciya:** S6 Terminology/Glossary half → `docs/governance/GLOSSARY.md` (NEW). Single source of truth for BANXE factory terminology; every entry grounded in an existing repo artifact (cite source file per term), references canon (ADR-102 reference-not-duplicate — does NOT restate/fork). Companion to the already-merged Merge-Queue half of S6 (durable ledger-race fix on `main`). Append-only ledger (ADR-056/059/060): ONE new tail shard, `il_ts` strictly > re-fetched max on `origin/main`; no renumber/edit of prior entries/other shards; regenerate `INSTRUCTION-LEDGER.md` via `python3 ledger/build_ledger.py`. No guardian bypass. NO MERGE.
+- **Preflight (read-only, origin/main 3c2a34f):** ADR-102 anti-dup PASS — no `glossar*`/`terminolog*` doc exists on `main` (`git ls-tree … | grep -iE 'glossar|terminolog'` → NONE; only incidental mentions inside other files). Fresh max `il_ts` on `origin/main` = `2026-06-22T09:00:00Z` (shard `…--9c2e7f`, session `agent-factory-sprint8-coo-resilience-ai-gov`); S6 `il_ts` = next free slot `2026-06-22T09:15:00Z` (strictly >). Branch `agent/factory/terminology/s6-glossary` conforms to ADR-060 `^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$` (id=`terminology` alnum-only; slug=`s6-glossary`).
+- **Doc (`docs/governance/GLOSSARY.md`, NEW):** §1 purpose & scope (descriptive, source-authoritative, additive to canon); §2 ADR framework (ADR-056/057/059/059-A/060/102/103/117); §3 ledger system (INSTRUCTION-LEDGER.md, shard, il_ts, session_id, sid6, IL-NNN, append-only, build_ledger.py, FROZEN-ARCHIVE.md, I-28); §4 guardian gates (guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming / guardian-adr117 / schemas-factory-project / Canon Judge); §5 topology (Factory, LEGION, Project cluster, evo1, evo2, node-per-service, on-prem inference); §6 model-risk tiers; §7 DevSecOps (SBOM, STRIDE grounded; cosign, SLSA AWAITS OPERATOR); §8 DORA & KPIs (EU-DORA grounded; four-keys AWAITS OPERATOR); §9 Open Banking (PSD2/TPP/AISP/PISP/CBPII/OBIE); §10 roles (SMF/CEO/CRO/CFO/COO/CTIO/CISO/MLRO + SMF24/26/17/2/4); §11 cross-ref to Merge-Queue artifacts (LEDGER-MERGE-QUEUE.md / OPERATOR-ENABLE-MERGE-QUEUE.md / merge-queue-ruleset.json — operator-activated); §12 open-items register (AWAITS OPERATOR); provenance footer.
+- **Grounding sources (cited per term):** `docs/adr/ADR-056/057/059/060/102/103/117*`, `instruction-ledger/sprint-53/ADR-059-A-*`, `ledger/build_ledger.py`, `ledger/README.md`, `ledger/FROZEN-ARCHIVE.md`, `INSTRUCTION-LEDGER.md`, `INVARIANTS.md` (I-28), `.github/workflows/guardian.yml`, `scripts/adr117-gate-check.sh`, `docs/canon/software-factory-canon-v1.md`, `docs/DEPLOYMENT-ARCHITECTURE.md`, `docs/canon/factory-project-stack-2026-05.md`, `docs/policies/OSS-SUPPLY-CHAIN-POLICY.md`, `docs/project/security/README.md`, `governance/SPRINT-8-COO-DEEP-BUILD.md`, `governance/CANONICAL-ORG-CHART-v2.md`, `docs/JOB-DESCRIPTIONS.md`, `docs/master-document/02-unified-stack.md`, `docs/migration/MIG-M2.4-OB-delta-completion.md` + OB migration shards, `adrs/ADR-PAY-01-*`, `docs/COMPLIANCE-MATRIX.md`.
+- **AWAITS OPERATOR (invent-no-facts; not asserted on `main`):** MRM framework; T1/T2/T3 model-risk tier schema; cosign; SLSA; DORA DevOps four-key metrics (deployment frequency / lead time / change-failure rate / MTTR-as-DORA-metric). Recorded in §6/§7/§8 + the §12 open-items register rather than invented.
+- **Proof:** ADR-102 reference-not-duplicate respected (no pre-existing glossary; glossary cites & links existing artifacts, adds no forked definitions). Append-only (ADR-056/057/059): ONE new tail shard at `il_ts 2026-06-22T09:15:00Z` (strictly > `09:00:00Z`); no prior shard/entry renumbered or edited; `INSTRUCTION-LEDGER.md` regenerated via `python3 ledger/build_ledger.py`; `--check` exit 0. Merge-Queue artifacts referenced only (NOT recreated/modified). Pre-existing untracked paths (`.quarantine/`, `docs/incoming/`, `docs/canon-transfer-*`) NOT staged. Local validators (guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming) green BASE=origin/main HEAD=branch. NO MERGE.
+- **Status:** S6 Terminology/Glossary half = DONE (authored, ledger-coupled). Merge-Queue half already on `main` (operator activation of the queue pending — repo-settings action, out of factory scope).
+- **Recommended next:** operator review of the PR diff; operator-side activation of the merge-queue ruleset (the other half of S6). Grounding of AWAITS-OPERATOR terms (MRM/tiers/cosign/SLSA/DORA-four-keys) once a source-of-truth artifact is supplied — appended via the normal ledger-coupled flow (no history edit). DO NOT MERGE without operator sign-off.
+- **Refs:** `docs/governance/GLOSSARY.md` (NEW); `docs/governance/LEDGER-MERGE-QUEUE.md` / `OPERATOR-ENABLE-MERGE-QUEUE.md` / `merge-queue-ruleset.json` (S6 Merge-Queue half, already on `main`); ADR-056/057/059/059-A/060/102/103/117; I-28; `ledger/build_ledger.py`; `.github/workflows/guardian.yml`.
+
+---
+
+### IL-447 - agent-factory-guardian-ledger-path-scope @ 2026-06-22T12:33:26Z
 
 - **il_ts:** 2026-06-22T12:33:26Z
 - **session_id:** agent-factory-guardian-ledger-path-scope
@@ -15453,7 +15474,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-447 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T12:45:00Z
+### IL-448 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T12:45:00Z
 
 - **il_ts:** 2026-06-22T12:45:00Z
 - **session_id:** agent-factory-mrm-s1-model-risk-framework
@@ -15472,7 +15493,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-448 - agent-factory-devsecops-s2-ssdlc-framework @ 2026-06-22T13:00:00Z
+### IL-449 - agent-factory-devsecops-s2-ssdlc-framework @ 2026-06-22T13:00:00Z
 
 - **il_ts:** 2026-06-22T13:00:00Z
 - **session_id:** agent-factory-devsecops-s2-ssdlc-framework
@@ -15492,7 +15513,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-449 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T13:15:00Z
+### IL-450 - agent-factory-kpi-dora-s3-kpi-dora-framework @ 2026-06-22T13:15:00Z
 
 - **il_ts:** 2026-06-22T13:15:00Z
 - **session_id:** agent-factory-kpi-dora-s3-kpi-dora-framework
@@ -15510,7 +15531,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-450 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T13:30:00Z
+### IL-451 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T13:30:00Z
 
 - **il_ts:** 2026-06-22T13:30:00Z
 - **session_id:** agent-factory-uiux-s4-design-system-canon
@@ -15531,7 +15552,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-451 - agent-factory-openbanking-s5-api-management-canon @ 2026-06-22T13:45:00Z
+### IL-452 - agent-factory-openbanking-s5-api-management-canon @ 2026-06-22T13:45:00Z
 
 - **il_ts:** 2026-06-22T13:45:00Z
 - **session_id:** agent-factory-openbanking-s5-api-management-canon
