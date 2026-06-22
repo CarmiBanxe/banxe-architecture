@@ -15628,3 +15628,28 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/m1/m26-changelog-spec; PR (spec, docs-only). New tail shard + ### IL-NNN; append-only; il_ts 09:30:00Z strictly > re-fetched main max 09:00:00Z (and > in-flight #694 readiness 09:15).
 - **Proof:** docs+ledger-only; backend repo untouched; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
 - **Refs:** docs/migration/MIG-M1.26-advisory-changelog-spec.md; MIG-M2.8-preflight-readiness.md (evo1 re-confirm open); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
+
+---
+
+### IL-456 - agent-factory-canon-fast-lane-simplification @ 2026-06-22T15:15:00Z
+
+- **il_ts:** 2026-06-22T15:15:00Z
+- **session_id:** agent-factory-canon-fast-lane-simplification
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-canon-fast-lane-simplification/IL-2026-06-22T15-15-00Z--b4f2d8.md`
+
+### Canon Fast-Lane Simplification — risk-tiered lane model + operator policy changes to accelerate BANXE smart-refactor migration (docs-only)
+- **Referer:** Canon fast-lane simplification for BANXE smart refactor migration. Governance proposal; DOCS-ONLY; NO code/runtime/migration-branch mutation; NO KYC touch; NO merge.
+- **Instrukciya:** Analyze what unjustifiably blocks migration throughput and propose a best-decision canon that removes ceremony from low-risk work WITHOUT weakening safety guardrails.
+- **Unjustified frictions identified (evidence-based):** (1) excessive IL/ledger churn on descriptive/additive docs; (2) il_ts collision management as constant overhead (readiness re-mint 13:30→13:45→14:00; "Sisyphus loop" per LEDGER-MERGE-QUEUE.md); (3) stale CONFLICTING/forced-nudge cases (main moved 8+/window); (4) docs-only PR batch-merge overhead; (5) over-fragmentation into micro-steps where one governance step blocks the next useful additive scaffold; (6) operator-gated mode over-applied to low-risk descriptive/additive surfaces; (7) one-size-fits-all heavy process for high- AND low-risk actions.
+- **Proposed canon (3 lanes):** 🟢 Fast (docs-only, low-risk scaffolds, descriptive/additive ports, adapter shells, roster/coverage updates) · 🟡 Controlled (bounded-context code migration, no live-state touch) · 🔴 Strict (KYC/KYB/AML, auth-crypto runtime, token/session issuance, live balances/ledger mutations, production cutover). Fail-safe: ambiguous → stricter lane.
+- **Fast-lane simplifications:** batch docs/IL updates in one PR; no separate governance-merge cycle without code/runtime risk; replace per-PR il_ts arbitration with deterministic batch-window OR merge-time sequencer; one-PR-per-sprint for related low-risk artifacts; no governance stop between consecutive low-risk scaffolds.
+- **Controlled-lane:** keep worktree/branch isolation + CI + ADR-102 on delete/merge + ADR-103 server-side; trim to one IL shard per BC + two operator checkpoints (plan, promotion).
+- **Operator policy changes (P1-P6):** P1 sprint-batch docs+IL PRs; P2 merge-time il_ts allocation / monotonic auto-sequencer; P3 one-PR-per-sprint low-risk; P4 remove governance stop between consecutive low-risk scaffolds; P5 mandatory operator approval ONLY for strict-lane; P6 enable GitHub merge queue (operator-privileged, runbook already on main).
+- **What stays STRICT (no dilution):** KYC/KYB/AML, SRP runtime activation, token/session issuance, live balances/ledger mutations, production cutover/re-point.
+- **Effective operating model:** sprint-based execution; one best-next-action artifact; batch low-risk work; fewer governance interrupts; direct progress to 100% migration of relevant microservices.
+- **Safety:** no invariant (I-21..I-28) weakened; append-only ledger + ADR-102/103 intact; throughput gain = removing ceremony, not controls; misclassification errs toward MORE control.
+- **Coupling/append-only:** branch agent/factory/canonfastlane/fast-lane-simplification (off main); new tail shard → IL-456 after final-rebase onto main@b2bde95; no prior entry mutated; il_ts 15:15:00Z strictly > re-fetched main max 15:05:00Z (#696 M1.26 changelog-spec took 15:05Z; our 15:15Z slot stayed free → no bump needed this pass). Earlier churn-loop passes: 14:30→15:15 after #699 MIG-TEMPLATE merged — a live instance of friction #2/#3 this very proposal targets.
+- **Proof:** docs+ledger only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards/guardian-branch-naming/guardian-adr117 green locally; force-with-lease push; NO --admin/bypass; docs-only PR opened, NO merge.
+- **Refs:** docs/governance/CANON-FAST-LANE-SIMPLIFICATION.md; docs/governance/LEDGER-MERGE-QUEUE.md; docs/governance/OPERATOR-ENABLE-MERGE-QUEUE.md; MIG-TEMPLATE §3; ADR-057, ADR-059/059-A, ADR-060, ADR-102, ADR-103; I-21..I-28, I-27 (KYC HOLD).
