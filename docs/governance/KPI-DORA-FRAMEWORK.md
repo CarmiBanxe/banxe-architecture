@@ -80,12 +80,12 @@ These five carry **repo-asserted numeric targets** (unlike the DORA bands above)
     collection is a **distinct, not-yet-existing** surface and MUST NOT overload the risk port
     (ADR-102 anti-duplication).
 
-### 4.2 Collection pipeline / tooling — AWAITS OPERATOR
+### 4.2 Collection pipeline / tooling — RECONCILED 2026-06-22 (operator-approved via chat)
 
-The concrete collection stack (e.g. Prometheus / Grafana / OpenTelemetry / CI-event ingestion, or any
-alternative) is **NOT asserted anywhere in the repo**. Tooling selection, exporters, retention, and
-scrape/ingest cadence are all **AWAITS OPERATOR** (§7). No tool is named normatively here to avoid
-inventing facts.
+The collection stack is **Prometheus + Grafana, hosted on evo2** (on-prem observability node, per
+topology) — **RECONCILED 2026-06-22 (operator-approved via chat)**. Residual parameters — exporters,
+retention, and scrape/ingest cadence — remain **AWAITS OPERATOR** (§7); no value beyond the approved
+tool stack is invented here.
 
 ### 4.3 On-prem residency constraint (asserted)
 
