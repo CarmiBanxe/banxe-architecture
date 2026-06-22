@@ -15607,3 +15607,24 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** branch agent/factory/migtemplate/canonical-doc (ADR-060 four-segment namespace); PR #699 (docs-only, no merge). New tail shard → IL-449 after rebase onto origin/main (was IL-447 pre-churn; main governance shards #681 MRM (12:45:00Z)=IL-447 and #686 DevSecOps/SSDLC (13:00:00Z)=IL-448, plus #697 hooks, landed first); append-only (no prior entry mutated); il_ts 15:00:00Z strictly > re-fetched main max shard 13:00:00Z.
 - **Proof:** docs+ledger-only; `python ledger/build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards green locally; no `--admin`/bypass; `--force-with-lease` only.
 - **Refs:** docs/migration/MIG-TEMPLATE.md; ledger/SHARD-WORKFLOW.md; ADR-102, ADR-103, ADR-059-A, ADR-060; I-28; sibling MIG docs (MIG-M2.8-*, MIG-M1.*) whose boilerplate this template unifies.
+
+---
+
+### IL-455 - agent-factory-m1-m26-changelog-spec @ 2026-06-22T15:05:00Z
+
+- **il_ts:** 2026-06-22T15:05:00Z
+- **session_id:** agent-factory-m1-m26-changelog-spec
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-m1-m26-changelog-spec/IL-2026-06-22T15-05-00Z--e8b1ce.md`
+
+### M1.26 advisory-surface changelog — governance SPEC only (code PROPOSED, deferred to evo1 per ADR-103; backend repo untouched)
+- **Instrukciya:** M1.26 advisory-surface changelog is a server-only code change to banxe-trading-backend. Session bound to Legion (not evo1); backend repo not local; evo1 re-confirm OPEN. Operator decision: produce governance SPEC only now; defer code to evo1. This shard records the SPEC delivery, NOT code completion.
+- **ADR-103 stop-barrier honored:** did NOT clone/edit banxe-trading-backend on Legion; no code produced; no backend commit/push/PR. Legion = thin client.
+- **Spec (PROPOSED):** GET /api/v1/catalogue/changelog → AdvisorySurfaceChangelog (fourth meta surface); ChangelogEntry{substep:str(non-exhaustive, not enum), title:str}; total_entries:int; version reuse __version__; source config-as-data. Files (on evo1): app/meta/changelog.py, app/api/catalogue_changelog.py, register in app/main.py, tests/test_advisory_changelog.py.
+- **ADR-102 four-way distinct:** catalogue_meta(M1.14 data-rows) / manifest(M1.24 endpoint-families) / schema-inventory(M1.25 DTO-families) / changelog(M1.26 substep-timeline) — no overlap; execution-time re-audit still required on evo1.
+- **Fences (for evo1 build):** config-as-data fail-closed; zero LedgerPort/FeeEnginePort; frozen DTOs; existing CatalogueMeta/Manifest/SchemaInventory untouched; reuse __version__; negative-fence no live/regulated/auth substeps; advisory-only.
+- **Result:** docs/migration/MIG-M1.26-advisory-changelog-spec.md (spec). Code execution deferred to evo1 (pre-flight: evo1 re-confirm + branch confirm + ADR-102 re-audit). Follow-up DONE IL-shard to record merged code later.
+- **Coupling:** branch agent/factory/m1/m26-changelog-spec; PR (spec, docs-only). New tail shard + ### IL-NNN; append-only; il_ts 09:30:00Z strictly > re-fetched main max 09:00:00Z (and > in-flight #694 readiness 09:15).
+- **Proof:** docs+ledger-only; backend repo untouched; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards green locally.
+- **Refs:** docs/migration/MIG-M1.26-advisory-changelog-spec.md; MIG-M2.8-preflight-readiness.md (evo1 re-confirm open); ADR-102, ADR-103, ADR-059-A, ADR-060, I-27 (KYC HOLD), I-28.
