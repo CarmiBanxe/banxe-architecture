@@ -15312,7 +15312,26 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-440 - agent-factory-awaitsop3-web-next-unify @ 2026-06-22T07:45:00Z
+### IL-440 - agent-factory-mrm-s1-model-risk-framework @ 2026-06-22T07:30:00Z
+
+- **il_ts:** 2026-06-22T07:30:00Z
+- **session_id:** agent-factory-mrm-s1-model-risk-framework
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-mrm-s1-model-risk-framework/IL-2026-06-22T07-30-00Z--7e851c.md`
+
+### S1: establish Model Risk Management framework (MODEL-RISK-MANAGEMENT.md), grounded in existing canon; open items marked AWAITS OPERATOR
+- **Instrukciya:** Establish the Model Risk Management (MRM) layer — the only fully ABSENT layer in the full-cycle audit (verified: no *mrm*/*model-risk* file in repo). Produce a governance-grade MRM framework aligned to SR 11-7 / EBA *structure*, populated ONLY with repo-asserted facts; mark every unknown AWAITS OPERATOR; invent no metrics/owners/dates.
+- **Result (single new doc):** `docs/governance/MODEL-RISK-MANAGEMENT.md` — purpose/scope (on-prem evo1/evo2 regulated perimeter), model inventory (model→role; sizes referenced not duplicated), risk tiering T1/T2/T3 (inferred from existing roles), lifecycle controls (Guardian 16 rules + Canon Judge audit-mode ADR-025 + P4/P5 gates), independent validation (Canon Judge audit-only; gaps flagged), KPIs (5 ADR-117 reused verbatim + CRO model KPIs from JOB-DESCRIPTIONS), RACI (CRO/CTIO/MLRO per JOB-DESCRIPTIONS), open-items register, provenance footer.
+- **No facts invented:** sizes/placement only referenced to docs/canon/HW-MODEL-UPGRADE-matrix.md; on-prem rule grounded in docs/compliance/ai-data-flow.md + software-factory-canon-v1.md; routes per ADR-043 + factory-routing-map; KPIs per CANON-RECONCILIATION-ADR117.md; owners per docs/JOB-DESCRIPTIONS.md (holders TBC).
+- **AWAITS OPERATOR (8 open items):** ADR-031 identifier (no such file; AI Execution Policy = ADR-040); binding per-model T1/T2/T3 classification; ai-heavy backend divergence (llama3.3:70b vs qwen3.5:35b); blocking independent-validation gate for T1; independent-validator ownership + revalidation cadence; model-monitoring metric set/thresholds (drift/accuracy-decay); CRO(SMF4)/MLRO(SMF17) holders; doubled-dev composition (ADR-117 Q6).
+- **Coupling:** branch agent/factory/mrm/s1-model-risk-framework; PR #681 (S1 MRM). This shard couples the docs-only change to the ledger (ADR-056/059/060): new tail shard + new ### IL-NNN; no prior entry edited/renumbered.
+- **Proof:** docs+ledger-only governance entry; no code; append-only (no prior shard mutated; INSTRUCTION-LEDGER.md regenerated via python3 ledger/build_ledger.py); il_ts 07:30:00Z strictly > fresh main max 07:15:00Z (re-minted 06:45→07:00→07:15→07:30 to resolve recurring renumber-race collisions with merged shards — latest collision: agent-factory-sprint7-coo-deep-build @07:15:00Z merged via PR #685); build_ledger.py --check = exit 0.
+- **Refs:** docs/governance/MODEL-RISK-MANAGEMENT.md; docs/canon/HW-MODEL-UPGRADE-matrix.md; docs/adr/ADR-043-aider-routes.md; docs/runbooks/factory-routing-map.md; docs/canon/software-factory-canon-v1.md; docs/DEPLOYMENT-ARCHITECTURE.md; docs/compliance/ai-data-flow.md; docs/governance/CANON-RECONCILIATION-ADR117.md; docs/JOB-DESCRIPTIONS.md; ADR-056, ADR-059, ADR-060, ADR-117; I-28.
+
+---
+
+### IL-441 - agent-factory-awaitsop3-web-next-unify @ 2026-06-22T07:45:00Z
 
 - **il_ts:** 2026-06-22T07:45:00Z
 - **session_id:** agent-factory-awaitsop3-web-next-unify
@@ -15333,7 +15352,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-441 - agent-factory-mig-m2-8-roster-c-split-spec @ 2026-06-22T08:00:00Z
+### IL-442 - agent-factory-mig-m2-8-roster-c-split-spec @ 2026-06-22T08:00:00Z
 
 - **il_ts:** 2026-06-22T08:00:00Z
 - **session_id:** agent-factory-mig-m2-8-roster-c-split-spec
@@ -15354,7 +15373,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-442 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T08:15:00Z
+### IL-443 - agent-factory-mig-m2-8-roster-c-divergence-evidence @ 2026-06-22T08:15:00Z
 
 - **il_ts:** 2026-06-22T08:15:00Z
 - **session_id:** agent-factory-mig-m2-8-roster-c-divergence-evidence
@@ -15376,7 +15395,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-443 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
+### IL-444 - agent-factory-migm28-awaits-decision-brief @ 2026-06-22T08:30:00Z
 
 - **il_ts:** 2026-06-22T08:30:00Z
 - **session_id:** agent-factory-migm28-awaits-decision-brief
@@ -15396,7 +15415,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-444 - agent-factory-migm28-scaffold-plan-skeleton @ 2026-06-22T08:45:00Z
+### IL-445 - agent-factory-migm28-scaffold-plan-skeleton @ 2026-06-22T08:45:00Z
 
 - **il_ts:** 2026-06-22T08:45:00Z
 - **session_id:** agent-factory-migm28-scaffold-plan-skeleton
@@ -15415,7 +15434,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-445 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
+### IL-446 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
 
 - **il_ts:** 2026-06-22T09:00:00Z
 - **session_id:** agent-factory-sprint8-coo-resilience-ai-gov
