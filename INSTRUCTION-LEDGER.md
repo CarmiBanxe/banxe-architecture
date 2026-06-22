@@ -15780,3 +15780,35 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling:** PR #677 (branch agent/factory/governance/adr117-canon-sync-q4-q5); doc commit f8d4a66. This shard couples the docs-only change to the ledger (ADR-056/060) so guardian-ledger / ledger-append-only / guardian-ledger-shards pass.
 - **Proof:** docs+ledger-only governance entry; no code change; append-only honoured (no prior shard edited/renumbered; INSTRUCTION-LEDGER.md regenerated deterministically via `python3 ledger/build_ledger.py`); build_ledger.py --check = exit 0 on fresh origin/main rebase.
 - **Refs:** PR #677; commit f8d4a66; docs/governance/CANON-RECONCILIATION-ADR117.md; docs/DEPLOYMENT-ARCHITECTURE.md §1.1; docs/canon/HW-MODEL-UPGRADE-matrix.md; ADR-056, ADR-059, ADR-060, ADR-117; I-28.
+
+---
+
+### IL-463 - agent-factory-sandbox-minimal-protection @ 2026-06-22T16:20:00Z
+
+- **il_ts:** 2026-06-22T16:20:00Z
+- **session_id:** agent-factory-sandbox-minimal-protection
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sandbox-minimal-protection/IL-2026-06-22T16-20-00Z--a8d5f2.md`
+
+### Branch protection → sandbox-minimal profile on main (max merge simplicity; ledger history still protected)
+- **Date:** 2026-06-22 · **Type:** governance/protection change (repo-admin API) + ledger record; operator-authorized; no code/runtime change.
+- **Goal:** maximum sandbox simplicity — remove all merge-friction gates on `main`, keeping ONLY ledger-history protection (no force-push, no branch deletion).
+- **Pre-state (live audit):** `gh api branches/main/protection` → **404 Branch not protected** (main was fully unprotected at time of change).
+- **Applied (PUT branches/main/protection):**
+  - `required_status_checks` = **null** (no required checks — max simplicity)
+  - `required_pull_request_reviews` = **null** (no review gate)
+  - `enforce_admins` = **false**
+  - `required_linear_history` = **false**
+  - `required_conversation_resolution` = **false** (not enabled)
+  - `required_signatures` = **false** (already off; PUT left it off — no separate DELETE needed)
+  - `restrictions` = **null**
+  - `allow_force_pushes` = **false** ← **KEPT** (protect append-only ledger history)
+  - `allow_deletions` = **false** ← **KEPT** (main not deletable)
+- **Rationale:** in the sandbox we drop every merge gate (checks/reviews/signatures/linear/conversation/admin-enforcement) so PRs merge with zero friction; we deliberately RETAIN `allow_force_pushes=false` + `allow_deletions=false` so a stray force-push or branch delete cannot destroy the append-only IL chain (IL-457..IL-461, ADR-056/057/059, ADR-119 frozen numbering).
+- **Post-audit (verified):** required_status_checks=null; required_pull_request_reviews=null; enforce_admins=false; required_linear_history=false; required_conversation_resolution=false; required_signatures=false; allow_force_pushes=false; allow_deletions=false; lock_branch=false. **Sandbox-minimal confirmed.**
+- **Numbering note (ADR-119):** this shard receives the next frozen IL number via `ledger/IL-SEQUENCE.json` (max+1); no prior entry renumbered — clean append regardless of il_ts. il_ts 16:20:00Z chosen > live main MAX 16:10:00Z (IL-461) and distinct from the unmerged 16:15:00Z slot (PR #708) to avoid collision.
+- **Canon compliance:** operator-authorized; live-audit source of truth (not memory); idempotent PUT; append-only ledger intact; signed commit (verified noreply identity); NO `--admin`/bypass.
+- **Coupling/append-only:** branch agent/factory/sandboxprofile/minimal-protection (off main@8bb5065); new tail shard + frozen IL via IL-SEQUENCE.json; no prior entry mutated.
+- **Proof:** build_ledger.py --check exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming green; signed; merged via squash (no gates now).
+- **Refs:** branches/main/protection (sandbox-minimal); ADR-119 + ledger/IL-SEQUENCE.json (frozen numbering, #704); IL-457/458/459 (protection-hardening trail); IL-460/461; ADR-056/057/059; docs/governance/branch-protection.md (STALE — separate reconciliation PR pending, NOT touched here).

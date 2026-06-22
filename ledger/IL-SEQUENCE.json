@@ -212,5 +212,6 @@
   "agent-factory-branch-protection-rootcause__d4cd11813eb2": 459,
   "agent-factory-security-xxe-defusedxml__5b04bc103e40": 460,
   "agent-factory-ledger-stable-il-numbering__434a71735946": 461,
-  "agent-factory-governance-adr117-canon-sync-q4-q5__bdb1b5a975dd": 462
+  "agent-factory-governance-adr117-canon-sync-q4-q5__bdb1b5a975dd": 462,
+  "agent-factory-sandbox-minimal-protection__c78061826281": 463
 }
