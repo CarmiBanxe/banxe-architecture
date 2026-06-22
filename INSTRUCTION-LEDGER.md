@@ -15440,7 +15440,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **il_ts:** 2026-06-22T09:30:00Z
 - **session_id:** agent-factory-m1-m26-changelog-spec
 - **source:** CEO
-- **status:** DONE
+- **status:** PROPOSED
 - **shard:** `ledger/entries/agent-factory-m1-m26-changelog-spec/IL-2026-06-22T09-30-00Z--e8b1ce.md`
 
 ### M1.26 advisory-surface changelog — governance SPEC only (code PROPOSED, deferred to evo1 per ADR-103; backend repo untouched)

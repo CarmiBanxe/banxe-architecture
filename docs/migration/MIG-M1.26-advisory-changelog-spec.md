@@ -1,6 +1,7 @@
 # MIG-M1.26 — Advisory-surface changelog (governance SPEC, code PROPOSED)
 
-**Status:** governance spec — **code PROPOSED / deferred to evo1 (ADR-103); NOT executed** · **Date:** 2026-06-22
+**Status:** **PROPOSED (NOT IMPLEMENTED)** — governance spec; backend code PROPOSED / deferred to evo1 (ADR-103); NOT executed · **Date:** 2026-06-22
+**IL status:** **PROPOSED (NOT DONE)** — the coupled ledger shard is `status: PROPOSED`; a follow-up DONE entry records the merged code after the evo1 run.
 **Type:** docs-only (this artifact lives in `banxe-architecture`) · **NO code produced, backend repo untouched, NO merge**
 **Target repo (later, server-side):** `CarmiBanxe/banxe-trading-backend` · **Track:** M1.x advisory surfaces (advisory-seam ADRs).
 
@@ -13,6 +14,24 @@
 - M1.26 is a **code change** to a product repo (`banxe-trading-backend`): new DTO + router + tests + router registration.
 - **ADR-103 PART 1** (server-only): product code edits + working copies + commit/push run **ONLY on evo1**; Legion = thin client. This session is bound to **Legion (`mark-legion`)**; the backend repo is **not** present locally; **evo1 re-confirm is OPEN**.
 - Therefore code execution is **deferred**; this doc captures the spec/contract so the evo1 run is deterministic when unblocked.
+
+---
+
+## 1a. Server-only governance gate (BINDING)
+
+**Constraints (current):**
+- Session bound to **Legion (`mark-legion`)**; `banxe-trading-backend` **not present locally**.
+- **evo1 re-confirm + authoritative state = OPEN** — recorded in the pre-flight readiness gate **PR #694** (blocking precedent).
+- Any **clone / edit / push of the backend repo from Legion is FORBIDDEN** until the ADR-103 gate is explicitly opened by the operator.
+
+**Plan to unblock:**
+1. Operator provides **ssh access to evo1** + confirms the target repo is available/clean (authoritative branch).
+2. A **separate server-side factory session on evo1** executes M1.26 per this spec (isolated worktree, ADR-060 branch).
+3. **Post-implementation DONE IL entry** in `banxe-architecture` links back to this spec (this PROPOSED shard is not the completion record).
+
+**Governance:**
+- Binding ADR: **ADR-103** (server-only refactoring). Blocking precedent: **PR #694** (M2.8 pre-flight readiness — evo1 re-confirm OPEN).
+- **This document does NOT authorize executing code on Legion.** It only fixes the governance frame + spec so the evo1 run is deterministic once unblocked.
 
 ---
 
