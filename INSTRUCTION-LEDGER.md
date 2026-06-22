@@ -15415,7 +15415,28 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-445 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
+### IL-445 - agent-factory-uiux-s4-design-system-canon @ 2026-06-22T08:45:00Z
+
+- **il_ts:** 2026-06-22T08:45:00Z
+- **session_id:** agent-factory-uiux-s4-design-system-canon
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-uiux-s4-design-system-canon/IL-2026-06-22T08-45-00Z--313745.md`
+
+### S4 — UI/UX Design System canonicalization (governance canon over existing research + system docs)
+
+- **Instrukciya:** S4: canonicalize UI/UX Design System (UI-UX-DESIGN-SYSTEM-CANON.md) over existing research+system docs; tokens/a11y level & ownership AWAITS OPERATOR. Create `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` that ELEVATES the two existing UI/UX docs into governance canon — reference/canonize, do NOT duplicate their content. Branch `agent/factory/uiux/s4-design-system-canon` (ADR-060 id=uiux alphanumeric). Append-only tail shard (ADR-056/059), il_ts strictly > fresh main max. No merge, no guardian bypass.
+- **Preflight (read-only, origin/main 16bb048):** `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` ОТСУТСТВУЕТ на origin/main (anti-dup ADR-102 OK). Fresh max il_ts on origin/main = 2026-06-22T08:30:00Z (shard `ledger/entries/agent-factory-migm28-awaits-decision-brief/IL-2026-06-22T08-30-00Z--302aef.md`). S4 il_ts = next free 15-min slot = 2026-06-22T08:45:00Z (strictly >). Source artifacts verified present: docs/BANXE-UI-UX-RESEARCH.md, docs/BANXE-UI-UX-SYSTEM.md, docs/UI-PLANE-OPERATING-MODEL.md, docs/adr/ADR-117-*.
+- **Doc (`docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md`, NEW):** §0 Purpose & scope (PARTIAL→CANON; anti-dup ADR-102, additive-only over invariants/ADRs); §1 canonical status declaration (3 artifacts elevated to governed source-of-truth); §2 canonical pointers (binding references, no content copied); §3 design-token governance (single source of truth = spec + `banxe-ui/packages/design-tokens/`; asserted naming `--color-/--font-/--text-/--space-/--radius-/--shadow-/--weight-*`; dark-first/light-v2; versioning rule); §4 component-library governance (contribution/review-promotion Developer→Product/deprecation; ADR-102/103 + ADR-117 KPIs); §5 accessibility canon (**WCAG 2.1 AA minimum ASSERTED** in BANXE-UI-UX-SYSTEM.md §Accessibility Rules — NOT AWAITS OPERATOR; higher level = open item); §6 5-stage delivery process (Design Discovery→Wireframing→Design System→Front-end→Usability per target model §5.3); §7 Roles & RACI (UX Researcher/UX Designer/UI Designer/Design System Lead/Motion/Accessibility Engineer; Head of Design / Design System Lead ownership = AWAITS OPERATOR — no such role in JOB-DESCRIPTIONS/ORG-STRUCTURE); §8 open-items register (OI-1 ownership / OI-2 a11y-above-AA / OI-3 token versioning / OI-4 UI KPIs — all AWAITS OPERATOR); §9 provenance footer.
+- **Repo-asserted facts used (quoted minimally):** WCAG 2.1 AA minimum (BANXE-UI-UX-SYSTEM.md §Accessibility Rules); token CSS-custom-property naming + dark-first/light-v2 (same doc §UI System); token machine source `banxe-ui/packages/design-tokens/` + promotion path (UI-PLANE-OPERATING-MODEL.md §Plane Assignment); factory KPIs ≥85% coverage / 0 blocker / security-hotspot ≥95% (ADR-117). NO Head of Design / Design System Lead role present in docs/JOB-DESCRIPTIONS.md or docs/ORG-STRUCTURE.md → ownership AWAITS OPERATOR (not invented).
+- **Proof:** New file + this shard; INSTRUCTION-LEDGER.md regenerated via `python3 ledger/build_ledger.py`; `--check` exit 0 (generated==rebuild). Append-only: tail-append only, 0 deletions/renames/edits of prior shards or ledger lines. Branch name matches ADR-060 `^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$`. Staged set = exactly new canon doc + new shard + regenerated ledger (pre-existing untracked .quarantine/, docs/incoming/, docs/canon-transfer-* NOT staged). NO merge, NO guardian bypass.
+- **Status:** S4 UI/UX Design System canon = governance-only, anti-dup (references existing artifacts, no content copied). DO NOT MERGE — operator review of AWAITS-OPERATOR open items (§8) required.
+- **Recommended next:** operator resolves OI-1 (assign Head of Design / Design System Lead in ORG-STRUCTURE + JOB-DESCRIPTIONS) and OI-2 (confirm a11y target above WCAG 2.1 AA floor); then CI-gated review of the PR.
+- **Refs:** docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md (NEW); sources docs/BANXE-UI-UX-RESEARCH.md / docs/BANXE-UI-UX-SYSTEM.md / docs/UI-PLANE-OPERATING-MODEL.md / docs/adr/ADR-117-factory-project-perimeter-and-fullcycle-org.md; target operating model §5.3 UI/UX Factory; ADR-102, ADR-103, ADR-056/057/059/060, I-18/I-20/I-28.
+
+---
+
+### IL-446 - agent-factory-sprint8-coo-resilience-ai-gov @ 2026-06-22T09:00:00Z
 
 - **il_ts:** 2026-06-22T09:00:00Z
 - **session_id:** agent-factory-sprint8-coo-resilience-ai-gov
