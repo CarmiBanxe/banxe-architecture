@@ -15,6 +15,25 @@ if [ -z "$ROOT" ]; then
 fi
 cd "$ROOT"
 
+# 0. Propagate the per-terminal role anchor into linked worktrees.
+#    The role-guard pre-commit (.git/hooks/pre-commit) reads .TERMINAL-ROLE at the
+#    worktree root, but `git worktree add` does NOT copy this untracked/excluded
+#    anchor (.git/info/exclude) — so every fresh sprint worktree warns
+#    "[role-guard] WARN: no .TERMINAL-ROLE anchor — skipping".
+#    Inherit it from the MAIN worktree (same terminal identity) when absent here.
+#    Idempotent; never silences a genuinely-missing anchor — copies ONLY when the
+#    main worktree actually has one.
+if [ ! -f "$ROOT/.TERMINAL-ROLE" ]; then
+  COMMON_DIR="$(git rev-parse --git-common-dir 2>/dev/null || true)"
+  MAIN_ROOT="$(cd "$COMMON_DIR/.." 2>/dev/null && pwd || true)"
+  if [ -n "$MAIN_ROOT" ] && [ "$MAIN_ROOT" != "$ROOT" ] && [ -f "$MAIN_ROOT/.TERMINAL-ROLE" ]; then
+    cp "$MAIN_ROOT/.TERMINAL-ROLE" "$ROOT/.TERMINAL-ROLE"
+    echo "✓ install-hooks: propagated .TERMINAL-ROLE from main worktree → $ROOT (role-guard anchor)"
+  else
+    echo "⚠ install-hooks: no .TERMINAL-ROLE here and none to inherit — role-guard will warn (set manually)"
+  fi
+fi
+
 SRC="scripts/pre-push-branch-name.sh"
 if [ ! -f "$SRC" ]; then
   echo "✗ install-hooks: $SRC not found (expected ADR-060 pre-push gate)"; exit 1
