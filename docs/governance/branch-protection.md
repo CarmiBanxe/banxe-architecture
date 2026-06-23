@@ -12,6 +12,30 @@
 
 ---
 
+## Change Procedure (operator-only, single-shard)
+
+Protection changes in this single-principal sandbox follow a minimal, audit-preserving procedure.
+They do **not** require a separate governance sprint-PR with per-change reconciliation: the
+one-PR-per-tweak pattern (IL-457..IL-468 / PRs #705/#710/#711/#712/#713) was надуманное friction
+for a single principal and is **closed by this record** — subsequent protection changes are
+one-shard records, not PR cycles.
+
+1. **Authority — operator-only.** Only the operator (`@mmber`, repo-admin) initiates a protection
+   change. **Agents / the factory MUST NOT initiate protection changes** — they may only read and
+   report the live settings. (Unchanged guardrail, now stated explicitly.)
+2. **Mechanism — `gh api` allowed.** Changes are applied by the operator via `gh api` (idempotent
+   full-object PUT/PATCH/DELETE). The earlier GitHub-UI-only mandate is retired: the audit trail is
+   already provided by git history + the append-only instruction-ledger + `enforce_admins=true`.
+3. **Record — ONE appended ledger shard, at change-time.** Each protection change is recorded by a
+   **single** appended `ledger/entries/**` shard (one `### IL-NNN` block) at the time of the
+   change — **not** a separate reconciliation / sprint PR per change. This document is reconciled
+   from the live API snapshot within that same shard when values drift.
+4. **Inviolable guardrails (unchanged).** Append-only ledger (I-28 / ADR-057 / ADR-059 / ADR-119),
+   `enforce_admins=true`, `allow_force_pushes=false`, `allow_deletions=false`, and the auto-guardian
+   required checks remain in force regardless of any protection-value tweak.
+
+---
+
 ## Scope
 
 | Branch | Protected |
