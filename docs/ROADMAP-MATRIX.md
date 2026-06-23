@@ -20,7 +20,7 @@
 | **C — Payment Rails** | C-fps | UK Faster Payments (FPS) — send/receive, account validation | 0% | P1 | Sprint 10 | CTIO |
 | **C — Payment Rails** | C-sepa | SEPA Credit Transfer + SEPA Instant — EU corridor | 0% | P1 | Sprint 11 | CTIO |
 | **C — Payment Rails** | C-swift | SWIFT MT/MX — international wires, correspondent banking | 0% | P2 | Sprint 12 | CTIO |
-| **D — Core Banking Engine** | D-gl | General Ledger — Midaz (LerianStudio) PRIMARY, Apache Fineract FALLBACK | 5% — In Progress | P1 | Sprint 8 | CTIO |
+| **D — Core Banking Engine** | D-gl | General Ledger — Midaz (LerianStudio) PRIMARY, Apache Fineract FALLBACK | Spec-Locked — In Progress (5% base; IL-484; D-GL-BUILD-SPEC) | P1 | Sprint 8 | CTIO |
 | **D — Core Banking Engine** | D-fin | Financial Reporting — P&L, balance sheet, management accounts | 0% | P1 | Sprint 10 | CEO |
 | **D — Core Banking Engine** | D-fee | Fee Engine & billing — per-transaction fees, monthly charges, FX markup | 0% | P1 | Sprint 10 | CTIO |
 | **D — Core Banking Engine** | D-recon | Reconciliation Engine — Midaz ledger ↔ safeguarding accounts ↔ payment rails | Spec-Locked — In Progress (IL-474; D-RECON-BUILD-SPEC promotes D-RECON-DESIGN) | P1 | Sprint 9 | CTIO |
@@ -55,7 +55,7 @@
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
 | P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480), F-finrpt (Spec-Locked, In Progress — IL-481) | — (P0 critical-path J→E→D→K→F-finrpt fully Spec-Locked) |
-| P1 (Core banking) | 13 | D-gl (5%) | All others 0% |
+| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
 
@@ -79,7 +79,7 @@ J — Safeguarding Engine (CASS 15)
 ## Notes
 
 - **F-aml**: Compliance API running on port 8093, OpenSanctions/Yente integrated, Watchman minMatch=0.80, Marble CM active, 39/39 pytest passing. Remaining 20% = FATCA/CRS + FIN-RPT integration.
-- **D-gl**: Midaz (LerianStudio) selected as primary GL in Sprint 8. LedgerPort adapter in design phase.
+- **D-gl**: Midaz (LerianStudio) selected as primary GL in Sprint 8. LedgerPort adapter in design phase. **Update (IL-484):** build-spec locked — `docs/architecture/D-GL-BUILD-SPEC.md` consolidates the 5% (Midaz API research + bootstrap/provisioning runbooks + IL-FIN-01 GL/posting subsystem) into one actionable spec; Midaz PRIMARY single-SoT, Fineract FALLBACK via LedgerPort swap (no dual-write). Status → Spec-Locked / In Progress; runtime completion in banxe-emi-stack = separate operator-authorized action.
 - **I-infra**: GMKtec EVO-X2 (128GB RAM, Ryzen AI MAX+ 395) operational. n8n, ClickHouse, OpenClaw, PII Proxy all running.
 - **J-engine**: Zero implementation. This is the single largest regulatory risk. Sprint 9 must begin this block immediately. **Update (Sprint J, IL-472):** build-spec locked — `docs/safeguarding/J-ENGINE-BUILD-SPEC.md` (promotes ADR-SAF-01) + `docs/safeguarding/J-CROSS-REPO-HANDOFF.md` (acceptance contract for banxe-emi-stack). Status: Spec-Locked → In Progress; implementation code is a separate operator-authorized action in the stack repo.
 - **P3.4 (IAM)**: Keycloak IAM cutover for EMI realm `banxe-emi` — IN_PROGRESS. ADR-022 (decision record) to follow in next PR. Deadline: 2026-05-07 (FCA CASS 15). Backout: revert to local IAM (Legion) per `banxe-emi-stack docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1`.
