@@ -37,8 +37,8 @@
 | **I — Technology & Infrastructure** | I-infra | GMKtec compute, WSL2 dev, n8n orchestration, ClickHouse (TTL 5Y) | 70% DONE | P0 | ONGOING | CTIO |
 | **I — Technology & Infrastructure** | I-security | OpenClaw hardening, PII Proxy (Presidio), Semgrep + CodeQL CI | 80% DONE | P0 | ONGOING | CTIO |
 | **I — Technology & Infrastructure** | I-api | API Gateway — developer-facing endpoints, auth, rate limiting | 0% | P1 | Sprint 10 | CTIO |
-| **J — Safeguarding Engine** | J-engine | FCA PS10/15 + CASS 15 safeguarding engine — segregated accounts, daily reconciliation, FCA breach reporting | Prompt Ready (IL-SAF-01) | P0 | **7 May 2026** | CEO + CTIO |
-| **J — Safeguarding Engine** | J-audit | Safeguarding audit trail — immutable log to ClickHouse, FCA-producible evidence | 0% | P0 | **7 May 2026** | CTIO |
+| **J — Safeguarding Engine** | J-engine | FCA PS10/15 + CASS 15 safeguarding engine — segregated accounts, daily reconciliation, FCA breach reporting | Spec-Locked — In Progress (IL-472; J-ENGINE-BUILD-SPEC promotes ADR-SAF-01) | P0 | **7 May 2026** | CEO + CTIO |
+| **J — Safeguarding Engine** | J-audit | Safeguarding audit trail — immutable log to ClickHouse, FCA-producible evidence | Spec-Locked — In Progress (IL-472; J-CROSS-REPO-HANDOFF acceptance contract) | P0 | **7 May 2026** | CTIO |
 | **K — Regulatory Reporting** | K-gabriel | FCA Gabriel / RegData returns — FIN-REP, EMI statistical returns | 0% | P0 | Q2 2026 | CEO |
 | **K — Regulatory Reporting** | K-fscs | FSCS (Financial Services Compensation Scheme) reporting | 0% | P1 | Q3 2026 | CEO |
 | **K — Regulatory Reporting** | K-nca | NCA SARs (Suspicious Activity Reports) — automated filing, MLRO workflow | 0% | P1 | Sprint 11 | CTIO |
@@ -54,7 +54,7 @@
 
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
-| P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%) | J-engine, J-audit, K-gabriel, F-finrpt, E-safeguard |
+| P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472) | K-gabriel, F-finrpt, E-safeguard |
 | P1 (Core banking) | 13 | D-gl (5%) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
@@ -81,7 +81,7 @@ J — Safeguarding Engine (CASS 15)
 - **F-aml**: Compliance API running on port 8093, OpenSanctions/Yente integrated, Watchman minMatch=0.80, Marble CM active, 39/39 pytest passing. Remaining 20% = FATCA/CRS + FIN-RPT integration.
 - **D-gl**: Midaz (LerianStudio) selected as primary GL in Sprint 8. LedgerPort adapter in design phase.
 - **I-infra**: GMKtec EVO-X2 (128GB RAM, Ryzen AI MAX+ 395) operational. n8n, ClickHouse, OpenClaw, PII Proxy all running.
-- **J-engine**: Zero implementation. This is the single largest regulatory risk. Sprint 9 must begin this block immediately.
+- **J-engine**: Zero implementation. This is the single largest regulatory risk. Sprint 9 must begin this block immediately. **Update (Sprint J, IL-472):** build-spec locked — `docs/safeguarding/J-ENGINE-BUILD-SPEC.md` (promotes ADR-SAF-01) + `docs/safeguarding/J-CROSS-REPO-HANDOFF.md` (acceptance contract for banxe-emi-stack). Status: Spec-Locked → In Progress; implementation code is a separate operator-authorized action in the stack repo.
 - **P3.4 (IAM)**: Keycloak IAM cutover for EMI realm `banxe-emi` — IN_PROGRESS. ADR-022 (decision record) to follow in next PR. Deadline: 2026-05-07 (FCA CASS 15). Backout: revert to local IAM (Legion) per `banxe-emi-stack docs/Keycloak-next-session-roadmap.md §IAM cutover plan v0.1`.
 
 ---

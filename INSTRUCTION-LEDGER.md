@@ -16065,3 +16065,26 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** Roadmap status актуализирован + forward план до 100% опубликован. 12 forward-спринтов P-ordered (2×P0, 5×P1, 2×P2/P3, 1 gated, 1 governance-close). Остаток = §4 AWAITS-OPERATOR + gated треки.
 - **Recommended next:** operator review doc; затем (по слову оператора) push + PR + merge (sandbox 4 guardians+strict+linear). Старт forward-спринтов с S-PROD-1 (safeguarding, P0 OVERDUE) — каждый по §5 canon. KYC/M2.8/binding-values — только после operator-решений (§4). Parallel-session ветки не трогать.
 - **Refs:** docs/ROADMAP-STATUS-2026-06-23.md (NEW); docs/ROADMAP-MATRIX.md (superseded-for-status); governance/SPRINT-4..8 + CANONICAL-ORG-CHART-v2.md; docs/governance/{MODEL-RISK-MANAGEMENT,DEVSECOPS-SSDLC,KPI-DORA-FRAMEWORK,UI-UX-DESIGN-SYSTEM-CANON,OPEN-BANKING-API-MANAGEMENT,GLOSSARY}.md; docs/migration/{MIG-INDEX-final-state-register,MIG-coverage-acceptance,AWAITS-OPERATOR-3-web-next-unify,MIG-M2.8-AWAITS-OPERATOR-decision-brief}.md; agent-factory Sprints 45-59; IL-412/413/414; ADR-102/056/013/117/119; I-27, I-28; CASS 15 / FCA PS10-15.
+
+---
+
+### IL-472 - agent-factory-sprintJ-safeguarding-engine @ 2026-06-23T01:00:00Z
+
+- **il_ts:** 2026-06-23T01:00:00Z
+- **session_id:** agent-factory-sprintJ-safeguarding-engine
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sprintJ-safeguarding-engine/IL-2026-06-23T01-00-00Z--d9f2a4.md`
+
+### Sprint J — Safeguarding Engine: ADR-SAF-01 build-spec promotion + cross-repo handoff + ROADMAP status-lock (docs/architecture plane)
+- **Objective:** Begin Block J (Safeguarding Engine, FCA PS25/12 + CASS 15), tracks J-engine + J-audit (both 0%/Prompt-Ready) — the single largest regulatory risk (docs/ROADMAP-MATRIX). docs/architecture plane only; runtime code belongs in banxe-emi-stack (ADR-115/116/117 perimeter; ADR-SAF-01/IL-SAF-01 precedent).
+- **Pre-work (read-only, verbatim — not memory):** read ADR-SAF-01, .claude/rules/cass15.md, both safeguarding passports, IL-SAF-01 (Sprint 44, banxe-emi-stack#24 SHA cb49885), GAP-005 shard. Located canonical ledger machinery at `ledger/IL-SEQUENCE.json` + `ledger/build_ledger.py` (single copy); confirmed MAX=IL-471 → this entry frozen max+1 = IL-472 (ADR-119, no renumber).
+- **Drift reconciled:** ROADMAP J-engine row says "PS10/15"; authoritative spec set (passports + GAP-005 + audit-agent) consistently uses **PS25/12** (35 refs vs 2). Build-spec governs by PS25/12 + CASS 15; matrix description cell left unmodified (additive-only), drift flagged in build-spec §1.
+- **Deliverable A — build-spec:** docs/safeguarding/J-ENGINE-BUILD-SPEC.md — promotes ADR-SAF-01 to actionable J-engine+J-audit spec: segregated CASS 15 accounts; daily three-leg recon Midaz↔safeguarding↔rails (penny tolerance, I-02 exclusion, I-04 flag, I-01 Decimal, I-27 shortfall→HITL, before-cutoff); J-audit immutable ClickHouse trail (TTL 5Y, I-24/I-28, FCA-producible); K-gabriel breach-reporting hook via n8n = interface contract ONLY; hexagonal ports enumerated.
+- **Deliverable B — handoff:** docs/safeguarding/J-CROSS-REPO-HANDOFF.md — exact list of what banxe-emi-stack MUST implement (J-E1..J-E6, J-A1..J-A4), Definition-of-Done acceptance/exit criteria (test matrix mirroring IL-SAF-01 style), interface contracts (breach event + audit row schemas), operator gates (cross-repo write + PROPOSED-passport activation NOT crossed). Additive; overwrites no MIG closure.
+- **Deliverable C — ROADMAP additive update:** J-engine "Prompt Ready (IL-SAF-01)" → "Spec-Locked — In Progress (IL-472)"; J-audit "0%" → "Spec-Locked — In Progress (IL-472)"; Status Summary moves J-engine/J-audit from Remaining → In Progress (consistent); risk note appended with build-spec pointers. No frozen historical row altered.
+- **Perimeter / no operator-gate hit:** no runtime code written; NO cross-repo write into banxe-emi-stack (handoff is a spec, not a commit there); PROPOSED passports (safeguarding_recon_governor GAP-005, safeguarding_audit_agent PS25/12) NOT activated; no roster choice. If stack-write or passport-activation is later required → separate operator decision-brief.
+- **Dedup (ADR-102):** repo-wide audit pre-authoring — no existing J build-spec/handoff/docs-safeguarding dir; new files non-duplicative; source-of-truth artifacts kept (keep), not overwritten.
+- **Coupling/append-only:** branch agent/factory/sprintJ/safeguarding-engine (off main@6a37539); frozen IL via ledger/IL-SEQUENCE.json (max+1=472); no prior entry mutated; signed commit (verified noreply identity).
+- **Proof:** build_ledger.py --check exit 0; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched; NO --admin/--auto/bypass.
+- **Refs:** docs/safeguarding/J-ENGINE-BUILD-SPEC.md; docs/safeguarding/J-CROSS-REPO-HANDOFF.md; docs/ROADMAP-MATRIX.md (J-engine/J-audit); adrs/ADR-SAF-01; instruction-ledger/sprint-44/IL-SAF-01; .claude/rules/cass15.md; GAP-005 + audit-agent passports; ADR-013/102/103/115/116/117/119; FCA PS25/12, CASS 15; I-01/02/04/24/27/28.
