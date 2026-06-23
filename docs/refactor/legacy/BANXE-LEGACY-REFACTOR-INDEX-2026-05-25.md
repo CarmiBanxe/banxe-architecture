@@ -13,15 +13,29 @@ Single entry point for Terminal B implementation. Aggregates the seven Phase A S
 
 ## Summary table — 7 SPECs / 25 legacy projects / 24 KEEP rows / 5+1 ports
 
-| # | SPEC file | Legacy projects | NEW components | Hexagonal port | Commit |
-|---|---|---|---|---|---|
-| 1 | crypto-api-keys-lib-SPEC-2026-05-22.md | crypto-api-keys-lib | banxe-crypto-utils | WalletPort | 2d44ca3 |
-| 2 | crypto-utils-libs-SPEC-2026-05-22.md | bitcoinjs-lib + wallet-address-validator + coinselect | banxe-crypto-utils (deps of #1) | (supports WalletPort) | 8b5d345 |
-| 3 | notification-port-SPEC-2026-05-23.md | telegram-bot + neuron-push-notifications + neuron-push-notifications-chat | banxe-notifications | NotificationPort (candidate 6th) | 0faf4c7 |
-| 4 | trading-ui-group-SPEC-2026-05-23.md | neuron-bitshares-ui + fast-exchange + banxe-trade-view + banxe-trade-view-new | banxe-trading-ui + banxe-trading-backend | ExchangePort | 790af18 |
-| 5 | emi-banking-services-SPEC-2026-05-23.md | cex/cex + cex/gql-cex + banxe-open-banking x2 + banxe-baas + sepa-service | banxe-open-banking + banxe-baas + banxe-sepa | PartnerPort | 446bca2 |
-| 6 | fiat-backend-utils-SPEC-2026-05-23.md | banxe-referrers + files-api + banxe-circuit-breaker + banxe-tariff + node-clickhouse | banxe-crm + banxe-files + @banxe/circuit-breaker + banxe-tariff | CRMPort | 18a8f02 |
-| 7 | crypto-ops-subgroup-SPEC-2026-05-25.md | crypto-api-rpc + crypto-api-portfolio + crypto-api-news | crypto-ops-monitor + banxe-portfolio (Python) + banxe-news | (consumer of WalletPort + ExchangePort) | 915fdda |
+> **NEW-capability anchor (added 2026-06-23, IL-475).** Per the governing
+> `NEW-PROJECT-PRIORITY-MAP-2026-06-06.md` (MEDIUM revision "INDEX add capability column"), each SPEC
+> is anchored to the authoritative NEW capabilities (C1–C30) it serves — NEW need drives legacy reuse,
+> never the reverse. Additive: no SPEC decision changed.
+
+| # | SPEC file | NEW capability (Cn) | Legacy projects | NEW components | Hexagonal port | Commit |
+|---|---|---|---|---|---|---|
+| 1 | crypto-api-keys-lib-SPEC-2026-05-22.md | **C1** (multi-chain custody) | crypto-api-keys-lib | banxe-crypto-utils | WalletPort | 2d44ca3 |
+| 2 | crypto-utils-libs-SPEC-2026-05-22.md | **C1/C2** (custody + address validation) | bitcoinjs-lib + wallet-address-validator + coinselect | banxe-crypto-utils (deps of #1) | (supports WalletPort) | 8b5d345 |
+| 3 | notification-port-SPEC-2026-05-23.md | **C9** (user notifications) | telegram-bot + neuron-push-notifications + neuron-push-notifications-chat | banxe-notifications | NotificationPort (candidate 6th) | 0faf4c7 |
+| 4 | trading-ui-group-SPEC-2026-05-23.md | **C6** (crypto exchange/trading) | neuron-bitshares-ui + fast-exchange + banxe-trade-view + banxe-trade-view-new | banxe-trading-ui + banxe-trading-backend | ExchangePort | 790af18 |
+| 5 | emi-banking-services-SPEC-2026-05-23.md | **C3/C4/C5** (fiat rails + BaaS + KYC inline) | cex/cex + cex/gql-cex + banxe-open-banking x2 + banxe-baas + sepa-service | banxe-open-banking + banxe-baas + banxe-sepa | PartnerPort | 446bca2 |
+| 6 | fiat-backend-utils-SPEC-2026-05-23.md | **C10/C11/C12/C13** (CRM/referral + tariff/fees + files + circuit-breaker) | banxe-referrers + files-api + banxe-circuit-breaker + banxe-tariff + node-clickhouse | banxe-crm + banxe-files + @banxe/circuit-breaker + banxe-tariff | CRMPort | 18a8f02 |
+| 7 | crypto-ops-subgroup-SPEC-2026-05-25.md | **C7/C8/C18** (portfolio + multi-chain RPC ops + news) | crypto-api-rpc + crypto-api-portfolio + crypto-api-news | crypto-ops-monitor + banxe-portfolio (Python) + banxe-news | (consumer of WalletPort + ExchangePort) | 915fdda |
+
+> **SPEC #7 contract status (Arch-WG GATE — not crossed here).** The three SPEC-#7 per-capability
+> CONTRACT specs — `crypto-ops-monitor-CONTRACT-SPEC-DRAFT-2026-06-08.md` (C8),
+> `banxe-portfolio-CONTRACT-SPEC-DRAFT-2026-06-08.md` (C7),
+> `banxe-news-CONTRACT-SPEC-DRAFT-2026-06-08.md` (C18) — are **DRAFT (not buildable); each requires
+> Architecture WG review before promotion to PROPOSED** (per ADR-050 Option B + the DRAFT headers).
+> Promotion is an **operator/Arch-WG governance gate** — the factory does not promote DRAFT→PROPOSED
+> autonomously. The remaining priority-map revisions (SPEC #6 re-anchor; SPEC #1/#2/#3/#5 capability
+> lines) are non-gated follow-ups.
 
 Totals: 25 legacy projects examined; 24 KEEP-rows of CLASS_KEEP.tsv covered; ~17 NEW components specified; 5 ADR-021 ports each have a primary SPEC; NotificationPort proposed as candidate 6th port.
 

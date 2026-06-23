@@ -16133,3 +16133,28 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/sprintED/drecon-esafeguard (off main@10693f4); frozen IL via ledger/IL-SEQUENCE.json (max+1=474); no prior entry mutated; signed commit (verified noreply identity).
 - **Proof:** build_ledger.py --check exit 0 (from root); guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
 - **Refs:** docs/D-RECON-BUILD-SPEC.md; docs/safeguarding/{E-SAFEGUARD-CASS15-SPEC,E-D-CROSS-REPO-HANDOFF,J-ENGINE-BUILD-SPEC,J-CROSS-REPO-HANDOFF}.md; docs/D-RECON-DESIGN.md; docs/ROADMAP-MATRIX.md; adrs/ADR-SAF-01; instruction-ledger/sprint-44/IL-SAF-01; .claude/rules/cass15.md; ADR-013/102/103/115/116/117/119; FCA PS25/12, CASS 15, CASS 7.15; I-01/02/04/24/27/28.
+
+---
+
+### IL-475 - agent-factory-refactor-index-capability-anchor @ 2026-06-23T18:00:00Z
+
+- **il_ts:** 2026-06-23T18:00:00Z
+- **session_id:** agent-factory-refactor-index-capability-anchor
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-refactor-index-capability-anchor/IL-2026-06-23T18-00-00Z--c4a9f7.md`
+
+### Right-terminal smart-refactor cycle — anchor legacy refactor INDEX to NEW capabilities C1–C30 (non-gated; docs-only)
+- **Plane / role:** RIGHT TERMINAL (smart refactor + legacy→new-project migration), docs/architecture plane only. Factory-only; no direct shell mutation; isolated worktree off fresh origin/main; signed; guardian-gated squash-PR.
+- **Live audit (source of truth, not memory):** origin/main@d2716e2; max IL=474 → this = frozen max+1 = IL-475; build_ledger.py --check OK from root.
+- **Target selection (ADR-102 + STOP-on-doubt):** enumerated legacy→new corpus via NEW-PROJECT-PRIORITY-MAP-2026-06-06.md (C1–C30) + BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md.
+  - C16 Travel Rule/IVMS101 candidate **REJECTED as duplicate** (ADR-102): already covered by ADR-036, ADR-114, build shard sp-pr4-travel-rule → not OPEN.
+  - The OPEN capability-contract targets are the 3 SPEC-#7 DRAFT contracts (crypto-ops-monitor C8, banxe-portfolio C7, banxe-news C18) — each self-declares **DRAFT (not buildable); requires Architecture WG review before promotion to PROPOSED** (ADR-050 Option B). Promotion = operator/Arch-WG governance GATE → NOT crossed autonomously (canon §6/§8).
+  - Chosen NON-GATED cycle = the governing priority-map's own prescribed MEDIUM revision "INDEX add capability column".
+- **Change (additive, no decision rewrite):** docs/refactor/legacy/BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md — added a **NEW capability (Cn)** column to the 7-SPEC summary table (per priority-map): #1=C1, #2=C1/C2, #3=C9, #4=C6, #5=C3/C4/C5, #6=C10–C13, #7=C7/C8/C18; plus a note recording the SPEC-#7 DRAFT contracts' Arch-WG promotion gate and the remaining non-gated follow-ups (SPEC #6 re-anchor; SPEC #1/#2/#3/#5 capability lines).
+- **ROADMAP-MATRIX:** N/A — crypto-ops/C8 and the refactor INDEX are refactor-plane artifacts with no ROADMAP-MATRIX (A–K EMI blocks) row; no row fabricated (faithful; mission's "additive ROADMAP" applies only where a row exists).
+- **Perimeter / operator-gates NOT crossed:** no DRAFT→PROPOSED promotion (Arch-WG gate); M2.8 Roster-C + web-next gates untouched; wt-gatelift uncommitted Roster-C dry-run untouched; no cross-repo write into any target repo (e.g. CarmiBanxe/crypto-ops-monitor).
+- **Coupling/append-only:** branch agent/factory/refactorindex/capability-anchor (off main@d2716e2); frozen IL via ledger/IL-SEQUENCE.json (max+1=475); no prior entry mutated; signed commit (verified noreply identity).
+- **Proof:** build_ledger.py --check exit 0 (root); schemas/validate_schemas.py pass; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
+- **Next (gated) step for operator:** authorize Arch-WG review to promote the 3 SPEC-#7 DRAFT contracts (crypto-ops-monitor/banxe-portfolio/banxe-news) DRAFT→PROPOSED, OR authorize the remaining non-gated priority-map revisions (SPEC #6 re-anchor; SPEC #1/#2/#3/#5 capability lines).
+- **Refs:** docs/refactor/legacy/BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md; docs/refactor/legacy/NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; crypto-ops-monitor/banxe-portfolio/banxe-news CONTRACT-SPEC-DRAFT-2026-06-08; ADR-021/050/051/052/109/111; ADR-036/114 (Travel Rule, dedup); ADR-102/103/119; I-28.
