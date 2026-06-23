@@ -64,3 +64,18 @@ help:
 	@echo "    File → Export → Open Exchange XML → archimate/banxe-model.xml"
 	@echo "    File → Export → CSV → archimate/csv/"
 	@echo ""
+
+# ── Training runner (S-FAC-63, R2) ──
+#   make train         → scripts/train.sh run     (T0 scaffold, host-aware)
+#   make train-dry     → scripts/train.sh dry-run (validate matrix↔passports, no writes)
+#   make train-verify  → scripts/train.sh verify  (gate: mandatory skill ⇒ passport binding)
+.PHONY: train train-dry train-verify
+
+train:
+	@bash scripts/train.sh run
+
+train-dry:
+	@bash scripts/train.sh dry-run
+
+train-verify:
+	@bash scripts/train.sh verify
