@@ -29,7 +29,7 @@
 | **E — Treasury / ALM / Safeguarding** | E-safeguard | Safeguarding account management — segregated client funds (CASS 15) | Spec-Locked — In Progress (IL-474; E-SAFEGUARD-CASS15-SPEC) | P0 | **7 May 2026** | CEO + CTIO |
 | **F — Compliance & Risk** | F-aml | AML/Sanctions/KYC screening — OpenSanctions/Yente, Watchman, Marble CM | ~80% DONE | P0 | DONE | CTIO |
 | **F — Compliance & Risk** | F-fatca | FATCA/CRS tax reporting — US persons, CRS automatic exchange | 0% | P2 | Sprint 11 | CEO |
-| **F — Compliance & Risk** | F-finrpt | FIN-RPT regulatory returns — FCA Gabriel / RegData submissions | 0% | P0 | Q2 2026 | CEO |
+| **F — Compliance & Risk** | F-finrpt | FIN-RPT regulatory returns — FCA Gabriel / RegData submissions | Spec-Locked — In Progress (IL-481; F-FINRPT-BUILD-SPEC, content core) | P0 | Q2 2026 | CEO |
 | **G — Fraud Prevention** | G-rt | Real-time transaction fraud scoring — rule engine + ML model | 0% | P1 | Sprint 11 | CTIO |
 | **G — Fraud Prevention** | G-device | Device fingerprinting, velocity checks, account takeover detection | 0% | P1 | Sprint 11 | CTIO |
 | **H — Customer Operations** | H-crm | CRM — customer record, case history, DSAR (data subject access requests) | 0% | P2 | Sprint 12 | CEO |
@@ -54,7 +54,7 @@
 
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
-| P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480) | F-finrpt |
+| P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480), F-finrpt (Spec-Locked, In Progress — IL-481) | — (P0 critical-path J→E→D→K→F-finrpt fully Spec-Locked) |
 | P1 (Core banking) | 13 | D-gl (5%) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
