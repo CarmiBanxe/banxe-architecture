@@ -67,6 +67,14 @@ shards and **append-only vs git HEAD** (no existing number mutated/removed).
 - Ledger ordering is by IL number (monotonic), not by `il_ts`; `il_ts` remains recorded
   per entry for provenance.
 
+> **`il_ts` semantics (clarification — not a defect).** The **IL number** (frozen via
+> `IL-SEQUENCE.json`) is the canonical ordering **and** identity. `il_ts` is an
+> **informational** provenance attribute and is **NOT required to be monotonic** with the IL
+> number: a behind-PR may carry an earlier `il_ts` than an already-merged later-numbered entry
+> (e.g. IL-465 @ 14:15Z appended after IL-463 @ 16:20Z). Append-only is enforced on the **number
+> sequence** (`ledger-append-only` / `guardian-ledger`, I-28), **not** on `il_ts`. A
+> non-monotonic `il_ts` is by-design under this ADR and must not be treated as a ledger violation.
+
 ## Verification
 
 - Regenerated `INSTRUCTION-LEDGER.md` byte-identical to pre-change (207 shards, IL-249..455).

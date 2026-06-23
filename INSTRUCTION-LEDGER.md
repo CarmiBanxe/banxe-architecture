@@ -16026,3 +16026,23 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** Per-change governance-PR loop для protection ЗАКРЫТ. Будущие protection-изменения = operator via gh api + один ledger-shard, без sprint-PR/reconciliation cycle. Это финальная loop-closing запись.
 - **Recommended next:** operator review diff; затем (по слову оператора) push + PR + merge (sandbox: 4 guardians + strict + linear, no review-gate). Будущие protection tweaks больше не требуют этой PR-церемонии. Parallel-session ветки не трогать.
 - **Refs:** docs/governance/branch-protection.md (§Change Procedure NEW); IL-457/458/459/463/466/468 chain (#705/#710/#711/#712/#713 — loop closed here); ADR-056 (ledger-coupling), ADR-057/059/119 (append-only/frozen numbering), I-28; enforce_admins=true.
+
+---
+
+### IL-470 - agent-factory-docs-ilts-semantics @ 2026-06-23T00:45:00Z
+
+- **il_ts:** 2026-06-23T00:45:00Z
+- **session_id:** agent-factory-docs-ilts-semantics
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-docs-ilts-semantics/IL-2026-06-23T00-45-00Z--c3f8d6.md`
+
+### docs clarify: il_ts is informational, NOT a sort invariant — non-monotonic il_ts is by-design (ADR-119)
+- **Date:** 2026-06-23 · **Type:** docs clarification; docs+ledger only; protection + ledger history untouched.
+- **Instrukciya:** Add a short note so a non-monotonic `il_ts` is not mistaken for a defect.
+- **Audit:** ADR-119 (`docs/adr/ADR-119-stable-frozen-il-numbering.md`, status ACCEPTED) confirmed: `IL-SEQUENCE.json` assigns frozen, append-only `IL-NNN` per `<session_id>__<sha1(path)[:12]>`; new shard = max+1 appended; ledger rendered in IL-number order; `il_ts` recorded for provenance only. On main IL-400..IL-468 are strictly monotonic/contiguous (ledger-append-only guardian green) while some `il_ts` are non-monotonic (e.g. IL-464 @ 2026-06-22T15:30Z, IL-465 @ 14:15Z after IL-463 @ 16:20Z) — by-design, not a violation.
+- **Change (minimal, no duplication):** added one clarification note in ADR-119 §Consequences (right where ordering-vs-`il_ts` is already discussed): "The IL number (frozen via IL-SEQUENCE.json) is the canonical ordering + identity; `il_ts` is informational and is NOT required to be monotonic — append-only is enforced on the number sequence (ledger-append-only / guardian-ledger, I-28), not on `il_ts`; a non-monotonic `il_ts` is by-design and not a ledger violation." No other file touched; no decision changed (additive clarification to an ACCEPTED ADR).
+- **Canon compliance:** live-audit source of truth; docs-only (no protection/history mutation); idempotent; append-only ledger; signed commit (verified noreply identity); NO `--admin`/bypass.
+- **Coupling/append-only:** branch agent/factory/docsclarify/ilts-semantics (off main@235a91e); frozen IL via ledger/IL-SEQUENCE.json (max+1 over MAX=IL-468); no prior entry mutated.
+- **Proof:** build_ledger.py --check exit 0; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; signed; merged via squash.
+- **Refs:** docs/adr/ADR-119-stable-frozen-il-numbering.md (§Consequences clarification); ledger/IL-SEQUENCE.json; ADR-056/057/059; I-28.
