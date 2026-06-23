@@ -16403,3 +16403,29 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch `agent/factory/ops/docsmkdocsfix/2026-06-23` (ADR-060 id segment hyphen-free; rebased onto origin/main@b818423 after D-gl IL-484 landed); new tail shard via `ledger/IL-SEQUENCE.json` (frozen max+1 = IL-485, ADR-119); no prior entry mutated (478..484 unchanged); il_ts 20:05:00Z > current main max 20:00:00Z (d-gl).
 - **Proof:** 1 workflow edit + 1 IL shard; `build_ledger.py --check` exit 0; append-only (0 deletions); no `__pycache__`/*.pyc. NO push/merge by author beyond branch publish; operator decides merge (Rule 11).
 - **Refs:** `.github/workflows/docs.yml` (Install MkDocs dependencies step); `mkdocs.yml` (plugins: tags — built-in, unchanged); run 28054664402; ADR-060; ADR-119; ADR-102.
+
+---
+
+### IL-487 - agent-factory-ops-s-fac-62-legion-keycloak-rediscli @ 2026-06-23T20:32:00Z
+
+- **il_ts:** 2026-06-23T20:32:00Z
+- **session_id:** agent-factory-ops-s-fac-62-legion-keycloak-rediscli
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-ops-s-fac-62-legion-keycloak-rediscli/IL-2026-06-23T20-32-00Z--s-fac-62-legion.md`
+
+### S-FAC-62 (R1) legion stabilization — OPS RECORD: keycloak healthcheck fix + redis-cli install (DoD MET)
+- **Date:** 2026-06-23 · **Type:** OPS record (ledger-only). **Fixes applied at RUNTIME on the legion host (infra), NOT repo code** (compose files live on hosts, not in this repo).
+- **Decision:** Record the two legion R1 fixes and mark **S-FAC-62 DoD = MET** (keycloak healthy; `redis-cli` present).
+- **Instrukciya:** Resolve the legion YELLOW findings from the R0/R1 audit: keycloak reporting "unhealthy" and missing `redis-cli`.
+- **Basis (audit):** live legion ops @ mark-legion 2026-06-23 ~20:35 UTC (not memory).
+- **Root causes fixed (runtime, host-side):**
+  1. **keycloak "unhealthy" = FALSE NEGATIVE.** Service was actually healthy (Keycloak 26.2.5 started, realm `banxe-emi` imported, `8180/realms/master` + `9000/health/ready` both 200). Root cause: original healthcheck did a raw `/dev/tcp` `GET /realms/master` on 8180 **without `Connection: close`** → keep-alive hang → timeout → false "unhealthy". **Fix:** `docker-compose.override.yml` healthcheck → `9000/health/ready` with `Connection: close`. **Result: healthy in 15s.**
+  2. **`redis-cli` ABSENT on legion.** **Fix:** installed `redis-tools` 7.0.15 (apt).
+- **Proof:** keycloak healthy in 15s; `9000/health/ready` 200; `8180/realms/master` 200; `redis-cli` (redis-tools 7.0.15) present. All envs now GREEN: evo1 midaz+ballerine Up/healthy (S-FAC-61), legion keycloak healthy + redis-cli (S-FAC-62), evo2 monitoring Up.
+- **DoD:** **MET** — keycloak healthy (correct healthcheck) + `redis-cli` present. (Unlike S-FAC-61 which is DoD PARTIAL pending 24h observation, S-FAC-62 acceptance criteria are point-in-time and satisfied.)
+- **Follow-up (flagged):** the keycloak healthcheck fix lives in host `docker-compose.override.yml` (runtime, reboot-local) — persist declaratively alongside the S-FAC-61 midaz-redis-bridge follow-up so legion stabilization survives host restart.
+- **Canon compliance:** live-audit source of truth; OPS record only (no repo code/protection mutation); best-solution; minimal-diff; append-only ledger (ADR-119 frozen IL via IL-SEQUENCE.json, max+1); authored in ISOLATED worktree off origin/main (ADR-120, NOT shared checkout); branch ADR-060-compliant (`agent/factory/ops/s-fac-62-legion-keycloak-rediscli`); no S320; hooks enabled (no `--no-verify`/`--admin`/bypass); STOP before merge for operator.
+- **Coupling/append-only:** branch off origin/main@b818423; single new shard; no prior entry modified.
+- **Proof (ledger):** `build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming green (local); squash PR to main (merge-queue); operator merges.
+- **Refs:** `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` §S-FAC-62 (R1); legion host-side `docker-compose.override.yml` (runtime artifact, not in this repo); ADR-120 (worktree isolation); ADR-119; ADR-060; S-FAC-61 ops record (sibling evo1 stabilization).
