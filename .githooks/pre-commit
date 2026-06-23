@@ -2,6 +2,19 @@
 # LucidShark pre-commit quality scan
 # BUG-006 fix: prevent AI-generated code issues from reaching commit
 
+# ── ADR-120: per-session git-worktree isolation ──
+# Refuse commits from the shared/main checkout. A linked session worktree's git-dir
+# lives under .git/worktrees/ (portable detection, no hardcoded path); the shared
+# checkout's does not. One session = one worktree off origin/main (see scripts/bx-session.sh).
+case "$(git rev-parse --absolute-git-dir 2>/dev/null || echo /)" in
+  */worktrees/*) : ;;  # linked session worktree — allowed
+  *)
+    echo "❌ ADR-120 violation: commit from the shared/main checkout is forbidden (audit-only)."
+    echo "   One session = one git worktree off origin/main:"
+    echo "     bash scripts/bx-session.sh agent/<central|right|factory>/<id>/<slug>"
+    exit 1 ;;
+esac
+
 echo "🔍 Running LucidShark scan..."
 
 # Check if lucidshark is available
