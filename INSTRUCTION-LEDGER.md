@@ -16383,3 +16383,23 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/dfin/d-fin-build-spec (off main@b818423); frozen IL via ledger/IL-SEQUENCE.json (max+1); no prior entry mutated (481..484 unchanged); signed commit (verified noreply identity).
 - **Proof:** build_ledger.py --check exit 0 (from root); schemas/validate_schemas.py pass; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
 - **Refs:** docs/architecture/D-FIN-BUILD-SPEC.md; docs/architecture/D-GL-BUILD-SPEC.md; docs/regulatory/F-FINRPT-BUILD-SPEC.md; docs/D-RECON-BUILD-SPEC.md; GAP-018 (fenced); docs/ROADMAP-MATRIX.md; ADR-013/102/103/115/116/117/119; I-01/24/28.
+
+---
+
+### IL-486 - agent-factory-docs-mkdocs-fix-2026-06-23 @ 2026-06-23T20:05:00Z
+
+- **il_ts:** 2026-06-23T20:05:00Z
+- **session_id:** agent-factory-docs-mkdocs-fix-2026-06-23
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-docs-mkdocs-fix-2026-06-23/IL-2026-06-23T20-05-00Z--d0c5f1.md`
+
+### CI fix — remove non-existent mkdocs-tags-plugin from docs.yml (Deploy MkDocs build)
+- **Objective:** Unbreak the "Deploy MkDocs to GitHub Pages" workflow on main. Run 28054664402 failed at step "Install MkDocs dependencies" — `No matching distribution found for mkdocs-tags-plugin` (pip exit 1).
+- **Root cause:** `.github/workflows/docs.yml` pip-installed `mkdocs-tags-plugin`, which does NOT exist on PyPI. The `tags` plugin is **built into mkdocs-material 9.5** (enabled via `mkdocs.yml` → `plugins: - tags`), not a separate package.
+- **Fix (minimal, surgical):** removed the `mkdocs-tags-plugin` argument and its preceding trailing backslash from the `pip install` line; `pymdown-extensions` is now the final arg (command stays valid). Kept mkdocs-material==9.5.*, mkdocs-minify-plugin, mkdocs-git-revision-date-localized-plugin, pymdown-extensions. NO new package added.
+- **mkdocs.yml untouched:** `tags` (mkdocs.yml:55 under plugins:) is provided by mkdocs-material 9.5 → still resolves; no edit needed, none made.
+- **ADR-102 anti-dup:** single-line CI dependency fix; no duplication; no other workflow/file touched.
+- **Coupling/append-only:** branch `agent/factory/ops/docsmkdocsfix/2026-06-23` (ADR-060 id segment hyphen-free; rebased onto origin/main@b818423 after D-gl IL-484 landed); new tail shard via `ledger/IL-SEQUENCE.json` (frozen max+1 = IL-485, ADR-119); no prior entry mutated (478..484 unchanged); il_ts 20:05:00Z > current main max 20:00:00Z (d-gl).
+- **Proof:** 1 workflow edit + 1 IL shard; `build_ledger.py --check` exit 0; append-only (0 deletions); no `__pycache__`/*.pyc. NO push/merge by author beyond branch publish; operator decides merge (Rule 11).
+- **Refs:** `.github/workflows/docs.yml` (Install MkDocs dependencies step); `mkdocs.yml` (plugins: tags — built-in, unchanged); run 28054664402; ADR-060; ADR-119; ADR-102.

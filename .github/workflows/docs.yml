@@ -48,8 +48,7 @@ jobs:
           pip install mkdocs-material==9.5.* \
             mkdocs-minify-plugin \
             mkdocs-git-revision-date-localized-plugin \
-            pymdown-extensions \
-            mkdocs-tags-plugin
+            pymdown-extensions
 
       - name: Build MkDocs site
         run: mkdocs build --strict
