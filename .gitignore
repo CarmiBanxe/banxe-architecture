@@ -5,3 +5,7 @@ scripts/__pycache__/
 /data/
 .claude/settings.local.json
 runtime/midaz-ledger/env.live
+
+# Transient buffers — never tracked (S-FAC-60 R0 hygiene, audit 2026-06-23)
+.quarantine/
+docs/incoming/
