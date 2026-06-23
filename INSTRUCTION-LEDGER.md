@@ -16006,3 +16006,23 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/docsreconcile/branch-protection (off main@430f7a6); frozen IL via ledger/IL-SEQUENCE.json (max+1); no prior entry mutated.
 - **Proof:** build_ledger.py --check exit 0; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; signed; merged via squash.
 - **Refs:** docs/governance/branch-protection.md; live branches/main/protection; IL-457/458/459/463/466 (protection chain); ADR-056/057/059, ADR-119 (frozen numbering).
+
+---
+
+### IL-469 - agent-factory-governance-protection-change-policy-simplify @ 2026-06-23T00:35:00Z
+
+- **il_ts:** 2026-06-23T00:35:00Z
+- **session_id:** agent-factory-governance-protection-change-policy-simplify
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-protection-change-policy-simplify/IL-2026-06-23T00-35-00Z--c1d9f7.md`
+
+### Simplify branch-protection change-policy — close the per-change governance-PR loop (docs-only)
+- **Instrukciya:** Упростить self-perpetuating цикл «branch-protection change → governance sprint-PR + reconciliation» для single-principal sandbox. Минимально amend docs/governance/branch-protection.md: разрешить gh api для protection-изменений (audit trail уже даётся git history + append-only ledger + enforce_admins); зафиксировать, что изменение protection = ОДИН appended ledger-shard в момент изменения, а НЕ отдельный sprint-PR с reconciliation per change; сохранить реальные guardrails (operator-only authority, append-only, no agent-initiated protection changes). Это ФИНАЛЬНАЯ такая запись — amendment + его shard закрывают петлю. Isolated worktree (Rule 1); local commit only — NO push/PR/merge.
+- **Problem (verified):** branch-protection.md ранее требовала «No gh api — all changes human-initiated via GitHub UI» + ledger-record per change → породило 5 PR за сессию (#705/#710/#711/#712/#713) и противоречило фактической практике (operator менял protection через gh api DELETE/PUT). Надуманный friction для single-principal sandbox.
+- **Anti-dup (ADR-102):** #713 (IL-468) УЖЕ снял UI-only mandate — дока уже гласит «Configured via gh api (repo-admin) … Manual GitHub-UI edits are not canon» (goal #1 уже на main). Не дублировал. Остаточная дельта закодифицирована: goal #2 (один shard на изменение, не sprint-PR) + goal #3 (operator-only authority, agents MUST NOT initiate) явным разделом.
+- **Change (docs-only, branch agent/factory/governance/protection-change-policy-simplify от main 235a91e, isolated worktree /tmp...protpolicy):** добавлен раздел «## Change Procedure (operator-only, single-shard)» в docs/governance/branch-protection.md: (1) Authority operator-only, agents/factory MUST NOT initiate (read/report only); (2) Mechanism gh api allowed (UI-only mandate retired; audit = git history + append-only ledger + enforce_admins); (3) Record = ОДИН appended ledger-shard at change-time, НЕ separate reconciliation/sprint-PR per change; (4) inviolable guardrails unchanged (append-only I-28/ADR-057/059/119, enforce_admins=true, no force-push/deletions, auto-guardian checks). Явно: one-PR-per-tweak pattern (IL-457..468 / #705/#710/#711/#712/#713) CLOSED by this record. Audit-trail принцип НЕ удалён — только расширен (gh api allowed) + collapse per-change-PR в single-shard.
+- **Proof:** docs-only (1 doc amend + 1 IL-shard, 0 code). Реальные guardrails сохранены (operator-only, append-only, no-agent-initiated, enforce_admins). Не удалил audit-trail principle. build_ledger.py --check exit 0; append-only (tail-append, 0 deletions в INSTRUCTION-LEDGER.md); no __pycache__ (ledger/.gitignore на main). Isolated worktree (Rule 1); parallel-session ветки не тронуты (Rule 6); local commit only — NO push/PR/merge.
+- **Status:** Per-change governance-PR loop для protection ЗАКРЫТ. Будущие protection-изменения = operator via gh api + один ledger-shard, без sprint-PR/reconciliation cycle. Это финальная loop-closing запись.
+- **Recommended next:** operator review diff; затем (по слову оператора) push + PR + merge (sandbox: 4 guardians + strict + linear, no review-gate). Будущие protection tweaks больше не требуют этой PR-церемонии. Parallel-session ветки не трогать.
+- **Refs:** docs/governance/branch-protection.md (§Change Procedure NEW); IL-457/458/459/463/466/468 chain (#705/#710/#711/#712/#713 — loop closed here); ADR-056 (ledger-coupling), ADR-057/059/119 (append-only/frozen numbering), I-28; enforce_admins=true.
