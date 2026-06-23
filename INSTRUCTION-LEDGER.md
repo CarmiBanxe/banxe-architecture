@@ -16088,3 +16088,25 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/sprintJ/safeguarding-engine (off main@6a37539); frozen IL via ledger/IL-SEQUENCE.json (max+1=472); no prior entry mutated; signed commit (verified noreply identity).
 - **Proof:** build_ledger.py --check exit 0; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched; NO --admin/--auto/bypass.
 - **Refs:** docs/safeguarding/J-ENGINE-BUILD-SPEC.md; docs/safeguarding/J-CROSS-REPO-HANDOFF.md; docs/ROADMAP-MATRIX.md (J-engine/J-audit); adrs/ADR-SAF-01; instruction-ledger/sprint-44/IL-SAF-01; .claude/rules/cass15.md; GAP-005 + audit-agent passports; ADR-013/102/103/115/116/117/119; FCA PS25/12, CASS 15; I-01/02/04/24/27/28.
+
+---
+
+### IL-473 - agent-factory-roadmap-2026-06-23 @ 2026-06-23T11:53:00Z
+
+- **il_ts:** 2026-06-23T11:53:00Z
+- **session_id:** agent-factory-roadmap-2026-06-23
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-roadmap-2026-06-23/IL-2026-06-23T11-53-00Z--roadmap.md`
+
+### Factory Roadmap 2026-06-23 — blocks R0–R5 + sprints S-FAC-60..69 (100%-adoption gate)
+- **Date:** 2026-06-23 · **Type:** docs/roadmap; docs+ledger only; no code/infra/protection mutation (later-sprint artifacts are SPECIFIED, not implemented).
+- **Decision:** Adopt a six-block roadmap (R0 env-stabilization → R5 100%-adoption gate) decomposed into ten sprints S-FAC-60..69, each with a Definition of Done, gated by a binary 100%-adoption criterion.
+- **Instrukciya:** Author `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` (R0–R5 + S-FAC-60..69 DoD table + adoption gate); define — without implementing — the S-FAC-63 training runner (`scripts/train.sh` + Makefile `train`/`train-dry`/`train-verify`, reads SKILLS-MATRIX→passports) and the S-FAC-65 traffic-light agent (internal_audit_agent + resilience_agent; cron 08:00/20:00 CEST + Redis session trigger; 🔴🟡🟢+reason; ledger shard + stream publish; DORA binding).
+- **Basis (audit):** BANXE FACTORY AUDIT v2 @ mark-legion 2026-06-23 (live, not memory) + #708 closed-clean. Drivers: training runner MISSING (no `scripts/train.sh`, empty `make train`); SKILLS-MATRIX/ORCHESTRATION/OPERATING-MODEL present; evo1 midaz-ledger/mongodb/workflow-service RESTARTING (RED), legion keycloak YELLOW, `redis-cli` absent; no audit cron (traffic-light from zero); model mismatch (ollama qwen2.5-coder 14b/7b vs ArchiMate qwen3-30b); legion RTX 4070 sole GPU (evo1/evo2 no-GPU).
+- **100%-adoption gate:** traffic-light GREEN 2×/day for 3 consecutive days (six scheduled verdicts) + clean final audit (0 RED, 0 unbound skill, 0 open DoD) + every SKILLS-MATRIX skill passport+ledger bound. Binary; any amber/red resets the 3-day counter.
+- **Change (minimal, no duplication):** +1 new roadmap doc, +1 new ledger shard. No existing file edited; no prior ledger entry mutated; later-sprint artifacts only specified.
+- **Canon compliance:** live-audit source of truth (audit v2, not memory); best-solution; minimal-diff; append-only ledger; passport-bound skills; constraint honored (no S320 — S314 family, Ruff ≥0.12.0; defusedxml already standard on main via #707); branch ADR-060-compliant (`agent/factory/roadmap/2026-06-23`); NO `--admin`/bypass; STOP before merge for operator.
+- **Coupling/append-only:** branch `agent/factory/roadmap/2026-06-23` (off origin/main@95d3c08); frozen IL via `ledger/IL-SEQUENCE.json` (max+1, append-only, ADR-119); no prior entry renumbered/modified.
+- **Proof:** `build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming green (local); squash PR opened to main (merge-queue); operator performs merge.
+- **Refs:** PR #707 (`d37a955`, defusedxml S320 close) / IL-460; `docs/governance/KPI-DORA-FRAMEWORK.md`; `governance/CANONICAL-ORG-CHART-v2.md`; `governance/STAFF-MATRIX-v2.md`; `docs/SKILLS-MATRIX.md`; `docs/SKILLS-ORCHESTRATION.md`; `docs/SKILLS-OPERATING-MODEL.md`; `agents/passports/internal_audit_agent.yaml`; `agents/passports/resilience_agent.yaml`; ADR-119; ADR-060.
