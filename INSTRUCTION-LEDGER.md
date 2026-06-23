@@ -16429,3 +16429,26 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch off origin/main@b818423; single new shard; no prior entry modified.
 - **Proof (ledger):** `build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming green (local); squash PR to main (merge-queue); operator merges.
 - **Refs:** `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` §S-FAC-62 (R1); legion host-side `docker-compose.override.yml` (runtime artifact, not in this repo); ADR-120 (worktree isolation); ADR-119; ADR-060; S-FAC-61 ops record (sibling evo1 stabilization).
+
+---
+
+### IL-488 - agent-factory-d-fee @ 2026-06-23T21:00:00Z
+
+- **il_ts:** 2026-06-23T21:00:00Z
+- **session_id:** agent-factory-d-fee
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-d-fee/IL-2026-06-23T21-00-00Z--b7f3a8.md`
+
+### D-fee — Fee Engine & billing build-spec (promotes ADR-090 fee-engine seam) + ROADMAP status-lock (docs/architecture plane)
+- **Objective:** Next non-gated P1 by roadmap order — D-fee fee engine & billing. Promote ADR-090 dynamic-fee-engine advisory seam into an actionable build-spec. docs/architecture plane only; runtime in banxe-emi-stack (billing) + banxe-trading-backend (existing seam); no cross-repo write.
+- **Live audit (source of truth, not memory):** origin/main@fa7bac2; ledger --check OK from root. **IL recompute:** task stated next=486, but after rebase onto main@e13db64 (#730 legion took 487) frozen max+1 = **IL-488** (ADR-119). Central PR #730 (legion stabilization, stale IL-485) unmerged + untouched; if it lands first this rebases and ALL IL references are corrected.
+- **ADR-102 dedup (incl. ADR-090 relationship):** no existing D-fee build-spec on main → non-duplicative. ADR-090 (`FeeEnginePort`, analytics-only mock, no billing) is **promoted** into D-fee's computation core (not duplicated). Kept/referenced: D-GL-BUILD-SPEC (posts fee JEs via LedgerPort), D-FIN-BUILD-SPEC (fee revenue → P&L), banxe-trading-backend fee seam.
+- **Drift reconciled (D-fee vs D-gl vs D-fin boundary):** D-fee computes fees (promotes ADR-090 FeeEnginePort) and, when activated, bills them; it **posts** fee journal entries to D-gl via LedgerPort (no posting reimpl) and fee revenue **surfaces in** D-fin P&L (no reporting reimpl). D-fee owns fee computation/billing; D-gl owns posting; D-fin owns reporting.
+- **GATE FAITHFULLY FENCED (ADR-090 D2/D4/D5):** the fee-attribution ANALYTICS seam is live as **mock-default, fail-closed** (no billing). **Real billing — charges, recurring/monthly invoicing, FX-markup settlement, metering, partner-tier ENFORCEMENT, live fee data, /v1 fee contract changes — is OPERATOR-GATED** ("OPERATOR DECISION REQUIRED", G-sprint) and **NOT activated here**; the build-spec specifies the target architecture only.
+- **Deliverable 1:** docs/architecture/D-FEE-BUILD-SPEC.md — scope (per-txn fees, monthly/recurring charges, FX markup); fee-rule model (config-as-data) + deterministic computation (Decimal I-01, partner-tier discount platform-take only); producer/consumer contracts (posts to D-gl LedgerPort gated; surfaces in D-fin P&L; internal /api/v1/fees/preview mock); explicit OPERATOR-GATED billing-activation section; DoD/acceptance; out-of-scope fail-closed; operator gates not crossed.
+- **Deliverable 2 — ROADMAP additive:** D-fee "0%" → "Spec-Locked — In Progress (IL-488; billing activation operator-gated per ADR-090)"; P1 Status Summary adds D-fee to In-Progress. No frozen historical row altered.
+- **Perimeter / operator-gates NOT crossed:** no runtime code; NO cross-repo write; no live billing/metering/invoicing/settlement (operator-gated ADR-090 D5); no partner-tier enforcement/live fee data/real keys (ODR); no /v1 fee contract change; no GL posting reimpl; no reporting reimpl; no passport activation; M2.8/web-next/Arch-WG untouched; central PR #730 left alone.
+- **Coupling/append-only:** branch agent/factory/dfee/d-fee-build-spec (off main@fa7bac2); frozen IL via ledger/IL-SEQUENCE.json (max+1); no prior entry mutated (483..486 unchanged); signed commit (verified noreply identity).
+- **Proof:** build_ledger.py --check exit 0 (from root); schemas/validate_schemas.py pass; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
+- **Refs:** docs/architecture/D-FEE-BUILD-SPEC.md; docs/adr/ADR-090-dynamic-fee-engine-advisory-seam.md; docs/architecture/D-GL-BUILD-SPEC.md; docs/architecture/D-FIN-BUILD-SPEC.md; ADR-083; docs/ROADMAP-MATRIX.md; ADR-102/103/115/116/117/119; I-01/I-28.

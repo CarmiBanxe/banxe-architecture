@@ -22,7 +22,7 @@
 | **C — Payment Rails** | C-swift | SWIFT MT/MX — international wires, correspondent banking | 0% | P2 | Sprint 12 | CTIO |
 | **D — Core Banking Engine** | D-gl | General Ledger — Midaz (LerianStudio) PRIMARY, Apache Fineract FALLBACK | Spec-Locked — In Progress (5% base; IL-484; D-GL-BUILD-SPEC) | P1 | Sprint 8 | CTIO |
 | **D — Core Banking Engine** | D-fin | Financial Reporting — P&L, balance sheet, management accounts | Spec-Locked — In Progress (IL-485; D-FIN-BUILD-SPEC) | P1 | Sprint 10 | CEO |
-| **D — Core Banking Engine** | D-fee | Fee Engine & billing — per-transaction fees, monthly charges, FX markup | 0% | P1 | Sprint 10 | CTIO |
+| **D — Core Banking Engine** | D-fee | Fee Engine & billing — per-transaction fees, monthly charges, FX markup | Spec-Locked — In Progress (IL-488; D-FEE-BUILD-SPEC; billing activation operator-gated per ADR-090) | P1 | Sprint 10 | CTIO |
 | **D — Core Banking Engine** | D-recon | Reconciliation Engine — Midaz ledger ↔ safeguarding accounts ↔ payment rails | Spec-Locked — In Progress (IL-474; D-RECON-BUILD-SPEC promotes D-RECON-DESIGN) | P1 | Sprint 9 | CTIO |
 | **E — Treasury / ALM / Safeguarding** | E-treasury | Treasury management — liquidity, FX positions, ALM | 0% | P2 | Sprint 12 | CEO |
 | **E — Treasury / ALM / Safeguarding** | E-capital | Capital adequacy reporting — FCA ICARA (Internal Capital and Risk Assessment) | 0% | P1 | Q3 2026 | CEO |
@@ -55,7 +55,7 @@
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
 | P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480), F-finrpt (Spec-Locked, In Progress — IL-481) | — (P0 critical-path J→E→D→K→F-finrpt fully Spec-Locked) |
-| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485) | All others 0% |
+| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
 
