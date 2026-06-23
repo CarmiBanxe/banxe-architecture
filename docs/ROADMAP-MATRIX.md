@@ -40,7 +40,7 @@
 | **J — Safeguarding Engine** | J-engine | FCA PS10/15 + CASS 15 safeguarding engine — segregated accounts, daily reconciliation, FCA breach reporting | Spec-Locked — In Progress (IL-472; J-ENGINE-BUILD-SPEC promotes ADR-SAF-01) | P0 | **7 May 2026** | CEO + CTIO |
 | **J — Safeguarding Engine** | J-audit | Safeguarding audit trail — immutable log to ClickHouse, FCA-producible evidence | Spec-Locked — In Progress (IL-472; J-CROSS-REPO-HANDOFF acceptance contract) | P0 | **7 May 2026** | CTIO |
 | **K — Regulatory Reporting** | K-gabriel | FCA Gabriel / RegData returns — FIN-REP, EMI statistical returns | Spec-Locked — In Progress (IL-480; K-GABRIEL-BUILD-SPEC) | P0 | Q2 2026 | CEO |
-| **K — Regulatory Reporting** | K-fscs | FSCS (Financial Services Compensation Scheme) reporting | 0% | P1 | Q3 2026 | CEO |
+| **K — Regulatory Reporting** | K-fscs | FSCS (Financial Services Compensation Scheme) reporting | Spec-Locked — In Progress (IL-491; K-FSCS-BUILD-SPEC) | P1 | Q3 2026 | CEO |
 | **K — Regulatory Reporting** | K-nca | NCA SARs (Suspicious Activity Reports) — automated filing, MLRO workflow | 0% | P1 | Sprint 11 | CTIO |
 | **L — Data Platform** | L-lake | Data Lake — ClickHouse analytics schema, event streaming | 30% DONE | P2 | Sprint 10 | CTIO |
 | **L — Data Platform** | L-bi | BI / dashboards — management reporting, FCA KPI monitoring | 0% | P3 | Sprint 13 | CEO |
@@ -55,7 +55,7 @@
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
 | P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480), F-finrpt (Spec-Locked, In Progress — IL-481) | — (P0 critical-path J→E→D→K→F-finrpt fully Spec-Locked) |
-| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated) | All others 0% |
+| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated), K-fscs (Spec-Locked, In Progress — IL-491) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
 
