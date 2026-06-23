@@ -16361,3 +16361,25 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/dgl/d-gl-build-spec (off main@8c69608); frozen IL via ledger/IL-SEQUENCE.json (max+1); no prior entry mutated (479..483 unchanged); signed commit (verified noreply identity).
 - **Proof:** build_ledger.py --check exit 0 (from root); schemas/validate_schemas.py pass; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
 - **Refs:** docs/architecture/D-GL-BUILD-SPEC.md; docs/midaz-transaction-api-research.md; docs/migration/MIG-ABS-posting-COVERED-gl-service.md (IL-FIN-01); docs/runbooks/{R1-MIDAZ-LEDGER-BOOTSTRAP-2026-05-22,pa-01-midaz-ledger-postgres-provisioning}.md; docs/D-RECON-BUILD-SPEC.md; docs/regulatory/F-FINRPT-BUILD-SPEC.md; decisions/ADR-013-midaz-cbs-primary.md; ADR-102/103/115/116/117/119; I-01/I-28.
+
+---
+
+### IL-485 - agent-factory-d-fin @ 2026-06-23T20:30:00Z
+
+- **il_ts:** 2026-06-23T20:30:00Z
+- **session_id:** agent-factory-d-fin
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-d-fin/IL-2026-06-23T20-30-00Z--e9c4b2.md`
+
+### D-fin — Financial Reporting core build-spec (P&L / balance sheet / management accounts) + ROADMAP status-lock (docs/architecture plane)
+- **Objective:** Next non-gated P1 by roadmap order — D-fin financial reporting core derived from D-gl GL data. docs/architecture plane only; runtime in banxe-emi-stack (ADR-115/116/117); no cross-repo write.
+- **Live audit (source of truth, not memory):** origin/main@b818423; ledger --check OK from root; max IL=484 → this = frozen max+1 = **IL-485** (ADR-119). Central PR #730 (legion stabilization, claims IL-485) unmerged and untouched; if it lands first this rebases and ALL IL references are corrected.
+- **ADR-102 dedup:** no existing D-fin build-spec on main → non-duplicative. Kept/referenced (not duplicated): D-GL-BUILD-SPEC (GL data source: JournalEntry, LedgerPort.get_balance), F-FINRPT-BUILD-SPEC (FinRepContentProvider — consumer of D-fin figures), D-RECON-BUILD-SPEC (sibling GL consumer); GAP-018 (governance) fenced.
+- **Drift reconciled (D-fin vs D-gl vs F-finrpt boundary):** D-gl owns journal entries/postings/balances (source of truth); **D-fin derives financial statements** (P&L, balance sheet, management accounts; period close; accrual basis) by reading GL — it does **not** post to GL; F-finrpt/K-gabriel own regulatory-return content/submission. D-fin **feeds** F-finrpt where FIN-REP line items map from the financial statements (referenced, not duplicated). Financial-reporting governance = GAP-018 (fenced).
+- **Deliverable 1:** docs/architecture/D-FIN-BUILD-SPEC.md — scope (P&L / balance sheet / mgmt accounts / period close / accrual treatment); report data model (FinancialStatementSet, statement line, config-as-data account classification); derivation from committed JournalEntry + CoA; invariants (assets=liabilities+equity, P&L→retained-earnings roll-forward, Decimal I-01, FINAL immutability I-24/I-28); interfaces (GLReadPort consume from D-gl; FinancialStatementProvider produce; feeds F-finrpt); DoD/acceptance; out-of-scope fail-closed (no GL posting, no regulatory submission); operator gates not crossed.
+- **Deliverable 2 — ROADMAP additive:** D-fin "0%" → "Spec-Locked — In Progress (IL-485)"; P1 Status Summary adds D-fin to In-Progress. No frozen historical row altered.
+- **Perimeter / operator-gates NOT crossed:** no runtime code; NO cross-repo write into banxe-emi-stack; no GL posting (D-gl's); no regulatory-returns content/submission (F-finrpt/K-gabriel's); no GAP-018 governance reimplementation; read-only over GL; no passport activation; M2.8/web-next/Arch-WG untouched; central PR #730 left alone.
+- **Coupling/append-only:** branch agent/factory/dfin/d-fin-build-spec (off main@b818423); frozen IL via ledger/IL-SEQUENCE.json (max+1); no prior entry mutated (481..484 unchanged); signed commit (verified noreply identity).
+- **Proof:** build_ledger.py --check exit 0 (from root); schemas/validate_schemas.py pass; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
+- **Refs:** docs/architecture/D-FIN-BUILD-SPEC.md; docs/architecture/D-GL-BUILD-SPEC.md; docs/regulatory/F-FINRPT-BUILD-SPEC.md; docs/D-RECON-BUILD-SPEC.md; GAP-018 (fenced); docs/ROADMAP-MATRIX.md; ADR-013/102/103/115/116/117/119; I-01/24/28.
