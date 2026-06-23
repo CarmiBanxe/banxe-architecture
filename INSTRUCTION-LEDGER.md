@@ -16177,3 +16177,30 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Status:** S-PROD-1 execution-spec COVERED by #718/IL-472 (J-ENGINE-BUILD-SPEC + J-CROSS-REPO-HANDOFF). Этот gate = coverage-map + 2 forward-asks (close operator gates §4 to unblock stack PR; harmonize PS10/15→PS25/12 §5). Code phase = cross-repo banxe-emi-stack, gated.
 - **Recommended next:** operator review gate; затем (по слову оператора) push + PR + merge. Для фактической реализации S-PROD-1: (1) operator закрывает §4 gates (cross-repo write auth + PROPOSED passport activation) → stack PR в banxe-emi-stack по J-CROSS-REPO-HANDOFF DoD; (2) harmonize roadmap label PS10/15→PS25/12. KYC/M2.8/binding-values — только после operator-решений. Parallel-session ветки не трогать.
 - **Refs:** docs/governance/S-PROD-1-SAFEGUARDING-EXECUTION-BRIEF.md (NEW, gate); docs/safeguarding/J-ENGINE-BUILD-SPEC.md + J-CROSS-REPO-HANDOFF.md (#718/IL-472, COVERED-by); adrs/ADR-SAF-01-safeguarding-reconciliation.md; instruction-ledger/sprint-44/IL-SAF-01-safeguarding-recon.md; .claude/rules/cass15.md; .claude/agents/safeguarding-agent.md; agents/passports/{safeguarding_recon_governor,safeguarding_audit_agent}.yaml; docs/canon/g-cass-01-audit-2026-05-05.md; docs/ROADMAP-STATUS-2026-06-23.md; ADR-013/102/103/115/116/117; FCA PS25/12, CASS 15; I-01/02/04/24/27/28.
+
+---
+
+### IL-477 - agent-factory-refactor-index-phase-b @ 2026-06-23T18:30:00Z
+
+- **il_ts:** 2026-06-23T18:30:00Z
+- **session_id:** agent-factory-refactor-index-phase-b
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-refactor-index-phase-b/IL-2026-06-23T18-30-00Z--b8e2f1.md`
+
+### Right-terminal smart-refactor cycle — Phase-B synthesis INDEX for the unindexed legacy→new SPEC/CONTRACT batch (non-gated; docs-only)
+- **Plane / role:** RIGHT TERMINAL (smart refactor + legacy→new migration), docs/architecture plane only. Factory-only; no direct shell mutation; isolated worktree off fresh origin/main; signed; guardian-gated squash-PR.
+- **Live audit (source of truth, not memory):** origin/main@1ac98a1; max IL=475 at authoring; after rebase onto main@(post-#720) frozen max+1 = IL-477 (#720 took 476); build_ledger.py --check OK from root.
+- **Selection (STOP-on-doubt applied twice):**
+  - The priority-map's prescribed Phase-A SPEC revision backlog (SPEC #6 re-anchor + SPEC #1/#2/#3/#5 capability lines) was found **already DONE on main** (every SPEC already carries a "## NEW capability anchor" section) → NOT a target; not fabricated.
+  - C16 Travel Rule already covered (ADR-036/114) — excluded prior cycle.
+  - The 3 SPEC-#7 DRAFT contracts (crypto-ops-monitor C8 / banxe-portfolio C7 / banxe-news C18) are Arch-WG GATED (DRAFT→PROPOSED) → excluded.
+  - **Real OPEN non-gated gap found:** the synthesis INDEX (2026-05-25) covers only the Phase-A 7 SPECs; the 2026-06-06/05-26 batch of ~20 finalized SPEC/CONTRACT docs (CLASS_TRANSFORM/PORT/MERGE/REVIEW/TAIL closures + C19–C30 + 6 executable port CONTRACT-SPECs) had **no index** → Terminal B lacked a post-Phase-A entry point.
+- **ADR-102 dedup:** no phase-b/extension/post-phase index exists → non-duplicative; built from verified `Status:` metadata of each doc (no decision rewritten, no capability inferred beyond each doc's self-declaration).
+- **Deliverable:** docs/refactor/legacy/BANXE-LEGACY-REFACTOR-INDEX-PHASE-B-2026-06-23.md — synthesis index: §A 14 refactor-class closure SPECs (CLASS + Cn + status), §B 6 executable port CONTRACT-SPECs (port + Cn + deepens), §C 3 DRAFT contracts flagged Arch-WG GATED (not promoted), coverage summary (Phase A + B = complete C1–C30 entry point), perimeter.
+- **ROADMAP-MATRIX:** N/A — refactor-plane synthesis doc with no A–K EMI block row; no row fabricated.
+- **Perimeter / operator-gates NOT crossed:** no DRAFT→PROPOSED promotion (Arch-WG); M2.8 Roster-C + web-next untouched; wt-gatelift untouched; no cross-repo write into any NEW target repo.
+- **Coupling/append-only:** branch agent/factory/refactorindex/phase-b-synthesis (off main@1ac98a1); frozen IL via ledger/IL-SEQUENCE.json (max+1=477 after rebase; #720 took 476); no prior entry mutated; signed commit (verified noreply identity).
+- **Proof:** build_ledger.py --check exit 0 (root); schemas/validate_schemas.py pass; guardian-factory/guardian-project/guardian-ledger/ledger-append-only green; one squash PR; protection invariants untouched (4 guardians, force-push/delete false); NO --admin/--auto/bypass.
+- **Next (gated) operator decision:** authorize Arch-WG review to promote the 3 SPEC-#7 DRAFT contracts DRAFT→PROPOSED (the remaining substantive non-indexing refactor work is behind this gate).
+- **Refs:** docs/refactor/legacy/BANXE-LEGACY-REFACTOR-INDEX-PHASE-B-2026-06-23.md; BANXE-LEGACY-REFACTOR-INDEX-2026-05-25.md; NEW-PROJECT-PRIORITY-MAP-2026-06-06.md; the 20 batch docs; ADR-021/050/017/019/020/102/103/119; I-28.
