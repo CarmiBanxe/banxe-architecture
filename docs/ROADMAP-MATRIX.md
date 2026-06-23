@@ -23,10 +23,10 @@
 | **D — Core Banking Engine** | D-gl | General Ledger — Midaz (LerianStudio) PRIMARY, Apache Fineract FALLBACK | 5% — In Progress | P1 | Sprint 8 | CTIO |
 | **D — Core Banking Engine** | D-fin | Financial Reporting — P&L, balance sheet, management accounts | 0% | P1 | Sprint 10 | CEO |
 | **D — Core Banking Engine** | D-fee | Fee Engine & billing — per-transaction fees, monthly charges, FX markup | 0% | P1 | Sprint 10 | CTIO |
-| **D — Core Banking Engine** | D-recon | Reconciliation Engine — Midaz ledger ↔ safeguarding accounts ↔ payment rails | 0% | P1 | Sprint 9 | CTIO |
+| **D — Core Banking Engine** | D-recon | Reconciliation Engine — Midaz ledger ↔ safeguarding accounts ↔ payment rails | Spec-Locked — In Progress (IL-474; D-RECON-BUILD-SPEC promotes D-RECON-DESIGN) | P1 | Sprint 9 | CTIO |
 | **E — Treasury / ALM / Safeguarding** | E-treasury | Treasury management — liquidity, FX positions, ALM | 0% | P2 | Sprint 12 | CEO |
 | **E — Treasury / ALM / Safeguarding** | E-capital | Capital adequacy reporting — FCA ICARA (Internal Capital and Risk Assessment) | 0% | P1 | Q3 2026 | CEO |
-| **E — Treasury / ALM / Safeguarding** | E-safeguard | Safeguarding account management — segregated client funds (CASS 15) | 0% | P0 | **7 May 2026** | CEO + CTIO |
+| **E — Treasury / ALM / Safeguarding** | E-safeguard | Safeguarding account management — segregated client funds (CASS 15) | Spec-Locked — In Progress (IL-474; E-SAFEGUARD-CASS15-SPEC) | P0 | **7 May 2026** | CEO + CTIO |
 | **F — Compliance & Risk** | F-aml | AML/Sanctions/KYC screening — OpenSanctions/Yente, Watchman, Marble CM | ~80% DONE | P0 | DONE | CTIO |
 | **F — Compliance & Risk** | F-fatca | FATCA/CRS tax reporting — US persons, CRS automatic exchange | 0% | P2 | Sprint 11 | CEO |
 | **F — Compliance & Risk** | F-finrpt | FIN-RPT regulatory returns — FCA Gabriel / RegData submissions | 0% | P0 | Q2 2026 | CEO |
@@ -54,7 +54,7 @@
 
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
-| P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472) | K-gabriel, F-finrpt, E-safeguard |
+| P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474) | K-gabriel, F-finrpt |
 | P1 (Core banking) | 13 | D-gl (5%) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
