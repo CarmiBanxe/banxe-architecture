@@ -6,6 +6,12 @@
 # server-side guardian-branch-naming check. Safe to run repeatedly.
 #
 # Usage:  bash scripts/install-hooks.sh   (from the repo root or anywhere inside it)
+#
+# Session isolation (ADR-120): do NOT work or commit in the shared checkout — every
+# session runs in a DEDICATED git worktree off origin/main. Launch one with:
+#     bash scripts/bx-session.sh agent/<central|right|factory>/<id>/<slug>
+# The .githooks/pre-commit installed here enforces ADR-120 (refuses commits from the
+# shared/main checkout).
 set -eu
 
 # Resolve repo root (works from any subdir).
