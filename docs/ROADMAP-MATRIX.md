@@ -17,7 +17,7 @@
 | **A — Customer Onboarding** | A-kyb | KYB business — Companies House, UBO chain, director checks | 0% | P1 | Sprint 11 | CTIO |
 | **B — Product Catalogue** | B-emi | EMI product definitions — e-money accounts, cards, IBAN | 0% | P1 | Sprint 10 | CEO |
 | **B — Product Catalogue** | B-pricing | Pricing rules, fee schedules, product tiers | 0% | P2 | Sprint 11 | CEO |
-| **C — Payment Rails** | C-fps | UK Faster Payments (FPS) — send/receive, account validation | 0% | P1 | Sprint 10 | CTIO |
+| **C — Payment Rails** | C-fps | UK Faster Payments (FPS) — send/receive, account validation | Spec-Locked — In Progress (IL-494; C-FPS-BUILD-SPEC promotes payment-rails-research; Modulr primary / ClearBank fallback; emits to D-recon Leg C + D-gl LedgerPort) | P1 | Sprint 10 | CTIO |
 | **C — Payment Rails** | C-sepa | SEPA Credit Transfer + SEPA Instant — EU corridor | 0% | P1 | Sprint 11 | CTIO |
 | **C — Payment Rails** | C-swift | SWIFT MT/MX — international wires, correspondent banking | 0% | P2 | Sprint 12 | CTIO |
 | **D — Core Banking Engine** | D-gl | General Ledger — Midaz (LerianStudio) PRIMARY, Apache Fineract FALLBACK | Spec-Locked — In Progress (5% base; IL-484; D-GL-BUILD-SPEC) | P1 | Sprint 8 | CTIO |
@@ -55,7 +55,7 @@
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
 | P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480), F-finrpt (Spec-Locked, In Progress — IL-481) | — (P0 critical-path J→E→D→K→F-finrpt fully Spec-Locked) |
-| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated), K-fscs (Spec-Locked, In Progress — IL-491), K-nca (Spec-Locked, In Progress — IL-492, MLRO-HITL) | All others 0% |
+| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated), K-fscs (Spec-Locked, In Progress — IL-491), K-nca (Spec-Locked, In Progress — IL-492, MLRO-HITL), C-fps (Spec-Locked, In Progress — IL-494, FPS send/receive + CoP) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
 
