@@ -25,7 +25,7 @@
 | **D — Core Banking Engine** | D-fee | Fee Engine & billing — per-transaction fees, monthly charges, FX markup | Spec-Locked — In Progress (IL-488; D-FEE-BUILD-SPEC; billing activation operator-gated per ADR-090) | P1 | Sprint 10 | CTIO |
 | **D — Core Banking Engine** | D-recon | Reconciliation Engine — Midaz ledger ↔ safeguarding accounts ↔ payment rails | Spec-Locked — In Progress (IL-474; D-RECON-BUILD-SPEC promotes D-RECON-DESIGN) | P1 | Sprint 9 | CTIO |
 | **E — Treasury / ALM / Safeguarding** | E-treasury | Treasury management — liquidity, FX positions, ALM | 0% | P2 | Sprint 12 | CEO |
-| **E — Treasury / ALM / Safeguarding** | E-capital | Capital adequacy reporting — FCA ICARA (Internal Capital and Risk Assessment) | 0% | P1 | Q3 2026 | CEO |
+| **E — Treasury / ALM / Safeguarding** | E-capital | Capital adequacy reporting — FCA ICARA (Internal Capital and Risk Assessment) | Spec-Locked — In Progress (IL-497; E-CAPITAL-BUILD-SPEC; ICARA own-funds/K-factor/FOR/wind-down; consumes D-fin; submits via K-gabriel; capital ≠ safeguarded funds) | P1 | Q3 2026 | CEO |
 | **E — Treasury / ALM / Safeguarding** | E-safeguard | Safeguarding account management — segregated client funds (CASS 15) | Spec-Locked — In Progress (IL-474; E-SAFEGUARD-CASS15-SPEC) | P0 | **7 May 2026** | CEO + CTIO |
 | **F — Compliance & Risk** | F-aml | AML/Sanctions/KYC screening — OpenSanctions/Yente, Watchman, Marble CM | ~80% DONE | P0 | DONE | CTIO |
 | **F — Compliance & Risk** | F-fatca | FATCA/CRS tax reporting — US persons, CRS automatic exchange | 0% | P2 | Sprint 11 | CEO |
@@ -55,7 +55,7 @@
 | Priority | Count | Done / In Progress | Remaining |
 |----------|-------|--------------------|-----------|
 | P0 (Regulatory blockers) | 7 | F-aml (~80%), I-infra/security (~70-80%), J-engine/J-audit (Spec-Locked, In Progress — IL-472), E-safeguard + D-recon (Spec-Locked, In Progress — IL-474), K-gabriel (Spec-Locked, In Progress — IL-480), F-finrpt (Spec-Locked, In Progress — IL-481) | — (P0 critical-path J→E→D→K→F-finrpt fully Spec-Locked) |
-| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated), K-fscs (Spec-Locked, In Progress — IL-491), K-nca (Spec-Locked, In Progress — IL-492, MLRO-HITL), C-fps (Spec-Locked, In Progress — IL-494, FPS send/receive + CoP), C-sepa (Spec-Locked, In Progress — IL-496, SCT + SCT Inst) | All others 0% |
+| P1 (Core banking) | 13 | D-gl (Spec-Locked, In Progress — 5% base, IL-484), D-fin (Spec-Locked, In Progress — IL-485), D-fee (Spec-Locked, In Progress — IL-488, billing operator-gated), K-fscs (Spec-Locked, In Progress — IL-491), K-nca (Spec-Locked, In Progress — IL-492, MLRO-HITL), C-fps (Spec-Locked, In Progress — IL-494, FPS send/receive + CoP), C-sepa (Spec-Locked, In Progress — IL-496, SCT + SCT Inst), E-capital (Spec-Locked, In Progress — IL-497, ICARA own-funds/capital-adequacy) | All others 0% |
 | P2 (Operational) | 9 | L-lake (30%) | All others 0% |
 | P3 (Backlog) | 3 | 0 | All 0% |
 
