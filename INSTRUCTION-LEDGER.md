@@ -16567,3 +16567,20 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch off origin/main@2fcf992; single new shard; no prior entry modified.
 - **Proof (ledger):** `build_ledger.py --check` exit 0; guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming / guardian-schemas green (local); squash PR to main (merge-queue); operator merges.
 - **Refs:** `docs/SKILLS-MATRIX.md`; `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` §S-FAC-64; `agents/passports/internal_audit_agent.yaml`, `resilience_agent.yaml`, `ml_pipeline_agent.yaml`; `scripts/train.sh` (S-FAC-63); `.claude/rules/agents.md` (allowed_skills = permission to use); ADR-120; ADR-119; ADR-060.
+
+---
+
+### IL-494 - agent-factory-c-fps-build-spec @ 2026-06-24T10:00:00Z
+
+- **il_ts:** 2026-06-24T10:00:00Z
+- **session_id:** agent-factory-c-fps-build-spec
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-c-fps-build-spec/IL-2026-06-24T10-00-00Z--3858d3.md`
+
+### C-fps — UK Faster Payments build-spec (send/receive + CoP + PSP adapter)
+- **Target:** C-fps (Block C — Payment Rails). UK Faster Payments: outbound send, inbound receive, Confirmation of Payee (CoP) account validation, payment status lifecycle. PSP adapter model (Modulr primary / ClearBank fallback per `docs/payment-rails-research.md` IL-012).
+- **Duplication Audit (ADR-102):** No prior C-FPS-BUILD-SPEC on main — new file non-duplicative. `docs/payment-rails-research.md` (IL-012) **promoted** into the build-spec (research retained as source, not duplicated). `docs/D-RECON-BUILD-SPEC.md` Leg C = payment rail — **referenced** (C-fps feeds Leg C, D-recon owns the engine). `GLService` / `LedgerPort` in banxe-emi-stack — **referenced** (C-fps posts settlement, does not reimplement GL). F-aml screening — **invoked** as pre-send gate (not reimplemented).
+- **Drift reconciled (C-fps vs D-recon vs D-gl):** C-fps = FPS rail integration (send/receive, CoP, PSP adapter, idempotent lifecycle, event emission). D-recon = reconciliation engine (3-leg; Leg C consumes C-fps rail data). D-gl = GL posting (LedgerPort; C-fps posts settlement journal entries). Boundaries explicit; no overlap.
+- **Perimeter:** docs/architecture plane only. `docs/payments/C-FPS-BUILD-SPEC.md` — actionable build-spec. `docs/ROADMAP-MATRIX.md` — additive update (C-fps 0% → Spec-Locked / In Progress IL-494). Runtime code in banxe-emi-stack / banxe-payment-core = separate operator-authorized action. No cross-repo write. No autonomous live payment execution. No DRAFT promotion. No passport activation.
+- **Refs:** docs/payment-rails-research.md (IL-012), docs/D-RECON-BUILD-SPEC.md, services/ledger/gl_service.py (D-gl/LedgerPort), F-aml (ADR-005), ADR-102/103/115/116/117/119, I-01/I-02/I-04/I-24/I-27/I-28, Pay.UK FPS scheme rules, PSR CoP regulations.
