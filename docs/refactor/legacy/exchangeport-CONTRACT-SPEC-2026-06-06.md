@@ -2,7 +2,7 @@
 
 - Family: exchangeport-contract
 - Target: banxe-payment-core / exchange contract
-- Scope: src/exchangeport/**, tests/exchangeport/**
+- Scope: src/exchangeport/**
 
 Date: 2026-06-06
 Status: CONTRACT SPEC (contract-only; defines ExchangePort interface, types, semantics, and conformance requirements for NEW capability C6 trading)
