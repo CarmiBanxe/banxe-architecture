@@ -258,5 +258,6 @@
   "agent-factory-factory-s-fac-65-traffic-light__db1123a3ccd9": 505,
   "agent-factory-governance-adr121-destructive-action-protection__b69b1b97dfd2": 506,
   "agent-factory-ledger-il-allocation-guard__406494ba19a5": 507,
-  "agent-factory-i-api__8dbd0662bee6": 508
+  "agent-factory-i-api__8dbd0662bee6": 508,
+  "agent-factory-governance-factory-status-report-prompt__5671d352429e": 509
 }
