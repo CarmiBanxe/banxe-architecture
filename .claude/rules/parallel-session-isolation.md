@@ -55,6 +55,44 @@ A session **MUST NEVER** run a destructive operation against shared state or ano
 
 **Recovery contract:** on shared-checkout / `.git` loss, recover via **`git clone` from origin** (origin = source of truth; no local-only state is canonical). Exact steps: `docs/runbooks/recover-shared-checkout.md`.
 
+### Rule 8 — IL number is FROZEN at merge time, never asserted at creation (ADR-119)
+
+> Added 2026-06-24 per the duplicate-IL incident: concurrent terminals double-claimed
+> IL-493/494/497/500/501 because each hardcoded `[IL-NNN]` against a stale base. PRs #744,
+> #749, #751 each carried a number already merged on `main`, forcing Claude Code to stop and
+> ask (an I-28 duplicate). Root cause = no atomic IL allocation across concurrent terminals.
+
+The IL number is a **pure function of `ledger/IL-SEQUENCE.json` + the shard set on the
+up-to-date base** (ADR-119). It MUST NOT be treated as known at shard-creation time.
+
+1. **Never hardcode `[IL-NNN]` at creation.** A shard's IL number is assigned by
+   `python ledger/build_ledger.py` (run **FROM ROOT**) as `max+1` over the **current
+   `origin/main`** — not over the base the branch was cut from. Until the branch is rebased
+   onto current `main` immediately before merge, any `[IL-NNN]` in the PR title, commit
+   subject, shard body, or companion doc is **provisional and unverified**.
+2. **Rebase-before-merge is mandatory.** Branch protection on `main` is `strict` (must be
+   up-to-date) precisely so a behind-branch cannot merge a stale number. Before merge:
+   `git fetch origin && git switch -C <work> origin/main && git checkout <pr> -- <own files>
+   && python ledger/build_ledger.py` (FROM ROOT) → read the assigned number from
+   `IL-SEQUENCE.json` → correct every human-facing `[IL-NNN]` to match → `--check` exit 0.
+3. **Serialize concurrent ledger PRs.** Merge one at a time; after each merge, the next PR
+   re-rebases onto the new `main` and regenerates, so it deterministically receives the next
+   `max+1`. `strict` protection enforces this at the platform level.
+4. **Append-only on the number sequence, never a renumber.** Regeneration assigns the new
+   shard `max+1` and MUST NOT mutate any existing key→value in `IL-SEQUENCE.json` (verify:
+   added = exactly the new key; mutated = ∅; removed = ∅). Never renumber a prior entry
+   (ADR-119, I-28). The same discipline applies to **named ordinals** (Rule N, ADR-NNN): a
+   collision with an already-merged ordinal is resolved by taking `max+1`, never by renumber
+   (this Rule itself was re-id'd 7 → 8 after ADR-121 landed Rule 7 concurrently).
+5. **A duplicate is a rebase signal, not a question.** If `build_ledger.py` on the current
+   base assigns a number different from the one asserted in the PR, that is the canonical
+   instruction to **rebase + regenerate + re-id**, performed autonomously — it is NOT a
+   stop-barrier and MUST NOT escalate to the operator (best-decision canon; only data-loss /
+   irreversibility / invariant breach is a stop-barrier).
+
+Enforced in CI by `guardian-ledger` (see
+`docs/guardian/guardian-ledger-il-collision-gate.md`) and by `strict` branch protection.
+
 ### Application
 
 These rules apply to:
@@ -73,3 +111,6 @@ These rules apply to:
 - docs/canon/operator-canon-2026-05.md — Operator canon
 - ADR-120 — per-session worktree isolation (commits); ADR-121 — destructive-action protection (Rule 7)
 - Shared-checkout-deletion incident 2026-06-24 (12 worktrees cascade-orphaned; re-clone → `06fac53`); `docs/runbooks/recover-shared-checkout.md`
+- ADR-119 — stable/frozen IL numbering (Rule 8 merge-time freeze; "Amendment 2026-06-24")
+- docs/guardian/guardian-ledger-il-collision-gate.md — pre-merge IL-collision gate spec (Rule 8)
+- PRs #744/#749/#751 (2026-06-24) — duplicate-IL re-id incident (IL-503/504/505); this guard = IL-507

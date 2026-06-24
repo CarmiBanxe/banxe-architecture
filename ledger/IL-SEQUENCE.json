@@ -256,5 +256,6 @@
   "agent-factory-migm28-roster-c-gate-resolution__d753bfae2558": 503,
   "agent-factory-dupsalvage-salvage-ledger-manifest__1a4314f57f56": 504,
   "agent-factory-factory-s-fac-65-traffic-light__db1123a3ccd9": 505,
-  "agent-factory-governance-adr121-destructive-action-protection__b69b1b97dfd2": 506
+  "agent-factory-governance-adr121-destructive-action-protection__b69b1b97dfd2": 506,
+  "agent-factory-ledger-il-allocation-guard__406494ba19a5": 507
 }
