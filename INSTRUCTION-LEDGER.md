@@ -16650,3 +16650,26 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Drift reconciled (C-sepa vs C-fps vs D-recon vs D-gl):** C-sepa = EU SEPA rail integration (SCT/SCT Inst, IBAN/BIC, ISO 20022, PSP adapter). C-fps = UK FPS rail integration (GBP, CoP). Both share `PaymentRailPort` — separate adapters, no overlap. D-recon = reconciliation engine (3-leg; Leg C consumes rail data from both C-fps and C-sepa). D-gl = GL posting (LedgerPort; both C-fps and C-sepa post settlement journal entries). Boundaries explicit.
 - **Perimeter:** docs/architecture plane only. `docs/payments/C-SEPA-BUILD-SPEC.md` — actionable build-spec. `docs/ROADMAP-MATRIX.md` — additive update (C-sepa 0% → Spec-Locked / In Progress IL-496). Runtime code in banxe-emi-stack / banxe-payment-core = separate operator-authorized action. No cross-repo write. No autonomous live SEPA execution. No DRAFT promotion. No passport activation.
 - **Refs:** docs/payments/C-FPS-BUILD-SPEC.md (IL-494, sibling), docs/payment-rails-research.md (IL-012), docs/migration/MIG-M1.5-sepa-split.md, docs/D-RECON-BUILD-SPEC.md, services/ledger/gl_service.py (D-gl/LedgerPort), F-aml (ADR-005), ADR-102/103/115/116/117/119, I-01/I-02/I-04/I-24/I-27/I-28, EPC SCT/RT1 Rulebooks, ISO 20022/13616/9362, PSD2 SCA.
+
+---
+
+### IL-497 - agent-factory-migm28-roster-c-gate-resolution @ 2026-06-24T18:00:00Z
+
+- **il_ts:** 2026-06-24T18:00:00Z
+- **session_id:** agent-factory-migm28-roster-c-gate-resolution
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-migm28-roster-c-gate-resolution/IL-2026-06-24T18-00-00Z--g5c8d3.md`
+
+### M2.8 Roster-C — gate resolution: all 4 gates resolved (#1/#2/#4/#5) (docs/architecture plane)
+- **Objective:** Resolve all 4 open M2.8 Roster-C gates (decision-brief IL-443) by engineering merit from verified evidence + canonical org-structure. docs/architecture plane only; no code, no scaffold, no file moves, no target-repo mutation.
+- **Live audit (source of truth, not memory):** origin/main@e715b22; ledger --check OK from root; max IL=496 → this = frozen max+1 = **IL-497** (ADR-119). Rebased from prior attempts: PR #740 closed (stale IL-493, taken by s-fac-64 #737); first #741 push stale IL-494 (taken by c-fps #739); second push stale IL-496 (taken by c-sepa #743). M2.8 PRs must be merged promptly or rebased before merge — IL is frozen at merge time, not creation; CENTRAL terminal appends may claim the creation-time number.
+- **ADR-102 dedup:** no existing gate-resolution entry on main → non-duplicative. Companion to (not duplicate of): IL-443 decision-brief (options, no selection); IL-442 §6 evidence; IL-441 split spec; IL-440 web-unify.
+- **Gate #1 @banxe/shared → (A) split by concern:** app-data (store/api-client/tokens, 16 src) stays in banxe-platform; view-support (hooks/granular-api, 7 src) stays in banxe-ui; design-tokens → banxe-ui (design-system home, aligns IL-440 + design_pipeline_agent.yaml CTX-09-DEVPLATFORM); types overlap → canonical in ui/shared. Grounded in IL-442 §6.1.
+- **Gate #2 @banxe/mobile → ui/apps/mobile canonical, re-home to platform; RN 0.76.9 / React 18.3.1:** ui/mobile is 2× larger (19 vs 10 src), layered (screens/theme/components), newer RN patch. Port platform's cards+sca routes. Per Roster-C, unified shell lands in banxe-platform. Grounded in IL-442 §6.2.
+- **Gate #4 promotion → (A) dedup-then-promote:** resolve #1+#2 on feature branches first, single clean feature→main promotion per repo. Avoids transient ADR-102 risk window. Pre-condition: evo1 server-side availability (ADR-103).
+- **Gate #5 owners → CTO (Oleg @p314pm, SMF26), per-package CODEOWNERS:** derived from canonical org-structure (ORG-STRUCTURE.md §1+§2.6, JOB-DESCRIPTIONS.md §1.6, cto_platform_agent.yaml CTX-03, design_pipeline_agent.yaml CTX-09-DEVPLATFORM). No separate frontend lead role exists; all frontend/platform/design-system falls under CTO. Per-package entries: @banxe/shared(app-data)→CTX-03, @banxe/shared(view-support)→CTX-09-DEVPLATFORM, @banxe/mobile→CTX-03. All @p314pm.
+- **Deliverable:** docs/migration/MIG-M2.8-roster-c-gate-resolution.md — additive record; decision-brief (IL-443) NOT overwritten. Unblocked scaffold map: S1 shared-split + S2 mobile-unify (parallelizable) → S3 promotion → S4 CODEOWNERS.
+- **Perimeter / operator-gates NOT crossed:** no code; no scaffold; no file moves; no target-repo mutation; no CODEOWNERS edit (planned for S4); KYC/KYB/AML = HOLD (I-27); STAFF-MATRIX untouched; evo1 re-confirm required before any code phase; parallel-session work untouched.
+- **Coupling/append-only:** branch agent/factory/migm28/roster-c-gate-resolution (off main@e715b22); frozen IL via ledger/IL-SEQUENCE.json (max+1); no prior entry mutated (490..496 unchanged); signed commit.
+- **Refs:** docs/migration/MIG-M2.8-roster-c-gate-resolution.md; MIG-M2.8-AWAITS-OPERATOR-decision-brief.md (IL-443); MIG-M2.8-roster-c-split-spec.md (IL-441); MIG-M2.8-PRE-collision-matrix.md (IL-429); MIG-M2.8-scaffold-execution-plan.md; IL-440/442; ORG-STRUCTURE.md (IL-065); JOB-DESCRIPTIONS.md (IL-071); cto_platform_agent.yaml; design_pipeline_agent.yaml; ADR-102/103/059-A/060/119; I-27; Rule 11.
