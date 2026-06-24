@@ -52,6 +52,7 @@ allowed_skills:
   - api_contract_guardian        # MANDATORY — owns ResilienceRequestPort / NotificationPort contracts
   - clean_architecture_enforcer  # MANDATORY advisory — no cross-contour imports (I-20)
   - smart_test_generator         # CONTROLLED — DR/BCP scenario tests (no real incident PII in fixtures)
+  - traffic_light_audit          # S-FAC-65 CO-OWNER (RED escalation) — HITL on 🔴 verdict per §4.2; binding only, does NOT activate (I-27)
 prohibited_skills:
   - auto_refactor_pro            # PROHIBITED — resilience runbooks are operationally critical (SYSC 15A)
 preferred_skill_sequences:
@@ -73,3 +74,4 @@ mandatory_skill_triggers:
   api_contract_guardian: ["ResilienceRequestPort change", "NotificationPort change"]
   performance_scanner: ["RTO/RPO target change", "incident-response hot-path change"]
   error_handling_standardizer: ["escalation path change", "AuditPort write path change (I-08)"]
+  traffic_light_audit: ["traffic-light verdict RED (HITL escalation to CTIO+COO)"]  # S-FAC-65 §4.2; PROPOSED (I-27), co-owner
