@@ -425,3 +425,6 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - [2026-04-19] 7816c87 — refactor(auth): add application service seam for thin router migration
 - [2026-05-03] 3adf76b — feat(infra): Keycloak realm banxe-emi — compose stack + realm export + runbook (pre-GATE-A; G-IAM-01..05,07 prep)
 - [2026-05-04] 76dd1e3 — feat(guardian-shim): claude-code pre-bash enforcer v0.1 + Strategy-S1 native hook (audit default)
+- [2026-05-09] e9a27e9 — feat(wave-c): SumsubHttpAdapter — KYCWorkflowPort via SumSub REST API, HMAC-SHA256 signed [IL-KYC-PROD-01] (#96)
+- [2026-05-09] a117c44 — feat(wave-c): ModulrSepaAdapter — PaymentRailPort via Modulr sandbox [IL-SEPA-PROD-01]
+- [2026-05-09] 5902a6f — feat(wave-e): MidazCryptoAdapter — CryptoLedgerPort via Midaz sandbox [IL-CRYPTO-PROD-01]

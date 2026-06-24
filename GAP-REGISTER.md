@@ -197,16 +197,13 @@
 
 ## KYC / Customer Lifecycle — Gaps (V-03 from HANDOFF-2026-05-04)
 
-- [ ] G-KYC-01: No KYC re-verification trigger on customer / organisation role change — NEW 2026-05-05
+- [x] G-KYC-01: No KYC re-verification trigger on customer / organisation role change — DONE 2026-05-09 (ADR-028 Accepted)
   Source: V-03 HIGH in HANDOFF-2026-05-04. Components: `services/customer_lifecycle/lifecycle_engine.py`, `services/customer_lifecycle/lifecycle_observer.py`, `services/hitl/org_roles.py`, `services/kyc/kyc_port.py`. Risk: when an existing customer or organisation member is granted elevated privileges (e.g. authorised signatory, beneficial owner ≥ 25%), KYC tier is not re-assessed → AML/MLR 2017 Reg 27/28 exposure.
-  Plan (3 steps):
-    1. **Audit** (read-only): trace `org_roles.py` mutations and `lifecycle_engine` transitions; confirm no `on_role_change` / `RoleChanged` event hook exists. Output: `docs/canon/v-03-audit-2026-05-05.md` (one-pager).
-    2. **Propose**: ADR-028 — KYC re-verification triggers. Define triggers (role grant, beneficial-ownership change, sanctions list match, recurring 24-month review, jurisdiction change), target FSM transitions in ADR-LCY-01, event payload schema, audit-trail integration.
-    3. **Fix**: implement `RoleChanged` event publisher in `org_roles.py`, subscriber in `lifecycle_observer.py` that triggers `KYC_RE_VERIFICATION_REQUIRED` state transition; add tests covering each trigger; canonise via update to ADR-LCY-01.
-  Owner: Architecture WG / Compliance lead. Linked: ADR-LCY-01 (canonical lifecycle FSM), .claude/rules/cass15.md, FCA MLR 2017 Reg 27/28.
+  Resolution: `ROLE_CHANGED` + `BENEFICIAL_OWNER_CHANGED` events wired through FSM lifecycle engine (`notify_attribute_change()`). Implementation: banxe-emi-stack PRs #69/#70/#99.
+  Owner: Architecture WG / Compliance lead. Linked: ADR-028 (Accepted), ADR-LCY-01, FCA MLR 2017 Reg 27/28.
 
-- [ ] G-KYC-02: KYC trigger coverage tests — NEW 2026-05-05
-  Add CI fixture that simulates each canonical trigger (role grant, BO ≥ 25%, sanctions match, 24-month review, jurisdiction change), asserts FSM transitions to KYC_RE_VERIFICATION_REQUIRED, and audit-trail records the event. Owner: Architecture WG.
+- [x] G-KYC-02: KYC trigger coverage tests — DONE 2026-05-09 (ADR-028 Accepted)
+  Resolution: `JURISDICTION_CHANGED` event (CRITICAL) + 12 tests (8 unit + 4 smoke) + operational check script (`scripts/kyc-retrigger-check.py`). Implementation: banxe-emi-stack PRs #69/#70/#99. Owner: Architecture WG.
 
 ## Operations / Backups — Gaps (V-07 from HANDOFF-2026-05-04)
 
