@@ -16650,3 +16650,20 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Drift reconciled (C-sepa vs C-fps vs D-recon vs D-gl):** C-sepa = EU SEPA rail integration (SCT/SCT Inst, IBAN/BIC, ISO 20022, PSP adapter). C-fps = UK FPS rail integration (GBP, CoP). Both share `PaymentRailPort` — separate adapters, no overlap. D-recon = reconciliation engine (3-leg; Leg C consumes rail data from both C-fps and C-sepa). D-gl = GL posting (LedgerPort; both C-fps and C-sepa post settlement journal entries). Boundaries explicit.
 - **Perimeter:** docs/architecture plane only. `docs/payments/C-SEPA-BUILD-SPEC.md` — actionable build-spec. `docs/ROADMAP-MATRIX.md` — additive update (C-sepa 0% → Spec-Locked / In Progress IL-496). Runtime code in banxe-emi-stack / banxe-payment-core = separate operator-authorized action. No cross-repo write. No autonomous live SEPA execution. No DRAFT promotion. No passport activation.
 - **Refs:** docs/payments/C-FPS-BUILD-SPEC.md (IL-494, sibling), docs/payment-rails-research.md (IL-012), docs/migration/MIG-M1.5-sepa-split.md, docs/D-RECON-BUILD-SPEC.md, services/ledger/gl_service.py (D-gl/LedgerPort), F-aml (ADR-005), ADR-102/103/115/116/117/119, I-01/I-02/I-04/I-24/I-27/I-28, EPC SCT/RT1 Rulebooks, ISO 20022/13616/9362, PSD2 SCA.
+
+---
+
+### IL-497 - agent-factory-e-capital @ 2026-06-24T17:30:00Z
+
+- **il_ts:** 2026-06-24T17:30:00Z
+- **session_id:** agent-factory-e-capital
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-e-capital/IL-2026-06-24T17-30-00Z--379a72.md`
+
+### E-capital — FCA ICARA capital-adequacy reporting build-spec (own-funds + K-factor + wind-down)
+- **Target:** E-capital (Block E — Treasury/ALM/Safeguarding). FCA ICARA: own-funds composition (CET1/AT1/T2), permanent minimum requirement (PMR £350k), fixed-overheads requirement (FOR 25%), K-factor requirement (mostly nil for pure EMI), wind-down trigger/analysis, liquid-asset requirement, ICARA document generation, capital-adequacy return via K-gabriel submission pattern.
+- **Duplication Audit (ADR-102):** No prior E-CAPITAL-BUILD-SPEC on main — new file non-duplicative. `D-FIN-BUILD-SPEC.md` (IL-485) — **referenced** (E-capital consumes D-fin `FinancialStatementSet` for own-funds figures; does NOT reimplement financial reporting). `D-GL-BUILD-SPEC.md` (IL-484) — **referenced** (consumed via D-fin; no direct GL posting). `E-SAFEGUARD-CASS15-SPEC.md` (IL-474) — **fenced** (capital ≠ safeguarded client funds — distinct regulatory regimes). `J-ENGINE-BUILD-SPEC.md` (IL-472) — **fenced** (no interaction with safeguarding engine). `K-GABRIEL-BUILD-SPEC.md` (IL-480) — **reuses submission pattern** (E-capital prepares content; K-gabriel submits; not duplicated). `F-FINRPT-BUILD-SPEC.md` (IL-481) — sibling return type, no overlap.
+- **Drift reconciled (E-capital vs E-safeguard vs D-fin vs D-gl):** E-capital = firm's OWN regulatory capital (ICARA, MIFIDPRU own-funds, K-factors). E-safeguard = CLIENT money in segregated accounts (CASS 15). These are separate regulatory regimes — capital is the firm's buffer; safeguarded funds are client money held in trust. D-fin provides the financial statement data from which own-funds are derived. D-gl is the underlying GL (consumed via D-fin, not directly). K-gabriel handles FCA submission mechanics. Boundaries explicit; no overlap.
+- **Perimeter:** docs-plane only. `docs/regulatory/E-CAPITAL-BUILD-SPEC.md` — actionable build-spec. `docs/ROADMAP-MATRIX.md` — additive update (E-capital 0% → Spec-Locked / In Progress IL-497). Runtime code in banxe-emi-stack = separate operator-authorized action. No cross-repo write. No autonomous regulatory submission (HITL mandatory). No DRAFT promotion. No passport activation.
+- **Refs:** docs/architecture/D-FIN-BUILD-SPEC.md (IL-485), docs/architecture/D-GL-BUILD-SPEC.md (IL-484), docs/safeguarding/E-SAFEGUARD-CASS15-SPEC.md (IL-474), docs/safeguarding/J-ENGINE-BUILD-SPEC.md (IL-472), docs/regulatory/K-GABRIEL-BUILD-SPEC.md (IL-480), docs/regulatory/F-FINRPT-BUILD-SPEC.md (IL-481), ADR-102/103/115/116/117/119, I-01/I-24/I-27/I-28, FCA MIFIDPRU 4.3–4.14, EMD2/PSR, FCA ICARA guidance (PS21/6, FG20/1).
