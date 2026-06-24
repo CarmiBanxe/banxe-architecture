@@ -79,3 +79,18 @@ train-dry:
 
 train-verify:
 	@bash scripts/train.sh verify
+
+# ── Factory status report («ОТЧЁТ ФАБРИКИ») — S executable collector ──
+#   make report          → scripts/factory-report.sh (RU text, read-only audit)
+#   make report-json     → scripts/factory-report.sh --json (machine-readable)
+#   make report-self-test→ scripts/factory-report.sh --self-test (hermetic, no host)
+.PHONY: report report-json report-self-test
+
+report:
+	@bash scripts/factory-report.sh
+
+report-json:
+	@bash scripts/factory-report.sh --json
+
+report-self-test:
+	@bash scripts/factory-report.sh --self-test
