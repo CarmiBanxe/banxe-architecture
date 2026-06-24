@@ -16738,3 +16738,29 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Biometric-delegation / privacy note (HARD FENCE):** Factory specifies a regulatory KYC process ONLY — performs/simulates/implements NO facial recognition, liveness, or biometric matching, and collects/stores NO facial/biometric data. ALL such operations delegated to licensed provider via `KYCProviderPort` (port REUSED, not reimplemented). Privacy-by-design: GDPR/UK-GDPR lawful basis (legal obligation MLR/AMLD), data minimisation (pseudonymous refs only), retention (5y audit / provider-held raw), consent capture, PII Proxy (Presidio) per I-security. No raw biometric persisted Banxe-side.
 - **Boundary (drift reconciled):** A-kyc = individual KYC *orchestration* (case/decision, risk-rating, EDD, ongoing-monitoring triggers). DEFINES onboarding gate — does NOT reimplement: `KYCProviderPort` (consumed/reused — biometrics provider-side), F-aml AML/sanctions/PEP screening (A-kyc hands off, F-aml owns), A-idv OCR + biometric-matching pipeline (separate sibling, also provider-delegated), B-emi account/IBAN creation (A-kyc gates, B-emi owns), A-kyb business KYB (separate).
 - **Refs:** docs/architecture/A-KYC-BUILD-SPEC.md; kyc-provider-port-CONTRACT-SPEC-2026-06-06.md + kyc-provider-port-SPEC-2026-05-26.md; aml-patterns-SPEC-2026-06-06.md; B-EMI-BUILD-SPEC.md; ADR-021/027/028/034/102/103/115/116/117/119; I-01/I-28; BUG-007 (HITL); CLAUDE.md §9/§10/§11; I-security (PII Proxy).
+
+---
+
+### IL-501 - agent-factory-a-idv @ 2026-06-24T21:30:00Z
+
+- **il_ts:** 2026-06-24T21:30:00Z
+- **session_id:** agent-factory-a-idv
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-a-idv/IL-2026-06-24T21-30-00Z--965e28.md`
+
+### A-idv — Identity-verification pipeline build-spec (document OCR + biometric/liveness matching DELEGATED to licensed provider)
+
+- **Target:** A-idv (Block A — Customer Onboarding). Identity-verification *pipeline*: document capture/OCR + biometric/liveness matching, VerificationResult model (score, per-check breakdown, evidence refs), pass/fail/refer flow feeding A-kyc orchestration. OCR + biometric/liveness matching are **DELEGATED to a licensed third-party IDV provider (SumSub primary + fallback) via the existing `KYCProviderPort`** — NO in-house OCR/biometrics. Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/architecture/A-IDV-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (A-idv 0% → Spec-Locked/In Progress + P1 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — main=b8b8f8b, `build_ledger.py --check` OK, IL-SEQUENCE max=500 → next=501; PRs #749 (dup-salvage) + #744 (M2.8 Roster-C, operator-gated) NOT touched.
+  2. ADR-102 dedup — `find docs -iname '*a-idv*'` ⇒ empty; `ls docs/architecture` ⇒ A-KYC/B-EMI/D-FEE/D-FIN/D-GL only. No existing A-idv pipeline artifact → new, non-duplicative.
+  3. Wrote build-spec (scope, VerificationResult model, provider-delegation flow via KYCProviderPort, privacy-by-design GDPR/PII-Proxy, audit/re-verification, producer/consumer contracts referenced-not-duplicated, ADR-102 dup-audit, SAFETY FENCE, perimeter, DoD, out-of-scope fail-closed, operator-gates-not-crossed).
+  4. ROADMAP-MATRIX.md additive: A-idv row → Spec-Locked/In Progress (IL-501); P1 summary line extended. No frozen row altered (description column left intact; scope-correction note in spec).
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..500 unchanged); new shard → IL-501. Signed squash-PR merged with 4 guardians + CI GREEN.
+- **Deviation:** session_id `agent-factory-a-idv` (id-less, matching `agent-factory-a-kyc`/`b-emi`/`e-capital` sibling convention) vs ADR-060 branch `agent/factory/aidv01/a-idv-build-spec` — ledger session_id intentionally decoupled from branch id per existing shard precedent. Legacy ROADMAP description mentions in-house "OCR + biometric matching" (PassportEye/DeepFace lineage); spec supersedes with provider-delegation per SAFETY FENCE (frozen description row left unaltered).
+- **Blocker:** none.
+- **Biometric-delegation / privacy note (HARD FENCE):** Factory specifies a regulatory identity-verification process ONLY — performs/simulates/implements NO OCR, facial recognition, liveness, or biometric matching, and collects/stores NO facial/biometric/raw-document data. ALL such operations delegated to licensed IDV provider via `KYCProviderPort` (port REUSED, not reimplemented). Privacy-by-design: GDPR/UK-GDPR lawful basis (legal obligation MLR/AMLD), data minimisation (normalised VerificationResult + provider/evidence refs only), retention (5y audit / provider-held raw), consent (upstream A-kyc), PII Proxy (Presidio) per I-security. No raw biometric/document persisted Banxe-side.
+- **Boundary (drift reconciled):** A-idv = identity-verification *pipeline* (document OCR + biometric/liveness DELEGATED; VerificationResult score/decision/evidence; pass/fail/refer). PRODUCES verification result consumed by A-kyc — does NOT reimplement: `KYCProviderPort` (consumed/reused — OCR/biometrics provider-side), A-kyc case/decision orchestration (A-kyc owns lifecycle + MLRO HITL; A-idv refers borderline to A-kyc), F-aml AML/sanctions/PEP screening (triggered by A-kyc on pass, not A-idv), A-kyb business KYB (separate), B-emi account/IBAN (separate). A-kyc orchestrates, A-idv verifies.
+- **Refs:** docs/architecture/A-IDV-BUILD-SPEC.md; A-KYC-BUILD-SPEC.md (IL-500); kyc-provider-port-CONTRACT-SPEC-2026-06-06.md + kyc-provider-port-SPEC-2026-05-26.md; aml-patterns-SPEC-2026-06-06.md; ADR-021/027/028/034/102/103/115/116/117/119; I-01/I-28; BUG-007 (HITL); CLAUDE.md §9/§10/§11; I-security (PII Proxy).
