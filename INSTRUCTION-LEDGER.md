@@ -17056,3 +17056,29 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** DONE — «ОТЧЁТ ФАБРИКИ» is now executable (`make report` / `--json` / `--self-test`). DO NOT MERGE pending operator review.
 - **Recommended next (operator):** merge PR; run `make report` on the legion host to exercise E/F with live `ollama`/ssh; deliver per-model cards so section F stops flagging the gap; optionally wire `make report-json` output into the dashboard model.
 - **Refs:** `scripts/factory-report.sh` (NEW), `Makefile` (report targets); `docs/governance/FACTORY-STATUS-REPORT-PROMPT.md` (spec A–G); `docs/SKILLS-MATRIX.md`, `scripts/train.sh` (skills/verify); `agents/passports/*.yaml` (57); `AGENTS.md`, `.claude/agents/` (swarm types); `ADR-117` (factory↔project compute), `MODEL-RISK-MANAGEMENT.md` (model cards); `scripts/traffic-light.sh` + `deploy/cron/traffic-light.crontab` (G schedule); ADR-059-A, ADR-120, ADR-121, I-28.
+
+---
+
+### IL-514 - agent-factory-f-fatca @ 2026-06-25T14:30:00Z
+
+- **il_ts:** 2026-06-25T14:30:00Z
+- **session_id:** agent-factory-f-fatca
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-f-fatca/IL-2026-06-25T14-30-00Z--e990cc.md`
+
+### F-fatca — FATCA/CRS/DAC8 tax-reporting build-spec (classification + due-diligence + reporting, HITL-filed)
+
+- **Target:** F-fatca (Block F — Compliance & Risk). Regulatory **tax reporting**: FATCA (US persons/IRS, IGA Model 1/2) + CRS (OECD AEOI) + DAC8/CARF context — account-holder classification, tax-residency self-certification capture, reportable-account determination (new vs pre-existing, de-minimis thresholds), FATCA XML + CRS 2.0 XML generation, submission. Config-as-data. Second P2 docs-spec (operator chose: continue P2 autonomously). Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/regulatory/F-FATCA-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (F-fatca 0% → Spec-Locked/In Progress + P2 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — origin/main=a5e2ddc (after drift), `build_ledger.py --check` OK, IL-SEQUENCE max=513 → next = max+1 = **IL-514**.
+  2. ADR-102 dedup — `find docs -iname '*fatca*'`/`*crs*` ⇒ empty; `ls docs/regulatory` ⇒ E-CAPITAL/F-FINRPT/K-FSCS/K-GABRIEL/K-NCA only. No existing F-fatca artifact → new, non-duplicative. Promotes the DAC8 tax-reporting snapshot.
+  3. Wrote build-spec (scope, SelfCertification/TaxClassification/ReportableAccount data model, reporting flow consuming A-kyc self-cert + B-emi/D-gl account data, submission via K-gabriel pattern reused, privacy-by-design legal-obligation basis, ADR-102 dup-audit, SCOPE/PRIVACY FENCE, perimeter, DoD, out-of-scope fail-closed, operator-gates-not-crossed). Placed in docs/regulatory/.
+  4. ROADMAP-MATRIX.md additive: F-fatca row → Spec-Locked/In Progress (IL-514); P2 summary line extended (L-lake + B-pricing + F-fatca). No frozen row altered.
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..513 unchanged); new shard → IL-514. Signed squash-PR merged with 4 required guardians + ledger gates GREEN.
+- **Deviation / IL-drift reconciliation:** First build off base 7f2b478 (max=512) assigned IL-513. Concurrent PR #760 (factory-report-collector) merged first claiming IL-513, advancing main to a5e2ddc → branch DIRTY. Per parallel-session-isolation Rule 7 + reset/rebase loop: reset worktree to fresh origin/main, recovered spec from prior commit object, re-ran build_ledger.py (max+1) → F-fatca renumbered **IL-513 → IL-514**; ALL IL references corrected (ROADMAP/shard/PR title/commit); --force-with-lease on agent branch only. session_id `agent-factory-f-fatca` (id-less, sibling convention) vs ADR-060 branch `agent/factory/ffatca01/f-fatca-build-spec`.
+- **Blocker:** none (drift resolved via reset/rebase loop).
+- **Privacy/scope note (HARD FENCE):** Regulatory tax-reporting process ONLY — NOT tax advice, NOT financial advice to customers. SPECIFICATION only: factory performs no live classification and files nothing. NO autonomous regulatory submission — every filing HITL-gated (human sign-off). Privacy-by-design for tax PII: GDPR/UK-GDPR lawful basis = legal obligation (Art.6(1)(c)); customer notification of data transfer; data minimisation (FATCA/CRS schema fields only); PII Proxy (Presidio); retention per regulatory requirement (5Y audit, I-24/I-28). Fail-closed on missing self-cert (remediation, no silent omission).
+- **Boundary (drift reconciled):** F-fatca = FATCA/CRS classification + due-diligence + reporting XML generation + HITL-gated submission. CONSUMES onboarding + account data — does NOT reimplement: A-kyc KYC capture/verification (A-kyc captures tax-residency self-certification + indicia; F-fatca consumes/classifies), B-emi product/account creation + D-gl GL posting (F-fatca reads account identity + period-end balance/gross-payments; does not create accounts or post), K-gabriel generic submission engine (F-fatca's TaxSubmissionPort REUSES the GabrielSubmissionPort-style pattern — idempotent per period, sandbox-first, HITL, append-only audit — not reimplemented), F-finrpt prudential returns (sibling, distinct domain prudential ≠ tax). Submits via K-gabriel pattern; consumes A-kyc self-cert + B-emi/D-gl account data.
+- **Refs:** docs/regulatory/F-FATCA-BUILD-SPEC.md; SNAPSHOT-2026-05-06-dac8-tax-reporting-block.md (promoted); A-KYC-BUILD-SPEC.md (IL-500, self-cert source); B-EMI-BUILD-SPEC.md (IL-498) + D-GL-BUILD-SPEC.md (IL-484, account/balance); K-GABRIEL-BUILD-SPEC.md (IL-480, submission pattern); F-FINRPT-BUILD-SPEC.md (IL-481, sibling); DAC8 (EU) 2023/2226; OECD CRS 2.0 + CARF; US FATCA / IGA; GDPR Art.6(1)(c); ADR-027/102/103/115/116/117/119; parallel-session-isolation Rule 7; I-01/I-24/I-27/I-28; CLAUDE.md §9/§10/§11; PII Proxy.
