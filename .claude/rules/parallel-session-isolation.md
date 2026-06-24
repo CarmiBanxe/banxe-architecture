@@ -37,6 +37,24 @@ Append-only at end of file. When conflict appears (`<<<<<<<` markers), strategy 
 
 If `git status --short` shows uncommitted modifications NOT initiated by current session, STOP and report to operator. Do NOT auto-stash, auto-restore, or auto-discard. Operator decides scope of resolution.
 
+### Rule 7 — Never run destructive ops against shared or foreign-session state (ADR-121, STOP-barrier)
+
+> Added 2026-06-24 per the shared-checkout-deletion incident: deleting the shared `.git` cascade-orphaned all 12 linked worktrees at once (no commits lost — origin intact; recovered via `git clone`). This is a **stop-barrier**, not advisory — same priority as the `safety-rules.md` destructive-op verify-step.
+
+A session **MUST NEVER** run a destructive operation against shared state or another session's state. Against any path/object the session **did not itself create**, forbidden:
+
+- `rm -rf` (or any delete / `shred` / `truncate`) on **any repository checkout** or its contents;
+- deleting / moving / corrupting a **`.git`** directory — shared OR a linked worktree's admin under `.git/worktrees/`;
+- `git worktree remove` / `git worktree prune` of a worktree the session **did not create**;
+- force-removing/updating **foreign branches** (`git branch -D`, `git push --delete`, `git update-ref -d`) it does not own;
+- `chattr` / permission / ownership changes on shared `.git` or shared checkouts.
+
+**Cleanup is limited to the session's OWN isolated worktree** (created off `origin/main` per ADR-120; `bx-session.sh --cleanup` removes only that one). Anything beyond it is **operator-owned**: report, do not act (extends Rule 6). **Uncertain whether a target is foreign ⇒ fail-closed** (treat as foreign; do not destroy) and escalate.
+
+**Resilience:** prefer an **independent clone per session** (own `.git`, no shared substrate) so destruction cannot cascade; if linked worktrees are used, the shared `.git` MUST be operator-protected (`chattr +i` / backup) — the single-point-of-failure is documented and accepted in ADR-121.
+
+**Recovery contract:** on shared-checkout / `.git` loss, recover via **`git clone` from origin** (origin = source of truth; no local-only state is canonical). Exact steps: `docs/runbooks/recover-shared-checkout.md`.
+
 ### Application
 
 These rules apply to:
@@ -53,3 +71,5 @@ These rules apply to:
 - approval-rules.md (sibling canon)
 - ADR-027 — Claude Code permissions reclassification
 - docs/canon/operator-canon-2026-05.md — Operator canon
+- ADR-120 — per-session worktree isolation (commits); ADR-121 — destructive-action protection (Rule 7)
+- Shared-checkout-deletion incident 2026-06-24 (12 worktrees cascade-orphaned; re-clone → `06fac53`); `docs/runbooks/recover-shared-checkout.md`
