@@ -16712,3 +16712,29 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** S2 DevSecOps executable controls = ACTIVE (advisory). Maturity advanced PARTIAL→ACTIVE for SAST/SCA/SBOM/signing; gate posture unchanged (no required gate). DO NOT MERGE pending operator review — squash-merge operator-reserved.
 - **Recommended next (operator):** after the four advisory checks prove green, mark REQUIRED in branch protection — `codeql-analyze (python)`, `osv-scanner-scan`, `sbom-cyclonedx`, `cosign-sign`; then decide O-2 (Dependabot toggle), O-5/O-7 (cosign sign target + identity policy), CodeQL on-prem self-hosted runner switch (ADR-031), and the remaining gaps (DAST/OWASP ZAP, SLSA, STRIDE instances, DORA workflow).
 - **Refs:** `docs/governance/DEVSECOPS-SSDLC.md`; `docs/roadmap/TARGET-MODEL-CONFORMANCE-2026-06-24.md`; `.github/workflows/{codeql,osv-scanner,sbom,cosign-sign}.yml` (NEW); removed `.github/workflows/{sbom,cosign-sign}.yml.template`; ADR-031 (on-prem), ADR-059-A (append-only ledger), ADR-102 (anti-dup), ADR-103 (no key material/server-only), ADR-120 (isolated worktree), CLAUDE.md §10 (Config-over-Hardcoding); grounding `.github/workflows/{ci,guardian,ledger-build,docs}.yml`.
+
+---
+
+### IL-500 - agent-factory-a-kyc @ 2026-06-24T20:30:00Z
+
+- **il_ts:** 2026-06-24T20:30:00Z
+- **session_id:** agent-factory-a-kyc
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-a-kyc/IL-2026-06-24T20-30-00Z--0cb504.md`
+
+### A-kyc — Individual KYC onboarding orchestration build-spec (doc verification + liveness DELEGATED to licensed provider)
+
+- **Target:** A-kyc (Block A — Customer Onboarding). Individual KYC onboarding *orchestration*: KYCCase/KYCDecision model, risk-rating + EDD step-up, ongoing-monitoring triggers, decision/HITL (MLRO) flow. Document verification, liveness, and biometric matching are **DELEGATED to a licensed third-party provider (SumSub primary + fallback) via the existing `KYCProviderPort`** — NO in-house biometrics. Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/architecture/A-KYC-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (A-kyc 0% → Spec-Locked/In Progress + P1 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — main=fef95b7 at start, `build_ledger.py --check` OK; PRs #746 (S2 devsecops) + #744 (M2.8 Roster-C, operator-gated) NOT touched.
+  2. ADR-102 dedup — `find docs -iname '*a-kyc*'` ⇒ empty; `ls docs/architecture` ⇒ B-EMI/D-FEE/D-FIN/D-GL only. No existing A-kyc orchestration artifact → new, non-duplicative.
+  3. Wrote build-spec (scope, KYCCase/Decision data model, provider-delegation flow via KYCProviderPort, privacy-by-design GDPR/PII-Proxy, risk-rating + EDD step-up + ongoing monitoring, producer/consumer contracts referenced-not-duplicated, ADR-102 dup-audit, SAFETY FENCE, perimeter, DoD, out-of-scope fail-closed, operator-gates-not-crossed).
+  4. ROADMAP-MATRIX.md additive: A-kyc row → Spec-Locked/In Progress (IL-500); P1 summary line extended. No frozen row altered (description column left intact; scope-correction note in spec).
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..499 unchanged); new shard → IL-500. Signed squash-PR merged with 4 guardians + CI GREEN.
+- **Deviation / IL-drift reconciliation:** Initial run assigned A-kyc=IL-499 off base fef95b7. Concurrent PR #746 (S2 devsecops) merged first and claimed IL-499 (`agent-factory-factory-s2-devsecops-activate`), advancing main to aa6784e and turning this branch DIRTY/CONFLICTING. Per parallel-session-isolation + append-only canon: reset worktree to fresh origin/main (aa6784e), restored canonical ledger/IL-SEQUENCE.json + INSTRUCTION-LEDGER.md, re-ran build_ledger.py (max+1) → A-kyc renumbered **IL-499 → IL-500**; ALL IL references corrected (spec/ROADMAP/shard); --force-with-lease on agent branch only. session_id `agent-factory-a-kyc` (id-less, matching `agent-factory-e-capital`/`b-emi` sibling convention) vs ADR-060 branch `agent/factory/akyc01/a-kyc-build-spec`. Legacy ROADMAP description mentions in-house "PassportEye, DeepFace"; spec supersedes with provider-delegation per SAFETY FENCE (frozen description row left unaltered).
+- **Blocker:** none (drift resolved via rebase/reset loop).
+- **Biometric-delegation / privacy note (HARD FENCE):** Factory specifies a regulatory KYC process ONLY — performs/simulates/implements NO facial recognition, liveness, or biometric matching, and collects/stores NO facial/biometric data. ALL such operations delegated to licensed provider via `KYCProviderPort` (port REUSED, not reimplemented). Privacy-by-design: GDPR/UK-GDPR lawful basis (legal obligation MLR/AMLD), data minimisation (pseudonymous refs only), retention (5y audit / provider-held raw), consent capture, PII Proxy (Presidio) per I-security. No raw biometric persisted Banxe-side.
+- **Boundary (drift reconciled):** A-kyc = individual KYC *orchestration* (case/decision, risk-rating, EDD, ongoing-monitoring triggers). DEFINES onboarding gate — does NOT reimplement: `KYCProviderPort` (consumed/reused — biometrics provider-side), F-aml AML/sanctions/PEP screening (A-kyc hands off, F-aml owns), A-idv OCR + biometric-matching pipeline (separate sibling, also provider-delegated), B-emi account/IBAN creation (A-kyc gates, B-emi owns), A-kyb business KYB (separate).
+- **Refs:** docs/architecture/A-KYC-BUILD-SPEC.md; kyc-provider-port-CONTRACT-SPEC-2026-06-06.md + kyc-provider-port-SPEC-2026-05-26.md; aml-patterns-SPEC-2026-06-06.md; B-EMI-BUILD-SPEC.md; ADR-021/027/028/034/102/103/115/116/117/119; I-01/I-28; BUG-007 (HITL); CLAUDE.md §9/§10/§11; I-security (PII Proxy).
