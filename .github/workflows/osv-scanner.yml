@@ -1,0 +1,40 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SCA — OSV-Scanner (dependency + filesystem CVE scan). Sprint S2 — G-S2-05.
+#
+# Canon SCA control = "Dependabot + OSV-Scanner" (DEVSECOPS-SSDLC.md §5,
+# in-perimeter, no external SaaS). This workflow wires the executable OSV-Scanner
+# half (dependency + fs scan over the repo). The Dependabot half is a GitHub
+# repo-setting toggle (Settings → Code security) — operator-reserved, §9 O-2.
+#
+# ADVISORY (non-blocking): runs on PR/push so it EXECUTES and can prove green,
+# but is NOT a required status check — promotion to "required" is operator-only
+# (DEVSECOPS-SSDLC.md §3: S2 adds no required gate; §9 O-2).
+#
+# Anchors: docs/governance/DEVSECOPS-SSDLC.md (G-S2-05, §5 SCA=Dependabot+OSV); §5.2.
+# ─────────────────────────────────────────────────────────────────────────────
+name: osv-scanner (SCA — advisory)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  osv-scan:
+    name: osv-scanner-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run OSV-Scanner (recursive dependency + fs scan)
+        uses: google/osv-scanner-action/osv-scanner-action@v1.9.1
+        with:
+          scan-args: |-
+            --recursive
+            --skip-git
+            ./

@@ -1,0 +1,49 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SAST — CodeQL (GitHub-native). Sprint S2 DevSecOps/SSDLC — G-S2-04.
+#
+# ADVISORY (non-blocking): runs on every PR/push so it EXECUTES and can prove
+# green, but is NOT a required status check — promotion to "required" in branch
+# protection is operator-reserved (DEVSECOPS-SSDLC.md §3: S2 adds no required
+# gate; §9 O-1). Canon target runner = on-prem self-hosted (ADR-031); the proving
+# phase uses GitHub-hosted ubuntu-latest (this repo carries NO customer/regulated
+# data — Factory perimeter, ADR-117 — so source-only SAST off-perimeter is in
+# bounds). Operator switches `runs-on` to a self-hosted label on activation.
+#
+# Anchors: docs/governance/DEVSECOPS-SSDLC.md (G-S2-04, §5 SAST=CodeQL); §5.2.
+# ─────────────────────────────────────────────────────────────────────────────
+name: codeql (SAST — advisory)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write   # required for CodeQL to upload SARIF results
+
+jobs:
+  codeql:
+    name: codeql-analyze (python)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
