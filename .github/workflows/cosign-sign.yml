@@ -1,0 +1,54 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Container / artifact signing — Cosign (keyless / OIDC). Sprint S2 — G-S2-02.
+# Activated from cosign-sign.yml.template (operator-approved ACTIVATE — RECONCILED
+# 2026-06-22, DEVSECOPS-SSDLC.md §4/§5).
+#
+# ADVISORY (non-blocking): runs on PR/push so it EXECUTES and can prove green
+# (installs + verifies Cosign is wired). NOT a required status check — promotion
+# to "required" is operator-only (DEVSECOPS-SSDLC.md §3; §9 O-7).
+#
+# Scope canon (NOT invented here — AWAITS OPERATOR, §9 O-5/O-7):
+#   - the signing TARGET (release artifact and/or container image reference), and
+#   - the identity policy (keyless OIDC via Fulcio/Rekor vs. KMS key)
+# remain operator decisions. The real `cosign sign` step is therefore guarded by
+# `release` + the operator-set repo variable COSIGN_SIGN_TARGET; it stays inert
+# (and green) on PR/push until the operator defines the target + identity. No key
+# material in repo (ADR-103 Part 1; secrets only in vault / GH secrets).
+#
+# Anchors: docs/governance/DEVSECOPS-SSDLC.md (G-S2-02, §5 signing=Cosign keyless); §5.2.
+# ─────────────────────────────────────────────────────────────────────────────
+name: cosign-sign (keyless/OIDC — advisory)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write      # required for keyless/OIDC signing (Fulcio)
+
+jobs:
+  cosign-sign:
+    name: cosign-sign
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.7.0
+
+      - name: Verify Cosign is wired
+        run: cosign version
+
+      - name: Sign target (keyless / OIDC) — operator-gated
+        # Inert until the operator defines COSIGN_SIGN_TARGET (repo variable) and
+        # the identity policy (§9 O-5/O-7). Runs only on a published release.
+        if: ${{ github.event_name == 'release' && vars.COSIGN_SIGN_TARGET != '' }}
+        run: |
+          echo "Signing operator-defined target: ${{ vars.COSIGN_SIGN_TARGET }}"
+          cosign sign --yes "${{ vars.COSIGN_SIGN_TARGET }}"

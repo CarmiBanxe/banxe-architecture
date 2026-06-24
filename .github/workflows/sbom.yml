@@ -1,0 +1,42 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SBOM — CycloneDX via syft (anchore/sbom-action). Sprint S2 — G-S2-01.
+# Activated from sbom.yml.template (operator-approved ACTIVATE — RECONCILED
+# 2026-06-22, DEVSECOPS-SSDLC.md §4/§5).
+#
+# ADVISORY (non-blocking): runs on PR/push so it EXECUTES and can prove green,
+# and uploads the SBOM as a build artifact. NOT a required status check —
+# promotion to "required" is operator-only (DEVSECOPS-SSDLC.md §3; §9 O-6).
+#
+# Anchors: docs/governance/DEVSECOPS-SSDLC.md (G-S2-01, §5 SBOM=syft→CycloneDX); §5.2.
+# ─────────────────────────────────────────────────────────────────────────────
+name: sbom (CycloneDX — advisory)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  sbom:
+    name: sbom-cyclonedx
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate CycloneDX SBOM (syft)
+        uses: anchore/sbom-action@v0.17.8
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: sbom.cyclonedx.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-cyclonedx
+          path: sbom.cyclonedx.json
