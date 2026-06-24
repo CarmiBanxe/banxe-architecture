@@ -15,6 +15,25 @@ case "$(git rev-parse --absolute-git-dir 2>/dev/null || echo /)" in
     exit 1 ;;
 esac
 
+# ── ADR-121 RULE 7: no destructive ops against shared/foreign state ──
+# (a) BLOCK staging of git-internal / worktree-admin paths — never a legitimate
+#     commit, so zero false-positives on normal commits.
+if git diff --cached --name-only | grep -Eq '(^\.git/|/worktrees/)'; then
+  echo "❌ ADR-121 RULE 7: refusing to commit git-internal / worktree-admin paths (.git/, */worktrees/)."
+  echo "   These are never committed; check your staged set (git diff --cached --name-only)."
+  exit 1
+fi
+# (b) WARN (non-blocking) if a staged *shell script* ADDS a destructive pattern targeting
+#     shared/foreign state. Scoped to *.sh added lines ⇒ does not false-block docs that merely
+#     mention these patterns, nor normal commits. Advisory only — never exits non-zero.
+_adr121_danger='(rm[[:space:]]+-[a-zA-Z]*r[a-zA-Z]*f|git[[:space:]]+worktree[[:space:]]+(remove|prune)|git[[:space:]]+branch[[:space:]]+-D|git[[:space:]]+push[[:space:]].*--delete|chattr[[:space:]].*\.git)'
+for _f in $(git diff --cached --name-only --diff-filter=ACM -- '*.sh' 2>/dev/null); do
+  if git diff --cached -- "$_f" | grep -E '^\+' | grep -Eiq "$_adr121_danger"; then
+    echo "⚠️  ADR-121 RULE 7 (advisory): '$_f' adds a destructive pattern (rm -rf / git worktree remove|prune / branch -D / push --delete / chattr .git)."
+    echo "   Cleanup is limited to the session's OWN worktree; never act on shared/foreign state. See ADR-121 + .claude/rules/parallel-session-isolation.md Rule 7."
+  fi
+done
+
 echo "🔍 Running LucidShark scan..."
 
 # Check if lucidshark is available
