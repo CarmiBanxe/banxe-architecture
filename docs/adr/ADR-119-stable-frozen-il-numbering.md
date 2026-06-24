@@ -80,3 +80,34 @@ shards and **append-only vs git HEAD** (no existing number mutated/removed).
 - Regenerated `INSTRUCTION-LEDGER.md` byte-identical to pre-change (207 shards, IL-249..455).
 - Regression: a probe shard with an early `il_ts` (2026-06-01) is assigned the tail number
   (IL-457) and rendered last; **zero** prior IL numbers shift.
+
+## Amendment 2026-06-24 — IL number frozen at MERGE time, not creation (race-proofing)
+
+> Context: concurrent factory terminals double-claimed IL numbers (493/494/497/500/501).
+> PRs #744, #749, #751 each asserted `[IL-NNN]` from a stale base; each number was already
+> merged on `main` by the time the PR was ready. The duplicate violates I-28 and forced
+> Claude Code to stop and ask — the "factory keeps asking" regression. No content was lost;
+> the three were re-id'd to distinct contiguous numbers IL-503/504/505 by rebase + regenerate.
+
+**Consequence (canon).** A shard's IL number is **provisional until the branch is rebased
+onto current `origin/main` immediately before merge** and `build_ledger.py` (FROM ROOT) has
+re-assigned it `max+1`. Therefore:
+
+1. **Do not assert `[IL-NNN]` as final at creation.** Any number in a PR title, commit
+   subject, shard body, or companion doc is provisional until the rebase-before-merge step
+   confirms it equals the regenerated `max+1`. Correct every human-facing reference to match
+   the regenerated number before merge.
+2. **The freeze happens at merge time** via `build_ledger.py` over the up-to-date base —
+   never hardcoded at creation. `main` branch protection is `strict` (up-to-date required) so
+   a behind-branch carrying a stale number physically cannot merge; it must rebase, which
+   regenerates the number deterministically as the next `max+1`.
+3. **Concurrent ledger PRs are serialized:** merge one, rebase the next onto the new `main`,
+   regenerate, merge — they cannot re-collide.
+4. **A mismatch between asserted and regenerated number is an autonomous rebase signal**, not
+   an operator question (best-decision canon; only data-loss / irreversibility / invariant
+   breach is a stop-barrier).
+
+Enforced by `strict` branch protection + the `guardian-ledger` pre-merge IL-collision gate
+(`docs/guardian/guardian-ledger-il-collision-gate.md`) + `.claude/rules/parallel-session-isolation.md`
+**Rule 8**. This amendment changes only *when* the number is considered final; it does **not**
+alter the append-only / coupling guarantees above, and never renumbers a prior entry.
