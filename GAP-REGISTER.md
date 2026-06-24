@@ -184,13 +184,13 @@
 
 ## CASS / Safeguarding audit-trail — Gaps (V-06 from HANDOFF-2026-05-04)
 
-- [ ] G-CASS-01: AuditTrail fail-open path leaves CASS reconciliation events un-recorded — NEW 2026-05-05
+- [x] G-CASS-01: AuditTrail fail-open path leaves CASS reconciliation events un-recorded — DONE 2026-05-06
   Source: V-06 HIGH in HANDOFF-2026-05-04. Components: `src/safeguarding/audit_trail.py` (banxe-emi-stack), `services/recon/reconciliation_engine{,_v2}.py`, `services/safeguarding-engine/app/services/reconciliation_service.py`. Risk: under ClickHouse outage, recon events succeed silently without persisting to immutable log. FCA CASS 15 expects unbroken audit chain.
-  Plan (3 steps):
-    1. **Audit** (read-only): query ClickHouse `audit_trail` for the last 30 days, compare event counts vs reconciliation_engine state-machine transitions. Identify gap windows. Output: `docs/ops/cass-audit-2026-05-05.md`.
-    2. **Propose**: ADR-027 — Audit-trail durability strategy. Options: (a) blocking append (fail-closed), (b) async queue with disk-backed buffer, (c) dual-write to ClickHouse + local SQLite ring-buffer.
-    3. **Fix**: implement chosen option, add tests covering ClickHouse-down scenarios, regenerate audit-trail for any identified gap window.
-  Owner: Architecture WG. Linked: I-08 (audit-trail invariant TBD), .claude/rules/cass15.md.
+  Resolution (ADR-027 Accepted 2026-05-06): implemented SQLite ring-buffer (Option b).
+    - banxe-emi-stack PR #66: `BufferedAuditPort` — SQLite WAL ring-buffer, 8 unit tests.
+    - banxe-emi-stack PR #67: DI wiring (`get_recon_engine`), `AUDIT_FAIL_CLOSED` flag, 4 integration tests.
+    - banxe-emi-stack PR #68: `scripts/audit-buffer-drain.py` cron drain, 3 smoke tests. Total: 15 tests, 0 new deps.
+  Owner: Architecture WG. Linked: ADR-027 (Accepted), I-08, .claude/rules/cass15.md.
 
 - [ ] G-CASS-02: Audit-trail end-to-end coverage tests (no gaps detectable) — NEW 2026-05-05
   Add CI check: pytest fixture that runs a full reconciliation cycle with ClickHouse connection killed mid-flight, asserts every recon event eventually persists OR returns 5xx (no silent success). Owner: Architecture WG.
@@ -366,18 +366,24 @@
   Anchors: G-INFRA-03 (closed), G-OPS-03 (midaz-ledger restart), IL-PA-05-CLOSE.
   Priority: P2.
 
-- [ ] G-OPS-04: banxe-frankfurter zombie restart-loop on evo1 (6051 restarts, no consumers, unreachable DB) — OPEN 2026-05-05
+- [x] G-OPS-04: banxe-frankfurter zombie restart-loop on evo1 — CLOSED 2026-05-06 → IL-OPS-G-OPS-04-2026-05-06
   Discovered in PA-5a-extended (IL-PROJECT-AUDIT-01). Container `banxe-frankfurter` (image `hakanensari/frankfurter:latest`) на evo1 имеет RestartCount=6051; Memory=25 MiB; CPU=0% idle между крашами; DATABASE_URL направлен на `172.17.0.1:5432` (host gateway), но host Postgres НЕ слушает на :5432 (verified via ss -tlnp). 0 TCP connections на :8181; 0 proxy/ingress/code refs. Zombie state нарушает Operator canon Principle 1 ("evo1 не должен задыхаться") через restart-loop CPU churn.
   Action: decommission via runbook `docs/runbooks/pa-05-frankfurter-decommission.md` (steps gated on operator go).
   Rollback: documented in runbook §"Rollback plan" — requires new Postgres frankfurter DB with rotated password per IL-SEC-01.
   Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, IL-SEC-01, IL-PA-05-CLOSE (где G-INFRA-03 closed как NOT PURSUED), docs/canon/operator-canon-2026-05.md.
   Priority: P2.
 
+- [x] IL-SEC-01: Frankfurter Postgres password exposed in PA-5a logs (2026-05-05) — CLOSED (canon applied, no live secrets)
+  During PA-5a (2026-05-05) `docker inspect banxe-frankfurter` on evo1 revealed DATABASE_URL with Postgres password in operator logs → password considered permanently compromised. Mitigated by canon IL-SEC-01-2026-05-06: old password banned from reuse; any future Frankfurter DB provisioning MUST generate new random credentials. Current state: no Frankfurter DB exists → no live secrets to rotate.
+  Anchors: docs/runbooks/pa-05-frankfurter-decommission.md, G-OPS-04, PA-5a logs (2026-05-05), IL-SEC-01-2026-05-06 in INSTRUCTION-LEDGER.md.
+  Priority: P1 (security canon applied; effectively closed pending future DB provisioning).
+
 - [ ] G-OPS-05: evo1 keycloak.service restart-loop (zombie) — OPEN 2026-05-06
   Discovered FA-4a (IL-FACTORY-AUDIT-01). evo1 has `keycloak.service` in `activating auto-restart` state. Two docker containers `keycloak` and `test-iam` exited (137) 5 days ago. NO :8180 listener on evo1. ADR-017 + G-IAM-08 (DONE 2026-05-04) made Legion the canonical authority — evo1 keycloak deployment is now legacy.
   Action: decommission analogous to G-OPS-04 frankfurter pattern — `docker compose down` on `/data/banxe/banxe-emi-stack/infra/keycloak-banxe-emi/docker-compose.yml`, disable systemd `keycloak.service`, remove containers. Runbook deferred (separate operator-gated execution).
   Anchors: ADR-017, G-IAM-08, FA-4a discovery, docs/canon/operator-canon-2026-05.md (Principle 1 — evo1 not choke).
   Priority: P3 (zombie tolerable; restart-loop CPU cost minimal compared to frankfurter).
+  Update 2026-05-06: keycloak.service observed HEALTHY on evo1 — active (running), port :8180 listening (java pid=705370), db-url=jdbc:postgresql://127.0.0.1:15433/keycloak, uptime ~3h. No restart-loop at observation time. Gap reclassified to MONITOR; decommission deferred. See IL-OPS-G-OPS-05-OBSERVED-2026-05-06.
 - [x] G-OPS-03: midaz-ledger restart loop resolved — **DONE 2026-05-05** (existing redis-stack container stopped SIGTERM 4 days ago; midaz-ledger expected Redis on 172.22.0.1:6379 (host gateway midaz-network) per Variant 2 lightweight topology in docker-compose.midaz.yml)
   Fix: `docker start redis` (recovery existing container redis/redis-stack:latest). Verify: midaz-ledger "Connected to Redis/Valkey in STANDALONE mode ✅".
   Follow-up: G-OPS-05 — set restart policy=unless-stopped on redis container to prevent recurrence.
@@ -409,11 +415,12 @@
   Priority: P2 (operational hygiene; not blocking; wastes ~5s per system-level restart attempt).
 - [x] G-FACTORY-03: Ruflo identity reclassified — DONE 2026-05-06 (FA-3 discovery: Ruflo is internal Banxe Review Agent / Claude Code subagent for regulatory boundary enforcement, not a PATH binary; documented in .claude/rules/agents.md + agent passports + IL-008 review reports; not "missing", just misclassified in A1 baseline which checked only PATH) — OPEN
   Update 2026-05-06 (FA-3): IL-008 review report at docs/reviews/IL-008-review.md confirms operational use; pipeline mandate per .claude/rules/agents.md (request → ARL → Ruflo → target agent → response for payment/compliance/kyc). Lesson: A1 inventory missed canonical agent fleet by checking only `command -v`, not `.claude/agents/` + `.claude/rules/agents.md`.
-- [ ] G-FACTORY-04: Legion has 2 keycloak Java processes on :8180 (potential orphan) — OPEN 2026-05-06
-  Discovered FA-4a. Legion runs two Quarkus Keycloak Java processes (pid 3221994 + pid 3354617), both started `May04`, both with identical `--http-port=8180` flags. docker-proxy binds :8180 to one of them. One is likely orphan from a previous restart that didn't kill old process before new started.
+- [ ] G-FACTORY-04: Legion :8180 keycloak Java processes — MONITOR/VERIFY 2026-05-06
+  Initial FA-4a observation suggested 2 keycloak Java processes on :8180 (pid 3221994 + pid 3354617). As of 2026-05-06 verification on Legion: `ps aux | grep keycloak` → 0 Java processes; `ss -tlnp | grep :8180` → LISTEN without users field; `sudo lsof -i :8180` → docker-proxy (PID 3979260/3979267, root). Gap reclassified to MONITOR/VERIFY: watch for future orphan Java processes and validate container Keycloak configuration.
   Action: identify which pid is the live one (linked to docker container), gracefully stop the other. Read-only verification first (`ps`, `docker inspect`, `lsof :8180`).
   Anchors: FA-4a discovery, G-IAM-08 (cutover artefact), Legion-side keycloak install dirs `/home/mmber/keycloak-banxe-emi-legion`, `/home/mmber/keycloak-banxe-emi-pg-test`.
   Priority: P3 (Quarkus consumes ~750 MB RAM each → ~1.5 GB total used; second process is wasted RAM but not breaking anything).
+  Update 2026-05-06: No Java Keycloak processes found on Legion :8180; only docker-proxy. Original "2 orphan Java procs" not confirmed. See IL-OPS-G-FACTORY-04-OBSERVED-2026-05-06.
 - [x] G-FACTORY-CHAIN: agents.md chain matrix not formalised — DONE 2026-05-06 (FA-5: agent-chain × GSD-phase matrix added to .claude/rules/agents.md with 6 canonical chains A-F; Ruflo placement formalised per FA-3 reclassification; agent-to-LiteLLM-route mapping included per FA-2)
   Anchors: PR #57 (sprint), PR #80 (FA-1), PR #81 (FA-2 runbook), PR #83 (FA-3 reclass), .claude/rules/agents.md, A4 proposal.
   Priority: P3 (closed).

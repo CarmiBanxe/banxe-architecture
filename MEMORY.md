@@ -425,3 +425,9 @@ GAP-019 (Fee Engine), GAP-023 (API Gateway).
 - [2026-04-19] 7816c87 — refactor(auth): add application service seam for thin router migration
 - [2026-05-03] 3adf76b — feat(infra): Keycloak realm banxe-emi — compose stack + realm export + runbook (pre-GATE-A; G-IAM-01..05,07 prep)
 - [2026-05-04] 76dd1e3 — feat(guardian-shim): claude-code pre-bash enforcer v0.1 + Strategy-S1 native hook (audit default)
+- [2026-05-06] ae795e5 — feat(audit): BufferedAuditPort — SQLite ring-buffer for audit-trail durability (ADR-027 step 1)
+- [2026-05-06] 93252ad — feat(audit): wire BufferedAuditPort into production + AUDIT_FAIL_CLOSED flag (ADR-027 step 2)
+- [2026-05-06] c0d09b5 — feat(audit): drain cron script + CI smoke (ADR-027 step 3 final)
+- [2026-05-06] fec3fd0 — feat(adr-028): extend BanxeEventType with KYC re-trigger events [Step 1]
+- [2026-05-06] da585e4 — feat(adr-028): wire KYC re-trigger events into lifecycle [Step 2]
+- [2026-05-06] da585e4 — feat(adr-028): wire KYC re-trigger events into lifecycle [Step 2]
