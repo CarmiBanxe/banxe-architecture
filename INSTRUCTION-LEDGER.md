@@ -15592,26 +15592,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-454 - agent-factory-governance-reconcile-b-tooling @ 2026-06-22T14:15:00Z
-
-- **il_ts:** 2026-06-22T14:15:00Z
-- **session_id:** agent-factory-governance-reconcile-b-tooling
-- **source:** CEO
-- **status:** DONE
-- **shard:** `ledger/entries/agent-factory-governance-reconcile-b-tooling/IL-2026-06-22T14-15-00Z--828a5b.md`
-
-### Governance reconciliation — operator-approved DevSecOps tooling (B) + KPI/DORA collection (D-5); all other items remain AWAITS OPERATOR
-- **Instrukciya:** Reconcile ONLY the operator-approved AWAITS-OPERATOR items decided via chat 2026-06-22. Apply exactly 7 approved values across the two affected governance docs; mark each `RECONCILED 2026-06-22 (operator-approved via chat)`; leave every other AWAITS-OPERATOR item untouched. Invent no owners, dates, numbers, or policy detail beyond the 7 values. DO NOT MERGE.
-- **Reconciled values (7):** B1 SAST = **CodeQL** (GitHub-native, on-prem self-hosted runner; ADR-031 on-prem); B2 SCA = **Dependabot + OSV-Scanner** (in-perimeter, no external SaaS); B3 DAST = **OWASP ZAP** (open-source, on-prem); B4 SLSA = **Level 2** (signed build provenance; path to L3 later); B5 SBOM = **ACTIVATE** `syft→CycloneDX` scaffold (proposed owner stays AWAITS OPERATOR); B6 Signing = **ACTIVATE** `cosign` keyless/OIDC (key/identity policy detail stays AWAITS OPERATOR); D-5 KPI/DORA collection tooling = **Prometheus + Grafana on evo2** (on-prem observability node; exporters/retention/cadence stay AWAITS OPERATOR).
-- **Files (2 docs):** `docs/governance/DEVSECOPS-SSDLC.md` — §6 GAPS register rows G-S2-01/02/04/05/06/07 + §5 tooling-stack rows + the §6 asserted/unasserted note updated consistently (no other row altered; G-S2-03 threat models and G-S2-08 DORA incident reporting untouched). `docs/governance/KPI-DORA-FRAMEWORK.md` — §4.2 collection pipeline/tooling only.
-- **Explicitly NOT touched (remain AWAITS OPERATOR):** all SMF/role holders (CRO/MLRO/CISO/Head of Security/VP Platform Eng/SRE/Head of Design/API owner); DORA numeric bands D-1..D-4 + KPI/DORA dashboard P-rows P-1..P-5; OPEN-BANKING O-1..O-11; MRM ADR-031 ref / route divergence / T1-T2-T3 / validation gate / monitoring metrics; UI-UX WCAG floor / token versioning / UI KPIs; CANON-RECONCILIATION GMKtec mapping / dev composition; SBOM owner; cosign key/identity policy detail; SBOM/signing physical scaffold go-live; DORA-collection exporters/retention/cadence.
-- **Coupling:** branch agent/factory/governance/reconcile-b-tooling (from origin/main; ADR-060 id=`governance` alphanumeric). New tail shard + new ### IL-NNN; append-only (no prior entry/shard mutated/renumbered). One governance PR for operator review.
-- **Proof:** Docs-only governance reconciliation; no code, no CI gate added, no guardian weakened (scaffolds remain inert `.template`; B5/B6 record the activation DECISION, not physical go-live). il_ts 14:15:00Z strictly > fresh origin/main max 14:00:00Z; INSTRUCTION-LEDGER.md regenerated via `python3 ledger/build_ledger.py`, `--check` exit 0. Local validators (guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming) green. No invented facts beyond the 7 operator-approved values. DO NOT MERGE.
-- **Refs:** docs/governance/DEVSECOPS-SSDLC.md; docs/governance/KPI-DORA-FRAMEWORK.md; ADR-056, ADR-057, ADR-059, ADR-060; ADR-031 (on-prem); I-28.
-
----
-
-### IL-455 - agent-factory-mig-template @ 2026-06-22T15:00:00Z
+### IL-454 - agent-factory-mig-template @ 2026-06-22T15:00:00Z
 
 - **il_ts:** 2026-06-22T15:00:00Z
 - **session_id:** agent-factory-mig-template
@@ -15629,7 +15610,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-456 - agent-factory-m1-m26-changelog-spec @ 2026-06-22T15:05:00Z
+### IL-455 - agent-factory-m1-m26-changelog-spec @ 2026-06-22T15:05:00Z
 
 - **il_ts:** 2026-06-22T15:05:00Z
 - **session_id:** agent-factory-m1-m26-changelog-spec
@@ -15650,7 +15631,7 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 
 ---
 
-### IL-457 - agent-factory-canon-fast-lane-simplification @ 2026-06-22T15:15:00Z
+### IL-456 - agent-factory-canon-fast-lane-simplification @ 2026-06-22T15:15:00Z
 
 - **il_ts:** 2026-06-22T15:15:00Z
 - **session_id:** agent-factory-canon-fast-lane-simplification
@@ -15672,3 +15653,22 @@ Refs: ADR-117 (PROPOSED), CANON-RECONCILIATION-ADR117.md
 - **Coupling/append-only:** branch agent/factory/canonfastlane/fast-lane-simplification (off main); new tail shard → IL-456 after final-rebase onto main@b2bde95; no prior entry mutated; il_ts 15:15:00Z strictly > re-fetched main max 15:05:00Z (#696 M1.26 changelog-spec took 15:05Z; our 15:15Z slot stayed free → no bump needed this pass). Earlier churn-loop passes: 14:30→15:15 after #699 MIG-TEMPLATE merged — a live instance of friction #2/#3 this very proposal targets.
 - **Proof:** docs+ledger only; build_ledger.py --check exit 0; guardian-ledger/ledger-append-only/guardian-ledger-shards/guardian-branch-naming/guardian-adr117 green locally; force-with-lease push; NO --admin/bypass; docs-only PR opened, NO merge.
 - **Refs:** docs/governance/CANON-FAST-LANE-SIMPLIFICATION.md; docs/governance/LEDGER-MERGE-QUEUE.md; docs/governance/OPERATOR-ENABLE-MERGE-QUEUE.md; MIG-TEMPLATE §3; ADR-057, ADR-059/059-A, ADR-060, ADR-102, ADR-103; I-21..I-28, I-27 (KYC HOLD).
+
+---
+
+### IL-457 - agent-factory-governance-reconcile-b-tooling @ 2026-06-22T15:30:00Z
+
+- **il_ts:** 2026-06-22T15:30:00Z
+- **session_id:** agent-factory-governance-reconcile-b-tooling
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-reconcile-b-tooling/IL-2026-06-22T15-30-00Z--828a5b.md`
+
+### Governance reconciliation — operator-approved DevSecOps tooling (B) + KPI/DORA collection (D-5); all other items remain AWAITS OPERATOR
+- **Instrukciya:** Reconcile ONLY the operator-approved AWAITS-OPERATOR items decided via chat 2026-06-22. Apply exactly 7 approved values across the two affected governance docs; mark each `RECONCILED 2026-06-22 (operator-approved via chat)`; leave every other AWAITS-OPERATOR item untouched. Invent no owners, dates, numbers, or policy detail beyond the 7 values. DO NOT MERGE.
+- **Reconciled values (7):** B1 SAST = **CodeQL** (GitHub-native, on-prem self-hosted runner; ADR-031 on-prem); B2 SCA = **Dependabot + OSV-Scanner** (in-perimeter, no external SaaS); B3 DAST = **OWASP ZAP** (open-source, on-prem); B4 SLSA = **Level 2** (signed build provenance; path to L3 later); B5 SBOM = **ACTIVATE** `syft→CycloneDX` scaffold (proposed owner stays AWAITS OPERATOR); B6 Signing = **ACTIVATE** `cosign` keyless/OIDC (key/identity policy detail stays AWAITS OPERATOR); D-5 KPI/DORA collection tooling = **Prometheus + Grafana on evo2** (on-prem observability node; exporters/retention/cadence stay AWAITS OPERATOR).
+- **Files (2 docs):** `docs/governance/DEVSECOPS-SSDLC.md` — §6 GAPS register rows G-S2-01/02/04/05/06/07 + §5 tooling-stack rows + the §6 asserted/unasserted note updated consistently (no other row altered; G-S2-03 threat models and G-S2-08 DORA incident reporting untouched). `docs/governance/KPI-DORA-FRAMEWORK.md` — §4.2 collection pipeline/tooling only.
+- **Explicitly NOT touched (remain AWAITS OPERATOR):** all SMF/role holders (CRO/MLRO/CISO/Head of Security/VP Platform Eng/SRE/Head of Design/API owner); DORA numeric bands D-1..D-4 + KPI/DORA dashboard P-rows P-1..P-5; OPEN-BANKING O-1..O-11; MRM ADR-031 ref / route divergence / T1-T2-T3 / validation gate / monitoring metrics; UI-UX WCAG floor / token versioning / UI KPIs; CANON-RECONCILIATION GMKtec mapping / dev composition; SBOM owner; cosign key/identity policy detail; SBOM/signing physical scaffold go-live; DORA-collection exporters/retention/cadence.
+- **Coupling:** branch agent/factory/governance/reconcile-b-tooling (from origin/main; ADR-060 id=`governance` alphanumeric). New tail shard + new ### IL-NNN; append-only (no prior entry/shard mutated/renumbered). One governance PR for operator review.
+- **Proof:** Docs-only governance reconciliation; no code, no CI gate added, no guardian weakened (scaffolds remain inert `.template`; B5/B6 record the activation DECISION, not physical go-live). il_ts 15:30:00Z strictly > fresh origin/main max 15:15:00Z (re-minted from 14:15:00Z to resolve the post-rebase renumber race); INSTRUCTION-LEDGER.md regenerated via `python3 ledger/build_ledger.py`, `--check` exit 0. Local validators (guardian-ledger / ledger-append-only / guardian-ledger-shards / guardian-branch-naming) green. No invented facts beyond the 7 operator-approved values. DO NOT MERGE.
+- **Refs:** docs/governance/DEVSECOPS-SSDLC.md; docs/governance/KPI-DORA-FRAMEWORK.md; ADR-056, ADR-057, ADR-059, ADR-060; ADR-031 (on-prem); I-28.
