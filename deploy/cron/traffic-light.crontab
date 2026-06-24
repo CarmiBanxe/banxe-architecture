@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Traffic-light ("Светофор") cron — Sprint S-FAC-65 (R1), FACTORY-ROADMAP §4.2.
+# Schedule: 08:00 & 20:00 CEST/CET (CRON_TZ pins the timezone so DST is handled).
+#
+# ARTIFACT ONLY — NOT installed from CI. Operator installs on the host that runs
+# the audit (legion), e.g.:
+#     crontab -l 2>/dev/null | cat - deploy/cron/traffic-light.crontab | crontab -
+# Verify:  crontab -l | grep traffic-light
+# Logs:    the verdict is written to a ledger shard + published to the Redis
+#          fabric stream by traffic-light.sh; cron stdout/stderr → $TL_LOG.
+#
+# Prereqs (host-side, AWAITS OPERATOR): redis reachable per config/traffic-light.env;
+# REPO checked out at the path below (edit BANXE_REPO to the real path).
+# ─────────────────────────────────────────────────────────────────────────────
+CRON_TZ=Europe/Berlin
+BANXE_REPO=/home/banxe/banxe-architecture
+TL_LOG=/var/log/banxe/traffic-light.log
+
+# m h dom mon dow   command
+0 8  * * *  cd "$BANXE_REPO" && bash scripts/traffic-light.sh >> "$TL_LOG" 2>&1
+0 20 * * *  cd "$BANXE_REPO" && bash scripts/traffic-light.sh >> "$TL_LOG" 2>&1

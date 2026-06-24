@@ -35,6 +35,7 @@ allowed_skills:
   - context_memory_sync          # MANDATORY — IL/audit-trail continuity across assurance sessions (I-28)
   - rapid_spec_builder           # MANDATORY — 3rd-line dept-head PROPOSES IL/ADR for audit findings (I-27, I-28)
   - clean_architecture_enforcer  # MANDATORY advisory — enforce 3rd-line independence / no cross-contour imports (I-20)
+  - traffic_light_audit          # S-FAC-65 PRIMARY owner — read-only host/service health verdict 🔴🟡🟢 (scripts/traffic-light.sh); binding only, does NOT activate (I-27)
 prohibited_skills:
   - auto_refactor_pro            # PROHIBITED — independent assurance must not auto-refactor reviewed code (independence)
 preferred_skill_sequences:
@@ -46,5 +47,6 @@ preferred_skill_sequences:
 mandatory_skill_triggers:
   context_memory_sync: ["any internal_audit_agent session start", "after any IL state change"]
   rapid_spec_builder: ["new audit finding", "new assurance recommendation", "ADR needed"]
+  traffic_light_audit: ["cron 08:00 CEST", "cron 20:00 CEST", "redis fabric/legion session-start trigger (fabric:session:start)"]  # S-FAC-65 §4.2; PROPOSED (I-27)
 # NOTE: error_handling_standardizer / performance_scanner / api_contract_guardian / smart_test_generator
 # are NOT bound here — this is a stub with no service code or ports yet; deferred to Sprint-3 (GAP-078).
