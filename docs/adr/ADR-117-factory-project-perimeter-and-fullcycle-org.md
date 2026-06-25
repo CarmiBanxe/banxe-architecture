@@ -40,6 +40,8 @@ Operator concept is supreme over canon. Where repo docs conflict with this ADR, 
 
 Hermes = ARCHITECTURAL AGENT PATTERN (SOUL.md identity layer, 3-tier memory, self-improving skills, 24/7 specialized agents) — a FUTURE factory work item, NOT an installed feature. No Hermes agent exists in the repo.
 
+> Role detail (refinement): **ADR-126** bounds this future role as a **Tier-1, read-only / alerting-first, HITL-safe** companion — CI/CD Watchdog + Telegram DevOps assistant + infra/alerting/research — and marks it **out of scope** for merge, deploy, payment-core write, AML/SAR decisions, or replacing Claude Code/OpenClaw orchestration. See `docs/adr/ADR-126-hermes-tier1-cicd-watchdog-role.md`.
+
 ## Spec-build pipeline & governance
 
 Spec → ADR → Architecture → API-contract → parallel impl → quality-gates → deploy. ADR append-only; Architecture Review Board.
