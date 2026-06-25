@@ -169,3 +169,18 @@ uiux-json:
 
 uiux-self-test:
 	@bash scripts/uiux-pipeline.sh --self-test
+
+# ── AgentOps / LLMOps status aggregator (read-only over existing signals) ──
+#   make agentops            → scripts/agentops-eval.sh (RU text; Guardian/Canon-Judge/eval status)
+#   make agentops-json       → scripts/agentops-eval.sh --json
+#   make agentops-self-test  → scripts/agentops-eval.sh --self-test (hermetic)
+.PHONY: agentops agentops-json agentops-self-test
+
+agentops:
+	@bash scripts/agentops-eval.sh
+
+agentops-json:
+	@bash scripts/agentops-eval.sh --json
+
+agentops-self-test:
+	@bash scripts/agentops-eval.sh --self-test
