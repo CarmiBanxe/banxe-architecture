@@ -17794,3 +17794,26 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Perimeter / canon:** read-only derivation (no ledger/recon write-back, I-28); Decimal-only (I-01); no KYC/KYB/AML; no GAP-018 governance; additive 2 new files only (no existing file edited); isolated branch off emi origin/main; signed; sub-B hands to MAIN per §71/§74 (does NOT open emi PR).
 - **Deliverable:** banxe-emi-stack branch agent/factory/finrpt/content-core (services/reporting/finrep_content_core.py + tests/test_finrep_content_core.py).
 - **Refs:** docs/regulatory/F-FINRPT-BUILD-SPEC.md (IL-481); K-GABRIEL-BUILD-SPEC §3 FinRepSourcePort; services/gabriel/*; ADR-102/103/013/115-119; I-01/I-24/I-28.
+
+---
+
+### IL-544 - agent-factory-governance-adr-092-claude-code-setup-plugin-eval @ 2026-06-26T12:00:00Z
+
+- **il_ts:** 2026-06-26T12:00:00Z
+- **session_id:** agent-factory-governance-adr-092-claude-code-setup-plugin-eval
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr-092-claude-code-setup-plugin-eval/IL-2026-06-26T12-00-00Z--adr-124-claude-code-setup-plugin-eval.md`
+
+### ADR-124 — Evaluate `claude-code-setup` official plugin under ADR-092 advisory seam — read-only advisor, gated on ADR-123
+- **Decision:** Created `docs/adr/ADR-124-claude-code-setup-plugin-eval-under-adr-092.md` (ACCEPTED, concept_only) + `docs/governance/plugin-blocklist-policy.json` (config-as-data). Evaluates two candidate Claude Code components under the existing ADR-092 advisory seam (read-only, no activation/entitlement). **NO plugin installed, NO config mutated, NO git ops outside this branch.**
+- **(a) n8n-atom → REJECTED:** `khanh-atom/n8n-atom` is a third-party community VS Code extension, NOT Anthropic, unrelated to the BANXE EMI stack → rejected; source recorded in the in-repo blocklist policy `docs/governance/plugin-blocklist-policy.json` (source-of-truth for the rejection; operator runtime mirror `~/.claude/plugins/blocklist.json` NOT mutated). ADR-124 D1.
+- **(b) claude-code-setup → CONDITIONALLY APPROVED:** `claude-code-setup@claude-plugins-official` is the OFFICIAL Anthropic-managed, READ-ONLY advisor (analyses project → recommends hooks/skills/MCP/subagents; does NOT modify files). Approved as read-only advisor only, **scope=user**, **no auto-apply** — every recommendation passes the normal IL → ADR/PR flow and never bypasses quality-gate.sh / I-01..I-28 / merge canon. Install permitted ONLY after PR #787 merge + hardened global config applied. ADR-124 D2/D3.
+- **Activation verify-condition (fail-closed, ALL must hold before any install/enable):** (1) ADR-123 CLOSED — PR #787 merged to `main`, ADR-123 file present in `docs/adr/`; (2) `skipDangerous` ABSENT from global `~/.claude/settings.json`; (3) push-deny on `main` PRESENT and effective. Any false → do NOT activate, report + stop; no timeout auto-activation; activation itself is operator-gated in a fresh IL.
+- **Harness audit (source of truth, not memory):** HEAD `ec95496`, 2026-06-25. `enabledPlugins=none` (global + project). `~/.claude/plugins/installed_plugins.json` shows `claude-code-setup@claude-plugins-official` cached at `scope=user` (`installedAt 2026-05-03`) but NOT enabled — cached ≠ active. Blocker: ADR-123 (PR #787) OPEN; global `~/.claude/settings.json` not yet operator-applied → fail-closed, no wiring until hardened.
+- **ADR-102 Duplication Audit:** no prior ADR/policy on `claude-code-setup` / `n8n-atom` / `enabledPlugins` (grep over docs/ → only ADR-124). ADR-092 parent (referenced, not duplicated); ADR-122 is finance-template mapping (distinct). No code imports any plugin; no service references either candidate. Verdict: non-duplicative, additive only.
+- **Perimeter / canon:** plugin advises factory/harness config (ADR-117 factory plane) only — never client funds / production EMI state (CLAUDE.md §11); not added to any external `/v1` BaaS facade (mirrors ADR-092 D3). Fully reversible.
+- **Proof:** ADR-124 = next free ADR number (global max docs/adr+decisions = 122; ADR-123 claimed by open PR #787 → 124). Append-only (ADR-059): ONE new tail shard at il_ts `2026-06-26T12:00:00Z` (strictly > fresh tree max `2026-06-26T11:30:00Z`); `INSTRUCTION-LEDGER.md` + `ledger/IL-SEQUENCE.json` regenerated via `python3 ledger/build_ledger.py`, `--check` exit 0. No plugin install/enable; no external code imported; isolated to branch `agent/factory/governance/adr-092-claude-code-setup-plugin-eval`; RULE 7/8 honored.
+- **Status:** DONE — ADR-124 ACCEPTED (governance/concept-only). n8n-atom REJECTED; claude-code-setup CONDITIONALLY APPROVED + dormant pending ADR-123. DO NOT MERGE pending operator review.
+- **Recommended next (operator):** close ADR-123 (merge PR #787) + apply hardened global `~/.claude/settings.json`; then, after §verify-condition holds, decide whether to enable `claude-code-setup` at scope=user (fresh IL).
+- **Refs:** `docs/adr/ADR-124-claude-code-setup-plugin-eval-under-adr-092.md` (NEW); `docs/governance/plugin-blocklist-policy.json` (NEW); ADR-092 (advisory seam parent), ADR-123 / PR #787 (permissions-hardening gate, OPEN), ADR-102 (no-dup), ADR-117 (perimeter), ADR-059, CLAUDE.md §11; external (verified): `claude.com/plugins/claude-code-setup`, `github.com/anthropics/claude-plugins-official`, `khanh-atom/n8n-atom`.

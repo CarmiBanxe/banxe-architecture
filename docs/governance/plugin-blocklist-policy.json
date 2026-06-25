@@ -1,0 +1,39 @@
+{
+  "$schema_note": "In-repo plugin admission policy (config-as-data). Source of truth for Claude Code plugin/marketplace admission decisions. The operator-side runtime mirror is ~/.claude/plugins/blocklist.json (operator-applied, NOT mutated by the repo). Governed by ADR-124 under the ADR-092 advisory seam.",
+  "policy_version": "1",
+  "governing_adr": "ADR-124",
+  "seam": "ADR-092",
+  "updated_at": "2026-06-25",
+  "blocked": [
+    {
+      "source": "khanh-atom/n8n-atom",
+      "plugin": "n8n-atom",
+      "kind": "third-party-community-vscode-extension",
+      "added_at": "2026-06-25",
+      "reason": "not-anthropic; unrelated to BANXE EMI stack; crosses ADR-117 perimeter; bypasses plugin/skill governance",
+      "decision": "REJECTED",
+      "ref": "ADR-124 D1"
+    }
+  ],
+  "conditional": [
+    {
+      "source": "anthropics/claude-plugins-official",
+      "plugin": "claude-code-setup@claude-plugins-official",
+      "kind": "official-anthropic-managed-readonly-advisor",
+      "decision": "CONDITIONALLY_APPROVED",
+      "scope": "user",
+      "read_only": true,
+      "auto_apply": false,
+      "note": "Read-only advisor only. Every recommendation passes the normal IL -> ADR/PR flow; no auto-apply; never bypasses quality-gate.sh / I-01..I-28 / merge canon.",
+      "activation_gate": {
+        "fail_closed": true,
+        "conditions": [
+          "ADR-123 (PR #787 permissions hardening) CLOSED and merged to main",
+          "skipDangerous absent from global ~/.claude/settings.json",
+          "push-deny on main present and effective (hardened global config applied)"
+        ]
+      },
+      "ref": "ADR-124 D2, D3"
+    }
+  ]
+}
