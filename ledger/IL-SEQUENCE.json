@@ -289,5 +289,6 @@
   "agent-factory-governance-conformance-refresh-mrm-green__58594f2f159e": 536,
   "agent-factory-sub-b-safeguarding-test-green-stop__775d4fe5f1e5": 537,
   "agent-factory-sub-b-emi-impl-state__e87e7562a2c3": 538,
-  "agent-factory-governance-adr-anthropic-finance-templates__00d1abe49484": 539
+  "agent-factory-governance-adr-anthropic-finance-templates__00d1abe49484": 539,
+  "agent-factory-governance-claude-permissions-hardening__86396a3bf6c1": 540
 }
