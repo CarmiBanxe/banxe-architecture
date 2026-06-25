@@ -124,3 +124,18 @@ dora-json:
 
 dora-self-test:
 	@bash scripts/dora-collect.sh --self-test
+
+# ── Model Risk Management validator (read-only; thresholds/classification AWAITS OPERATOR) ──
+#   make mrm            → scripts/mrm-validate.sh (RU text, per-tier card coverage)
+#   make mrm-json       → scripts/mrm-validate.sh --json
+#   make mrm-self-test  → scripts/mrm-validate.sh --self-test (hermetic)
+.PHONY: mrm mrm-json mrm-self-test
+
+mrm:
+	@bash scripts/mrm-validate.sh
+
+mrm-json:
+	@bash scripts/mrm-validate.sh --json
+
+mrm-self-test:
+	@bash scripts/mrm-validate.sh --self-test
