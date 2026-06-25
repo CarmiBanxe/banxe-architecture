@@ -17238,3 +17238,29 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** DONE — GROUP 2 (12 agents) bound; passports remain PROPOSED/non-activated (I-27). DO NOT MERGE pending operator review.
 - **Recommended next (operator):** merge; then GROUP 3 binding sprint (remaining 26 unbound agents via `make skills-audit`); separately bind `cicd_quick_setup` to a CI/infra-owning passport to close `train-verify` (S-FAC-66).
 - **Refs:** 12 passports under `agents/passports/`; `docs/SKILLS-MATRIX.md` (source of truth); `scripts/skills-bind-audit.sh` (proposals); `scripts/train.sh` (train-verify); S-FAC-64 / IL-518 GROUP 1 (precedent); ADR-059-A, ADR-120, ADR-121, I-20/I-24/I-27/I-28.
+
+---
+
+### IL-521 - agent-factory-h-crm @ 2026-06-25T20:30:00Z
+
+- **il_ts:** 2026-06-25T20:30:00Z
+- **session_id:** agent-factory-h-crm
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-h-crm/IL-2026-06-25T20-30-00Z--6b4b11.md`
+
+### H-crm — CRM customer record + case history + DSAR build-spec (privacy-by-design, DSAR rights fulfilment)
+
+- **Target:** H-crm (Block H — Customer Operations). CRM: customer golden record (links onboarding A-kyc/A-kyb + B-emi accounts/products, tier via CRMProviderPort), case history (append-only audit trail, references H-support cases), DSAR fulfilment (GDPR/UK-GDPR Art.15-22: access/rectification/erasure/portability, 1-month SLA, identity verification before disclosure, HITL on erasure + legal-hold fail-closed). Config-as-data. Fifth P2 docs-spec (operator chose: continue P2 autonomously). Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/architecture/H-CRM-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (H-crm 0% → Spec-Locked/In Progress + P2 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — origin/main=b832180 (after drift), `build_ledger.py --check` OK, IL-SEQUENCE max=520 → next = max+1 = **IL-521**. No other open PRs (#768 is this one).
+  2. ADR-102 dedup — `find docs -iname '*h-crm*'`/`*crm*BUILD*` ⇒ empty. No existing H-crm artifact → new, non-duplicative. REUSES CRMPort/CRMProviderPort (crm-port-CONTRACT-SPEC) — not reimplemented.
+  3. Wrote build-spec (scope golden record/case history/DSAR, CustomerRecord/CaseHistory/DSARRequest data model, DSAR workflow request→verify→collect→review→fulfil with HITL erasure, CRM provider delegation via CRMProviderPort, privacy-by-design, producer/consumer contracts referenced-not-duplicated, ADR-102 dup-audit, PRIVACY/DSAR FENCE, perimeter, DoD, out-of-scope fail-closed, operator-gates-not-crossed).
+  4. ROADMAP-MATRIX.md additive: H-crm row → Spec-Locked/In Progress (IL-521); P2 summary line extended. No frozen row altered.
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..520 unchanged); new shard → IL-521. Signed squash-PR merged with 4 required guardians + ledger gates GREEN.
+- **Deviation / IL-drift reconciliation:** First build off base 03f987f (max=519) assigned IL-520. Concurrent PR #767 (skills-bind-group2) merged first claiming IL-520, advancing main to b832180 → branch DIRTY. Per parallel-session-isolation Rule 7 + reset/rebase loop: reset worktree to fresh origin/main, recovered spec from prior commit object, re-ran build_ledger.py (max+1) → H-crm renumbered **IL-520 → IL-521**; ALL IL references corrected (ROADMAP/shard/PR title/commit); --force-with-lease on agent branch only. session_id `agent-factory-h-crm` (id-less, sibling convention) vs ADR-060 branch `agent/factory/hcrm01/h-crm-build-spec`.
+- **Blocker:** none (drift resolved via reset/rebase loop).
+- **Privacy/DSAR note (HARD FENCE):** SPECIFICATION of a CRM + DSAR process ONLY — factory collects/stores/processes NO real customer PII; defines the contract. DSAR = legitimate data-subject right (GDPR/UK-GDPR Art.15-22) with SLA (1 month), mandatory identity verification before disclosure, scope limits. Erasure (Art.17) is HITL + fail-closed against legal-obligation retention (AML 5y / CASS / tax F-fatca override erasure → documented refusal/deferral, never silent delete under legal hold). Privacy-by-design: lawful basis per purpose, data minimisation, retention limits, purpose limitation (NO profiling beyond service/compliance need, NO secondary use, NO surveillance, NO marketing analytics), PII Proxy (Presidio), audit of every access (ADR-027, 5Y I-24/I-28).
+- **Boundary (drift reconciled):** H-crm = customer record + case history + DSAR fulfilment orchestration. REUSES CRMProviderPort (provider-facing user/tier/referral ops) — does NOT reimplement: A-kyc/A-kyb KYC/KYB capture (onboarding is the SOURCE of the customer/business record; H-crm links by reference, does not re-store KYC docs), H-support support ticketing workflow (sibling — H-support owns ticket lifecycle/escalation/SLA; H-crm aggregates customer-centric case HISTORY referencing support cases), I-security PII infrastructure + IAM (H-crm INTEGRATES PII Proxy/Presidio + Keycloak access control; does not reimplement), CRMPort port internals (reused, frozen ADR-021), B-emi account/product definitions (golden record links account refs). Golden record links by reference (no PII re-storage).
+- **Refs:** docs/architecture/H-CRM-BUILD-SPEC.md; crm-port-CONTRACT-SPEC-2026-06-06.md (CRMPort/CRMProviderPort, reused); A-KYC-BUILD-SPEC.md (IL-500) + A-KYB-BUILD-SPEC.md (IL-502, record source); ROADMAP-MATRIX.md (H-support sibling, I-security, B-emi); GDPR/UK-GDPR Art.12-22; ADR-021/027/102/103/115/116/117/119; parallel-session-isolation Rule 7; I-24/I-28; CLAUDE.md §9/§10/§11; I-security (PII Proxy, Keycloak IAM).
