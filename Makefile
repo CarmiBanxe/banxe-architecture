@@ -94,3 +94,18 @@ report-json:
 
 report-self-test:
 	@bash scripts/factory-report.sh --self-test
+
+# ── Skills-binding audit (read-only proposals; no passport mutation) ──
+#   make skills-audit            → scripts/skills-bind-audit.sh (RU text proposals)
+#   make skills-audit-json       → scripts/skills-bind-audit.sh --json
+#   make skills-audit-self-test  → scripts/skills-bind-audit.sh --self-test (hermetic)
+.PHONY: skills-audit skills-audit-json skills-audit-self-test
+
+skills-audit:
+	@bash scripts/skills-bind-audit.sh
+
+skills-audit-json:
+	@bash scripts/skills-bind-audit.sh --json
+
+skills-audit-self-test:
+	@bash scripts/skills-bind-audit.sh --self-test
