@@ -150,6 +150,7 @@ emit_text() {
   echo; echo "F. МОДЕЛИ И ЭФФЕКТИВНОСТЬ"
   echo "    модели=$F_MODELS | model-card файлов найдено=$F_CARDS"
   if [ "${F_CARDS:-0}" = "0" ]; then echo "    ПРОБЕЛ: карточки моделей не найдены (см. MODEL-RISK-MANAGEMENT.md) — AWAITS OPERATOR"; fi
+  echo "    DORA-метрики (D-1..D-4): repo-derived прокси → \`make dora\` (scripts/dora-collect.sh); live Prometheus/Grafana(evo2) AWAITS OPERATOR (KPI-DORA-FRAMEWORK §4.2)"
   echo; echo "G. ДОП. ОБЯЗАННОСТИ: контроль качества + UI/UX"
   echo "    per-PR gate(.githooks/pre-commit)=$G_PRE | traffic-light=$G_TL | cron 08:00/20:00 CEST=$G_CRON"
   echo "    UI/UX pipeline(design_pipeline_agent)=$G_UIUX"

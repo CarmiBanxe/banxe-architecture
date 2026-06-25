@@ -109,3 +109,18 @@ skills-audit-json:
 
 skills-audit-self-test:
 	@bash scripts/skills-bind-audit.sh --self-test
+
+# ── DORA metrics (repo-derived proxy; read-only; live infra AWAITS OPERATOR) ──
+#   make dora            → scripts/dora-collect.sh (RU text, D-1..D-4 vs targets)
+#   make dora-json       → scripts/dora-collect.sh --json
+#   make dora-self-test  → scripts/dora-collect.sh --self-test (hermetic, synthetic)
+.PHONY: dora dora-json dora-self-test
+
+dora:
+	@bash scripts/dora-collect.sh
+
+dora-json:
+	@bash scripts/dora-collect.sh --json
+
+dora-self-test:
+	@bash scripts/dora-collect.sh --self-test
