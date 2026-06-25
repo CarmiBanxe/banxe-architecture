@@ -291,5 +291,6 @@
   "agent-factory-sub-b-emi-impl-state__e87e7562a2c3": 538,
   "agent-factory-governance-adr-anthropic-finance-templates__00d1abe49484": 539,
   "agent-factory-governance-claude-permissions-hardening__86396a3bf6c1": 540,
-  "agent-factory-sub-b-safeguarding-coverage-dedup__df0cff86a0b1": 541
+  "agent-factory-sub-b-safeguarding-coverage-dedup__df0cff86a0b1": 541,
+  "agent-factory-governance-adr-123-operator-apply-runbook__528049c75b56": 542
 }
