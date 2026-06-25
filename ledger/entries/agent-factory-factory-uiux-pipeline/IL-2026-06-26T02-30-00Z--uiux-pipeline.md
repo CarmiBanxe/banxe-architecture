@@ -1,0 +1,20 @@
+---
+il_ts: 2026-06-26T02:30:00Z
+session_id: agent-factory-factory-uiux-pipeline
+source: CEO
+status: DONE
+---
+### UI/UX pipeline validator (governance-side) — scripts/uiux-pipeline.sh: validate §6 5-stage process + artifacts; frontend/axe-core DELEGATED → banxe-ui
+- **Decision:** Created `scripts/uiux-pipeline.sh` (bash, `set -euo pipefail`, READ-ONLY, no mutation) validating the **governance/process** side of the UI/UX delivery model in THIS repo, each 🟢/🟡/🔴: (a) all 5 §6 stages declared (parsed from `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` §6); (b) canonical input artifacts present; (c) `design_pipeline_agent` passport present + bound; (d) stages 3-5 gating references `quality-gate.sh` + invariants. Honestly DELEGATES the frontend side to the separate `banxe-ui` repo and marks the Head-of-Design RACI holder AWAITS OPERATOR — inventing no frontend code and NOT running axe-core here. Added Makefile targets `uiux`/`uiux-json`/`uiux-self-test` (existing untouched).
+- **Checks (governance, computable here):**
+  - **§6 stages 5/5** — parsed `Design Discovery, Wireframing, Design System, Front-end, Usability`.
+  - **Input artifacts 3/3** — `docs/BANXE-UI-UX-RESEARCH.md`, `docs/BANXE-UI-UX-SYSTEM.md`, `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` all present.
+  - **design_pipeline_agent** — passport present + bound (`allowed_skills` = context_memory_sync, clean_architecture_enforcer, error_handling_standardizer, api_contract_guardian, smart_test_generator, dependency_optimizer; bound in GROUP 2).
+  - **Gating wiring** — §6 statement "No stage may bypass `quality-gate.sh` or the invariants (CLAUDE.md, agents.md)" confirmed present.
+- **Honesty boundary:** **DELEGATED → banxe-ui** (separate repo; not run here): Storybook deploy, design-token machine source (`banxe-ui/packages/design-tokens`), axe-core accessibility CI. **AWAITS OPERATOR:** Head of Design + Design System Lead RACI holders (§7.2 ownership gap). The validator executes no frontend/axe-core; it reports these as ⚪.
+- **Proof — --self-test green + live:** `bash scripts/uiux-pipeline.sh --self-test` → overall 🟢, exit 0; `--self-test --json` valid (overall 🟢, 5 stages), exit 0; `make uiux-self-test` exit 0. LIVE run → overall **🟢**: §6 stages 5/5, input artifacts 3/3, design_pipeline_agent bound, gating present; DELEGATED (banxe-ui) + AWAITS (Head of Design) reported as ⚪; exit 0. LIVE `--json` valid. Exit semantics: 20 only on a real governance gap (missing stage/artifact/binding/gating); never on DELEGATED/AWAITS. `bash -n` clean; 91 lines (≤300); semgrep pre-commit green.
+- **Basis:** `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` §6 (5-stage delivery process + stage→artifact binding + "no bypass of quality-gate.sh/invariants"), §7.1/§7.2 (RACI; Head of Design / Design System Lead = AWAITS OPERATOR), §3-§5 (design-system/accessibility, machine source in banxe-ui); `agents/passports/design_pipeline_agent.yaml`; `scripts/quality-gate.sh` (the gate stages 3-5 reference).
+- **Append-only (ADR-059-A):** ONE new tail shard at il_ts `2026-06-26T02:30:00Z` (strictly > fresh tree max `2026-06-26T02:00:00Z`); INSTRUCTION-LEDGER.md + IL-SEQUENCE.json regenerated via `python3 ledger/build_ledger.py`, `--check` exit 0. Isolated worktree off `origin/main 41e376d` (ADR-120); RULE 7 self-honored. Anti-dup (ADR-102): no prior `scripts/uiux-*`.
+- **Status:** DONE — governance-side UI/UX pipeline validator in place (`make uiux`); process/artifacts green, frontend honestly delegated to banxe-ui. DO NOT MERGE pending operator review.
+- **Recommended next (operator):** merge; wire the banxe-ui CI (Storybook deploy + design-token build + axe-core accessibility gate) to satisfy the DELEGATED stage-3/4/5 machine checks; appoint Head of Design / Design System Lead (§7.2 AWAITS OPERATOR).
+- **Refs:** `scripts/uiux-pipeline.sh` (NEW), `Makefile` (uiux targets); `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` (§6/§7); `agents/passports/design_pipeline_agent.yaml`; `scripts/quality-gate.sh`; `docs/BANXE-UI-UX-RESEARCH.md`, `docs/BANXE-UI-UX-SYSTEM.md`; ADR-059-A, ADR-120, ADR-121, I-28.

@@ -154,3 +154,18 @@ quality-json:
 
 quality-self-test:
 	@bash scripts/quality-gate.sh --self-test
+
+# ── UI/UX pipeline validator (governance-side; frontend/axe-core DELEGATED → banxe-ui) ──
+#   make uiux            → scripts/uiux-pipeline.sh (RU text; §6 stages + artifacts + delegated)
+#   make uiux-json       → scripts/uiux-pipeline.sh --json
+#   make uiux-self-test  → scripts/uiux-pipeline.sh --self-test (hermetic)
+.PHONY: uiux uiux-json uiux-self-test
+
+uiux:
+	@bash scripts/uiux-pipeline.sh
+
+uiux-json:
+	@bash scripts/uiux-pipeline.sh --json
+
+uiux-self-test:
+	@bash scripts/uiux-pipeline.sh --self-test
