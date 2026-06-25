@@ -1,0 +1,9 @@
+---
+il_ts: 2026-06-26T18:30:00Z
+session_id: agent-factory-governance-hermes-stack-canon
+source: CEO
+status: DONE
+---
+### ADR-128 — Banking-agent HITL authority matrix (L1/L2/L3 — MLRO/CRO/CTO gates), read-only AI by default
+- **Decision:** Created `docs/adr/ADR-128-banking-agents-hitl-matrix.md` (PROPOSED, concept_only) recording the banking-domain HITL authority ladder as canon so any future agent adoption inherits a pre-bounded gate (EU AI Act Art. 14; guardian BUG-007). **All banking-domain AI is read-only by default; no AI agent — Hermes included — may self-escalate across a level.** Levels: **L1** (auto, read-only/observe — health/metric/log monitoring, velocity counters, advisory reads; observational/alerting output only); **L2** (human review — MLRO/CRO — anomaly/threshold breach, fraud-score review, KYC HIGH/PROHIBITED, AML triage; AI proposes, named human disposes); **L3** (human-only — MLRO/CEO/CRO/CTO — SAR filing, PEP approval, AML-threshold change, sanctions decision, production deploy; NO AI authority, GPG-signed human action only). Matrix: AML triage/SAR → L2 review + L3 file; tx-monitor velocity → L1 auto + L2 on threshold; sanctions → L1 auto-flag + BLOCK/L3. Confirms Hermes is NOT an L2+ decision agent — it sits **outside** this ladder (read-only/alerting only). No runtime code, no agent provisioned. Append-only (ADR-059-A), il_ts strictly > `2026-06-26T17:00:00Z`. Minted IL-548.
+- **Refs:** `docs/adr/ADR-128-banking-agents-hitl-matrix.md` (NEW); ADR-126 (Hermes outside L2+), ADR-019 (AI guardian two-family), ADR-016 (AI plane PII/AML routing), ADR-102 (Duplication Audit); `.claude/rules/agents.md` (HITL BUG-007, ARL/Ruflo BUG-005, perimeter zones); `COMPLIANCE-ARCH.md` / `SANCTIONS-POLICY.md` (root canon); research artifact `Hermes-Agent-Razbor-…-Software-Factory.md` (attached, referenced — not duplicated). PR #794.

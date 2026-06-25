@@ -1,0 +1,9 @@
+---
+il_ts: 2026-06-26T19:00:00Z
+session_id: agent-factory-governance-hermes-stack-canon
+source: CEO
+status: DONE
+---
+### ADR-129 — Factory project isolation for any Tier-1 agent (AGENTS.md per repo, scoped tokens, read-only DB) — Tier 7-8 hardening
+- **Decision:** Created `docs/adr/ADR-129-factory-project-isolation-tier78.md` (PROPOSED, concept_only) recording the mandatory least-privilege isolation baseline any Tier-1 agent (e.g. the future Hermes of ADR-126) must satisfy **before** adoption — isolation is a **precondition, not a post-hoc control**. Baseline (Tier 7-8): (1) per-repo `AGENTS.md` scope — agent operates only in repos with an explicit grant, no implicit cross-repo reach; (2) **CWD isolation** — activity confined to a project working dir, no traversal outside the grant; (3) **scoped credentials** — GitHub fine-grained tokens limited to declared repos + **read** scopes, DB access via **read-only** users only, no broad PATs/write/admin; (4) operator-held secrets, provisioned + rotated operator-side (ADR-103/ADR-032), agent never stores/self-provisions; (5) scoped channels — messaging limited to declared operator channels/allowed users; (6) **approval-gated risky actions** — anything beyond read/observe requires operator HITL, production banking stack out of reach by default. No runtime code, no agent or credential provisioned. Append-only (ADR-059-A), il_ts strictly > `2026-06-26T17:00:00Z`. Minted IL-549.
+- **Refs:** `docs/adr/ADR-129-factory-project-isolation-tier78.md` (NEW); ADR-126 (Hermes Tier-1, parent), ADR-117 §Hermes (factory-node perimeter), ADR-103 (server-only/secrets operator-side), ADR-001 / `PRIVILEGE-MODEL.md` (privilege model), ADR-032 (secret-rotation), ADR-102 (Duplication Audit); research artifact `Hermes-Agent-Razbor-…-Software-Factory.md` (attached, referenced — not duplicated). PR #794.

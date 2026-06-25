@@ -17863,3 +17863,45 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** DONE — ADR-126 ACCEPTED (governance/concept-only). Squash PR to main; STOP before merge (gated; operator disposition).
 - **Recommended next (operator):** if/when Hermes adoption is desired, open a separate gated IL — Hermes server (operator-hosted, ADR-103) + a PROPOSED Tier-1 passport (I-27) wired only to read-only CI/alerting scopes, with the ADR-126 boundaries enforced; never grant merge/deploy/payment/AML scopes.
 - **Refs:** `docs/adr/ADR-126-hermes-tier1-cicd-watchdog-role.md` (NEW); `docs/adr/ADR-117-…md` §Hermes (refined, pointer added); ADR-092, ADR-102, ADR-103, ADR-119, ADR-059-A, ADR-120; `.claude/rules/agents.md` (BUG-005 ARL/Ruflo, BUG-007 HITL); research artifact `Hermes-Agent-Razbor-i-primenenie-v-EMI-BANXE-AI-Bank-i-Software-Factory.md` (attached, referenced).
+
+---
+
+### IL-547 - agent-factory-governance-hermes-stack-canon @ 2026-06-26T18:00:00Z
+
+- **il_ts:** 2026-06-26T18:00:00Z
+- **session_id:** agent-factory-governance-hermes-stack-canon
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-hermes-stack-canon/IL-2026-06-26T18-00-00Z--adr-127-hermes-delegation-contract.md`
+
+### ADR-127 — Hermes Tier-1 delegation contract in the Software Factory pipeline (read-only observer, HITL-safe)
+- **Decision:** Created `docs/adr/ADR-127-hermes-factory-delegation-contract.md` (PROPOSED, concept_only) detailing the delegation/handoff contract for the Hermes Tier-1 role within the exact bounds of ADR-126. Hermes participates in the Factory pipeline **only as a read-only observer + alert producer**: it may observe orchestration/spec/lock state and forward read-only signals (benchmark deltas, failing spec-to-code tasks, coverage regressions) as operator alerts, plus research-fetch assist via browser/SSH/cron gateways feeding human decisions. **OUT OF SCOPE (hard boundary, new ADR + operator HITL required):** task dispatch / orchestration (no `ruflo run`, no Lock-0 spec assignment, no NanoClaw trigger, no OpenClaw coding drive — does NOT replace Tier-0), merge / deploy authority, compliance authority. No runtime code, no agent passport / soul / config stub. Coupling shard per ADR-059 (build_ledger); append-only (ADR-059-A), il_ts strictly > origin/main max `2026-06-26T17:00:00Z`. Minted IL-547 (= max+1 over origin/main 546).
+- **Refs:** `docs/adr/ADR-127-hermes-factory-delegation-contract.md` (NEW); ADR-126 (Hermes Tier-1 role, parent), ADR-117 §Hermes (perimeter), ADR-025 (agent-interaction/handoff canon), ADR-103 (server-only), ADR-102 (Duplication Audit); `.claude/rules/agents.md` (ARL/Ruflo BUG-005, HITL BUG-007); research artifact `Hermes-Agent-Razbor-i-primenenie-v-EMI-BANXE-AI-Bank-i-Software-Factory.md` (attached, referenced — not duplicated). PR #794.
+
+---
+
+### IL-548 - agent-factory-governance-hermes-stack-canon @ 2026-06-26T18:30:00Z
+
+- **il_ts:** 2026-06-26T18:30:00Z
+- **session_id:** agent-factory-governance-hermes-stack-canon
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-hermes-stack-canon/IL-2026-06-26T18-30-00Z--adr-128-banking-agents-hitl-matrix.md`
+
+### ADR-128 — Banking-agent HITL authority matrix (L1/L2/L3 — MLRO/CRO/CTO gates), read-only AI by default
+- **Decision:** Created `docs/adr/ADR-128-banking-agents-hitl-matrix.md` (PROPOSED, concept_only) recording the banking-domain HITL authority ladder as canon so any future agent adoption inherits a pre-bounded gate (EU AI Act Art. 14; guardian BUG-007). **All banking-domain AI is read-only by default; no AI agent — Hermes included — may self-escalate across a level.** Levels: **L1** (auto, read-only/observe — health/metric/log monitoring, velocity counters, advisory reads; observational/alerting output only); **L2** (human review — MLRO/CRO — anomaly/threshold breach, fraud-score review, KYC HIGH/PROHIBITED, AML triage; AI proposes, named human disposes); **L3** (human-only — MLRO/CEO/CRO/CTO — SAR filing, PEP approval, AML-threshold change, sanctions decision, production deploy; NO AI authority, GPG-signed human action only). Matrix: AML triage/SAR → L2 review + L3 file; tx-monitor velocity → L1 auto + L2 on threshold; sanctions → L1 auto-flag + BLOCK/L3. Confirms Hermes is NOT an L2+ decision agent — it sits **outside** this ladder (read-only/alerting only). No runtime code, no agent provisioned. Append-only (ADR-059-A), il_ts strictly > `2026-06-26T17:00:00Z`. Minted IL-548.
+- **Refs:** `docs/adr/ADR-128-banking-agents-hitl-matrix.md` (NEW); ADR-126 (Hermes outside L2+), ADR-019 (AI guardian two-family), ADR-016 (AI plane PII/AML routing), ADR-102 (Duplication Audit); `.claude/rules/agents.md` (HITL BUG-007, ARL/Ruflo BUG-005, perimeter zones); `COMPLIANCE-ARCH.md` / `SANCTIONS-POLICY.md` (root canon); research artifact `Hermes-Agent-Razbor-…-Software-Factory.md` (attached, referenced — not duplicated). PR #794.
+
+---
+
+### IL-549 - agent-factory-governance-hermes-stack-canon @ 2026-06-26T19:00:00Z
+
+- **il_ts:** 2026-06-26T19:00:00Z
+- **session_id:** agent-factory-governance-hermes-stack-canon
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-hermes-stack-canon/IL-2026-06-26T19-00-00Z--adr-129-factory-project-isolation.md`
+
+### ADR-129 — Factory project isolation for any Tier-1 agent (AGENTS.md per repo, scoped tokens, read-only DB) — Tier 7-8 hardening
+- **Decision:** Created `docs/adr/ADR-129-factory-project-isolation-tier78.md` (PROPOSED, concept_only) recording the mandatory least-privilege isolation baseline any Tier-1 agent (e.g. the future Hermes of ADR-126) must satisfy **before** adoption — isolation is a **precondition, not a post-hoc control**. Baseline (Tier 7-8): (1) per-repo `AGENTS.md` scope — agent operates only in repos with an explicit grant, no implicit cross-repo reach; (2) **CWD isolation** — activity confined to a project working dir, no traversal outside the grant; (3) **scoped credentials** — GitHub fine-grained tokens limited to declared repos + **read** scopes, DB access via **read-only** users only, no broad PATs/write/admin; (4) operator-held secrets, provisioned + rotated operator-side (ADR-103/ADR-032), agent never stores/self-provisions; (5) scoped channels — messaging limited to declared operator channels/allowed users; (6) **approval-gated risky actions** — anything beyond read/observe requires operator HITL, production banking stack out of reach by default. No runtime code, no agent or credential provisioned. Append-only (ADR-059-A), il_ts strictly > `2026-06-26T17:00:00Z`. Minted IL-549.
+- **Refs:** `docs/adr/ADR-129-factory-project-isolation-tier78.md` (NEW); ADR-126 (Hermes Tier-1, parent), ADR-117 §Hermes (factory-node perimeter), ADR-103 (server-only/secrets operator-side), ADR-001 / `PRIVILEGE-MODEL.md` (privilege model), ADR-032 (secret-rotation), ADR-102 (Duplication Audit); research artifact `Hermes-Agent-Razbor-…-Software-Factory.md` (attached, referenced — not duplicated). PR #794.
