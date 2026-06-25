@@ -32,7 +32,7 @@ Live tool readings @ `338f6e3`: skills **57 bound / 0 unbound**; quality-gate **
 | # | Trait | Prev (06-24) | **Now (06-25)** | New evidence |
 |---|---|---|---|---|
 | 1 | Immutable audit trail / Event Sourcing | PRESENT | **PRESENT** | `ledger/` append-only + `guardian.yml`; unchanged |
-| 2 | XAI layer (Explainability) | PARTIAL | **PARTIAL** | MRM validator (`make mrm`) + agentops Canon-Judge status (`make agentops`) — governance executable; model-level `ExplanationBundle` still emi-stack |
+| 2 | XAI layer (Explainability) | PARTIAL | **PARTIAL** (strengthened — see §8) | MRM validator (`make mrm`) **now 🟢, 13/13 model cards** (#780/#782) + agentops Canon-Judge status; **stays PARTIAL** — cards are unapproved DRAFTS, numeric XAI/monitoring thresholds AWAITS OPERATOR, model-level `ExplanationBundle` still emi-stack |
 | 3 | HITL governance (EU AI Act Art.14) | PRESENT | **PRESENT** | `make agentops` reports Canon-Judge audit-mode + Guardian gates; unchanged (blocking T1 gate AWAITS OPERATOR) |
 | 4 | Trust boundaries between agents | PRESENT | **PRESENT** | `AGENT-ORG-STRUCTURE.md` + 57/57 bound passports |
 | 5 | SOUL.md / governance-file change gate | PRESENT | **PRESENT** | Guardian + merge-queue ruleset (activation operator-gated) |
@@ -113,3 +113,34 @@ This assessment **supersedes** `docs/roadmap/TARGET-MODEL-CONFORMANCE-2026-06-24
 - **Superseded:** `docs/roadmap/TARGET-MODEL-CONFORMANCE-2026-06-24.md`.
 - **Canon:** ADR-056/059/060 (ledger); ADR-102 (anti-duplication/supersede); ADR-117 (perimeter); ADR-120/121 (isolation).
 - **Invented facts:** NONE. Every residual gap is OPERATOR-GATED, evo2/banxe-ui build, or emi-stack runtime.
+
+---
+
+## 8. Addendum — 2026-06-25 · MRM card-hygiene 🟢 (13/13); conformance HOLDS at ~86 %
+
+> Base @ `02d3cc3`. Since the §1-§7 audit, the **MRM model-card gap closed**: `make mrm` is now **overall 🟢** — **T1 3/3 + T2 5/5 + T3 5/5 = 13/13 cards present** (#780 T1 cards; #782 T2+T3 cards). This was the cited MRM card-hygiene sub-gap of trait #2.
+
+**Honest recompute — the conformance % does NOT change.** It **holds at 12/14 ≈ 86 %**:
+
+- Trait **#2 (XAI layer) stays PARTIAL**, not PRESENT — the **card-hygiene sub-metric** moved 🔴→🟢, but #2 was already PARTIAL (0.5) and does **not** flip to PRESENT because: (a) the 13 cards are **unapproved DRAFTS**; (b) **numeric monitoring thresholds** (drift/hallucination/accuracy-decay) remain **AWAITS OPERATOR** (MRM §6); (c) the **blocking independent-validation gate + owner** are AWAITS OPERATOR (MRM §5); (d) **model-level runtime XAI** (`ExplanationBundle` in `risk_contract.py`) is **emi-stack**. Counting #2 as PRESENT would overstate XAI as delivered when only its documentation governance is.
+- No other trait depends on the MRM card delta, so PRESENT (10) / PARTIAL (4) / OOS (1) is unchanged ⇒ **86 % holds**.
+
+**What the milestone really means:** the **executable factory work is essentially complete** — the MRM validator now reports green, and there is **no remaining executable governance artifact to build in this repo**. **Every residual gap is now operator-gated** (decision, evo2/banxe-ui build, or emi-stack runtime). The path from ~86 % to ~100 % is **entirely operator actions**, not factory documentation.
+
+### Residual register — now PURELY operator-gated (exact action)
+
+| # | Residual (operator-gated) | Unblocks | Exact action |
+|---|---|---|---|
+| 1 | Model-card AWAITS fields (13 cards) | #2 → PRESENT | Operator/CRO approve DRAFTS + fill: binding T1/T2/T3 classification, numeric thresholds (drift/hallucination), eval results, independent-validator owner |
+| 2 | evo2 fraud model unnamed | #2 / MRM T1 | Name the deployed evo2 fraud model → replace `fraud-classifier-evo2.md` gap card with real `<slug>.md` |
+| 3 | Canon-Judge blocking gate for T1 | #2, #3, #15 | Enable a blocking independent-validation gate for T1 (currently audit-only) once thresholds set |
+| 4 | Numeric monitoring thresholds | #2, #14 | CRO sets drift/hallucination/accuracy-decay/calibration bands (MRM §6) |
+| 5 | evo2 Prometheus/Grafana | #7, #13 | Stand up live DORA pipeline (repo proxy = `make dora` until then) |
+| 6 | Merge-queue ruleset + required checks | #5, #11 | Activate `merge-queue-ruleset.json` on GitHub; mark security checks required |
+| 7 | banxe-ui CI (Storybook/axe-core) | #14 / S4 | Wire banxe-ui frontend CI (`make uiux` validates the governance side) |
+| 8 | Role appointments | multiple | Name CRO (SMF4), MLRO (SMF17), VP Platform Eng/SRE, Head of Design/Design-System-Lead |
+| 9 | Passport activation (I-27) | #10, #12 | Per-agent operator activation gate (passports bound 57/57 but PROPOSED) |
+| 10 | emi-stack runtime | #2, #7, #10, #14 | Runtime builds: model-XAI ExplanationBundle, compliance_config.yaml, vault-JIT ZSP, OPA sidecar (out of architecture-repo scope) |
+
+> **Conformance HOLDS at ~86 %** by honest method; the MRM 🟢 milestone strengthens #2 within PARTIAL but does not flip it (thresholds + runtime XAI operator-gated). No new factory artifact is needed to reach ~100 % — only the operator-gated items above.
+
