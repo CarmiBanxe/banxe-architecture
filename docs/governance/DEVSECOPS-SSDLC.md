@@ -151,6 +151,8 @@ Recorded verbatim from `docs/governance/CANON-RECONCILIATION-ADR117.md`. Enforce
 4. **security-hotspot ≥95%**
 5. **MTTD <24h**
 
+> **Repo-local enforcement (partial, O-11):** `scripts/quality-gate.sh` (`make quality`) now enforces the *computable* KPI-3 ("0 blocker/critical") gates in THIS repo — `build_ledger.py --check` + semgrep ERROR scan + security-workflow presence. Code-metric KPIs (coverage / tech-debt / security-hotspot) remain **DELEGATED → project CI** (no app source/analyzer here); MTTD remains **AWAITS OPERATOR** (incident telemetry; proxy = `make dora` D-4). Full ADR-117 KPI gating stays O-11.
+
 ---
 
 ## 8. Roles & RACI

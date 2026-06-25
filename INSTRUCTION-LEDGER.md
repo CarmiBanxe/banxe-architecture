@@ -17440,3 +17440,27 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** DONE — read-only MRM validator + card convention + template in place (`make mrm`). The computable hygiene is honest; thresholds/classification/backend remain operator-gated. DO NOT MERGE pending operator review.
 - **Recommended next (operator):** merge; author the 13 per-model cards from TEMPLATE.md (T1 first — regulated-critical) to move T1 🔴→🟢; then the operator/CRO decisions on the four AWAITS-OPERATOR items (thresholds, binding classification, T1 blocking independent-validation gate, ai-heavy backend).
 - **Refs:** `scripts/mrm-validate.sh` (NEW), `docs/governance/model-cards/TEMPLATE.md` (NEW), `Makefile` (mrm targets); `docs/governance/MODEL-RISK-MANAGEMENT.md` (§3-§6); `scripts/factory-report.sh` (§F gap); ADR-059-A, ADR-120, ADR-121, I-28.
+
+---
+
+### IL-529 - agent-factory-factory-quality-gate @ 2026-06-26T02:00:00Z
+
+- **il_ts:** 2026-06-26T02:00:00Z
+- **session_id:** agent-factory-factory-quality-gate
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-factory-quality-gate/IL-2026-06-26T02-00-00Z--quality-gate.md`
+
+### Quality gate (repo-local) — scripts/quality-gate.sh: computable KPI-3 gates + honest DELEGATED/AWAITS boundary for code-metrics (O-11)
+- **Decision:** Created `scripts/quality-gate.sh` (bash, `set -euo pipefail`, READ-ONLY, no mutation) implementing the **computable** Quality-Factory checks for THIS governance/architecture repo, each 🟢/🟡/🔴 vs the DEVSECOPS-SSDLC §7 KPI targets. Honestly DELEGATES the code-metric KPIs (no app source/analyzer here) and marks true MTTD AWAITS OPERATOR — fabricating no coverage/tech-debt/hotspot number. Added Makefile targets `quality`/`quality-json`/`quality-self-test` + one non-breaking note in DEVSECOPS-SSDLC.md §7 (quality-gate.sh now does repo-local enforcement; code-metrics stay project-CI/O-11).
+- **Gate classification (best-solution, honest):**
+  - **LOCAL-PASS (computable here, KPI-3 «0 blocker/critical»):** `python3 ledger/build_ledger.py --check` (hard local gate) + `semgrep --error --severity=ERROR` scan (mirror of `.githooks/pre-commit`; absent/timeout ⇒ 🟡 inconclusive, NOT blocking) + security-workflow presence (codeql/osv-scanner/sbom/cosign-sign = 4/4 wired, advisory; promote-to-required = operator). Blocking-failure count drives exit code.
+  - **DELEGATED → project CI:** coverage ≥85% (KPI-1), tech-debt <5% (KPI-2), security-hotspot ≥95% (KPI-4) — need an app source + SonarQube/test-runner not present in this repo; reported `⚪ DELEGATED`, never a fabricated number.
+  - **AWAITS OPERATOR:** MTTD <24h (KPI-5) — needs incident telemetry; closest local signal referenced = `scripts/dora-collect.sh` D-4 (MTTR proxy, `make dora`).
+- **Exit semantics:** non-zero (20) ONLY on a real local blocking failure (ledger --check fail OR semgrep ERROR findings); DELEGATED/AWAITS items NEVER cause non-zero. Self-test exits 0.
+- **Basis:** `docs/governance/DEVSECOPS-SSDLC.md` §2 Test row (references "quality-gate.sh (project canon)") + §7 KPIs (5, ADR-117 verbatim) + open item O-11 ("Implement ADR-117 KPI gates"); local gates available in-repo (`ledger/build_ledger.py`, `.githooks/pre-commit` semgrep, `.github/workflows/{codeql,osv-scanner,sbom,cosign-sign}.yml`); `scripts/dora-collect.sh` (MTTD proxy). Note: the doc's "quality-gate.sh" is project-canon (intended for the project repo); this repo had none — this adds the repo-local computable subset honestly.
+- **Proof — --self-test green + live:** `bash scripts/quality-gate.sh --self-test` → overall 🟢, 0 blocking, exit 0; `--self-test --json` valid (overall 🟢), exit 0; `make quality-self-test` exit 0. LIVE run → overall **🟢**: ledger `pass`, semgrep ERROR `pass`, security-workflows `4/4`, ADR-записей 105, code-metrics `⚪ DELEGATED`, MTTD `⚪ AWAITS OPERATOR`, exit 0. `bash -n` clean; 90 lines (≤300); semgrep pre-commit green.
+- **Append-only (ADR-059-A):** ONE new tail shard at il_ts `2026-06-26T02:00:00Z` (strictly > fresh tree max `2026-06-26T01:30:00Z`); INSTRUCTION-LEDGER.md + IL-SEQUENCE.json regenerated via `python3 ledger/build_ledger.py`, `--check` exit 0. Isolated worktree off `origin/main 9891da7` (ADR-120); RULE 7 self-honored. Anti-dup (ADR-102): no prior `scripts/quality-gate.sh`.
+- **Status:** DONE — repo-local quality gate in place (`make quality`); computable KPI-3 enforced, code-metrics honestly delegated to project CI (O-11 remains open for full ADR-117 gating). DO NOT MERGE pending operator review.
+- **Recommended next (operator):** merge; wire `scripts/quality-gate.sh` into the project-repo CI alongside SonarQube/test-runner to satisfy the DELEGATED code-metric KPIs (coverage/tech-debt/hotspot) and close O-11; optionally add `make quality` to the per-PR gate set in this repo.
+- **Refs:** `scripts/quality-gate.sh` (NEW), `Makefile` (quality targets), `docs/governance/DEVSECOPS-SSDLC.md` (§7 note); `ledger/build_ledger.py`, `.githooks/pre-commit`, `.github/workflows/{codeql,osv-scanner,sbom,cosign-sign}.yml`; `scripts/dora-collect.sh` (MTTD proxy); ADR-117 (KPIs), ADR-059-A, ADR-120, ADR-121, I-28.
