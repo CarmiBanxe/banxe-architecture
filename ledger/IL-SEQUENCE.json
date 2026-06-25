@@ -293,5 +293,6 @@
   "agent-factory-governance-claude-permissions-hardening__86396a3bf6c1": 540,
   "agent-factory-sub-b-safeguarding-coverage-dedup__df0cff86a0b1": 541,
   "agent-factory-governance-adr-123-operator-apply-runbook__528049c75b56": 542,
-  "agent-factory-sub-b-finrpt-content-core__850ca097b7c0": 543
+  "agent-factory-sub-b-finrpt-content-core__850ca097b7c0": 543,
+  "agent-factory-governance-adr-092-claude-code-setup-plugin-eval__06e0669349ce": 544
 }
