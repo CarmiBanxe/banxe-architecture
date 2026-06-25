@@ -168,3 +168,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: ADR-117 placeholder gate (ACCEPTED requires all OPERATOR-DECISION filled)
         run: bash scripts/adr117-gate-check.sh
+
+  guardian-traceability:
+    name: guardian-traceability
+    runs-on: ubuntu-latest
+    # Informational / non-required until stabilized (ADR-132). Never blocks a merge.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: ADR<->implementation & souls<->SKILLS-MATRIX traceability gate (ADR-132, informational)
+        env:
+          BASE_REF: origin/${{ github.base_ref || 'main' }}
+        run: bash scripts/adr-traceability-check.sh
