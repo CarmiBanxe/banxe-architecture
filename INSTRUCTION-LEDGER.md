@@ -17130,3 +17130,28 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Perimeter / canon:** docs/migration plane only; no secrets in repo (no .RAR unpack; legacy depth left on factory server /home/mmber/banxe-legacy-unpack, ADR-103); no port/scaffold/code; isolated worktree off origin/main@a5e2ddc; signed commit; sub-B does NOT push/PR/merge — hands to main per §71/§74; --force-with-lease only if needed.
 - **Deliverable:** docs/migration/MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.md.
 - **Refs:** banxe_legacy_inventory.md; banxe_legacy_domain_map.md; banxe_to_emi_mapping.md; MIG-INDEX-final-state-register.md (IL-436); ROADMAP-MATRIX.md; banxe-emi-stack:services/* (35033ac); ADR-102/103/119; I-01/I-27/I-28.
+
+---
+
+### IL-517 - agent-factory-c-swift @ 2026-06-25T17:30:00Z
+
+- **il_ts:** 2026-06-25T17:30:00Z
+- **session_id:** agent-factory-c-swift
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-c-swift/IL-2026-06-25T17-30-00Z--7dfcb2.md`
+
+### C-swift — SWIFT international wires build-spec (MT/MX + correspondent banking; shared PaymentRailPort)
+
+- **Target:** C-swift (Block C — Payment Rails). International rail sibling of C-fps/C-sepa: SWIFT cross-border wires — outbound/inbound MT (MT103/MT202/MT202COV) + MX ISO 20022 (pacs.008/pacs.009/COV) with MT/MX coexistence (CBPR+ migration), correspondent/NOSTRO-VOSTRO model, cover payments, BIC validation, gpi/UETR tracking, STP vs repair. Shared PaymentRailPort. Third P2 docs-spec (operator chose: continue P2 autonomously). Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/payments/C-SWIFT-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (C-swift 0% → Spec-Locked/In Progress + P2 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — origin/main=d60cc62 (after 2x drift), `build_ledger.py --check` OK, IL-SEQUENCE max=516 → next = max+1 = **IL-517**. No other open PRs (#764 is this one).
+  2. ADR-102 dedup — `find docs -iname '*c-swift*'`/`*swift*BUILD*` ⇒ empty; `ls docs/payments` ⇒ C-FPS/C-SEPA only. No existing C-swift artifact → new, non-duplicative. Mirrors C-fps/C-sepa structure; SHARES PaymentRailPort (defined in C-fps §3.1) — referenced, not duplicated.
+  3. Wrote build-spec mirroring C-sepa (scope MT/MX + correspondent/cover payments, SWIFTRailPort extends shared PaymentRailPort, adapter model, MT+MX message mapping, settlement/GL posting via LedgerPort, D-recon Leg C handoff, limits/timing config-as-data, F-aml pre-send + FATF Travel Rule + I-02 jurisdiction block, DoD, out-of-scope fail-closed, operator-gates-not-crossed).
+  4. ROADMAP-MATRIX.md additive: C-swift row → Spec-Locked/In Progress (IL-517); P2 summary line extended. No frozen row altered.
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..516 unchanged); new shard → IL-517. Signed squash-PR merged with 4 required guardians + ledger gates GREEN.
+- **Deviation / IL-drift reconciliation (TWO rounds):** First build off base 3042e17 (max=514) assigned IL-515; PR #762 (skills-bind-audit) merged claiming IL-515. Reset → IL-516; PR #763 (residual-gap-register) merged claiming IL-516. Reset to main=d60cc62 → **IL-517**. Per parallel-session-isolation Rule 7 + reset/rebase loop each round: reset to fresh origin/main, recovered spec from prior commit object, re-ran build_ledger.py (max+1), corrected ALL IL references, --force-with-lease on agent branch only. session_id `agent-factory-c-swift` (id-less, sibling convention) vs ADR-060 branch `agent/factory/cswift01/c-swift-build-spec`.
+- **Blocker:** none (drift resolved via reset/rebase loop; converged once last competing PR merged).
+- **Boundary (drift reconciled):** C-swift = SWIFT international rail integration (MT/MX cross-border wires, correspondent/NOSTRO-VOSTRO, cover payments, gpi/UETR). SHARES PaymentRailPort with C-fps (UK domestic, defines the port) + C-sepa (EU corridor) — separate SWIFT-specific adapters/messages/scheme rules, NOT duplicated. EMITS payment events + NOSTRO statements to D-recon Leg C (D-recon owns the 3-leg recon engine), POSTS multi-currency settlement journal entries to D-gl via LedgerPort (Dr Client/Cr NOSTRO; D-gl owns posting), INVOKES F-aml mandatory pre-send sanctions screening (cross-border = elevated; F-aml owns screening) + FATF Rec 16 Travel Rule + I-02 hard jurisdiction block. Does NOT reimplement GL/recon/AML; no FX conversion (multi-currency settlement, not a dealing desk); no autonomous live wire execution (operator-gated).
+- **Refs:** docs/payments/C-SWIFT-BUILD-SPEC.md; C-FPS-BUILD-SPEC.md (IL-494, defines shared PaymentRailPort); C-SEPA-BUILD-SPEC.md (IL-496, EU sibling mirrored); D-RECON-BUILD-SPEC.md (Leg C); services/ledger LedgerPort/GLService (D-gl); aml-patterns-SPEC-2026-06-06.md (F-aml); ISO 20022 (pacs.008/009/002, camt.053/056); SWIFT MT (MT103/202/202COV/940); SWIFT gpi (UETR); FATF Rec 16; ISO 9362 (BIC); ADR-027/102/103/115/116/117/119; parallel-session-isolation Rule 7; I-01/I-02/I-24/I-27/I-28; CLAUDE.md §9/§10/§11; PII Proxy.
