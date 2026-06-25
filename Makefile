@@ -139,3 +139,18 @@ mrm-json:
 
 mrm-self-test:
 	@bash scripts/mrm-validate.sh --self-test
+
+# ── Quality gate (repo-local; code-metric KPIs DELEGATED → project CI) ──
+#   make quality            → scripts/quality-gate.sh (RU text; local gates + delegated/awaits)
+#   make quality-json       → scripts/quality-gate.sh --json
+#   make quality-self-test  → scripts/quality-gate.sh --self-test (hermetic)
+.PHONY: quality quality-json quality-self-test
+
+quality:
+	@bash scripts/quality-gate.sh
+
+quality-json:
+	@bash scripts/quality-gate.sh --json
+
+quality-self-test:
+	@bash scripts/quality-gate.sh --self-test
