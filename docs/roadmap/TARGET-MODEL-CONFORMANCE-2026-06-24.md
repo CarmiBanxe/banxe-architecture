@@ -1,5 +1,7 @@
 # Target-Model Conformance Assessment — 2026-06-24
 
+> **⚠ SUPERSEDED (ADR-102) by `docs/roadmap/TARGET-MODEL-CONFORMANCE-2026-06-25.md`** — recomputed ~86 % after S2 activation + 57/57 passport binding + 7 executable factory tools merged. This doc is retained for history (its ~79 % reflects the `5aa561c` state).
+>
 > **Status:** LIVE AUDIT (supersedes stale 04-audit-v2 plan; ADR-102 note §6).
 > **Base:** `origin/main` @ `5aa561c` (2026-06-24).
 > **Method:** content audit of every S1-S6 governance artifact against the 15 target-model
