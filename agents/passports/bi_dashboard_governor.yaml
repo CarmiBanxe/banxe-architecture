@@ -29,3 +29,23 @@ ports:
   inbound:
     - port: BiGovernancePort
       description: Receives dashboard-access / dataset / RLS / no-PII / BI-audit review requests
+
+# ── Passport-bound skills (S-FAC-64; binding metadata only — does NOT activate, I-27) ──
+allowed_skills:
+  - context_memory_sync          # MANDATORY — IL/audit-trail continuity (I-28)
+  - rapid_spec_builder           # MANDATORY — proposes IL/ADR for new port/service (I-28)
+  - clean_architecture_enforcer  # MANDATORY — no cross-contour imports across ports (I-20)
+  - error_handling_standardizer  # MANDATORY — typed exceptions on ports/adapters
+  - api_contract_guardian        # MANDATORY — owns BiGovernancePort contract(s)
+  - smart_test_generator         # CONTROLLED — port/scenario tests (no PII, no float I-05, no mocked audit I-24)
+preferred_skill_sequences:
+  scenario_governance:
+    - context_memory_sync
+    - api_contract_guardian
+    - error_handling_standardizer
+    - smart_test_generator
+    # quality-gate.sh MUST follow
+mandatory_skill_triggers:
+  context_memory_sync: ["any bi_dashboard_governor session start", "after any IL state change"]
+  api_contract_guardian: ["BiGovernancePort change", "REST router / webhook schema change"]
+  error_handling_standardizer: ["new adapter added", "AuditPort write-path change (I-24)"]
