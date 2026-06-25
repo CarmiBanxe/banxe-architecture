@@ -17342,3 +17342,28 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** DONE — factory-wide skill-binding COMPLETE (57/57 bound, train-verify exit 0). Passports remain PROPOSED/non-activated (I-27). DO NOT MERGE pending operator review.
 - **Recommended next (operator):** merge; binding coverage now 100% — next is per-agent ACTIVATION gates (I-27 → operator approval) and S-FAC-66 skill↔passport↔ledger one-to-one mapping verification.
 - **Refs:** 26 passports under `agents/passports/`; `docs/SKILLS-MATRIX.md` (source of truth); `scripts/skills-bind-audit.sh` (proposals); `scripts/train.sh` (train-verify exit 0); S-FAC-64 / IL-518 / IL-520 (GROUP 1-2 precedent); ADR-059-A, ADR-120, ADR-121, I-20/I-24/I-27/I-28.
+
+---
+
+### IL-525 - agent-factory-m-gateway @ 2026-06-25T23:30:00Z
+
+- **il_ts:** 2026-06-25T23:30:00Z
+- **session_id:** agent-factory-m-gateway
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-m-gateway/IL-2026-06-25T23-30-00Z--85c217.md`
+
+### M-gateway — Developer Platform build-spec (public API product, OpenAPI publication, SDKs, versioning; productisation layer on I-api)
+
+- **Target:** M-gateway (Block M — Developer Platform). Developer-platform PRODUCTISATION layer: public OpenAPI/Swagger spec publication, SDK generation (language clients), developer portal/docs, API-key self-service onboarding + lifecycle, API versioning + deprecation policy, usage analytics + plan/tier hooks. Config-as-data. Seventh P2 docs-spec (operator chose: continue P2 autonomously). Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/architecture/M-GATEWAY-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (M-gateway 0% → Spec-Locked/In Progress + P2 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — origin/main=2f23efa (after drift), `build_ledger.py --check` OK, IL-SEQUENCE max=524 → next = max+1 = **IL-525**. No other open PRs (#772 is this one).
+  2. ADR-102 dedup — `find docs -iname '*m-gateway*'`/`*gateway*BUILD*` ⇒ empty; `ls docs/architecture` has I-API but no M-GATEWAY. No existing M-gateway artifact → new, non-duplicative. CRITICAL disambiguation from I-api: M-gateway = productisation wrapper (public OpenAPI/SDKs/portal/self-service keys/versioning), NOT a second gateway; PUBLISHES THROUGH I-api (IL-508 which owns routing/auth/rate-limit). I-api §0/§4 already cross-defines this boundary.
+  3. Wrote build-spec (scope public API product, PublishedAPI/SDKArtifact/DeveloperApp/APIKeyGrant data model, publication flow M-gateway-defines/I-api-enforces, versioning/deprecation governance, producer/consumer contracts referenced-not-duplicated, ADR-102 dup-audit with explicit I-api disambiguation, perimeter, DoD, out-of-scope fail-closed, operator-gates-not-crossed).
+  4. ROADMAP-MATRIX.md additive: M-gateway row → Spec-Locked/In Progress (IL-525); P2 summary line extended. No frozen row altered.
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..524 unchanged); new shard → IL-525. Signed squash-PR merged with 4 required guardians + ledger gates GREEN.
+- **Deviation / IL-drift reconciliation:** First build off base 15ec561 (max=523) assigned IL-524. Concurrent PR #771 (skills-bind-group3 FINAL) merged first claiming IL-524, advancing main to 2f23efa → branch DIRTY. Per parallel-session-isolation Rule 7 + reset/rebase loop: reset worktree to fresh origin/main, recovered spec from prior commit object, re-ran build_ledger.py (max+1) → M-gateway renumbered **IL-524 → IL-525**; ALL IL references corrected (ROADMAP/shard/PR title/commit); --force-with-lease on agent branch only. session_id `agent-factory-m-gateway` (id-less, sibling convention) vs ADR-060 branch `agent/factory/mgw01/m-gateway-build-spec`.
+- **Blocker:** none (drift resolved via reset/rebase loop).
+- **Boundary (drift reconciled) — productisation vs internal gateway:** M-gateway = developer-platform productisation (public API product: OpenAPI publication, SDK generation, developer portal/docs, API-key self-service UX, versioning/deprecation governance, usage analytics/plan-tier hooks). PUBLISHES THROUGH I-api — does NOT reimplement: I-api (IL-508) internal gateway runtime (routing, authN/authZ via Keycloak, rate limiting, PII Proxy egress — I-api ENFORCES at runtime; M-gateway DEFINES the product; rate-tier selection maps to I-api enforcement), I-security IAM + API-key store + PII Proxy (self-service key issuance/rotation/revocation FULFILLED by I-security IAM; M-gateway provides DX + holds references, NO secrets stored), B-pricing pricing computation (plan/tier hooks REFERENCE B-pricing tiers; D-fee computes/bills), LiteLLM AI-routing gateway (different plane), M-sandbox sandbox environment (sibling — M-gateway issues sandbox keys/visibility, does not implement mock-rails). NOT a second gateway (ADR-102); product/DX wrapper on top of I-api.
+- **Refs:** docs/architecture/M-GATEWAY-BUILD-SPEC.md; I-API-BUILD-SPEC.md (IL-508, internal gateway publishes-through; routing/auth/rate-limit owner); B-PRICING-BUILD-SPEC.md (IL-512, plan/tier source); ROADMAP-MATRIX.md (I-security IAM, M-sandbox sibling); decision-litellm-dual-gateway-2026-05-13.md (AI-routing, disambiguated); OpenAPI 3.x/Swagger/Redoc; semver; parallel-session-isolation Rule 7; ADR-027/102/103/115/116/117/119; CLAUDE.md §9/§10/§11; I-security (Keycloak IAM, PII Proxy).
