@@ -291,6 +291,7 @@
   "agent-factory-sub-b-emi-impl-state__e87e7562a2c3": 538,
   "agent-factory-governance-adr-anthropic-finance-templates__00d1abe49484": 539,
   "agent-factory-governance-claude-permissions-hardening__86396a3bf6c1": 540,
+  "agent-factory-handoff-0625__session0625": 540,
   "agent-factory-sub-b-safeguarding-coverage-dedup__df0cff86a0b1": 541,
   "agent-factory-governance-adr-123-operator-apply-runbook__528049c75b56": 542,
   "agent-factory-sub-b-finrpt-content-core__850ca097b7c0": 543,
@@ -299,5 +300,6 @@
   "agent-factory-governance-hermes-tier1-watchdog-role__a6ec8cc30225": 546,
   "agent-factory-governance-hermes-stack-canon__e8d2d66d0f48": 547,
   "agent-factory-governance-hermes-stack-canon__abdfdd94ce6e": 548,
-  "agent-factory-governance-hermes-stack-canon__5ab67862b4fd": 549
+  "agent-factory-governance-hermes-stack-canon__5ab67862b4fd": 549,
+  "agent-factory-handoff-0625__1de1128490b9": 550
 }
