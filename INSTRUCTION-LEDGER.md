@@ -17180,3 +17180,29 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Status:** DONE — GROUP 1 (10 agents) bound; passports remain PROPOSED/non-activated (I-27). DO NOT MERGE pending operator review.
 - **Recommended next (operator):** merge; then GROUP 2 binding sprint (next unbound L2/L3 agents — adapters, governors, integration agents via `make skills-audit`); separately bind `cicd_quick_setup` (the one unbound mandatory skill) to a CI/infra-owning passport to close `train-verify` (S-FAC-66).
 - **Refs:** 10 passports under `agents/passports/`; `docs/SKILLS-MATRIX.md` (source of truth); `scripts/skills-bind-audit.sh` (proposals); `scripts/train.sh` (train-verify); S-FAC-64 (binding precedent); `governance/CANONICAL-ORG-CHART-v2.md` (line-of-defence); ADR-059-A, ADR-120, ADR-121, I-20/I-24/I-27/I-28.
+
+---
+
+### IL-519 - agent-factory-e-treasury @ 2026-06-25T18:30:00Z
+
+- **il_ts:** 2026-06-25T18:30:00Z
+- **session_id:** agent-factory-e-treasury
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-e-treasury/IL-2026-06-25T18-30-00Z--b50da6.md`
+
+### E-treasury — Treasury management build-spec (liquidity + FX positions + ALM; operationalises ADR-078 read-only ports, CFO-HITL)
+
+- **Target:** E-treasury (Block E — Treasury/ALM/Safeguarding). Operational treasury management for the firm: liquidity management (cash position, rolling forecast, buffers), FX position/exposure monitoring (multi-currency, NOSTRO), ALM (asset-liability matching, maturity ladders, IR/liquidity-risk gap analysis). Operationalises ADR-078 read-only ports. Config-as-data. Fourth P2 docs-spec (operator chose: continue P2 autonomously). Was 0% → Spec-Locked / In Progress.
+- **Instruction:** Produce `docs/architecture/E-TREASURY-BUILD-SPEC.md` (actionable build-spec), additive ROADMAP-MATRIX status-lock (E-treasury 0% → Spec-Locked/In Progress + P2 summary), and this ledger shard. Factory-only; isolated worktree off fresh origin/main; signed guardian-gated squash-PR.
+- **Steps:**
+  1. Live audit — origin/main=55e62d5, `build_ledger.py --check` OK, IL-SEQUENCE max=518 → next = max+1 = **IL-519**; PR queue EMPTY.
+  2. ADR-102 dedup — `find docs -iname '*e-treasury*'`/`*treasury*BUILD*` ⇒ empty; no docs/treasury/ dir → placement docs/architecture/ (E-capital regulatory-capital lives in docs/regulatory/; treasury-mgmt = architecture). No existing E-treasury artifact → new, non-duplicative. Operationalises ADR-078 ports (not reimplemented).
+  3. Wrote build-spec (scope liquidity/FX/ALM, LiquidityPosition/FXExposure/ALMLadder/TreasuryDecision data model, read-only derivation flow via ADR-078 ports, TreasuryAgent L2 + ≥£100k CFO HITL governance, producer/consumer contracts referenced-not-duplicated, ADR-102 dup-audit, SCOPE/HITL FENCE, perimeter, DoD, out-of-scope fail-closed, operator-gates-not-crossed).
+  4. ROADMAP-MATRIX.md additive: E-treasury row → Spec-Locked/In Progress (IL-519); P2 summary line extended. No frozen row altered.
+- **Proof:** `python ledger/build_ledger.py --check` ⇒ exit 0 (FROM ROOT); IL-SEQUENCE append-only (prior IL-001..518 unchanged); new shard → IL-519. Signed squash-PR merged with 4 required guardians + ledger gates GREEN.
+- **Deviation:** session_id `agent-factory-e-treasury` (id-less, matching sibling convention) vs ADR-060 branch `agent/factory/etreas01/e-treasury-build-spec`. None other.
+- **Blocker:** none.
+- **Scope/HITL note (HARD FENCE):** Operational treasury management for the firm ONLY — NOT investment advice, NOT financial advice, NOT a client-facing trading/dealing desk, NOT autonomous trading. SPECIFICATION only: factory runs no live treasury, executes no trades. Governance: TreasuryAgent L2 Review (ADR-078 §2.5.3) consumes FXExposurePort + NOSTROReconPort; treasury decisions ≥ threshold (config-as-data; ADR-078 cites ≥ £100k) forced to REVIEW + CFO sign-off (human_reviewed_by = CFO); ForecastAgent L2 (§2.5.2) consumes LiquidityForecastPort, below-AUTO → Head-of-FP&A HITL hold. ALL ADR-078 ports are READ-ONLY (observe/surface, never move money/mutate sources). No autonomous treasury execution. TreasuryDecision = governed proposal/observation only (no execution field).
+- **Boundary (drift reconciled):** E-treasury = firm-internal treasury observation/management (liquidity position+forecast+buffers, FX exposure monitoring, ALM maturity-ladder/gap analysis). OPERATIONALISES ADR-078 read-only ports (FXExposurePort/NOSTROReconPort/LiquidityForecastPort) — does NOT reimplement: E-capital FCA ICARA capital adequacy (treasury ≠ capital adequacy; E-treasury supplies a liquidity INPUT to E-capital, E-capital owns own-funds/K-factor/wind-down), D-fin financial reporting (E-treasury feeds position data, D-fin reports), payment rails C-swift/C-fps/C-sepa (rails move funds + own NOSTRO settlement; E-treasury observes positions read-only), D-recon reconciliation engine (D-recon owns recon; NOSTROReconPort supplies read-only recon inputs). No trading/dealing/advice; no autonomous execution.
+- **Refs:** docs/architecture/E-TREASURY-BUILD-SPEC.md; ADR-078-cfo-treasury-forecast-ports.md (IL-172, ports + agents + ≥£100k CFO sign-off, operationalised); ADR-106-execution-channel-selection-for-adr-078.md; E-CAPITAL-BUILD-SPEC.md (IL-497, capital adequacy distinct); D-FIN-BUILD-SPEC.md (IL-485, reporting); C-SWIFT/C-FPS/C-SEPA-BUILD-SPEC.md (NOSTRO/settlement); D-RECON-BUILD-SPEC.md (recon); ADR-027/049/102/103/115/116/117/119; I-01; CLAUDE.md §9/§10/§11.
