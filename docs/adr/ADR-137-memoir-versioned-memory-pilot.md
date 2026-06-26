@@ -1,9 +1,10 @@
 ---
 id: ADR-137
 title: Memoir versioned-memory — factory-only alternative-backend PILOT under ADR-136 boundaries (resolves BL-SCRIPT-01)
-status: PROPOSED
+status: ACCEPTED
 date: 2026-06-27
-accepted:
+accepted: 2026-06-27
+acceptance_note: "ACCEPTED applies to the governance decision (Outcome B) ONLY. The executable Memoir pilot stays a SEPARATE future gated work item; it MUST NOT start until all Pilot Entry Preconditions are met."
 supersedes: []
 relates:
   - "ADR-136 (agentmemory substrate — the governing envelope; Memoir is a pilot UNDER it, not a replacement)"
@@ -87,6 +88,29 @@ decision.
 3. **Supersede/extend ADR-136** — Memoir may replace or extend the agentmemory line **only via a future
    ADR (Outcome C)** if the pilot proves explicit superiority AND duplication is avoided; that ADR
    passes the **ADR-135 held-out validation gate** + operator + IronClaw. Until then ADR-136 is primary.
+
+## Pilot Entry Preconditions (gating)
+
+> **ACCEPTED (2026-06-27) is a governance decision (Outcome B) ONLY.** It authorises the *policy* that
+> Memoir may be piloted under this envelope — it does **NOT** start any executable pilot. The executable
+> Memoir pilot is a **SEPARATE future gated work item** and MUST NOT begin until **every** item below is
+> implemented, verified, and operator-signed. Any unmet item ⇒ **fail-closed, no pilot.**
+
+| # | Precondition | Gate |
+|---|---|---|
+| 1 | **Redaction-at-capture (fail-closed)** implemented and verified — secrets/PII stripped before storage; deny-by-default on uncertainty (drop, don't store). | MUST be implemented + tested |
+| 2 | **Bounded retention + purge** as **config-as-data** (operator-owned), no indefinite accumulation. | MUST be config, not hardcoded |
+| 3 | **Replay scoped to fork + perimeter (ADR-117)** — no cross-fork / cross-perimeter replay; replay is observability, never re-execution of privileged actions. | MUST be enforced |
+| 4 | **One-substrate-per-fork enforced** — a fork runs **agentmemory XOR Memoir**, never both as competing production stores; ledger (ADR-059) stays source of truth. | MUST be enforced |
+| 5 | **Factory fork ONLY; Project fork disabled by default** — no project deployment without operator approval. | MUST default-off |
+| 6 | **Sensitive domains OUT OF SCOPE** — payment-core, KYC, AML, sanctions, ledger, secrets-bearing flows, customer PII; RED zone AI-FORBIDDEN. | MUST be excluded |
+| 7 | **No authority expansion (ADR-130/127)** — memory VCS (branch/merge/rollback/checkout) operates on memory content only; never code/ledger/prod/dispatch. | MUST hold |
+| 8 | **Any expansion beyond the factory pilot** → **ADR-135 held-out validation gate** (no regression on boundary/redaction checks) **+ operator + IronClaw sign-off**. | MUST pass the gate |
+
+**Entry rule:** the executable pilot may start **iff** 1–7 are implemented+verified+operator-signed; any
+widening past the factory pilot additionally requires 8. Until then ADR-136/agentmemory remains the
+primary substrate and **no Memoir runtime exists**. This ADR (and this acceptance) adds **no runtime, no
+code, no config, no secret, no import** of `github.com/zhangfengcdt/memoir`.
 
 ## Duplication Audit (ADR-102)
 

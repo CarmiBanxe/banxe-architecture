@@ -312,5 +312,6 @@
   "agent-factory-sfac66-bind-cicd-skill__37555f81d262": 558,
   "agent-factory-governance-skill-evolution-gate__5ca1277e1eb0": 559,
   "agent-factory-governance-agentmemory-substrate-eval__e682f2f5b034": 560,
-  "agent-factory-governance-memoir-versioned-memory-eval__3f2cb4c9e7f5": 561
+  "agent-factory-governance-memoir-versioned-memory-eval__3f2cb4c9e7f5": 561,
+  "agent-factory-governance-adr-137-accept-pilot-preconditions__8035bd23137d": 562
 }
