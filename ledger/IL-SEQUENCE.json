@@ -315,5 +315,6 @@
   "agent-factory-governance-memoir-versioned-memory-eval__3f2cb4c9e7f5": 561,
   "agent-factory-governance-adr-137-accept-pilot-preconditions__8035bd23137d": 562,
   "agent-factory-governance-adr-137-precond-1-redaction-spec__9e8599975be7": 563,
-  "agent-factory-governance-adr-137-precond-2-retention-spec__3b2a9fcd2147": 564
+  "agent-factory-governance-adr-137-precond-2-retention-spec__3b2a9fcd2147": 564,
+  "agent-factory-governance-adr-137-precond-3-replay-scope-spec__577901410e65": 565
 }
