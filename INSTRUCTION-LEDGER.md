@@ -18052,3 +18052,27 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Fix (real issue 3):** `scripts/stub-classifier.sh` splits stub-bearing files into **non-gated (TRUE)** vs **operator-gated (EXCLUDED)** by canon gating markers (`gated on operator`/`PROPOSED stub`/`I-27`/`operator-gated`/`ADR-087`/`MOCK/STUB/LIVE`/`provider-mode|stub`/`mock-default`/`REWRITE-7`/`legacy-crypto`). Read-only, text + `--json`, exit 0. **Live audit: 13 stub files → 3 non-gated / 10 operator-gated** (the 10 PROPOSED I-27 passports correctly excluded). Codify (1)(2) as canon: actor-tag check before "foreign terminal" labelling; operator-runtime-config (~/.claude/settings.json) is LOCAL, not a cross-terminal race (cross-ref ADR-039).
 - **ADR-102 dedup:** no prior attribution/stub-classification ADR; classifier + canon note did not exist; ADR-133/#801 closed the IL-collision counter (different root). `factory-report.sh`/`gap-tracker.py` NOT rewritten (prior figure was ad-hoc). ADR # = **134** (130/131/132/133 in-flight, confirmed free on main). Subordinate to ADR-060. **NOT touched:** `~/.claude/settings.json` (operator-owned, LOCAL); PRs #795/#796/#798/#799/#801 + their files. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-26T23:45:00Z` strictly > last in-flight `2026-06-26T23:30:00Z` (#801). IL **NOT hardcoded** — build_ledger mints max+1 over current main (max 556 after #798/#796/#795/#799/#801 merged) → IL-557 at rebase-before-merge (Rule 8); validated by the live ADR-133 uniqueness gate. Isolated worktree off origin/main `f0dfe7a` (ADR-120); namespace ADR-060; concept-only; no runtime/secrets.
 - **Refs:** `docs/adr/ADR-134-cross-terminal-status-report-attribution.md` (NEW); `scripts/stub-classifier.sh` (NEW, read-only); `.claude/rules/parallel-session-isolation.md` (canon note, NEW section); FAST-LANE:22, ADR-087 (gating), ADR-039 (settings LOCAL), ADR-060 (actor namespace), ADR-133/#801, ADR-102. Draft PR — operator HITL; DO NOT MERGE.
+
+---
+
+### IL-558 - agent-factory-sfac66-bind-cicd-skill @ 2026-06-26T23:30:00Z
+
+- **il_ts:** 2026-06-26T23:30:00Z
+- **session_id:** agent-factory-sfac66-bind-cicd-skill
+- **source:** agent-factory
+- **status:** IN_PROGRESS
+- **shard:** `ledger/entries/agent-factory-sfac66-cicd-binding/IL-2026-06-26T00-00-00Z--sfac66-cicd-binding.md`
+
+### S-FAC-66 — Bind `cicd_quick_setup` to CTO Platform Agent (CI/infra owner)
+
+- **Date:** 2026-06-26 · **Type:** passport skill-binding metadata; passport update + ledger; NO activation (I-27).
+- **Decision:** Add `cicd_quick_setup` (MANDATORY Developer-Plane skill) to `cto_platform_agent` `allowed_skills` + `mandatory_skill_triggers`. The CTO Platform Agent (department head, technology/platform infrastructure owner) is the best-fit binding target for CI/CD governance: .github/workflows, hooks, release pipelines, quality-gate.sh.
+- **Binding rationale:** `cicd_quick_setup` is MANDATORY in the Developer Plane (SKILLS-MATRIX), governs CI/CD infrastructure setup. Previous GROUP-3 binding to `sdk_release_governor` (SDK release pipelines only) left an implicit gap in general CI/infra ownership. Binding to `cto_platform_agent` (CTO = tech/platform department head) closes this gap at the infrastructure governance level.
+- **Basis:** S-FAC-63/S-FAC-64/GROUP-3 train-verify runs identified `cicd_quick_setup` as a binding target. SKILLS-MATRIX + banxe-architecture/docs/SKILLS-MATRIX.md confirm it is MANDATORY (Developer Plane). `cto_platform_agent` passport (level 2, dept-head, line_of_defence: 1st-line technology/platform) is the semantic owner.
+- **Proof (train-verify):** `make train-verify` → exit 0, all 7 mandatory skills bound (cicd_quick_setup now included). `make skills-audit` → all 57+ passports have skills; no regression.
+- **ADR-102 duplication audit:** NO new passport created. Binding added to existing `cto_platform_agent` (agents/passports/cto_platform_agent.yaml, line 39-40, 53). Confirmed unique CI/infra-owning agent.
+- **Change (minimal):** +1 skill entry in `allowed_skills` (line 39); +1 skill trigger in `mandatory_skill_triggers` (line 53). Existing fields/order/status preserved. Binding-metadata only; status stays `active` (pre-existing).
+- **Canon compliance:** single shard; append-only ledger (IL-554 → IL-555); branch naming agent/factory/sfac66/*; passports stay PROPOSED (status field unchanged, I-27); no activation. Binding follows S-FAC-64 format (comment + trigger list).
+- **Coupling:** branch off origin/main; single new shard; no prior entries modified; no new passport created.
+- **Proof (ledger):** `build_ledger.py --check` exit 0; YAML parsing of cto_platform_agent.yaml OK (4 skills, agent_id='cto_platform_agent').
+- **Refs:** `agents/passports/cto_platform_agent.yaml`; `docs/SKILLS-MATRIX.md` (cicd_quick_setup: Developer Plane, MANDATORY); S-FAC-63, S-FAC-64, GROUP-3 ledger entries; `scripts/train.sh verify`.
