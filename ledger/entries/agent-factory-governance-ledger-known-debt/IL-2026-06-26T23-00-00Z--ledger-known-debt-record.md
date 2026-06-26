@@ -1,0 +1,13 @@
+---
+il_ts: 2026-06-26T23:00:00Z
+session_id: agent-factory-governance-ledger-known-debt
+source: CEO
+status: DONE
+---
+### Known-debt record — ledger IL uniqueness + souls↔SKILLS-MATRIX (record only, NO fix)
+- **Decision:** Record three known-debt items surfaced during the #795/#796 IL-550 reconcile (ADR-119 Rule 8). **This shard only RECORDS the debt — it fixes nothing** (append-only ADR-059; renumber forbidden ADR-119; no ADR/guard created). Each item gets a separate remediation IL later.
+  - **(a) IL-540 duplicated on `origin/main`** — `{540: 2}`, owned by `agent-factory-governance-claude-permissions-hardening` (#787, ADR-123) **and** `agent-factory-handoff-0625` (#797 handoff). Both merged with IL-540. **Renumber is FORBIDDEN (ADR-119)** — needs a dedup-analysis (which entry keeps 540, how the duplicate is annotated/aliased without mutating existing keys) in a dedicated follow-up IL. NOT fixed here.
+  - **(b) souls ↔ SKILLS-MATRIX desync** — `agents/souls/*.md` = 19, references in `docs/SKILLS-MATRIX.md` = 0. Follow-up IL: add the 19 souls to SKILLS-MATRIX.md (per the ADR-131 format standard, #796), after which `guardian-traceability` (ADR-132, #798) can be promoted **informational → required**. NOT done here (no mass edit of souls/matrix).
+  - **(c) `build_ledger.py --check` lacks a global-uniqueness assertion** — current `--check` verifies ledger==rebuild + append-only vs HEAD, but **NOT** that `IL-SEQUENCE.json` values are globally unique; this is why the IL-540 duplicate (a) slipped through merged. **Proposal (separate IL):** add a uniqueness check to `--check` (fail if any IL value appears >1×), with a one-time allowlist/annotation for the pre-existing 540 dup so the gate can go green without renumbering. NOT implemented here.
+- **Context:** #795 (ADR-130) and #796 (ADR-131) had hardcoded `[IL-550]` (collision 550×2); reconciled per Rule 8 — de-hardcoded, rebased on fresh main, re-minted at rebase-before-merge to unique numbers via the sequential HITL merge order **#798→#796→#795→#799** (actuals: #798=552, #796=553, #795=554, this=555). This debt shard mints `build_ledger` max+1 over current main (max 554 after #798/#796/#795 merged) = **IL-555** at its own rebase-before-merge (ADR-119).
+- **Refs:** ADR-119 + `.claude/rules/parallel-session-isolation.md` Rule 8 + `docs/guardian/guardian-ledger-il-collision-gate.md` (collision canon); `ledger/build_ledger.py` (`--check` — proposal (c)); `docs/SKILLS-MATRIX.md` (b); ADR-132/#798 (guardian-traceability informational→required after (b)); PRs #787/#797 (IL-540 dup, item a), #795/#796 (reconciled). Record-only; concept-only; no runtime/secrets; DO NOT MERGE — operator HITL.
