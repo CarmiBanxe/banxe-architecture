@@ -17,7 +17,7 @@
 - **What it gives:** persistent agent memory → knowledge base.
 - **Why for factory:** durable cross-session memory for agents/spec-build.
 - **Canon flags:** Duplication Audit vs existing **CMS / context_memory_sync** (likely overlap — keep/extend, not new); **no secrets/PII** (I-08); **Ruflo** for any compliance output; external claims **[НЕИЗВЕСТНО]**.
-- **Trust:** ⚠️ medium. **Status:** PROPOSED.
+- **Trust:** ⚠️ medium. **Status:** RESOLVED → **ADR-137** (Outcome B: factory-only alternative-backend PILOT under the ADR-136 boundary envelope; agentmemory remains primary; no second production substrate; no authority/secrets). See `docs/adr/ADR-137-memoir-versioned-memory-pilot.md`.
 
 ---
 
