@@ -18230,3 +18230,614 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Proof:** docs/governance-only; concept_only; **no runtime, no code, no config-file/stub, no secret, no import** of `github.com/zhangfengcdt/memoir`. ADR-136/137/117/agentmemory/CMS/PRECOND-01..04 bodies untouched (only referenced). Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-27T03:30:00Z` strictly > origin/main max `2026-06-27T03:00:00Z`. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger` mints max+1 over current `origin/main` (max 566) → IL-567; frozen at rebase-before-merge. Validated by live ADR-133 uniqueness gate (540 allowlisted). Isolated worktree off origin/main `cffb400` (ADR-120); namespace ADR-060; no git ops outside this branch.
 - **Status:** DONE — Precondition #5 spec PROPOSED (governance/concept-only). Draft squash PR; DO NOT MERGE — STOP before merge, operator HITL.
 - **Refs:** `docs/governance/MEMOIR-PILOT-PRECOND-05-factory-fork-only.md` (NEW); ADR-137 (Precondition #5; L65, L87, L105), MEMOIR-PILOT-PRECOND-01/02/03/04 (siblings), ADR-136 (fork split), ADR-117 (perimeter), ADR-135 (held-out gate), ADR-133 (uniqueness gate), ADR-102; `github.com/zhangfengcdt/memoir` (external ref, NOT imported). Draft PR — operator HITL.
+
+---
+
+### IL-568 - agent-factory-sub-b-neuronext-paybis-retirement @ 2026-06-26T18:00:00Z
+
+- **il_ts:** 2026-06-26T18:00:00Z
+- **session_id:** agent-factory-sub-b-neuronext-paybis-retirement
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-neuronext-paybis-retirement/IL-2026-06-26T18-00-00Z--neuronext-paybis-retirement.md`
+
+### NeuroNext retired → PAYBIS sole external crypto provider — decision recorded (ADR-126, docs-plane)
+
+- **Objective:** Record the operator's binding decision that PAYBIS fully replaces NeuroNext as the external crypto service provider across the EMI BANXE AI BANK stack; NeuroNext = fully retired provider. Docs-plane governance artifact (no runtime, no cross-repo write).
+- **Live audit (source of truth, not memory):** banxe-emi-stack origin/main@b23593c — **0** neuronext refs + **0** bitrix refs in services/**/app/** (grep-confirmed); PAYBIS appears only in arch docs (ADR-108/114), not in code. banxe-architecture origin/main@9ef6c49, ADR max=124, IL max=544 → this provisional max+1=IL-545 (Rule 8 frozen-at-merge; MAIN regenerates). ADR-125 claimed by in-flight PR #790 (DRAFT) → used ADR-126 (MAIN re-numbers at merge if collision).
+- **Decision (ADR-126):** PAYBIS = single external crypto processor for exchange/custody/processing/payouts/treasury-crypto flows via CryptoLedgerPort/CryptoCompliancePort seams; no new code path may introduce NeuroNext as active participant; no dual-provider logic; remaining NeuroNext config/adapters/flags = deprecation targets (Bitrix/NeuroNext sunset track — none present today, forward guard); cutover steps + rollback that never reintroduces NeuroNext.
+- **Rationale:** NeuroNext Polish licensing no longer relied upon → EU/MiCA/national licensing+compliance risk if routed via NeuroNext. PAYBIS = regulated MiCA CASP (ADR-108) + Travel-Rule responsible (ADR-114), designated white-label crypto provider; BANXE = distribution agent.
+- **Removal scope = EMPTY (audit-confirmed):** nothing to strip out — NeuroNext was never ported into the new codebase (residual-gap register IL-516: legacy neuron/crypto-processing classified DROP/RESCOPE). ADR-126 is a forward guard forbidding reintroduction, not a present cleanup.
+- **Forward follow-up (separate, operator-authorized banxe-emi-stack runtime task — NOT done here):** implement the PAYBIS adapter behind CryptoLedgerPort (12 crypto stubs: get_balance/create_wallet_address/create_tx/get_fee_estimate/health) — injectable-mock + fenced live PAYBIS API, HITL where funds/PII move, ≥90% coverage via mock, live transport fenced. ADR-126 gates that build to PAYBIS-only.
+- **ADR-102 self-dup:** no existing NeuroNext-retirement / PAYBIS-sole-provider ADR (ADR-108 = distribution model, ADR-114 = travel rule; this consolidates them into an explicit provider-replacement decision) → non-duplicative; builds on, does not modify, ADR-108/114/036.
+- **Perimeter / canon:** docs/architecture plane only; no runtime/code change; no secrets; no cross-repo write; isolated worktree off arch origin/main@9ef6c49; signed; sub-B hands to MAIN per §71/§74 (does NOT push/PR/merge); governance decision is operator-made (human-in-the-loop satisfied), LLM persists the materials only.
+- **Deliverable:** docs/adr/ADR-126-neuronext-retired-paybis-sole-crypto-provider.md (+ this IL shard).
+- **Refs:** ADR-108/114/036/111; services/ledger/crypto_ledger_port.py; residual-gap register IL-516; GAP-REGISTER; ADR-119/I-28; MiCA / FATF R.16 / UK MLR 2017.
+
+---
+
+### IL-569 - agent-factory-sub-b-paybis-dossier @ 2026-06-26T18:30:00Z
+
+- **il_ts:** 2026-06-26T18:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-dossier
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-dossier/IL-2026-06-26T18-30-00Z--paybis-dossier.md`
+
+### PAYBIS crypto-provider DOSSIER — inputs for plan/roadmap/sprints (docs-plane, no runtime)
+
+- **Objective:** Produce a grounded dossier document-set for later plan/roadmap/sprints of the NeuroNext→PAYBIS replacement, docs-plane only, grounded ONLY in ADR-108, ADR-114, ADR-126, the BANXE↔PAYBIS agreement, and the live-audit fact. FACT/INFERENCE/НЕИЗВЕСТНО tagged; no invented runtime facts.
+- **Live audit (source of truth, not memory):** banxe-emi-stack origin/main@b23593c — 0 neuronext / 0 bitrix in services/app. banxe-architecture origin/main@9ef6c49; companion to ADR-126/IL-545 on the same branch (agent/factory/paybis/neuronext-retirement-adr). Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **Key constraint honestly recorded:** the BANXE↔PAYBIS agreement (SP-PR3 Distribution/Outsourcing) / Paybis distribution guide is **NOT present in the repository** (ADR-108/114 reference it as operator-provided). Therefore all agreement-specific contractual fields (approved entity detail, domains/URLs/ICT systems, prior-approval, security/incident/audit clauses, sublicensing/white-label scope) are marked **НЕИЗВЕСТНО** — not fabricated. Operator/legal must provide the document before runtime work.
+- **Grounded facts captured:** PAYBIS=MiCA CASP (Latvia/Latvijas Banka, EU-passport); BANXE=distribution agent, non-CASP, non-custodial; Paybis=data processor / BANXE=controller (GDPR Art.28); Travel-Rule on Paybis (FATF R.16, GBP1,000), MLRO fallback; seams CryptoLedgerPort + CryptoCompliancePort; settlement via Tompay IBAN; go-live gated on TR-contract + MLRO procedure + CASP T&C (2026-07-01).
+- **Dossier sections:** (1) executive framing; (2) source-of-truth FACT/INFERENCE/UNKNOWN; (3) contractual constraints (agreement absent → НЕИЗВЕСТНО); (4) architecture target (PAYBIS sole, seams, no dual-provider, rollback no-reintroduce, consolidation principle); (5) implementation dossier map; (6) roadmap inputs (epics/deps/unknowns/data-needed); (7) return-to-base rule.
+- **Perimeter / canon:** docs/architecture plane only; no runtime/code/secrets; no cross-repo write; ADR-102 non-duplicative (no prior PAYBIS dossier); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74 (does NOT push/PR/merge).
+- **Deliverable:** docs/architecture/DOSSIER-PAYBIS-CRYPTO-PROVIDER-2026-06-26.md (+ this IL shard). Companion to ADR-126 (IL-545) on the same branch.
+- **Refs:** ADR-108/114/126/036/111; services/ledger/crypto_ledger_port.py; residual-gap register IL-516; ADR-119/I-28; SP-PR3 (НЕИЗВЕСТНО — not in repo).
+
+---
+
+### IL-570 - agent-factory-sub-b-paybis-src01 @ 2026-06-26T19:00:00Z
+
+- **il_ts:** 2026-06-26T19:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-src01
+- **source:** CEO
+- **status:** BLOCKED
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-src01/IL-2026-06-26T19-00-00Z--paybis-src01.md`
+
+### PAYBIS dossier SRC-01 (BANXE↔PAYBIS agreement) — intake BLOCKED: source document not found
+
+- **Objective:** Ingest dossier source #1 — the BANXE↔PAYBIS legal/contractual agreement — into docs/paybis-dossier/SRC-01-banxe-paybis-agreement.md, extracting only literal contractual FACTs. Docs-plane only.
+- **Live audit (source of truth, not memory):** banxe-architecture origin/main@9ef6c49; companion to ADR-126/IL-545 + DOSSIER/IL-546 on branch agent/factory/paybis/neuronext-retirement-adr. Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **STOP-CONDITION hit (honest):** the operator stated the agreement was "already provided", but the actual document is NOT present in any accessible location — exhaustive read-only search: banxe-architecture + banxe-emi-stack git-tree (only ADR-108/114 references to SP-PR3 / Paybis distribution guide), full filesystem /home/mmber/** (pdf/docx/txt), ~/.claude/paste-cache/* (the "paybis" hits were the TASK PROMPTS, not the agreement), scratchpad, /tmp. Therefore literal FACT extraction is impossible without the document.
+- **Action taken (canon-compliant):** produced SRC-01 with full required structure but every agreement-specific contractual field marked НЕИЗВЕСТНО (awaiting source); did NOT invent contractual terms. Context-facts that ARE traceable to ADR-108/114 (PAYBIS=MiCA CASP Latvia; processor/controller GDPR Art.28; TR on PAYBIS) are listed separately and explicitly labelled as ADR-sourced, NOT as agreement text.
+- **Operator action required:** attach/paste the actual BANXE↔PAYBIS agreement (SP-PR3) text/file so SRC-01 FACT-section + dossier Section 3 (contractual constraints / approved environments / control obligations) can be populated; runtime PAYBIS-adapter work stays contractually gated (ADR-114: TR-confirmation contract + MLRO procedure).
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no cross-repo write; ADR-102 non-duplicative; no fabricated contractual facts; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74 (does NOT push/PR/merge); does NOT self-request the next document.
+- **Deliverable:** docs/paybis-dossier/SRC-01-banxe-paybis-agreement.md (intake-blocked) + this IL shard (status BLOCKED).
+- **Refs:** ADR-108/114/126; DOSSIER (IL-546); IL-545; ADR-119/I-28; SP-PR3 (НЕ найден — required from operator).
+
+---
+
+### IL-571 - agent-factory-sub-b-paybis-intake-register @ 2026-06-26T19:30:00Z
+
+- **il_ts:** 2026-06-26T19:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-intake-register
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-intake-register/IL-2026-06-26T19-30-00Z--paybis-intake-register.md`
+
+### PAYBIS dossier source-intake register — drives roadmap dependency gating (docs-plane)
+
+- **Objective:** One source-intake register tracking every dossier source (status/blocker/ingestion path) so roadmap epics gate on source readiness. Docs-plane only; no invented contractual/API facts.
+- **Live audit (source of truth, not memory):** banxe-architecture origin/main@9ef6c49; companion to ADR-126/IL-545 + DOSSIER/IL-546 + SRC-01/IL-547 on branch agent/factory/paybis/neuronext-retirement-adr. Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **Confirmed-present sources:** ADR-108, ADR-114, ADR-126, AUDIT-01 (0 NeuroNext/0 Bitrix in emi b23593c), SRC-01 (placeholder; contractual fields НЕИЗВЕСТНО).
+- **Missing/BLOCKED sources (per operator):** SRC-04 SP-PR3 agreement full text (owner operator/legal); SRC-05 Paybis distribution/integration guide — approved domains/ICT/use-cases/prior-approval (operator/Paybis); SRC-06 PAYBIS API spec — unblocks CryptoLedgerPort adapter (Paybis); SRC-07 TR data contract/TR-status schema — unblocks CryptoCompliancePort (Paybis/MLRO); SRC-08 MLRO oversight owner + CASP T&C status (operator/compliance). SRC-02/03 unassigned/reserved (НЕИЗВЕСТНО).
+- **Audit provenance for BLOCKED:** off-repo mark-legion filesystem audit (operator-reported) found NO physical SP-PR3 file; content grep for approved-domains/prior-written-approval/distribution-agreement/outsourcing-agreement = EMPTY; independently re-confirmed by sub-B exhaustive search (repos/FS/paste-cache=task-prompts/scratchpad/tmp). BLOCKED = audit-based, not memory.
+- **Roadmap gating rule recorded:** contractual/approved-env/API/compliance epics GATED until their SRC-xx ingested (SRC-04/05 contractual+env; SRC-06 adapter; SRC-07/08 compliance + ADR-114 go-live gate). NON-blocked: architecture-seam analysis, ADR-102 consolidation-analysis, injectable-mock test-strategy cavas. No live PAYBIS call until ADR-114 go-live gate closed.
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no cross-repo write; ADR-102 non-duplicative; no fabricated contractual/API facts; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74 (does NOT push/PR/merge).
+- **Deliverable:** docs/paybis-dossier/SRC-INTAKE-REGISTER.md + this IL shard.
+- **Refs:** ADR-108/114/126; SRC-01 (IL-547); DOSSIER (IL-546); services/ledger/crypto_ledger_port.py; AUDIT-01 (b23593c); ADR-119/I-28; SP-PR3 (НЕ найден — required from operator).
+
+---
+
+### IL-572 - agent-factory-sub-b-paybis-src04-ingest @ 2026-06-26T20:00:00Z
+
+- **il_ts:** 2026-06-26T20:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-src04-ingest
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-src04-ingest/IL-2026-06-26T20-00-00Z--paybis-src04-ingest.md`
+
+### PAYBIS SRC-04 agreement ingested — contractual layer НЕИЗВЕСТНО → FACT (commercial/settlement) (docs-plane)
+
+- **Objective:** Ingest the operator-provided BANXE↔PAYBIS agreement (Corporate-On_Off-Ramp_BANXE-LTD-rev.-1.docx, excerpt §8/§9.3/General) into the dossier: update SRC-01 placeholder → real intake, reflect into DOSSIER Section 3, flip SRC-04 BLOCKED→PRESENT in the intake register. Docs-plane only; no invented terms.
+- **Live audit:** banxe-architecture origin/main@9ef6c49; branch agent/factory/paybis/neuronext-retirement-adr (ADR-126 IL-545, DOSSIER IL-546, SRC-01 IL-547, REGISTER IL-548). Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates). Full .docx not on disk → only operator-provided excerpt ingested; fields beyond excerpt kept НЕИЗВЕСТНО.
+- **FACT ingested (literal, traceable to agreement):** §8 Payment — Paybis disburses Partner Fees; monthly (or as agreed) invoice notice incl. tax; non-EU Partner invoice without certain references; all taxes Partner's responsibility; remit within 30 days of an invoice undisputed by Paybis to wallet address OR bank account; Paybis not obligated to pay beyond Partner Fees. §9.3 Shortfall Fee — Paybis sole discretion: (1) invoice payable within 14 days, or (2) set-off/deduct from accrued Partner Fees/commissions (relevant/subsequent period). General — notice emails (invoice@/finance@/support@banxe.com; users@/legal@paybis.com); Annex 1 (and future) integral; Agreement prevails over Commercial Offer; Paybis disclaims warranties, no warranty Services fully secure/uninterrupted/error-free. Party identities Partner=BANXE LTD, counterparty=Paybis.
+- **INFERENCE flagged (not literal):** dual payout rails (wallet+bank); 30-day undisputed-invoice dispute/recon window; fee netting (shortfall set-off); warranty-disclaimer → runtime resilience + independent reconciliation; Annex 1 binding fee-config + Agreement>Commercial-Offer conflict rule; configurable billing cadence.
+- **Still НЕИЗВЕСТНО (outside excerpt — not invented):** approved domains/URLs/subdomains/ICT/environments/use-cases; prior-written-approval change procedure; security/incident/remediation/audit clauses; sublicensing/white-label scope; full API surface/rate-limits/data-residency; exact Paybis legal entity. Owners: operator/legal (full .docx) + Paybis (API). → SRC-05/06/07/08 remain BLOCKED; dossier §3b НЕИЗВЕСТНО.
+- **Files updated:** SRC-01 (placeholder→INGESTED), DOSSIER §3 (3a FACT / 3b НЕИЗВЕСТНО / 3c INFERENCE), SRC-INTAKE-REGISTER (SRC-04 BLOCKED→PRESENT + update note).
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no cross-repo write; no invented contractual facts; one excerpt per concept; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Refs:** Corporate-On_Off-Ramp_BANXE-LTD-rev.-1.docx (§8/§9.3/General, operator excerpt); ADR-108/114/126; SRC-01/DOSSIER/REGISTER (IL-547/546/548); ADR-119/I-28.
+
+---
+
+### IL-573 - agent-factory-sub-b-paybis-src0506-ingest @ 2026-06-26T20:30:00Z
+
+- **il_ts:** 2026-06-26T20:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-src0506-ingest
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-src0506-ingest/IL-2026-06-26T20-30-00Z--paybis-src0506-ingest.md`
+
+### PAYBIS SRC-05/06 integration map ingested (structural, from operator preview) — docs-plane
+
+- **Objective:** Ingest SRC-05 (IT — ProWallet×Paybis) + SRC-06/07 (GE — Интеграция с Paybis) operator previews as a STRUCTURAL integration map; flip SRC-05/06/07 BLOCKED→PARTIAL in the intake register. Latin identifiers reliable; Cyrillic prose encoding-mangled → no invented literal spec.
+- **Live audit:** banxe-architecture origin/main@9ef6c49; branch agent/factory/paybis/neuronext-retirement-adr (IL-545..549). Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates). Binaries NOT on disk (mark-legion: no PDF) → only structural identifiers ingested.
+- **[FACT-from-preview] ingested:** flows BuyCrypto/SellCrypto; ids requestId/partnerOrderId/transactionId; entities Order/Refund/WidgetSettings + signed request; order states pending/completed/cancelled/rejected/expired; events paymentInitiated/paymentCompleted/GetPaymentCreated/Completed/Refunded/cancelled; mechanics signed-request(signature)/widget/webhook-callback; environments sandbox; compliance Travel-Rule + KYB on Paybis side + Privacy Policy banxe.com; contact Alex Guts (Paybis).
+- **[INFERENCE] flagged:** PaybisCryptoAdapter implements FROZEN CryptoLedgerPort alongside MidazCryptoAdapter; BuyCrypto/SellCrypto+Order/Refund ↦ create_tx + status/webhook; widget+signedRequest → HMAC-style signing (algo НЕИЗВЕСТНО); TR on Paybis (ADR-114), KYB/compliance Paybis-side (ADR-108 processor split); webhook → verified callback endpoint + idempotency on partnerOrderId/transactionId; sandbox/prod → config-as-data env switch + fenced live transport.
+- **НЕИЗВЕСТНО (require clean PDF/Paybis spec — not invented):** exact endpoints/methods, auth scheme, signature algorithm + signed fields, per-flow request/response schemas, webhook event names/payload/signature-verification, retry/timeout/rate-limit/SLA, data residency, exact integration fee %, sandbox/prod base-URLs/credentials. Owners: Paybis / operator.
+- **Files:** docs/paybis-dossier/SRC-05-06-paybis-integration-map.md (new); SRC-INTAKE-REGISTER.md (SRC-05/06/07 BLOCKED→PARTIAL).
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no cross-repo write; no invented literal spec; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Refs:** SRC-05/06/07 operator previews; ADR-108/114/126; SRC-01/SRC-04 (IL-547/549); services/ledger/crypto_ledger_port.py; ADR-119/I-28.
+
+---
+
+### IL-574 - agent-factory-sub-b-paybis-plan-roadmap @ 2026-06-26T21:00:00Z
+
+- **il_ts:** 2026-06-26T21:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-plan-roadmap
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-plan-roadmap/IL-2026-06-26T21-00-00Z--paybis-plan-roadmap.md`
+
+### PAYBIS implementation plan / roadmap / sprints (NeuroNext→PAYBIS) — docs-plane
+
+- **Objective:** Produce the implementation plan, roadmap (waves), and sprints for replacing NeuroNext with PAYBIS, grounded in the ingested dossier (SRC-01/04 FACT contractual; SRC-05/06/07 PARTIAL structural; code-verified FROZEN CryptoLedgerPort + MidazCryptoAdapter; CryptoCompliancePort does NOT exist → travel_rule_engine + ADR-114; ADR-108/114/126; 0 NeuroNext/0 Bitrix). Docs-plane only; no invented literal API facts; FROZEN port respected (new adapter, not port change).
+- **Live audit:** banxe-architecture origin/main@9ef6c49; branch agent/factory/paybis/neuronext-retirement-adr (IL-545..550). Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **Plan content:** 11 epics (E1 adapter scaffold READY … E11 MLRO/CASP GATED) with dependency graph + gate-status (READY/GATED-on-SRCxx); 3 waves (A READY-now mock/fenced ≥90%; B GATED-on-SRC-06 API spec; C GATED-on-SRC-07+ADR-114+SRC-08); Wave-A sprints detailed (A-S1..A-S5: adapter scaffold, NeuroNext CI guard, ADR-102 consolidation audit, settlement domain logic, env-switch+mock-DI) with ≥90% cov + dup-audit + hand-to-MAIN cadence; Wave-B/C gated outlines; explicit operator/Paybis dependency gate-list; return-to-base.
+- **Guardrails recorded:** I-27 HITL (KYC/KYB/AML), I-01 Decimal-only, ADR-102 dup-audit, I-SEC secrets, FROZEN CryptoLedgerPort untouched, no live PAYBIS call until ADR-114 go-live gate; microservice-consolidation only via ADR-102 (preserve microservice arch).
+- **НЕИЗВЕСТНО honored:** literal endpoints/auth/signature/schemas/webhook-payload/SLA/data-residency/fee% kept as external dependencies (SRC-06/07/08) — not invented.
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no cross-repo write; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74; return-to-base = primary track (Phase-3.6 stub→L2, IL-538) after PAYBIS track.
+- **Deliverable:** docs/paybis-dossier/PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md + this IL shard.
+- **Refs:** SRC-01/04/05-06 (IL-547/549/550), REGISTER (IL-548), DOSSIER (IL-546), ADR-126 (IL-545); ADR-108/114; services/ledger/crypto_ledger_port.py; travel_rule_engine; EMI-impl-state IL-538; ADR-102/119; I-01/I-27/I-SEC.
+
+---
+
+### IL-575 - agent-factory-sub-b-paybis-wave-a @ 2026-06-26T22:00:00Z
+
+- **il_ts:** 2026-06-26T22:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-wave-a
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-wave-a/IL-2026-06-26T22-00-00Z--paybis-wave-a.md`
+
+### PAYBIS Wave A runtime — PaybisCryptoAdapter behind FROZEN CryptoLedgerPort (mock-first, fenced)
+
+- **Objective:** Implement the smallest safe PAYBIS-first runtime slice enabling on/off-ramp through PAYBIS under existing constraints, invariants preserved, money/PII fenced. Per PLAN Wave A (E1 + structural E3/E6/E8 elements).
+- **Live audit:** banxe-emi-stack origin/main@17647be; Wave-A code on isolated branch agent/factory/paybis/wave-a-adapter (worktree .wt-paybis-wavea), commit 2edf49d, SSH-signed. banxe-architecture origin/main; this IL shard on the PAYBIS dossier branch agent/factory/paybis/neuronext-retirement-adr. Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **Runtime added (4 additive files; ADR-102 clean — no pre-existing paybis file, no existing file edited; FROZEN CryptoLedgerPort UNCHANGED):**
+  - services/ledger/production/paybis_crypto_adapter.py — PaybisCryptoAdapter(CryptoLedgerPort) PAYBIS-only (no dual-provider); injectable PaybisTransportPort; default FencedLivePaybisTransport (raises PaybisLiveFencedError — no live HTTP/secrets/funds); PaybisConfig/PaybisEnv (config-as-data, no secret values); map_order_status (pending→PENDING/completed→CONFIRMED/cancelled|rejected|expired|refunded→FAILED). Capabilities: health, get_fee_estimate, create_tx (initiate order→PENDING). get_balance/create_wallet_address raise OUT_OF_PAYBIS_SCOPE (non-custodial, ADR-108).
+  - services/ledger/production/paybis_webhook.py — PaybisWebhookEvent + parse_event (structural latin fields → CryptoTransactionStatus) + idempotency key (partnerOrderId⊳transactionId); verify_signature FENCED (algorithm НЕИЗВЕСТНО).
+  - tests/test_paybis_crypto_adapter.py — 8 mock-first tests; PAYBIS-WAVE-A.md doc note (does/does-NOT).
+- **Quality:** 8 tests pass, **100% module coverage** (adapter+webhook); ruff+format clean; semgrep banxe-rules+p/default exit 0; gitleaks-style scan — **no secrets**.
+- **Invariants/constraints honored:** I-01 Decimal-only (float→I01_DECIMAL); I-24 FROZEN immutable results; I-27 — no funds/PII movement (live fenced); I-28 — this IL append-only; no main-worktree write; sub-B does NOT push/PR/merge; coverage canonical; FROZEN port not changed (new adapter).
+- **НЕИЗВЕСТНО (not invented):** literal endpoints/auth/signature/schemas/webhook-payload/rate-limit/SLA/data-residency/fee% — fenced; Wave B unblocks on SRC-06 (API spec) + ADR-114 go-live gate (Wave C: travel_rule_engine + MLRO + SRC-07/08).
+- **OPERATOR-GATE:** live PAYBIS transport + Travel-Rule go-live remain GATED (SRC-06/07/08 + ADR-114). No operator question raised — best-decision within fence.
+- **Perimeter / canon:** PAYBIS-only; no NeuroNext; isolated worktrees; signed; hand to MAIN per §71/§74 (MAIN pushes/PRs both emi code branch + this arch IL).
+- **Deliverable:** banxe-emi-stack branch agent/factory/paybis/wave-a-adapter (2edf49d) + this IL shard.
+- **Refs:** ADR-108/114/126; PLAN (IL-551); SRC-01/04/05-06 (IL-547/549/550); services/ledger/crypto_ledger_port.py (FROZEN); travel_rule_engine; ADR-102/119; I-01/I-24/I-27/I-28/I-SEC.
+
+---
+
+### IL-576 - agent-factory-sub-b-paybis-arch-conformance @ 2026-06-26T22:30:00Z
+
+- **il_ts:** 2026-06-26T22:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-arch-conformance
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-arch-conformance/IL-2026-06-26T22-30-00Z--paybis-arch-conformance.md`
+
+### PAYBIS migration — canonicalize MANDATORY track "Architecture Conformance & Service Consolidation"
+
+- **Objective:** Fix as a HARD requirement (not nice-to-have) that the PAYBIS migration keeps microservice architecture BUT smart-refactors to significantly reduce service count / duplicate / versioned / deprecated variants, removes Bitrix + NeuroNext process footprint, maps legacy onto existing target ports (adapt-not-transplant), and uses mandatory shell-audit evidence. Docs-plane only; factory-orchestration only.
+- **Live audit (evidence, not memory):** banxe-emi-stack origin/main@a27ab27 — 107 service dirs; 3 `*_v[0-9]`; 22 `*/legacy/*`; 5 `*/production/*_stub.py`; 0 `_old/_deprecated/_copy/_new`; **neuronext=0, bitrix=0** in services/app (removal already satisfied → forward-guard + consolidation, not code-deletion). banxe-architecture origin/main IL max=546 (governance merged ahead); this shard on PAYBIS dossier branch agent/factory/paybis/neuronext-retirement-adr. Provisional IL = max+1 frozen-at-merge (Rule 8; MAIN re-ids on rebase).
+- **Canonicalized into in-branch artifacts:** PLAN §1A MANDATORY TRACK (7 sub-goals + baseline evidence table + track epics E9 extended-with-bitrix / E10 consolidation / E12 conformance-map) + PLAN §5A migration-completeness acceptance HARD GATE (no wave complete unless: provider/process replacement done; architecture conformance checked; service-count/duplication audited; legacy/versioned leftovers removed-or-explicitly-parked-with-justification); DOSSIER §4 HARD-REQUIREMENT reference.
+- **Completeness rule (per wave):** replacement done + conformance checked + duplication-reduction audited + leftovers removed-or-parked (parked-list in IL/doc; no silent residue). Overall PAYBIS-completeness additionally requires ADR-114 go-live gate closed + SRC-06/07/08 ingested + neuronext/bitrix footprint=0 (E9 CI-guard green).
+- **Wave A reflection:** PARTIAL — Wave A (IL-552) already conforms (FROZEN CryptoLedgerPort respected = adapt-not-transplant; PAYBIS-only; non-custodial map; no NeuroNext/Bitrix). NOT yet done in Wave A: actual consolidation pass (E10 the 3+22+5 variants), E9 CI forward-guard, E12 conformance-map — these are dedicated sprints (A-S2/A-S3 + E12). So the mandatory track is now canonical but only partially executed.
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no cross-repo write; no invented repo facts (all counts from read-only shell audit); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74; factory-orchestration only (no direct conflict-prone execution).
+- **Deliverable:** PLAN §1A + §5A, DOSSIER §4 update, this IL shard.
+- **Refs:** PLAN (IL-551), DOSSIER (IL-546), Wave-A (IL-552), ADR-126/108/114; ADR-102; shell-audit emi@a27ab27; I-28/ADR-119.
+
+---
+
+### IL-577 - agent-factory-sub-b-paybis-e10-audit @ 2026-06-26T23:00:00Z
+
+- **il_ts:** 2026-06-26T23:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-e10-audit
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-e10-audit/IL-2026-06-26T23-00-00Z--paybis-e10-audit.md`
+
+### E10 consolidation audit RESULT (ledger crypto perimeter) — keep/merge/delete matrix, no deletion (docs-plane)
+
+- **Objective:** Record the E10 consolidation-audit result for the ledger crypto perimeter into PLAN §1A + tick §5A acceptance points 3-4. Read-only shell-evidence only; NO runtime deletion (all variants on live consumers).
+- **Live audit (evidence, not memory):** banxe-emi-stack origin/main — independently verified api/deps.py:229-231 binds wallet=LegacyCryptoWalletAdapter()/processing=LegacyCryptoProcessingAdapter()/rpc=LegacyCryptoRpcAdapter() (live DI = current production crypto impl); 5 crypto files present (3 legacy + midaz_crypto_adapter + midaz_crypto_stub); 3 *_v2 out-of-perimeter confirmed. banxe-architecture: this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN re-ids).
+- **E10 verdict matrix recorded:** legacy_crypto_wallet_adapter / legacy_crypto_processing_adapter / legacy_crypto_rpc_adapter = PARKED(superseded-on-cutover) — live via api/deps.py, remove only after PaybisCryptoAdapter wins DI (Wave B) + covers use-cases; midaz_crypto_adapter = KEEP (production Midaz path, not duplicate); midaz_crypto_stub = PARKED(conformance-stub, FROZEN-port guarantee). refs non-test/def: Wallet=3/Processing=4/Rpc=5/MidazStub=2; ZERO orphans.
+- **Parked consolidation backlog (out-of-perimeter, separate future epics — NOT this step):** *_v2 ×3 (recon/reconciliation_engine_v2, consumer_duty/models_v2, reporting/fin060_generator_v2) + */legacy/* ×22 (compliance/payment/auth/...); each requires own ADR-102 dup-audit + consumer-graph per module.
+- **Cutover rule:** every PARKED-superseded module removed only in Wave C production cutover, gated, after PAYBIS provider live in DI + NeuroNext/Bitrix guard green; rollback never reintroduces NeuroNext.
+- **§5A acceptance:** points 3 (duplication audited) + 4 (leftovers removed-or-parked) ticked for ledger perimeter = parked-with-justification, no orphan deletion.
+- **Perimeter / canon:** docs-plane only; NO runtime deletion; FROZEN CryptoLedgerPort/CryptoRpcPort unchanged; no invented refs (matrix traceable to shell-evidence); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A E10-result subsection + §5A tick, this IL shard.
+- **Refs:** PLAN (IL-551), arch-conformance (IL-553), Wave-A (IL-552); ADR-102; api/deps.py:229-231; services/ledger/{legacy,production}/*crypto*; ADR-119/I-28.
+
+---
+
+### IL-578 - agent-factory-sub-b-paybis-e9-guard @ 2026-06-26T23:30:00Z
+
+- **il_ts:** 2026-06-26T23:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-e9-guard
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-e9-guard/IL-2026-06-26T23-30-00Z--paybis-e9-guard.md`
+
+### E9 NeuroNext/Bitrix forward-guard (semgrep deny-rules) — Architecture-Conformance track
+
+- **Objective:** Add CI/lint guard forbidding reintroduction of NeuroNext + Bitrix in EMI runtime code (E9 of mandatory Architecture-Conformance track, ADR-126). CI/lint asset only; no app logic.
+- **Live audit (read-only shell, not memory):** banxe-emi-stack origin/main — every semgrep invocation loads --config .semgrep/banxe-rules.yml (FILE): quality-gate.yml:149, lint-python.yml:89, .pre-commit-config.yaml:84, Makefile:140; the .semgrep/banxe-rules/ DIR is loaded by nothing; semgrep YAML cannot include other config files. Footprint baseline neuronext=0 bitrix=0 in services/app. banxe-architecture: this shard + PLAN §1A E9 flip on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN re-ids).
+- **Deliverable (emi branch agent/factory/paybis/wave-a-guard, commit cfe185d, SSH-signed):** 2 ERROR deny-rules appended to .semgrep/banxe-rules.yml — banxe-no-neuronext-reintroduction (regex (?i)neuronex) + banxe-no-bitrix-reintroduction (regex (?i)(bitrix|битрикс)); paths include **/services/** + **/app/**, exclude **/tests/** **/docs/** **/.semgrep/**.
+- **ADR-102 single mechanism (not parallel/dead file):** rules placed in the actually-loaded banxe-rules.yml (NOT a new .semgrep/banxe-rules/ file which would be dead — dir unconfigured). Deviation from "one new file" is evidence-based and documented; otherwise the guard would not enforce.
+- **Verification (recorded):** clean tree → 0 new-rule findings; in-repo positive test (temp services/ file with neuronext_api+Bitrix24 from repo root) → BOTH rules detect, scratch discarded (NOT committed); full --config banxe-rules.yml --error on clean services/ → exit 0; pre-commit full-repo scan (3412 files, 15 rules) → 0 findings, completed successfully; no secrets; yaml valid (13→15 rules).
+- **Merge NOTE for MAIN:** PaybisCryptoAdapter (sibling branch wave-a-adapter) docstrings literally mention 'NeuroNext retired' (governance) → will trip banxe-no-neuronext-reintroduction when both land; add '# nosemgrep: banxe-no-neuronext-reintroduction' on those comment lines or reword at merge.
+- **PLAN update:** §1A E9 READY → DONE (with verification note).
+- **Perimeter / canon:** CI/lint asset only; no app/runtime logic; no secrets; gitleaks-clean; single guard mechanism; isolated worktrees; signed; sub-B hands to MAIN per §71/§74 (MAIN pushes/PRs emi guard branch + this arch update).
+- **Refs:** ADR-126; PLAN §1A/§5A (IL-553/554); Wave-A (IL-552); .semgrep/banxe-rules.yml; quality-gate.yml/lint-python.yml/pre-commit/Makefile; ADR-102/119/I-28; I-SEC.
+
+---
+
+### IL-579 - agent-factory-sub-b-paybis-e10-v2-audit @ 2026-06-26T23:59:00Z
+
+- **il_ts:** 2026-06-26T23:59:00Z
+- **session_id:** agent-factory-sub-b-paybis-e10-v2-audit
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-e10-v2-audit/IL-2026-06-26T23-59-00Z--paybis-e10-v2-audit.md`
+
+### E10 _v2 dup-audit RESULT (wave 1) — recon/consumer_duty/reporting; no deletion (docs-plane)
+
+- **Objective:** Record the wave-1 _v2 dup-audit (3 verdicts) into PLAN §1A E10 + update §5A points 3-4. Read-only shell-evidence; NO runtime change/deletion/rename (all parked with conditions).
+- **Live audit (evidence, not memory):** banxe-emi-stack origin/main — verified: consumer_duty/models.py MISSING (models_v2 sole impl); api/routers/safeguarding_recon.py imports reconciliation_engine_v2 (StatementEntry+ReconciliationEngineV2); reporting_agent imports fin060_generator_v2 (FIN060Generator+HITLProposal); all 5 _v2/original files exist. banxe-architecture IL max=550; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN re-ids).
+- **Verdicts (all PARKED, 0 orphan deletions):**
+  1. recon/reconciliation_engine_v2.py vs reconciliation_engine.py = MERGE-PLANNED — BOTH live (api router imports both; _v2 in camt053_parser/recon_agent, original in batch_payments/breach_detector/midaz_reconciliation/safeguarding_adapters); _v2 carries ReconStorePort/InMemoryReconStore/HITLProposal; condition: unify+migrate imports in scoped refactor; blast ~8 files.
+  2. consumer_duty/models_v2.py = NOT-A-DUPLICATE → RENAME-DEBT — models.py does NOT exist; models_v2 sole real impl; step-1 "importers" were grep false-positives on word "models"; condition: atomic rename models_v2→models + import-update; blast 12+ importers.
+  3. reporting/fin060_generator_v2.py vs fin060_generator.py = MERGE-PLANNED — BOTH live (reporting_agent imports both; original in api/routers/safeguarding.py+regdata_return.py); condition: migrate api+regdata off original then unify; blast ~8 files.
+- **§5A acceptance:** point 3 (duplication audited) — _v2 wave-1 AUDITED (2 MERGE-PLANNED + 1 RENAME-DEBT, 0 orphan deletions); point 4 (leftovers) — all parked with verdict+condition+blast-radius. */legacy/*×22 = wave-2 pending (own per-module ADR-102).
+- **Refactor rule:** each MERGE-PLANNED = own scoped track (migrate consumers → unify → delete superseded; tests green ≥90% before deletion); RENAME-DEBT = atomic rename+import-update with full test pass. NOTHING deleted/renamed this step.
+- **Perimeter / canon:** docs-plane only; NO runtime change/deletion/rename; FROZEN ports untouched; every verdict traceable to shell-evidence (no invented refs); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A "E10 — _v2 dup-audit RESULT (wave 1)" table + Refactor rule + §5A points 3-4 update, this IL shard.
+- **Refs:** PLAN §1A E10/E12/§5A (IL-553/554/555/556); ADR-102; api/routers/safeguarding_recon.py, services/reporting/reporting_agent.py, services/consumer_duty/, services/recon/; ADR-119/I-28.
+
+---
+
+### IL-580 - agent-factory-sub-b-paybis-e12-conformance @ 2026-06-27T00:00:00Z
+
+- **il_ts:** 2026-06-27T00:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-e12-conformance
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-e12-conformance/IL-2026-06-27T00-00-00Z--paybis-e12-conformance.md`
+
+### E12 architecture-conformance map — legacy/PAYBIS processes → existing target ports (adapt, not transplant)
+
+- **Objective:** Record E12 conformance-map in PLAN §1A + tick §5A acceptance point 2 (architecture conformance checked); flip E12 READY→DONE. Docs-plane; no new ports/contracts; FROZEN ports unchanged; no invented facts.
+- **Live audit (read-only shell, not memory):** banxe-emi-stack origin/main — verified 49 *_port.py; all anchor ports present: crypto_ledger_port (CryptoLedgerPort+CryptoRpcPort FROZEN), ledger_port (LedgerPort), payment_port/payment_gateway_port, kyc_provider_port/kyc_port, crypto_custody/travel_rule_engine (methods requires_travel_rule/screen_jurisdiction/attach_originator_data/get_travel_rule_data/validate_travel_rule_complete) + crypto_custody/models (TravelRuleData), observability/compliance_monitor (ComplianceCheckPort), webhooks/reliability_port, treasury/{fx_exposure,liquidity_forecast,nostro_recon}_port, recon/recon_port. CryptoCompliancePort confirmed NON-existent → compliance via travel_rule_engine + ComplianceCheckPort. banxe-architecture IL max=546; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Conformance map recorded (8 process→port mappings):** crypto ops→CryptoLedgerPort (FROZEN; non-custodial balance/wallet OUT_OF_PAYBIS_SCOPE); crypto RPC→CryptoRpcPort (FROZEN, legacy parked); Order/Refund+events→CryptoLedgerPort create_tx/status + webhooks/reliability_port; Travel-Rule→TravelRuleEngine+TravelRuleData (E5, NOT new CryptoCompliancePort); compliance verdicts→ComplianceCheckPort; KYC/KYB→KYCProviderPort/KYCWorkflowPort (I-27 HITL; data-sharing НЕИЗВЕСТНО SRC-07); settlement→LedgerPort+treasury/* (SRC-04 FACT, fiat Tompay IBAN ADR-108); webhook idempotency→webhooks/reliability_port.
+- **Conformance verdict:** every PAYBIS/legacy process lands on an EXISTING port → 0 new contracts, FROZEN CryptoLedgerPort/CryptoRpcPort unchanged (adapt-not-transplant). Literal API/TR mapping НЕИЗВЕСТНО until SRC-06/07 — not invented.
+- **§5A acceptance:** point 2 (architecture conformance checked) ticked ✅; E12 READY→DONE in §1A track-epics + §2 table.
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no new ports/contracts; FROZEN ports intact; every mapping traceable to shell-evidence (no invented ports); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A E12-result + §5A point-2 tick, this IL shard.
+- **Refs:** ADR-108/114/126; PLAN §1A/§5A (IL-553/554/555); Wave-A (IL-552); services/ledger/crypto_ledger_port.py, services/crypto_custody/travel_rule_engine.py, services/observability/compliance_monitor.py, services/kyc/*, services/webhooks/reliability_port.py, services/treasury/*; ADR-102/119/I-28; I-27.
+
+---
+
+### IL-581 - agent-factory-sub-b-paybis-e10-legacy-wave2 @ 2026-06-27T00:30:00Z
+
+- **il_ts:** 2026-06-27T00:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-e10-legacy-wave2
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-e10-legacy-wave2/IL-2026-06-27T00-30-00Z--paybis-e10-legacy-wave2.md`
+
+### E10 legacy dup-audit RESULT (wave 2) — 18 legacy modules; verify-before-delete; NO deletion (docs-plane)
+
+- **Objective:** Record E10 wave-2 legacy dup-audit + DELETE-candidate verification into PLAN §1A + update §5A points 3-4. Read-only shell-evidence; NO deletion/rename this step. Count correction: total */legacy/* .py (excl __init__) = 18 (verified), not 22.
+- **Live audit (evidence, not memory; sub-B independent re-verification):** banxe-emi-stack origin/main — verified 18 legacy modules. The briefed "0 refs → DELETE-ELIGIBLE" for 3 candidates was REFINED by re-verification (test-coupling found): 
+  1. compliance/legacy/legacy_bkyc_adapter.py = CONFIRMED ORPHAN (0 refs to any symbol BKYC*/LegacyBKYCAdapter in services/api/tests; no re-export, no test) → DELETE-ELIGIBLE clean.
+  2. auth/legacy/role_guard.py = 0 production refs BUT dedicated tests/test_legacy_role_guard.py imports LegacyRoleGuardAdapter/require_roles/make_legacy_role_guard → DELETE-ELIGIBLE-WITH-TEST (delete adapter + its test together).
+  3. compliance/legacy/legacy_binancekyc_adapter.py = 0 production refs (other ref = a COMMENT in _legacy_common/state_machine.py) BUT BinanceKYCError imported by shared tests/test_shared_errors.py → VERIFY-THEN-DELETE (excise that section, don't break shared error-tests).
+- **Cluster:** auth/legacy/legacy_sca_adapter.py (0 external refs) + legacy_totp_adapter.py (ref'd ONLY by sca, verified) → DELETE-AS-PAIR-CANDIDATE (DI-trace first).
+- **Reclassified to PARKED (NOT orphan — live symbols, operator-briefed + verified):** payment/legacy/bifrost_adapter.py (to_minor_units used by open_banking/intl_scheduled.py + m24_int_bridge.py, verified 2); payment/legacy/legacy_transactions_adapter.py (TransactionRecord → ledger/midaz_adapter.py verified 13×; TransactionApplicationError → shared/errors.py).
+- **Remaining PARKED:** auth/legacy {legacy_otp_adapter, jwks_models, jwt_strategy}; compliance/legacy {_edd, _jurisdictions, legacy_sumsub_adapter}; payment/legacy {legacy_abs_payment_adapter, legacy_sepa_adapter}; ledger/legacy/legacy_crypto_* (E10 PAYBIS-cutover).
+- **Key lesson (canon):** simple import-count insufficient — full-symbol+re-export+dynamic+test-ref verification flipped 4/7 import-count candidates; sub-B re-verification further refined the 3 "0-ref orphans" to test-coupled (only 1/3 clean). "Verify before delete / fail-closed on doubt" enforced.
+- **§5A acceptance:** point 3 — legacy wave-2 AUDITED (18 modules); point 4 — 1 confirmed orphan + 1 delete-with-test + 1 verify-then-delete + 1 pair-candidate + rest PARKED-with-justification (no silent residue, no deletion this step).
+- **Deletion-execution rule:** confirmed orphans removed in dedicated scoped track (legacy_bkyc clean; role_guard + dedicated test; legacy_binancekyc excise shared-test section; sca/totp DI-trace then pair) — full test-suite green + gitleaks clean + ADR-102 re-confirm at execution time (main moves).
+- **Perimeter / canon:** docs-plane only; NO deletion/rename; FROZEN ports untouched; every verdict traceable to shell-evidence (sub-B re-verified, no invented/parroted refs); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A "E10 — legacy dup-audit RESULT (wave 2)" table + Deletion-execution rule + §5A points 3-4 update, this IL shard.
+- **Refs:** PLAN §1A E10/_v2-wave1/§5A (IL-553/554/556/557); ADR-102 (verify-before-delete); tests/test_legacy_role_guard.py, tests/test_shared_errors.py, services/_legacy_common/state_machine.py, services/open_banking/intl_scheduled.py, services/ledger/midaz_adapter.py; ADR-119/I-28.
+
+---
+
+### IL-582 - agent-factory-sub-b-paybis-i27-kyc-park @ 2026-06-27T01:00:00Z
+
+- **il_ts:** 2026-06-27T01:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-i27-kyc-park
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-i27-kyc-park/IL-2026-06-27T01-00-00Z--paybis-i27-kyc-park.md`
+
+### E10 Wave-2 — I-27 KYC legacy PARKED-by-canon (operator decision); deletion scope narrowed (docs-plane)
+
+- **Objective:** Apply operator decision — legacy_bkyc_adapter + legacy_binancekyc_adapter stay PARKED (NOT deleted) because they sit in the I-27 KYC/KYB/AML licensed perimeter; add a CANON RULE that I-27 legacy is never consolidation-deletable; narrow deletion scope to auth-orphans. Docs-plane; NO deletion.
+- **Operator decision (this turn, explicit):** legacy_bkyc PARKED despite 0 production refs — implements KYCWorkflowPort (KYB onboarding) in I-27 perimeter; deletion destructive + licensed-compliance; value of removing one file < barrier. legacy_binancekyc reclassified PARKED by same rule (cohesive KYC layer; do not partially delete one of three KYC adapters).
+- **Verification (grounding, read-only shell, emi origin/main):** tests/test_legacy_bkyc_adapter.py + tests/test_legacy_binancekyc_adapter.py BOTH exist (verified); both implement KYCWorkflowPort/KYB; kyb_onboarding service exists (application_manager, companies_house_adapter) → "future KYB activation" grounded. NB: this also CORRECTS sub-B's prior IL-558 "legacy_bkyc = confirmed clean orphan" — it has a dedicated test, so never a clean orphan (verify-before-delete validated again).
+- **CANON RULE recorded (§1A, referenced §5A):** "KYC/KYB/AML legacy modules (I-27 perimeter) are NEVER candidates for consolidation-deletion — only PARKED. Removal of any I-27 component requires explicit operator + MLRO/HITL-L4 authorization, never best-decision auto."
+- **Net effect on deletion scope:** both compliance/legacy KYC adapters REMOVED from deletion scope (PARKED-by-canon). Remaining deletion-eligible (non-I-27, auth perimeter): role_guard (DELETE-WITH-TEST, 0 prod refs) + sca/totp pair (DELETE-AS-PAIR after DI-trace). These are the ONLY remaining real deletion candidates; everything else PARKED. Destructive step still requires operator go.
+- **§5A point 4:** I-27 KYC legacy = permanently PARKED-by-canon (not "pending"); deletion scope = auth orphans only.
+- **Perimeter / canon:** docs-plane only; NO deletion; FROZEN ports untouched; traceable to operator decision + prior shell-evidence (IL-558) + this verification; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A E10 Wave-2 table (2 KYC rows → PARKED) + CANON RULE + итог + Deletion-execution rule + §5A point 4 update, this IL shard.
+- **Refs:** IL-558 (Wave-2 audit, corrected re bkyc test); operator decision this turn; I-27 (KYC/KYB/AML HITL); tests/test_legacy_bkyc_adapter.py, tests/test_legacy_binancekyc_adapter.py, services/kyb_onboarding/; ADR-102; ADR-119/I-28.
+
+---
+
+### IL-583 - agent-factory-sub-b-paybis-consolidation-closed @ 2026-06-27T01:30:00Z
+
+- **il_ts:** 2026-06-27T01:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-consolidation-closed
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-consolidation-closed/IL-2026-06-27T01-30-00Z--paybis-consolidation-closed.md`
+
+### Consolidation track CLOSED (audit phase) — operator decision; destructive execution deferred (docs-plane)
+
+- **Objective:** Record operator decision to close the Architecture-Conformance / E10 consolidation track at the audit point (full map done, I-27 protected, §5A satisfied); defer residual destructive deletions; hand off to next-priority selection. Docs-plane; no runtime change.
+- **Status recorded (PLAN §1A "Consolidation track — CLOSED (audit phase)"):** E9 DONE (NeuroNext/Bitrix forward-guard, IL-555) + E10 DONE (audit: _v2 wave-1 IL-557 + legacy wave-2 IL-558 + I-27 park IL-559, full map) + E12 DONE (conformance-map, IL-556). §5A points 2/3/4 satisfied. 0 deletions executed (docs-plane only throughout); destructive execution intentionally deferred.
+- **Residual deferred-execution backlog (each needs operator go + full-suite-green + ADR-102 re-confirm at execution time):** auth-orphans role_guard (DELETE-WITH-TEST) + sca/totp (DELETE-AS-PAIR after DI-trace); _v2 merge-planned recon engine + fin060 generator (consumer-migration → unify → delete); rename-debt consumer_duty/models_v2 → models; I-27 KYC legacy bkyc/binancekyc = PARKED-by-canon (NOT in deletion scope); bifrost/legacy_transactions + live-consumer legacy = PARKED.
+- **Re-entry rule:** on resume, re-run ADR-102 dup-audit per module against current main before any deletion (audit may be stale; main moves).
+- **Closure statement:** this CLOSES the consolidation execution phase for now; audit-deliverables (E9/E10/E12 + §5A) stand as the canonical consolidation-map. Next → operator next-priority selection.
+- **Perimeter / canon:** docs-plane only; no deletion/runtime; FROZEN ports untouched; traceable to operator decision + prior IL-553..559; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A closure note, this IL shard.
+- **Refs:** IL-553 (track canon) / IL-554 (E10 ledger) / IL-555 (E9) / IL-556 (E12) / IL-557 (_v2 wave-1) / IL-558 (legacy wave-2) / IL-559 (I-27 park); operator decision this turn; §5A; ADR-102/119/I-27/I-28.
+
+---
+
+### IL-584 - agent-factory-sub-b-paybis-landing-handoff @ 2026-06-27T02:00:00Z
+
+- **il_ts:** 2026-06-27T02:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-landing-handoff
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-landing-handoff/IL-2026-06-27T02-00-00Z--paybis-landing-handoff.md`
+
+### Landing handoff package for MAIN — confirmed landing-blocker + ordered execution steps (docs-plane)
+
+- **Objective:** Produce docs/paybis-dossier/LANDING-HANDOFF-MAIN.md recording the confirmed landing-blocker (sub-B work NOT pushed to any origin) + exact ordered steps MAIN/operator must execute (ARCH + EMI push/rebase/re-id/PRE-MERGE-FIX/PR/merge). sub-B prepares only; does NOT push/PR/merge (§71 — sub-B not single-writer).
+- **Live audit (evidence, not memory):** EMI + ARCH `ls-remote` for paybis/wave-a/phase36 = EMPTY (verified 0/0) → all sub-B work local-only. HEADs verified: EMI wave-a-guard@cfe185d, wave-a-adapter@2edf49d; ARCH neuronext-retirement-adr@689ae66 (16 commits IL-545…560), phase36/impl-state-refresh@2264751 (IL-551). ARCH origin/main IL max = 551 (moved 7 gov-PRs) → IL re-id GUARANTEED at merge.
+- **Two accuracy corrections recorded (verify-before-assert):** (1) IL re-id is mandatory not optional (origin IL max already 551 > some provisional numbers). (2) Guard-trip PRE-MERGE-FIX file list corrected by git grep on 2edf49d: neuronext appears in services/ledger/production/paybis_crypto_adapter.py (L3) AND PAYBIS-WAVE-A.md (L3/5/25 — under services/**, NOT docs/**, so guard exclude does NOT apply) — but NOT in paybis_webhook.py (original note wrongly included it). Missing PAYBIS-WAVE-A.md would leave quality-gate red.
+- **Package contents:** pre-flight (§73 fetch + build_ledger.py FROM ROOT re-id); ARCH order (push → rebase → ADR-126-vs-#790-ADR-125 verify → PR/merge → optional impl-state); EMI order (guard FIRST → adapter → PRE-MERGE nosemgrep/reword fix → quality-gate green → PR/merge); post-landing (Wave B GATED on SRC-06, still not provided); exact operator push commands marked "👉 OPERATOR EXECUTES — not sub-B".
+- **Perimeter / canon:** docs-plane only; no push/PR/merge by sub-B; traceable to live audit evidence; isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** docs/paybis-dossier/LANDING-HANDOFF-MAIN.md, this IL shard.
+- **Refs:** IL-545…560 (dossier track), IL-551 (impl-state); §71/§73/§74; ADR-126/119; E9 guard (cfe185d), Wave-A (2edf49d); PLAN §1A/§5A.
+
+---
+
+### IL-585 - agent-factory-sub-b-paybis-signature-blocker @ 2026-06-27T02:30:00Z
+
+- **il_ts:** 2026-06-27T02:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-signature-blocker
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-signature-blocker/IL-2026-06-27T02-30-00Z--paybis-signature-blocker.md`
+
+### Landing handoff — SIGNATURE BLOCKER recorded (honest correction: sub-B commits are UNSIGNED)
+
+- **Objective:** Record the verified signature blocker into LANDING-HANDOFF-MAIN.md + add a signature re-sign gate to ARCH+EMI landing sequences. Honest correction of prior inaccurate "SSH-signed" reports.
+- **Verified fact (%G? audit, evidence not memory):** ALL commits of branch agent/factory/paybis/neuronext-retirement-adr IL-545…561 (17 commits) = %G?=N (UNSIGNED; raw verify = "No signature"). EMI wave-a-guard (cfe185d) / wave-a-adapter (2edf49d, + Wave-B 42563df) also %G?=N. Baseline central-terminal origin/main = %G?=E (signed, locally-unverifiable). sub-B independently confirmed via `git log --format='%G?' origin/main..HEAD` → 17×N.
+- **Honest correction:** prior per-step factory reports claiming "SSH-signed ✓" were INACCURATE — the check relied on `grep 'BEGIN SSH SIGNATURE'`, which is NOT valid signature verification. Commits were never actually signed (worktree config commit.gpgsign=true/gpg.format=ssh/user.signingkey set, but signature not applied — no private-key access / commit without signing).
+- **Risk:** if branch-protection / merge-policy requires signed commits (main IS signed), MAIN cannot land this branch as-is → asymmetry blocker.
+- **Required MAIN remediation (at landing, during mandatory rebase-onto-main):** re-sign with a valid key in MAIN env — `git rebase --exec 'git commit --amend --no-edit -S' origin/main` (ARCH dossier + both EMI branches); verify `git log --format='%h %G?' origin/main..HEAD` shows non-N BEFORE PR. sub-B CANNOT fix this itself (no signing key, does not push/re-sign) — MAIN/operator action.
+- **Doc updates:** LANDING-HANDOFF-MAIN.md — new "⚠ SIGNATURE BLOCKER (corrected)" section + SIGNATURE GATE step b2 in both ARCH (§2) and EMI (§3) sequences; all other landing steps intact (push order, ADR-126-vs-#790, IL re-id origin max≥551, PRE-MERGE nosemgrep fix on paybis_crypto_adapter.py + PAYBIS-WAVE-A.md, quality-gate green).
+- **Note on THIS commit:** this IL shard commit is itself UNSIGNED (same environment limitation) — included in the same MAIN re-sign pass. No "signed" claim is made.
+- **Perimeter / canon:** docs-plane only; sub-B does NOT push/PR/merge/re-sign; signature fact traceable to %G?=N audit; isolated worktree off arch origin/main; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** LANDING-HANDOFF-MAIN.md updates, this IL shard.
+- **Refs:** IL-561 (landing handoff); %G? audit (17×N on branch; EMI wave-a-* N; origin/main E); §71/§73/§74; ADR-119/I-28.
+
+---
+
+### IL-586 - agent-factory-sub-b-paybis-signature-note-repair @ 2026-06-27T03:00:00Z
+
+- **il_ts:** 2026-06-27T03:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-signature-note-repair
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-signature-note-repair/IL-2026-06-27T03-00-00Z--paybis-signature-note-repair.md`
+
+### Landing handoff — REPAIR signature section: blocker downgraded to non-blocking NOTE (branch-protection audit)
+
+- **Objective:** Repair LANDING-HANDOFF-MAIN.md — the prior "⚠ SIGNATURE BLOCKER + mandatory re-sign gate" over-stated severity. main does NOT require signed commits, so unsigned is NOT a merge blocker. Honest double-correction.
+- **Verified (read-only gh api, evidence not memory):** repos/CarmiBanxe/banxe-architecture/branches/main/protection — required_signatures.enabled=FALSE; required_status_checks = guardian-factory/guardian-project/guardian-ledger/ledger-append-only; required_linear_history=true; enforce_admins=true; allow_force_pushes=false. Commits remain %G?=N (unsigned) — confirmed — but moot for merge.
+- **Repairs applied:** (1) "⚠ SIGNATURE BLOCKER" → "ℹ SIGNATURE NOTE (not a blocker)": unsigned fact kept; required_signatures=false → unsigned CAN merge; re-sign OPTIONAL hygiene (command kept, marked OPTIONAL). (2) Removed "SIGNATURE GATE (mandatory)" step b2 from BOTH ARCH §2 and EMI §3 → one-line optional hygiene note each. (3) Added "REAL required gates" table (4 status checks GREEN + linear-history → rebase mandatory for linearity not signing + enforce_admins + force-push off + required_signatures=false). (4) Added "Corrections log": unsigned confirmed; blocker severity corrected to non-blocking.
+- **Kept intact:** push order, ADR-126-vs-#790 check, IL re-id (origin IL max ≥551), PRE-MERGE nosemgrep fix (paybis_crypto_adapter.py L3 + PAYBIS-WAVE-A.md L3/5/25), quality-gate/tests green.
+- **Honest double-correction summary:** (a) per-step "SSH-signed" was wrong → commits unsigned (stands); (b) "signature blocker" was wrong → not a blocker (required_signatures=false). No hand-waving.
+- **Perimeter / canon:** docs-plane only; sub-B does NOT push/PR/merge/re-sign; every claim traceable to gh-api branch-protection audit; isolated worktree off arch origin/main; sub-B hands to MAIN per §71/§74. This commit itself %G?=N (moot — not required).
+- **Deliverable:** LANDING-HANDOFF-MAIN.md repair, this IL shard.
+- **Refs:** IL-561 (landing handoff), IL-562 (signature blocker — now downgraded by this shard, not edited); gh-api branch-protection (required_signatures=false; checks guardian-*+ledger-append-only; linear=true); §71/§73/§74; ADR-119/I-28.
+
+---
+
+### IL-587 - agent-factory-sub-b-paybis-sandbox-state @ 2026-06-27T03:30:00Z
+
+- **il_ts:** 2026-06-27T03:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-sandbox-state
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-sandbox-state/IL-2026-06-27T03-30-00Z--paybis-sandbox-state.md`
+
+### PAYBIS sandbox final-state map — canonical navigation/status doc (docs-plane)
+
+- **Objective:** Record one canonical PAYBIS sandbox completeness/state doc (docs/paybis-dossier/PAYBIS-SANDBOX-STATE.md) so operator + MAIN have a single source of state. Docs-plane; no runtime.
+- **Live audit (evidence, not memory):** EMI branch agent/factory/paybis/wave-a-adapter @ c21bf2e — 6 commits (2edf49d Wave A / 42563df Wave B / b012c40 docs / 669fa58 sandbox install / 887b2aa provider+smoke / c21bf2e DI-gate), all %G?=N (unsigned; NOT a merge-blocker — required_signatures=false verified gh-api). 30 tests pass; paybis_provider 100% cov; ruff+semgrep clean; no secrets. api/deps.py: lru_cache@247 on get_crypto_application_service, processing=_select_crypto_processing_adapter()@261 (line refs corrected from operator's 217/261 — main drifted). banxe-architecture origin/main IL max=559; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **State matrix recorded:** REAL = flag+selector+façade+DI-gate (default OFF) + env-config/sandbox-guard/idempotency/error-mapping; MOCKED = transport responses (SandboxMockPaybisTransport); FENCED = live HTTP/endpoints/auth/signature; OUT OF SCOPE = Travel-Rule go-live (ADR-114) + funds/wallet-balance (non-custodial ADR-108).
+- **Invariants:** FROZEN CryptoLedgerPort/CryptoRpcPort unchanged; I-01/I-24; non-custodial; micro-boundaries intact; ADR-126 NeuroNext-replacement compatible; default OFF = zero regression.
+- **Live-activation blockers (external, NOT inventable):** sandbox base-URL+creds (vault, approved-scope); SRC-06 (endpoints/auth/signature/schemas/fee); SRC-07+ADR-114 (Travel-Rule go-live); full agreement .docx (§3b НЕИЗВЕСТНО).
+- **Activation path:** real PaybisTransport + verify_signature on SRC-06 → wallet/rpc substitution → PAYBIS-as-default only after live enablement + ADR-114 → landing per LANDING-HANDOFF-MAIN.md.
+- **Perimeter / canon:** docs-plane only; every status evidence-traced (no invented literals); FROZEN ports untouched; isolated worktree off arch origin/main; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** docs/paybis-dossier/PAYBIS-SANDBOX-STATE.md, this IL shard.
+- **Refs:** EMI wave-a-adapter@c21bf2e (Wave A/B + sandbox install + provider + DI-gate); ADR-126/108/114; PLAN/LANDING-HANDOFF/SRC-INTAKE-REGISTER; ADR-119/I-28; required_signatures=false (gh-api).
+
+---
+
+### IL-588 - agent-factory-sub-b-paybis-governance-facts @ 2026-06-27T04:00:00Z
+
+- **il_ts:** 2026-06-27T04:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-governance-facts
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-governance-facts/IL-2026-06-27T04-00-00Z--paybis-governance-facts.md`
+
+### PAYBIS governance-facts cross-check + honest CryptoCompliancePort correction (docs-plane)
+
+- **Objective:** Record governance facts (ADR-108/114/GAP-REGISTER) into a cross-referenced fact table + one honest correction (CryptoCompliancePort code-vs-governance); update PLAN go-live-gate + settlement route. Docs-plane; no runtime.
+- **Live audit (evidence, not memory):** CryptoCompliancePort = 0 occurrences in EMI services/api (verified grep) BUT named in governance docs/adr/ADR-114-travel-rule-paybis-casp.md + README + SESSION-2026-05-10 → both truths confirmed. ADR-108 (docs/adr/ADR-108-payment-distribution-model.md) + ADR-114 exist; services/crypto_custody/travel_rule_engine.py present (Wave C anchor). banxe-architecture origin/main IL max=559; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Facts recorded (PAYBIS-GOVERNANCE-FACTS.md, 13 rows, each ADR/GAP-line-cited):** G1 CryptoCompliancePort = TR seam receive-not-originate, design-frozen (ADR-114:8/13); G2 not-in-runtime (grep=0); G3 TomPay GBP IBAN + G4 Papaya SEPA EUR (ADR-108:14); G5 GAP-071 + G6 GAP-072 = 🟡 IN PROGRESS (GAP-REGISTER:61-62); G7 go-live gate = TR contract + MLRO both (ADR-114:14/22, ADR-108:18); G8 TR contract in SP-PR3; G9 CASP T&C 2026-07-01; G10 Neuronext VASP retired; G11 BANXE distribution-agent NOT CASP; G12 non-custodial; G13 Paybis = MiCA CASP (Latvia).
+- **Honest correction (corrections log):** prior sub-B «CryptoCompliancePort does not exist» true ONLY for runtime code (G2); in governance it IS canonical design-frozen seam (G1) — record BOTH: canonical-in-ADR-114 / not-yet-coded. Fixed stale «НЕ существует» in PLAN (source-of-truth line + conformance-map rows) and DOSSIER references.
+- **PLAN updates:** GO-LIVE GATE section (concrete: TR contract + MLRO + CASP T&C 2026-07-01; GAP-071/072 IN PROGRESS); SETTLEMENT route (TomPay GBP IBAN / Papaya SEPA EUR, ADR-108:14); conformance-map TR row now cites CryptoCompliancePort (Wave C) alongside travel_rule_engine.
+- **Wave C note:** must implement CryptoCompliancePort (canonical seam) + travel_rule_engine integration, gated on ADR-114 go-live + SRC-07.
+- **Perimeter / canon:** docs-plane only; every fact cites ADR/GAP source; no invented literals; FROZEN ports untouched; isolated worktree off arch origin/main; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PAYBIS-GOVERNANCE-FACTS.md + PLAN go-live-gate/settlement/source-of-truth updates, this IL shard.
+- **Refs:** ADR-108:5/8/13/14/15/18, ADR-114:8/13/14/22, GAP-REGISTER:61-62, SESSION-2026-05-10; PLAN, PAYBIS-SANDBOX-STATE, DOSSIER; travel_rule_engine.py; ADR-119/I-28.
+
+---
+
+### IL-589 - agent-factory-sub-b-paybis-landing-refresh @ 2026-06-27T04:30:00Z
+
+- **il_ts:** 2026-06-27T04:30:00Z
+- **session_id:** agent-factory-sub-b-paybis-landing-refresh
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-landing-refresh/IL-2026-06-27T04-30-00Z--paybis-landing-refresh.md`
+
+### LANDING-HANDOFF-MAIN.md refresh — current verified landing commands (docs-plane)
+
+- **Objective:** Refresh the "👉 OPERATOR EXECUTES" section of LANDING-HANDOFF-MAIN.md with current verified state + exact ARCH/EMI landing commands for operator/MAIN. sub-B does NOT execute. Docs-plane.
+- **Live audit (evidence, not memory):** ARCH branch agent/factory/paybis/neuronext-retirement-adr @ 62fd737 = 21 commits ahead (IL-545…565), ledger-build OK; ARCH origin/main IL max=560 → provisional 545…565 collide → re-id mandatory. EMI NOT pushed: wave-a-adapter @ c21bf2e, wave-a-guard @ cfe185d. nosemgrep targets verified on c21bf2e: PAYBIS-WAVE-A.md lines 6/8/28/102/153 + paybis_crypto_adapter.py line 3 contain 'neuronext' (other paybis files clean — verified). Required CI gates: guardian-factory/guardian-project/guardian-ledger/ledger-append-only; required_signatures=false (unsigned OK). This shard on the same branch; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Doc update:** replaced OPERATOR EXECUTES block with current commands — ARCH landing (push → rebase linear-history → re-id build_ledger.py + --check FROM ROOT → ADR-126-vs-in-flight verify → required checks GREEN → PR/merge) + EMI landing (PRE-MERGE nosemgrep fix on exact verified lines → push guard FIRST → push adapter → quality-gate GREEN → PR/merge each) + notes (sub-B no push; signatures not required; after-landing flag-gated default OFF, live still gated SRC-06/creds/Onboarding-Fee/CASP T&C 2026-07-01/TR-MLRO).
+- **Honest currency fixes:** prior section cited stale IL-545…560 / origin IL max=551 / 2-line nosemgrep list — corrected to 21 commits IL-545…565, origin max=560, full 5+1 nosemgrep line targets.
+- **Perimeter / canon:** docs-plane only; sub-B does NOT push/PR/merge/execute; every SHA/IL/line cites live audit; isolated worktree off arch origin/main; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** LANDING-HANDOFF-MAIN.md OPERATOR EXECUTES refresh, this IL shard.
+- **Refs:** ARCH 62fd737 (IL-545…565), EMI c21bf2e/cfe185d; nosemgrep grep on c21bf2e; required_signatures=false + required checks (gh-api); §71/§73/§74; ADR-126/119/114; PAYBIS-SANDBOX-STATE/GOVERNANCE-FACTS.
+
+---
+
+### IL-590 - agent-factory-sub-b-paybis-legacy-flow-map @ 2026-06-27T05:00:00Z
+
+- **il_ts:** 2026-06-27T05:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-legacy-flow-map
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-legacy-flow-map/IL-2026-06-27T05-00-00Z--paybis-legacy-flow-map.md`
+
+### Legacy crypto-flow → PAYBIS mapping + governance-drift flag (docs-plane)
+
+- **Objective:** Record legacy crypto-flow → PAYBIS mapping + invariant impact (I-30/32/33/36) + surface a governance drift (CRYPTO-BLOCK.md not reconciled with ADR-108). Docs-plane; sub-B does NOT edit CRYPTO-BLOCK.md (central doc) — only flags.
+- **Live audit (evidence, not memory):** docs/CRYPTO-BLOCK.md verified — 0 refs to ADR-108/paybis/retired/superseded, 46 neuronext refs → drift CONFIRMED (still active-NeuroNext model). Invariants I-30(:372)/I-32(:374)/I-33(:375)/I-36(:378) present with cited descriptions. Legacy flows at :157-161. banxe-architecture origin/main IL max=561; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Mapping recorded (PAYBIS-LEGACY-FLOW-MAP.md §1):** Buy→PAYBIS on-ramp (fiat→TomPay GBP IBAN/Papaya SEPA EUR, non-custodial); Sell→off-ramp same route; Card top-up→off-ramp→TomPay card GBP; Crypto-to-crypto→PAYBIS-side OR OUT-OF-SCOPE НЕИЗВЕСТНО (SRC-06/agreement); Fiat transfer→UNCHANGED (TomPay FCA, not PAYBIS).
+- **Invariant impact (§2):** I-30 UK-resident restriction → re-evaluate under PAYBIS T&C (НЕИЗВЕСТНО, CASP T&C 2026-07-01); I-32 dual-AML → PL-GIIF leg gone, crypto-AML PAYBIS-side (Latvia/MiCA), BANXE keeps MLRO (ADR-114), reporting topology changes; I-33 firewall → TomPay↔PAYBIS (processor/controller, GDPR Art.28, ADR-108); I-36 NeuroNext-as-TomPay-client → NO LONGER APPLIES (settlement Paybis→TomPay GBP IBAN). All require governance re-base (central/legal, not sub-B).
+- **Governance drift (§3):** CRYPTO-BLOCK.md = superseded-by-ADR-108 recommendation + re-base I-30/32/33/36 → central/governance action (NOT sub-B). sub-B surfaces, does not edit.
+- **Primary-track note (§4):** corrects earlier "stub array closed" — safeguarding-engine (P0 CASS 15) = SPEC-LOCKED-STUB, 40 NotImplementedError, IL-535 STOP (EMI-IMPLEMENTATION-STATE-2026-06-25.md:19/29/64); F-aml REAL+TESTED ~80%.
+- **Perimeter / canon:** docs-plane only; CRYPTO-BLOCK.md NOT edited (verified untouched); every fact cites CRYPTO-BLOCK/ADR line; unsettled → НЕИЗВЕСТНО; isolated worktree off arch origin/main; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** PAYBIS-LEGACY-FLOW-MAP.md, this IL shard.
+- **Refs:** CRYPTO-BLOCK.md:157-161/372-378; ADR-108/114/126; PAYBIS-GOVERNANCE-FACTS.md; EMI-IMPLEMENTATION-STATE-2026-06-25.md:19/29/64; ADR-119/I-28.
+
+---
+
+### IL-591 - agent-factory-sub-b-paybis-flowmap-safeguard-fix @ 2026-06-27T06:00:00Z
+
+- **il_ts:** 2026-06-27T06:00:00Z
+- **session_id:** agent-factory-sub-b-paybis-flowmap-safeguard-fix
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-paybis-flowmap-safeguard-fix/IL-2026-06-27T06-00-00Z--paybis-flowmap-safeguard-fix.md`
+
+### Fix PAYBIS-LEGACY-FLOW-MAP §4 — remove safeguarding-engine stale-stub contradiction (docs-plane)
+
+- **Objective:** Resolve cross-branch divergence — PAYBIS-LEGACY-FLOW-MAP.md §4 still claimed safeguarding-engine = SPEC-LOCKED-STUB/40 NotImplementedError/IL-535 STOP, contradicting the authoritative correction (IL-552). Minimal edit to §4 only. Docs-plane.
+- **Live audit (evidence, not memory):** safeguarding-engine REAL — app/services/* 0 NotImplementedError + full test suite (verified prior turn on origin/main); GAP-REGISTER GAP-003 = DONE; IL-541 coverage 95.82%. Authoritative correction: docs/architecture/EMI-IMPL-STATE-REFRESH-2026-06-26.md, IL-552, branch agent/factory/phase36/impl-state-refresh @ 1728a2a. banxe-architecture origin/main IL max=561; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Edit applied (§4 only):** stale claim → safeguarding-engine = REAL/DONE (GAP-003 DONE, 0 NotImplementedError + full tests, IL-541 95.82%); prior SPEC-LOCKED-STUB wording marked SUPERSEDED with citation to IL-552/1728a2a; F-aml REAL+TESTED ~80% kept; return-to-base note updated (safeguarding NOT an open gap; no internal runtime stub; residual external-provider-gated only). IL-535 referenced superseded, NOT edited/renumbered (append-only). CRYPTO-BLOCK.md untouched.
+- **Result:** the two branches (paybis dossier + phase36 impl-state) are now CONSISTENT on safeguarding-engine state for MAIN.
+- **Perimeter / canon:** docs-plane only; only §4 changed (1 block); IL-535 + CRYPTO-BLOCK.md untouched (verified); every fact cites shell-evidence/GAP-003/IL-552; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
+- **Deliverable:** PAYBIS-LEGACY-FLOW-MAP.md §4 fix, this IL shard.
+- **Refs:** EMI-IMPL-STATE-REFRESH-2026-06-26.md / IL-552 / branch phase36@1728a2a; GAP-003; IL-541; IL-535 (superseded, referenced); safeguarding-engine app/services + tests (shell-evidence); ADR-119/I-28.
+
+---
+
+### IL-592 - agent-factory-sub-b-e10-auth-orphan-exec @ 2026-06-27T07:30:00Z
+
+- **il_ts:** 2026-06-27T07:30:00Z
+- **session_id:** agent-factory-sub-b-e10-auth-orphan-exec
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-e10-auth-orphan-exec/IL-2026-06-27T07-30-00Z--e10-auth-orphan-exec.md`
+
+### E10 consolidation wave-1 EXECUTION — auth-legacy orphan deletion (sca/totp DELETED; role_guard ABORTED-PARKED)
+
+- **Objective:** Operator-authorized destructive consolidation E10 — delete verified-orphan legacy auth modules. Mandatory pre-execution re-verify on fresh origin/main; per-module abort on any blocker. EMI runtime branch; sub-B does NOT push/PR/merge.
+- **Re-verify (read-only shell, origin/main @ b54e10f — evidence, not memory):** sca+totp = CLEAN (0 non-test/non-self refs; 0 re-export in auth/legacy/__init__.py; 0 DI-wiring; imported ONLY by dedicated tests; totp ref'd intra-cluster only by sca; otp_fake.py only docstring-mentions, no import). role_guard = BLOCKED — non-dedicated live test consumer tests/test_wave_a_adapter_seam_scaffold.py imports LegacyRoleGuard/make_legacy_role_guard (L117/124/133), NOT in deletion-set → deleting role_guard would break repo test-collection.
+- **Executed (emi branch agent/factory/consolidation/auth-legacy-orphans, commit 998040a, %G?=N):** git rm services/auth/legacy/legacy_sca_adapter.py + legacy_totp_adapter.py + tests/test_legacy_sca_adapter.py + test_legacy_totp_adapter.py. __init__.py untouched (no re-export). role_guard + its dedicated test NOT deleted (aborted).
+- **Gates (all pass, recorded in commit body):** pytest --collect-only green (no import errors); pytest -k auth = 185 passed/0 failed; 0 residual refs to deleted modules; ruff clean; semgrep banxe-rules exit 0; no secrets in diff. ADR-102: removal of verified-orphan duplicates of retired auth-legacy layer; source-of-truth = production auth (non-legacy); no consumer blocks. I-20/I-24 (auth contour) preserved — no live auth path touched.
+- **Abort report:** role_guard re-classified PARKED (was DELETE-ELIGIBLE-WITH-TEST). Operator-decision needed: handle tests/test_wave_a_adapter_seam_scaffold.py role_guard usage first (it is a non-orphan scaffold consumer), OR keep role_guard PARKED. Per-module re-verify protocol honored (verify-before-delete; fail-closed on the blocked module).
+- **PLAN §1A flip:** sca/totp DELETE-AS-PAIR-CANDIDATE → ✅ DELETED (998040a); role_guard DELETE-ELIGIBLE-WITH-TEST → BLOCKED→PARKED (re-verify). Wave-2 итог + table updated.
+- **Perimeter / canon:** EMI deletion on isolated branch (signed-attempt %G?=N — required_signatures=false, non-blocking); other legacy modules (otp/jwks/jwt) untouched (live consumers, PARKED); arch IL+PLAN on .wt-paybis; sub-B does NOT push/PR/merge (§71) — hands to MAIN. banxe-architecture origin/main IL max=561; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Deliverable:** emi commit 998040a (sca/totp deletion); PLAN §1A flip; this IL shard.
+- **Refs:** emi 998040a (branch agent/factory/consolidation/auth-legacy-orphans @ origin/main b54e10f); PLAN §1A E10 Wave-2; tests/test_wave_a_adapter_seam_scaffold.py (role_guard blocker); ADR-102; IL-558/559 (E10 audit + I-27 park); ADR-119/I-28; I-20/I-24.
+
+---
+
+### IL-593 - agent-factory-sub-b-e10-wave1-closed @ 2026-06-27T08:00:00Z
+
+- **il_ts:** 2026-06-27T08:00:00Z
+- **session_id:** agent-factory-sub-b-e10-wave1-closed
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-e10-wave1-closed/IL-2026-06-27T08-00-00Z--e10-wave1-closed.md`
+
+### E10 consolidation wave-1 CLOSED — role_guard final verdict PARKED-NOT-ORPHAN (docs-plane)
+
+- **Objective:** Finalize role_guard verdict + close consolidation E10 wave-1. Docs-plane; do not edit/renumber prior IL (reference IL-558/569 as superseded).
+- **Live audit (evidence, not memory):** tests/test_wave_a_adapter_seam_scaffold.py has 3 LIVE functional role_guard tests (verified origin/main): test_legacy_role_guard_constructs_with_roles (L116, LegacyRoleGuard(allowed_roles=["MLRO","CEO"])); test_make_legacy_role_guard_factory (L123, make_legacy_role_guard("MLRO","OPS")); test_legacy_role_guard_check_invariant (L131, production security-invariant "role ∈ allowed AND status == ACTIVE" — guard.check True/False). role_guard.py present (PARKED, not deleted). This file = contractual-surface test suite for services/auth/legacy/ seam (jwt_strategy + jwks_models + role_guard), Wave A backend — NOT obsolete scaffold; 185 auth tests pass. banxe-architecture origin/main IL max=565; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **FINAL VERDICT:** role_guard = PARKED — NOT-ORPHAN (live tested implementation; deletion/strip loses coverage of real auth role/status security invariant). Supersedes IL-558 "DELETE-ELIGIBLE-WITH-TEST" + IL-569 "BLOCKED→PARKED" (both referenced, NOT edited/renumbered — append-only).
+- **E10 wave-1 CLOSED:** Executed = sca+totp pair DELETED (emi 998040a, gates green) — the one verified-safe orphan removal. role_guard = PARKED-NOT-ORPHAN. All other legacy PARKED (otp/jwks/jwt/_edd/_jurisdictions/sumsub/abs/sepa/bifrost/transactions live; I-27 KYC bkyc/binancekyc PARKED-by-canon; ledger-crypto Wave-C cutover). Net: legacy-surface reduced by 1 module-pair; NO further orphan deletions without external decisions.
+- **Lesson:** verify-before-delete fired twice on role_guard — mechanical "orphan" (0 prod refs) wrong both times; test-consumers count.
+- **PLAN §1A:** role_guard row → PARKED-NOT-ORPHAN; new "E10 consolidation wave-1 — CLOSED" subsection.
+- **Perimeter / canon:** docs-plane only; prior IL not edited; every fact cites test-line/sha; no invented refs; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
+- **Deliverable:** PLAN §1A role_guard row + "E10 wave-1 CLOSED" subsection, this IL shard.
+- **Refs:** tests/test_wave_a_adapter_seam_scaffold.py:106/116/119/123/131/136/137; emi 998040a (sca/totp deletion); IL-558/569 (superseded-by-this-final); ADR-102; ADR-119/I-28; I-20/I-24.
+
+---
+
+### IL-594 - agent-factory-sub-b-landing-5branch @ 2026-06-27T08:30:00Z
+
+- **il_ts:** 2026-06-27T08:30:00Z
+- **session_id:** agent-factory-sub-b-landing-5branch
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-landing-5branch/IL-2026-06-27T08-30-00Z--landing-5branch.md`
+
+### LANDING-HANDOFF-MAIN.md refresh — complete 5-branch landing state (docs-plane)
+
+- **Objective:** Refresh "👉 OPERATOR EXECUTES" to cover ALL 5 sub-B branches with exact current commands for operator/MAIN. sub-B does NOT execute. Docs-plane.
+- **Live audit (evidence, not memory):** ARCH neuronext-retirement-adr @ 9544c66 (26 ahead, IL-545…570) + impl-state-refresh @ 39e1198 (4 ahead, IL≤554); EMI wave-a-guard @ cfe185d (1) + wave-a-adapter @ c21bf2e (6) + auth-legacy-orphans @ 998040a (1). All %G?=N. ARCH origin/main IL max=565 → provisional ≤570 collide → re-id mandatory. nosemgrep targets on c21bf2e: PAYBIS-WAVE-A.md ×5 + paybis_crypto_adapter.py:3. Required checks guardian-factory/project/ledger + ledger-append-only; required_signatures=false. This shard on neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Doc update:** replaced OPERATOR EXECUTES with 5-branch table + ARCH landing (2 branches: push → rebase linear-history → build_ledger re-id + --check FROM ROOT → ADR-126 verify → required checks GREEN → PR/merge each) + EMI landing (3 branches ORDER: guard→adapter→auth-orphans; PRE-MERGE nosemgrep on adapter; auth-orphans must keep 185 auth tests + collect-only clean; rebase + quality-gate → PR/merge) + notes (sub-B no push; signatures not required; after-landing flag-gated default OFF + sca/totp removed + live gated; governance-drift CRYPTO-BLOCK central action) + refreshed Refs.
+- **Honest currency fixes:** prior section cited stale 4-branch state (62fd737/IL≤565/origin-max=560, 2 EMI branches) → corrected to 5 branches (9544c66/IL≤570/origin-max=565, 3 EMI incl auth-orphans).
+- **Perimeter / canon:** docs-plane only; sub-B does NOT push/PR/merge/execute; every SHA/IL/branch cites live audit; isolated worktree off arch origin/main; hands to MAIN per §71/§74.
+- **Deliverable:** LANDING-HANDOFF-MAIN.md OPERATOR EXECUTES 5-branch refresh, this IL shard.
+- **Refs:** 5 branches (9544c66/39e1198/cfe185d/c21bf2e/998040a); origin IL max=565; nosemgrep c21bf2e; required checks + required_signatures=false; §71/§73/§74; ADR-126/119/114/108; ADR-119/I-28.
+
+---
+
+### IL-595 - agent-factory-sub-b-adr-126-to-138-renumber @ 2026-06-27T09:00:00Z
+
+- **il_ts:** 2026-06-27T09:00:00Z
+- **session_id:** agent-factory-sub-b-adr-126-to-138-renumber
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-adr-126-to-138-renumber/IL-2026-06-27T09-00-00Z--adr-126-to-138-renumber.md`
+
+### Renumber sub-B PAYBIS ADR 126 → 138 — clear collision with merged ADR-126-hermes (docs-plane)
+
+- **Objective:** Re-number sub-B's PAYBIS ADR from provisional 126 to the true next-free, clearing the collision with the merged Hermes ADR-126 on origin/main. Own-artifact fix (ADR-119: renumber the unmerged ADR, never a merged one). Docs-plane.
+- **Live audit (evidence, not memory):** origin/main @ 4937778 — docs/adr/ADR-126-hermes-tier1-cicd-watchdog-role.md merged (central); ADR-125…137 ALL occupied (incl ADR-135-agent-skill-evolution-gate, 136, 137) → operator's "next free = 135" was STALE; true ADR max=137 → next-free = max+1 = 138. ADR-114 confirmed still travel-rule-paybis-casp (no change). banxe-architecture origin/main IL max=565; this shard on branch agent/factory/paybis/neuronext-retirement-adr; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **CORRECTION to instruction:** renumbered to **ADR-138 (NOT 135)** — 135/136/137 are already merged on origin/main; renumbering to 135 would re-collide. Best-decision per ADR-119 (max+1, never collide with a merged ADR); deviation flagged in ADR provenance note + here.
+- **Executed:** git mv docs/adr/ADR-126-neuronext-retired-paybis-sole-crypto-provider.md → ADR-138-...md; ADR header/title 126→138 + provenance note (renumbered from 126 due to merged Hermes-126 + 127-137 occupied @ 4937778; content unchanged). Replaced ADR-126 → ADR-138 across 8 dossier/DOSSIER files (incl bare ADR-list refs ADR-108/114/126). All sub-B ADR-126 refs meant NeuroNext-PAYBIS (0 Hermes refs in sub-B docs, verified). LANDING-HANDOFF ADR-verify step → cites ADR-138 (renumber DONE; MAIN re-confirms 138 free).
+- **Verify:** grep ADR-126 in docs/paybis-dossier/ = 0; remaining ADR-126 = only the provenance note in the ADR file (allowed); 0 bare-list 126; build_ledger --check OK.
+- **Perimeter / canon:** docs-plane only; own-artifact correction (not central doc, not destructive runtime); other ADR-126 (Hermes) untouched; no prior committed IL edited; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
+- **Deliverable:** ADR-138 file (renamed+reheadered) + 8-file ref updates + LANDING ADR-verify update, this IL shard.
+- **Refs:** origin/main @ 4937778 (ADR-126-hermes merged; ADR max=137); ADR-119 (collision→max+1); ADR-114 confirmed; ADR-108; LANDING-HANDOFF; ADR-119/I-28.
