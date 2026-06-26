@@ -114,3 +114,28 @@ These rules apply to:
 - ADR-119 — stable/frozen IL numbering (Rule 8 merge-time freeze; "Amendment 2026-06-24")
 - docs/guardian/guardian-ledger-il-collision-gate.md — pre-merge IL-collision gate spec (Rule 8)
 - PRs #744/#749/#751 (2026-06-24) — duplicate-IL re-id incident (IL-503/504/505); this guard = IL-507
+
+## Operator-runtime-config is LOCAL — not a cross-terminal git race (canon, ADR-134)
+
+> Added 2026-06-26 per a false-attribution review: a permission-mode change was misread as a
+> cross-terminal/PR race. It is not.
+
+`~/.claude/settings.json` (operator runtime config) is **LOCAL and NOT git-tracked** — it is read
+**at session startup** as local enforcement (see **ADR-039**, Claude Code permissions
+reclassification). Therefore:
+
+1. **A change to it is a LOCAL session event** (session restart / a different home file / an operator
+   edit), **never a repository merge race.** A `bypassPermissions → acceptEdits` (or any permission-mode)
+   shift is local startup state, not a git conflict between terminals.
+2. **`.claude/` is protected in-repo** by `.github/CODEOWNERS` (`/.claude/ @mmber`) and
+   `.gitignore` (`.claude/settings.local.json`). A PR cannot silently rewrite operator settings; any
+   `.claude/` change requires the `@mmber` code-owner review.
+3. **A permission-mode discrepancy between terminals ⇒ a local restart, not a repo conflict.** Do NOT
+   diagnose it as a cross-session leak (Rules 1–7), do NOT "fix" it via git, and do NOT touch
+   `~/.claude/settings.json` (operator-owned). Report the local nature and stop.
+4. **Attribution rule (ADR-134):** before flagging "another/foreign governance terminal", verify PR
+   actor tags — `agent/<actor>/…` (ADR-060). Factory-authored PRs (`agent/factory/…`) are *our own*
+   work, not a foreign terminal; misreading them is false attribution.
+
+Cross-ref: **ADR-039** (settings = LOCAL startup enforcement), **ADR-134** (cross-terminal
+attribution + operator-gated stub classification), ADR-060 (branch actor namespace).
