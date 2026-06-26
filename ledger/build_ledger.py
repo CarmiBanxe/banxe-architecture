@@ -196,6 +196,30 @@ def check_append_only(numbering):
     return None
 
 
+# Historical IL-value duplicates that predate the global-uniqueness gate (ADR-133).
+# Renumber is FORBIDDEN (ADR-119), so these are accepted as known-debt; only NEW
+# duplicate values are rejected. See docs/adr/ADR-133-*.md and the #799 debt record.
+ALLOWED_DUP_VALUES = {540}
+
+
+def check_global_uniqueness(numbering):
+    """Assert IL-SEQUENCE.json VALUES are globally unique (ADR-133), closing the
+    shard_key gap (uniqueness was enforced only per filesystem path, not per IL
+    number). Allowlisted historical dups (ALLOWED_DUP_VALUES) pass; any other value
+    assigned to >1 shard fails. Returns error string or None."""
+    counts = {}
+    for v in numbering.values():
+        counts[v] = counts.get(v, 0) + 1
+    bad = sorted(v for v, n in counts.items() if n > 1 and v not in ALLOWED_DUP_VALUES)
+    if bad:
+        return ("IL-SEQUENCE.json global-uniqueness violation (ADR-133): value(s) "
+                "assigned to >1 shard: " + ", ".join("IL-%03d" % v for v in bad)
+                + " (renumber forbidden ADR-119; new duplicates rejected). "
+                "Allowlisted historical dups: "
+                + ", ".join("IL-%03d" % v for v in sorted(ALLOWED_DUP_VALUES)))
+    return None
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
@@ -226,6 +250,10 @@ def main(argv=None):
         if ao:
             sys.stderr.write("FAIL: " + ao + "\n")
             rc = 1
+        gu = check_global_uniqueness(numbering)
+        if gu:
+            sys.stderr.write("FAIL: " + gu + "\n")
+            rc = 1
         if rc == 0:
             sys.stdout.write("ledger-build check OK\n")
         return rc
@@ -233,6 +261,10 @@ def main(argv=None):
     ao = check_append_only(numbering)
     if ao:
         sys.stderr.write("FAIL: " + ao + "\n")
+        return 1
+    gu = check_global_uniqueness(numbering)
+    if gu:
+        sys.stderr.write("FAIL: " + gu + "\n")
         return 1
     LEDGER.write_text(content, encoding="utf-8")
     SEQUENCE.write_text(seq_content, encoding="utf-8")
