@@ -1,0 +1,15 @@
+---
+il_ts: 2026-06-26T23:50:00Z
+session_id: agent-factory-sub-b-emi-impl-state-refresh
+source: CEO
+status: DONE
+---
+### EMI implementation-state refresh — Phase-3.6 stub→L2 array CLOSED; supersedes IL-538 backlog (docs-plane)
+
+- **Objective:** Record an updated EMI implementation-state map superseding the stale IL-538 Phase-3.6 stub→L2 backlog, based on live read-only shell-audit (evidence, not memory). IL-538 referenced, NOT edited (append-only).
+- **Live audit (read-only shell, not memory):** banxe-emi-stack origin/main — ledger core gl_service.py REAL (create_account/get_balance/post_journal_entry/commit-cancel-revert/approve-reject_high_value/_validate_balance verified L125/170/176/306/392 + tests); the 7 ledger "stubs" = crypto adapters (legacy_crypto_* + midaz_crypto_stub) already PARKED in PLAN E10; transaction_monitor/consumer_duty/consent_management/recon = 0 real NotImplementedError + full module+tests; recon BreachClientProtocol/FCARegDataClientProtocol = Protocol contracts (concrete BreachDetector/FCARegDataClient/MockFCARegDataClient implemented). banxe-architecture IL max=550; this shard on branch agent/factory/phase36/impl-state-refresh (off origin/main); provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Provider-wiring stubs registry (ALL residual NotImplementedError outside legacy/crypto — external-provider-gated, operator-owned, NOT impl backlog; direct analogue of FencedLivePaybisTransport):** auth/production/twilio_otp_stub (OtpDeliveryPort, Twilio), compliance/production/sumsub_http_stub (KYCWorkflowPort, Sumsub), payment/production/modulr_sepa_stub (PaymentRailPort, Modulr). **shell-audit additionally found 3 of the same class** (operator audit named 3, full set = 6): fraud/sardine_adapter (FraudScoringPort, Sardine — "raises NotImplementedError to prevent accidental use"), complaints/fos_escalation.fos_portal_submit (FOS portal P1; prepare_case REAL), backup/offsite_upload_port (OffsiteUploadPort default at factory-resolution). Recorded the complete accurate registry (not overstated, not understated).
+- **CONCLUSION:** Phase-3.6 stub→L2 array CLOSED — no remaining actionable stubs; all residual = EXTERNAL-PROVIDER-GATED (Twilio/Sumsub/Modulr/Sardine/FOS-portal/offsite-upload/PAYBIS) → operator-input dependent (creds+contracts). Next-priority candidates (operator-choice, NOT auto-started): (a) provider-wiring live integrations; (b) consolidation backlog PLAN E10 (_v2×3 + legacy×22, own ADR-102 each); (c) new feature track.
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no invented gaps/impl; every state traceable to shell-evidence; supersedes-not-renumbers IL-538 (referenced, untouched); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** docs/architecture/EMI-IMPL-STATE-REFRESH-2026-06-26.md + this IL shard.
+- **Refs:** IL-538 (superseded, referenced); gl_service.py; twilio_otp_stub/sumsub_http_stub/modulr_sepa_stub/sardine_adapter/fos_escalation/offsite_upload_port; recon breach_detector/fca_regdata_client; PLAN E10; ADR-126/108/114; ADR-119/I-28.

@@ -18841,3 +18841,84 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Perimeter / canon:** docs-plane only; own-artifact correction (not central doc, not destructive runtime); other ADR-126 (Hermes) untouched; no prior committed IL edited; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
 - **Deliverable:** ADR-138 file (renamed+reheadered) + 8-file ref updates + LANDING ADR-verify update, this IL shard.
 - **Refs:** origin/main @ 4937778 (ADR-126-hermes merged; ADR max=137); ADR-119 (collision→max+1); ADR-114 confirmed; ADR-108; LANDING-HANDOFF; ADR-119/I-28.
+
+---
+
+### IL-596 - agent-factory-sub-b-emi-impl-state-refresh @ 2026-06-26T23:50:00Z
+
+- **il_ts:** 2026-06-26T23:50:00Z
+- **session_id:** agent-factory-sub-b-emi-impl-state-refresh
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-emi-impl-state-refresh/IL-2026-06-26T23-50-00Z--emi-impl-state-refresh.md`
+
+### EMI implementation-state refresh — Phase-3.6 stub→L2 array CLOSED; supersedes IL-538 backlog (docs-plane)
+
+- **Objective:** Record an updated EMI implementation-state map superseding the stale IL-538 Phase-3.6 stub→L2 backlog, based on live read-only shell-audit (evidence, not memory). IL-538 referenced, NOT edited (append-only).
+- **Live audit (read-only shell, not memory):** banxe-emi-stack origin/main — ledger core gl_service.py REAL (create_account/get_balance/post_journal_entry/commit-cancel-revert/approve-reject_high_value/_validate_balance verified L125/170/176/306/392 + tests); the 7 ledger "stubs" = crypto adapters (legacy_crypto_* + midaz_crypto_stub) already PARKED in PLAN E10; transaction_monitor/consumer_duty/consent_management/recon = 0 real NotImplementedError + full module+tests; recon BreachClientProtocol/FCARegDataClientProtocol = Protocol contracts (concrete BreachDetector/FCARegDataClient/MockFCARegDataClient implemented). banxe-architecture IL max=550; this shard on branch agent/factory/phase36/impl-state-refresh (off origin/main); provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Provider-wiring stubs registry (ALL residual NotImplementedError outside legacy/crypto — external-provider-gated, operator-owned, NOT impl backlog; direct analogue of FencedLivePaybisTransport):** auth/production/twilio_otp_stub (OtpDeliveryPort, Twilio), compliance/production/sumsub_http_stub (KYCWorkflowPort, Sumsub), payment/production/modulr_sepa_stub (PaymentRailPort, Modulr). **shell-audit additionally found 3 of the same class** (operator audit named 3, full set = 6): fraud/sardine_adapter (FraudScoringPort, Sardine — "raises NotImplementedError to prevent accidental use"), complaints/fos_escalation.fos_portal_submit (FOS portal P1; prepare_case REAL), backup/offsite_upload_port (OffsiteUploadPort default at factory-resolution). Recorded the complete accurate registry (not overstated, not understated).
+- **CONCLUSION:** Phase-3.6 stub→L2 array CLOSED — no remaining actionable stubs; all residual = EXTERNAL-PROVIDER-GATED (Twilio/Sumsub/Modulr/Sardine/FOS-portal/offsite-upload/PAYBIS) → operator-input dependent (creds+contracts). Next-priority candidates (operator-choice, NOT auto-started): (a) provider-wiring live integrations; (b) consolidation backlog PLAN E10 (_v2×3 + legacy×22, own ADR-102 each); (c) new feature track.
+- **Perimeter / canon:** docs-plane only; no runtime/code/secrets; no invented gaps/impl; every state traceable to shell-evidence; supersedes-not-renumbers IL-538 (referenced, untouched); isolated worktree off arch origin/main; signed; sub-B hands to MAIN per §71/§74.
+- **Deliverable:** docs/architecture/EMI-IMPL-STATE-REFRESH-2026-06-26.md + this IL shard.
+- **Refs:** IL-538 (superseded, referenced); gl_service.py; twilio_otp_stub/sumsub_http_stub/modulr_sepa_stub/sardine_adapter/fos_escalation/offsite_upload_port; recon breach_detector/fca_regdata_client; PLAN E10; ADR-126/108/114; ADR-119/I-28.
+
+---
+
+### IL-597 - agent-factory-sub-b-safeguarding-correction @ 2026-06-27T05:30:00Z
+
+- **il_ts:** 2026-06-27T05:30:00Z
+- **session_id:** agent-factory-sub-b-safeguarding-correction
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-safeguarding-correction/IL-2026-06-27T05-30-00Z--safeguarding-correction.md`
+
+### Safeguarding-engine correction — REAL/implemented, supersedes stale IL-535 stub claim (docs-plane)
+
+- **Objective:** Record a correction superseding the stale IL-535 / 2026-06-25-row / IL-567-§4 claim that safeguarding-engine is an unimplemented stub. Append to EMI-IMPL-STATE-REFRESH-2026-06-26.md on branch agent/factory/phase36/impl-state-refresh. Docs-plane; do NOT edit/renumber IL-535 (append-only).
+- **Live audit (evidence, not memory):** banxe-emi-stack origin/main services/safeguarding-engine/app/services/* — 6 real service files (audit_logger 3655B, breach_service 4972B, position_calculator 3843B, reconciliation_service 4146B, safeguarding_service 5177B, scheduler 1673B); NotImplementedError=0 (verified grep empty); full test suite present (test_breach_service/position_calculator/reconciliation_service/audit_logger/api_breach/api_reconciliation/api_safeguarding). GAP-REGISTER GAP-003 = DONE (governance per operator); S6-15 Recon Engine v2 DONE (PR #24, 34 tests); IL-541 coverage 95.82%. banxe-architecture origin/main IL max=561; this shard on branch agent/factory/phase36/impl-state-refresh; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Correction recorded:** IL-535 ("safeguarding unimplemented, 40 NotImplementedError, STOP") + EMI-IMPLEMENTATION-STATE-2026-06-25 row (SPEC-LOCKED-STUB) + IL-567 §4 (which repeated the stale 06-25 claim) = ALL superseded by current main (implemented + tested + GAP-003 DONE). IL-535 referenced as superseded, NOT edited/renumbered (append-only, ADR-119/I-28). Honest self-correction of sub-B's own IL-567 §4.
+- **Conclusion updated:** Phase-3.6 stub→L2 has NO remaining actionable runtime stub — ledger core + top marker-services + safeguarding-engine all REAL; remaining NotImplementedError = provider-wiring stubs (Twilio/Sumsub/Modulr/Sardine/FOS-portal/offsite-upload) + Protocol contracts, all EXTERNAL-PROVIDER-GATED (same class as PAYBIS live). No internal impl backlog; next = operator-input-dependent.
+- **Perimeter / canon:** docs-plane only; IL-535 NOT edited (referenced superseded); every fact cites shell-evidence/GAP line; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
+- **Deliverable:** EMI-IMPL-STATE-REFRESH-2026-06-26.md "Safeguarding-engine correction" section + updated conclusion, this IL shard.
+- **Refs:** services/safeguarding-engine/app/services/* + tests/* (shell-evidence); GAP-REGISTER GAP-003/S6-15/S6-01/02/05; IL-541; IL-535 (superseded, referenced); IL-567 §4 (self-corrected); ADR-119/I-28.
+
+---
+
+### IL-598 - agent-factory-sub-b-fx-complaints-correction @ 2026-06-27T06:30:00Z
+
+- **il_ts:** 2026-06-27T06:30:00Z
+- **session_id:** agent-factory-sub-b-fx-complaints-correction
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-fx-complaints-correction/IL-2026-06-27T06-30-00Z--fx-complaints-correction.md`
+
+### fx_engine + complaints correction + refactor/migration track conclusion (docs-plane)
+
+- **Objective:** Extend EMI-IMPL-STATE-REFRESH-2026-06-26.md with fx_engine + complaints stub-count corrections + refactor/migration track conclusion. Docs-plane; do not edit/renumber prior IL.
+- **Live audit (evidence, not memory):** fx_engine REAL — 8 service files (fx_agent 5042B/fx_compliance_reporter 5557B/fx_executor 5473B/fx_quoter 5757B/hedging_engine 5324B/models 8533B/rate_provider 9914B/spread_calculator 3576B), 0 NotImplementedError (verified), 8 test files exist (tests/test_fx_engine/*), consumer api/routers/fx_engine.py → claim "15 stubs/0 tests" FALSE. complaints REAL — 0 real NotImplementedError in services/complaints/** (only fos_portal_submit fenced, provider-gated; L4/94 = comments) → "8 stubs" FALSE. MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.md:70 fx_engine/fx_exchange=Trading-core=RESCOPE/DROP SERVER-AUDIT-REQUIRED P3 (nuance :80 treasury-FX COVERED). banxe-architecture origin/main IL max=561; this shard on branch agent/factory/phase36/impl-state-refresh; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Recorded:** fx_engine = REAL but NOT impl/refactor target — drop-decision (RESCOPE/DROP, operator/server-audit, :70); complaints REAL (only fos_portal_submit provider-gated). Refactor/migration track conclusion: BANXE.RAR→EMI migration ACCEPTED/CLOSED, residual genuine-gaps=0; EMI-IMPLEMENTATION-STATE-2026-06-25 stub-counts MECHANICAL-GREP-UNRELIABLE (disproven safeguarding 40→0, ledger core, consumer_duty 3→real, fx_engine 15→0, complaints 8→~0); real residual NIE = external-provider-wiring (creds-gated); only actionable refactor = consolidation E10 (mostly PARKED on live consumers; orphan-deletions need operator go).
+- **Recommendation (NOT decision — operator/central):** re-baseline EMI-IMPLEMENTATION-STATE-2026-06-25 stub table via TRUE-body audit.
+- **Perimeter / canon:** docs-plane only; no prior IL edited; every fact cites shell-evidence / residual-register line; no invented gaps; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
+- **Deliverable:** EMI-IMPL-STATE-REFRESH-2026-06-26.md "fx_engine + complaints correction" + "Refactor/migration track conclusion" sections, this IL shard.
+- **Refs:** services/fx_engine/* + tests/test_fx_engine/* + api/routers/fx_engine.py; services/complaints/fos_escalation.py; MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.md:70/80; PLAN E10; IL-552 (safeguarding correction), IL-538/535 (referenced); ADR-119/I-28.
+
+---
+
+### IL-599 - agent-factory-sub-b-final-rebaseline @ 2026-06-27T07:00:00Z
+
+- **il_ts:** 2026-06-27T07:00:00Z
+- **session_id:** agent-factory-sub-b-final-rebaseline
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sub-b-final-rebaseline/IL-2026-06-27T07-00-00Z--final-rebaseline.md`
+
+### FINAL EMI-IMPL-STATE re-baseline — 16/16 services REAL, impl-backlog exhausted (docs-plane)
+
+- **Objective:** Append the complete TRUE-body re-baseline (all 16 stub-claimed services) + 3-class residual-NotImpl taxonomy + final conclusion to EMI-IMPL-STATE-REFRESH-2026-06-26.md. Docs-plane; do not edit prior IL or the 2026-06-25 file.
+- **Live audit (evidence, not memory):** 16/16 services = 0 TRUE impl-stubs (excl legacy/_stub/comment/Protocol). sub-B directly verified the crux + sample: ledger 4 NotImpl ALL in legacy/ (legacy_crypto_processing_adapter:162/169 + legacy_crypto_wallet_adapter:127/136 = REWRITE-7 delegate-hints, PARKED) + 5 in production/midaz_crypto_stub (provider-wiring); ledger core (gl_service/midaz_adapter/payment_posting_service) REAL; compliance/payment/kyb_onboarding/fatca_crs/observability = 0 true-NotImpl; provider-wiring stubs (twilio_otp_stub/sumsub_http_stub/midaz_crypto_stub/modulr_sepa_stub) present. Full table per shell-audit (safeguarding 40→0/11t, fx_engine 15→0/8t, complaints 8→0/5t, compliance 7→0/36t, payment 4→0/24t, kyb_onboarding 4→0/8t, fraud_tracer 4→0/2t, backup 4→0/7t, fatca_crs 3→0/4t, consumer_duty 3→0/11t, client_statements 3→0/4t, auth 3→0/7t, reporting 2→0/22t, observability 2→0/8t, fraud 2→0/6t, ledger 12→legacy-only). banxe-architecture origin/main IL max=561; this shard on branch agent/factory/phase36/impl-state-refresh; provisional IL = max+1 frozen-at-merge (Rule 8).
+- **Residual-NotImpl taxonomy (none impl-backlog):** (a) legacy-crypto adapters PARKED (Wave C PAYBIS cutover); (b) Protocol/ABC ... contracts (CryptoLedgerPort/CryptoRpcPort/LedgerPort); (c) provider-wiring stubs (creds-gated).
+- **CONCLUSION FINAL:** EMI-IMPLEMENTATION-STATE-2026-06-25 stub-table FULLY DISPROVEN (16/16 REAL); no internal impl/refactor backlog; BANXE.RAR→EMI migration CLOSED (residual genuine-gaps=0). Only doable-without-external-input refactor = E10 destructive orphan-deletions (auth role_guard + sca/totp) needing operator go; everything else operator/creds-gated (provider-wiring, fx_engine drop-decision, M2.8 roster, PAYBIS live).
+- **Recommendation (NOT decision — operator/central):** mark EMI-IMPLEMENTATION-STATE-2026-06-25 superseded-by-this-refresh (append-only reference; sub-B does NOT edit it).
+- **Perimeter / canon:** docs-plane only; 2026-06-25 file + prior IL NOT edited (verified); every count cites shell-audit; no invented gaps; isolated worktree off arch origin/main; sub-B does not push/PR/merge; hands to MAIN per §71/§74.
+- **Deliverable:** EMI-IMPL-STATE-REFRESH-2026-06-26.md "FINAL re-baseline (16/16 REAL)" section, this IL shard.
+- **Refs:** services/*/ shell-audit (16 services + tests); ledger/legacy/* + production/midaz_crypto_stub; provider-wiring stubs; MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25; PLAN E10; IL-552/553 (prior corrections), IL-538/535 (referenced); ADR-119/I-28.
