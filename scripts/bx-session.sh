@@ -61,4 +61,29 @@ fi
 # Inherit hooks + role anchor into the fresh worktree (idempotent).
 ( cd "$WT_PATH" && bash scripts/install-hooks.sh >/dev/null 2>&1 || true )
 
+# PR-aware candidate IL (ADR-133 / ADR-119 Rule 8) — READ-ONLY advisory, no write.
+# Candidate = max(IL-SEQUENCE.json values, max IL-NNN across OPEN PR titles) + 1, so a new
+# session sees in-flight (unmerged) IL claims, not just main. This is GUIDANCE only: the number
+# is provisional and is minted deterministically by build_ledger at merge — do NOT hardcode it.
+il_advisory() {
+  local seq="$WT_PATH/ledger/IL-SEQUENCE.json"
+  command -v python3 >/dev/null 2>&1 || return 0
+  [ -f "$seq" ] || return 0
+  local seq_max pr_titles pr_max cand
+  seq_max="$(python3 -c "import json;print(max(json.load(open('$seq')).values()))" 2>/dev/null || echo 0)"
+  pr_max=0
+  if command -v gh >/dev/null 2>&1; then
+    pr_titles="$(gh pr list --state open --json title -q '.[].title' 2>/dev/null || true)"
+    if [ -n "$pr_titles" ]; then
+      pr_max="$(printf '%s\n' "$pr_titles" | grep -oE 'IL-[0-9]+' | grep -oE '[0-9]+' \
+                | sort -n | tail -1 || true)"
+      [ -n "$pr_max" ] || pr_max=0
+    fi
+  fi
+  cand=$(( ( seq_max > pr_max ? seq_max : pr_max ) + 1 ))
+  echo "ℹ bx-session: PR-aware candidate IL ≈ IL-$cand (main max=$seq_max, open-PR max=$pr_max)." >&2
+  echo "  Rule 8 (ADR-119/ADR-133): do NOT hardcode [IL-NNN] in titles/commits — build_ledger mints at merge." >&2
+}
+il_advisory || true
+
 printf '%s\n' "$WT_PATH"
