@@ -69,6 +69,16 @@ genuine-gaps abs-info-field / login-history / SRP DONE in banxe-emi-stack (IL-41
 | **S-PROD-1** | **P0** | Safeguarding Engine — J-engine (IL-SAF-01 prompt-ready), J-audit, E-safeguard | CASS 15 / PS10-15; Midaz | **⚠ OVERDUE — deadline 2026-05-07 passed.** Highest priority; daily-recon + shortfall auto-FCA (immutable, no-suppress) |
 | **S-PROD-2** | **P0** | FCA Regulatory Reporting — F-finrpt, K-gabriel (Gabriel/RegData) | Q2 2026; safeguarding figs | submission boundary = CFO personally (HITL-010); agents draft-only |
 | **S-PROD-3** | **P1** | Core Banking — D-gl→100% (Midaz), D-recon, D-fee, D-fin | Midaz CBS (ADR-013) | D-gl ~5% = largest core gap; via LedgerPort/I-28 (no direct HTTP) |
+
+> **[CORRECTION 2026-06-27]:** S-PROD-3 status above is STALE (predates GAP-017 completion on 2026-06-20).
+> **ACTUAL STATUS:** D-gl (fiat double-entry GL) = **DONE** (GAP-017, banxe-emi-stack/services/ledger/: gl_service.py,
+> ledger_port.py, midaz_adapter.py, inmemory_ledger.py, test_gl_service.py, test_ledger_adapter.py,
+> test_ledger_lifecycle.py, test_api_ledger.py). D-recon = DONE. D-fee = DONE. D-fin (FIN060) = DONE.
+> **REMAINING WORK:** crypto-ledger production wiring = Wave E / P3 / future production team.
+> Code marker: `services/ledger/production/midaz_crypto_stub.py` raises `NotImplementedError` with explicit
+> Wave E note in module docstring (ADR-031 + ADR-025 §15-16, CryptoLedgerPort FROZEN per PORT-CONTRACTS-FREEZE-2026-05-08).
+> S-PROD-3 **fiat core banking: COMPLETE**. Crypto-ledger: explicit future-track, not P0/P1 blocker.
+
 | **S-PROD-4** | **P1** | Onboarding — A-kyc, A-idv, A-kyb | **HOLD — KYC gated I-27 HITL-L4** | A-kyc/kyb advisory-only until I-27; non-KYC A-idv parts may proceed |
 | **S-PROD-5** | **P1** | Payment Rails — C-fps, C-sepa, C-swift | ClearBank/Modulr (S4) | behind PaymentRouter; ≥£50k → L2 COO/CFO (HITL-016) |
 | **S-PROD-6** | **P1** | Product Catalogue + Capital — B-emi, B-pricing, E-capital (ICARA) | EMI permissions | ICARA capital prudential; binding figures AWAITS OPERATOR |
