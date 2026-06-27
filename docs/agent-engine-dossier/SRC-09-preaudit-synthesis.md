@@ -56,6 +56,14 @@
 
 ## Cross-references
 
-- Все 9 ADR (см. SRC-INTAKE-REGISTER.md)
+- ADR-045 — intent-first banking architecture
+- ADR-060 — multi-actor orchestration
+- ADR-128 — banking agents HITL matrix
+- ADR-136 — agent memory / shared memory substrate
+- ADR-139 — guardian system
+- ADR-141 — self-healing continuous learning loop
+- ADR-042 — UFW perimeter
+- ADR-123 — Claude permissions hardening
+- ADR-143-A — shared-evo1 Redis IL allocator
 - docs/agent-engine-dossier/VERIFIED-RUNTIME-SNAPSHOT.md
 - docs/agent-engine-dossier/SRC-INTAKE-REGISTER.md
