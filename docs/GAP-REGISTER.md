@@ -127,6 +127,26 @@
 
 ---
 
+
+---
+
+## 🔵 V12.0 Verification — Residual Non-Technical Debts (ADR-140)
+
+> **Source:** Concept v12.0 full verification (2026-06-27, 16/16 checks). All factory-fixable
+> technical debts resolved. These 8 gaps require operator / business / legal / org action.
+> Anchored in `docs/adr/ADR-140-residual-debt-register-v12.md`.
+
+| ID | Gap | Owner | Deadline | Status |
+|---|---|---|---|---|
+| GAP-079 | **C-02.1 Currency mismatch** — Concept claims 32 currencies; code enforces 10 (GBP/EUR/USD/CHF/PLN/CZK/SEK/NOK/DKK/HUF). FCA PRIN7/Consumer Duty PS22/9 exposure. Fix: correct concept OR expand allowlist (FX/nostro/EDD work). | Operator/Product | Q3 2026 | 🔴 OPEN |
+| GAP-080 | **C-37.3 Intent-First Banking not implemented** — Hybrid Intent Interface, IntentParser, SkillRouter, 6 card variants absent from banxe-frontend (ops console only, no consumer UI). | Product | Q3 2026 | 🔴 OPEN |
+| GAP-081 | **AGPL-boundary** — Jube (ADR-004 AGPLv3) + MiroFish (AGPL-3.0) cannot be externalised in BaaS without Apache-2.0 replacement (AGPL §13 copyleft on network exposure). Blocks BaaS channel activation. | Product/Legal | Before BaaS go-live | 🔴 BLOCKED |
+| GAP-082 | **R-09.14 Legion ufw missing** — 8 ports on 0.0.0.0 (LiteLLM :4000, Keycloak :8180/:8181, Hyperswitch :8096/:8098, Jube :5001, :3000, :8765) with no host firewall. Fix: ufw install + allowlist (SSH/LAN/tailscale0) — see ADR-140 Appendix A safe-sequence. Requires physical/console access. | Operator (physical) | ASAP | 🔴 OPEN |
+| GAP-083 | **R-09.15 Tailscale ACL/MagicDNS unconfigured** — getent evo1/evo2 fails; SSH ACL blocks cross-device access. Fix: Tailscale admin console ACL + MagicDNS enable. Unblocks Guardian :8195/:8196, GAP-086 self-hosted runner. | Operator (admin console) | Q3 2026 | 🔴 OPEN |
+| GAP-084 | **R-16.1 Bus factor = 1** — All 8 repos under personal account CarmiBanxe (no org/teams); every protected PR needs --admin bypass; 6/8 repos missing CODEOWNERS. Fix: create GitHub org, invite team members, configure branch protection with real peer review. Concept flags before Sprint 5. | Operator/Org | Before Sprint 5 | 🟡 PENDING |
+| GAP-085 | **ss1 GDPR** — ss1 repo (guiyon/ss1) was PUBLIC until 2026-05-13; may be indexed (Google Cache/archive.org). If personal data present: GDPR Art.33 CNIL notification (72-hour clock from 2026-06-27 awareness). Legal must assess immediately. | Legal (CNIL) | IMMEDIATE if data breach | 🔴 OPEN |
+| GAP-086 | **self-hosted-runner** — AI-eval CI (vibe-coding verification-network/deepeval) needs evo1 LiteLLM access. Temporary fix: continue-on-error (R-10.3). Permanent: register evo1 as GitHub Actions self-hosted runner. Blocked by GAP-083. | Factory/Ops | Q4 2026 | 🟡 NON-BLOCKING |
+
 ## Sprint Assignment Summary
 
 | Sprint | P0 Items | P1 Items | Focus |
@@ -141,4 +161,4 @@
 
 ---
 
-*Enforced by: GapTrackerAgent | Last updated: 2026-04-13 | IL-GAP-001*
+*Enforced by: GapTrackerAgent | Last updated: 2026-06-27 | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086)*
