@@ -361,5 +361,7 @@
   "agent-factory-governance-adr-137-precond-7-no-authority-expansion-spec__6d47a7e3ca92": 607,
   "agent-factory-governance-adr-137-precond-8-expansion-gate-spec__6874e9701074": 608,
   "agent-factory-governance-self-healing-learning-loop__91f7ff469998": 609,
-  "agent-factory-emi-legacy-rationalization-pass1__cb4a457d7939": 610
+  "agent-factory-emi-legacy-rationalization-pass1__cb4a457d7939": 610,
+  "agent-factory-governance-il-dup-migration-159-172__944051d3c3d5": 611,
+  "agent-factory-governance-il-dup-migration-159-172__4e9e6c485fa5": 612
 }
