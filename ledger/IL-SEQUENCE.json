@@ -375,5 +375,12 @@
   "agent-factory-bittrex-eliminated-guard-sync__9c4e36ae8b04": 626,
   "agent-factory-gapregister-canonical-status-sync-20260627__d4ccca46f759": 627,
   "agent-factory-recon-mergepair-direction-correction__29ff7fbcf036": 630,
-  "agent-factory-fin060-mergepair-direction-correction__5a3abb018b42": 636
+  "agent-factory-fin060-mergepair-direction-correction__5a3abb018b42": 636,
+  "agent-factory-agenteng01-src07-enrich__e2045d4f7a09": 644,
+  "agent-factory-agenteng01-intake-dossier__ff548243ae12": 645,
+  "agent-factory-agenteng01-src09-mathstatus__fede028f5465": 646,
+  "agent-factory-agenteng01-runtime-snapshot-v2__1e36b82bc5d3": 647,
+  "agent-factory-agenteng01-intake-dossier__e43bde827611": 648,
+  "agent-factory-agenteng01-dedup-findings__46849d5ca7e4": 649,
+  "agent-factory-agenteng01-oss-status__1a1e0d12034d": 650
 }
