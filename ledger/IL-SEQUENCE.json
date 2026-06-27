@@ -359,5 +359,6 @@
   "agent-factory-governance-ledger-serialization-procedure__8c0d2f9ed521": 605,
   "agent-factory-governance-gap087-sprod1-safeguard__c2557ac1fe4b": 606,
   "agent-factory-governance-adr-137-precond-7-no-authority-expansion-spec__6d47a7e3ca92": 607,
-  "agent-factory-governance-adr-137-precond-8-expansion-gate-spec__6874e9701074": 608
+  "agent-factory-governance-adr-137-precond-8-expansion-gate-spec__6874e9701074": 608,
+  "agent-factory-governance-self-healing-learning-loop__91f7ff469998": 609
 }
