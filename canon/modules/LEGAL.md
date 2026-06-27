@@ -81,6 +81,9 @@ LEGAL работает поверх него для конкретного от�
 
 ## 5. Взаимодействие с FR_MODULE
 
+> **[LEGAL SEPARATION]** FR_MODULE.md перемещён в `legal-reference-fr` (PLAN_LEGAL_SEPARATION_2026-05-20).
+> Файл доступен в репо `CarmiBanxe/legal-reference-fr/modules/FR_MODULE.md`.
+
 При французском праве — FR_MODULE активируется автоматически:
 - Code civil, Code de commerce, Code du travail
 - Legifrance как основной источник

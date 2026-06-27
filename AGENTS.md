@@ -57,7 +57,7 @@ Components from this repository are synced to:
 ## Instruction hierarchy (for THIS repository)
 
 1. **Explicit user instruction** (highest authority)
-2. **CANON** (`~/developer/canon/`) — CORE.md, DEV.md, FR_MODULE.md
+2. **CANON** (`~/developer/canon/`) — CORE.md, DEV.md (FR_MODULE.md → legal-reference-fr)
 3. **Repository-level contracts**:
    - `CLAUDE.md` (project context)
    - `AGENTS.md` (this file)

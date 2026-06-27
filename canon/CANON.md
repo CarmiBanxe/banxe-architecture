@@ -25,7 +25,7 @@ canon/
 │   ├── LEGAL.md       ← Юридический профиль (off для dev-проектов)
 │   ├── DECISION.md    ← Модуль принятия решений
 │   ├── DEV.md         ← BANXE-специфичный (on для dev-проектов)
-│   └── FR_MODULE.md   ← Французское право (надстройка над LEGAL)
+│   └── [FR_MODULE.md MOVED → legal-reference-fr] (PLAN_LEGAL_SEPARATION_2026-05-20)
 └── rules/
     ├── DIALOGUE.md        ← КАНОН 2 + КАНОН 7
     ├── COLLABORATION.md   ← КАНОН 1 + КАНОН 9
@@ -49,7 +49,7 @@ canon/
 | DEV    | ✅ ACTIVE (primary) |
 | DECISION | ✅ ACTIVE |
 | LEGAL  | ❌ OFF |
-| FR_MODULE | ❌ OFF |
+| FR_MODULE | ❌ OFF | (→ legal-reference-fr)
 
 **Правила активного профиля:**
 - Все compliance-операции через GAP-REGISTER + INVARIANTS
@@ -71,12 +71,12 @@ canon/
 | DOC    | ✅ ACTIVE |
 | LEGAL  | ✅ ACTIVE (primary) |
 | DECISION | ✅ ACTIVE |
-| FR_MODULE | ✅ ACTIVE (если французское право) |
+| FR_MODULE | ✅ ACTIVE (если французское право; модуль в legal-reference-fr) |
 | DEV    | ❌ OFF |
 
 **Правила активного профиля:**
 - Все правовые ответы со ссылкой на статьи
-- FR_MODULE активируется автоматически при французских правовых вопросах
+- FR_MODULE активируется автоматически при французских правовых вопросах (модуль → legal-reference-fr)
 - Консультационный канон: КАНОН 7 (предлагаю → пользователь одобряет)
 - Не давать юридических советов как окончательных — только анализ
 
@@ -94,7 +94,7 @@ canon/
 | DEV    | ✅ ACTIVE (primary context = BANXE) |
 | LEGAL  | ✅ ACTIVE (overlay) |
 | DECISION | ✅ ACTIVE |
-| FR_MODULE | условно ACTIVE |
+| FR_MODULE | условно ACTIVE (→ legal-reference-fr) |
 
 **Правило переключения:**
 ```
