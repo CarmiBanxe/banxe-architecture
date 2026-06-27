@@ -8,6 +8,9 @@
 > / PARKED-protected**. Verify-before-delete: surface "0-live" modules (`jwks_models`, `jwt_strategy`,
 > `legacy_abs_payment`) are **transitively live** via kept anchors (`role_guard`, `bifrost`).
 
+### Pass-1 update log (2026-06-27)
+- Stream **#1 DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock EMI #257 / `36418d9`). Matrix otherwise unchanged; no new orphan deletions; remaining streams (`to_minor_units` extraction, `recon_v2`/`fin060_v2` merge-pairs, `otp`/`sepa` → production) stay OPEN.
+
 ## 1. Live / orphan matrix (24 modules — verified on eb09e9c)
 | Module | Live-consumers (non-legacy) | Class |
 |---|---|---|
@@ -24,7 +27,7 @@
 | `services/compliance/legacy/legacy_sumsub_adapter.py` | 1 (I-27) | LIVE_KEEP |
 | `services/compliance/legacy/legacy_binancekyc_adapter.py` | 0 test-only (I-27) | PARKED_REVIEW |
 | `services/compliance/legacy/legacy_bkyc_adapter.py` | 0 test-only (I-27) | PARKED_REVIEW |
-| `services/consumer_duty/models_v2.py` | 1 sole impl (no `models.py`) | LIVE_MIGRATE_NEXT (rename-debt) |
+| `services/consumer_duty/models_v2.py` | 1 sole impl (no `models.py`) | ✅ DONE — renamed → `models.py` (EMI #255 / `78207c0`) |
 | `services/ledger/legacy/legacy_crypto_processing_adapter.py` | 2 (api/deps DI) | LIVE_KEEP (PAYBIS-controlled) |
 | `services/ledger/legacy/legacy_crypto_rpc_adapter.py` | 1 | LIVE_KEEP (PAYBIS-controlled) |
 | `services/ledger/legacy/legacy_crypto_wallet_adapter.py` | 1 | LIVE_KEEP (PAYBIS-controlled) |
@@ -43,7 +46,7 @@
 |---|---|---|---|
 | `reconciliation_engine_v2` | `recon/reconciliation_engine.py` (v1) | migrate 4 consumers → unify → delete v2 | scoped PR |
 | `fin060_generator_v2` | `reporting/fin060_generator.py` (v1) | migrate matrix_scanner + reporting_agent → unify | scoped PR |
-| `consumer_duty/models_v2` | rename → `models.py` | atomic rename + 12+ import update | rename PR |
+| `consumer_duty/models_v2` | rename → `models.py` | atomic rename + 12+ import update | ✅ **DONE** (EMI #255, `78207c0`; ruff-debt unblock EMI #257 / `36418d9`) |
 | `bifrost_adapter` (`to_minor_units`) | `services/shared` money util | move helper, repoint open_banking ×2 | helper extraction |
 | `legacy_otp_adapter` | `auth/production/{twilio,sendgrid}_otp_adapter` | repoint 4 consumers | provider parity |
 | `legacy_sepa_adapter` | `payment/production/modulr_sepa_stub` | repoint 1 consumer | Modulr live-wiring |
@@ -51,7 +54,7 @@
 
 ## 4. Duplicates / replacements map
 - **legacy ↔ current:** `legacy_otp_adapter` ↔ `production/{twilio,sendgrid}_otp_adapter` · `legacy_crypto_*` ↔ `PaybisCryptoAdapter` (gated) · `legacy_sepa_adapter` ↔ `production/modulr_sepa_stub` · `crypto_legacy` router ↔ future PAYBIS routes.
-- **v2 ↔ current:** `reconciliation_engine_v2` ↔ `reconciliation_engine` · `fin060_generator_v2` ↔ `fin060_generator` · `models_v2` ↔ *(no `models.py` — rename-debt, sole impl)*.
+- **v2 ↔ current:** `reconciliation_engine_v2` ↔ `reconciliation_engine` · `fin060_generator_v2` ↔ `fin060_generator` · `models_v2` ↔ `models` *(✅ unified — rename done, EMI #255 / `78207c0`)*.
 - **parked vs genuinely redundant:** `role_guard` = parked, **NOT redundant** (security invariant, no replacement proven) · `binancekyc`/`bkyc` = parked I-27 · `legacy_abs_payment`/`jwt_strategy`/`jwks_models` = parked-coupled (transitive live), not redundant.
 
 ## 5. Protected (do NOT remove)
@@ -65,7 +68,7 @@
 ## 7. Recommended next batch
 - **Deletion batch: EMPTY** (smallest-safe = zero new deletions this pass).
 - **Highest-value next (each its own scoped PR — ADR-102 dup-audit + full-suite green; NOT this pass):**
-  1. `consumer_duty/models_v2 → models` rename (lowest risk).
+  1. ✅ **DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock #257 / `36418d9`).
   2. extract `bifrost.to_minor_units → shared` money util (unlocks bifrost + `legacy_abs_payment` parking).
   3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs.
   4. `legacy_otp` / `legacy_sepa` → production adapters.
