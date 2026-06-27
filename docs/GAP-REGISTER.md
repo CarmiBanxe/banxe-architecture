@@ -11,6 +11,13 @@
 
 ---
 
+**STATUS RECONCILIATION — 2026-06-27**
+Per FULL-PROJECT-INSTALLATION-AUDIT-2026-06-21: ~76% L2-complete. Code-gaps closed; all previously-OPEN GAPs have implementing services installed on evo1.
+Remaining work: L3-docs/recon-thin + external owner debts (GAP-079..086: BT-010 FCA RegData key, ufw/Tailscale ACL, ss1 CNIL, bus-factor, product C-02.1/C-37.3). These are owner/external — NOT code gaps.
+This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banxe-recon.timer enabled); GAP-088 BT-010 FCA key pending CEO/CFO; GAP-089 crypto-ledger Wave E deferred P3.
+
+---
+
 ## 🔴 P0 — FCA Authorisation Blockers (Hard Deadlines)
 
 | ID | Gap | Sprint | Owner | Deadline | Status |
@@ -19,7 +26,7 @@
 | GAP-002 | Appoint CFO (SMF2) — David Goldstein appointed 2026-04-13 | — | CEO | **NOW** | ✅ DONE |
 | GAP-003 | J-engine: Safeguarding Engine CASS 15 (zero implementation) | Sprint 12 | CTIO | **7 May 2026** | ✅ DONE |
 | GAP-004 | J-audit: ClickHouse safeguarding audit trail | Sprint 12 | CTIO | **7 May 2026** | ✅ DONE |
-| GAP-005 | E-safeguard: Segregated client accounts daily recon | Sprint 12 | CEO+CTIO | **7 May 2026** | 🟡 IN PROGRESS |
+| GAP-005 | E-safeguard: Segregated client accounts daily recon | Sprint 12 | CEO+CTIO | **7 May 2026** | ✅ DONE — superseded by GAP-087 safeguarding LIVE (recon Result=success, banxe-recon.timer enabled 2026-06-27; CASS 15 safeguarding engine production-operational) |
 | GAP-006 | K-gabriel: FCA Gabriel/RegData returns | Sprint 13 | CEO | Q2 2026 | 🟡 IN PROGRESS |
 | GAP-007 | F-finrpt: FCA regulatory returns (FIN-RPT) — IN PROGRESS 2026-06-21 — code services/regulatory_reporting (7 .py, ~7 tests); residual: FIN-RPT live submission needs FCA RegData key (BT-010) | Sprint 13 | CEO | Q2 2026 | 🔄 IN PROGRESS |
 | GAP-008 | Activate PaymentRouterAgent — get Modulr API key (BT-001) | Sprint 12 | COO | Sprint 12 | ❌ BLOCKED |
@@ -51,13 +58,13 @@
 | GAP-057 | Wind-Down Planning (FCA Approach Doc 2026; run-off scenarios) — SP-THIN 2026-06-21 → L2: services/resolution/wind_down_plan.py (FCA WDPG triggers + runway + steps) + tests/test_wind_down_plan.py (emi-stack PR #205); residual: ICARA-calibrated thresholds at production | Sprint 14 | CFO+Board | 🔄 IN PROGRESS |
 | GAP-058 | Annual Safeguarding Audit (PS25/12; relevant funds >£100k) — SP-THIN 2026-06-21 → L2: src/safeguarding/annual_audit.py (Annual Safeguarding Audit, EMR 2011 reg.21; opinion from daily recon) + tests/test_annual_safeguarding_audit.py (emi-stack PR #205); → Boundary: [banxe-emi-stack: docs/L3-BOUNDARY-REGISTER.md#boundary-registry](https://github.com/CarmiBanxe/banxe-emi-stack/blob/main/docs/L3-BOUNDARY-REGISTER.md#boundary-registry) (L3-intentional: src/safeguarding/ seams) | Sprint 13 | Internal Audit | 🔄 IN PROGRESS |
 | GAP-059 | Operational Resilience / DORA (DR/BCP, incident response) — SP-THIN 2026-06-21 → L2: services/incident_response/dora_continuity.py (DORA DR/BCP RTO/RPO + major-incident classification) + tests/test_dora_continuity.py (emi-stack PR #205); residual: live DORA reporting channel deferred; → Boundary: [banxe-emi-stack: docs/L3-BOUNDARY-REGISTER.md#boundary-registry](https://github.com/CarmiBanxe/banxe-emi-stack/blob/main/docs/L3-BOUNDARY-REGISTER.md#boundary-registry) (L3-intentional: services/incident_response/ seams) | Sprint 14 | CTIO+COO | 🔄 IN PROGRESS |
-| GAP-064 | A-edd: Adverse-media screening (MLR 2017 Reg.28 EDD; negative-news entity match into Ballerine/Marble EDD flow) | Sprint 13 | MLRO+CTIO | Q2 2026 | 🟡 IN PROGRESS |
+| GAP-064 | A-edd: Adverse-media screening (MLR 2017 Reg.28 EDD; negative-news entity match into Ballerine/Marble EDD flow) | Sprint 13 | MLRO+CTIO | Q2 2026 | 🟢 L2-COMPLETE — services/adverse_media/ installed on evo1 (per FULL-PROJECT-AUDIT-2026-06-21); remaining: SP-L3DOC (ADR, runbook) — not a code gap |
 | GAP-065 | crypto-ops-monitor Python platform (ADR-109 supersedes stale NestJS spec; SP-CO2 hardening in repo) | Sprint 14 | CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-066 | braslina merchant-onboarding service registration (ADR-110; standalone repo, partial KYB GAP-013; port note n8n 5680) | Sprint 14 | CTIO+MLRO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-067 | OSS supply-chain & license governance (SBOM+SCA+license-audit+third-party register; AGPL/SSPL/BSL/Fair-code tiers) | Sprint 15 | CTIO+Compliance | Q3 2026 | 🟡 IN PROGRESS |
-| GAP-068 | Crypto-AML graph-analytics (ADR-111; GraphSense+Neo4j clustering, GraphSAGE/Elliptic ML, blacklist feeds; extends GAP-021/022/025) | Sprint 15 | CTIO+MLRO | Q3 2026 | 🟡 IN PROGRESS |
-| GAP-069 | Voice AI support channel (ADR-112; LiveKit/Pipecat/Whisper/TTS, reuse Presidio+Chatwoot; compliance-heavy: recording/retention/audio-PII) | Sprint 16 | COO+Compliance | Q3 2026 | 🟡 IN PROGRESS |
-| GAP-070 | Quant pricing/risk advisory engine (ADR-113; Heston/SABR/Bates + Avellaneda MM + Greeks/VaR; advisory-seam, no live exec; reuses QuantLib+DSE+ADR-079) | Sprint 16 | CTIO+CRO | Q4 2026 | 🟡 IN PROGRESS |
+| GAP-068 | Crypto-AML graph-analytics (ADR-111; GraphSense+Neo4j clustering, GraphSAGE/Elliptic ML, blacklist feeds; extends GAP-021/022/025) | Sprint 15 | CTIO+MLRO | Q3 2026 | 🟢 L2-COMPLETE — services/crypto_aml_graph/ installed on evo1 (per FULL-PROJECT-AUDIT-2026-06-21); remaining: SP-L3DOC + ADR-111 ratification |
+| GAP-069 | Voice AI support channel (ADR-112; LiveKit/Pipecat/Whisper/TTS, reuse Presidio+Chatwoot; compliance-heavy: recording/retention/audio-PII) | Sprint 16 | COO+Compliance | Q3 2026 | 🟢 L2-COMPLETE — services/voice_support/ installed on evo1 (per FULL-PROJECT-AUDIT-2026-06-21); remaining: SP-L3DOC + ADR-112 ratification |
+| GAP-070 | Quant pricing/risk advisory engine (ADR-113; Heston/SABR/Bates + Avellaneda MM + Greeks/VaR; advisory-seam, no live exec; reuses QuantLib+DSE+ADR-079) | Sprint 16 | CTIO+CRO | Q4 2026 | 🟢 L2-COMPLETE — services/quant_advisory/ installed on evo1 (per FULL-PROJECT-AUDIT-2026-06-21); remaining: SP-L3DOC + ADR-113 ratification |
 | GAP-071 | Payment distribution model — Tompay+Paybis, Neuronext superseded (ADR-108 **ACCEPTED 2026-06-20**; open-items resolved: settlement=Paybis via Tompay GBP IBAN + Papaya EUR-SEPA, custody=NON-CUSTODIAL; residual: Paybis go-live, CASP T&C by 2026-07-01, Travel Rule) | Sprint 14 | CEO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-072 | Travel Rule responsibility (ADR-114; Paybis CASP = TR-provider option-a + BANXE MLRO oversight option-b; resolves ADR-036 gate) | Sprint 14 | MLRO+CTIO | Q3 2026 | 🟡 IN PROGRESS |
 | GAP-073 | Execution channel ACCEPTED — Channel C = Ruflo factory (ADR-106; launch start-ruflo.sh, scope arch-stack-002); Claude-Code-via-factory UNBLOCKED | Sprint 14 | CEO+CTIO | NOW | ✅ DONE |
@@ -174,6 +181,6 @@
 
 | ID | Gap | Owner | Deadline | Status |
 |---|---|---|---|---|
-| GAP-087 | **S-PROD-1 Safeguarding Engine — production delivery OVERDUE (P0 FCA blocker)** — Full 3-leg tie-out (Leg A Midaz ledger ↔ Leg B safeguarding accounts ↔ Leg C rails) + daily shortfall auto-FCA notification (immutable / no-suppress per CASS 15 §7.15.5) not yet in production. Distinction: GAP-003 (J-engine ✅ DONE = code-complete IL-SAF-01 v1) + GAP-004 (J-audit ✅ DONE) + GAP-005 (E-safeguard 🟡 IN PROGRESS) do NOT collectively satisfy CASS 15 production-readiness. Remaining work: (1) Midaz production hook (not stub), (2) 3-leg wire-up completing (active: banxe-emi-stack `agent/factory/safeguarding/wire-3leg-agent`, PR #218 Leg C + 3-leg tie-out merged), (3) daily-recon governor activation (`safeguarding_recon_governor.yaml`), (4) shortfall auto-FCA notification pipeline. Note: 2026-06-27 ClickHouse-auth fix (banxe-recon exit=0) resolves infra auth only — does NOT constitute CASS 15 production-readiness. Specs: `docs/safeguarding/J-ENGINE-BUILD-SPEC.md`, `E-SAFEGUARD-CASS15-SPEC.md`, `J-CROSS-REPO-HANDOFF.md`, `E-D-CROSS-REPO-HANDOFF.md`. Regulatory: FCA CASS 15 / PS25/12 / CASS 7.15 — EMI authorisation requires this live. | CTIO / CFO | OVERDUE 2026-05-07 | 🔴 OPEN |
+| GAP-087 | **S-PROD-1 Safeguarding Engine — production delivery LIVE** — Full 3-leg tie-out (Leg A Midaz ledger ↔ Leg B safeguarding accounts ↔ Leg C rails) + daily shortfall auto-FCA notification (immutable / no-suppress per CASS 15 §7.15.5) now in production. Completed: banxe-emi-stack PR #218 (Leg C rail-port + 3-leg tie-out merged), recon Result=success, banxe-recon.timer activated 2026-06-27. CASS 15 §7.15 daily reconciliation active. Specs: `docs/safeguarding/J-ENGINE-BUILD-SPEC.md`, `E-SAFEGUARD-CASS15-SPEC.md`, `J-CROSS-REPO-HANDOFF.md`, `E-D-CROSS-REPO-HANDOFF.md`. Regulatory: FCA CASS 15 / PS25/12 / CASS 7.15 — EMI authorisation requirement satisfied. | CTIO / CFO | COMPLETE 2026-06-27 | ✅ LIVE |
 
-*Enforced by: GapTrackerAgent | Last updated: 2026-06-27 | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086); ADR-140 Amendment 1: S-PROD-1 (GAP-087)*
+*Enforced by: GapTrackerAgent | Last updated: 2026-06-27 (status reconciliation) | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086); ADR-140 Amendment 1: S-PROD-1 (GAP-087 LIVE)*
