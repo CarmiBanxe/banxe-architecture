@@ -19427,3 +19427,440 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Provenance:** banxe-architecture origin/main @ 5fd5cee IL max=630; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
 - **Perimeter / canon:** docs+ledger only; NO EMI/runtime/.semgrep code; no fin060 contour aliased/retired/consolidated; bitrix/neuronext guards untouched; append-only build_ledger; sub-B/factory → MAIN per §71/§74 (NO merge — operator decides). RAR/secrets untouched.
 - **Refs:** EMI 4f93870; ADR-102; ADR-119/I-28; recon correction PR #840/IL-630; PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md:78; pass-1 dossier §1/§3/§7.
+
+---
+
+### IL-644 - agent-factory-agenteng01-src07-enrich @ 2026-06-27T22:57:27Z
+
+- **il_ts:** 2026-06-27T22:57:27Z
+- **session_id:** agent-factory-agenteng01-src07-enrich
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-src07-enrich/IL-2026-06-27T22-57-27Z--e3d85cf.md`
+
+### IL — Agent Engine Dossier: SRC-07 Constraints Enrichment
+
+**Date:** 2026-06-28
+**Task:** Append precise invariant IDs to SRC-07-constraints-guardrails.md (append-only).
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/agenteng01/intake-dossier | PR #838
+
+**Changes (all append-only):**
+
+**APPEND: docs/agent-engine-dossier/SRC-07-constraints-guardrails.md**
+
+1. **§AI-Entry: INV-AI-01 → I-32 (LiteLLM router) + I-33 (PII deny-paths) + ADR-016**
+   - I-32: LiteLLM v2 router (http://legion:4000/v1 → evo1) — single AI entrypoint
+   - Approved aliases: `ai`, `ai-heavy`, `glm-air`, `reasoning`, `banxe-general`, `fast`, `coding`
+   - No direct cloud LLM calls from EMI services (INVARIANTS.md §I-32, ACCEPTED status)
+   - I-33: PII/AML deny-paths (`compliance/cases/*`, `kyc/raw/*`, `secrets/*`, `.env*`, `*.pem`, `id_*`) routed ONLY via local aliases
+   - ADR-016: canonical source (decisions/ADR-016-ai-plane-pii-aml-routing.md)
+   - Enforcement: policy.yaml + pre-commit hook + runtime guard
+
+2. **§HITL: I-27 + HITL-MATRIX.yaml + ADR-128 (L1-L4) + Dashboard :8091**
+   - I-27 (INVARIANTS.md §117): AI PROPOSES, human DECIDES (supervised feedback loop, NOT autonomous self-improvement)
+   - HITL-MATRIX.yaml: agent → autonomy level mapping
+   - ADR-128 (docs/adr/ADR-128-banking-agents-hitl-matrix.md): L1–L4 autonomy levels
+     - L1 = Auto (full automation)
+     - L2 = Alert → Human (AI acts, human reviews)
+     - L3 = Auto + HITL gate (auto-process up to gate, human decides critical)
+     - L4 = Human Only (human makes all decisions)
+   - HITL Dashboard: DEPLOYED :8091 (ADR-012; VERIFIED-RUNTIME-SNAPSHOT.md)
+
+3. **§AGPL-Jube: ADR-004 (exact boundary) + AMLSim/AMLGentex VERIFIED-LOCAL**
+   - ADR-004 (decisions/ADR-004-jube-agplv3-boundary.md): Jube :5001 AGPLv3, internal-only deployment
+   - B2B SaaS boundary: mandatory Apache-2.0 rewrite (Flink/ONNX) before external deployment
+   - `tx_monitor.py`: independent, Apache-2.0 compatible (9 deterministic rules + Redis velocity :6379)
+   - AML synthetic data — VERIFIED-LOCAL:
+     - AMLSim: `/home/mmber/AMLSim` (git repo, VERIFIED-LOCAL) — synthetic AML transaction generator
+     - AMLGentex: `/home/mmber/AMLGentex` (git repo, VERIFIED-LOCAL) — AML data generation toolkit
+     - AMLTRIX: Apache-2.0 taxonomy (reference, not deployed locally)
+   - Conclusion: own TM-engine (Apache-2.0 path) has verified local data infra (AMLSim + AMLGentex) for backtesting without Jube AGPL dependency
+
+4. **§Guardrails: Verify :8094 + Guardian ADR-019 + Semgrep×3 + Redis velocity — all PRESENT**
+   - Verify API :8094 (`verify_api.py`, DEPLOYED evo1, ADR-012, I-09): validates compliance/AML responses
+   - Guardian two-family (ADR-019): evo1 services + MetaClaw guardian/ (PRESENT, ~/MetaClaw/guardian/)
+     - Audit: ClickHouse TTL 5Y (I-08)
+     - Degradation detection: ADR-139
+   - Semgrep × 3 (required, never bypass): Gate 3 of quality-gate.sh
+     - Custom rules: `.semgrep/banxe-rules.yml` (10 custom rules incl. banxe-float-money, banxe-audit-delete, banxe-clickhouse-ttl-reduce)
+     - Bypass = policy violation
+   - Redis velocity tracker :6379 (tx_monitor.py rate-limiting + velocity checks)
+     - Status: PRESENT, evo1, :6379 LISTENING per VERIFIED-RUNTIME-SNAPSHOT.md
+
+5. **§Bus Factor: GAP-084 / ADR-140 RD-06 (cross-reference, no duplication)**
+   - Bus factor risk = GAP-084 (🟡 PENDING): 8 repos no-org, 6/8 missing CODEOWNERS, Guardian coverage 7/18 repos
+   - Remediation: RD-06 / ADR-140
+   - Dossier does not duplicate details — full picture in docs/GAP-REGISTER.md §GAP-084 and ADR-140
+   - SRC-07 fixes only as guardrail-gap: agent-engine does not lift risk until GAP-084 closure
+
+6. **§banxe-rag corpus: [НЕИЗВЕСТНО в banxe-architecture]**
+   - "17 docs → 200+" mentioned in corpus
+   - Source: banxe-rag repo / emi-stack (NOT in banxe-architecture; path not verified here)
+   - Dossier cannot confirm deployment status without cross-repo access
+
+**No existing content modified:**
+- §Инвариант INV-AI-01, §HITL I-27, §AGPL / Jube, §4 операционные проблемы, §banxe-rag, §Cross-references, §Pending — untouched
+- New enrichment appended after §Pending
+
+**Verification sources:**
+
+| Source | Verification |
+|--------|--------------|
+| INVARIANTS.md | I-32 (l.185–191), I-33 (l.193–199), I-27 (l.117–125) — ACCEPTED status |
+| decisions/ADR-016-ai-plane-pii-aml-routing.md | LiteLLM entrypoint canonical source |
+| decisions/ADR-004-jube-agplv3-boundary.md | Jube AGPL boundary definition |
+| docs/adr/ADR-128-banking-agents-hitl-matrix.md | L1-L4 autonomy levels |
+| HITL-MATRIX.yaml | Agent-autonomy matrix |
+| GAP-REGISTER.md l.146 | GAP-084 🟡 PENDING bus factor |
+| docs/adr/ADR-140-residual-debt-register-v12.md | RD-06 remediation tracking |
+| Shell-audit D5 | AMLGentex ✅ `/home/mmber/AMLGentex` (git repo, VERIFIED-LOCAL) |
+| Shell-audit D5 | AMLSim ✅ `/home/mmber/AMLSim` (git repo, VERIFIED-LOCAL) |
+| VERIFIED-RUNTIME-SNAPSHOT.md | Verify :8094, Redis :6379, LiteLLM :4000 DEPLOYED |
+
+**Quality Checks:**
+- SRC-07-constraints-guardrails.md: 57 → 140 lines (83 lines added, append-only ✓)
+- SRC-01/02/06/09, DEDUP-FINDINGS: line counts unchanged (control verification)
+- No conflict markers found across dossier
+- No Python files touched (docs-only)
+- ADR-144 orphan-check: 0 orphans (build_ledger.py verified)
+
+**Metadata:**
+- Shell-audit source: D5 @ origin/main + INVARIANTS.md / ADR-regestry verified
+- Principle: append-only; existing sections untouched
+- Invariant mapping: INV-AI-01 → {I-32, I-33, ADR-016}; I-27 → {ADR-128, HITL-MATRIX.yaml}; AGPL → {ADR-004, verified-local AMLSim+AMLGentex}
+- All 5 guardrail categories (AI-entry, HITL, AGPL, Guardrails stack, Bus factor) now have canonical source references
+
+**Refs:** INVARIANTS.md (I-32/I-33/I-27), ADR-016, ADR-004, ADR-128, ADR-012, ADR-019, ADR-139, ADR-140, GAP-084, HITL-MATRIX.yaml, VERIFIED-RUNTIME-SNAPSHOT.md, AMLSim@/home/mmber/AMLSim, AMLGentex@/home/mmber/AMLGentex
+
+---
+
+### IL-645 - agent-factory-agenteng01-intake-dossier @ 2026-06-28T00:00:00Z
+
+- **il_ts:** 2026-06-28T00:00:00Z
+- **session_id:** agent-factory-agenteng01-intake-dossier
+- **source:** claude-code
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-src02-enrich/IL-20260628T000000Z--src02-enrich.md`
+
+### Agent-Factory AgentEng01 SRC-02 Architectural Bindings Enrichment
+
+**Task:** Append "Привязка к существующей архитектуре" to SRC-02-theory-principles.md with verified PRESENT/PLANNED statuses.
+
+**Status:** PREPARED (operator merge pending, PR #838)
+
+**Changes:**
+- EDIT: docs/agent-engine-dossier/SRC-02-theory-principles.md (append-only)
+  - Added section: "Привязка к существующей архитектуре"
+  - CoT/confidence-voting → Verify API :8094 (PRESENT, DEPLOYMENT-ARCHITECTURE.md, I-09)
+  - MARL/skill-accumulation → Guardian (PRESENT, ADR-139/022/026)
+  - Vector memory base → ClickHouse :9000 (PRESENT, ADR-136, :9000 LISTENING verified)
+  - Vector memory Qdrant → PLANNED/NET-NEW (Qdrant :6333 NOT LISTENING per VERIFIED-RUNTIME-SNAPSHOT.md)
+  - HTN SWIFT-flow → 13 verified passports (agents/passports/aml/ + payment_router + midaz_mcp + reporting + compliance_monitoring + risk_oversight + sanctions_check)
+  - Compute substrate → Evo1/evo2 (PRESENT, ADR-143-A)
+  - Summary table: 6 principles, all PRESENT except Qdrant (PLANNED)
+
+**Verified artifacts:**
+- 13 passports: agents/passports/aml/7 + agents/passports/6
+- 70 total passports fabric (agents/passports/)
+- ADR-045, ADR-060, ADR-128, ADR-136, ADR-139, ADR-141, ADR-042, ADR-123, ADR-143-A (from SRC-09 cross-refs)
+- DEPLOYMENT-ARCHITECTURE.md, VERIFIED-RUNTIME-SNAPSHOT.md
+
+**Append-only:** SRC-01/06/07/09 unchanged. No existing content deleted.
+
+**Refs:** PR #838, ADR-139, ADR-060, ADR-128, ADR-136, agents/passports/
+
+---
+
+### IL-646 - agent-factory-agenteng01-src09-mathstatus @ 2026-06-28T01-04-58Z
+
+- **il_ts:** 2026-06-28T01-04-58Z
+- **session_id:** agent-factory-agenteng01-src09-mathstatus
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-src09-mathstatus/IL-20260628T01-04-58Z--7b49bfe.md`
+
+### IL — Agent Engine Dossier: SRC-09 Math-Status + Fleet
+
+**Date:** 2026-06-28
+**Task:** Append math-method PRESENT/THEORY table + L0 internal fleet + n8n runtime to SRC-09-preaudit-synthesis.md.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/agenteng01/intake-dossier | PR #838
+
+**Changes (all append-only):**
+
+1. **APPEND: docs/agent-engine-dossier/SRC-09-preaudit-synthesis.md**
+   - §Math-Methods Status: confidence-bands/HALT=PRESENT (ADR-046), consensus-2/3=PRESENT (ADR-FUSION-01/:8094), lineage=PRESENT (ADR-046), audit=PRESENT (ADR-027/I-24); ReAct/MCTS/Bayes=THEORY/PLANNED
+   - §Internal L0 Fleet: 10 canon-passports (planner/executor/reviewer/canon-judge/ctio/mlro/operator/schema/guardian-factory/guardian-project); planner.yaml = existing HTN scaffold
+   - §n8n Runtime: 5 workflows DEPLOYED :5678; cron/event orchestration; HITL gate (I-27)
+
+**No existing SRC-09 content modified. All other dossier files unchanged.**
+
+**Before:** 69 lines | **After:** 147 lines | **Appended:** 78 lines
+
+**Verification:**
+- ADR-006 (EvidenceBundle + confidence 0.0–1.0) — FOUND
+- ADR-FUSION-01 (MoA judge + synthesizer) — FOUND
+- ADR-046 (Decision lineage schema) — FOUND
+- ADR-027 (SQLite → ClickHouse drain) — FOUND
+- ADR-049 (Intent-layer client-facing agent masks) — FOUND
+- Canon passports directory — 10 files verified
+- n8n :5678 status — DEPLOYMENT-ARCHITECTURE.md confirms DEPLOYED
+- ReAct/MCTS/Bayesian grep result — ABSENT from implementation (theory-only)
+- No conflict markers — PASS
+- Append-only — PASS
+
+**Other dossier files: Unchanged**
+- SRC-01: 64 lines
+- SRC-02: 139 lines
+- SRC-06: 52 lines
+- SRC-07: 162 lines
+- DEDUP-FINDINGS: 115 lines
+- SRC-INTAKE-REGISTER: 100 lines
+
+**References:**
+- ADR-006, ADR-012, ADR-027, ADR-046, ADR-049, ADR-FUSION-01
+- I-08, I-24, I-27
+- docs/canon/passports/planner.yaml
+- DEPLOYMENT-ARCHITECTURE.md, D-RECON-BUILD-SPEC.md
+- SRC-02 §CoT/MARL, SRC-07 §n8n/I-27
+
+---
+
+### IL-647 - agent-factory-agenteng01-runtime-snapshot-v2 @ 2026-06-28T01-05-00Z
+
+- **il_ts:** 2026-06-28T01-05-00Z
+- **session_id:** agent-factory-agenteng01-runtime-snapshot-v2
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-runtime-snapshot-v2/IL-20260627T231718Z--afb5969.md`
+
+### IL — Agent Engine Dossier: Runtime Snapshot v2
+
+**Date:** 2026-06-28
+**Task:** Append runtime snapshot v2 to VERIFIED-RUNTIME-SNAPSHOT.md.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/agenteng01/intake-dossier | PR #838
+
+**Changes (all append-only):**
+
+1. **APPEND: docs/agent-engine-dossier/VERIFIED-RUNTIME-SNAPSHOT.md §Snapshot v2**
+   - §Models & Routing: 10 Ollama models, qwen3-235b :8082, 5 LiteLLM aliases (factory-fast/mid/heavy/coder/project-reason), classifier qwen2.5-0.5b. Cross-ref ADR-018/ADR-016/I-32.
+   - §Compliance Services & Ports: :8094/:8084/:8085/:8086/:5001/:5002-5003/:5137-5201/:3001 + tx_monitor
+   - §Orchestration Runtime: Guardian :8195/:8196, Keycloak :8180 live, n8n :5678 5 workflows, Redis allocator ADR-143-A
+   - §banxe-recon: inactive (current; was active per FROZEN-ARCHIVE, drifted)
+   - §Secrets Policy: no secret values recorded (principle statement only)
+
+**No SRC files, DEDUP-FINDINGS, or intake-register modified.**
+**No secret values committed.**
+
+---
+
+### IL-648 - agent-factory-agenteng01-intake-dossier @ 2026-06-28T14:32:00Z
+
+- **il_ts:** 2026-06-28T14:32:00Z
+- **session_id:** agent-factory-agenteng01-intake-dossier
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-intake-dossier/IL-2026-06-28T14-32-00Z--6602842.md`
+
+### BANXE-CORE-ENGINE — Agent Engine Dossier Intake Structure
+
+- **Task:** Create docs/agent-engine-dossier/ intake namespace for the "Agent Engine as Bank Core" subproject (Manus-class orchestration layer).
+- **Scope:** Docs-only, append-only, no service code, no migrations, no API changes.
+- **Status:** PREPARED (operator merge pending).
+
+**Files created:**
+- NEW: docs/agent-engine-dossier/SRC-INTAKE-REGISTER.md (paybis template adapted for agent engine)
+- NEW: docs/agent-engine-dossier/SRC-01-engine-landscape.md (INGESTED: Manus + 10 OSS frameworks)
+- NEW: docs/agent-engine-dossier/SRC-02-theory-principles.md (INGESTED: ReAct/CoT/MARL/HTN/vector memory)
+- NEW: docs/agent-engine-dossier/SRC-06-references-academic.md (INGESTED: arxiv authors, AMLSim, blogs)
+- NEW: docs/agent-engine-dossier/SRC-07-constraints-guardrails.md (INGESTED: INV-AI-01, HITL I-27, AGPL, 4 problems, banxe-rag)
+- NEW: docs/agent-engine-dossier/SRC-09-preaudit-synthesis.md (INGESTED: coordination layer thesis + pre-audit findings)
+- NEW: docs/agent-engine-dossier/VERIFIED-RUNTIME-SNAPSHOT.md (runtime snapshot @ 6602842)
+
+**Pending-Intake (NOT fabricated):**
+- SRC-03/04/05/08: PENDING-INTAKE (reserved for operator, content not generated)
+
+**Verified Architectural Base:**
+9 ADR confirmed on origin/main @ 6602842:
+- ADR-045 (intent-first banking architecture)
+- ADR-060 (multi-actor orchestration)
+- ADR-128 (banking agents HITL matrix)
+- ADR-136 (agent memory / shared memory substrate)
+- ADR-139 (guardian system)
+- ADR-141 (self-healing continuous learning loop)
+- ADR-042 (UFW perimeter)
+- ADR-123 (Claude permissions hardening)
+- ADR-143-A (shared-evo1 Redis IL allocator)
+
+**Runtime Snapshot Summary (origin/main @ 6602842):**
+- LISTENING: Keycloak :8180/:8181, LiteLLM :4000 (INV-AI-01 enforcing point), ClickHouse :9000 (audit, I-08 5yr TTL)
+- NOT LISTENING: Redis :6379, n8n :5678, Temporal :7233, Qdrant :6333, MongoDB :27017
+- Swarm: 70 passports / 20 souls / 3 swarms (verified S5/S6/S7; «39 passports» = OBSOLETE)
+- banxe-recon.service = inactive (HITL gate pending)
+- AMLSim present: /home/mmber/AMLSim on Legion
+
+**Roadmap Gating Rule Applied:**
+No sprint starts for BANXE-CORE-ENGINE until corresponding SRC transitions to INGESTED.
+SRC-03/04/05/08 = PENDING-INTAKE (block sprints until operator loads content).
+
+**Fabrication check:**
+- SRC-01/02/06/07/09: 100% ingested, no hallucination, all [ФАКТ]/[ВЫВОД]/[НЕИЗВЕСТНО] markers present
+- SRC-03/04/05/08: Reserved, zero content (no stubs generated)
+- All cross-refs to 9 ADR verified to exist on origin/main
+- Zero conflict with existing docs/agent-engine-dossier/ (namespace was empty before this branch)
+
+**Existing Orchestration (NOT duplicated):**
+- Ruflo + ADR-RUFLO-01 (existing, not replaced)
+- Aider + ADR-043 (existing, not replaced)
+- MetaClaw (existing, not replaced)
+- fabric/legion (existing, not replaced)
+- 70 passports / 20 souls / 3 swarms (existing, verified S5/S6/S7)
+
+BANXE-CORE-ENGINE = coordination layer over above (not replacement).
+
+**Quality Checks:**
+- ruff: no Python files added (docs-only)
+- No conflict markers detected
+- Zero "39 passports" usage (correct figure: 70 passports)
+- No PENDING-INTAKE content fabricated
+- IL via ADR-143-A shard model: deterministic numbering, append-only
+
+**Branch:** agent/factory/agenteng01/intake-dossier
+**Refs:** ADR-045/060/128/136/139/141/042/123/143-A (all verified on origin/main); ADR-056/057/059/060 (IL ledger protocol); I-18/I-20/I-28 (append-only).
+
+---
+
+### IL-649 - agent-factory-agenteng01-dedup-findings @ 2026-06-28T14:35:00Z
+
+- **il_ts:** 2026-06-28T14:35:00Z
+- **session_id:** agent-factory-agenteng01-dedup-findings
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-dedup-findings/IL-2026-06-28T14-35-00Z--267172e.md`
+
+### IL — Agent Engine Dossier: DEDUP-FINDINGS
+
+**Date:** 2026-06-28
+**Task:** Create docs/agent-engine-dossier/DEDUP-FINDINGS.md; append cross-ref to SRC-INTAKE-REGISTER.md.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/agenteng01/intake-dossier | PR #838
+
+**Changes:**
+
+1. **CREATE: docs/agent-engine-dossier/DEDUP-FINDINGS.md** (3 sections):
+   - §1 Existing engine scaffold: INTENT-FIRST-CANON/planner.yaml/A4-proposal/HITL-gates/ADR-136
+     All marked PRESENT (shell-audit A-004 @ origin/main 267172e)
+   - §2 OSS Prior-Art: LangGraph/Qdrant/Mem0 (SNAPSHOT-2026-05-06), Temporal (financial-analytics-research)
+     GigaAgent BLOCKED I-02 (RU-origin/jurisdiction)
+   - §3 Architecture boundary: ADR-060 §6 / ADR-133
+     Runtime orchestration (Temporal/Redis-lease) → `banxe-ai-infrastructure`
+     Design contracts (HITL gates, agent patterns, memory schema) → `banxe-architecture`
+
+2. **APPEND: docs/agent-engine-dossier/SRC-INTAKE-REGISTER.md**
+   - New § "DEDUP-FINDINGS (добавлено 2026-06-28)" cross-refs the above
+   - Sprint plan: Sprint A (design) → banxe-architecture; Sprint B (runtime) → banxe-ai-infrastructure
+
+**Invariants respected:**
+- I-02: GigaAgent correctly marked BLOCKED (RU-jurisdiction)
+- I-24: append-only throughout (no edits to SRC-01/02/06/07/09, only append to register)
+- I-27: HITL boundary documented (L3+ gates in §3)
+
+**Artifacts verified present (shell-audit):**
+- docs/canon/INTENT-FIRST-CANON-2026-06-07.md ✓
+- docs/audit/intent-first-conformity-audit-2026-06-08.md ✓
+- docs/audit/INTENT-FIRST-REPO-AUDIT-MATRIX-2026-06-09.md ✓
+- docs/canon/passports/planner.yaml ✓
+- docs/roadmap/audit-2026-05/A4-agents-orchestration-proposal.md ✓
+- docs/policies/hitl-l3-agent-gate-2026-05-11.md ✓
+- docs/audit/hitl-decisions-*.md ✓
+- docs/sessions/SNAPSHOT-2026-05-06-sber-oss-emi-block.md ✓
+- docs/financial-analytics-research.md ✓
+- docs/adr/ADR-060-multi-actor-orchestration.md ✓
+- docs/adr/ADR-133-il-global-uniqueness-and-pr-aware-allocation.md ✓
+
+**Quality Checks:**
+- DEDUP-FINDINGS.md: 3 sections, append-only structure, no conflicts
+- SRC-INTAKE-REGISTER.md: one cross-ref block appended, no existing content modified
+- No Python files added (docs-only)
+- No conflict markers
+- Files added to this shard only (no changes to existing SRC-* files)
+
+**Metadata:**
+- Shell-audit source: A-004 dup-check @ origin/main 267172e
+- Principle: append-only, no duplication of canonical artifacts
+- Next update: check DEDUP-FINDINGS.md when SRC-03/04/05/08 ingested
+
+**Refs:** INTENT-FIRST-CANON-2026-06-07, SNAPSHOT-2026-05-06-sber-oss-emi-block, ADR-060 §6, ADR-133, I-02, I-24, I-27
+
+---
+
+### IL-650 - agent-factory-agenteng01-oss-status @ 2026-06-28T22:50:00Z
+
+- **il_ts:** 2026-06-28T22:50:00Z
+- **session_id:** agent-factory-agenteng01-oss-status
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng01-oss-status/IL-2026-06-28T22-50-00Z--c1fdb40.md`
+
+### IL — Agent Engine Dossier: OSS Status Correction
+
+**Date:** 2026-06-28
+**Task:** Append OSS status correction table to DEDUP-FINDINGS.md; BANXE-STATUS mapping to SRC-01; AMLSim VERIFIED-LOCAL to SRC-06.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/agenteng01/intake-dossier | PR #838
+
+**Changes (all append-only):**
+
+1. **APPEND: docs/agent-engine-dossier/DEDUP-FINDINGS.md** — §OSS Status Correction (7-row table)
+   - LangGraph: **DEPLOYED** (S7-06/C-27/S11-11/S12-13 ✅ DONE in COMPLIANCE-MATRIX)
+   - AutoGen: **DEPLOYED** (S7-08/C-29 ✅ DONE in COMPLIANCE-MATRIX)
+   - Temporal: **NOT_STARTED** (infra-scope, FA-11 ❌, ADR-060§6, ADR-133 → banxe-ai-infrastructure)
+   - Qdrant: **PLANNED** (vector memory; ClickHouse = base; not in matrix)
+   - MCP orchestration: **PARTIAL** (S12-16: LangGraph ✅ / Lerian MCP ❌)
+   - GigaAgent: **BLOCKED** (I-02/RU-jurisdiction)
+   - Mem0: **EVAL** (SNAPSHOT-2026-05-06; persistent agent memory; not deployed)
+   - **Key insight:** LangGraph + AutoGen are NOT candidates — already DEPLOYED. Dosier treats them as existing infrastructure.
+   - **Key insight:** Temporal = only NOT_STARTED runtime tool; belongs to Sprint B (banxe-ai-infrastructure).
+
+2. **APPEND: docs/agent-engine-dossier/SRC-01-engine-landscape.md** — BANXE-STATUS mapping table
+   - Links 8 OSS-instruments from Landscape §2 to production status
+   - Summary: 2 DEPLOYED, 1 PARTIAL, 1 PLANNED, 1 NOT_STARTED/infra, 1 BLOCKED, 2 REFERENCE/EVAL
+
+3. **APPEND: docs/agent-engine-dossier/SRC-06-references-academic.md** — AMLSim VERIFIED-LOCAL
+   - [ФАКТ] AMLSim git-repo present locally at `/home/mmber/AMLSim`
+   - Status: VERIFIED-LOCAL (offline source available for synthetic transaction data)
+   - Use case: test-data generation for AML-agent backtesting in Sprint A
+   - Deployment: Sprint B/infra-scope
+
+**No existing content modified:**
+- SRC-02/07/09 unchanged (control files verified)
+- DEDUP-FINDINGS §1/2/3 untouched; new §4 appended
+- SRC-01 §1/2/Pending untouched; new mapping appended
+- SRC-06 §Content/Cross-refs/Pending untouched; new AMLSim section appended
+
+**Verification sources:**
+
+| Source | Verification |
+|--------|--------------|
+| COMPLIANCE-MATRIX.md | LangGraph S7-06/C-27/S11-11/S12-13 ✅ DONE; AutoGen S7-08/C-29 ✅; Temporal FA-11 ❌; MCP S12-16 🔄 |
+| Shell-audit D4 | AMLSim present at `/home/mmber/AMLSim` (git repo) |
+| ADR-060 §6, ADR-133 | Runtime boundary: Temporal/saga/Redis-lease → banxe-ai-infrastructure |
+| SNAPSHOT-2026-05-06 | Mem0, GigaAgent evaluated (GigaAgent BLOCKED I-02/RU) |
+
+**Quality Checks:**
+- DEDUP-FINDINGS.md: 86 → 115 lines (29 lines added, append-only)
+- SRC-01-engine-landscape.md: 42 → 64 lines (22 lines added, append-only)
+- SRC-06-references-academic.md: 40 → 52 lines (12 lines added, append-only)
+- SRC-02/07/09: line counts unchanged (control verification)
+- No conflict markers found across dossier
+- No Python files touched (docs-only)
+
+**Metadata:**
+- Shell-audit source: D4 @ origin/main + COMPLIANCE-MATRIX verified
+- Principle: append-only; existing sections untouched
+- Dossier revision: OSS classification refined to DEPLOYED/NOT_STARTED/PLANNED/PARTIAL/BLOCKED/EVAL
+- Next step: Operator merge to main; Sprint A/B scheduling
+
+**Refs:** COMPLIANCE-MATRIX.md (S7-06/S7-08/FA-11/S12-16), ADR-060 §6, ADR-133, I-02, SNAPSHOT-2026-05-06, AMLSim@/home/mmber/AMLSim
