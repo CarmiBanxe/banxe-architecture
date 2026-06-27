@@ -161,4 +161,19 @@
 
 ---
 
-*Enforced by: GapTrackerAgent | Last updated: 2026-06-27 | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086)*
+---
+
+## 🔴 S-PROD-1 Safeguarding Production Residual — ADR-140 Amendment 1
+
+> **Source:** Late verification audit (2026-06-27). `docs/ROADMAP-STATUS-2026-06-23.md:69`
+> confirms S-PROD-1 OVERDUE since 2026-05-07. Not captured in the original ADR-140
+> (GAP-079..086) which focused on operator/business/legal/org debts.
+> GAP-003 (J-engine) + GAP-004 (J-audit) were closed code-complete (IL-SAF-01 v1);
+> GAP-005 (E-safeguard) remains IN PROGRESS. GAP-087 tracks full production delivery —
+> a distinct P0 FCA-authorisation blocker. Anchored in `docs/adr/ADR-140-residual-debt-register-v12.md` Amendment 1.
+
+| ID | Gap | Owner | Deadline | Status |
+|---|---|---|---|---|
+| GAP-087 | **S-PROD-1 Safeguarding Engine — production delivery OVERDUE (P0 FCA blocker)** — Full 3-leg tie-out (Leg A Midaz ledger ↔ Leg B safeguarding accounts ↔ Leg C rails) + daily shortfall auto-FCA notification (immutable / no-suppress per CASS 15 §7.15.5) not yet in production. Distinction: GAP-003 (J-engine ✅ DONE = code-complete IL-SAF-01 v1) + GAP-004 (J-audit ✅ DONE) + GAP-005 (E-safeguard 🟡 IN PROGRESS) do NOT collectively satisfy CASS 15 production-readiness. Remaining work: (1) Midaz production hook (not stub), (2) 3-leg wire-up completing (active: banxe-emi-stack `agent/factory/safeguarding/wire-3leg-agent`, PR #218 Leg C + 3-leg tie-out merged), (3) daily-recon governor activation (`safeguarding_recon_governor.yaml`), (4) shortfall auto-FCA notification pipeline. Note: 2026-06-27 ClickHouse-auth fix (banxe-recon exit=0) resolves infra auth only — does NOT constitute CASS 15 production-readiness. Specs: `docs/safeguarding/J-ENGINE-BUILD-SPEC.md`, `E-SAFEGUARD-CASS15-SPEC.md`, `J-CROSS-REPO-HANDOFF.md`, `E-D-CROSS-REPO-HANDOFF.md`. Regulatory: FCA CASS 15 / PS25/12 / CASS 7.15 — EMI authorisation requires this live. | CTIO / CFO | OVERDUE 2026-05-07 | 🔴 OPEN |
+
+*Enforced by: GapTrackerAgent | Last updated: 2026-06-27 | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086); ADR-140 Amendment 1: S-PROD-1 (GAP-087)*

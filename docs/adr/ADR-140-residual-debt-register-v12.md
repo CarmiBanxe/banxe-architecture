@@ -354,3 +354,65 @@ Access these via LAN or Tailscale after enabling ufw.
 - ADR-117 bus factor / org: `docs/adr/ADR-117-factory-project-perimeter-and-fullcycle-org.md`
 - CNIL Art.33 portal: `notifications.cnil.fr`
 - Tailscale ACL console: `login.tailscale.com/admin/acls`
+
+
+---
+
+## Amendment 1 — 2026-06-27: S-PROD-1 Safeguarding Production Residual (GAP-087)
+
+**Raised by:** Late verification audit (2026-06-27). **Ledger:** IL-606.
+
+A ninth residual debt was identified after ADR-140 was originally accepted. It was **not
+captured** in the original 8-gap set (GAP-079..GAP-086) because:
+
+- GAP-003 (J-engine) + GAP-004 (J-audit) were marked ✅ DONE on code-complete (IL-SAF-01 v1,
+  banxe-emi-stack#24), and the original ADR-140 scope focused on
+  **operator/business/legal/org** debts only.
+- The full **production delivery** gap — 3-leg tie-out, Midaz production hook, shortfall
+  auto-FCA — was not in scope of the original verification pass.
+
+### RD-09 · S-PROD-1 — Safeguarding Engine Production Delivery
+
+**Gap ID:** GAP-087
+**Severity:** P0 — FCA CASS 15 authorisation blocker
+**Owner:** CTIO / CFO
+**Deadline:** OVERDUE — 2026-05-07
+**Status:** 🔴 OPEN
+
+**Verified evidence:**
+`docs/ROADMAP-STATUS-2026-06-23.md:69` — *"S-PROD-1 | P0 | Safeguarding Engine —
+J-engine (IL-SAF-01 prompt-ready), J-audit, E-safeguard | CASS 15 / PS10-15; Midaz |
+⚠ OVERDUE — deadline 2026-05-07 passed. Highest priority; daily-recon + shortfall
+auto-FCA (immutable, no-suppress)."*
+
+**Distinction from GAP-003/004/005:**
+
+| Gap | Status | Scope |
+|-----|--------|-------|
+| GAP-003 J-engine | ✅ DONE | Code-complete: IL-SAF-01 v1 (banxe-emi-stack#24). Initial implementation. |
+| GAP-004 J-audit | ✅ DONE | Code-complete: ClickHouse audit trail basic setup. |
+| GAP-005 E-safeguard | 🟡 IN PROGRESS | Daily segregated-accounts recon — active. |
+| **GAP-087** | 🔴 OPEN | **Full production delivery**: 3-leg tie-out (A Midaz ↔ B safeguarding ↔ C rail), Midaz production hook, daily shortfall auto-FCA (immutable/no-suppress). None live. |
+
+**Distinction from 2026-06-27 ClickHouse-auth fix:**
+The ClickHouse connection-auth fix (banxe-recon exit=0, done this session) resolves an
+infra authentication issue. It does **not** constitute CASS 15 production-readiness —
+the 3-leg tie-out and Midaz production hook remain outstanding.
+
+**Fix-path:**
+1. Complete `banxe-emi-stack` 3-leg wire-up (active branch: `agent/factory/safeguarding/wire-3leg-agent`;
+   PR #218 merged Leg C rail port + CASS 15 three-leg tie-out A==B==C).
+2. Wire `SafeguardingAccountPort` → real Midaz Leg A balance endpoint (replace stub).
+3. Activate daily-recon governor (`agents/passports/safeguarding_recon_governor.yaml`, GAP-005).
+4. Implement shortfall auto-FCA notification pipeline (append-only I-24, immutable, no-suppress).
+5. Ops sign-off: CTIO confirms live daily run; CFO signs off on relevant-funds computation.
+
+**Regulatory basis:** FCA CASS 15 §7.15 (daily reconciliation), PS25/12 (safeguarding
+reform), CASS 7.15.5 (shortfall notification within 1 business day). EMI authorisation
+cannot proceed while this is not live.
+
+**Specs:**
+- `docs/safeguarding/J-ENGINE-BUILD-SPEC.md`
+- `docs/safeguarding/E-SAFEGUARD-CASS15-SPEC.md`
+- `docs/safeguarding/J-CROSS-REPO-HANDOFF.md`
+- `docs/safeguarding/E-D-CROSS-REPO-HANDOFF.md`

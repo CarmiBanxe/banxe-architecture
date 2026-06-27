@@ -87,7 +87,7 @@ and is now 4 (placeholder-only).
 | Number  | Title                                                                                              | Status   | Date       | Path |
 |---------|----------------------------------------------------------------------------------------------------|----------|------------|------|
 | ADR-139 | Guardian System — self-hosted PR-audit service (Factory :8195 + Project :8196) [comprehensive] | ACCEPTED | 2026-06-26 | [./ADR-139-guardian-system.md](./ADR-139-guardian-system.md) |
-| ADR-140 | Residual Debt Register — Concept v12.0 Verification (8 non-technical debts) | ACCEPTED | 2026-06-27 | [./ADR-140-residual-debt-register-v12.md](./ADR-140-residual-debt-register-v12.md) |
+| ADR-140 | Residual Debt Register — Concept v12.0 Verification (8 non-technical debts + Amendment 1: S-PROD-1 GAP-087) | ACCEPTED | 2026-06-27 | [./ADR-140-residual-debt-register-v12.md](./ADR-140-residual-debt-register-v12.md) |
 | ADR-039 | Claude Code permissions reclassification                                                            | Accepted | 2026-05-05 | [./ADR-039-claude-code-permissions-reclassification.md](./ADR-039-claude-code-permissions-reclassification.md) |
 | ADR-040 | AI Execution Policy — Meta-Plane vs Inference-Plane                                                  | Accepted | 2026-05-03 | [./ADR-040-ai-execution-policy.md](./ADR-040-ai-execution-policy.md) |
 | ADR-041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                                                         | Accepted | 2026-05-03 | [./ADR-041-glm45-air-distributed.md](./ADR-041-glm45-air-distributed.md) |
