@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import pathlib
 import re
 import subprocess
@@ -118,13 +119,90 @@ def load_sequence():
     return {}
 
 
-def assign(records):
+# --- Central IL allocator (ADR-143) -----------------------------------------
+# Replaces the inter-process-unsafe local `max+1` for NEW shards with an atomic
+# central counter (Redis INCR) so concurrent terminals on different worktrees can
+# never mint the same number (the IL-172 duplicate class). The allocator runs ONLY
+# at live-mint time (write mode); --check / rebuild stay 100% offline + deterministic
+# (numbers, once minted, are FROZEN in IL-SEQUENCE.json — ADR-119 Rule 8 preserved:
+# the IL stays provisional, only the SOURCE of the number changes).
+IL_COUNTER_KEY = "banxe:il:counter"
+
+
+def _load_fabric_redis():
+    """Import fabric_redis by file path (fabric/ has no package __init__).
+
+    Returns (RedisStreams, RedisUnavailable) or (None, None) if not importable.
+    """
+    try:
+        import importlib.util
+        path = ROOT / "fabric" / "common" / "fabric_redis.py"
+        spec = importlib.util.spec_from_file_location("banxe_fabric_redis", str(path))
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod.RedisStreams, mod.RedisUnavailable
+    except Exception:
+        return None, None
+
+
+def _redis_allocate(current_max):
+    """Monotonic IL number strictly > current_max via atomic Redis INCR.
+
+    Config: TL_REDIS_HOST/TL_REDIS_PORT (default 127.0.0.1:6379); password vault
+    file REDIS_PASS_FILE (~/banxe-fabric/.vault/redis.pass). The counter is kept
+    >= the frozen sequence max: a fresh/behind counter is bumped (repeat INCR) until
+    it exceeds current_max, so no number below an already-assigned one is handed out.
+    Raises on any failure (caller degrades to local max+1).
+    """
+    RedisStreams, _RedisUnavailable = _load_fabric_redis()
+    if RedisStreams is None:
+        raise RuntimeError("fabric_redis not importable")
+    host = os.environ.get("TL_REDIS_HOST", "127.0.0.1")
+    port = int(os.environ.get("TL_REDIS_PORT", "6379"))
+    pw = os.environ.get("REDIS_PASS_FILE", os.path.expanduser("~/banxe-fabric/.vault/redis.pass"))
+    client = RedisStreams(host, port, pw)
+    try:
+        val = client.incr(IL_COUNTER_KEY)
+        # Monotonicity guarantee: never return a number <= the frozen sequence max.
+        while val <= current_max:
+            val = client.incr(IL_COUNTER_KEY)
+        return val
+    finally:
+        client.close()
+
+
+def _alloc_next(current_max):
+    """Allocate the next IL number for a NEW shard (live mint only).
+
+    Source = central Redis counter (cross-process atomic anti-collision). On ANY
+    Redis failure, degrade to local max+1 with a loud RACE warning (ADR-104 §5
+    graceful degrade — never crash the build). Set BANXE_IL_ALLOCATOR=local to
+    force the offline path explicitly (used by --check-equivalent deterministic runs).
+    """
+    if os.environ.get("BANXE_IL_ALLOCATOR", "redis").lower() == "local":
+        return current_max + 1
+    try:
+        return _redis_allocate(current_max)
+    except Exception as exc:  # RedisUnavailable or import/config error
+        sys.stderr.write(
+            "WARN: Redis allocator unavailable (%s); fallback to local max+1 — "
+            "RACE POSSIBLE if multiple terminals mint concurrently.\n" % exc
+        )
+        return current_max + 1
+
+
+def assign(records, use_allocator=False):
     """Return (numbering: key->int, new_keys: list) without writing.
 
-    Existing keys keep their frozen number; new shards get max+1, ... in
+    Existing keys keep their frozen number; new shards get the next number, in
     (il_ts, session_id, path) order (records is already sorted that way).
     On first run (empty map) this replays the legacy FROZEN-offset numbering,
     so existing shards keep EXACTLY their present IL-NNN.
+
+    use_allocator=True (live mint, write mode) sources each NEW number from the
+    central Redis allocator (ADR-143). use_allocator=False (--check / rebuild)
+    is fully offline + deterministic: it only ever reproduces already-frozen
+    numbers, and any (unexpected) new key falls back to local max+1.
     """
     seq = load_sequence()
     numbering = dict(seq)
@@ -133,8 +211,11 @@ def assign(records):
     for r in records:
         k = shard_key(r)
         if k not in numbering:
-            base += 1
-            numbering[k] = base
+            num = _alloc_next(base) if use_allocator else base + 1
+            if num <= base:  # strict-monotonic clamp (allocator must never regress)
+                num = base + 1
+            base = num
+            numbering[k] = num
             new_keys.append(k)
     return numbering, new_keys
 
@@ -226,7 +307,9 @@ def main(argv=None):
                     help="verify INSTRUCTION-LEDGER.md == rebuild + sequence append-only")
     args = ap.parse_args(argv)
     records = collect()
-    numbering, _new = assign(records)
+    # --check / rebuild: offline + deterministic (no Redis). Live write: central
+    # Redis allocator mints any NEW shard number (ADR-143).
+    numbering, _new = assign(records, use_allocator=not args.check)
     content = render(records, numbering)
     seq_content = dump_sequence(numbering)
 

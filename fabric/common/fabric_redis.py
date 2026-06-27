@@ -92,6 +92,16 @@ class RedisStreams:
     def ping(self) -> bool:
         return self._call("PING") == "PONG"
 
+    def incr(self, key: str) -> int:
+        """Atomic INCR key -> new integer value (cross-process safe).
+
+        Used by the central IL allocator (ADR-143) so concurrent terminals on
+        different worktrees can never mint the same number. Any connect / AUTH /
+        IO failure raises RedisUnavailable (via _call), so callers fail-closed and
+        degrade per ADR-104 §5.
+        """
+        return int(self._call("INCR", key))
+
     def xadd(self, stream: str, fields: Dict[str, str]) -> str:
         flat: List[str] = []
         for k, v in fields.items():
