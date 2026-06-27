@@ -41,6 +41,32 @@ The earlier `reconciliation_engine_v2 → v1` direction ("migrate 4 consumers �
 - **Cross-ref (not duplicated here):** `docs/paybis-dossier/PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md`
   already records this pair as MERGE-PLANNED / PARKED with both engines live + v2's ReconStorePort/HITLProposal.
 
+## Correction note (2026-06-28, ADR-102 fin060 audit on EMI `4f93870`) — fin060 merge-pair direction
+
+The earlier `fin060_generator_v2 → v1` direction ("migrate matrix_scanner + reporting_agent → unify",
+rows §1/§3/§7 below) is **BACKWARDS and SUPERSEDED** (same pattern as the recon correction above).
+Verified facts (EMI `4f93870`): FIN060 is **THREE complementary contours**, not a v2→v1 pair.
+- **`fin060_generator_v2.py` = GOVERNANCE-API canonical** — HITL/CFO gate (I-01/I-24/I-27, BT-006:
+  *never auto-submits*, returns `HITLProposal`), IL-FIN060-01/Phase 51C. Wired `reporting_agent.py →
+  api/routers/fin060_reporting.py` (`/v1/fin060/*`) + `compliance_sync/matrix_scanner.py`. Explicitly
+  *"Does NOT overwrite fin060_generator.py (backward compat)"*.
+- **`fin060_generator.py` (v1) = SUBMISSION engine (REQUIRED)** — PDF render (WeasyPrint) + RegData upload
+  (CASS 15 / PS25-12), `generate_fin060(start,end)→Path`. Wrapped by `regdata_return.py::RealFIN060Generator`
+  (impl of the `FIN060Generator(Protocol)` port) → `api/deps.py` → `/v1/reporting/fin060/*` + `regdata_gabriel_adapter`.
+- **`src/safeguarding/fin060_generator.py` = SEPARATE domain** — safeguarding return-data (`FIN060Return`,
+  `build(...)`, CASS 15.12.4R), wired `api/routers/safeguarding.py` (`/v1/safeguarding…fca-return`).
+- **Corrected status:** the three are **complementary by design** (governance gate / submission engine /
+  safeguarding data) — deleting v2 would regress the I-27/BT-006 HITL gate. **The pair is PARKED**; any
+  consolidation is an **architecture decision** (should the v2 gate wrap the v1 engine via the
+  `FIN060Generator` Protocol port, or stay parallel layers) — no code action without operator + fresh ADR-102.
+- **ADR-102 name collisions (wrong-import risk):** `class FIN060Generator` defined **three times** —
+  `fin060_generator_v2.py` (concrete V2 HITL), `regdata_return.py` (Protocol port),
+  `src/safeguarding/fin060_generator.py` (concrete data-builder) = 1 port + 2 domain impls. `generate_fin060`
+  defined **twice** — `fin060_generator.py` (function→`Path`, PDF) vs `fin060_generator_v2.py`
+  (method→`HITLProposal`); the `generate_fin060_view` in `design_pipeline` is unrelated.
+- **Cross-ref (not duplicated here):** `docs/paybis-dossier/PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md:78`
+  already records this pair as MERGE-PLANNED / PARKED with both live + v2's FIN060Generator+HITLProposal.
+
 ### Pass-1 update log (2026-06-27)
 - Stream **#1 DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock EMI #257 / `36418d9`). Matrix otherwise unchanged; no new orphan deletions; remaining streams (`to_minor_units` extraction, `recon_v2`/`fin060_v2` merge-pairs, `otp`/`sepa` → production) stay OPEN.
 
@@ -69,7 +95,7 @@ The earlier `reconciliation_engine_v2 → v1` direction ("migrate 4 consumers �
 | `services/payment/legacy/legacy_abs_payment_adapter.py` | ~~transitive via bifrost~~ ⚠ **CORRECTED → consumed BY bifrost** (`bifrost_adapter.py:19` imports `AbsPaymentStatus`); direction is bifrost→abs_payment, abs_payment is NOT transitively-live *via* bifrost | LIVE_KEEP (coupled) |
 | `services/payment/legacy/legacy_sepa_adapter.py` | 1 | LIVE_MIGRATE_NEXT |
 | `services/recon/reconciliation_engine_v2.py` | 4 | ⚠ CORRECTED → **CANONICAL live engine, PARKED** (v1 is legacy-cron; direction is v1→v2, not v2→v1 — see Correction note 2026-06-28) |
-| `services/reporting/fin060_generator_v2.py` | 2 | LIVE_MIGRATE_NEXT (merge-pair) |
+| `services/reporting/fin060_generator_v2.py` | 2 | ⚠ CORRECTED → **GOVERNANCE-API canonical (HITL/CFO), PARKED** (v1 = required submission engine; src/safeguarding = separate; direction v2→v1 is wrong — see Correction note 2026-06-28) |
 
 ## 2. ORPHAN_REMOVE_CANDIDATE
 **NONE this pass.** (Legacy SCA/TOTP already removed in EMI #248 / `39742b7`.)
@@ -78,7 +104,7 @@ The earlier `reconciliation_engine_v2 → v1` direction ("migrate 4 consumers �
 | Module | Modern target | Thinnest seam | Blocker |
 |---|---|---|---|
 | ~~`reconciliation_engine_v2`~~ | ~~`recon/reconciliation_engine.py` (v1)~~ | ~~migrate 4 consumers → unify → delete v2~~ ⚠ **SUPERSEDED 2026-06-28** — direction is **v1→v2** (v2 canonical), pair **PARKED**, non-trivial; see Correction note | PARKED (ADR-102) |
-| `fin060_generator_v2` | `reporting/fin060_generator.py` (v1) | migrate matrix_scanner + reporting_agent → unify | scoped PR |
+| ~~`fin060_generator_v2`~~ | ~~`reporting/fin060_generator.py` (v1)~~ | ~~migrate matrix_scanner + reporting_agent → unify~~ ⚠ **SUPERSEDED 2026-06-28** — three complementary contours (v2 governance / v1 submission / src-safeguarding data); pair **PARKED**; see Correction note | PARKED (ADR-102) |
 | `consumer_duty/models_v2` | rename → `models.py` | atomic rename + 12+ import update | ✅ **DONE** (EMI #255, `78207c0`; ruff-debt unblock EMI #257 / `36418d9`) |
 | ~~`bifrost_adapter` (`to_minor_units`)~~ | `services/shared` money util | ~~move helper, repoint open_banking ×2~~ ⚠ **CORRECTED → DE-DUPLICATE** both copies (`bifrost:51` + `open_banking/m24_int_bridge:31`) into a shared money-util (ADR-102); open_banking already uses its own copy. bifrost stays (Wave-D scaffold); de-dup neither parks nor removes it | de-dup (ADR-102) |
 | `legacy_otp_adapter` | `auth/production/{twilio,sendgrid}_otp_adapter` | repoint 4 consumers | provider parity |
@@ -103,7 +129,7 @@ The earlier `reconciliation_engine_v2 → v1` direction ("migrate 4 consumers �
 - **Highest-value next (each its own scoped PR — ADR-102 dup-audit + full-suite green; NOT this pass):**
   1. ✅ **DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock #257 / `36418d9`).
   2. ~~extract `bifrost.to_minor_units → shared` money util (unlocks bifrost + `legacy_abs_payment` parking)~~ ⚠ **CORRECTED → DE-DUPLICATE `to_minor_units`** (bifrost:51 + open_banking/m24_int_bridge:31) into a `services/shared` money-util (ADR-102). It does NOT unlock parking — bifrost is a Wave-D scaffold (already PARKED) and `legacy_abs_payment` is its dependency, not its dependent.
-  3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs. *(⚠ recon pair: direction is **v1→v2**, currently **PARKED** — see Correction note 2026-06-28; `fin060` pair unaffected.)*
+  3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs. *(⚠ **both PARKED** — recon: direction is **v1→v2**; fin060: **three complementary contours** (v2 governance / v1 submission / src-safeguarding), not a v2→v1 merge — see the two Correction notes 2026-06-28.)*
   4. `legacy_otp` / `legacy_sepa` → production adapters.
   5. **GATED on PAYBIS Wave C:** `crypto_legacy` router + `ledger/legacy/legacy_crypto_*` cutover.
 
