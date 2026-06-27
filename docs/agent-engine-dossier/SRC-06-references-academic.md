@@ -37,3 +37,16 @@
 ## Pending
 
 Точные arxiv-идентификаторы требуют уточнения от оператора.
+
+---
+
+## AMLSim — VERIFIED-LOCAL (добавлено 2026-06-28)
+
+[ФАКТ] AMLSim git-репозиторий присутствует локально на Legion: `/home/mmber/AMLSim` (git repo).
+Статус: **VERIFIED-LOCAL** — источник доступен для offline-анализа synthetic transaction data.
+
+**Назначение (из SRC-06 §AMLSim):** генерация синтетических AML-транзакций для backtesting
+и обучения fraud/AML-агентов без реальных ПД.
+
+**Implikationen:** при разработке Sprint A (design contracts для AML-агентов) AMLSim
+может быть использован как test-data generator. Внедрение в pipeline = Sprint B/infra-scope.

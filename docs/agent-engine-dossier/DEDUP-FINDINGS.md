@@ -83,3 +83,33 @@ SRC-09 §Coordination Layer thesis.
 - **Shell-аудит источника:** A-004 dup-check @ origin/main 267172e
 - **Принцип:** append-only. Этот файл НЕ заменяет и НЕ дублирует перечисленные артефакты.
 - **Обновление:** при поступлении SRC-03/04/05/08 проверить этот файл на новые дубли.
+
+---
+
+## OSS Status Correction (2026-06-28, append)
+
+По результатам shell-аудита D4 @ origin/main и docs/COMPLIANCE-MATRIX.md,
+§2 "OSS Prior-Art" уточняется: статусы PRIOR-ART → точные production-статусы.
+
+| Инструмент | BANXE-STATUS | Источник | Примечание |
+|-----------|-------------|---------|-----------|
+| **LangGraph** | **DEPLOYED** | COMPLIANCE-MATRIX: S7-06 ✅ DONE, C-27, S11-11, S12-13 (Aider) | SAR workflow, KYC orchestration, Marble+Jube+LangGraph, Ollama+LangGraph+n8n. НЕ кандидат — уже в продакшн. |
+| **AutoGen** | **DEPLOYED** | COMPLIANCE-MATRIX: S7-08 ✅ DONE, C-29 AI CHAT | Advisory/customer-facing AI. DEPLOYED. |
+| **Temporal** | **NOT_STARTED** (infra-scope) | COMPLIANCE-MATRIX: FA-11 ❌ NOT_STARTED; ADR-060§6 | Saga, exactly-once payments. Replaces n8n (backlog). Runtime-scope → `banxe-ai-infrastructure`. НЕ планировать в banxe-architecture. |
+| **Qdrant** | **PLANNED** | COMPLIANCE-MATRIX + SRC-02 §Vector Memory | Векторная память агентов поверх ClickHouse. Не развёрнут (:6333 NOT LISTENING). |
+| **MCP orchestration** | **PARTIAL** | COMPLIANCE-MATRIX: S12-16 | LangGraph ✅ / Lerian MCP ❌. Оркестрация через MCP частично реализована. |
+| **GigaAgent** | **BLOCKED** | I-02 (RU-jurisdiction) | Санкционная юрисдикция. Не рассматривать. |
+| **Mem0** | **EVAL** | SNAPSHOT-2026-05-06-sber-oss-emi-block.md | Persistent agent memory; не развёрнут; оценка завершена. |
+
+**[ВЫВОД]** LangGraph и AutoGen НЕ являются «кандидатами» для внедрения —
+они уже DEPLOYED. Досье движка рассматривает их как существующую инфраструктуру
+(аналогично planner.yaml, HITL-gates), на которую опирается coordination layer.
+
+**[ВЫВОД]** Temporal = единственный NOT_STARTED runtime-инструмент; по ADR-060§6
+и ADR-133 принадлежит `banxe-ai-infrastructure` sprint (Sprint B).
+
+**Скорректированная классификация для Sprint A/B:**
+- Sprint A (banxe-architecture): design contracts, ADR-обновления, soul-файлы,
+  обогащение плановых паспортов — поверх DEPLOYED LangGraph/AutoGen.
+- Sprint B (banxe-ai-infrastructure): Temporal saga-wiring, Qdrant deployment,
+  Redis-lease coordination, evo1/evo2 runtime wiring.

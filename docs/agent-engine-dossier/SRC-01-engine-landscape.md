@@ -40,3 +40,25 @@
 ## Pending
 
 SRC-03/04/05/08 могут содержать дополнительный ландшафтный материал. До их загрузки — [НЕИЗВЕСТНО].
+
+---
+
+## BANXE-STATUS mapping (добавлено 2026-06-28)
+
+Привязка OSS-кандидатов из Landscape §2 к production-статусам BANXE-CORE-ENGINE.
+Источник: docs/COMPLIANCE-MATRIX.md (verified D4 @ origin/main).
+
+| OSS-кандидат (из Landscape) | BANXE-STATUS | COMPLIANCE-MATRIX ref |
+|----------------------------|-------------|----------------------|
+| LangGraph | DEPLOYED | S7-06/C-27/S11-11/S12-13 ✅ DONE |
+| AutoGen | DEPLOYED | S7-08/C-29 ✅ DONE |
+| Temporal | NOT_STARTED (infra-scope) | FA-11 ❌ → banxe-ai-infrastructure |
+| Qdrant | PLANNED | — (not in matrix; ClickHouse = base) |
+| MCP orchestration | PARTIAL | S12-16 (LangGraph✅/Lerian❌) |
+| GigaAgent | BLOCKED | I-02/RU |
+| Mem0 | EVAL | SNAPSHOT-2026-05-06 |
+| Manus (closed-source) | REFERENCE | SRC-01 §1 (benchmark only) |
+
+**[ВЫВОД]** Из 10 оцениваемых OSS-инструментов 2 уже DEPLOYED (LangGraph, AutoGen),
+1 — PARTIAL (MCP), 1 — PLANNED (Qdrant), 1 — NOT_STARTED/infra (Temporal),
+1 — BLOCKED (GigaAgent), остальные — REFERENCE/EVAL.
