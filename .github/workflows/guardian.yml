@@ -48,15 +48,18 @@ jobs:
   guardian-ledger:
     name: guardian-ledger
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    # Run on pull_request AND merge_group so the required status context resolves
+    # to success inside the merge queue (ALLGREEN) instead of skipping → timeout.
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Ledger-coupling gate (ADR-056, ADR-060 shard bridge)
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          # pull_request → PR head/base; merge_group → the merge-group SHAs.
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.event.merge_group.head_sha }}
         run: |
           set -e
           LEDGER=INSTRUCTION-LEDGER.md
@@ -91,6 +94,8 @@ jobs:
           EVENT: ${{ github.event_name }}
           PR_BASE: ${{ github.event.pull_request.base.sha }}
           PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          MG_BASE: ${{ github.event.merge_group.base_sha }}
+          MG_HEAD: ${{ github.event.merge_group.head_sha }}
           PUSH_BEFORE: ${{ github.event.before }}
           PUSH_AFTER: ${{ github.sha }}
         run: |
@@ -98,6 +103,10 @@ jobs:
           LEDGER=INSTRUCTION-LEDGER.md
           if [ "$EVENT" = "pull_request" ]; then
             BASE="$PR_BASE"; HEAD="$PR_HEAD"
+          elif [ "$EVENT" = "merge_group" ]; then
+            # In the merge queue the append-only (ADR-057) check must run for real,
+            # diffing the merge-group base..head — not skip via an empty push 'before'.
+            BASE="$MG_BASE"; HEAD="$MG_HEAD"
           else
             BASE="$PUSH_BEFORE"; HEAD="$PUSH_AFTER"
           fi
