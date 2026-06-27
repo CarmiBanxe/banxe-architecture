@@ -19364,3 +19364,28 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Deliverable:** additive dated Amendment in docs/adr/ADR-138-neuronext-retired-paybis-sole-crypto-provider.md — distinguishes Bittrex(exchange) from Bitrix(CMS), records ELIMINATED status + new guard + closed gap. Single best home (ADR-138 = crypto-provider retirement ADR); no duplication (ADR-102: no pre-existing bittrex elimination+guard record; pass-1 dossier §6 had only a brief note).
 - **Perimeter / canon:** docs+ledger only; NO EMI/runtime code; bitrix+neuronext guards intact (not weakened); additive amendment (original ADR-138 decision unchanged); append-only build_ledger; sub-B/factory → MAIN per §71/§74 (NO merge — operator decides). RAR/secrets untouched.
 - **Refs:** EMI PR #262 (4f93870); ADR-138; ADR-102; ADR-119/I-28; pass-1 dossier §6.
+
+---
+
+### IL-627 - agent-factory-gapregister-canonical-status-sync-20260627 @ 2026-06-28T09:15:00Z
+
+- **il_ts:** 2026-06-28T09:15:00Z
+- **session_id:** agent-factory-gapregister-canonical-status-sync-20260627
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-gapregister-canonical-status-sync/IL-2026-06-28T09-15-00Z--75ab50.md`
+
+### GAP-REGISTER canonical status reconciliation — 2026-06-27
+
+- **Objective:** Reconcile stale GAP statuses per FULL-PROJECT-INSTALLATION-AUDIT-2026-06-21 (76% L2-complete, all OPEN code-GAPs have services installed on evo1).
+- **Changes applied to `docs/GAP-REGISTER.md`:**
+  - **GAP-005 (E-safeguard):** `🟡 IN PROGRESS` → `✅ DONE` — superseded by GAP-087 LIVE (recon Result=success, banxe-recon.timer enabled 2026-06-27; CASS 15 safeguarding engine production-operational)
+  - **GAP-064 (A-edd):** `🟡 IN PROGRESS` → `🟢 L2-COMPLETE` — services/adverse_media/ installed on evo1 (SP-L3DOC + ADR ratification remain)
+  - **GAP-068 (Crypto-AML graph):** `🟡 IN PROGRESS` → `🟢 L2-COMPLETE` — services/crypto_aml_graph/ installed on evo1 (SP-L3DOC + ADR-111 ratification remain)
+  - **GAP-069 (Voice AI):** `🟡 IN PROGRESS` → `🟢 L2-COMPLETE` — services/voice_support/ installed on evo1 (SP-L3DOC + ADR-112 ratification remain)
+  - **GAP-070 (Quant advisory):** `🟡 IN PROGRESS` → `🟢 L2-COMPLETE` — services/quant_advisory/ installed on evo1 (SP-L3DOC + ADR-113 ratification remain)
+  - **GAP-087 (S-PROD-1 Safeguarding):** `🔴 OPEN` → `✅ LIVE` — production delivery confirmed (PR #218 Leg C + 3-leg tie-out merged, recon Result=success, banxe-recon.timer activated 2026-06-27, CASS 15 §7.15 daily reconciliation active)
+  - **GAP-079..086 (external owner debts):** untouched (BT-010 FCA RegData key, ufw/Tailscale ACL, ss1 CNIL, bus-factor, product C-02.1/C-37.3 remain genuine owner work)
+- **Evidence:** FULL-PROJECT-INSTALLATION-AUDIT-2026-06-21; service directories verified on evo1 (prior factory session); banxe-emi-stack PR #218 (Leg C rail-port + 3-leg tie-out); banxe-recon timer activation log
+- **Perimeter / canon:** docs plane only; NO code changes in any codebase; Append-only: header note + status updates in `docs/GAP-REGISTER.md` + this IL record. Factory-prepared, operator HITL for merge.
+- **Refs:** `docs/GAP-REGISTER.md` (header reconciliation note + GAP-005/064/068/069/070/087 status updates); FULL-PROJECT-INSTALLATION-AUDIT-2026-06-21 (evidential basis); banxe-emi-stack PR #218; ADR-140 (residual debt register v12, amended 1 for S-PROD-1 GAP-087).
