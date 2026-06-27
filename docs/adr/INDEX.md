@@ -82,11 +82,12 @@ and is now 4 (placeholder-only).
 | ADR-076 | RAILGUN Integration Decision Gate                                                                    | PENDING LEGAL REVIEW                            | —          | [decisions/ADR-076-railgun-integration-decision-gate.md](../../decisions/ADR-076-railgun-integration-decision-gate.md) |
 | ADR-077 | Guardian -> GitHub webhook auth: GitHub App vs PAT | ACCEPTED | 2026-05-22 | [decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md](../../decisions/ADR-077-guardian-github-webhook-auth-app-vs-pat.md) |
 
-## Real ADR files in `docs/adr/` (factory governance, 18 files)
+## Real ADR files in `docs/adr/` (factory governance, 19 files)
 
 | Number  | Title                                                                                              | Status   | Date       | Path |
 |---------|----------------------------------------------------------------------------------------------------|----------|------------|------|
 | ADR-139 | Guardian System — self-hosted PR-audit service (Factory :8195 + Project :8196) [comprehensive] | ACCEPTED | 2026-06-26 | [./ADR-139-guardian-system.md](./ADR-139-guardian-system.md) |
+| ADR-140 | Residual Debt Register — Concept v12.0 Verification (8 non-technical debts) | ACCEPTED | 2026-06-27 | [./ADR-140-residual-debt-register-v12.md](./ADR-140-residual-debt-register-v12.md) |
 | ADR-039 | Claude Code permissions reclassification                                                            | Accepted | 2026-05-05 | [./ADR-039-claude-code-permissions-reclassification.md](./ADR-039-claude-code-permissions-reclassification.md) |
 | ADR-040 | AI Execution Policy — Meta-Plane vs Inference-Plane                                                  | Accepted | 2026-05-03 | [./ADR-040-ai-execution-policy.md](./ADR-040-ai-execution-policy.md) |
 | ADR-041 | GLM-4.5-Air Distributed Inference (USB4 RPC)                                                         | Accepted | 2026-05-03 | [./ADR-041-glm45-air-distributed.md](./ADR-041-glm45-air-distributed.md) |
