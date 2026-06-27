@@ -291,7 +291,6 @@
   "agent-factory-sub-b-emi-impl-state__e87e7562a2c3": 538,
   "agent-factory-governance-adr-anthropic-finance-templates__00d1abe49484": 539,
   "agent-factory-governance-claude-permissions-hardening__86396a3bf6c1": 540,
-  "agent-factory-handoff-0625__session0625": 540,
   "agent-factory-sub-b-safeguarding-coverage-dedup__df0cff86a0b1": 541,
   "agent-factory-governance-adr-123-operator-apply-runbook__528049c75b56": 542,
   "agent-factory-sub-b-finrpt-content-core__850ca097b7c0": 543,
@@ -371,5 +370,6 @@
   "agent-factory-governance-merge-serialize-gate__a822a9472228": 617,
   "agent-factory-dossier-correction-payment-cluster__a07bb1f687d7": 618,
   "agent-factory-spl3doc-archxref__e1bcbe379ff4": 619,
-  "agent-factory-session-handoff-2026-06-27__241f06b0b071": 622
+  "agent-factory-session-handoff-2026-06-27__241f06b0b071": 622,
+  "agent-factory-governance-orphan-shardkey-prune__bd81026ba2b3": 623
 }

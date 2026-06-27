@@ -213,6 +213,35 @@ def _alloc_next(current_max):
         return current_max + 1
 
 
+def find_orphans(records, sequence):
+    """Return [(key, value), ...] for ORPHAN keys in `sequence`: keys in the
+    ACTIVE range (value > frozen_offset) that have NO live shard in entries/.
+
+    These are stale index-keys left behind when a branch's shard path (hence its
+    shard_key hash) changed on a forced-update/rebuild — the old key lingers in
+    IL-SEQUENCE.json with no backing shard (the orphan-from-rebase class, ADR-144).
+    Keys with value <= frozen_offset are FROZEN-ARCHIVE entries that legitimately
+    have no entries/ shard — they are NEVER orphans and are never reported here.
+    """
+    live = {shard_key(r) for r in records}
+    fmax = frozen_offset()
+    return [(k, v) for k, v in sequence.items() if k not in live and v > fmax]
+
+
+def prune_orphans(numbering, records):
+    """Remove ORPHAN keys (find_orphans) from `numbering` IN PLACE.
+
+    Pruning a stale index-key is NOT a violation of append-only PRIOR ENTRIES
+    (ADR-057/059-A): an orphan has no shard record in the ledger — it is debris
+    in the index map, not a recorded IL. Live shard numbers and the FROZEN range
+    are untouched (ADR-119: live numbers stay frozen). Returns removed [(k,v),...].
+    """
+    removed = find_orphans(records, numbering)
+    for k, _v in removed:
+        del numbering[k]
+    return numbering, removed
+
+
 def assign(records, use_allocator=False):
     """Return (numbering: key->int, new_keys: list) without writing.
 
@@ -221,13 +250,14 @@ def assign(records, use_allocator=False):
     On first run (empty map) this replays the legacy FROZEN-offset numbering,
     so existing shards keep EXACTLY their present IL-NNN.
 
-    use_allocator=True (live mint, write mode) sources each NEW number from the
-    central Redis allocator (ADR-143). use_allocator=False (--check / rebuild)
-    is fully offline + deterministic: it only ever reproduces already-frozen
-    numbers, and any (unexpected) new key falls back to local max+1.
+    Orphan index-keys are PRUNED first (ADR-144) so they neither inflate `base`
+    nor linger in the written map. use_allocator=True (live mint, write mode)
+    sources each NEW number from the central Redis allocator (ADR-143).
+    use_allocator=False (--check / rebuild) is fully offline + deterministic.
     """
     seq = load_sequence()
     numbering = dict(seq)
+    numbering, _orphans = prune_orphans(numbering, records)  # ADR-144 — drop stale index-keys
     base = max(numbering.values()) if numbering else frozen_offset()
     new_keys = []
     for r in records:
@@ -284,14 +314,24 @@ def head_sequence():
         return None
 
 
-def check_append_only(numbering):
-    """Assert IL-SEQUENCE.json is append-only vs git HEAD: no existing key
-    removed, no existing value mutated. Returns error string or None."""
+def check_append_only(numbering, records):
+    """Assert IL-SEQUENCE.json is append-only vs git HEAD: no RECORDED key
+    removed, no existing value mutated. Returns error string or None.
+
+    Removal of an ORPHAN index-key (no live shard, active range — ADR-144) is
+    PERMITTED: an orphan is not a recorded IL, so pruning it does not violate
+    append-only of prior entries. Removal of a LIVE shard's key, or of any
+    frozen key, is still a violation.
+    """
     head = head_sequence()
     if head is None:
         return None  # first introduction / no git context — nothing to compare
+    live = {shard_key(r) for r in records}
+    fmax = frozen_offset()
     for k, v in head.items():
         if k not in numbering:
+            if k not in live and v > fmax:
+                continue  # ADR-144: orphan prune is allowed (stale index-key, no shard)
             return "IL-SEQUENCE.json append-only violation: key removed: " + k
         if numbering[k] != v:
             return ("IL-SEQUENCE.json append-only violation: value mutated for "
@@ -351,7 +391,17 @@ def main(argv=None):
                 "Run: python ledger/build_ledger.py\n"
             )
             rc = 1
-        ao = check_append_only(numbering)
+        # ADR-144: orphan detection on the COMMITTED sequence — fail loudly (do NOT
+        # silently prune) so a regenerate is forced. Offline + deterministic.
+        orphans = find_orphans(records, load_sequence())
+        if orphans:
+            sys.stderr.write(
+                "FAIL: ORPHAN shard_key(s) in IL-SEQUENCE.json without an entries shard: "
+                + ", ".join("%s=IL-%03d" % (k, v) for k, v in sorted(orphans, key=lambda x: x[1]))
+                + " — run `python ledger/build_ledger.py` to prune them (ADR-144).\n"
+            )
+            rc = 1
+        ao = check_append_only(numbering, records)
         if ao:
             sys.stderr.write("FAIL: " + ao + "\n")
             rc = 1
@@ -363,7 +413,7 @@ def main(argv=None):
             sys.stdout.write("ledger-build check OK\n")
         return rc
 
-    ao = check_append_only(numbering)
+    ao = check_append_only(numbering, records)
     if ao:
         sys.stderr.write("FAIL: " + ao + "\n")
         return 1
