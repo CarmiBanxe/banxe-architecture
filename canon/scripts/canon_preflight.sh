@@ -15,10 +15,8 @@ done
 
 # Check active profile
 PROFILE="${CANON_PROFILE:-DEV}"
-if [ "$PROFILE" = "LEGAL" ] && [ ! -f "$CANON_DIR/modules/FR_MODULE.md" ]; then
-  echo "CANON PREFLIGHT FAIL: LEGAL profile requires FR_MODULE.md"
-  ERRORS=$((ERRORS + 1))
-fi
+# FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
+# FR_MODULE.md is no longer required in banking canon — LEGAL profile passes without it.
 
 if [ $ERRORS -gt 0 ]; then
   echo "CANON PREFLIGHT: $ERRORS errors — fix before proceeding"
