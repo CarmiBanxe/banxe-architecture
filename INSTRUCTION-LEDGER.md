@@ -19310,3 +19310,21 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Companion:** banxe-emi-stack PR #260 (SP-L3DOC main register)
 - **Perimeter / canon:** docs-plane only; NO code changed; append-only (Boundary refs appended to existing GAP rows, original content preserved); sub-B/factory → MAIN per §71/§74.
 - **Refs:** SP-THIN verification 2026-06-27; ADR-119/I-28; companion emi-stack PR #260
+
+---
+
+### IL-622 - agent-factory-session-handoff-2026-06-27 @ 2026-06-27T22:00:00Z
+
+- **il_ts:** 2026-06-27T22:00:00Z
+- **session_id:** agent-factory-session-handoff-2026-06-27
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-session-handoff-2026-06-27/IL-2026-06-27T22-00-00Z--session-handoff-2026-06-27.md`
+
+### Session handoff — canonical state & open-tasks doc for new session resume (docs-plane)
+
+- **Objective:** Single canonical resume doc so a NEW Perplexity/factory session continues seamlessly. Additive docs-only; no code/secrets/RAR.
+- **Deliverable:** docs/sessions/SESSION-HANDOFF-STATE-AND-TASKS-2026-06-27.md — (A) factual state with verified SHAs (EMI #245..#261 @ 3f418d1; ARCH #815..#834 @ 45c5a5c; legacy 107 services/~20 modules; residual-gap 0; crypto-trading ADR-083 track), (B) open tasks with gates (rationalization streams, crypto-trading A/B/C, operator gates, PARKED list, net-new), (C) canon/protocol, appendix = verbatim REFACTOR-STATUS recurring prompt.
+- **Bases (verified):** EMI origin/main 3f418d1 (#261); ARCH origin/main 45c5a5c (#835). banxe-architecture IL max=619; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **Perimeter / canon:** docs-plane only; NO code / .canon/rules / prior IL / merged ADR modified; cites canon, does not duplicate; append-only build_ledger; sub-B/factory → MAIN per §71/§74. RAR not unpacked.
+- **Refs:** ADR-083/021/102/103/119/114/138; §71; pass-1 dossier IL-610/614/618; MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.
