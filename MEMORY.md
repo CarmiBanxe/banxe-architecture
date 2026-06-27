@@ -237,7 +237,7 @@ Key completed gaps (Sprint 4):
 | `modules/DEV.md` | BANXE-специфика (I-21..I-25, B-01..B-06, CLASS_A/B/C/D) |
 | `modules/DECISION.md` | Framework принятия решений, ADR-шаблон |
 | `modules/LEGAL.md` | Юридический профиль (guiyon, ss1) |
-| `modules/FR_MODULE.md` | Французское право (надстройка над LEGAL) |
+| ~~`modules/FR_MODULE.md`~~ | [MOVED → legal-reference-fr] Французское право (PLAN_LEGAL_SEPARATION_2026-05-20) |
 | `rules/DIALOGUE.md` | КАНОН 2+7: QRAA + консультационный протокол |
 | `rules/COLLABORATION.md` | КАНОН 1+9: роли агентов + изоляция проектов |
 | `rules/AUTOMATION.md` | КАНОН 3+4+10: MEMORY.md, скрипты, auto-git |

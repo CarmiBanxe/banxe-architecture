@@ -18981,3 +18981,31 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Proof:** docs/governance-only; concept_only; **no runtime, no code, no config-file/stub, no secret, no import** of `github.com/zhangfengcdt/memoir`. ADR-136/137/agentmemory/CMS/PRECOND-01..05 bodies untouched (only referenced). Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-27T04:00:00Z` strictly > origin/main max. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger` mints max+1 over current `origin/main`; **re-minted 568 → 596 → 601 → IL-602 at successive rebase-before-merge** as main advanced (#815 took IL-568..595; #816 took 596..599; #813/ADR-139 took 600; #819/ADR-140 took 601 → current main max 601 → next free 602). ADR-136/137 unchanged throughout. Validated by live ADR-133 uniqueness gate (540 allowlisted). Isolated worktree off origin/main (ADR-120; rebased onto current main 701c774); namespace ADR-060; no git ops outside this branch.
 - **Status:** DONE — Precondition #6 spec PROPOSED (governance/concept-only). Draft squash PR; DO NOT MERGE — STOP before merge, operator HITL.
 - **Refs:** `docs/governance/MEMOIR-PILOT-PRECOND-06-sensitive-out-of-scope.md` (NEW); ADR-137 (Precondition #6; L67-68), MEMOIR-PILOT-PRECOND-01/03/05 (compose) + 02/04 (siblings), ADR-136 (envelope), ADR-130/127 (no authority), ADR-135 (held-out gate), ADR-133 (uniqueness gate), ADR-102; `github.com/zhangfengcdt/memoir` (external ref, NOT imported). Draft PR — operator HITL.
+
+---
+
+### IL-603 - agent-factory-legal-sep-remove-fr-module @ 2026-06-27T10:30:00Z
+
+- **il_ts:** 2026-06-27T10:30:00Z
+- **session_id:** agent-factory-legal-sep-remove-fr-module
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-legal-sep-remove-fr-module/IL-2026-06-27T10-30-00Z--legal-sep-remove-fr-module.md`
+
+### Legal separation residual: remove FR_MODULE.md from banxe-architecture → legal-reference-fr
+
+- **Instrukciya:** PLAN_LEGAL_SEPARATION_2026-05-20 mandates removing legal artifacts from banking repos. FR_MODULE.md (canon/modules/FR_MODULE.md) is a personal French law reference module (criminal procedure, child custody, police deontology — guiyon/laval/SCI context; banking_refs=0). It was missed in the original separation. Task: copy to legal-reference-fr, remove from banxe-architecture, update all 7 reference files. Two PRs, neither merged.
+- **Banking compliance check (VERIFIED SAFE):** FR_MODULE v3.1 — zero FCA/EMI/CASS/PSD2/AML content. Activation references in canon files (CANON.md, LEGAL.md, CORE.md) describe personal-assistant profile routing, not banking compliance rules. Safe to remove from banking repo without any regulatory or operational impact.
+- **Destination decision:** `CarmiBanxe/legal-reference-fr` — "France legal reference: Code civil + Légifrance dumps". FR_MODULE content (CPP, Code civil, Code pénal, Légifrance, Judilibre, ArianeWeb) matches repo purpose. No `legal-canon` repo exists. Provenance header added to destination copy.
+- **Removed:** `canon/modules/FR_MODULE.md` (DELETE, 7 pages French law procedure module, v3.1-banxe 2026-03-30)
+- **References updated (7 files, no lines deleted — only annotations added):**
+  - `canon/CANON.md` — tree diagram + 4 profile table entries: note → legal-reference-fr
+  - `canon/modules/LEGAL.md` — §5 "Взаимодействие с FR_MODULE": added [LEGAL SEPARATION] block
+  - `canon/modules/CORE.md` — KA-09 activation line: note → legal-reference-fr
+  - `AGENTS.md` — 2 CANON listing lines: removed FR_MODULE.md, note → legal-reference-fr
+  - `docs/COLLAB.md` — instruction hierarchy line: note → legal-reference-fr
+  - `MEMORY.md` — modules table: strikethrough + [MOVED → legal-reference-fr]
+- **NOT updated (historical archives):** `.sync-backup-20260406-*/` (tracked but are frozen snapshots), `docs/sessions/SESSION-2026-05-10-UNIFIED-CANON-ROADMAP.md` (historical session record).
+- **GAP note:** This is a legal-separation residual found post-V12.0 verification. To be registered as GAP-087 after PR #819 (ADR-140 GAP-079..086) merges onto main.
+- **Legal repo PR:** `CarmiBanxe/legal-reference-fr` — branch `add/fr-module-from-banxe` adds `modules/FR_MODULE.md` with provenance header.
+- **Refs:** `canon/modules/FR_MODULE.md` (removed); `CarmiBanxe/legal-reference-fr/modules/FR_MODULE.md` (destination); PLAN_LEGAL_SEPARATION_2026-05-20; ADR-140 §RD-07 (ss1/legal domain same track); IL-603.

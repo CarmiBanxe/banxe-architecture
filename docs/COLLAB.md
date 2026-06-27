@@ -108,7 +108,7 @@ YOU → Claude Code (architect/orchestrator)
 Agents follow instructions in this priority order:
 
 1. **Explicit user instruction** (highest authority)
-2. **CANON** (`~/developer/canon/`) — universal rules (CORE.md, DEV.md, FR_MODULE.md …)
+2. **CANON** (`~/developer/canon/`) — universal rules (CORE.md, DEV.md, … FR_MODULE.md → legal-reference-fr)
 3. **Repository-level contracts**:
    - `CLAUDE.md` — project context
    - `AGENTS.md` — agent execution instructions
