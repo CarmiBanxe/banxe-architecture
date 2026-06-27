@@ -37,3 +37,22 @@ No runtime code here; no cross-repo write; no PAYBIS adapter implementation (sep
 
 ## Related
 ADR-108 (distribution model), ADR-114 (Travel Rule / PAYBIS CASP), ADR-036 (CryptoCompliancePort / TR gate), ADR-111 (crypto-AML graph); `services/ledger/crypto_ledger_port.py`; residual-gap register IL-516; GAP-REGISTER (NeuroNext/Bitrix sunset). FATF R.16, UK MLR 2017, MiCA.
+
+## Amendment (2026-06-28) — Bittrex (exchange) ≠ Bitrix (CMS): ELIMINATED + forward-guarded
+
+Additive clarification (the original Context conflated two distinct retired components; this does **not**
+alter any decision above):
+
+- **Bittrex** = the retired crypto **exchange** (legacy `neuron`/`fast-exchange` lineage). **Bitrix / битрикс**
+  = the unrelated CMS/CRM platform. The original "zero `bitrix`" audit line did **not** cover Bittrex.
+- **Status — Bittrex = ELIMINATED.** Live audit on banxe-emi-stack origin/main `4f93870`: repo-wide
+  `git grep -il 'bittrex'` = **0** (code, tests, docs, config). Bittrex was never ported (greenfield rebuild);
+  consistent with this ADR's NeuroNext/PAYBIS-sole-provider canon.
+- **Forward-guard added.** A prior guard gap existed: `banxe-no-bitrix-reintroduction` (regex
+  `(?i)(bitrix|битрикс)`) does **not** match `bittrex`, so the exchange was unguarded. Closed by EMI **PR #262**
+  (squash-merge `4f93870`): new Semgrep rule **`banxe-no-bittrex-reintroduction`** — `pattern-regex '(?i)bittrex'`,
+  `languages: [generic]`, `severity: ERROR`, paths include `services/app/src/api/config`, exclude
+  `tests/docs/.semgrep`. CI now fails on any future Bittrex reintroduction.
+- **Unchanged:** `banxe-no-bitrix-reintroduction` and `banxe-no-neuronext-reintroduction` remain intact (not
+  weakened). PAYBIS stays the sole external crypto provider (this ADR's core decision).
+- **Refs:** EMI PR #262 (`4f93870`, `.semgrep/banxe-rules.yml`); `docs/refactor-legacy/EMI-LEGACY-RATIONALIZATION-PASS-1-2026-06-27.md` §6.
