@@ -471,4 +471,61 @@ redis-cli -h <evo1-ip> GET banxe:il:counter
 
 ---
 
+## 7. Cross-Reference to Intake Dossier (#838, merged — ad99f63)
+
+> Append-only cross-reference. PR #838 merged to main 2026-06-28.
+> Source: `docs/agent-engine-dossier/` (ad99f63).
+> DO NOT copy dossier content here — only path references.
+
+### 7.1 GAP: Semantic Memory Index → Dossier Status
+
+- **Dossier path:** `docs/agent-engine-dossier/VERIFIED-RUNTIME-SNAPSHOT.md` §Models
+- **Dossier status:** Qdrant=PLANNED; port :6333 confirmed NOT LISTENING at snapshot time (2026-06-28)
+- **ADR reference:** ADR-136 (Shared Memory Substrate, PROPOSED), ADR-137 (Memoir Pilot, ACCEPTED/deferred)
+- **Cross-ref verdict:** CONSISTENT — gap confirmed by both audit and dossier snapshot
+
+### 7.2 GAP: Orchestration Spine / Intent Dispatcher L1→L2 → Dossier Status
+
+- **Dossier path:** `docs/agent-engine-dossier/SRC-09-preaudit-synthesis.md` §L0 Fleet
+- **Dossier status:** `docs/canon/passports/planner.yaml` EXISTS (verified); intent dispatcher between L1→L2 NOT deployed (governance layer only)
+- **ADR reference:** ADR-045 (Intent-First Architecture, ACCEPTED); ADR-060 §6 (runtime → banxe-ai-infrastructure scope)
+- **Cross-ref verdict:** CONSISTENT — planner passport present but spine not wired
+
+### 7.3 GAP: A2A Contract (Agent-to-Agent Communication) → Dossier Status
+
+- **Dossier path:** не подтверждено (Q3 grep пуст по всем SRC-* файлам)
+- **Dossier status:** НЕ ПОКРЫТ — A2A message schema absent from all ingested dossier SRC files
+- **Cross-ref verdict:** ⚠ NOVELTY — this gap is NOT addressed in the merged dossier. Requires separate specification in a future SRC or ADR.
+- **Recommendation:** Flag as input for next dossier corpus acceptance session (SRC-03/04/05/08 PENDING-INTAKE)
+
+### 7.4 GAP: Tool Registry / MCP Binding → Dossier Status
+
+- **Dossier path:** `docs/agent-engine-dossier/SRC-01-engine-landscape.md` §BANXE-STATUS column
+- **Dossier status:** MCP=PARTIAL (S12-16): LangGraph MCP ✅ DEPLOYED / Lerian MCP ❌ NOT DEPLOYED
+- **ADR reference:** ADR-004 (MCP tooling boundary)
+- **Cross-ref verdict:** CONSISTENT — partial MCP binding confirmed by both audit and dossier; central tool registry absent in both
+
+### 7.5 GAP: Execution Sandbox Contract → Dossier Status
+
+- **Dossier path:** `docs/agent-engine-dossier/SRC-07-constraints-guardrails.md` §Autonomy levels
+- **Dossier status:** Autonomy L1–L4 defined via ADR-128 + HITL-MATRIX.yaml; sandbox execution contract (isolation spec, resource limits, escape-hatch rules) NOT formalized in any SRC
+- **ADR reference:** ADR-128 (HITL gates), agent-authority.md
+- **Cross-ref verdict:** CONSISTENT — levels defined, contract absent; gap stands in both documents
+
+---
+
+## 8. Audit Metadata Update (Cross-Reference Addition)
+
+| Field | Value |
+|-------|-------|
+| Cross-ref added | 2026-06-28 (rebase + §7 append) |
+| Dossier source | PR #838 merged (ad99f63) |
+| Cross-ref coverage | 5/5 GAPs linked to dossier sections |
+| NOVELTY gaps | 1 (A2A Contract — §7.3) |
+| Orphan check | ADR-144: 0 (verified post-rebase) |
+| Mutations to existing content | ZERO (§1–§6 unchanged) |
+| New section size | ~40 lines (append-only §7–§8) |
+
+---
+
 **END OF AUDIT REPORT**
