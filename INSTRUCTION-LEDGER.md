@@ -19031,3 +19031,21 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Proof:** 4 files changed (14 ins / 13 del), 0 functional LOC added. `build_ledger.py` → INSTRUCTION-LEDGER.md + IL-SEQUENCE.json regenerated. `build_ledger.py --check` exit 0. Semgrep 0 findings. Branch per ADR-060.
 - **Status:** DONE — 4 scripts fixed; LEGAL/mixed profiles no longer fail due to missing FR_MODULE.md. DO NOT MERGE — operator review required.
 - **Refs:** `canon/scripts/canon_preflight.sh` (modified); `canon/scripts/check-canon.sh` (modified); `canon/scripts/sync-to-project.sh` (modified); `canon/scripts/activate-profile.sh` (modified); PR #820 (source of regression); IL-603 (FR_MODULE legal-sep); ADR-140 (GAP-085 reference in comment); ADR-056/057/060 (ledger/branch conventions).
+
+---
+
+### IL-605 - agent-factory-governance-ledger-serialization-procedure @ 2026-06-27T11:15:00Z
+
+- **il_ts:** 2026-06-27T11:15:00Z
+- **session_id:** agent-factory-governance-ledger-serialization-procedure
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-ledger-serialization-procedure/IL-2026-06-27T11-15-00Z--ledger-serialization-procedure.md`
+
+### LEDGER-MERGE-QUEUE serialization procedure — STOP the IL race (operator must enable merge queue)
+- **Decision:** Appended a **"Serialization operating procedure"** section to `docs/governance/LEDGER-MERGE-QUEUE.md` (governance-only). **Root cause confirmed** (IL-601→602→603→604 collision streak): multiple terminals mint `max+1` against a fast-moving `main` with **no active single-writer mechanism**. **Audit (2026-06-27):** the GitHub merge queue documented in this file is **NOT active** — `gh api .../rulesets` empty, `branches/main/protection` `required_merge_queue: absent` (only `strict=true`), ledger PRs merging via direct `gh pr merge --squash`. No ledger-lock runner/cron exists (PHASE-1 audit).
+- **STOP-and-report (durable fix = operator action):** operator MUST bring up the GitHub merge queue on `main` (Require merge queue ON, Squash, **Build concurrency = 1**) per `OPERATOR-ENABLE-MERGE-QUEUE.md` + `merge-queue-ruleset.json`. Once active the queue auto-rebases + serializes each ledger PR → `max+1` IL numbering can never collide; manual re-minting becomes unnecessary. **No runtime/cron/runner/secret instantiated here** (PHASE-1 step 3) — governance-only note + the required merge order.
+- **Interim single-writer procedure (until queue on):** one ledger PR minted+in-flight+merged at a time; re-mint immediately before merge (rebase onto current main, `build_ledger` max+1, `il_ts` strictly > current main-max +15min, single clean commit, `--check` exit 0); fixed merge order, each step waits for the previous to land. **Current required order:** (1) this note → (2) #817 precond-07 → (3) #818 precond-08 → (4) #821 ADR-141.
+- **Proof:** docs/governance-only; concept/operating-rule; **no runtime, no code, no cron/runner, no config-stub, no secret, no import**. Edited only `LEDGER-MERGE-QUEUE.md` (append) + this shard + regenerated ledger. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-27T11:15:00Z` strictly > origin/main max `2026-06-27T11:00:00Z`. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger` mints max+1 over current `origin/main` (max 604) → IL-605; frozen at rebase-before-merge. Validated by live ADR-133 uniqueness gate (540 allowlisted). Isolated worktree off origin/main `0343d3b` (ADR-120); namespace ADR-060; no git ops outside this branch.
+- **Status:** DONE — PHASE 1 serialization procedure recorded. Squash PR; DO NOT MERGE — STOP. This note lands FIRST in the serialized order; PHASE 2 (#817→#818→#821) proceeds one-at-a-time only after operator enables the merge queue OR merges this note and confirms landing.
+- **Refs:** `docs/governance/LEDGER-MERGE-QUEUE.md` (appended); `OPERATOR-ENABLE-MERGE-QUEUE.md`, `merge-queue-ruleset.json`; ADR-059/059-A/057 (append-only ledger), ADR-060, ADR-119 (Rule 8), ADR-133 (uniqueness gate). Stuck PRs: #817 (precond-07), #818 (precond-08), #821 (ADR-141). Squash PR — operator HITL.

@@ -355,5 +355,6 @@
   "agent-factory-governance-adr140-residual-debt__cbe06dee1d21": 601,
   "agent-factory-governance-adr-137-precond-6-sensitive-oos-spec__fd970024dea2": 602,
   "agent-factory-legal-sep-remove-fr-module__f5da0311c546": 603,
-  "agent-factory-legalsep-fix-canon-scripts__54f836e12dbb": 604
+  "agent-factory-legalsep-fix-canon-scripts__54f836e12dbb": 604,
+  "agent-factory-governance-ledger-serialization-procedure__8c0d2f9ed521": 605
 }
