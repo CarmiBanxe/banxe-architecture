@@ -26,7 +26,7 @@ REQUIRED_FILES=(
   "modules/DEV.md"
   "modules/DECISION.md"
   "modules/LEGAL.md"
-  "modules/FR_MODULE.md"
+  # FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
   "rules/DIALOGUE.md"
   "rules/COLLABORATION.md"
   "rules/AUTOMATION.md"

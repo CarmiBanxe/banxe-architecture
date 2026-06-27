@@ -59,13 +59,13 @@ sync_project() {
       ;;
     legal)
       cp "$CANON_DIR/modules/LEGAL.md" "$DEST/modules/"
-      cp "$CANON_DIR/modules/FR_MODULE.md" "$DEST/modules/"
-      echo -e "${GREEN}✅ LEGAL + FR_MODULE добавлены${NC}"
+      # FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
+      echo -e "${GREEN}✅ LEGAL добавлен${NC}"
       ;;
     mixed)
       cp "$CANON_DIR/modules/DEV.md" "$DEST/modules/"
       cp "$CANON_DIR/modules/LEGAL.md" "$DEST/modules/"
-      cp "$CANON_DIR/modules/FR_MODULE.md" "$DEST/modules/"
+      # FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
       cp "$CANON_DIR/rules/COLLABORATION.md" "$DEST/rules/"
       echo -e "${GREEN}✅ Все модули добавлены (MIXED)${NC}"
       ;;

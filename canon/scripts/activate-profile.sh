@@ -18,7 +18,7 @@ if [ -z "$PROFILE" ]; then
   echo ""
   echo "Профили:"
   echo "  banxe  — BANXE/DEV: CORE + DOC + DEV + DECISION (LEGAL=off)"
-  echo "  legal  — LEGAL: CORE + DOC + LEGAL + DECISION + FR_MODULE (DEV=off)"
+  echo "  legal  — LEGAL: CORE + DOC + LEGAL + DECISION (DEV=off; FR_MODULE → legal-reference-fr)"
   echo "  mixed  — MIXED: все модули, DEV primary + LEGAL overlay"
   exit 1
 fi
@@ -28,16 +28,19 @@ case "$PROFILE" in
   banxe)
     PROFILE_DISPLAY="BANXE/DEV"
     ACTIVE_MODULES="CORE DOC DEV DECISION"
-    INACTIVE_MODULES="LEGAL FR_MODULE"
+    INACTIVE_MODULES="LEGAL"
+    # FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
     ;;
   legal)
     PROFILE_DISPLAY="LEGAL"
-    ACTIVE_MODULES="CORE DOC LEGAL DECISION FR_MODULE"
+    ACTIVE_MODULES="CORE DOC LEGAL DECISION"
+    # FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
     INACTIVE_MODULES="DEV"
     ;;
   mixed)
     PROFILE_DISPLAY="MIXED"
-    ACTIVE_MODULES="CORE DOC DEV LEGAL DECISION FR_MODULE"
+    ACTIVE_MODULES="CORE DOC DEV LEGAL DECISION"
+    # FR_MODULE.md relocated to legal-reference-fr (legal-separation, ADR-140/GAP-085)
     INACTIVE_MODULES=""
     ;;
   *)
@@ -80,7 +83,7 @@ case "$PROFILE" in
     ;;
   legal)
     echo "• Все правовые ответы со ссылкой на статьи"
-    echo "• FR_MODULE активен для французского права"
+    echo "• FR_MODULE (french law) relocated to legal-reference-fr (legal-separation)"
     echo "• КАНОН 7: предлагаю → пользователь одобряет"
     echo "• Не давать юридических советов как окончательных"
     ;;
