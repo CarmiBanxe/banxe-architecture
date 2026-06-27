@@ -374,5 +374,6 @@
   "agent-factory-governance-orphan-shardkey-prune__bd81026ba2b3": 623,
   "agent-factory-bittrex-eliminated-guard-sync__9c4e36ae8b04": 626,
   "agent-factory-gapregister-canonical-status-sync-20260627__d4ccca46f759": 627,
-  "agent-factory-recon-mergepair-direction-correction__29ff7fbcf036": 630
+  "agent-factory-recon-mergepair-direction-correction__29ff7fbcf036": 630,
+  "agent-factory-fin060-mergepair-direction-correction__5a3abb018b42": 636
 }
