@@ -45,7 +45,7 @@
 ## B. OPEN TASKS (with gates)
 
 ### B.1 Rationalization streams (each its own verify-first scoped PR; ADR-102 dup-audit + full-suite green)
-- `reconciliation_engine_v2 → v1` merge-pair (4 consumers: safeguarding_recon, matrix_scanner, camt053_parser, recon_agent).
+- `reconciliation_engine_v2 → v1` merge-pair (4 consumers: safeguarding_recon, matrix_scanner, camt053_parser, recon_agent). ⚠ **CORRECTED 2026-06-28: direction is v1→v2 (v2 is the canonical live REST engine; v1 = legacy-cron), pair PARKED** — see the recon Correction note in `docs/refactor-legacy/EMI-LEGACY-RATIONALIZATION-PASS-1-2026-06-27.md`.
 - `fin060_generator_v2 → v1` merge-pair (2 consumers: matrix_scanner, reporting_agent).
 - `legacy_otp_adapter → production/{twilio,sendgrid}_otp_adapter` (provider parity).
 - `legacy_sepa_adapter → production/modulr_sepa_stub` (Modulr live-wiring).

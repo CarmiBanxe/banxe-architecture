@@ -19,6 +19,28 @@ Three payment-cluster facts in this pass-1 audit were mis-read; original lines a
 - **FACT-3 — dependency direction reversed.** `bifrost → legacy_abs_payment` (`bifrost_adapter.py:19` imports `AbsPaymentStatus`). `legacy_abs_payment` is not transitively-live *via* bifrost.
 - **Consequence for the stream:** the real action on `to_minor_units` is **DE-DUPLICATE both copies into a `services/shared` money-util (ADR-102)**, NOT "extract bifrost's and repoint open_banking" (open_banking already has its own). De-dup does **not** park or remove bifrost (it stays as the Wave-D scaffold).
 
+## Correction note (2026-06-28, ADR-102 recon audit on EMI `4f93870`) — recon merge-pair direction
+
+The earlier `reconciliation_engine_v2 → v1` direction ("migrate 4 consumers → unify → **delete v2**", rows
+§1/§3/§7 below) is **BACKWARDS and SUPERSEDED**. Verified facts (EMI `4f93870`): `services/recon` holds
+**THREE distinct engines**, not a v2→v1 pair.
+- **`reconciliation_engine_v2.py` = CANONICAL** live runtime — CASS 7.15 V2 (IL-REC-01/Phase 51B), wired
+  REST via `recon_agent.py → api/routers/safeguarding_recon.py` (`/v1/safeguarding-recon/*`), CAMT.053
+  ingestion (`camt053_parser.py`), `compliance_sync/matrix_scanner.py`. Carries `ReconStorePort` /
+  `HITLProposal` / `StatementEntry` / `ReconciliationReport`.
+- **`reconciliation_engine.py` (v1) = LEGACY-cron** — CASS 7.15 (IL-007), used **only** by the cron-CLI
+  `midaz_reconciliation.py` (`daily-recon.sh`) + 2 tests.
+- **`recon_engine.py` = SEPARATE domain** — CASS 7 *safeguarding* recon (IL-SAF-01, DI-wired via
+  `api/deps.py`); **not part of this pair** (name collision below is incidental).
+- **Corrected direction:** if ever consolidated, it is **`v1 → v2`** (migrate the cron-CLI off v1's model),
+  and it is **non-trivial** (different models/signatures, live cron contract). **The pair is PARKED** — no
+  code action without operator + a fresh ADR-102 dup-audit.
+- **ADR-102 name collisions to track (wrong-import risk):** `class ReconciliationEngine` defined **twice**
+  (`reconciliation_engine.py` `.reconcile`, CASS 7.15 — vs `recon_engine.py` `.run_daily_recon`, CASS 7
+  safeguarding); `@dataclass ReconResult` defined **twice** (same two files, distinct frozen dataclasses).
+- **Cross-ref (not duplicated here):** `docs/paybis-dossier/PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md`
+  already records this pair as MERGE-PLANNED / PARKED with both engines live + v2's ReconStorePort/HITLProposal.
+
 ### Pass-1 update log (2026-06-27)
 - Stream **#1 DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock EMI #257 / `36418d9`). Matrix otherwise unchanged; no new orphan deletions; remaining streams (`to_minor_units` extraction, `recon_v2`/`fin060_v2` merge-pairs, `otp`/`sepa` → production) stay OPEN.
 
@@ -46,7 +68,7 @@ Three payment-cluster facts in this pass-1 audit were mis-read; original lines a
 | `services/payment/legacy/legacy_transactions_adapter.py` | 2 | LIVE_KEEP |
 | `services/payment/legacy/legacy_abs_payment_adapter.py` | ~~transitive via bifrost~~ ⚠ **CORRECTED → consumed BY bifrost** (`bifrost_adapter.py:19` imports `AbsPaymentStatus`); direction is bifrost→abs_payment, abs_payment is NOT transitively-live *via* bifrost | LIVE_KEEP (coupled) |
 | `services/payment/legacy/legacy_sepa_adapter.py` | 1 | LIVE_MIGRATE_NEXT |
-| `services/recon/reconciliation_engine_v2.py` | 4 | LIVE_MIGRATE_NEXT (merge-pair) |
+| `services/recon/reconciliation_engine_v2.py` | 4 | ⚠ CORRECTED → **CANONICAL live engine, PARKED** (v1 is legacy-cron; direction is v1→v2, not v2→v1 — see Correction note 2026-06-28) |
 | `services/reporting/fin060_generator_v2.py` | 2 | LIVE_MIGRATE_NEXT (merge-pair) |
 
 ## 2. ORPHAN_REMOVE_CANDIDATE
@@ -55,7 +77,7 @@ Three payment-cluster facts in this pass-1 audit were mis-read; original lines a
 ## 3. LIVE_MIGRATE_NEXT streams (target | thinnest seam | blocker)
 | Module | Modern target | Thinnest seam | Blocker |
 |---|---|---|---|
-| `reconciliation_engine_v2` | `recon/reconciliation_engine.py` (v1) | migrate 4 consumers → unify → delete v2 | scoped PR |
+| ~~`reconciliation_engine_v2`~~ | ~~`recon/reconciliation_engine.py` (v1)~~ | ~~migrate 4 consumers → unify → delete v2~~ ⚠ **SUPERSEDED 2026-06-28** — direction is **v1→v2** (v2 canonical), pair **PARKED**, non-trivial; see Correction note | PARKED (ADR-102) |
 | `fin060_generator_v2` | `reporting/fin060_generator.py` (v1) | migrate matrix_scanner + reporting_agent → unify | scoped PR |
 | `consumer_duty/models_v2` | rename → `models.py` | atomic rename + 12+ import update | ✅ **DONE** (EMI #255, `78207c0`; ruff-debt unblock EMI #257 / `36418d9`) |
 | ~~`bifrost_adapter` (`to_minor_units`)~~ | `services/shared` money util | ~~move helper, repoint open_banking ×2~~ ⚠ **CORRECTED → DE-DUPLICATE** both copies (`bifrost:51` + `open_banking/m24_int_bridge:31`) into a shared money-util (ADR-102); open_banking already uses its own copy. bifrost stays (Wave-D scaffold); de-dup neither parks nor removes it | de-dup (ADR-102) |
@@ -81,7 +103,7 @@ Three payment-cluster facts in this pass-1 audit were mis-read; original lines a
 - **Highest-value next (each its own scoped PR — ADR-102 dup-audit + full-suite green; NOT this pass):**
   1. ✅ **DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock #257 / `36418d9`).
   2. ~~extract `bifrost.to_minor_units → shared` money util (unlocks bifrost + `legacy_abs_payment` parking)~~ ⚠ **CORRECTED → DE-DUPLICATE `to_minor_units`** (bifrost:51 + open_banking/m24_int_bridge:31) into a `services/shared` money-util (ADR-102). It does NOT unlock parking — bifrost is a Wave-D scaffold (already PARKED) and `legacy_abs_payment` is its dependency, not its dependent.
-  3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs.
+  3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs. *(⚠ recon pair: direction is **v1→v2**, currently **PARKED** — see Correction note 2026-06-28; `fin060` pair unaffected.)*
   4. `legacy_otp` / `legacy_sepa` → production adapters.
   5. **GATED on PAYBIS Wave C:** `crypto_legacy` router + `ledger/legacy/legacy_crypto_*` cutover.
 
