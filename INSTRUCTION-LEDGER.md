@@ -19193,3 +19193,21 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Proof:** `--check` exit 0 offline (run ×2 identical, no Redis); 7/7 tests pass; write-mode probe → fallback 613 + RACE warning (no Redis in worktree). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted by the new allocator over current `origin/main` (max 612 → IL-613; Redis-down fallback path, deterministic). Append-only (ADR-059-A): tail shard, il_ts `2026-06-27T13:15:00Z` strictly > origin/main max `2026-06-27T13:00:00Z`. ADR-133 uniqueness: 0 new minted-value dups (set stays {540:2}). Isolated worktree off origin/main `81e65e8` (ADR-120); namespace ADR-060.
 - **Status:** DONE — code + ADR + tests. PR; DO NOT MERGE — STOP, operator HITL. Redis HA/persistence hardening = optional future scope.
 - **Refs:** `docs/adr/ADR-143-redis-central-il-allocator.md`; `ledger/build_ledger.py`; `fabric/common/fabric_redis.py`; `tests/test_redis_il_allocator.py`; ADR-119/133/142, ADR-057/059-A, ADR-104 §5, `LEDGER-MERGE-QUEUE.md`. Operator HITL merge.
+
+---
+
+### IL-614 - agent-factory-dossier-refresh-models-v2-done @ 2026-06-27T20:00:00Z
+
+- **il_ts:** 2026-06-27T20:00:00Z
+- **session_id:** agent-factory-dossier-refresh-models-v2-done
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-dossier-refresh-models-v2-done/IL-2026-06-27T20-00-00Z--dossier-refresh-models-v2-done.md`
+
+### Dossier refresh — mark consumer_duty models_v2→models rename DONE (docs-plane)
+
+- **Objective:** Update EMI-LEGACY-RATIONALIZATION-PASS-1-2026-06-27.md to record that LIVE_MIGRATE_NEXT stream #1 (consumer_duty models_v2→models rename) landed. Additive status-only edit; original audit facts preserved verbatim. NO code changed.
+- **Evidence (not memory):** EMI rename landed PR #255 / merge 78207c0 (models.py present, models_v2.py gone, 0 repo-wide refs); companion ruff-debt unblock EMI #257 / 36418d9 (pre-existing I001 fixed, repo-wide Ruff gate green). banxe-architecture origin/main @ 4f3886e IL max=613; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
+- **Edits:** matrix row (models_v2 → DONE), stream row (DONE + #257 ref), dedupe-map (models_v2↔models unified), recommended-next item 1 (✅ DONE), new Pass-1 update log line. Remaining streams (to_minor_units, recon_v2/fin060_v2 merge-pairs, otp/sepa) stay OPEN.
+- **Perimeter / canon:** docs-plane only; NO code / no prior IL or merged ADR modified; additive; build_ledger re-mints append-only; sub-B/factory → MAIN per §71/§74.
+- **Refs:** dossier IL-610; EMI #255 (78207c0); EMI #257 (36418d9); ADR-119/I-28; PLAN §1A E10.
