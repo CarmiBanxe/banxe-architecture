@@ -7,6 +7,17 @@
 > were already removed in EMI **#248 (`39742b7`)**. All remaining legacy is **LIVE / transitively-live
 > / PARKED-protected**. Verify-before-delete: surface "0-live" modules (`jwks_models`, `jwt_strategy`,
 > `legacy_abs_payment`) are **transitively live** via kept anchors (`role_guard`, `bifrost`).
+> ⚠ **CORRECTED 2026-06-27** (independent shell-audit on EMI `fe27f4d`) — the `bifrost`/`legacy_abs_payment`
+> half is wrong: dependency runs **`bifrost → legacy_abs_payment`** (bifrost imports `AbsPaymentStatus`
+> from it, `bifrost_adapter.py:19`), so `legacy_abs_payment` is NOT transitively-live *via* bifrost. The
+> `role_guard → jwt_strategy → jwks_models` chain is unaffected. See **Correction note** below.
+
+## Correction note (2026-06-27, independent shell-audit on EMI `fe27f4d`)
+Three payment-cluster facts in this pass-1 audit were mis-read; original lines are kept (struck/marked) for trail.
+- **FACT-1 — `to_minor_units` is a DUPLICATE, not a dependency.** Defined in **two** places — `services/payment/legacy/bifrost_adapter.py:51` **and** `services/open_banking/m24_int_bridge.py:31` (near-identical). `open_banking` (`intl_scheduled.py:25`) imports from its **own** `m24_int_bridge`, NOT bifrost. So bifrost's "2 (`to_minor_units`)" live-count was a duplicate-definition mis-read.
+- **FACT-2 — `bifrost_adapter` is a Wave-D SCAFFOLD, class = PARKED.** Docstring: `MIG-M2.5-BIF, Wave-D`, `ADR-025 §15-16`, **advisory / sandbox** (no live GCP calls), with characterization tests. It is NOT `LIVE_MIGRATE_NEXT` and NOT an orphan → **PARKED (intentional scaffold)**.
+- **FACT-3 — dependency direction reversed.** `bifrost → legacy_abs_payment` (`bifrost_adapter.py:19` imports `AbsPaymentStatus`). `legacy_abs_payment` is not transitively-live *via* bifrost.
+- **Consequence for the stream:** the real action on `to_minor_units` is **DE-DUPLICATE both copies into a `services/shared` money-util (ADR-102)**, NOT "extract bifrost's and repoint open_banking" (open_banking already has its own). De-dup does **not** park or remove bifrost (it stays as the Wave-D scaffold).
 
 ### Pass-1 update log (2026-06-27)
 - Stream **#1 DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock EMI #257 / `36418d9`). Matrix otherwise unchanged; no new orphan deletions; remaining streams (`to_minor_units` extraction, `recon_v2`/`fin060_v2` merge-pairs, `otp`/`sepa` → production) stay OPEN.
@@ -31,9 +42,9 @@
 | `services/ledger/legacy/legacy_crypto_processing_adapter.py` | 2 (api/deps DI) | LIVE_KEEP (PAYBIS-controlled) |
 | `services/ledger/legacy/legacy_crypto_rpc_adapter.py` | 1 | LIVE_KEEP (PAYBIS-controlled) |
 | `services/ledger/legacy/legacy_crypto_wallet_adapter.py` | 1 | LIVE_KEEP (PAYBIS-controlled) |
-| `services/payment/legacy/bifrost_adapter.py` | 2 (`to_minor_units`) | LIVE_MIGRATE_NEXT |
+| ~~`services/payment/legacy/bifrost_adapter.py`~~ | ~~2 (`to_minor_units`)~~ | ~~LIVE_MIGRATE_NEXT~~ ⚠ **CORRECTED → PARKED** (Wave-D scaffold, MIG-M2.5-BIF / ADR-025 §15-16, advisory-sandbox, has characterization tests); the "2 (`to_minor_units`)" count was a DUPLICATE-definition mis-read, not a live dependency |
 | `services/payment/legacy/legacy_transactions_adapter.py` | 2 | LIVE_KEEP |
-| `services/payment/legacy/legacy_abs_payment_adapter.py` | transitive via bifrost | LIVE_KEEP (coupled) |
+| `services/payment/legacy/legacy_abs_payment_adapter.py` | ~~transitive via bifrost~~ ⚠ **CORRECTED → consumed BY bifrost** (`bifrost_adapter.py:19` imports `AbsPaymentStatus`); direction is bifrost→abs_payment, abs_payment is NOT transitively-live *via* bifrost | LIVE_KEEP (coupled) |
 | `services/payment/legacy/legacy_sepa_adapter.py` | 1 | LIVE_MIGRATE_NEXT |
 | `services/recon/reconciliation_engine_v2.py` | 4 | LIVE_MIGRATE_NEXT (merge-pair) |
 | `services/reporting/fin060_generator_v2.py` | 2 | LIVE_MIGRATE_NEXT (merge-pair) |
@@ -47,7 +58,7 @@
 | `reconciliation_engine_v2` | `recon/reconciliation_engine.py` (v1) | migrate 4 consumers → unify → delete v2 | scoped PR |
 | `fin060_generator_v2` | `reporting/fin060_generator.py` (v1) | migrate matrix_scanner + reporting_agent → unify | scoped PR |
 | `consumer_duty/models_v2` | rename → `models.py` | atomic rename + 12+ import update | ✅ **DONE** (EMI #255, `78207c0`; ruff-debt unblock EMI #257 / `36418d9`) |
-| `bifrost_adapter` (`to_minor_units`) | `services/shared` money util | move helper, repoint open_banking ×2 | helper extraction |
+| ~~`bifrost_adapter` (`to_minor_units`)~~ | `services/shared` money util | ~~move helper, repoint open_banking ×2~~ ⚠ **CORRECTED → DE-DUPLICATE** both copies (`bifrost:51` + `open_banking/m24_int_bridge:31`) into a shared money-util (ADR-102); open_banking already uses its own copy. bifrost stays (Wave-D scaffold); de-dup neither parks nor removes it | de-dup (ADR-102) |
 | `legacy_otp_adapter` | `auth/production/{twilio,sendgrid}_otp_adapter` | repoint 4 consumers | provider parity |
 | `legacy_sepa_adapter` | `payment/production/modulr_sepa_stub` | repoint 1 consumer | Modulr live-wiring |
 | `crypto_legacy` router + `ledger/legacy/legacy_crypto_*` | `PaybisCryptoAdapter` | route cutover + DI swap | **GATED on PAYBIS Wave C** (SRC-06 + ADR-114) |
@@ -55,12 +66,12 @@
 ## 4. Duplicates / replacements map
 - **legacy ↔ current:** `legacy_otp_adapter` ↔ `production/{twilio,sendgrid}_otp_adapter` · `legacy_crypto_*` ↔ `PaybisCryptoAdapter` (gated) · `legacy_sepa_adapter` ↔ `production/modulr_sepa_stub` · `crypto_legacy` router ↔ future PAYBIS routes.
 - **v2 ↔ current:** `reconciliation_engine_v2` ↔ `reconciliation_engine` · `fin060_generator_v2` ↔ `fin060_generator` · `models_v2` ↔ `models` *(✅ unified — rename done, EMI #255 / `78207c0`)*.
-- **parked vs genuinely redundant:** `role_guard` = parked, **NOT redundant** (security invariant, no replacement proven) · `binancekyc`/`bkyc` = parked I-27 · `legacy_abs_payment`/`jwt_strategy`/`jwks_models` = parked-coupled (transitive live), not redundant.
+- **parked vs genuinely redundant:** `role_guard` = parked, **NOT redundant** (security invariant, no replacement proven) · `binancekyc`/`bkyc` = parked I-27 · `legacy_abs_payment`/`jwt_strategy`/`jwks_models` = parked-coupled (transitive live), not redundant. *(⚠ CORRECTED: `legacy_abs_payment` is a **dependency of** bifrost, not transitively-live via it — see Correction note; `jwt_strategy`/`jwks_models` unaffected.)*
 
 ## 5. Protected (do NOT remove)
 - `role_guard` — role/status **security invariant** (3 functional tests); no replacement proven.
 - `legacy_binancekyc` / `legacy_bkyc` — **I-27 KYC perimeter**; removal needs operator + MLRO/HITL-L4.
-- **Coupled chains migrate as units:** `role_guard → jwt_strategy → jwks_models`; `bifrost → legacy_abs_payment`.
+- **Coupled chains migrate as units:** `role_guard → jwt_strategy → jwks_models`; `bifrost → legacy_abs_payment` *(✓ this arrow direction is correct: bifrost depends on abs_payment — see Correction note; the matrix row L36 wording is what was fixed)*.
 
 ## 6. Bittrex / NeuroNext
 **0 footprint** in `services/`/`app/` (E9 guard `banxe-no-{neuronext,bitrix}-reintroduction` active). Removal = **forward-guard** against reintroduction + PAYBIS replacement path.
@@ -69,7 +80,7 @@
 - **Deletion batch: EMPTY** (smallest-safe = zero new deletions this pass).
 - **Highest-value next (each its own scoped PR — ADR-102 dup-audit + full-suite green; NOT this pass):**
   1. ✅ **DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock #257 / `36418d9`).
-  2. extract `bifrost.to_minor_units → shared` money util (unlocks bifrost + `legacy_abs_payment` parking).
+  2. ~~extract `bifrost.to_minor_units → shared` money util (unlocks bifrost + `legacy_abs_payment` parking)~~ ⚠ **CORRECTED → DE-DUPLICATE `to_minor_units`** (bifrost:51 + open_banking/m24_int_bridge:31) into a `services/shared` money-util (ADR-102). It does NOT unlock parking — bifrost is a Wave-D scaffold (already PARKED) and `legacy_abs_payment` is its dependency, not its dependent.
   3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs.
   4. `legacy_otp` / `legacy_sepa` → production adapters.
   5. **GATED on PAYBIS Wave C:** `crypto_legacy` router + `ledger/legacy/legacy_crypto_*` cutover.
