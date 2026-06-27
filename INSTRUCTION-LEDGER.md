@@ -19211,3 +19211,21 @@ Dominant remaining gap: S2 DevSecOps templates not promoted to active CI.
 - **Edits:** matrix row (models_v2 → DONE), stream row (DONE + #257 ref), dedupe-map (models_v2↔models unified), recommended-next item 1 (✅ DONE), new Pass-1 update log line. Remaining streams (to_minor_units, recon_v2/fin060_v2 merge-pairs, otp/sepa) stay OPEN.
 - **Perimeter / canon:** docs-plane only; NO code / no prior IL or merged ADR modified; additive; build_ledger re-mints append-only; sub-B/factory → MAIN per §71/§74.
 - **Refs:** dossier IL-610; EMI #255 (78207c0); EMI #257 (36418d9); ADR-119/I-28; PLAN §1A E10.
+
+---
+
+### IL-615 - agent-factory-governance-il-allocator-shared-redis @ 2026-06-27T20:15:00Z
+
+- **il_ts:** 2026-06-27T20:15:00Z
+- **session_id:** agent-factory-governance-il-allocator-shared-redis
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-il-allocator-shared-redis/IL-2026-06-27T20-15-00Z--il-allocator-shared-evo1-redis.md`
+
+### ADR-143-A — Central IL allocator targets SHARED evo1 Redis (fix the local-127.0.0.1 config gap of ADR-143)
+- **Decision:** Repointed `ledger/build_ledger.py` `_redis_allocate` from `TL_REDIS_HOST/PORT` (default **127.0.0.1** — traffic-light LOCAL monitoring, per-host counter ⇒ anti-collision illusory; IL-613 was minted via fallback because no local Redis) to the **one shared fabric Redis = evo1 `100.68.102.48:6379` over tailscale**, using the SAME env/defaults as `fabric/legion/gate_exec_consumer.py`: `REDIS_HOST` (default 100.68.102.48) > evo1 default, `REDIS_PORT` (6379), `REDIS_PASS_FILE` (~/banxe-fabric/.vault/redis.pass — path only, no secret in code). New `_redis_config()` helper centralizes it.
+- **Changes:** (1) `_redis_config()` + `_redis_allocate` retargeted; (2) **counter seed** — on first contact `GET banxe:il:counter`; `SET` to frozen `max(IL-SEQUENCE)` only if below (so a fresh evo1 counter never returns < an assigned number); INCR-until-`>max` loop remains the atomic safety net; (3) `fabric/common/fabric_redis.py` +`get`/`set` (RESP, fail-closed) for the seed; (4) `_alloc_next` **WARN strengthened** to name the target host:port (`shared fabric Redis 100.68.102.48:6379 unreachable … anti-collision DEGRADED`) so a miss on the shared counter is visible, not silent; (5) ADR-143-A amendment + `fabric/legion/README.md` operational requirement (ALL terminals point at evo1 counter).
+- **Canon:** ADR-119 Rule 8 — IL provisional, only counter LOCATION changes (shared vs local). ADR-057/059-A — existing keys keep frozen numbers; IL-SEQUENCE diff add-only. ADR-104 §5 — fallback retained (never crash); **`--check` UNCHANGED** (`use_allocator=not args.check`) → offline-deterministic, CI без Redis проходит. No secrets in code (vault path only).
+- **Proof:** `--check` exit 0 offline ×2 identical (no Redis); 10/10 tests pass (incl. `_redis_config`→100.68.102.48 not 127.0.0.1, env override, fallback WARN names host, seed floor, 2 concurrent mints distinct). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted over current `origin/main` via the **real shared evo1 allocator** (evo1 `100.68.102.48` reachable; atomic INCR on `banxe:il:counter` — 614 was consumed by a concurrent mint on the shared counter, so this shard got **IL-615**, itself end-to-end proof the counter is genuinely shared, not per-host). Frozen at 615 in IL-SEQUENCE.json → `--check` reproduces it offline. Append-only (ADR-059-A): tail shard, il_ts `2026-06-27T20:15:00Z` strictly > origin/main max `2026-06-27T20:00:00Z`. ADR-133 uniqueness: 0 new minted-value dups ({540:2}). FROZEN-ARCHIVE + ADR-143/119/133/142 bodies untouched. Isolated worktree off origin/main `1fb99c6` (ADR-120); namespace ADR-060.
+- **Status:** DONE — code + ADR-143-A + README + tests. PR; DO NOT MERGE — STOP, operator HITL.
+- **Refs:** `docs/adr/ADR-143-A-shared-evo1-redis-allocator.md`; `ledger/build_ledger.py`; `fabric/common/fabric_redis.py`; `fabric/legion/README.md`; `tests/test_redis_il_allocator.py`; ADR-143/119/057/059-A/104 §5, `gate_exec_consumer.py`. Operator HITL merge.

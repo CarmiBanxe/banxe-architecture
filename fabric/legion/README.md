@@ -67,3 +67,14 @@ the same server-side way) — the factory never transfers the secret.
 
 This closes **GAP-G3** (Legion = sole execution gate) for the low-risk allow-list — see
 `docs/runbooks/gate-exec-stage3.1-consumer-2026-06-17.md` (and `gate-exec-stage3-2026-06-17.md`).
+
+## IL allocator shares this same evo1 Redis (ADR-143 / ADR-143-A)
+
+The central IL number allocator (`ledger/build_ledger.py`) increments a single counter
+`banxe:il:counter` on the **same evo1 Redis** (`100.68.102.48:6379`, vault
+`~/banxe-fabric/.vault/redis.pass`). For anti-collision to be real, **every** terminal that mints IL
+numbers — evo1 / evo2 / **Legion** — MUST point at that one counter, i.e. keep the default
+`REDIS_HOST=100.68.102.48` (reachable over tailscale). Do **not** set it to `127.0.0.1` and do **not**
+use `TL_REDIS_*` (that is local traffic-light monitoring, a per-host counter — using it re-introduces
+the IL-172 duplicate class). If evo1 Redis is unreachable the build still succeeds but prints
+`… anti-collision DEGRADED …`; `--check` never needs Redis.

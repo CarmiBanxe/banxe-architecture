@@ -102,6 +102,22 @@ class RedisStreams:
         """
         return int(self._call("INCR", key))
 
+    def get(self, key: str) -> Optional[str]:
+        """GET key -> value (str) or None if unset. Fail-closed via _call.
+
+        Used by the IL allocator (ADR-143-A) to read the shared counter before
+        seeding its floor to the frozen sequence max.
+        """
+        return self._call("GET", key)
+
+    def set(self, key: str, value: Any) -> str:
+        """SET key value -> 'OK'. Fail-closed via _call.
+
+        Used by the IL allocator (ADR-143-A) to seed the shared counter floor
+        (never a secret; value is the integer IL counter).
+        """
+        return self._call("SET", key, value)
+
     def xadd(self, stream: str, fields: Dict[str, str]) -> str:
         flat: List[str] = []
         for k, v in fields.items():

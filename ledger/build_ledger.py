@@ -145,23 +145,42 @@ def _load_fabric_redis():
         return None, None
 
 
-def _redis_allocate(current_max):
-    """Monotonic IL number strictly > current_max via atomic Redis INCR.
+def _redis_config():
+    """Config for the SHARED fabric Redis counter (ADR-143-A).
 
-    Config: TL_REDIS_HOST/TL_REDIS_PORT (default 127.0.0.1:6379); password vault
-    file REDIS_PASS_FILE (~/banxe-fabric/.vault/redis.pass). The counter is kept
-    >= the frozen sequence max: a fresh/behind counter is bumped (repeat INCR) until
-    it exceeds current_max, so no number below an already-assigned one is handed out.
-    Raises on any failure (caller degrades to local max+1).
+    Same env vars + defaults as fabric/legion/gate_exec_consumer.py so EVERY
+    terminal (evo1 / evo2 / Legion) increments ONE counter on the evo1 host over
+    tailscale — that is the only thing that makes the anti-collision real.
+    Explicit REDIS_HOST/REDIS_PORT override the evo1 default. NOT TL_REDIS_*
+    (that is local traffic-light monitoring, a per-host 127.0.0.1 counter).
+    """
+    host = os.environ.get("REDIS_HOST", "100.68.102.48")  # evo1 redis over tailscale
+    port = int(os.environ.get("REDIS_PORT", "6379"))
+    pw = os.environ.get("REDIS_PASS_FILE", os.path.expanduser("~/banxe-fabric/.vault/redis.pass"))
+    return host, port, pw
+
+
+def _redis_allocate(current_max):
+    """Monotonic IL number strictly > current_max via atomic INCR on the SHARED
+    evo1 Redis counter (banxe:il:counter). Config = _redis_config() (REDIS_HOST/
+    REDIS_PORT/REDIS_PASS_FILE, default evo1 100.68.102.48:6379).
+
+    On first contact the counter floor is seeded to the frozen sequence max
+    (SET only when the counter is below it) so a fresh evo1 counter never hands
+    out a number below an already-assigned one; the INCR-until-> loop is the
+    atomic safety net that also covers any seed race between terminals.
+    Raises on any failure (caller degrades to local max+1 + WARN naming the host).
     """
     RedisStreams, _RedisUnavailable = _load_fabric_redis()
     if RedisStreams is None:
         raise RuntimeError("fabric_redis not importable")
-    host = os.environ.get("TL_REDIS_HOST", "127.0.0.1")
-    port = int(os.environ.get("TL_REDIS_PORT", "6379"))
-    pw = os.environ.get("REDIS_PASS_FILE", os.path.expanduser("~/banxe-fabric/.vault/redis.pass"))
+    host, port, pw = _redis_config()
     client = RedisStreams(host, port, pw)
     try:
+        cur = client.get(IL_COUNTER_KEY)
+        cur_int = int(cur) if cur is not None else 0
+        if cur_int < current_max:  # seed floor (optimization; loop below guarantees correctness)
+            client.set(IL_COUNTER_KEY, current_max)
         val = client.incr(IL_COUNTER_KEY)
         # Monotonicity guarantee: never return a number <= the frozen sequence max.
         while val <= current_max:
@@ -184,9 +203,12 @@ def _alloc_next(current_max):
     try:
         return _redis_allocate(current_max)
     except Exception as exc:  # RedisUnavailable or import/config error
+        host, port, _pw = _redis_config()
         sys.stderr.write(
-            "WARN: Redis allocator unavailable (%s); fallback to local max+1 — "
-            "RACE POSSIBLE if multiple terminals mint concurrently.\n" % exc
+            "WARN: shared fabric Redis %s:%d unreachable (%s); fallback to local "
+            "max+1 — anti-collision DEGRADED, RACE POSSIBLE across terminals "
+            "(set REDIS_HOST to the evo1 counter or bring it up).\n"
+            % (host, port, exc)
         )
         return current_max + 1
 

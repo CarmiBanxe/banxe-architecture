@@ -27,6 +27,31 @@ fabric_redis = _load("fabric_redis_under_test", "fabric/common/fabric_redis.py")
 build_ledger = _load("build_ledger_under_test", "ledger/build_ledger.py")
 
 
+def _fake_shared_client(shared):
+    """A FakeClient class backed by one shared dict — models the single evo1
+    Redis counter (get/set/incr atomic on that one integer)."""
+
+    class FakeClient:
+        def __init__(self, *a, **k):
+            pass
+
+        def get(self, key):
+            return str(shared["n"])
+
+        def set(self, key, value):
+            shared["n"] = int(value)
+            return "OK"
+
+        def incr(self, key):
+            shared["n"] += 1
+            return shared["n"]
+
+        def close(self):
+            pass
+
+    return FakeClient
+
+
 class TestIncr(unittest.TestCase):
     def test_incr_monotonic(self):
         """incr() returns the monotonically increasing values from INCR."""
@@ -108,19 +133,8 @@ class TestConcurrentMintNoCollision(unittest.TestCase):
     def test_parallel_mints_distinct(self):
         """Two 'parallel' terminals sharing ONE atomic counter get DISTINCT numbers,
         each strictly above the frozen max — the IL-172 duplicate class is impossible."""
-        shared = {"n": 612}  # one central counter, like Redis INCR
-
-        class FakeClient:
-            def __init__(self, *a, **k):
-                pass
-
-            def incr(self, key):
-                shared["n"] += 1
-                return shared["n"]
-
-            def close(self):
-                pass
-
+        shared = {"n": 612}  # ONE central counter (the shared evo1 Redis)
+        FakeClient = _fake_shared_client(shared)
         orig = build_ledger._load_fabric_redis
         build_ledger._load_fabric_redis = lambda: (FakeClient, fabric_redis.RedisUnavailable)
         try:
@@ -133,28 +147,64 @@ class TestConcurrentMintNoCollision(unittest.TestCase):
         finally:
             build_ledger._load_fabric_redis = orig
 
-    def test_monotonic_bump_when_counter_behind(self):
-        """A fresh/behind counter is bumped until it exceeds the frozen max."""
+    def test_seed_floor_when_counter_behind(self):
+        """A fresh/behind counter is SEEDED to the frozen max, then incremented —
+        so it never hands out a number below an already-assigned one."""
         shared = {"n": 0}  # fresh counter starting at 0
-
-        class FakeClient:
-            def __init__(self, *a, **k):
-                pass
-
-            def incr(self, key):
-                shared["n"] += 1
-                return shared["n"]
-
-            def close(self):
-                pass
-
+        FakeClient = _fake_shared_client(shared)
         orig = build_ledger._load_fabric_redis
         build_ledger._load_fabric_redis = lambda: (FakeClient, fabric_redis.RedisUnavailable)
         try:
             got = build_ledger._redis_allocate(612)
-            self.assertEqual(got, 613)  # bumped past the frozen max
+            self.assertEqual(got, 613)        # seeded to 612 then INCR
+            self.assertEqual(shared["n"], 613)
         finally:
             build_ledger._load_fabric_redis = orig
+
+
+class TestSharedHostConfig(unittest.TestCase):
+    def test_targets_evo1_not_localhost(self):
+        """Allocator targets the SHARED evo1 Redis by default, NOT local 127.0.0.1."""
+        import os
+        for var in ("REDIS_HOST", "REDIS_PORT"):
+            os.environ.pop(var, None)
+        host, port, pw = build_ledger._redis_config()
+        self.assertEqual(host, "100.68.102.48")   # evo1 over tailscale
+        self.assertNotEqual(host, "127.0.0.1")
+        self.assertEqual(port, 6379)
+        self.assertIn("redis.pass", pw)            # vault path, not a secret
+
+    def test_explicit_env_override(self):
+        """Explicit REDIS_HOST/REDIS_PORT override the evo1 default."""
+        import os
+        os.environ["REDIS_HOST"] = "10.0.0.9"
+        os.environ["REDIS_PORT"] = "6380"
+        try:
+            host, port, _ = build_ledger._redis_config()
+            self.assertEqual((host, port), ("10.0.0.9", 6380))
+        finally:
+            os.environ.pop("REDIS_HOST", None)
+            os.environ.pop("REDIS_PORT", None)
+
+    def test_fallback_warn_names_target_host(self):
+        """When Redis is down, the WARN names the shared host so a miss on the
+        shared counter is visible (not silently 'all ok')."""
+        import os
+        for var in ("REDIS_HOST", "REDIS_PORT", "BANXE_IL_ALLOCATOR"):
+            os.environ.pop(var, None)
+        orig = build_ledger._redis_allocate
+        build_ledger._redis_allocate = lambda cur: (_ for _ in ()).throw(
+            fabric_redis.RedisUnavailable("connect refused")
+        )
+        try:
+            buf = io.StringIO()
+            with redirect_stderr(buf):
+                got = build_ledger._alloc_next(613)
+            self.assertEqual(got, 614)
+            self.assertIn("100.68.102.48:6379", buf.getvalue())  # target host named
+            self.assertIn("DEGRADED", buf.getvalue())
+        finally:
+            build_ledger._redis_allocate = orig
 
 
 if __name__ == "__main__":
