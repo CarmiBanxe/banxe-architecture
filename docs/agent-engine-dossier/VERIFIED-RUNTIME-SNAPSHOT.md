@@ -94,11 +94,11 @@ Verified значение: **70 passports** (S5/S6/S7).
 
 | Alias | Target |
 |-------|--------|
-| `factory-fast` | Lightweight model (fast responses) |
-| `factory-mid` | Mid-tier model |
-| `factory-heavy` | Heavy reasoning |
-| `factory-coder` | Code-specialised |
-| `project-reason` | qwen3-235b @ evo2:8082 (ADR-018) |
+| `factory-fast` | qwen3:4b @ Legion RTX 4070 (FA-1 ✅) |
+| `factory-mid` | qwen3:30b-a3b MoE @ evo1+evo2 LB (Strix Halo iGPU) |
+| `factory-heavy` | llama3.3:70b @ evo1+evo2 LB (Strix Halo iGPU) |
+| `factory-coder` | qwen3-coder-next (Q4_K_M, 51B) @ evo1 |
+| `project-reason` | qwen3:235b-a22b (Q3_K_S, 142 GB) @ evo2:8082 standalone (ADR-018) |
 
 **Classifier:** qwen2.5-0.5b @ evo2 (routing classification, lightweight).
 

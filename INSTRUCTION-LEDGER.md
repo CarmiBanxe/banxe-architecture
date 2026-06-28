@@ -20736,3 +20736,45 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** docs-only; **no code / runtime / repo / keys / secrets / RAR content**; no FROZEN port/contract touched; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (rebased onto `8848e00`, base frozen max 704) → **IL-714** via the ADR-143 central allocator (counter ahead of local frozen max; intervening numbers = concurrent shards elsewhere; degrades to local max+1 with WARN if Redis down). Re-rebased per ADR-119 Rule 2/5 after successive concurrent ledger PRs (#866/#867, then #843) advanced main — a rebase signal, not a stop-barrier. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T01:00:00Z` strictly > origin/main max. Branch `agent/factory/docs/trading-block-roadmap` off origin/main `8848e00` (ADR-120; namespace ADR-060).
 - **Status:** DONE — road map authored. **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
 - **Refs:** `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md`; ADR-083/084/089/090/091/100/102/103/113/119/140/016; BUG-001/005/007; IL-691; IL-CANON-RUFLO; `HANDOFF-composable-defi-stack-integration.md`; `dse-live-providers-options.md`. Operator HITL.
+
+---
+
+### IL-715 - agent-factory-compute-routing-taxonomy @ 2026-06-28T15:00:00Z
+
+- **il_ts:** 2026-06-28T15:00:00Z
+- **session_id:** agent-factory-compute-routing-taxonomy
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-compute-routing-taxonomy/IL-2026-06-28T15-00-00Z--000000.md`
+
+### IL — COMPUTE-ROUTING-TAXONOMY.md
+
+**Date:** 2026-06-28
+**Task:** Create docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md — canonical alias→model→hardware table, task-routing guide, activation-gap register (4 gaps), operator-go steps. Fill empty Target cells in VERIFIED-RUNTIME-SNAPSHOT.md alias table.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/compute/routing-taxonomy
+
+**Changes (docs-only):**
+
+1. **CREATE: docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md**
+   - §1 Alias table: 5 aliases × (target, hardware, model, params, speed, use-tier)
+   - §2 Task-routing guide: 9 task types → recommended alias + reason
+   - §3 ACTIVATION-GAP register: 4 gaps (FA-02, AGENT_ROUTING=false, ADR-FUSION-01, infra mismatch)
+   - §4 References: FA-02, ADR-018, ADR-016, ADR-FUSION-01, model-cards, I-32/I-33
+
+2. **EDIT: docs/agent-engine-dossier/VERIFIED-RUNTIME-SNAPSHOT.md**
+   - Fill empty Target cells in canonical alias table (factory-fast → qwen3:4b Legion RTX 4070, factory-mid → qwen3:30b-a3b LB, factory-heavy → llama3.3:70b LB, factory-coder → qwen3-coder-next evo1, project-reason → qwen3-235b evo2:8082)
+
+**Key decisions:**
+- factory-heavy ≠ project-reason: heavy=mid-size LB (Strix Halo iGPU), reason=qwen3-235b 235B standalone (evo2:8082)
+- Activation path: FA-02 → AGENT_ROUTING=true → ADR-FUSION-01 acceptance (sequential gates)
+- No new aliases added (ADR-043 unchanged per ADR-FUSION-01 §Decision(b))
+- Docs-only; no code, no migrations
+
+**Quality Checks:**
+- ADR-144 orphan-check: 0
+- ADR-120: isolated worktree
+- ADR-119 Rule 8: no hardcoded IL-NNN in commit title
+- removed=0 (append-only per I-24)
+
+**Refs:** FA-02, ADR-018, ADR-016, ADR-043, ADR-FUSION-01, ADR-119, ADR-120, ADR-143-A, ADR-144, I-24, I-32, I-33
