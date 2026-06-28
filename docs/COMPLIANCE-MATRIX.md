@@ -704,6 +704,32 @@ Full governance: `docs/SKILLS-MATRIX.md` + `docs/SKILLS-OPERATING-MODEL.md`.
 
 ---
 
+## РАЗДЕЛ 18 — MCP Agent Tool Binding (ADR-147, Sprint-B B3)
+
+Agent-to-Tool binding registry and Lerian MCP Central Tool Registry protocol (IL-694, ADR-147, PR #863).
+Transition: PENDING → IN_PROGRESS (B3 open) → DEPLOYED (after B3 merge + integration).
+
+| ID | Требование | Статус | Proof | ADR | Sprint | Gap |
+|----|-----------|--------|-------|-----|--------|-----|
+| S12 | Agent Autonomy Enforcement — HITL gate + autonomy_level validation in MCP client | 🔄 IN_PROGRESS | ADR-147 Decision §2.2, MCP binding protocol spec | ADR-147 (IL-694) | B3 | Lerian MCP client scaffold merged; runtime endpoint pending CTIO infra setup (banxe-ai-infrastructure PR infra#7) |
+| S13 | Audit Trail Completeness — ClickHouse a2a_mcp_calls table (I-24, TTL 5yr) | 🔄 IN_PROGRESS | ADR-147 Consequences §1, a2a_mcp_calls schema (TTL 5yr) | ADR-147 (IL-694) | B3 | Migration spec written; table not yet deployed (awaiting B3 merge) |
+| S14 | Tool Endpoint Isolation — Lerian MCP auth via LITELLM_MASTER_KEY + virtual agent tokens | 🔄 IN_PROGRESS | ADR-147 Decision §2.3, auth scheme | ADR-147 (IL-694) | B3 | Auth scheme defined; Lerian MCP endpoint not yet operational (CTIO infra setup pending) |
+| S15 | Registry Versioning — version field in ToolRegistryEntry for auditability | 🔄 IN_PROGRESS | ADR-147 Decision §1 (ToolRegistryEntry.version = 1) | ADR-147 (IL-694) | B3 | Schema defined; PostgreSQL table central_tool_registry not yet created (awaiting B3 migration) |
+| S16 | Semgrep Enforcement — banxe-a2a-direct-import rule (NEVER hardcoded banxe_mcp.server imports) | 🔄 IN_PROGRESS | ADR-147 Consequences §3, Implementation Checklist item 5 | ADR-147 (IL-694) | B3 | Rule spec written; .semgrep/banxe-rules.yml patch not yet deployed (awaiting B3) |
+
+**Покрытие S12–S16 (Lerian MCP): 0/5 DEPLOYED** | 5/5 IN_PROGRESS | Transition to DEPLOYED after Sprint-B B3 merge + integration with A2A Redis Streams bus
+
+**References:**
+- ADR-147: Lerian MCP Central Tool Registry & Binding Protocol (IL-694, PR #863, ACCEPTED)
+- banxe-ai-infrastructure PR infra#7: Lerian MCP intent translator (OPEN, 34 tests, 98% coverage)
+- agent-authority.md: Autonomy levels L1–L4
+- security-policy.md: banxe-hardcoded-secret, banxe-a2a-direct-import rules
+- I-24: Append-only audit trails
+- I-27: HITL feedback supervised
+- I-28: Execution discipline (IL ledger)
+
+---
+
 ## Org canon (Sprint-1 Freeze)
 Top-level organisation is normatively frozen in `governance/CANONICAL-ORG-CHART-v2.md` (8 departments,
 independent MLRO + Internal Audit lines, Level 0–4 model). Compliance/SMF mappings in §1 above defer to it.

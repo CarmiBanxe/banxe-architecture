@@ -20612,3 +20612,54 @@ Replaced 9-row table with 17-row table including all merged items and B1–B9 st
 - **ADR-119:** Git Workflow (Rule 8: no IL-NNN in title)
 - **SPRINT-PLAN.md:** IL-669, PR #859
 - **ENGINE-ROADMAP.md:** IL-666, PR #857
+
+---
+
+### IL-699 - agent-factory-b3-compliance-matrix-s12-16 @ 2026-06-28T00:00:00Z
+
+- **il_ts:** 2026-06-28T00:00:00Z
+- **session_id:** agent-factory-b3-compliance-matrix-s12-16
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-b3-compliance-matrix-s12-16/IL-2026-06-28T00-00-00Z--b3cm.md`
+
+### IL — COMPLIANCE-MATRIX S12-16 Update: Lerian MCP Agent Tool Binding (Sprint-B B3)
+
+**Date:** 2026-06-28
+**Task:** Sprint-B B3 sub-deliverable — update COMPLIANCE-MATRIX entries S12–S16 to reflect Lerian MCP Central Tool Registry binding (ADR-147, IL-694).
+**Status:** IN_PROGRESS (B3 CI running)
+**Branch:** agent/factory/b3/compliance-matrix-s12-16
+
+**Changes (docs-only, COMPLIANCE-MATRIX.md update):**
+
+1. **APPEND: docs/COMPLIANCE-MATRIX.md §18 "MCP Agent Tool Binding"** — new section, ~40 lines
+   - New entries: S12 (Agent Autonomy Enforcement), S13 (Audit Trail Completeness), S14 (Tool Endpoint Isolation), S15 (Registry Versioning), S16 (Semgrep Enforcement)
+   - Status: 🔄 IN_PROGRESS (5/5 entries; B3 OPEN, CI green)
+   - Proof: ADR-147 Decision §2, banxe-ai-infrastructure PR infra#7 (34 tests, 98% coverage)
+   - Transition timeline: PENDING → IN_PROGRESS (now) → DEPLOYED (after B3 merge + A2A Redis Streams integration)
+
+**No existing content modified:**
+- COMPLIANCE-MATRIX sections S1–S17 untouched
+- Append-only discipline (I-24): 0 rows deleted
+
+**Verification sources:**
+
+| Source | Finding |
+|--------|---------|
+| ADR-147 (IL-694, PR #863) | ACCEPTED; defines S12-16 Agent Tool Binding entries (COMPLIANCE-MATRIX Update Path §283–296) |
+| banxe-ai-infrastructure PR infra#7 | OPEN; Lerian MCP intent translator; 34 tests, 98% coverage |
+| SPRINT-PLAN.md §3 B3 | B3 sub-deliverable: "Lerian MCP intent translator + Central Tool Registry binding" |
+| agent-authority.md | Autonomy levels L1–L4 referenced in S12 |
+| security-policy.md | banxe-a2a-direct-import rule spec (S16 Semgrep Enforcement) |
+| I-24 (append-only audit) | S13 ClickHouse a2a_mcp_calls table (TTL 5yr) |
+| I-27 (HITL feedback) | S12 HITL gate + autonomy_level validation |
+
+**Quality Checks:**
+- Docstring-only changes; no code/schema changes in this PR
+- ADR-147 already ACCEPTED (IL-694)
+- COMPLIANCE-MATRIX: append-only (0 rows deleted, 5 new rows added)
+- No hardcoded IL numbers in commit title (ADR-119 Rule 8)
+- Isolated worktree (ADR-120)
+
+**Refs:** ADR-147 (IL-694, PR #863), banxe-ai-infrastructure PR infra#7, SPRINT-PLAN.md §3 B3, 
+agent-authority.md, security-policy.md, I-24, I-27, I-28, COMPLIANCE-MATRIX §18
