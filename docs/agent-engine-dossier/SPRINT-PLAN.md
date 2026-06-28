@@ -18,11 +18,21 @@
 |-----------|-------|
 | Roadmap source | ENGINE-ROADMAP.md (IL-666, PR #857) |
 | Input anchor | ENGINE-ROADMAP-INPUTS.md (IL-665, PR #856) |
-| A2A ADR (A1) | ADR-145 — PR #858, IL-667, **PROPOSED** (CTIO pending) |
-| Sprint-A remaining | A2–A5: NOT_STARTED |
-| Sprint-B repo | banxe-ai-infrastructure ✅ (created 2026-06-05) |
-| Sprint-B all items | B1–B9: BLOCKED (Sprint-A gating rules apply) |
-| Adoption gate | 0 / 5 GAPs at L2 |
+| A2A ADR (A1) | ADR-145 — PR #858, IL-667, **ACCEPTED** ✅ |
+| Sprint-A A2 | ADR-045 amendment — PR #860, IL-693, **ACCEPTED** ✅ |
+| Sprint-A A3 | ADR-147 Lerian MCP spec — PR #863, IL-694, **ACCEPTED** ✅ |
+| Sprint-A A4 | ADR-146 sandbox contract — PR #862, IL-692, **ACCEPTED** ✅ |
+| Sprint-A A5 | Passport revisions — PR #865, IL-695, **PROPOSED** (CTIO review) |
+| Sprint-B B1 | Qdrant deploy — infra#3 OPEN (operator merge + evo1 execute pending) |
+| Sprint-B B2 | Dispatcher runtime — BLOCKED (gate-in: A5 ACCEPTED) |
+| Sprint-B B3 | Lerian MCP runtime — infra#7 OPEN (CI running, 34 tests / 98%) |
+| Sprint-B B4 | gate-exec enforcement — infra#6 OPEN (CI running, 15 tests / 100%) |
+| Sprint-B B5 | A2A bus RedisStreams — BLOCKED (gate-in: B2) |
+| Sprint-B B6 | G-CANON-BYPASS fix — infra#5 OPEN (operator merge + CTIO execute pending) |
+| Sprint-B B7 | G-GUARDIAN-WEBHOOK-MISSING — infra#4 OPEN (title fix by operator pending) |
+| Sprint-B B8 | Temporal saga runner — BLOCKED (ADR-133 approval) |
+| Sprint-B B9 | Redis-lease saga — BLOCKED (B8 required) |
+| Adoption gate | 0 / 5 GAPs at L2 (sprint B in progress) |
 
 ---
 
@@ -56,7 +66,7 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E4 (root dependency) |
-| Status | **PROPOSED** — CTIO acceptance pending |
+| Status | **DONE** (ACCEPTED ✅) |
 | PR | #858 (`agent/factory/sprintA01/a2a-contract`) |
 | IL | IL-667 |
 | Gate-in | None (root item) |
@@ -75,10 +85,10 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E1 |
-| Status | **NOT_STARTED** |
-| PR | TBD (factory task pending) |
-| IL | TBD |
-| Gate-in | **[A-GATE: A1 ACCEPTED]** |
+| Status | **DONE** (ACCEPTED ✅) |
+| PR | #860 |
+| IL | IL-693 |
+| Gate-in | **[A-GATE: A1 ACCEPTED]** ✅ |
 | Gate-out | ADR-045 amendment ACCEPTED; `concept_only: true` removed |
 | Blocks | A5 (passport revisions), B2 (dispatcher runtime wiring) |
 
@@ -95,10 +105,10 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E2 |
-| Status | **NOT_STARTED** |
-| PR | TBD |
-| IL | TBD |
-| Gate-in | **[A-GATE: A1 ACCEPTED]** (parallel with A4, A5 after A1) |
+| Status | **DONE** (ACCEPTED ✅) |
+| PR | #863 |
+| IL | IL-694 |
+| Gate-in | **[A-GATE: A1 ACCEPTED]** ✅ |
 | Gate-out | Lerian MCP binding spec accepted; central tool registry schema defined |
 | Blocks | B3 (Lerian MCP runtime binding) |
 
@@ -115,10 +125,10 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E5 |
-| Status | **NOT_STARTED** |
-| PR | TBD |
-| IL | TBD |
-| Gate-in | **[A-GATE: A1 ACCEPTED]** (parallel with A3, A5 after A1) |
+| Status | **DONE** (ACCEPTED ✅) |
+| PR | #862 |
+| IL | IL-692 |
+| Gate-in | **[A-GATE: A1 ACCEPTED]** ✅ |
 | Gate-out | Sandbox contract ADR ACCEPTED; L1–L4 → isolation-policy mapping defined |
 | Blocks | B4 (gate-exec extension) |
 
@@ -136,10 +146,10 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E1 |
-| Status | **NOT_STARTED** |
-| PR | TBD |
-| IL | TBD |
-| Gate-in | **[A-GATE: A2 ACCEPTED]** |
+| Status | **PROPOSED** (CTIO review) |
+| PR | #865 |
+| IL | IL-695 |
+| Gate-in | **[A-GATE: A2 ACCEPTED]** ✅ |
 | Gate-out | `planner.yaml` updated; intent-layer masks spec complete |
 | Blocks | B2 (dispatcher runtime needs updated passport) |
 
@@ -167,7 +177,7 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E3 |
-| Status | **NOT_STARTED** (independent — no Sprint-A gate) |
+| Status | **OPEN** (infra#3 — operator merge + evo1 execute pending) |
 | Gate-in | ADR-136/137 undeferred (operator decision) |
 | Gate-out | `:6333 LISTENING` on evo1; episode-substrate smoke-test passes |
 | Blocks | ADR-141 self-healing (episode-substrate dependency) |
@@ -185,8 +195,8 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E1 |
-| Status | **NOT_STARTED** |
-| Gate-in | **[A-GATE: A1 ACCEPTED + A2 ACCEPTED + A5 complete]** |
+| Status | **BLOCKED** (gate-in: A5 ACCEPTED pending) |
+| Gate-in | **[A-GATE: A1 ACCEPTED ✅ + A2 ACCEPTED ✅ + A5 ACCEPTED pending]** |
 | Gate-out | Dispatcher running on evo1; integration tests green |
 | Blocks | B5 (A2A bus needs dispatcher) |
 
@@ -203,8 +213,8 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E2 |
-| Status | **NOT_STARTED** |
-| Gate-in | **[A-GATE: A3 ACCEPTED]** |
+| Status | **OPEN** (infra#7 — CI running, 34 tests / 98%) |
+| Gate-in | **[A-GATE: A3 ACCEPTED]** ✅ |
 | Gate-out | Lerian MCP bound; COMPLIANCE-MATRIX S12-16 DEPLOYED |
 | Blocks | None (leaf node) |
 
@@ -221,8 +231,8 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E5 |
-| Status | **NOT_STARTED** |
-| Gate-in | **[A-GATE: A4 ACCEPTED]** |
+| Status | **OPEN** (infra#6 — CI running, 15 tests / 100%) |
+| Gate-in | **[A-GATE: A4 ACCEPTED]** ✅ |
 | Gate-out | gate-exec enforces contract; L3 call audit-logged (I-24) |
 | Blocks | None (leaf node) |
 
@@ -239,8 +249,8 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E4 |
-| Status | **NOT_STARTED** |
-| Gate-in | **[A-GATE: A1 ACCEPTED] + [B2 complete]** |
+| Status | **BLOCKED** (gate-in: B2) |
+| Gate-in | **[A-GATE: A1 ACCEPTED] ✅ + [B2 complete]** |
 | Gate-out | `RedisStreamsA2ABus` wrapping `bus-redis-streams.py`; MLRO chain migrated |
 | Blocks | None (leaf node — completes GAP-E4 at L2) |
 
@@ -258,7 +268,7 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Type | P1 blocker (not an epic deliverable; blocks L3 gate) |
-| Status | **NOT_STARTED** |
+| Status | **OPEN** (infra#5 — operator merge + CTIO execute pending) |
 | Gate-in | None (P1 — highest priority, start immediately) |
 | Gate-out | OpenClaw instances route through canon audit path; I-24/I-28 satisfied |
 
@@ -275,7 +285,7 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Type | P1 blocker (blocks L3 gate) |
-| Status | **NOT_STARTED** |
+| Status | **OPEN** (infra#4 — title fix by operator pending) |
 | Gate-in | None (P1 — start immediately) |
 | Gate-out | Guardian App 15368 webhook configured; breach alerts active |
 
@@ -291,7 +301,7 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | Infra enabler (ADR-060 §6, ADR-133) |
-| Status | **NOT_STARTED** |
+| Status | **BLOCKED** (ADR-133 approval pending) |
 | Gate-in | ADR-133 execution approval |
 | Gate-out | Temporal worker running on evo1/evo2 |
 | Blocks | B9 |
@@ -303,7 +313,7 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | Infra enabler (ADR-143-A extension) |
-| Status | **NOT_STARTED** |
+| Status | **BLOCKED** (B8 required) |
 | Gate-in | **[B8 complete]** |
 | Gate-out | Redis-lease used for Temporal saga lease (extends ADR-143-A) |
 
