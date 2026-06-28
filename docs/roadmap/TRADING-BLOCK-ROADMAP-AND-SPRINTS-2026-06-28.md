@@ -7,6 +7,8 @@
 **Source:** factory (operator TASK, §71 single-writer)
 **Track:** Trading Block (`banxe-trading-backend`), sprint series **S6.x** — a **separate track** from the EMI core-banking `ROADMAP-MATRIX.md` (departments A–K, Sprints 8–12). Do **not** cross-number the two.
 
+> **⚠️ ADR-094 reconciliation (correction, 2026-06-29).** This road map (IL-714) originally listed **S6.6** (YieldPort) and **S6.7** (Hardening) as Phase-1 *executable* and **omitted any reference to ADR-094**. **ADR-094** (ACCEPTED, 2026-06-15, IL-237) canonically **DROPS S6.6 and S6.7 as out-of-scope for 2026** ("not part of the minimal core plus moat layer"); revival requires a **dedicated new ADR + IL** (operator decision). Per canon priority **ADRs > IL**, ADR-094 governs. The S6.6/S6.7 rows below are therefore corrected to **DROPPED per ADR-094**; their `earn/` advisory seam still exists (ADR-102 reuse) but is **not** a 2026 build obligation. The S6.6 build-spec PR **#875** is **HELD** pending an operator revival decision. All other rows (S6.2/6.4/6.5 built + S6.2-EN enable, S6.8, advisory seams, the three ADR-gated elements, SEC-1) are unaffected and stand.
+
 ---
 
 ## 0. Preamble — what this is, and the one discipline that governs it
@@ -39,7 +41,7 @@ Status legend: **BUILT** (shipped; ADR-102 reuse-not-rebuild) · **PROPOSED-MOCK
 | DSE action space (HOLD/HEDGE/…) (§6.7) | ADR-084 | **BUILT (advisory)** | Trajectory = **advice → unsigned intent → execution** (`dse-baas-component.md`). DSE never executes. |
 | Agent components — Ruflo/OpenClaw/MiroFish/MetaClaw (§6.8, §9.1) | `.claude/rules/agents.md`, IL-CANON-RUFLO | **BUILT (canon agents)** | Existing fleet, **not net-new naming**. External repo bindings (`ruvnet/ruflo`, `666ghj/MiroFish`, …) are **UNVERIFIED** → adoption = CLAUDE.md §9 gate + ADR-103. |
 | ARL swarm / policy / reasoning-bank (§9.3) | **BUG-005** (Agent Routing Layer) | **BUILT (gated off)** | EMI `tests/test_agent_routing/` (swarm_orchestrator/policy/reasoning_bank/tier_workers), `AGENT_ROUTING_ENABLED=false`. **ENABLE+EXTEND — never re-import an external swarm (ADR-102).** |
-| Yield / Earn (§3.3-C) | ADR-083 (YieldPort future) | **PENDING BUILD** | `ports/yield_port.py` **absent** → genuine build (see §B S6.6). StakeKit/Yield.xyz, non-custodial. |
+| Yield / Earn (§3.3-C) | ADR-083 + **ADR-094** | **DROPPED (out-of-scope 2026)** | **ADR-094 (IL-237) closed S6.6 as DROPPED.** The `earn/` advisory seam exists (ADR-102 reuse) but **YieldPort is NOT a 2026 build obligation** — revival requires a dedicated new ADR + IL (operator decision). |
 | HEDGE-with-PUT option (§6.7) | ADR-083 | **OUT-OF-MVP** | dYdX v4 has **no options venue** → no MVP venue; options post-MVP. |
 | Hummingbot / Enso / OctoBot execution bots (§7.1) | ADR-046, ADR-089, ADR-083 | **ACCEPTED (internal-only)** | "future strategy sidecar, **not a port**"; **internal-analytics-only**; client offering = OUT-OF-SCOPE. |
 | AGPL handling — dYdX, MiroFish, Jube (§7) | **ADR-140** (RD-03), ADR-004, ADR-083 §7 | **ACCEPTED** | dYdX consumed **API-only via public Indexer — no §13 trigger**; **MiroFish/Jube AGPL-3.0 = internal-use-only fence** (no BaaS externalisation). |
@@ -58,10 +60,12 @@ Status legend: **BUILT** (shipped; ADR-102 reuse-not-rebuild) · **PROPOSED-MOCK
 
 ### PHASE 1 — immediately executable (lowest-gate; **no keys, no legal sign-off**)
 
+> **Correction (ADR-094):** S6.6 and S6.7 are **NOT** in Phase 1 — they are **DROPPED per ADR-094** (see the two rows below, marked ⛔). The genuinely-executable Phase-1 items are **S6.8** and **S6.2-EN** only.
+
 | Sprint | Goal | Port/module | Gate | Acceptance | Advisory-moat |
 |---|---|---|---|---|---|
-| **S6.6** | **YieldPort + StakeKit/Yield.xyz adapter** — list yields, build **non-custodial** staking txns | `ports/yield_port.py` (**NEW**) + adapter (mock-default) | **executable** (mock; no key needed for skeleton) | port contract + mock impl + conformance test; atomic-unit strings (I-01); fail-closed when `BANXE_DSE_LIVE_ALLOWED≠true` | builds **unsigned** staking tx; client signs. No custody. |
-| **S6.7** | **Hardening** — per-port conformance suites + MiCA/AML review hooks | all ports; `tests/test_ports.py` (extend) | **executable** (hooks are stubs/observability) | snapshot-on-gap (MarketData), idempotency/error-map (Exchange), quote-fidelity (Quote); ADR-016 AML/MiCA **hook points** wired (no live decision) | hooks are advisory/observability; no execution path added |
+| **S6.6** ⛔ | **YieldPort + StakeKit/Yield.xyz adapter** *(closed)* | `ports/yield_port.py` | ⛔ **DROPPED per ADR-094** — closed for 2026; may return only via a dedicated ADR + IL (operator decision) | *(former scope, retained for reference: port contract + mock impl + conformance test; atomic-unit strings (I-01); fail-closed)* | *(advisory-moat retained for any future revival: unsigned staking tx; client signs; no custody)* |
+| **S6.7** ⛔ | **Hardening** — per-port conformance suites + MiCA/AML review hooks *(closed)* | all ports; `tests/test_ports.py` | ⛔ **DROPPED per ADR-094** — closed for 2026; may return only via a dedicated ADR + IL (operator decision) | *(former scope, retained for reference: snapshot-on-gap, idempotency/error-map, quote-fidelity; ADR-016 hook points)* | *(hooks were advisory/observability; no execution path)* |
 | **S6.8** | **FE↔BFF mock-live wiring** — connect `banxe-trading-frontend` `trade-proxy.ts` (`:8080`) to the BFF over the **mock** feed | BFF REST/WS surface (no new repo) | **executable** (mock data; no keys) | FE renders order-book + places **unsigned** orders against mock ExchangePort; deterministic mock feed (IL-185) preserved as CI default | order = unsigned intent surfaced to client wallet; backend signs nothing |
 | **S6.2-EN** | **Enable S6.2 sandbox-live** via **public dYdX Indexer** (`v4_orderbook`) — **no key required** | `dydx_market_data.py` flag flip | **executable** (public market data; API-only AGPL-safe) | `BANXE_DSE_MARKET_PROVIDER=dydx` + `BANXE_DSE_MARKET_MODE=sandbox-live` with `BANXE_DSE_LIVE_ALLOWED=true`; mock stays CI default | read-only market data; no orders, no keys |
 
@@ -73,7 +77,7 @@ Status legend: **BUILT** (shipped; ADR-102 reuse-not-rebuild) · **PROPOSED-MOCK
 |---|---|---|---|---|---|
 | **S6.4-EN** | dYdX **ExchangePort sandbox-live** — place/cancel/status as **unsigned** orders | `dydx_exchange.py` | **ODR-gated** (ODR-1 dYdX subaccount/addr; ODR-3 MiCA stance) | unsigned orders signed on FE; idempotency on `clientOrderId`; sandbox testnet first | client signs every order; backend holds no keys |
 | **S6.5-EN** | QuotePort **LI.FI live** + per-layer provider selection | `lifi_quote.py` / `quote_port.py` | **ODR-gated** (ODR-1 integrator+fee addr; ODR-2 LI.FI vs 0x vs Rubic) | `/quote`, `/routes`, `/quote/build` return unsigned tx; provider chosen via config | quote/route only; unsigned build |
-| **S6.6-EN** | YieldPort **StakeKit live** | `yield_port.py` | **ODR-gated** (ODR-1 StakeKit key; ODR-2 yield scope) | live yields + unsigned staking tx; sandbox first | non-custodial; unsigned |
+| **S6.6-EN** ⛔ | YieldPort **StakeKit live** *(contingent)* | `yield_port.py` | ⛔ **Contingent on a future S6.6-revival ADR** (S6.6 currently **DROPPED per ADR-094**) — *then* ODR-gated (ODR-1 StakeKit key; ODR-2 yield scope) | live yields + unsigned staking tx; sandbox first | non-custodial; unsigned |
 | **S6.x-PROD** | Per-domain **sandbox-live → prod-live** promotion | all | **ODR-gated** (all 5 ODR + ODR-3 MiCA/CASP + Travel Rule) | `BANXE_DSE_PROVIDER_MODE=prod-live` per domain; master kill-switch `BANXE_DSE_LIVE_ALLOWED` retained; per-domain override | unchanged: advice → unsigned → client-signs |
 
 ### PHASE 3 — new-ADR-gated (author ADR + legal sign-off **before any code**)
@@ -103,8 +107,8 @@ Every Phase-1/2 sprint above conforms to the **advisory moat**: the backend prod
 
 | # | Decision | Blocks |
 |---|---|---|
-| **ODR-1** | Integrator keys/addresses — LI.FI integrator string + fee-collection address; StakeKit API key; dYdX subaccount/wallet addresses (env-only, none committed) | S6.4-EN, S6.5-EN, S6.6-EN |
-| **ODR-2** | Per-layer provider selection — QuotePort (LI.FI vs 0x vs Rubic); dYdX market set; yield provider scope | S6.5-EN, S6.6-EN |
+| **ODR-1** | Integrator keys/addresses — LI.FI integrator string + fee-collection address; StakeKit API key; dYdX subaccount/wallet addresses (env-only, none committed) | S6.4-EN, S6.5-EN, S6.6-EN *(contingent — S6.6 DROPPED per ADR-094)* |
+| **ODR-2** | Per-layer provider selection — QuotePort (LI.FI vs 0x vs Rubic); dYdX market set; yield provider scope | S6.5-EN, S6.6-EN *(contingent — S6.6 DROPPED per ADR-094)* |
 | **ODR-3** | AML/MiCA legal stance — CASP classification, Travel Rule applicability, MiCA surface (ADR-016) | S6.x-PROD, all live order paths |
 | **ODR-4** | dYdX AGPL consumption mode — **API-only recommended** (public Indexer, no §13 trigger) vs vendoring | S6.2-EN (already API-only) / any vendoring |
 | **ODR-5** | OpenDAX community-vs-commercial (reference UI) | optional FE decision |
