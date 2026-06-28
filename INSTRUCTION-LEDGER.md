@@ -20794,3 +20794,23 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** docs/adr governance-only; **no install/clone/import/runtime/secret**. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 716) → IL-717 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T02:15:00Z` > origin/main max `2026-06-29T02:00:00Z`. Fresh worktree off origin/main `ee6021e`, commit-before-push (head≠base, anti-auto-close) (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — DRAFT ADR-149 + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135.**
 - **Refs:** `docs/adr/ADR-149-closed-loop-completion-criteria.md`; ADR-117/135/148/119/143/143-A/120; parallel-session-isolation Rule 6/7; agent-looping pattern ref (not imported). Operator HITL.
+
+---
+
+### IL-718 - agent-factory-docs-s66-yieldport-build-spec @ 2026-06-29T03:00:00Z
+
+- **il_ts:** 2026-06-29T03:00:00Z
+- **session_id:** agent-factory-docs-s66-yieldport-build-spec
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-docs-s66-yieldport-build-spec/IL-2026-06-29T03-00-00Z--s66-yieldport-build-spec.md`
+
+### S6.6 — YieldPort + StakeKit (mock) build-spec [docs-only, ADR-102 reuse-refinement]
+- **Decision:** Created `docs/specs/S6.6-YIELDPORT-BUILD-SPEC-2026-06-29.md` (PROPOSED, **docs-only**) — the verify-first spec the operator selected (option b) before any S6.6 code. Refines the road map S6.6 row via an **ADR-102 reuse finding**: a full earn/yield **advisory** module already exists in `banxe-trading-backend` and must be **wrapped, not rebuilt**.
+- **Verified wrap-points (read-only deep-read of `banxe-trading-backend@main`):** `earn/providers.py` (`EarnRatesProvider` Protocol + `build_earn_provider` factory: mock default / crypto-earn / operator-gated), `earn/rates.py` (`EarnRatesCatalog`, `RateCard`/`EarnRatesResponse`, `RiskBand`, `_RATES_DISCLAIMER`, `SANDBOX_MOCK`), `dse.models.EarnMetrics`. Patterns to MIRROR: `ports/quote_port.py` (Protocol + mock-default), `ports/dydx_exchange.py` (UNSIGNED-intent construction, self-custodial, I-01 Decimal, API-only), `ports/exchange_port.py` (error hierarchy).
+- **Net-new (the only build):** `ports/yield_port.py` `YieldPort` Protocol + `MockYieldAdapter` — `list_yields` **delegates to the injected EarnRatesProvider** (reuse), `build_stake_intent`/`build_unstake_intent` return **unsigned** staking-tx intents the client signs. Mock-default, no network/keys. `build_yield_provider`: mock wired / stakekit operator-gated; **fail-closed** when `BANXE_DSE_LIVE_ALLOWED≠true`. Conformance test mirrors `tests/test_ports.py`.
+- **Advisory-moat (canonical):** earn/ advisory rates → YieldPort unsigned staking tx → client wallet signs/submits. Backend never holds keys, signs, or submits (live = S6.6-EN, ODR-gated: StakeKit key + yield scope + MiCA/CASP/Travel-Rule). StakeKit SDK = MIT over hosted REST → no AGPL concern (unlike dYdX).
+- **Spec contents:** §0 ADR-102 refinement + reuse table; §1 scope (in/out); §2 Protocol + mock + models + error hierarchy; §3 config/gating (fail-closed); §4 invariants (I-01, self-custodial, API-only, no FROZEN change); §5 conformance-test plan; §6 acceptance criteria; §7 ADR-102 reuse map (reuse/mirror/new); §8 S6.6-EN follow-on.
+- **Proof:** docs-only (one spec in `banxe-architecture`); **no code / runtime / new repo / keys / secrets / RAR content**; no FROZEN port/contract touched; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (rebased onto `eba4c98`, base frozen max 717) → **IL-718** via the ADR-143 central allocator (717 taken concurrently by #874 — collision resolved by max+1, no renumber per ADR-119 Rule 4). Re-rebased per Rule 2/5 after concurrent ledger PR #874 advanced main — a rebase signal, not a stop-barrier; `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T03:00:00Z` strictly > origin/main max. Branch `agent/factory/docs/s66-yieldport-build-spec` off origin/main `eba4c98` (ADR-120; namespace ADR-060).
+- **Status:** DONE — spec authored. Authorises a later operator-gated `banxe-trading-backend` code build (own GO required). **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
+- **Refs:** `docs/specs/S6.6-YIELDPORT-BUILD-SPEC-2026-06-29.md`; `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md` (IL-714); ADR-083/021/102/016/119/143/059-A/120/060; I-01; banxe-trading-backend `ports/{quote_port,dydx_exchange,exchange_port,yield_port}`, `earn/{providers,rates}`, `dse.models`. Operator HITL.
