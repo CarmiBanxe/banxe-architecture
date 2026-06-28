@@ -89,6 +89,31 @@ Verified facts (EMI `4f93870`) — this is an **inheritance hierarchy**, not a d
   legacy_otp_adapter already PARKED); `docs/architecture/EMI-IMPL-STATE-REFRESH-2026-06-26.md:43,174`
   (twilio_otp_stub → OtpDeliveryPort; provider-wiring stubs creds-gated).
 
+## Correction note (2026-06-28, ADR-102 legacy_sepa audit on EMI `4f93870`) — SEPA family is UNWIRED; live rail is ModulrPaymentAdapter
+
+The earlier `legacy_sepa_adapter → modulr_sepa_stub` framing ("LIVE_MIGRATE_NEXT / repoint 1 consumer /
+Modulr live-wiring", rows §1/§3/§4 below) is a **MISCLASSIFICATION and SUPERSEDED** (4th and final stream;
+mirrors recon/fin060/legacy_otp). Verified facts (EMI `4f93870`):
+- **The live SEPA rail is `ModulrPaymentAdapter` (`services/payment/modulr_client.py`)** — implements the
+  FROZEN `PaymentRailPort` for FPS/Bacs/**SEPA_CT/SEPA_INSTANT** (IL-014). Selected via `PAYMENT_ADAPTER`
+  env (`mock`→`MockPaymentAdapter` default; `modulr`→`ModulrPaymentAdapter`, gated `MODULR_API_KEY`),
+  wired `api/routers/payments.py` (`/v1/payments`) → `PaymentService.send_sepa_ct/send_sepa_instant`.
+- **None of the three `*_sepa_*`-named adapters is runtime-wired** (0 instantiations in `api/**`/`services/**`):
+  - `LegacySepaAdapter` (`payment/legacy/legacy_sepa_adapter.py`) — REWRITE-3 semantic rewrite, **transport
+    dropped** (ADR-025 §15-16). **PARKED reference** (unwired). → NOT a migrate/retire target (no consumers).
+  - `ModulrSepaAdapter` (`payment/production/modulr_sepa_adapter.py`) — SEPA-specific Modulr REST,
+    sandbox-default. **PARKED scaffold** + **⚠ ADR-102 OVERLAP**: it duplicates the SEPA_CT/INSTANT
+    capability of the already-wired `ModulrPaymentAdapter` → needs a reconcile decision (keep / park / remove).
+  - `ModulrSepaStub` (`payment/production/modulr_sepa_stub.py`) — Wave-C wiring seam (`NotImplementedError`
+    on submit/status/health). **PARKED seam** — a placeholder, NOT a migration end-state.
+- **Corrected status:** `legacy_sepa_adapter` = **PARKED reference**; "→ modulr_sepa_stub" is wrong (no
+  consumers; stub ≠ end-state; live rail = `ModulrPaymentAdapter`). The future SEPA-specific path (if pursued)
+  is `ModulrSepaAdapter`, **gated** on Wave C + `MODULR_API_KEY` + the ADR-102 overlap reconcile. No code
+  action without operator + fresh ADR-102.
+- **Cross-ref (not duplicated here):** `PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md:98` (payment/legacy incl
+  legacy_sepa_adapter already PARKED); `docs/architecture/EMI-IMPL-STATE-REFRESH-2026-06-26.md:45,174`
+  (modulr_sepa_stub → PaymentRailPort; provider-wiring stubs creds-gated).
+
 ### Pass-1 update log (2026-06-27)
 - Stream **#1 DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock EMI #257 / `36418d9`). Matrix otherwise unchanged; no new orphan deletions; remaining streams (`to_minor_units` extraction, `recon_v2`/`fin060_v2` merge-pairs, `otp`/`sepa` → production) stay OPEN.
 
@@ -115,7 +140,7 @@ Verified facts (EMI `4f93870`) — this is an **inheritance hierarchy**, not a d
 | ~~`services/payment/legacy/bifrost_adapter.py`~~ | ~~2 (`to_minor_units`)~~ | ~~LIVE_MIGRATE_NEXT~~ ⚠ **CORRECTED → PARKED** (Wave-D scaffold, MIG-M2.5-BIF / ADR-025 §15-16, advisory-sandbox, has characterization tests); the "2 (`to_minor_units`)" count was a DUPLICATE-definition mis-read, not a live dependency |
 | `services/payment/legacy/legacy_transactions_adapter.py` | 2 | LIVE_KEEP |
 | `services/payment/legacy/legacy_abs_payment_adapter.py` | ~~transitive via bifrost~~ ⚠ **CORRECTED → consumed BY bifrost** (`bifrost_adapter.py:19` imports `AbsPaymentStatus`); direction is bifrost→abs_payment, abs_payment is NOT transitively-live *via* bifrost | LIVE_KEEP (coupled) |
-| `services/payment/legacy/legacy_sepa_adapter.py` | 1 | LIVE_MIGRATE_NEXT |
+| `services/payment/legacy/legacy_sepa_adapter.py` | 1 | ⚠ CORRECTED → **PARKED reference** (REWRITE-3, transport-dropped, UNWIRED; live SEPA rail = `ModulrPaymentAdapter` — see Correction note 2026-06-28) |
 | `services/recon/reconciliation_engine_v2.py` | 4 | ⚠ CORRECTED → **CANONICAL live engine, PARKED** (v1 is legacy-cron; direction is v1→v2, not v2→v1 — see Correction note 2026-06-28) |
 | `services/reporting/fin060_generator_v2.py` | 2 | ⚠ CORRECTED → **GOVERNANCE-API canonical (HITL/CFO), PARKED** (v1 = required submission engine; src/safeguarding = separate; direction v2→v1 is wrong — see Correction note 2026-06-28) |
 
@@ -130,11 +155,11 @@ Verified facts (EMI `4f93870`) — this is an **inheritance hierarchy**, not a d
 | `consumer_duty/models_v2` | rename → `models.py` | atomic rename + 12+ import update | ✅ **DONE** (EMI #255, `78207c0`; ruff-debt unblock EMI #257 / `36418d9`) |
 | ~~`bifrost_adapter` (`to_minor_units`)~~ | `services/shared` money util | ~~move helper, repoint open_banking ×2~~ ⚠ **CORRECTED → DE-DUPLICATE** both copies (`bifrost:51` + `open_banking/m24_int_bridge:31`) into a shared money-util (ADR-102); open_banking already uses its own copy. bifrost stays (Wave-D scaffold); de-dup neither parks nor removes it | de-dup (ADR-102) |
 | ~~`legacy_otp_adapter`~~ | ~~`auth/production/{twilio,sendgrid}_otp_adapter`~~ | ~~repoint 4 consumers~~ ⚠ **SUPERSEDED 2026-06-28** — legacy_otp is the BASE CLASS the production adapters inherit (no repoint); Twilio/SendGrid PARKED (creds/route gated) — see Correction note | PARKED (ADR-102) |
-| `legacy_sepa_adapter` | `payment/production/modulr_sepa_stub` | repoint 1 consumer | Modulr live-wiring |
+| ~~`legacy_sepa_adapter`~~ | ~~`payment/production/modulr_sepa_stub`~~ | ~~repoint 1 consumer~~ ⚠ **SUPERSEDED 2026-06-28** — SEPA family unwired (0 consumers); live rail = `ModulrPaymentAdapter`; stub ≠ end-state; future path = `ModulrSepaAdapter` gated (ADR-102 overlap) — see Correction note | PARKED (ADR-102) |
 | `crypto_legacy` router + `ledger/legacy/legacy_crypto_*` | `PaybisCryptoAdapter` | route cutover + DI swap | **GATED on PAYBIS Wave C** (SRC-06 + ADR-114) |
 
 ## 4. Duplicates / replacements map
-- **legacy ↔ current:** `legacy_otp_adapter` ↔ `production/{twilio,sendgrid}_otp_adapter` *(⚠ CORRECTED 2026-06-28: this is a base-class↔subclass **inheritance**, not a legacy↔replacement pair — see Correction note)* · `legacy_crypto_*` ↔ `PaybisCryptoAdapter` (gated) · `legacy_sepa_adapter` ↔ `production/modulr_sepa_stub` · `crypto_legacy` router ↔ future PAYBIS routes.
+- **legacy ↔ current:** `legacy_otp_adapter` ↔ `production/{twilio,sendgrid}_otp_adapter` *(⚠ CORRECTED 2026-06-28: this is a base-class↔subclass **inheritance**, not a legacy↔replacement pair — see Correction note)* · `legacy_crypto_*` ↔ `PaybisCryptoAdapter` (gated) · `legacy_sepa_adapter` ↔ `production/modulr_sepa_stub` *(⚠ CORRECTED 2026-06-28: both UNWIRED; live SEPA rail is `ModulrPaymentAdapter` (`modulr_client.py`), not this pair — see Correction note)* · `crypto_legacy` router ↔ future PAYBIS routes.
 - **v2 ↔ current:** `reconciliation_engine_v2` ↔ `reconciliation_engine` · `fin060_generator_v2` ↔ `fin060_generator` · `models_v2` ↔ `models` *(✅ unified — rename done, EMI #255 / `78207c0`)*.
 - **parked vs genuinely redundant:** `role_guard` = parked, **NOT redundant** (security invariant, no replacement proven) · `binancekyc`/`bkyc` = parked I-27 · `legacy_abs_payment`/`jwt_strategy`/`jwks_models` = parked-coupled (transitive live), not redundant. *(⚠ CORRECTED: `legacy_abs_payment` is a **dependency of** bifrost, not transitively-live via it — see Correction note; `jwt_strategy`/`jwks_models` unaffected.)*
 
@@ -152,7 +177,7 @@ Verified facts (EMI `4f93870`) — this is an **inheritance hierarchy**, not a d
   1. ✅ **DONE** — `consumer_duty/models_v2 → models` rename (EMI #255 / `78207c0`; ruff-debt unblock #257 / `36418d9`).
   2. ~~extract `bifrost.to_minor_units → shared` money util (unlocks bifrost + `legacy_abs_payment` parking)~~ ⚠ **CORRECTED → DE-DUPLICATE `to_minor_units`** (bifrost:51 + open_banking/m24_int_bridge:31) into a `services/shared` money-util (ADR-102). It does NOT unlock parking — bifrost is a Wave-D scaffold (already PARKED) and `legacy_abs_payment` is its dependency, not its dependent.
   3. `reconciliation_engine_v2` / `fin060_generator_v2` merge-pairs. *(⚠ **both PARKED** — recon: direction is **v1→v2**; fin060: **three complementary contours** (v2 governance / v1 submission / src-safeguarding), not a v2→v1 merge — see the two Correction notes 2026-06-28.)*
-  4. ~~`legacy_otp`~~ / `legacy_sepa` → production adapters. *(⚠ `legacy_otp` **SUPERSEDED 2026-06-28**: it is a LIVE_KEEP base class, not a migrate target; Twilio/SendGrid PARKED — see Correction note. `legacy_sepa` unaffected.)*
+  4. ~~`legacy_otp` / `legacy_sepa` → production adapters.~~ *(⚠ **BOTH SUPERSEDED 2026-06-28**: `legacy_otp` = LIVE_KEEP base class (Twilio/SendGrid PARKED); `legacy_sepa` = PARKED reference, SEPA family unwired, live rail = `ModulrPaymentAdapter` — see the two Correction notes. All four pass-1 "LIVE_MIGRATE_NEXT" streams are now PARKED.)*
   5. **GATED on PAYBIS Wave C:** `crypto_legacy` router + `ledger/legacy/legacy_crypto_*` cutover.
 
 ### Refs
