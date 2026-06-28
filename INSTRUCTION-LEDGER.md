@@ -19940,3 +19940,56 @@ BANXE-CORE-ENGINE = coordination layer over above (not replacement).
 - **AMENDED (in place, same ADR-145 — anti-duplication):** integrated the operator-**ACCEPTED single target architecture** — *"Factory-authoritative, single-writer, durable-orchestrated contour"* as new **§2** (authority=factory-only non-delegable; write-path=single-writer central allocator ADR-143/143-A + orphan-gate ADR-144; orchestration=**Temporal durable control-plane + LangGraph reasoning-activities** [LangGraph/AutoGen already deployed → reuse; Temporal recorded-not-deployed, Sprint B]; project fork=execution-consumer only) + **rejected alternatives** (decentralized max+1 / distributed lock / content-addressed-for-IL / merge-queue+scripts-as-end-state / LangGraph-as-durability / Temporal-only / project-or-split-authority) + **phased target §5** (P1 canonize spine + make main-merge-serialize REQUIRED + mandatory ADR-120 worktrees, NO new infra; P2 wrap pipeline in Temporal durable workflows, mint/merge=activities, LangGraph=reasoning-activities, crash→resume; P3 project-fork delegation on synthetic + read-only ledger-evidence under ADR-135 gate, authority stays factory). Status stays **PROPOSED**; sections re-sequenced 1–7. IL unchanged (IL-668, same shard key).
 - **Status:** DONE — DRAFT ADR (amended) + shard. **DRAFT PR; DO NOT MERGE — PREPARE-ONLY, operator HITL via ADR-135 adoption-gate.**
 - **Refs:** `docs/adr/ADR-145-factory-project-fork-target-model.md`; ADR-117/135/136/137/143/143-A/144; Temporal (Sprint B banxe-ai-infrastructure), LangGraph+AutoGen (deployed), Hermes-MCP, Lazyweb (factory tool), Hallmark [UNKNOWN]. Operator HITL.
+
+---
+
+### IL-679 - agent-factory-engine-roadmap-inputs @ 2026-06-28T23:05:00Z
+
+- **il_ts:** 2026-06-28T23:05:00Z
+- **session_id:** agent-factory-engine-roadmap-inputs
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-engine-roadmap-inputs/IL-2026-06-28T23-05-00Z--ee39fb.md`
+
+### IL — Agent Engine Roadmap Inputs Anchor
+
+**Date:** 2026-06-28
+**Task:** Create ENGINE-ROADMAP-INPUTS.md — verified synthesis from Central's dossier audit (PRs #842–#851). Input-anchor for roadmap builder.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/roadmap01/engine-inputs
+
+**Changes (docs-only, new file):**
+
+1. **CREATE: docs/agent-engine-dossier/ENGINE-ROADMAP-INPUTS.md** — 6 sections, ~120 lines
+   - §1 GAP Inventory: 5 engine gaps (E1–E5) with evidence + scope columns + dependency chain
+   - §2 Sprint Split: Sprint-A (architecture ADRs/specs) vs Sprint-B (infra runtime per ADR-060 §6)
+   - §3 Reuse Scaffold: 11 artefacts marked DO NOT REBUILD (passports/ADRs/fabric/gate-exec/OSS)
+   - §4 Maturity Model: L1 Design → L2 Sandbox → L3 Production + adoption-gate table (5 GAPs)
+   - §5 Known Runtime Gaps: G-CANON-BYPASS (P1) + G-GUARDIAN-WEBHOOK-MISSING (P1)
+   - §6 Input Completeness: confidence HIGH for all 9 input categories
+
+**No existing content modified:**
+- All 9 dossier files on main: untouched (SRC-01/02/06/07/09 + DEDUP + SNAPSHOT + INTAKE-REGISTER)
+- New file only; append-only by design
+
+**Verification sources:**
+
+| Source | Finding |
+|--------|---------|
+| ADR-045 §concept_only, ADR-049 lines 291/390/490 | GAP-E1 intent-dispatcher = concept only, not deployed |
+| COMPLIANCE-MATRIX S12-13/S12-16 | GAP-E2 LangGraph ✅ / Lerian MCP ❌ |
+| runtime-snapshot :6333 NOT LISTENING | GAP-E3 Qdrant not deployed |
+| DEDUP-FINDINGS §NOVELTY | GAP-E4 A2A contract = no ADR (novel gap) |
+| agent-authority.md; fabric/legion/gate-exec verified | GAP-E5 sandbox = gate-exec present, contract absent |
+| ADR-060 §6 + ADR-133 | Sprint-B boundary (Temporal/Redis-lease/Qdrant = runtime) |
+| DEDUP-FINDINGS §OSS Status Correction | Reuse: LangGraph/AutoGen DEPLOYED; GigaAgent BLOCKED (I-02/RU) |
+| VERIFIED-RUNTIME-SNAPSHOT.md v2 + A-003 addendum | G-CANON-BYPASS/G-GUARDIAN-WEBHOOK-MISSING confirmed P1 |
+
+**Quality Checks:**
+- ENGINE-ROADMAP-INPUTS.md: new file; 0 existing content modified; ~120 lines
+- ADR-144 orphan-check: 0 (docs-only, no new ADR/passport cross-refs that create orphans)
+- No Python files touched
+
+**Refs:** ADR-045, ADR-049, ADR-060 §6, ADR-077, ADR-133, ADR-136, ADR-137, ADR-141, ADR-143-A,
+PR #842 (target-audit), DEDUP-FINDINGS.md, VERIFIED-RUNTIME-SNAPSHOT.md,
+agent-authority.md, COMPLIANCE-MATRIX.md S12-13/S12-16, I-02, I-24, I-28
