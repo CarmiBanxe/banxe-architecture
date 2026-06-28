@@ -20755,3 +20755,24 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 714) → IL-715 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T01:15:00Z` > origin/main max `2026-06-29T01:00:00Z`. Fresh worktree+branch off origin/main `49f7252` (ADR-120/060). FROZEN untouched.
 - **Status:** DONE — file populated + shard, fresh Draft PR. **DO NOT MERGE — operator HITL via ADR-135 (merge promptly to beat wave-drift).**
 - **Refs:** `instruction-ledger/sprint-53/ADR-059-A-frozen-archive-shard-composition.md`; base `docs/adr/ADR-059-il-append-serialization-per-session-shards.md`; `docs/governance/GLOSSARY.md:45`; ADR-057/059/119/143/143-A/144/120/060; I-28. Operator HITL.
+
+---
+
+### IL-716 - agent-factory-security-scrub-presigned-urls @ 2026-06-29T02:00:00Z
+
+- **il_ts:** 2026-06-29T02:00:00Z
+- **session_id:** agent-factory-security-scrub-presigned-urls
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-security-scrub-presigned-urls/IL-2026-06-29T02-00-00Z--scrub-presigned-urls.md`
+
+### SEC-1 — scrub committed AWS presigned URLs to bare URLs + gitleaks rule [docs-only]
+- **Decision:** Scrubbed 5 committed AWS S3 presigned URLs (ppl-ai-file-upload links carrying expired STS credentials — access-key-id + signature + security-token + Expires) down to their **bare object URLs** (scheme+host+path, query string removed) across 3 master-documents, and added a targeted **gitleaks detection rule** so the pattern is caught in CI going forward.
+- **Scope (verified by grep, not memory):** `docs/master-document/01-master-full.md` (×3: lines 657/660/662), `docs/master-document/02-unified-stack.md` (×1: 578), `docs/master-document/03-gap-overlay.md` (×1: 396). Each URL stripped from `?` onward; the bare `https://ppl-ai-file-upload.s3.amazonaws.com/.../<name>.{pdf,md}` reference is retained. **Docs not deleted.**
+- **Detector:** `.gitleaks.toml` — added rule `aws-presigned-url-credentials` (regex on the four presign query-param names). The repo config previously held **only an allowlist (zero active rules)** — this change is **purely additive; nothing weakened/removed**. `.gitleaks.toml` self-allowlisted (its regex documents the param names); `ledger/FROZEN-ARCHIVE.md` allowlist preserved.
+- **Out-of-scope note (recorded, not done):** did **not** set `[extend] useDefault = true` — activating the full upstream gitleaks default ruleset repo-wide is a separate, larger hardening decision (dry-run first to avoid a surprise repo-wide red gate). SEC-1 adds one targeted rule only.
+- **Severity / remediation rationale:** creds are **expired STS temp tokens** (`Expires` ~2026-04-02) → LOW active risk; **history-rewrite NOT warranted** — bounded scrub of current HEAD is sufficient (no filter-repo/force-push of history).
+- **Verify:** grep over `docs/` for the four presign query-param names (access-key-id / x-amz-signature / x-amz-security-token / x-amz-credential, each followed by `=`) → **zero hits** post-scrub; bare URLs intact. Local `gitleaks 8.18.4 detect --config .gitleaks.toml` on the scrubbed tree → **no leaks (exit 0)**; regression probe with a presigned param → **rule fires (exit 1)**. Repo-wide check: zero presigned params in any tracked file (excl. self-allowlisted `.gitleaks.toml`) → CI Secrets Scan stays green.
+- **Proof:** docs-only (3 master-docs + `.gitleaks.toml`); **no code / runtime / port / FROZEN-contract / new repo / new secret / RAR content**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (rebased onto `785f4be`, base frozen max 715) → **IL-716** via the ADR-143 central allocator (715 taken concurrently by #872 — collision resolved by max+1, no renumber per ADR-119 Rule 4). Re-rebased per Rule 2/5 after concurrent ledger PR #872 advanced main — a rebase signal, not a stop-barrier; `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T02:00:00Z` strictly > origin/main max. Branch `agent/factory/security/scrub-presigned-urls` off origin/main `785f4be` (ADR-120; namespace ADR-060).
+- **Status:** DONE — scrub + rule applied, verified green. **DO NOT MERGE — operator-gated (§71).**
+- **Refs:** `.gitleaks.toml`; `docs/master-document/{01-master-full,02-unified-stack,03-gap-overlay}.md`; `.github/workflows/ci.yml` (gitleaks-action@v2); ADR-119/143/059-A/120/060; I-24; SEC-1 (tracked in `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md` §D). Operator HITL.
