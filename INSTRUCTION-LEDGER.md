@@ -19902,3 +19902,22 @@ BANXE-CORE-ENGINE = coordination layer over above (not replacement).
 - **Provenance:** banxe-architecture origin/main @ 6549092 IL max=662; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
 - **Perimeter / canon:** docs+ledger only; NO EMI/runtime/.semgrep code; no adapter aliased/retired/wired/deduped; bitrix/neuronext guards untouched; append-only build_ledger; sub-B/factory → MAIN per §71/§74 (NO merge — operator decides). RAR/secrets untouched.
 - **Refs:** EMI 4f93870; ADR-102; ADR-119/I-28; recon #840/IL-630; fin060 #841/IL-636; legacy_otp #853/IL-662; PLAN-ROADMAP-SPRINTS:98; EMI-IMPL-STATE-REFRESH:45,174.
+
+---
+
+### IL-667 - agent-factory-governance-single-active-clone-policy @ 2026-06-28T23:35:00Z
+
+- **il_ts:** 2026-06-28T23:35:00Z
+- **session_id:** agent-factory-governance-single-active-clone-policy
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-single-active-clone-policy/IL-2026-06-28T23-35-00Z--single-active-clone-policy.md`
+
+### SINGLE-ACTIVE-CLONE-POLICY (DRAFT) — one active write-capable clone per machine per origin (extends ADR-120) + clone2 rescue/classification
+- **Decision:** Created `docs/governance/SINGLE-ACTIVE-CLONE-POLICY.md` (PROPOSED, **PREPARE-ONLY**). Root cause: a **second un-synced write-capable clone on the same origin** (clone2 `~/banxe/banxe-architecture`, HTTPS, stale) is an **un-serialized write path** — same collision class (base-drift/DIRTY/IL-merge races) the single-writer allocator (ADR-143/143-A) + `main-merge-serialize` + ADR-120 worktree-isolation fixed *within* one clone. Policy: **one ACTIVE write-capable clone per machine per origin**; secondary clones read-only/archived; rescue-before-remediation (reversible bundle+patches); **factory never deletes** (operator-only).
+- **Rescue (read-only, reversible — Step 1):** `~/banxe-architecture/.rescue/clone2-20260628T044333/` — `git bundle --branches` (all local branches, full history, **verified**) + **24 per-branch `format-patch`** + MANIFEST. Restorable via `git bundle unbundle` / `git am`.
+- **Classification (Step 2):** 24 LOCAL-ONLY ahead branches → **14 SAFE-TO-DELETE** (11 PR-MERGED: #684/687/688/692/694/696/699/791/839/840/841 + 3 files-identical-in-main: pr249/pr251/pr828) / **10 UNIQUE-REVIEW** (fail-closed — no merged PR + content differs: pr825/827/829/830/832/833/835, neuronext-landing, m28e-append, implstate-landing). Signals: PR-merged state + touched-files-identical-to-main (net-diff-vs-main rejected as base-drift-noisy; git-cherry rejected as squash-unreliable). **Nothing deleted.**
+- **Canon:** extends ADR-120 (worktree→clone isolation); parallel-session-isolation Rules 1–8; ADR-143/143-A (single-writer); ADR-117 (perimeter). NO clone/branch/worktree deletion; NO push of clone2 branches to origin (would create the very collision risk); rescue artifacts operator-local (NOT committed).
+- **Proof:** docs/governance-only; concept; **no runtime, no install, no deploy, no deletion, no secret**. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger` mints max+1 over current `origin/main` (max 662) → IL-667 via central allocator (ADR-143/143-A); unique, 0 new dups; orphan-gate 1:1 (ADR-144). Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-28T23:35:00Z` strictly > origin/main max `2026-06-28T22:50:00Z`. Isolated worktree off origin/main `6549092` (ADR-120); namespace ADR-060.
+- **Status:** DONE — DRAFT policy + shard + reversible rescue + classification. **DRAFT PR; DO NOT MERGE — PREPARE-ONLY; operator decides deletions/archival via review of CLASSIFICATION.md.**
+- **Refs:** `docs/governance/SINGLE-ACTIVE-CLONE-POLICY.md`; rescue `~/banxe-architecture/.rescue/clone2-20260628T044333/` (bundle + 24 patches + CLASSIFICATION.md, operator-local); ADR-120/143/143-A/117, parallel-session-isolation.md. Operator HITL.
