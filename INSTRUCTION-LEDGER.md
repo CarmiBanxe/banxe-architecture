@@ -20663,3 +20663,55 @@ Replaced 9-row table with 17-row table including all merged items and B1–B9 st
 
 **Refs:** ADR-147 (IL-694, PR #863), banxe-ai-infrastructure PR infra#7, SPRINT-PLAN.md §3 B3, 
 agent-authority.md, security-policy.md, I-24, I-27, I-28, COMPLIANCE-MATRIX §18
+
+---
+
+### IL-712 - agent-factory-agenteng10/src09-resolve-unknowns @ 2026-06-28T03:46:00Z
+
+- **il_ts:** 2026-06-28T03:46:00Z
+- **session_id:** agent-factory-agenteng10/src09-resolve-unknowns
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-agenteng10-src09-resolve-unknowns/IL-2026-06-28T03-46-00Z--src09-resolve.md`
+
+### IL — SRC-09 resolve 5 UNKNOWN (consolidation-audit C4)
+
+**Date:** 2026-06-28
+**Task:** Append-only enrichment resolves 5 UNKNOWN placeholders from consolidation-audit C4
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/agenteng10/src09-resolve-unknowns | PR #851
+
+**Changes (all append-only):**
+
+1. **APPEND: docs/agent-engine-dossier/SRC-09-preaudit-synthesis.md** — Resolve 5 UNKNOWN
+   - U-1: Math methods (ReAct/MCTS/Bayes = THEORY/PLANNED; confidence-bands/consensus/lineage = PRESENT)
+   - U-2: Runtime services (Redis NOT/ADR-143-A, Qdrant NOT/PLANNED, Temporal NOT/infra, n8n ✅, MongoDB ✅)
+   - U-3: Neobank (Manus/Revolut/bunq/Monzo = CONFIRMED corpus Part 6; Nebius/H100 = НЕ ПОДТВЕРЖДЕНО)
+   - U-4: banxe-recon = inactive; GAP-087 PARTIAL CONFLICT; HITL CTIO/CFO pending
+   - U-5: Passport count = 70 (not 39 — OBSOLETE)
+
+**No existing content modified:**
+- SRC-09 existing sections untouched; only UNKNOWN blocks enriched
+- Cross-ref only; no content duplicated
+- UNKNOWN 5→0 (resolution complete)
+
+**Verification sources:**
+
+| Source | Verification |
+|--------|--------------|
+| COMPLIANCE-MATRIX.md | Deployment status verified |
+| ADR-143-A, ADR-144 | IL allocator, zero-orphans protocol |
+| ADR-056 | Ledger coupling gate requirement |
+
+**Quality Checks:**
+- SRC-09-preaudit-synthesis.md: append-only, no deletions
+- UNKNOWN count: 5→0
+- No Python files touched (docs-only)
+- No conflict markers
+
+**Metadata:**
+- Principle: append-only; existing sections untouched
+- Source: factory agenteng10 session
+- Next step: Operator merge to main; resolution audit complete
+
+**Refs:** ADR-143-A, ADR-144, ADR-056, PR #851
