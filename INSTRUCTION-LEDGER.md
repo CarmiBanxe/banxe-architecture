@@ -20109,3 +20109,65 @@ Root dependency for ENGINE-ROADMAP GAP-E4 chain (E4→E1→E2→E5).
 **Refs:** GAP-E4, ENGINE-ROADMAP PR #857, ENGINE-ROADMAP-INPUTS PR #856 (IL-665),
 target-audit PR #842, DEDUP-FINDINGS.md §NOVELTY, I-24, I-27, I-08, ADR-060 §6,
 ADR-077, ADR-133, ADR-144, fabric/common/bus-redis-streams.py
+
+---
+
+### IL-683 - agent-factory-sprintplan01-build @ 2026-06-28T23:35:00Z
+
+- **il_ts:** 2026-06-28T23:35:00Z
+- **session_id:** agent-factory-sprintplan01-build
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintplan01-build/IL-2026-06-28T23-35-00Z--d8b602.md`
+
+### IL — Agent Engine SPRINT-PLAN.md
+
+**Date:** 2026-06-28
+**Task:** Create SPRINT-PLAN.md — per-deliverable execution plan for Sprint-A (A1–A5)
+and Sprint-B (B1–B9) derived from ENGINE-ROADMAP.md (IL-666, PR #857). No B0 needed:
+banxe-ai-infrastructure repo confirmed EXISTS (created 2026-06-05).
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/sprintplan01/build
+
+**Changes (docs-only, new file):**
+
+1. **CREATE: docs/agent-engine-dossier/SPRINT-PLAN.md** — 5 sections, ~350 lines
+   - §0 Status dashboard (A1=PROPOSED/IL-667, A2–A5=NOT_STARTED, B1–B9=BLOCKED)
+   - §1 Gating rules: A-GATE, L2-GATE, L3-GATE, ORPHAN-GATE, REVIEW-GATE
+   - §2 Sprint-A plan: A1(DONE/PR#858) through A5(NOT_STARTED), dependency order, acceptance criteria
+   - §3 Sprint-B plan: B1–B9 with gate-in/gate-out/acceptance criteria; B0 ABSENT (repo exists)
+   - §4 Critical path diagram (A1→A2→A5→B2→B5; A1→A3→B3; A1→A4→B4; B1/B6/B7 independent)
+   - §5 IL tracking table (IL-665 through IL-668; A2–A5/B1–B9 TBD)
+
+**No existing content modified:**
+- SPRINT-PLAN.md: new file; extends ENGINE-ROADMAP.md §2 with per-item execution state
+- All 9 dossier files on main + ENGINE-ROADMAP-INPUTS.md + ENGINE-ROADMAP.md + ADR-145: untouched
+
+**Key decisions:**
+- No B0 Sprint-B precondition: banxe-ai-infrastructure EXISTS (verified VERIFY-2 GREEN)
+- A1 = PROPOSED (not DONE; gate-out requires CTIO ACCEPTED in PR comment)
+- B6/B7 (P1 blockers): gate-in=None; start immediately parallel with Sprint-A
+- ADR-060 §6 boundary: B8/B9 (Temporal/Redis-lease) are infrastructure items in banxe-ai-infrastructure
+- SPRINT-PLAN extends, does not duplicate ENGINE-ROADMAP §2
+
+**Verification sources:**
+
+| Source | Finding |
+|--------|---------|
+| ENGINE-ROADMAP.md (IL-666, PR #857) | Sprint-A A1–A5 + Sprint-B B1–B9 items defined |
+| VERIFY-2 diagnostic (session) | banxe-ai-infrastructure EXISTS 2026-06-05 — no B0 needed |
+| VERIFY-3 diagnostic (session) | SPRINT-PLAN.md absent → factory task triggered |
+| ADR-145 PR #858 IL-667 | A1 = PROPOSED; gate-out = CTIO ACCEPTED |
+| ADR-060 §6 | Sprint-B = banxe-ai-infrastructure; Sprint-A = banxe-architecture |
+| ADR-143-A | IL sequence: main max=663, IL-665+666+667 in open PRs, next=668 |
+
+**Quality Checks:**
+- SPRINT-PLAN.md: new file, 0 existing content modified (ADR-056/I-24)
+- No Python code; no financial logic; no cross-service imports
+- ADR-144 orphan-check: pending (run before commit)
+- ADR-120: isolated worktree `/home/mmber/wt/agent-factory-sprintplan01-build`
+- ADR-119 Rule 8: no hardcoded IL-NNN in commit title
+
+**Refs:** ENGINE-ROADMAP.md (IL-666, PR #857), ENGINE-ROADMAP-INPUTS.md (IL-665, PR #856),
+ADR-145 (IL-667, PR #858), ADR-056, ADR-060 §6, ADR-119, ADR-120, ADR-143-A, ADR-144,
+I-24, I-27, I-08, agent-authority.md
