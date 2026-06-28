@@ -1,8 +1,26 @@
 # Gitleaks configuration — banxe-architecture
-# Allowlist for historical archive files containing documented example commands
+#
+# SEC-1: adds AWS S3 presigned-URL detection so committed presigned credentials
+# (AWSAccessKeyId / X-Amz-Signature / x-amz-security-token / X-Amz-Credential)
+# are caught in CI going forward. The repo previously defined only an allowlist
+# (zero active detection rules) — this change is purely ADDITIVE; it
+# removes/weakens nothing.
+#
+# NOTE (out of SEC-1 scope): this config intentionally does NOT set
+# `[extend] useDefault = true`. Activating the full upstream gitleaks default
+# ruleset repo-wide is a separate, larger hardening decision that should be a
+# dedicated PR with a dry-run first (to avoid a surprise repo-wide red gate from
+# pre-existing findings). SEC-1 adds one targeted rule only.
+
+[[rules]]
+  id = "aws-presigned-url-credentials"
+  description = "AWS S3 presigned URL with embedded STS/signature credentials (SEC-1)"
+  regex = '''(?i)(AWSAccessKeyId|X-Amz-Credential|X-Amz-Signature|x-amz-security-token)\s*='''
+  tags = ["aws", "presigned-url", "credentials", "SEC-1"]
 
 [allowlist]
-  description = "Historical ledger archive — documented curl examples with placeholder auth headers"
+  description = "Self (this config documents the patterns) + historical ledger archive with documented placeholder auth examples"
   paths = [
+    '''\.gitleaks\.toml''',
     '''ledger/FROZEN-ARCHIVE\.md''',
   ]
