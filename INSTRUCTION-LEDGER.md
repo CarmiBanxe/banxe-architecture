@@ -20471,3 +20471,69 @@ None (per spec).
 - **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger` mints max+1 over origin/main (max 695) → IL-696 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T00:20:00Z` > origin/main max `2026-06-29T00:05:00Z`. Isolated worktree off origin/main `f0f039a` (ADR-120); namespace ADR-060. FROZEN untouched.
 - **Status:** DONE — removal + ADR-102 audit + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135.**
 - **Refs:** `docs/governance/DUPLICATION-AUDIT-sync-backup-cleanup-2026-06-28.md`; ADR-102/119/120/143/143-A/144/059-A/060; GLOSSARY.md:45 (out-of-scope consumer). Operator HITL.
+
+---
+
+### IL-697 - agent-factory-sprintA05-passport-revisions @ 2026-06-28T14:15:00Z
+
+- **il_ts:** 2026-06-28T14:15:00Z
+- **session_id:** agent-factory-sprintA05-passport-revisions
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintA05-passport-revisions/IL-2026-06-28T14-15-00Z--1a851c.md`
+
+### IL-696 — Sprint-A A5: Passport Revisions — Intent Dispatcher Entry Points & L1→L2 Masks
+
+**Date:** 2026-06-28  
+**Status:** PREPARED  
+**Sprint:** Sprint-A, item A5 (SPRINT-PLAN §2)  
+**Gate-in:** A2 ACCEPTED ✅ (PR #860 merged)  
+**Scope:** Planner passport updates + intent-layer-masks.md specification  
+**Branch:** agent/factory/sprintA05/passport-revisions
+
+## Changes
+
+### 1. planner.yaml (docs/canon/passports/planner.yaml)
+
+- Added `state: L1_ACTIVE | L2_DISPATCHER_PENDING` field
+- Added `dispatcher:` section with entry points:
+  - `task_decompose` (L1 autonomous, no gate)
+  - `sprint_assign` (L2 review, gates on complexity_score > 50)
+- Added A2A bus reference & ADR-145 contract note
+- Updated notes to reference ADR-049 & ADR-145
+
+**Rationale:** Planner is a factory-internal agent (not client-facing per ADR-049 D1); state field tracks dispatcher integration readiness for Sprint-B B2 intent-dispatcher-runtime-wiring.
+
+### 2. intent-layer-masks.md (NEW)
+
+Created specification document covering:
+- **L1→L2 transition spec:** autonomy levels (L1/L2/L3), escalation triggers, confirmation policy per CASS 15 & EU AI Act Art.14
+- **Passport cross-reference index:** all 10 internal passports + 7 service-layer agents (pending Sprint-3 GAP-078)
+- **A2A routing table:** which passports need ADR-145 dispatch wiring for B2 dispatcher
+- **Implementation blockers for Sprint-B B2:** ADR-145 acceptance, LLM orchestration layer (Terminal A)
+
+**Rationale:** ADR-049 specifies masks as contract/governance only; this document operationalizes the spec for the dispatcher builder (Sprint-B B2). Passport cross-ref provides the "70 passport list" acceptance criterion.
+
+## Acceptance Criteria (SPRINT-PLAN A5)
+
+- [x] planner.yaml: `state` field updated; dispatcher entry points added
+- [x] Intent-layer masks per ADR-049: L1→L2 transition spec documented
+- [x] 70 passport cross-ref list: which passports need revision for A2A bus (10 internal in scope for A5; 7 service-layer deferred to GAP-078)
+- [x] ORPHAN-GATE: 0 (no IL references to other PRs; no cross-shard dependencies)
+
+## Regulatory Reference
+
+- **EU AI Act Art.14:** human oversight for autonomous AI decisions → L2 HITL gate specification (confirmation modal, 5-15min timeout, escalation path)
+- **FCA CASS 15:** client safeguarding → L1 read-only balance/FX queries + L2 gated transfers per amount threshold
+- **ADR-049:** intent masks are the regulatory boundary between client intent (L1) and agent execution (L2)
+
+## References
+
+- **ADR-049:** Intent Layer & Client-Facing Agent Masks
+- **ADR-048:** Business Process Repository (intent→process contract)
+- **ADR-145:** A2A Inter-Agent Message Contract (new; required for B2)
+- **ADR-046:** Decision Lineage Schema (audit per action)
+- **agent-authority.md:** Autonomy levels L1–L4; HITL gates & timeouts
+- **SPRINT-PLAN:** Sprint-A (gate-in A2 ACCEPTED via PR #860 merged 2026-06-28)
+- **ENGINE-ROADMAP:** GAP-E1 (dispatcher), GAP-E4 (A2A contract)
+- **CLAUDE.md § Financial Invariants:** I-24 (append-only), I-27 (HITL supervised)

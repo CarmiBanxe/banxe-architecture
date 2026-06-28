@@ -3,6 +3,7 @@ role_name: Planner
 actor: claude-code
 type: agent
 responsibility: Decomposes tasks, creates plans, assigns sprints
+state: L1_ACTIVE | L2_DISPATCHER_PENDING
 tools:
 - plan-mode
 - task-create
@@ -23,4 +24,17 @@ litellm_routes:
 - factory-mid
 - factory-heavy
 - project-reason
-notes: Does NOT write code (INV-01). Delegates to Executor.
+dispatcher:
+  trigger: Sprint-B B2 (intent-dispatcher-runtime-wiring)
+  entry_points:
+    - intent: task_decompose
+      route: planner-agent → schema-validator → task-creator
+      autonomy: L1
+      hitl_gate: null
+    - intent: sprint_assign
+      route: planner-agent → plan-validator → schedule-task
+      autonomy: L2
+      hitl_gate: complexity_score > 50
+  a2a_bus: RedisStreams (Sprint-B B5)
+  contract: ADR-145 A2AMessage types
+notes: Does NOT write code (INV-01). Delegates to Executor. L1→L2 escalation via ADR-049 intent masks; A2A routing per ADR-145.
