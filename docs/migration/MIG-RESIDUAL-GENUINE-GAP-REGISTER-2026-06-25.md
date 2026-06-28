@@ -67,7 +67,7 @@ server-side unpack — never into repo).
 | **KYC/AML** (banxe 469 + digital 164) | `kyc` (6), `kyb_onboarding`, `aml`, `sanctions_screening`, `adverse_media`, `compliance` | **COVERED (I-27 gated)** | MIG-INDEX §3 IL-391; ROADMAP A-kyc/A-idv/A-kyb Spec-Locked | gated |
 | **Risk/DSE/analytics** (banxe 153) | `risk` (2), `risk_management`, `quant_advisory`; DSE advisory (SBOX-1..6) | **COVERED** | mapping P0 #1 (delivered DSE); ADR-083/084 | P1 depth |
 | **Money model** (bignumber.js 711+587; decimal.js 0) | EMI Decimal (I-01; Semgrep `banxe-float-money`) | **COVERED (invariant)** | mapping P0 #2 — rewrite-gate, not a service port | P0 contract-tests |
-| **Trading-core** (banxe 536 + crypto-processing 213) | `fx_exchange`, `fx_engine` (9) — **no crypto order-matching/exchange engine** | **RESCOPE/DROP** (out of EMI-license scope) + **SERVER-AUDIT-REQUIRED** | EMI = e-money institution, not a securities/crypto exchange; confirm legacy trading scope server-side | P3 — decide-then-drop |
+| **Trading-core** (banxe 536 + crypto-processing 213) | `fx_exchange`, `fx_engine` (9) — **no crypto order-matching/exchange engine** | ✅ **SERVER-AUDIT RESOLVED 2026-06-28 → RESCOPE/DROP (rebuild-not-port)** | evo1 read-only audit: legacy trading = **Binance-dealer / custodial** lineage (`crypto-api/crypto-api-exchange`, `crypto-api-keys-lib/binance`, `neuron/fast-exchange`, `neuron-transaction-service` Binance) — the model **ADR-083 RETIRES** (self-custodial DeFi replaces it). NOT a port candidate; DeFi stack is **greenfield**. See Server-audit resolution note. | P3 — decided (drop-as-port) |
 | **Infra** (banxe 1 202 + binarity 426) | EMI Postgres/ClickHouse/Redis + `deploy/` | **RESCOPE/replace** | not a port | P3 |
 
 ---
@@ -102,6 +102,27 @@ server-side unpack — never into repo).
 - **4 SERVER-AUDIT-REQUIRED** items (`neuron`, `internal_dev`, `ilink`, Trading-core) gate
   their final DROP/RESCOPE verdict on an ADR-103 server-side legacy read at
   `/home/mmber/banxe-legacy-unpack` — **never unpacked into the repo, no secrets committed**.
+  *(⚠ UPDATE 2026-06-28: **Trading-core RESOLVED** via evo1 server-audit → 3 remaining: `neuron`*
+  *[already finalized rebuild-not-port in MIG-SAR-MODULES-FINALIZATION], `internal_dev`, `ilink`.)*
+
+## Server-audit resolution (2026-06-28, read-only on evo1 `/home/banxe/banxe-rar-extracted`, 8.6 G)
+
+Read-only audit (file names + match counts only; **no RAR content or secrets pulled into the repo**) resolving the **Trading-core** SERVER-AUDIT-REQUIRED item:
+- **(a) Legacy trading sources = Binance-dealer / custodial legacy → ADR-083-retired, NOT-PORT.**
+  Present: `crypto-api/crypto-api-exchange` (NestJS exchange/wallet + keystore),
+  `crypto-api/crypto-api-keys-lib/blockchains/binance.ts`, `crypto-api/crypto-api-rate`,
+  `neuron/neuron-transaction-service` (Binance market-cap/balance), `neuron/fast-exchange`,
+  `neuron/client-virtual-abs` (Binance address DTOs). This is the **dealer/custodial model ADR-083
+  replaces** — it is **not** marked LIVE_MIGRATE_NEXT and is **not** ported.
+- **(b) The "13-section trading program"** (Стратегический контекст / Intent-First AgentFi / Метод
+  Ремизова / Decision Support Engine / эффект казино / Фазовая дорожная карта) is **NOT in the RAR**
+  (0 content hits) — it is a **separate design document**, not legacy code; **no RAR migration item** for it.
+- **(c) DeFi replacement stack is GREENFIELD** — `dYdX` / `LI.FI` / `ExchangePort` / `MarketDataPort` /
+  `QuotePort` / self-custodial / `trading-frontend`/`backend` have **0 hits** in the RAR (only `Binance`
+  legacy present). Built net-new (ADR-083), **gated** on ADR-083 §7 (revenue legal-review +
+  investment-firm reclassification) and the **dYdX AGPL-3.0** license.
+- **(d) Secret surface = 124 `.env` files** → all unpack / de-secret / refactor stays **server-side on
+  evo1 under the factory**; only de-secreted, sandbox-mode code may reach a repo (BANXE.RAR secrets rule).
 
 ### Next track step (best-solution, for operator)
 The migration's remaining value is **depth/quality of already-covered services** and the two
