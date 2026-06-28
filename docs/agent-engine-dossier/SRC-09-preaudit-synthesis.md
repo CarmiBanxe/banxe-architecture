@@ -37,7 +37,7 @@
 
 ---
 
-## Что требует shell-аудита перед любым roadmap/sprint ([НЕИЗВЕСТНО])
+## Что требует shell-аудита перед любым roadmap/sprint ([НЕИЗВЕСТНО]) → RESOLVED, см. §U-2 ниже
 
 - Redis :6379 — NOT LISTENING в snapshot; роль в движке требует уточнения deployment-плана.
 - n8n :5678, Temporal :7233, Qdrant :6333, MongoDB :27017 — NOT LISTENING; зависимости движка от них требуют явного deployment-плана.
@@ -81,9 +81,9 @@
 | **Consensus 2/3 majority vote** | **PRESENT** | ADR-FUSION-01 §Decision (MoA judge + synthesizer layer); fan-out ensemble (factory-mid + factory-heavy + project-reason); majority vote design-draft; Auto-Verify API :8094 validates responses; ADR-047 per-request token cap covers all N calls + judge + synthesizer |
 | **Decision lineage / audit chain** | **PRESENT** | ADR-046 (decision-lineage schema); `AgentDecisionRecord` immutable row (record_id/timestamp/agent_id/triggering_event/intent/policies_evaluated/compliance_result/confidence_score/action_taken/human_reviewed_by/correlation_id/immutable_storage_ref); append-only ClickHouse storage; IL-mapped execution trace |
 | **Immutable audit trail** | **PRESENT** | ADR-027 (SQLite → ClickHouse drain); ClickHouse TTL 5Y (I-08); pgAudit active; append-only (I-24 — no UPDATE/DELETE on audit); guardian_audit_events ClickHouse trail durably capture commands/verdicts |
-| **ReAct (Reasoning + Acting loop)** | **THEORY / PLANNED** | [НЕИЗВЕСТНО] grep пуст — не найден в коде/docs @ origin/main. Теоретический паттерн (SRC-02 §CoT). |
-| **MCTS (Monte Carlo Tree Search)** | **THEORY / PLANNED** | [НЕИЗВЕСТНО] не найден в коде/docs. Не реализован. |
-| **Bayesian uncertainty** | **THEORY / PLANNED** | [НЕИЗВЕСТНО] не найден в коде/docs. Не реализован. |
+| **ReAct (Reasoning + Acting loop)** | **THEORY / PLANNED** | [НЕИЗВЕСТНО] grep пуст — не найден в коде/docs @ origin/main. Теоретический паттерн (SRC-02 §CoT).  → RESOLVED, см. §U-1 ниже|
+| **MCTS (Monte Carlo Tree Search)** | **THEORY / PLANNED** | [НЕИЗВЕСТНО] не найден в коде/docs. Не реализован.  → RESOLVED, см. §U-1 ниже|
+| **Bayesian uncertainty** | **THEORY / PLANNED** | [НЕИЗВЕСТНО] не найден в коде/docs. Не реализован.  → RESOLVED, см. §U-1 ниже|
 
 **[ВЫВОД]** Реализованные мат-методы (PRESENT) соответствуют финансово-compliance контексту:
 confidence-threshold + consensus + lineage + append-audit. ReAct/MCTS/Bayes = теоретические
