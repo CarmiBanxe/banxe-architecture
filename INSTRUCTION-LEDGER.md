@@ -20055,3 +20055,57 @@ ADR-133, ADR-136, ADR-137, ADR-141, ADR-143-A, ADR-144,
 PR #842 (target-audit), PR #845 (A-003), PR #856 (inputs anchor),
 DEDUP-FINDINGS.md, VERIFIED-RUNTIME-SNAPSHOT.md,
 agent-authority.md, COMPLIANCE-MATRIX.md S12-13/S12-16
+
+---
+
+### IL-682 - agent-factory-sprintA01-a2a-contract @ 2026-06-28T23:25:00Z
+
+- **il_ts:** 2026-06-28T23:25:00Z
+- **session_id:** agent-factory-sprintA01-a2a-contract
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintA01-a2a-contract/IL-2026-06-28T23-25-00Z--fa47c9.md`
+
+### IL — ADR-145 A2A Inter-Agent Message Contract (Sprint-A A1)
+
+**Date:** 2026-06-28
+**Task:** Sprint-A item A1 — create ADR-145 defining A2A inter-agent message contract.
+Root dependency for ENGINE-ROADMAP GAP-E4 chain (E4→E1→E2→E5).
+**Status:** PROPOSED (CTIO acceptance pending)
+**Branch:** agent/factory/sprintA01/a2a-contract
+
+**Changes (docs-only, new file):**
+
+1. **CREATE: docs/adr/ADR-145-a2a-inter-agent-message-contract.md** — ~130 lines
+   - Context: 70+ agent passports; no A2A protocol; hardcoded cross-agent imports
+   - Decision: `A2AMessage` frozen dataclass; 4 message types (REQUEST/RESPONSE/EVENT/ESCALATION)
+   - Transport: `InMemoryA2ABus` (L2-sandbox) → `RedisStreamsA2ABus` (L3-production)
+   - Audit: ClickHouse `a2a_events` TTL 5yr (I-08); payload hash only (PII guard)
+   - HITL: ESCALATION = propose-only (I-27); no auto-apply
+   - Sprint-B migration: 3 agent chains (MLRO→AML→Sanctions)
+   - Semgrep rule `banxe-a2a-direct-import` (Sprint-B)
+
+**No existing content modified:**
+- ADR-144 is the prior ADR (orphan-shardkey-prune); ADR-145 is additive
+
+**Verification sources:**
+
+| Source | Finding |
+|--------|---------|
+| target-audit #842 §4.4 | "No ADR found for A2A contract; hardcoded service calls" |
+| DEDUP-FINDINGS §NOVELTY | GAP-E4 = no prior ADR, no passport formalises it |
+| ENGINE-ROADMAP §1 EPIC-E4 | Root dependency; Sprint-A A1 |
+| fabric/common/bus-redis-streams.py | Transport candidate DEPLOYED |
+| agent-authority.md ADR-077 | HITL L1–L4 autonomy levels |
+| ADR-060 §6 | Sprint-B impl = banxe-ai-infrastructure; this ADR = spec only |
+
+**Quality Checks:**
+- ADR-145: new file, 0 existing content modified
+- No Python code (spec-only); no financial logic
+- ADR-144 orphan-check: 0 (new ADR doesn't create cross-refs to unresolvable shards)
+- ADR-120: isolated worktree
+- ADR-119 Rule 8: no hardcoded IL-NNN in commit title
+
+**Refs:** GAP-E4, ENGINE-ROADMAP PR #857, ENGINE-ROADMAP-INPUTS PR #856 (IL-665),
+target-audit PR #842, DEDUP-FINDINGS.md §NOVELTY, I-24, I-27, I-08, ADR-060 §6,
+ADR-077, ADR-133, ADR-144, fabric/common/bus-redis-streams.py
