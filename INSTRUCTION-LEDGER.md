@@ -20715,3 +20715,20 @@ agent-authority.md, security-policy.md, I-24, I-27, I-28, COMPLIANCE-MATRIX §18
 - Next step: Operator merge to main; resolution audit complete
 
 **Refs:** ADR-143-A, ADR-144, ADR-056, PR #851
+
+## Amendment Z1-fix 2026-06-28: fix 1 remaining unmarked [НЕИЗВЕСТНО]
+
+**Detected:** Z1 independent verify found 1 UNMARKED [НЕИЗВЕСТНО] line missed by prior pass:
+- **Line 75:** "Разрешение §7 НЕИЗВЕСТНО из первичного текста SRC-09."
+- **Context:** §Math-Methods Status (L0 fleet coordination layer)
+- **Resolver:** §U-1 (Math methods: THEORY/PLANNED)
+
+**Action Applied:** Inline marker → RESOLVED, см. §U-1 ниже
+
+**Verification:**
+- Remaining unmarked [НЕИЗВЕСТНО]: 0 ✅
+- Nebius/H100 [НЕ ПОДТВЕРЖДЕНО] preserved: 7 instances ✅ (12 total НЕ ПОДТВЕРЖДЕНО, 7 Nebius+H100)
+- ADR-144 orphans: 0 ✅
+- No deletions, append-only ✅
+
+**Refs:** L75 Z1-audit, ADR-144, ADR-056
