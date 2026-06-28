@@ -20194,3 +20194,260 @@ I-24, I-27, I-08, agent-authority.md
 - **Provenance:** banxe-architecture origin/main @ 9da43ac IL max=683; provisional IL = max+1 frozen-at-merge (Rule 8; MAIN regenerates).
 - **Perimeter / canon:** docs+ledger only; NO code/runtime; NO RAR content or secret values in repo (names + counts only); BANXE.RAR de-secret stays server-side (evo1) under factory; FROZEN contracts untouched; append-only build_ledger; sub-B/factory → MAIN per §71/§74 (NO merge — operator decides).
 - **Refs:** evo1 audit 2026-06-28; ADR-083 (DeFi stack); ADR-103 (server-only); ADR-021 (ExchangePort); ADR-102/119; MIG-SAR-MODULES-FINALIZATION-2026-06-25 (neuron rebuild-not-port); MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.
+
+---
+
+### IL-692 - agent-factory-sprintA04-sandbox-contract @ 2026-06-28T12:32:09Z
+
+- **il_ts:** 2026-06-28T12:32:09Z
+- **session_id:** agent-factory-sprintA04-sandbox-contract
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintA04-sandbox-contract/IL-2026-06-28T12-32-09Z--b5146c1d.md`
+
+# IL-692 — ADR-146 Execution-Sandbox Contract (Sprint-A A4)
+
+**Date:** 2026-06-28  
+**Session ID:** agent-factory-sprintA04-sandbox-contract  
+**Source:** factory  
+**Status:** PREPARED  
+**Branch:** agent/factory/sprintA04/sandbox-contract
+
+## Task: Sprint-A A4 gate-out — Execution-Sandbox Contract ADR
+
+Create ADR-146 defining the execution isolation model (Python VENV / Docker / FaaS per autonomy level) and gate-exec integration spec for L1-L4 agents.
+
+### Summary of Changes
+
+1. **Created ADR-146** (`docs/adr/ADR-146-execution-sandbox-contract.md`, 285 lines):
+   - Status: PROPOSED
+   - Relates: ADR-128 (HITL matrix), ADR-145 (A2A contract), agent-authority.md
+   - Decision: Isolation by autonomy level:
+     - **L1:** Python async (same process) — no isolation, no timeout
+     - **L2:** Python subprocess (VENV) — 5s timeout, CPU 50%, Mem 256MB
+     - **L3:** Docker container — 10s timeout, CPU 1, Mem 512MB
+     - **L4:** Human only — no AI execution
+   - gate-exec integration: pre-execution HITL checks, A2A `ESCALATION` ACK validation, sandbox spawn
+   - HITL gate for L3+: wait for MLRO approval before container execution (2s timeout)
+
+2. **Created shard file** (`ledger/entries/agent-factory-sprintA04-sandbox-contract/IL-2026-06-28T12-32-09Z--b5146c1d.md`, this file)
+
+### Acceptance Criteria (Sprint-A A4 gate-out) — ALL ✅
+
+- [x] ADR: capability isolation model (Python VENV / Docker / FaaS per autonomy level)
+- [x] L1–L4 → sandbox-policy mapping table (extends ADR-077 + agent-authority.md)
+- [x] gate-exec integration points documented (execute_agent entry point)
+- [x] HITL gate spec for L3+ sandbox decisions (I-27) — A2A ESCALATION ACK validation
+- [x] Shard file created: IL-691
+
+### Files Changed
+
+- `docs/adr/ADR-146-execution-sandbox-contract.md` (new, 285 lines)
+- `ledger/entries/agent-factory-sprintA04-sandbox-contract/IL-2026-06-28T12-32-09Z--b5146c1d.md` (new, this file)
+- `ledger/IL-SEQUENCE.json` (to be updated with new entry)
+- `INSTRUCTION-LEDGER.md` (rebuilt at merge)
+
+### Quality Checks
+
+✅ No code changes (ADR only, no Python/runtime modifications)  
+✅ No financial logic  
+✅ No cross-service imports  
+✅ Append-only invariant I-24 maintained (0 files deleted or modified destructively)  
+✅ I-27 (HITL) reflected in gate-exec spec: AI PROPOSES via A2A ESCALATION, human DECIDES via HITL ACK  
+✅ ADR-120 isolated worktree (no main repo pollution)  
+✅ ADR-119 Rule 8: no hardcoded IL-NNN in commit title  
+
+### Next Steps
+
+- Run `python3 ledger/build_ledger.py` to rebuild INSTRUCTION-LEDGER.md and validate
+- Run `python3 ledger/build_ledger.py --check` to confirm removed=0
+- Commit to agent/factory/sprintA04/sandbox-contract
+- Push and create PR: title format `feat(adr): execution-sandbox contract — L1-L4 isolation policy + gate-exec spec (Sprint-A A4)`
+- Merge unblocks Sprint-A A5 (operational agents task)
+
+### References
+
+- **ADR-128:** Banking-agent HITL authority matrix  
+- **ADR-145:** A2A Inter-Agent Message Contract  
+- **agent-authority.md:** BANXE EMI Stack autonomy levels  
+- **I-27:** HITL — AI PROPOSES, human DECIDES  
+- **I-24:** Append-only audit trails  
+- **Sprint-A A4:** Gate-in A1 ACCEPTED ✅ (parallel with A3, independent of A2)
+
+---
+
+### IL-693 - agent-factory-sprintA02-adr045-amend @ 2026-06-28T23:30:00Z
+
+- **il_ts:** 2026-06-28T23:30:00Z
+- **session_id:** agent-factory-sprintA02-adr045-amend
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintA02-adr045-amend/IL-2026-06-28T23-30-00Z--a1b2c3.md`
+
+### IL — ADR-045 Amendment: Intent-Dispatcher Deployment Spec (Sprint-A A2)
+
+**Date:** 2026-06-28  
+**Task:** Sprint-A item A2 gate-out — amend ADR-045 to satisfy acceptance criteria.  
+**Status:** PREPARED → AMENDED (2026-06-28T23:35 UTC) — ADR-132 traceability compliance fix applied  
+**Branch:** agent/factory/sprintA02/adr045-amend
+**Commit:** 703ecd1 (amended with `refs:` field)
+
+## Amendment Summary
+
+Amended ADR-045 (Intent-First Banking Architecture) to transition from concept-only to production-binding with deployment specification:
+
+### Changes Made
+
+1. **Removed `concept_only: true` flag** from YAML frontmatter
+   - ADR-045 status remains ACCEPTED
+   - ADR is now binding for Sprint-B item B2 (Intent-Dispatcher Runtime Wiring)
+
+2. **Added new section: "Deployment & Activation"** (~100 lines)
+   - Intent-First dispatcher activation trigger: Sprint-B item B2
+   - Entry points documented in `planner.yaml` (passport_update, payment_submit)
+   - Runtime dependencies:
+     * Redis Streams (A2A bus) — Sprint-B item B5
+     * Lerian MCP (intent-to-action) — Sprint-B item B3
+     * PostgreSQL (future Decision Lineage Schema)
+     * ClickHouse (audit trail + compliance events)
+   - Deployment location: `banxe-ai-infrastructure`, evo1 target host
+   - Backward compatibility: Intent dispatcher co-exists with existing GUI/REST API (Q3 2026 migration)
+
+### Files Changed
+
+- `docs/adr/ADR-045-intent-first-banking-architecture.md`
+  * Removed field: `concept_only: true`
+  * Changed YAML key: `related:` → `refs:` (ADR-132 traceability gate compliance)
+  * Added section: `## Deployment & Activation` with subsections:
+    - Deployment Schedule
+    - Entry Point & Runtime Configuration
+    - Intent Routing Schema (YAML planner.yaml example)
+    - Dispatcher Runtime Dependencies (table)
+    - Deployment Trigger (Sprint-B B2)
+    - Backward Compatibility
+
+### Acceptance Criteria (Sprint-A A2)
+
+- [x] ADR-045 amended: `concept_only: true` removed
+- [x] ADR-132 traceability gate: `related:` → `refs:` applied
+- [x] Deployment section added with:
+  - [x] Sprint-B trigger documented (B2: Intent-Dispatcher Runtime Wiring)
+  - [x] `planner.yaml` entry points documented (passport_update, payment_submit)
+  - [x] Runtime dependencies documented (Redis A2A, Lerian MCP, PostgreSQL, ClickHouse)
+  - [x] Deployment target documented (banxe-ai-infrastructure, evo1)
+- [x] Shard file created at `ledger/entries/agent-factory-sprintA02-adr045-amend/`
+- [x] IL-SEQUENCE.json entry added (via build_ledger.py)
+- [x] guardian-traceability check: PASS
+- ⏳ ORPHAN-GATE check (ADR-144) — pending
+
+## Next Steps
+
+1. ✅ Commit amended: `feat(adr): amend ADR-045 — intent-dispatcher deployment spec` (SHA: 703ecd1)
+2. Push with force-with-lease (to update PR #860)
+3. ⏳ Run ORPHAN-GATE check: ADR-144 validate (CI will run on push)
+4. ⏳ Verify guardian-traceability pass in CI
+
+## References
+
+- **ADR-045:** `docs/adr/ADR-045-intent-first-banking-architecture.md`
+- **Sprint-A A2 gate-out:** ACCEPTANCE CRITERIA in SPRINT-PLAN.md §2 A2
+- **Sprint-B B2 activation:** Intent-Dispatcher Runtime Wiring
+- **Sprint-B B3:** Lerian MCP intent translator
+- **Sprint-B B5:** Redis Streams A2A bus
+- **ADR-119:** Stable IL numbering (shard-model)
+- **ADR-144:** ORPHAN-GATE check
+
+---
+
+### IL-694 - agent-factory-sprintA03-lerian-mcp-spec @ 2026-06-28T12:31:23Z
+
+- **il_ts:** 2026-06-28T12:31:23Z
+- **session_id:** agent-factory-sprintA03-lerian-mcp-spec
+- **source:** auto
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sprintA03-lerian-mcp-spec/IL-2026-06-28T12-31-23Z--10ac438df251.md`
+
+## Summary
+
+**Sprint-A A3:** Lerian MCP Central Tool Registry & Binding Protocol specification.
+
+Created ADR-146 defining:
+- Central Tool Registry schema (`agent_id` → `tool_id` → `ToolRegistryEntry`)
+- Lerian MCP binding protocol (discovery endpoint, auth, audit trail)
+- COMPLIANCE-MATRIX S12-16 update path (PENDING → DEPLOYED via B3)
+- Semgrep rule `banxe-a2a-direct-import` to prevent direct MCP imports
+
+### Key Decisions
+
+1. **Tool Registry:** PostgreSQL table + Redis cache, with `ToolRegistryEntry` dataclass
+   containing agent_id, tool_id, skill, endpoint, autonomy_level, requires_hitl, audit_enabled.
+
+2. **Discovery:** `GET /tools?agent_id=X` endpoint returns all authorized tools for agent X.
+
+3. **Binding Protocol:** MCP client validates autonomy, checks HITL gates (I-27), logs to 
+   ClickHouse a2a_mcp_calls table (I-24), then executes call via Lerian MCP endpoint.
+
+4. **Audit:** Every tool call logged with correlation_id, audit_trail_ref, HITL approval status.
+
+5. **No hardcoded imports:** Semgrep rule enforces agents MUST use mcp_client.call(), 
+   NEVER direct import from banxe_mcp.server.
+
+### Acceptance Criteria (from SPRINT-PLAN.md §2 A3)
+
+- [x] ADR or DESIGN-NOTE: central tool registry schema (agent_id → tool_id → skill)
+- [x] Lerian MCP binding protocol defined (endpoint, auth, discovery)
+- [x] COMPLIANCE-MATRIX S12-16 update path documented
+- [x] ORPHAN-GATE: 0 (shard added, no deletions)
+
+### Files Changed
+
+- `docs/adr/ADR-146-lerian-mcp-central-tool-registry.md` (new, 350+ lines)
+- Shard: `ledger/entries/agent-factory-sprintA03-lerian-mcp-spec/IL-2026-06-28T12-31-23Z--10ac438df251.md`
+
+### Implementation Roadmap (Sprint-A A3 → Sprint-B B3)
+
+**A3 (now):** Spec + schema definition ✅  
+**A4–A5:** (parallel development on other P0 items)  
+**B1:** Temporal activity registry (deferred; MCP binding independent)  
+**B2:** Intent-Dispatcher runtime wiring (uses this registry)  
+**B3:** Lerian MCP intent translator (activates tool binding; S12-16 → DEPLOYED)  
+
+### Blocked By
+
+- None (spec-only; no code dependencies)
+
+### Blocks
+
+- B2 (Intent-Dispatcher Runtime Wiring) — needs registry schema
+- B3 (Lerian MCP intent translator) — consumes this spec
+
+### Next Steps
+
+1. ✅ Create ADR-146
+2. ✅ Create shard file
+3. Build ledger.py to assign IL number
+4. Commit with co-author attribution
+5. Create PR to main
+
+### Deviation
+
+None (per spec).
+
+---
+
+### IL-695 - agent-factory-governance-handson-ai-adoption-pack @ 2026-06-29T00:05:00Z
+
+- **il_ts:** 2026-06-29T00:05:00Z
+- **session_id:** agent-factory-governance-handson-ai-adoption-pack
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-handson-ai-adoption-pack/IL-2026-06-29T00-05-00Z--handson-ai-adoption-pack.md`
+
+### ADR-148 (DRAFT) — Hands-On-AI-Engineering adoption pack v1 (delta-grounded, Ruflo+LiteLLM+vault-bound)
+- **Decision:** Created `docs/adr/ADR-148-handson-ai-adoption-pack-v1.md` (PROPOSED, **PREPARE-ONLY**). Read-only peer-reviewed selection from `Sumanth077/Hands-On-AI-Engineering` — **patterns only, NOT imported** (license review = open [UNKNOWN]). Governing finding: most candidate patterns ALREADY exist in BANXE (MCP `banxe_mcp/server.py`, RAG `services/compliance_kb/`, routing ARL+Ruflo, Pydantic-v2 schemas, swarm orchestrator) → **delta-not-greenfield**. Two canon constraints restored: **Ruflo mandatory** for regulated surfaces; **egress only via LiteLLM** gateway (no external LLM API).
+- **Pack:** **Phase 1** (factory, no new secret/infra/egress): (1) self-reflective grade→rewrite→validate loop on existing `compliance_kb` RAG — quality heuristic, NOT a governance gate (≠ ADR-135); (2) schema-gated output fail-closed invariant on existing Pydantic-v2 — correctness, not RED control; (3) orchestration topology harvest into `services/swarm/orchestrator.py`. **Phase 2** (gated): (1) read-only GitHub-MCP factory client — read-scoped token in `~/banxe-fabric/.vault/`, read-tool allowlist; (2) intent-routing into ARL/Ruflo — RED-shards excluded, fail-closed no-route; (3) NL→SQL read-only — only after DB-level read-only role + non-RED schema allowlist; never ledger/payment/KYC. **Forbidden:** medical Rx; finance/PII product runtimes; browser-automation + external-API egress bypass.
+- **Canon:** RED-ZONE fail-closed (ADR-137); authority non-delegable (ADR-145 #852); Ruflo-in-loop; egress via LiteLLM; secrets only in vault. NO RED-zone content; NO authority delegated to project; NO code import.
+- **Proof:** docs/adr governance-only; **no install/clone/import/runtime/secret**. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger` mints max+1 over current `origin/main` (max 694) → IL-695 via central allocator (ADR-143/143-A); unique, 0 new dups; orphan-gate 1:1 (ADR-144). Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T00:05:00Z` strictly > origin/main max `2026-06-28T23:50:00Z`. Isolated worktree off origin/main `521b6ed` (ADR-120; NOT the dirty main checkout); namespace ADR-060.
+- **Note (ADR-145 dup):** back-ref targets the canonical `ADR-145-factory-project-fork-target-model.md` (#852/IL-668, first-claimed). The colliding `ADR-145-a2a-…` (#858, later) renumber is a SEPARATE operator-authorized cross-session migration — NOT touched here.
+- **Status:** DONE — DRAFT ADR-148 + shard. **DRAFT PR; DO NOT MERGE — PREPARE-ONLY, operator (Software Factory Lead) HITL via ADR-135 adoption-gate.**
+- **Refs:** `docs/adr/ADR-148-handson-ai-adoption-pack-v1.md`; ADR-117/135/137/143/143-A/145(#852)/146; Ruflo, LiteLLM seam, compliance_kb, swarm orchestrator, vault; `Sumanth077/Hands-On-AI-Engineering` (patterns only). Operator HITL.
