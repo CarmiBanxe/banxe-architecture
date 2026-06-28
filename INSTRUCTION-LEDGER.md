@@ -20736,3 +20736,22 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** docs-only; **no code / runtime / repo / keys / secrets / RAR content**; no FROZEN port/contract touched; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (rebased onto `8848e00`, base frozen max 704) → **IL-714** via the ADR-143 central allocator (counter ahead of local frozen max; intervening numbers = concurrent shards elsewhere; degrades to local max+1 with WARN if Redis down). Re-rebased per ADR-119 Rule 2/5 after successive concurrent ledger PRs (#866/#867, then #843) advanced main — a rebase signal, not a stop-barrier. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T01:00:00Z` strictly > origin/main max. Branch `agent/factory/docs/trading-block-roadmap` off origin/main `8848e00` (ADR-120; namespace ADR-060).
 - **Status:** DONE — road map authored. **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
 - **Refs:** `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md`; ADR-083/084/089/090/091/100/102/103/113/119/140/016; BUG-001/005/007; IL-691; IL-CANON-RUFLO; `HANDOFF-composable-defi-stack-integration.md`; `dse-live-providers-options.md`. Operator HITL.
+
+---
+
+### IL-715 - agent-factory-governance-adr059a-populate-v2 @ 2026-06-29T01:15:00Z
+
+- **il_ts:** 2026-06-29T01:15:00Z
+- **session_id:** agent-factory-governance-adr059a-populate-v2
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr059a-populate-v2/IL-2026-06-29T01-15-00Z--adr059a-populate.md`
+
+### Populate empty ADR-059-A — frozen-archive + shard-composition spec (re-PR; old #869 auto-closed)
+- **Decision:** Wrote the composition spec into the previously-empty `instruction-ledger/sprint-53/ADR-059-A-frozen-archive-shard-composition.md` (0 → 1465 bytes). Documents the **existing S4 cutover** (2026-06-08) — frozen archive (`ledger/FROZEN-ARCHIVE.md`, append-only/immutable per ADR-057) + new-entries-as-shards-only + deterministic composition by `build_ledger.py` + numbering (frozen keep IL-NNN, new = max+1, later ADR-143/119 allocator). **No new policy** — amendment documenting reality; bullet-form matching base ADR-059. **PREPARE-ONLY**, fresh Draft PR.
+- **Re-PR context:** prior PR #869 (branch `…/adr059a-populate`, b3f179a) GitHub-auto-closed when a rebase force-push transiently made head==base (no-diff). Content was never lost (branch intact). This is a clean re-do on a fresh branch off current `origin/main` with commit-before-push (head≠base guaranteed). Old #869 left CLOSED (dead); its branch is orphan/harmless.
+- **Fail-closed verify:** target was **0 bytes** on origin/main before write. GLOSSARY.md:45 cited this path → citation now resolves to a non-empty file.
+- **Scope:** touched ONLY the target file + this IL shard. `.canon/`, `GLOSSARY.md`, `FROZEN-ARCHIVE.md` NOT modified. Rule 6/7.
+- **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 714) → IL-715 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T01:15:00Z` > origin/main max `2026-06-29T01:00:00Z`. Fresh worktree+branch off origin/main `49f7252` (ADR-120/060). FROZEN untouched.
+- **Status:** DONE — file populated + shard, fresh Draft PR. **DO NOT MERGE — operator HITL via ADR-135 (merge promptly to beat wave-drift).**
+- **Refs:** `instruction-ledger/sprint-53/ADR-059-A-frozen-archive-shard-composition.md`; base `docs/adr/ADR-059-il-append-serialization-per-session-shards.md`; `docs/governance/GLOSSARY.md:45`; ADR-057/059/119/143/143-A/144/120/060; I-28. Operator HITL.
