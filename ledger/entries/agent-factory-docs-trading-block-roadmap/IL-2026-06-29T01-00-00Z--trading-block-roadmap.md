@@ -1,0 +1,15 @@
+---
+il_ts: 2026-06-29T01:00:00Z
+session_id: agent-factory-docs-trading-block-roadmap
+source: CEO
+status: DONE
+---
+### BANXE-TRADING-001 — §1–§X→canon road map + S6.x sprint plan (enable-not-build) [docs-only]
+- **Decision:** Created `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md` (PROPOSED, **docs-only**). Maps the 13-section trading program (**0 hits in BANXE.RAR** — greenfield design doc) onto the **existing, mostly-built** `banxe-trading-backend` S6.x track. Discipline = **ADR-102 reuse-not-rebuild** for every shipped item (S6.2–S6.5 ports, `dse/*`/Kelly, advisory seams, EMI ARL swarm).
+- **A — canon map:** built / proposed-mock / accepted / net-new-gated / prohibited / gov-delta. Cites ADR-083/084/089/090/091/100/113/140 + BUG-005 + IL-691.
+- **B — sprint plan (S6.x, separate track from EMI A–K Sprints 8–12):** **Phase 1** executable (no keys/legal) = S6.6 YieldPort build, S6.7 conformance+MiCA hooks, S6.8 FE↔BFF mock-live, S6.2 enable sandbox-live via public dYdX Indexer (API-only, AGPL-safe). **Phase 2** ODR-gated = sandbox→prod-live per domain after 5 ODR + keys. **Phase 3** ADR-gated = three new ADR-stubs (① autonomous MM+RL/DDQN → MiCA/MiFID; ② MetaClaw RL auto-adapt → GDPR Art.22; ③ AgentFi autonomy → EU AI Act Art.14). **Excluded:** real-money gamblification (ADR-100 prohibited), rebuild of shipped ports/DSE/ARL (ADR-102).
+- **C — advisory-moat clause:** every Phase-1/2 sprint conforms to advice→unsigned-intent→client-signs; backend never holds keys, never executes autonomously; regulated paths via ARL→Ruflo→HITL (BUG-005/007).
+- **D — open-decisions register:** 5 ODR (keys/addrs · provider · MiCA/CASP · dYdX AGPL · OpenDAX) + 3 ADR-stubs + ADR-100 prohibition + §9 governance-delta (operator-gated merge §71, Ruflo+HITL, MetaClaw=dev-time-only, AI-plane PII gateway I-33, AGPL §13 fence, external-repo provenance unverified) + **SEC-1** (presigned-URL scrub, expired creds, LOW, separate PR).
+- **Proof:** docs-only; **no code / runtime / repo / keys / secrets / RAR content**; no FROZEN port/contract touched; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (rebased onto `8848e00`, base frozen max 704) → **IL-714** via the ADR-143 central allocator (counter ahead of local frozen max; intervening numbers = concurrent shards elsewhere; degrades to local max+1 with WARN if Redis down). Re-rebased per ADR-119 Rule 2/5 after successive concurrent ledger PRs (#866/#867, then #843) advanced main — a rebase signal, not a stop-barrier. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T01:00:00Z` strictly > origin/main max. Branch `agent/factory/docs/trading-block-roadmap` off origin/main `8848e00` (ADR-120; namespace ADR-060).
+- **Status:** DONE — road map authored. **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
+- **Refs:** `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md`; ADR-083/084/089/090/091/100/102/103/113/119/140/016; BUG-001/005/007; IL-691; IL-CANON-RUFLO; `HANDOFF-composable-defi-stack-integration.md`; `dse-live-providers-options.md`. Operator HITL.
