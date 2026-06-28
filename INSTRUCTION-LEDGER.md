@@ -20776,3 +20776,21 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** docs-only (3 master-docs + `.gitleaks.toml`); **no code / runtime / port / FROZEN-contract / new repo / new secret / RAR content**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (rebased onto `785f4be`, base frozen max 715) → **IL-716** via the ADR-143 central allocator (715 taken concurrently by #872 — collision resolved by max+1, no renumber per ADR-119 Rule 4). Re-rebased per Rule 2/5 after concurrent ledger PR #872 advanced main — a rebase signal, not a stop-barrier; `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T02:00:00Z` strictly > origin/main max. Branch `agent/factory/security/scrub-presigned-urls` off origin/main `785f4be` (ADR-120; namespace ADR-060).
 - **Status:** DONE — scrub + rule applied, verified green. **DO NOT MERGE — operator-gated (§71).**
 - **Refs:** `.gitleaks.toml`; `docs/master-document/{01-master-full,02-unified-stack,03-gap-overlay}.md`; `.github/workflows/ci.yml` (gitleaks-action@v2); ADR-119/143/059-A/120/060; I-24; SEC-1 (tracked in `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md` §D). Operator HITL.
+
+---
+
+### IL-717 - agent-factory-governance-adr-closed-loop-criteria @ 2026-06-29T02:15:00Z
+
+- **il_ts:** 2026-06-29T02:15:00Z
+- **session_id:** agent-factory-governance-adr-closed-loop-criteria
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-adr-closed-loop-criteria/IL-2026-06-29T02-15-00Z--adr-closed-loop-criteria.md`
+
+### ADR-149 (DRAFT) — Closed-loop completion-criteria for prepare-only factory tasks
+- **Decision:** Created `docs/adr/ADR-149-closed-loop-completion-criteria.md` (PROPOSED, **PREPARE-ONLY**). Codifies how a prepare-only factory task self-terminates: (1) completion-criteria = first-class declarative stop-condition in the IL shard (`--check=0 AND behind-0 AND back-refs-resolved AND FROZEN-untouched`); (2) **closed looping only** for regulated/EMI, open looping FORBIDDEN (token-burn/slop/egress/FCA); (3) self-correcting loop in the PREPARE phase only — STOP at ANY mutation = HITL ADR-135 (merge/renumber/permissions/push); (4) egress only via LiteLLM seam, external loop-service runtime FORBIDDEN. Agent-looping research (`@shannholmberg`/Steinberger; `loops.elorm.xyz`) = patterns only, NOT a dependency/runtime.
+- **Motivation:** the 4× wave-drift churn on #869/#872 — an `auto-rebase-until-behind-0` closed loop (gate-terminated) would have absorbed it autonomously while preserving HITL on the irreversible merge.
+- **Canon:** authority factory-only (ADR-117); HITL on mutations (ADR-135); allocator determinism (ADR-119/143/143-A) bounds the loop; self-reflective ≠ gate (ADR-148). NO RED-zone, NO new runtime, NO external dependency.
+- **Proof:** docs/adr governance-only; **no install/clone/import/runtime/secret**. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 716) → IL-717 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T02:15:00Z` > origin/main max `2026-06-29T02:00:00Z`. Fresh worktree off origin/main `ee6021e`, commit-before-push (head≠base, anti-auto-close) (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — DRAFT ADR-149 + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135.**
+- **Refs:** `docs/adr/ADR-149-closed-loop-completion-criteria.md`; ADR-117/135/148/119/143/143-A/120; parallel-session-isolation Rule 6/7; agent-looping pattern ref (not imported). Operator HITL.

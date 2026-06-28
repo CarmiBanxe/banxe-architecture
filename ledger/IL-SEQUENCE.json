@@ -403,5 +403,6 @@
   "agent-factory-agenteng02-src01-descriptors__ada7aacce44f": 704,
   "agent-factory-docs-trading-block-roadmap__28cb0f8db46e": 714,
   "agent-factory-governance-adr059a-populate-v2__6ab253d4ab0f": 715,
-  "agent-factory-security-scrub-presigned-urls__4ec27efd42dc": 716
+  "agent-factory-security-scrub-presigned-urls__4ec27efd42dc": 716,
+  "agent-factory-governance-adr-closed-loop-criteria__d5a774da36fd": 717
 }
