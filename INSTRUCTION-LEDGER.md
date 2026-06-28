@@ -20839,3 +20839,22 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** docs-only (one road-map file); **no code / runtime / port / FROZEN-contract / new repo / keys / secrets / RAR content / revival-ADR / new-label**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints over current `origin/main` (base frozen max 718) via the ADR-143 central allocator; on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T04:00:00Z` strictly > origin/main max `2026-06-29T02:30:00Z`. Branch `agent/factory/docs/roadmap-adr094-reconciliation` off origin/main `c88340c` (ADR-120; namespace ADR-060).
 - **Status:** DONE — correction applied. **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
 - **Refs:** `docs/roadmap/TRADING-BLOCK-ROADMAP-AND-SPRINTS-2026-06-28.md` (IL-714); `docs/adr/ADR-094-scope-closure-s6.6-s6.7-t7.9-t8.0.md` (IL-237); ADR-083/102/119/143/059-A/120/060; PR #875 (held). Operator HITL.
+
+---
+
+### IL-720 - agent-factory-governance-a2a-150-renumber-completion @ 2026-06-29T04:15:00Z
+
+- **il_ts:** 2026-06-29T04:15:00Z
+- **session_id:** agent-factory-governance-a2a-150-renumber-completion
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-a2a-150-renumber-completion/IL-2026-06-29T04-15-00Z--a2a-150-renumber-completion.md`
+
+### Complete a2a→ADR-150 renumber — fix 7 residual A2A-contract refs missed by #876
+- **Decision:** Corrected **7 residual A2A-contract references** `ADR-145 → ADR-150` in two **live-canon** files missed by the #876 sweep: `docs/canon/intent-layer-masks.md` (×5: lines 7/86/128/131/140) + `docs/canon/passports/planner.yaml` (×2: lines 39/40). Correctness fix — `planner.yaml` declared its message contract as `ADR-145 A2AMessage`, now correctly `ADR-150`. **PREPARE-ONLY**, Draft PR.
+- **Root cause (#876):** classification sweep used `grep --include=*.md`, skipping `planner.yaml` (.yaml) + not enumerating `intent-layer-masks.md`. **Lesson:** renumber back-ref sweeps MUST be **suffix-agnostic** (all extensions), verified `0 remaining` before close — recorded in the audit doc §6.
+- **Scope discipline:** every changed line verified A2A-context (non-A2A sanity grep = ∅); factory⊕project ADR-145 refs untouched (none present), `ADR-049`/`ADR-048` untouched (still present), append-only shards untouched, 0 edits outside the 2 files / 7 lines. Post-fix suffix-agnostic re-grep → 0 remaining A2A↔ADR-145.
+- **Audit:** `docs/governance/DUPLICATION-AUDIT-adr145-renumber-completion-2026-06-28.md` (ADR-102 five-step + per-line verdict + §6 process changelog).
+- **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 719) → IL-720 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T04:15:00Z` > origin/main max `2026-06-29T04:00:00Z`. Fresh worktree off origin/main `abae680`, commit-before-push (head≠base) (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — 7-line fix + audit + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135.**
+- **Refs:** `docs/canon/intent-layer-masks.md`, `docs/canon/passports/planner.yaml`; `docs/adr/ADR-150-a2a-inter-agent-message-contract.md`; #876 audit (`DUPLICATION-AUDIT-adr145-dup-renumber-2026-06-28.md`); ADR-102/119/142/057/120/060. Operator HITL.

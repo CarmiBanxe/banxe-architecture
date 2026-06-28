@@ -36,5 +36,5 @@ dispatcher:
       autonomy: L2
       hitl_gate: complexity_score > 50
   a2a_bus: RedisStreams (Sprint-B B5)
-  contract: ADR-145 A2AMessage types
-notes: Does NOT write code (INV-01). Delegates to Executor. L1→L2 escalation via ADR-049 intent masks; A2A routing per ADR-145.
+  contract: ADR-150 A2AMessage types
+notes: Does NOT write code (INV-01). Delegates to Executor. L1→L2 escalation via ADR-049 intent masks; A2A routing per ADR-150.

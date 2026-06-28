@@ -4,7 +4,7 @@
 **Date:** 2026-06-28  
 **Status:** PROPOSED  
 **IL Anchor:** (assigned at merge)  
-**Related ADRs:** ADR-049 (intent layer & masks), ADR-145 (A2A contract), ADR-048 (business process repository)  
+**Related ADRs:** ADR-049 (intent layer & masks), ADR-150 (A2A contract), ADR-048 (business process repository)  
 **Regulatory source:** EU AI Act Art.14 (human oversight), FCA CASS 15 (safeguarding)
 
 ---
@@ -83,7 +83,7 @@ The following passports are candidates for A2A bus revision (Sprint-B B2 intent-
 |----------|------|---------------|--------------------|-----------------------|-------|
 | **canon-judge** | Policy enforcer | Internal | Optional | policy_validate | Reviews decisions; non-client-facing |
 | **executor** | Code executor | Internal | NO | — | Aider CLI only; not in agent swarm |
-| **planner** | Task decomposer | L1_ACTIVE | YES | task_decompose, sprint_assign | Dispatcher integration via A2A; ADR-145 contract |
+| **planner** | Task decomposer | L1_ACTIVE | YES | task_decompose, sprint_assign | Dispatcher integration via A2A; ADR-150 contract |
 | **reviewer** | Code reviewer | Internal | Optional | code_review_gate | Non-client-facing; optional A2A for audit |
 | **mlro** | Compliance overseer | L2_REVIEW | YES | sar_file, threshold_change | High-trust; requires HITL gate |
 | **ctio** | Tech/infrastructure owner | L1_ACTIVE | Optional | secret_rotate, infra_config | Internal; optional A2A if swarm includes infra agents |
@@ -125,10 +125,10 @@ The following are **NOT yet modelled in passports** (live in `vibe-coding` + `ba
 2. Wire A2A routing: planner → executor | mlro → decision-gate | payment-agent → ledger-agent
 3. Implement confirmation UI: L2 cards with visual + OTP + optional biometric
 4. Test HITL timeout escalation: 24h SAR window → CEO notification
-5. Validate ADR-145 A2A message envelope: correlation_id propagation, audit trail logging (ClickHouse)
+5. Validate ADR-150 A2A message envelope: correlation_id propagation, audit trail logging (ClickHouse)
 
 **BLOCKERS for B2:**
-- ADR-145 A2A contract must be ACCEPTED (currently PROPOSED; depends on A1)
+- ADR-150 A2A contract must be ACCEPTED (currently PROPOSED; depends on A1)
 - LLM orchestration layer (Terminal A responsibility) must be operational
 
 ---
@@ -137,7 +137,7 @@ The following are **NOT yet modelled in passports** (live in `vibe-coding` + `ba
 
 - **ADR-049:** Intent Layer & Client-Facing Agent Masks (L1 specification)
 - **ADR-048:** Business Process Repository (intent→process contract)
-- **ADR-145:** A2A Inter-Agent Message Contract (routing & correlation)
+- **ADR-150:** A2A Inter-Agent Message Contract (routing & correlation)
 - **ADR-046:** Decision Lineage Schema (audit trail per action)
 - **ADR-047:** AI Cost Governance Policy (cost caps + HITL thresholds)
 - **agent-authority.md:** Autonomy levels L1–L4; HITL gates & timeouts
