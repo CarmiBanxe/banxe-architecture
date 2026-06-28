@@ -32,13 +32,13 @@
 ### A.3 Legacy migration state
 - **107** EMI services; **~20** legacy/v2 modules classed `LIVE_KEEP` / `LIVE_MIGRATE_NEXT` / `PARKED_REVIEW` — see `docs/refactor-legacy/EMI-LEGACY-RATIONALIZATION-PASS-1-2026-06-27.md` (incl. corrections; cited, not duplicated here).
 - **Residual genuine-gap = 0** — `docs/migration/MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.md`.
-- BANXE.RAR domain migration **COVERED**; **4 SERVER-AUDIT-REQUIRED**: `neuron`, `internal_dev`, `ilink`, `Trading-core`.
+- BANXE.RAR domain migration **COVERED**; **4 SERVER-AUDIT-REQUIRED**: `neuron`, `internal_dev`, `ilink`, `Trading-core`. ⚠ **UPDATE 2026-06-28: `Trading-core` RESOLVED** (evo1 server-audit → Binance-dealer legacy, ADR-083-retired, rebuild-not-port) → **3 remaining** — see Server-audit resolution note in `docs/migration/MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.md`.
 
 ### A.4 Crypto-trading track
 - **ADR-083 ACCEPTED** — Composable DeFi Stack (self-custodial) replaces the Binance-dealer model.
 - Repos: `banxe-trading-frontend` (mock-feed) + `banxe-trading-backend` (exists). `ExchangePort` contract + Python impl in `banxe-payment-core`; rate provider `crypto-ops-monitor`.
 - **LAST-MILE NOT DONE:** dYdX v4 `MarketDataPort` (§D2 orderbook WS) + `ExchangePort` REST/WS BFF + `QuotePort` (LI.FI).
-- Legacy sources inventoried (`neuron-bitshares-ui`, `fast-exchange`, `banxe-transactions/.../crypto`) on evo1 `/home/banxe/banxe-rar-extracted/`.
+- Legacy sources inventoried (`neuron-bitshares-ui`, `fast-exchange`, `banxe-transactions/.../crypto`) on evo1 `/home/banxe/banxe-rar-extracted/`. ⚠ **server-audit 2026-06-28:** these = **Binance-dealer / custodial legacy** (`crypto-api-exchange`, `crypto-api-keys-lib/binance`, `neuron-transaction-service` Binance, `fast-exchange`) → **ADR-083-retired, NOT-PORT**; the DeFi stack above is **greenfield**. The "13-section trading program" is **not** in the RAR (separate design doc). 124 `.env` → de-secret server-side only. (Canonical: Server-audit resolution note in `MIG-RESIDUAL-GENUINE-GAP-REGISTER-2026-06-25.md`.)
 
 ---
 
