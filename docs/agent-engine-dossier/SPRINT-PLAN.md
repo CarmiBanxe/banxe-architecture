@@ -18,7 +18,7 @@
 |-----------|-------|
 | Roadmap source | ENGINE-ROADMAP.md (IL-666, PR #857) |
 | Input anchor | ENGINE-ROADMAP-INPUTS.md (IL-665, PR #856) |
-| A2A ADR (A1) | ADR-145 — PR #858, IL-667, **ACCEPTED** ✅ |
+| A2A ADR (A1) | ADR-150 — PR #858, IL-667, **ACCEPTED** ✅ |
 | Sprint-A A2 | ADR-045 amendment — PR #860, IL-693, **ACCEPTED** ✅ |
 | Sprint-A A3 | ADR-147 Lerian MCP spec — PR #863, IL-694, **ACCEPTED** ✅ |
 | Sprint-A A4 | ADR-146 sandbox contract — PR #862, IL-692, **ACCEPTED** ✅ |
@@ -61,7 +61,7 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 
 ---
 
-### A1 — ADR-145: A2A Inter-Agent Message Contract
+### A1 — ADR-150: A2A Inter-Agent Message Contract
 
 | Field | Value |
 |-------|-------|
@@ -70,12 +70,12 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | PR | #858 (`agent/factory/sprintA01/a2a-contract`) |
 | IL | IL-667 |
 | Gate-in | None (root item) |
-| Gate-out | ADR-145 status = ACCEPTED; REVIEW-GATE satisfied |
+| Gate-out | ADR-150 status = ACCEPTED; REVIEW-GATE satisfied |
 | Blocks | A2, A3, A4, A5, B2, B5 |
 
 **Acceptance criteria:**
-- [ ] ADR-145: `A2AMessage` dataclass spec; 4 message types; transport spec; `a2a_events` schema
-- [ ] ADR-145 status changed from PROPOSED → ACCEPTED (PR comment by CTIO)
+- [ ] ADR-150: `A2AMessage` dataclass spec; 4 message types; transport spec; `a2a_events` schema
+- [ ] ADR-150 status changed from PROPOSED → ACCEPTED (PR comment by CTIO)
 - [ ] ORPHAN-GATE: 0
 
 ---
@@ -322,7 +322,7 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 ## 4. Critical Path
 
 ```
-A1 (ADR-145 ACCEPTED)
+A1 (ADR-150 ACCEPTED)
   └─► A2 ──► A5 ──► B2 ──► B5
   └─► A3 ──────────► B3
   └─► A4 ──────────► B4
@@ -333,7 +333,7 @@ B8 ──► B9 (independent of A/B chain)
 ```
 
 **Fastest path to adoption-gate (all 5 GAPs at L2):**
-1. Accept ADR-145 (A1) — unblocks all Sprint-A work
+1. Accept ADR-150 (A1) — unblocks all Sprint-A work
 2. Execute A2+A3+A4 in parallel (after A1)
 3. A5 after A2; then B2 can start
 4. B1, B6, B7 parallel from now
@@ -347,7 +347,7 @@ B8 ──► B9 (independent of A/B chain)
 |------|----|----|--------|
 | ENGINE-ROADMAP-INPUTS.md | #856 | IL-665 | PREPARED |
 | ENGINE-ROADMAP.md | #857 | IL-666 | PREPARED |
-| ADR-145 (A1 — A2A contract) | #858 | IL-667 | PROPOSED |
+| ADR-150 (A1 — A2A contract) | #858 | IL-667 | PROPOSED |
 | SPRINT-PLAN.md (this file) | #859 | IL-669 | PREPARED |
 | A2 (ADR-045 amendment) | TBD | TBD | NOT_STARTED |
 | A3 (Lerian MCP spec) | TBD | TBD | NOT_STARTED |

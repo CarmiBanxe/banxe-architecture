@@ -1,10 +1,11 @@
-# ADR-145: A2A Inter-Agent Message Contract
+# ADR-150: A2A Inter-Agent Message Contract
 
 **Date:** 2026-06-28
 **Status:** PROPOSED
 **IL:** assigned at merge by build_ledger.py | ADR-143-A
 **Sprint:** Sprint-A, item A1 (ENGINE-ROADMAP §2; GAP-E4 root dependency)
 **Supersedes:** N/A (first A2A contract ADR — NOVELTY per DEDUP-FINDINGS §NOVELTY)
+**Renumbered:** from duplicate **ADR-145** → **ADR-150** per ADR-142 / ADR-119 first-claim collision-fix (this A2A ADR was the later collider, #858; the canonical ADR-145 is `ADR-145-factory-project-fork-target-model.md`, #852, first-claimed). Append-only ledger shards retain the historical ADR-145 reference per ADR-057; this content is otherwise unchanged.
 
 ---
 
@@ -102,15 +103,15 @@ must approve before any action is taken. Agents NEVER auto-apply ESCALATION resp
 
 ### Hardcoded Import Ban
 
-After ADR-145 is ACCEPTED, new agent code MUST NOT import other agents directly:
+After ADR-150 is ACCEPTED, new agent code MUST NOT import other agents directly:
 
 ```python
-# BANNED after ADR-145
+# BANNED after ADR-150
 from services.aml.aml_agent import AMLAgent
 aml = AMLAgent()
 result = await aml.screen(payload)
 
-# REQUIRED after ADR-145
+# REQUIRED after ADR-150
 from services.a2a.bus import a2a_bus
 await a2a_bus.send(A2AMessage(
     source_agent_id="mlro_agent",
@@ -159,7 +160,7 @@ Semgrep rule `banxe-a2a-direct-import` to be added in Sprint-B (enforcement).
 ## Implementation Path (Sprint-A → Sprint-B)
 
 **Sprint-A (banxe-architecture — this ADR):**
-- [ ] ADR-145 accepted (CTIO sign-off)
+- [ ] ADR-150 accepted (CTIO sign-off)
 - [ ] `A2AMessage` dataclass spec finalised
 - [ ] `InMemoryA2ABus` Protocol + stub spec documented
 - [ ] `a2a_events` ClickHouse schema spec added

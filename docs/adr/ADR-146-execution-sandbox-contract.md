@@ -7,7 +7,7 @@ accepted:
 supersedes: []
 relates:
   - "ADR-128 (Banking-agent HITL authority matrix L1/L2/L3)"
-  - "ADR-145 (A2A Inter-Agent Message Contract — ESCALATION type)"
+  - "ADR-150 (A2A Inter-Agent Message Contract — ESCALATION type)"
   - "ADR-077 (Autonomy levels — reference)"
   - "agent-authority.md (Agent Autonomy Matrix — BANXE EMI Stack)"
   - "ADR-120 (Session Worktree Isolation)"
@@ -23,7 +23,7 @@ concept_only: false
 
 ## Context
 
-**ADR-145** (A2A Inter-Agent Message Contract) defines a formal messaging envelope for
+**ADR-150** (A2A Inter-Agent Message Contract) defines a formal messaging envelope for
 multi-agent orchestration, including the `ESCALATION` message type for L3+ actions requiring
 HITL approval (I-27). **ADR-128** classifies all banking-domain AI into four autonomy levels
 (L1/L2/L3/L4) with HITL gates at L2/L3/L4.
@@ -277,7 +277,7 @@ Undeclared agents default to L2 (most restrictive).
 ## References
 
 - **ADR-128** Banking-agent HITL authority matrix (autonomy levels L1/L2/L3)
-- **ADR-145** A2A Inter-Agent Message Contract (ESCALATION message type)
+- **ADR-150** A2A Inter-Agent Message Contract (ESCALATION message type)
 - **ADR-077** Autonomy levels (reference, if exists)
 - **agent-authority.md** BANXE EMI Stack Agent Autonomy Matrix
 - **I-27** (HITL — AI PROPOSES, human DECIDES)

@@ -20794,3 +20794,22 @@ Orphan check status: 0 orphans (will verify after build_ledger)
 - **Proof:** docs/adr governance-only; **no install/clone/import/runtime/secret**. IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 716) → IL-717 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T02:15:00Z` > origin/main max `2026-06-29T02:00:00Z`. Fresh worktree off origin/main `ee6021e`, commit-before-push (head≠base, anti-auto-close) (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — DRAFT ADR-149 + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135.**
 - **Refs:** `docs/adr/ADR-149-closed-loop-completion-criteria.md`; ADR-117/135/148/119/143/143-A/120; parallel-session-isolation Rule 6/7; agent-looping pattern ref (not imported). Operator HITL.
+
+---
+
+### IL-718 - agent-factory-governance-a2a-renumber-150 @ 2026-06-29T02:30:00Z
+
+- **il_ts:** 2026-06-29T02:30:00Z
+- **session_id:** agent-factory-governance-a2a-renumber-150
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-a2a-renumber-150/IL-2026-06-29T02-30-00Z--a2a-renumber-150.md`
+
+### Resolve ADR-145 number-collision — renumber a2a (later collider) → ADR-150
+- **Decision:** Resolved the live duplicate ADR-145 by renumbering the **later collider** (a2a inter-agent message contract, #858, UTC 11:46) → **ADR-150**, leaving the canonical first-claim ADR-145 (`ADR-145-factory-project-fork-target-model.md`, #852, UTC 11:06, IL-668) untouched (ADR-119 first-claim discipline; ADR-142 collision-fix precedent). **PREPARE-ONLY**, Draft PR. Cross-session renumber authorized by operator.
+- **Changes:** `git mv ADR-145-a2a-… → ADR-150-a2a-inter-agent-message-contract.md`; header `# ADR-145:` → `# ADR-150:` + renumber-note; 5 internal self-refs → ADR-150. **Classified** live-doc back-refs updated (a2a-only): `ADR-146` (3), `ADR-147` (2), `SPRINT-PLAN.md` (8) → ADR-150. **NOT touched:** `ADR-148` (factory ref, #852); all `ledger/entries/**` shards (append-only ADR-057, retain historical ADR-145 ref); `INSTRUCTION-LEDGER.md` (generated).
+- **Result:** ADR-145 now resolves to ONE file (factory, unique); ADR-150 = a2a (unique); **no two ADRs share a number**. a2a IL (IL-667) unchanged — renumber touches only the ADR-NNN identifier, not the ledger entry.
+- **Audit:** `docs/governance/DUPLICATION-AUDIT-adr145-dup-renumber-2026-06-28.md` (ADR-102 five-step + per-file classification).
+- **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 717) → IL-718 via central allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T02:30:00Z` > origin/main max `2026-06-29T02:15:00Z`. Fresh worktree off origin/main `eba4c98`, commit-before-push (head≠base) (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — renumber + audit + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135.**
+- **Refs:** `docs/adr/ADR-150-a2a-inter-agent-message-contract.md`; `docs/adr/ADR-145-factory-project-fork-target-model.md` (canonical, untouched); ADR-102/119/142/057/120/060; Rule 6/7. Operator HITL.

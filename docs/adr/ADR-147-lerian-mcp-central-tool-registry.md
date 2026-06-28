@@ -10,7 +10,7 @@
 
 ## Context
 
-ADR-145 (A1) defined the A2A message contract for agent-to-agent communication. ADR-045 (amended in A2) 
+ADR-150 (A1) defined the A2A message contract for agent-to-agent communication. ADR-045 (amended in A2) 
 established intent-first dispatcher architecture with deployment trigger in Sprint-B B2.
 
 **Gap evidence (from SPRINT-PLAN.md §2 A3 + target-audit findings):**
@@ -315,7 +315,7 @@ S12-16 status updates to DEPLOYED.
 ## References
 
 - **ADR-045:** Intent-first banking architecture (amended in A2)
-- **ADR-145:** A2A inter-agent message contract (A1)
+- **ADR-150:** A2A inter-agent message contract (A1)
 - **ADR-060:** Temporal saga runtime (Sprint-B roadmap)
 - **SPRINT-PLAN.md:** §2 Sprint-A items A1–A5
 - **agent-authority.md:** Autonomy levels L1–L4
