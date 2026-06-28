@@ -19993,3 +19993,65 @@ BANXE-CORE-ENGINE = coordination layer over above (not replacement).
 **Refs:** ADR-045, ADR-049, ADR-060 §6, ADR-077, ADR-133, ADR-136, ADR-137, ADR-141, ADR-143-A,
 PR #842 (target-audit), DEDUP-FINDINGS.md, VERIFIED-RUNTIME-SNAPSHOT.md,
 agent-authority.md, COMPLIANCE-MATRIX.md S12-13/S12-16, I-02, I-24, I-28
+
+---
+
+### IL-681 - agent-factory-roadmap02-engine-roadmap @ 2026-06-28T23:15:00Z
+
+- **il_ts:** 2026-06-28T23:15:00Z
+- **session_id:** agent-factory-roadmap02-engine-roadmap
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-roadmap02-engine-roadmap/IL-2026-06-28T23-15-00Z--c1d5c9.md`
+
+### IL — Agent Engine Execution Roadmap
+
+**Date:** 2026-06-28
+**Task:** Create ENGINE-ROADMAP.md — execution roadmap for 5 engine GAPs (E1–E5) derived
+from ENGINE-ROADMAP-INPUTS.md anchor (IL-665, PR #856). Sprint-A/B split, L1→L2→L3
+adoption gate, reuse mandate map, P1 blocker register.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/roadmap02/engine-roadmap
+
+**Changes (docs-only, new file):**
+
+1. **CREATE: docs/agent-engine-dossier/ENGINE-ROADMAP.md** — 6 sections, ~230 lines
+   - §0 Status dashboard (0/5 GAPs at L2; DIRTY PR notice)
+   - §1 Epic register: 5 epics (E4/E1/E2/E3/E5 in dependency order) with acceptance criteria
+   - §2 Sprint plan: Sprint-A (banxe-architecture, 5 items A1–A5) + Sprint-B (banxe-ai-infrastructure, 9 items B1–B9)
+   - §3 Adoption gate: L1/L2/L3 gate table; 100%-adoption-gate condition
+   - §4 Reuse mandate map (cross-ref ENGINE-ROADMAP-INPUTS §3)
+   - §5 P1 blocker register (G-CANON-BYPASS, G-GUARDIAN-WEBHOOK-MISSING)
+   - §6 Dossier dependency (merge order; DIRTY PR rebase required)
+
+**No existing content modified:**
+- All 9 dossier files on main + ENGINE-ROADMAP-INPUTS.md (PR #856): untouched
+- New file only; append-only by design; extends ENGINE-ROADMAP-INPUTS.md (does not duplicate)
+
+**Key finding surfaced:**
+- PRs #842–#851 status: OPEN/DIRTY (main advanced to IL-663 since branch creation)
+- Operator must rebase all 10 PRs before merge; PR #856 is CLEAN and merge-ready
+
+**Verification sources:**
+
+| Source | Finding |
+|--------|---------|
+| ENGINE-ROADMAP-INPUTS.md IL-665, PR #856 | 5 GAPs, sprint split, reuse, maturity, runtime gaps |
+| target-audit #842 §4/§7 | GAP evidence (lines 29–524) confirmed |
+| bx-session.sh output | PR-aware IL-666 (main max=663, open-PR max=665) |
+| ADR-144 orphan-check | 0 (docs-only; no new ADR/passport cross-refs) |
+| ADR-060 §6 | Sprint-B scope boundary confirmed |
+| EVIDENCE-6 diagnostic | PRs #842–#851 = DIRTY; PR #856 = CLEAN |
+
+**Quality Checks:**
+- ENGINE-ROADMAP.md: new file, 0 existing content modified
+- ADR-144 orphan-check: 0
+- ADR-120: isolated worktree `/home/mmber/wt/agent-factory-roadmap02-engine-roadmap`
+- ADR-119 Rule 8: no hardcoded IL-NNN in commit title
+- No Python files touched; no financial code
+
+**Refs:** ENGINE-ROADMAP-INPUTS.md (IL-665), ADR-045, ADR-049, ADR-060 §6, ADR-077,
+ADR-133, ADR-136, ADR-137, ADR-141, ADR-143-A, ADR-144,
+PR #842 (target-audit), PR #845 (A-003), PR #856 (inputs anchor),
+DEDUP-FINDINGS.md, VERIFIED-RUNTIME-SNAPSHOT.md,
+agent-authority.md, COMPLIANCE-MATRIX.md S12-13/S12-16
