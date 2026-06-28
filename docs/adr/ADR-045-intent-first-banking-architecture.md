@@ -4,7 +4,7 @@ title: Intent-First Banking Architecture for EMI BANXE AI BANK
 status: ACCEPTED
 date: 2026-06-07
 supersedes: []
-related:
+refs:
   - "ADR-040-ai-execution-policy.md (Meta-Plane vs Inference-Plane)"
   - "ADR-039-claude-code-permissions-reclassification.md (Claude Code permissions)"
   - "../../decisions/ADR-014-composable-financial-stack.md (Composable Financial Stack)"
@@ -18,7 +18,6 @@ related:
 binding_artifact: docs/canon/INTENT-FIRST-CANON-2026-06-07.md
 il_anchor: IL-122-INTENT-FIRST-CANON-2026-06-07
 scope: BANXE-only
-concept_only: true
 ---
 
 # ADR-045: Intent-First Banking Architecture for EMI BANXE AI BANK
@@ -171,6 +170,64 @@ name them and reserve them as future work.
   paired with a canon doc for the binding-principle restatement).
 - **Fold the three open gaps into this ADR** (rejected: scope; each warrants its own
   ADR with proper design. CONCEPT ONLY mandate.).
+
+## Deployment & Activation
+
+### Deployment Schedule
+
+The Intent-First architecture is activated incrementally through Sprint-B. The
+intent-dispatcher runtime (L1 conversational interface layer) is wired and deployed
+in **Sprint-B item B2: Intent-Dispatcher Runtime Wiring**.
+
+### Entry Point & Runtime Configuration
+
+**Location:** `banxe-ai-infrastructure` repo, evo1 target host  
+**Config file:** `planner.yaml` (intent routing schema and dispatcher endpoint configuration)
+
+#### Intent Routing Schema (`planner.yaml`)
+
+```yaml
+# banxe-ai-infrastructure/config/planner.yaml
+intent_routing:
+  passport_update:
+    spec_ref: "banxe-architecture/docs/passport/intent-passport-identity-passport-update.md"
+    dispatcher_endpoint: "/v1/intent/execute"
+    executor_autonomy: L2
+    compliance_gate: L3_GOVERNANCE
+    result_type: "DECISION_LINEAGE_RECORD"
+  payment_submit:
+    spec_ref: "banxe-architecture/docs/passport/intent-passport-financial-payment-submit.md"
+    dispatcher_endpoint: "/v1/intent/execute"
+    executor_autonomy: L2
+    compliance_gate: L3_GOVERNANCE
+    result_type: "DECISION_LINEAGE_RECORD"
+```
+
+#### Dispatcher Runtime Dependencies
+
+| Dependency | Service | Port | Purpose |
+|-----------|---------|------|---------|
+| Redis Streams | `redis-a2a` | 6379 | A2A (Agent-to-Agent) bus (Sprint-B item B5) |
+| Lerian MCP | `lerian-mcp` | 5555 | Intent-to-action translation (Sprint-B item B3) |
+| PostgreSQL | `postgres` | 5432 | Decision Lineage Schema storage (future ADR) |
+| ClickHouse | `clickhouse` | 9000 | Audit trail + compliance event log |
+
+#### Deployment Trigger
+
+The intent-dispatcher enters **production beta** when **Sprint-B item B2** merges
+to main in `banxe-ai-infrastructure`. This unblocks:
+
+- Intent passports (identity, payment, compliance domains) → active routing
+- L2 agent execution against intent intents (via Lerian MCP B3)
+- L3 governance gates interception (HITL feedback loop)
+- Decision Lineage recording (append-only ClickHouse, future ADR)
+
+### Backward Compatibility
+
+The Intent-First dispatcher launches **alongside** the existing GUI/REST API;
+no existing REST/banking-screen clients are disrupted. The dispatcher is a new
+L1 entry point that co-exists with the current banking app entry point until
+migration to Intent-First is complete (Q3 2026 target).
 
 ## Anchors
 
