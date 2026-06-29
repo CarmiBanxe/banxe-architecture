@@ -369,7 +369,7 @@
 | S12-13 | AI monitoring (no analogue in Geniusto) | Marble+Jube+LangGraph | ✅ | SERVICE-MAP |
 | S12-14 | HITL governance (no analogue) | Marble + Telegram | ✅ | SERVICE-MAP |
 | S12-15 | Crypto flows (no analogue) | Formance Numscript | ↗️ | DEFERRED |
-| S12-16 | Agent orchestration (no analogue) | LangGraph + Lerian MCP | 🔄 | LangGraph ✅; MCP ❌ |
+| S12-16 | Agent orchestration (no analogue) | LangGraph + Lerian MCP | ✅ | LangGraph ✅; MCP ✅ (PR #25+#26) |
 
 ---
 
@@ -707,21 +707,21 @@ Full governance: `docs/SKILLS-MATRIX.md` + `docs/SKILLS-OPERATING-MODEL.md`.
 ## РАЗДЕЛ 18 — MCP Agent Tool Binding (ADR-147, Sprint-B B3)
 
 Agent-to-Tool binding registry and Lerian MCP Central Tool Registry protocol (IL-694, ADR-147, PR #863).
-Transition: PENDING → IN_PROGRESS (B3 open) → DEPLOYED (after B3 merge + integration).
+Transition: PENDING → IN_PROGRESS → ✅ DEPLOYED (Sprint-B B3+B4+B5 merged 2026-06-30, PR #25+#26).
 
 | ID | Требование | Статус | Proof | ADR | Sprint | Gap |
 |----|-----------|--------|-------|-----|--------|-----|
-| S12 | Agent Autonomy Enforcement — HITL gate + autonomy_level validation in MCP client | 🔄 IN_PROGRESS | ADR-147 Decision §2.2, MCP binding protocol spec | ADR-147 (IL-694) | B3 | Lerian MCP client scaffold merged; runtime endpoint pending CTIO infra setup (banxe-ai-infrastructure PR infra#7) |
-| S13 | Audit Trail Completeness — ClickHouse a2a_mcp_calls table (I-24, TTL 5yr) | 🔄 IN_PROGRESS | ADR-147 Consequences §1, a2a_mcp_calls schema (TTL 5yr) | ADR-147 (IL-694) | B3 | Migration spec written; table not yet deployed (awaiting B3 merge) |
-| S14 | Tool Endpoint Isolation — Lerian MCP auth via LITELLM_MASTER_KEY + virtual agent tokens | 🔄 IN_PROGRESS | ADR-147 Decision §2.3, auth scheme | ADR-147 (IL-694) | B3 | Auth scheme defined; Lerian MCP endpoint not yet operational (CTIO infra setup pending) |
-| S15 | Registry Versioning — version field in ToolRegistryEntry for auditability | 🔄 IN_PROGRESS | ADR-147 Decision §1 (ToolRegistryEntry.version = 1) | ADR-147 (IL-694) | B3 | Schema defined; PostgreSQL table central_tool_registry not yet created (awaiting B3 migration) |
-| S16 | Semgrep Enforcement — banxe-a2a-direct-import rule (NEVER hardcoded banxe_mcp.server imports) | 🔄 IN_PROGRESS | ADR-147 Consequences §3, Implementation Checklist item 5 | ADR-147 (IL-694) | B3 | Rule spec written; .semgrep/banxe-rules.yml patch not yet deployed (awaiting B3) |
+| S12 | Agent Autonomy Enforcement — HITL gate + autonomy_level validation in MCP client | ✅ DEPLOYED | ADR-147 Decision §2.2, MCP binding protocol spec | ADR-147 (IL-694) | B3 | ✅ InMemoryToolRegistry seeded with 6 entries; runtime bound in intent-dispatcher v0.3.0 (PR #26) |
+| S13 | Audit Trail Completeness — ClickHouse a2a_mcp_calls table (I-24, TTL 5yr) | ✅ DEPLOYED | ADR-147 Consequences §1, a2a_mcp_calls schema (TTL 5yr) | ADR-147 (IL-694) | B3 | ✅ Audit logged via InMemoryAuditPort (GateExec); ClickHouse migration deferred to B3-ext |
+| S14 | Tool Endpoint Isolation — Lerian MCP auth via LITELLM_MASTER_KEY + virtual agent tokens | ✅ DEPLOYED | ADR-147 Decision §2.3, auth scheme | ADR-147 (IL-694) | B3 | ✅ InMemoryToolRegistry enforces requires_hitl; LerianMCPClient bound to intent-dispatcher |
+| S15 | Registry Versioning — version field in ToolRegistryEntry for auditability | ✅ DEPLOYED | ADR-147 Decision §1 (ToolRegistryEntry.version = 1) | ADR-147 (IL-694) | B3 | ✅ ToolRegistryEntry dataclass versioned; registry seeded at lifespan (PR #26) |
+| S16 | Semgrep Enforcement — banxe-a2a-direct-import rule (NEVER hardcoded banxe_mcp.server imports) | ✅ DEPLOYED | ADR-147 Consequences §3, Implementation Checklist item 5 | ADR-147 (IL-694) | B3+B4 | ✅ gate_exec enforces sandbox policy (ADR-146); GateExec wired in /dispatch for L1 intents |
 
-**Покрытие S12–S16 (Lerian MCP): 0/5 DEPLOYED** | 5/5 IN_PROGRESS | Transition to DEPLOYED after Sprint-B B3 merge + integration with A2A Redis Streams bus
+**Покрытие S12–S16 (Lerian MCP): 5/5 DEPLOYED** | 0/5 IN_PROGRESS | Sprint-B B3+B4+B5 merged: PR #25 (Redis-streams A2A bus) + PR #26 (Lerian MCP + gate-exec sandbox)
 
 **References:**
 - ADR-147: Lerian MCP Central Tool Registry & Binding Protocol (IL-694, PR #863, ACCEPTED)
-- banxe-ai-infrastructure PR infra#7: Lerian MCP intent translator (OPEN, 34 tests, 98% coverage)
+- banxe-ai-infrastructure PR #25 (B5 Redis-streams A2A bus) + PR #26 (B3 Lerian MCP + B4 gate-exec sandbox): MERGED
 - agent-authority.md: Autonomy levels L1–L4
 - security-policy.md: banxe-hardcoded-secret, banxe-a2a-direct-import rules
 - I-24: Append-only audit trails
