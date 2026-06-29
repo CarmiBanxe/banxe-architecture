@@ -58,6 +58,20 @@ else:
     ct=open(CANON,encoding='utf-8').read() if os.path.isfile(CANON) else ""
     gating=("quality-gate.sh" in ct and "invariant" in ct.lower())
 
+# ADVISORY (non-blocking) — taste-declaration presence; NEVER feeds `blocking`/exit code.
+_CANON_REL="docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md"
+def _has(rel,pat):
+    try: return bool(re.search(pat,open(os.path.join(ROOT,rel),encoding='utf-8').read(),re.M))
+    except FileNotFoundError: return False
+if SELF:
+    t_a=t_b=t_c=True
+else:
+    t_a=_has("docs/BANXE-UI-UX-SYSTEM.md",r'^##\s*Taste Rubric \(advisory\)')         # A substance
+    t_b=_has(_CANON_REL,r'^##\s*5A\.\s*Taste & Polish')                                # B governance
+    t_c=_has(_CANON_REL,r'ADR-149') and _has(_CANON_REL,r'(?i)completion[- ]criteria|stop-condition|MAX_ITER')  # ADR-149 loop
+taste_ok=t_a and t_b and t_c
+sv_taste="🟢" if taste_ok else "🟡"   # advisory: 🟡 worst case — NEVER 🔴, NEVER blocking
+
 n_stage=len(stages); n_in=len(present_inputs)
 blocking = (n_stage!=5) + (n_in!=len(INPUTS)) + (0 if passport_bound else 1) + (0 if gating else 1)
 def v(ok): return "🟢" if ok else "🔴"
@@ -72,6 +86,7 @@ if JSON:
         inputs=dict(verdict=sv_in,present=present_inputs,missing=[p for p in INPUTS if p not in present_inputs]),
         design_pipeline_agent=dict(verdict=sv_pp,bound=passport_bound),
         gating_quality_gate_invariants=dict(verdict=sv_gate,present=gating),
+        taste_declaration=dict(verdict=sv_taste,advisory=True,a_rubric=t_a,b_governance=t_b,adr149_loop=t_c),
         delegated_banxe_ui=delegated,awaits_operator=awaits),ensure_ascii=False,indent=2))
     raise SystemExit(0 if blocking==0 else 20)
 
@@ -81,6 +96,7 @@ print(f"{sv_in} канонические входные артефакты: {n_i
 for p in INPUTS: print(f"      {'✓' if p in present_inputs else '✗'} {p}")
 print(f"{sv_pp} design_pipeline_agent: паспорт {'bound (allowed_skills)' if passport_bound else 'НЕ привязан/отсутствует'}")
 print(f"{sv_gate} стадии 3-5 gating: ссылка на quality-gate.sh + инварианты {'присутствует' if gating else 'ОТСУТСТВУЕТ'} (§6)")
+print(f"{sv_taste} taste declaration (ADVISORY, non-blocking): A-rubric={'✓' if t_a else '✗'} B-governance={'✓' if t_b else '✗'} ADR-149-loop={'✓' if t_c else '✗'} — advisory only; WCAG §5 + 4 governance checks remain the only hard gates")
 print("\nDELEGATED → banxe-ui (отдельный репо; фронтенд/axe-core НЕ выполняются здесь):")
 for x in delegated: print(f"  ⚪ {x}")
 print("AWAITS OPERATOR:")

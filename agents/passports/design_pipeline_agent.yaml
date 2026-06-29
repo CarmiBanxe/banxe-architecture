@@ -16,11 +16,14 @@ capabilities:
   - component_catalog
   - design_token_management
   - visual_regression_config
+  - aesthetic_taste_review        # ADVISORY ONLY (declaration); never a gate. PROPOSED/not-activated (I-27).
 department: "Engineering / Developer Platform"
 human_double: "CTO"
 non_goals:
   - "Do NOT reimplement services/design_pipeline/ — existing code in banxe-emi-stack"
   - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
+  - "Taste review is ADVISORY ONLY — never a promotion/merge/governance gate (canon §5A)"
+  - "Do NOT auto-activate aesthetic_taste_review — declaration only, PROPOSED (I-27); θ/owner AWAITS-OPERATOR"
 ports:
   inbound:
     - port: DesignSpecPort
@@ -30,6 +33,12 @@ ports:
       description: derived from services/design_pipeline code
     - port: AuditPort
       description: Immutable audit log (I-08)
+    - port: TasteScorePort
+      description: >
+        ADVISORY-ONLY. Emits taste sub-scores (advisory bands per
+        docs/BANXE-UI-UX-SYSTEM.md §"Taste Rubric (advisory)") + concrete deltas.
+        NOT a gate; never blocks promotion. θ = AWAITS-OPERATOR (config-as-data,
+        UI-UX-DESIGN-SYSTEM-CANON §8 OI-5). Declaration only — PROPOSED, not-activated (I-27).
 allowed_callers:
   - sandbox_rails_governor
 allowed_callees:
