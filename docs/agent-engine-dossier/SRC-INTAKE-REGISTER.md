@@ -98,3 +98,22 @@ Snapshot @ origin/main 6602842, local host mark-legion.
    `banxe-ai-infrastructure`; design contracts → `banxe-architecture`.
 
 Sprint plan из досье: Sprint A (design) → здесь; Sprint B (runtime) → banxe-ai-infrastructure.
+
+---
+
+## SRC-04 — Framework Selection (INGESTED 2026-06-28)
+
+**File:** `docs/agent-engine-dossier/SRC-04-framework-selection.md`
+**Branch:** `agent/factory/agenteng06/src04-framework-selection`
+**IL:** agent-factory-agenteng06-src04-framework-selection
+**Source:** Corpus Part 4 (operator-provided, 2026-06-28)
+**Status:** INGESTED
+
+**Content:**
+- §1 Recommendation table: 10 frameworks, stars (June 2026), fintech-readiness, BANXE role
+- §4.1 LangGraph+Temporal combo: repo-split (architecture vs banxe-ai-infrastructure/ADR-060§6)
+- §4.2 Cross-references: SRC-01 BANXE-STATUS, #842 GAP, ADR-SAF-01, J-ENGINE-BUILD-SPEC
+- §4.3 Open gaps: Intent Dispatcher / Temporal code / Haystack RAG / TaskWeaver
+
+**Dedup:** SRC-01 = landscape+BANXE-STATUS (primary); SRC-04 = decision/recommendation layer (additive).
+**Star-count note:** June 2026 snapshot (distinct from Corpus Part 1 slice in SRC-01).
