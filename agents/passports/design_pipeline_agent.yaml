@@ -23,7 +23,7 @@ non_goals:
   - "Do NOT reimplement services/design_pipeline/ — existing code in banxe-emi-stack"
   - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
   - "Taste review is ADVISORY ONLY — never a promotion/merge/governance gate (canon §5A)"
-  - "Do NOT auto-activate aesthetic_taste_review — declaration only, PROPOSED (I-27); θ/owner AWAITS-OPERATOR"
+  - "Do NOT auto-activate aesthetic_taste_review — declaration only, PROPOSED (I-27); θ=on-canon (set 2026-06-30), owner=interim CTO; activation still operator-gated"
 ports:
   inbound:
     - port: DesignSpecPort
@@ -37,7 +37,8 @@ ports:
       description: >
         ADVISORY-ONLY. Emits taste sub-scores (advisory bands per
         docs/BANXE-UI-UX-SYSTEM.md §"Taste Rubric (advisory)") + concrete deltas.
-        NOT a gate; never blocks promotion. θ = AWAITS-OPERATOR (config-as-data,
+        NOT a gate; never blocks promotion. θ = on-canon (band threshold — impeccable-loop
+        stop-condition only, advisory; operator-set 2026-06-30; config-as-data per
         UI-UX-DESIGN-SYSTEM-CANON §8 OI-5). Declaration only — PROPOSED, not-activated (I-27).
 allowed_callers:
   - sandbox_rails_governor
