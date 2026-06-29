@@ -204,23 +204,25 @@ Accessibility Engineer**.
 
 | Activity | Responsible | Accountable | Consulted |
 |----------|-------------|-------------|-----------|
-| Design Discovery (1) | UX Researcher | **Head of Design** *(AWAITS OPERATOR)* | UX Designer |
-| Wireframing (2) | UX Designer | **Head of Design** *(AWAITS OPERATOR)* | UI Designer, UX Researcher |
-| Design System (3) | **Design System Lead** | **Head of Design** *(AWAITS OPERATOR)* | UI Designer, Accessibility Engineer |
+| Design Discovery (1) | UX Researcher | **CTO (SMF26)** *(interim Head of Design)* | UX Designer |
+| Wireframing (2) | UX Designer | **CTO (SMF26)** *(interim Head of Design)* | UI Designer, UX Researcher |
+| Design System (3) | **Design System Lead** | **CTO (SMF26)** *(interim Head of Design)* | UI Designer, Accessibility Engineer |
 | Front-end (4) | Front-end (Developer plane) | **Design System Lead** | Motion, Accessibility Engineer |
-| Usability (5) | Accessibility Engineer | **Head of Design** *(AWAITS OPERATOR)* | UX Researcher |
-| Taste & Polish governance (§5A) | **Design System Lead** *(AWAITS OPERATOR)* | **Head of Design** *(AWAITS OPERATOR)* | UI Designer, Accessibility Engineer |
+| Usability (5) | Accessibility Engineer | **CTO (SMF26)** *(interim Head of Design)* | UX Researcher |
+| Taste & Polish governance (§5A) | **CTO (SMF26)** *(interim)* | **CTO (SMF26)** *(interim Head of Design)* | UI Designer, Accessibility Engineer |
 
-### 7.2 Ownership gap — AWAITS OPERATOR
-- **No `Head of Design` or `Design System Lead` role is defined** in
-  `docs/JOB-DESCRIPTIONS.md` or `docs/ORG-STRUCTURE.md` as of 2026-06-22 (verified — the
-  SMF/org tables list CEO/CFO/CRO/Internal-Audit/MLRO/COO/CTO and finance/treasury/AML
-  agents only; no design function).
-- Therefore the **Accountable owner** of the Design System (named person, reporting line,
-  SMF/department mapping) and the **named Design System Lead** are **AWAITS OPERATOR**.
-- This canon does not invent an owner. Until the operator assigns ownership, design-system
-  governance decisions (token breaking changes, accessibility target above the AA floor,
-  promotion sign-off) escalate to the operator.
+### 7.2 Ownership — INTERIM (CTO / SMF26), dedicated hire pending
+- **Interim accountable owner = CTO (SMF26, Oleg)** — operator-assigned 2026-06-29 as the interim
+  design-system accountable (Head-of-Design function), recorded in `docs/ORG-STRUCTURE.md` §2.7 +
+  `docs/JOB-DESCRIPTIONS.md` §1.6. The CTO holds design-system accountability until a dedicated
+  role is hired.
+- **Still AWAITS OPERATOR:** a **dedicated `Head of Design` / `Design System Lead`** (a named person
+  beyond the interim CTO holder) remains a future operator hire — the interim assignment does not
+  create the standalone role.
+- Design-system governance decisions (token breaking changes, accessibility target above the AA
+  floor, promotion sign-off, taste sign-off) are **accountable to the interim CTO owner**; anything
+  beyond interim scope escalates to the operator. This canon assigns no owner of its own accord — it
+  records the operator's interim assignment.
 
 ---
 
@@ -228,11 +230,11 @@ Accessibility Engineer**.
 
 | # | Item | State | Resolution path |
 |---|------|-------|-----------------|
-| OI-1 | Design function ownership — `Head of Design` / `Design System Lead` (named person, reporting line, SMF/dept) | **AWAITS OPERATOR** | Add role to `docs/ORG-STRUCTURE.md` + `docs/JOB-DESCRIPTIONS.md`; reference here |
+| OI-1 | Design function ownership — `Head of Design` / `Design System Lead` (named person, reporting line, SMF/dept) | **INTERIM: CTO (SMF26)** accountable (2026-06-29); dedicated hire **AWAITS OPERATOR** | Interim recorded in `docs/ORG-STRUCTURE.md` §2.7 + `docs/JOB-DESCRIPTIONS.md` §1.6; dedicated Head-of-Design / Design-System-Lead hire pending |
 | OI-2 | Accessibility target above the asserted **WCAG 2.1 AA** floor (e.g. 2.2 AA, or AAA for specific flows) | **AWAITS OPERATOR** | Operator decision; if raised, update `docs/BANXE-UI-UX-SYSTEM.md` §"Accessibility Rules" then this canon |
 | OI-3 | Token versioning scheme (semver of `banxe-ui/packages/design-tokens/`, release cadence) | **AWAITS OPERATOR** | Define version policy in token package; reference here |
 | OI-4 | Component-library KPIs specific to UI/UX (beyond ADR-117 factory KPIs) | **AWAITS OPERATOR** | Confirm whether UI-specific KPIs are needed; if so, add to `docs/governance/CANON-RECONCILIATION-ADR117.md` |
-| OI-5 | Taste-score threshold **θ** for the polish loop (config-as-data location + value) + named **Taste & Polish owner** (Design System Lead / Head of Design) | **AWAITS OPERATOR** | Operator sets θ as config-as-data (parallel to token machine-source, §3.1) + assigns owner (see §5A, §7.2); this canon sets no value |
+| OI-5 | Taste-score threshold **θ** for the polish loop (config-as-data location + value) + named **Taste & Polish owner** (Design System Lead / Head of Design) | **θ: AWAITS OPERATOR** · **owner: INTERIM CTO (SMF26)** (2026-06-29) | Owner = interim CTO (§7.2); **θ value still AWAITS OPERATOR** — operator sets θ as config-as-data (parallel to token machine-source, §3.1); this canon sets no θ |
 
 > Per operator canon: unknowns are recorded as **AWAITS OPERATOR**, never invented.
 

@@ -168,6 +168,7 @@
 - Integration management (Modulr, Ballerine, Jube, Marble)
 - Security incident triage (CRITICAL: notify CEO within 2h)
 - AI model update approval (with CRO)
+- **Interim design-system accountability** — accountable owner of the Design System / Head-of-Design function (`docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` §7.2) until a dedicated Head of Design / Design System Lead is hired (operator-assigned 2026-06-29). Taste-rubric review is advisory, never a gate; θ threshold value remains AWAITS OPERATOR.
 
 **KPIs:**
 - Platform uptime: >99.9%
