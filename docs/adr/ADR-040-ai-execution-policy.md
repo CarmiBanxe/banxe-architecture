@@ -123,3 +123,48 @@ I-18 (no Banxe/GUIYON data crossing), I-20 (replaceable inference targets),
 I-27 (HITL gate for outbound action), I-28 (no implementation without IL entry),
 I-32 (no direct cloud LLM calls from EMI services) — `INVARIANTS.md`,
 I-33 (PII/AML deny-paths route only via local aliases) — `INVARIANTS.md`.
+
+---
+
+## Amendment 2026-06-29 — Sprint-C production topology (canon-v1.39 / Gap-032)
+
+**Status:** ACCEPTED  
+**Author:** Factory (Central)  
+**Amends:** §Context and §Decision (Plane definitions table, Routing rules)
+
+### Change
+
+Post Sprint-C execution (`banxe-ai-infrastructure` commits `c23ca48`/`cfe246d`/`1013fac`, closure `9d9f95b`):
+
+The LiteLLM v2 router split into two distinct binds:
+
+| Role | Host | Bind | Purpose |
+|------|------|------|---------|
+| **Prod gateway (S1)** | evo1 (`100.68.102.48`) | `0.0.0.0:4000` via Tailscale | BANXE agent/factory prod inference; monitored by banxe-monitoring Prometheus |
+| **Dev-proxy** | Legion (factory plane) | `127.0.0.1:4000` | Local developer tooling (Aider, Continue, IDE plugins) — loopback only |
+
+Updated plane definitions:
+
+| Plane | Where | LiteLLM router |
+|-------|-------|----------------|
+| **Meta-plane** | Claude Code (cloud, legion only) | n/a — orchestrates |
+| **Inference-plane (prod)** | evo1:4000 → Ollama (evo1:11434, evo2:11434) + glm-master (evo1:8081) | `evo1:4000` |
+| **Inference-plane (dev)** | legion:4000 → same Ollama backends | `legion:4000` (loopback) |
+
+### Routing rule update
+
+> All production BANXE agent/factory inference routes through `evo1:4000` (LiteLLM prod gateway).  
+> Developer tooling on Legion routes through `legion:4000` (dev-proxy, loopback, never prod).  
+> Direct calls to `evo1:11434`, `evo2:11434`, `evo1:8081` remain reserved for diagnostics and the LiteLLM router itself.
+
+### Why
+
+ADR-040 was authored 2026-05-03 when LiteLLM ran only on Legion. Sprint-C formalised the
+split: prod gateway = evo1, dev-proxy = Legion. Without this amendment ADR-040 would
+incorrectly imply a single Legion-only router for all inference traffic.
+
+### References
+
+- Sprint-C closure: `banxe-ai-infrastructure` commit `9d9f95b`
+- banxe-monitoring scrape target: `evo1:4000/metrics` (Gap-028)
+- Gap-032: closed — see `banxe-ai-infrastructure/docs/infrastructure/audit/gap-hypotheses.md`
