@@ -11,6 +11,10 @@ related:
   - "ADR-033-ufw-perimeter.md (ufw Perimeter Posture)"
   - "ADR-034-aider-routes.md (Aider/Continue Routes)"
 binding_artifact: banxe-infra/ai-routing/policy.yaml
+refs:
+  - "banxe-ai-infrastructure/deploy/config.yaml (LiteLLM prod/dev split — evo1:4000 vs legion:4000)"
+  - "banxe-ai-infrastructure/deploy/docker-compose.yml (LiteLLM service definition)"
+  - "banxe-ai-infrastructure/docs/infrastructure/audit/gap-hypotheses.md#gap-032 (Gap-032 closed, canon-v1.39)"
 ---
 
 # ADR-040: AI Execution Policy — Meta-Plane vs Inference-Plane
