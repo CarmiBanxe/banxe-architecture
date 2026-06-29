@@ -21305,3 +21305,22 @@ Added runtime addendum (A2 audit) section to `VERIFIED-RUNTIME-SNAPSHOT.md`:
 - removed=0 (append-only per I-24)
 
 **Refs:** FA-02, ADR-018, ADR-016, ADR-043, ADR-FUSION-01, ADR-119, ADR-120, ADR-143-A, ADR-144, I-24, I-32, I-33
+
+---
+
+### IL-732 - agent-factory-governance-adr151-paybis-fee-transparency-consumer-duty @ 2026-06-29T13:00:00Z
+
+- **il_ts:** 2026-06-29T13:00:00Z
+- **session_id:** agent-factory-governance-adr151-paybis-fee-transparency-consumer-duty
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-governance-adr151-paybis-fee-transparency-consumer-duty/IL-2026-06-29T13-00-00Z--adr151-paybis-fee-transparency.md`
+
+### ADR-151 (DRAFT) — Paybis embedded-markup fee transparency / Consumer Duty (FCA PS22/9) [docs-only, prepare-only]
+- **Decision:** Created `docs/adr/ADR-151-paybis-fee-transparency-consumer-duty.md` (PROPOSED, **docs-only, PREPARE-ONLY**). Fixes the **disclosure principle** for the BANXE distribution fee that Paybis on/off-ramp **embeds into the quoted rate** (client sees one blended "Service Fee", not a separated markup): all-in price before consummation, existence-of-fee disclosure, fair-value basis (PRIN 2A), Ruflo-gated price surface. **Mechanism, not amounts.**
+- **ADR-102 dup-check (mandatory, done):** Consumer Duty exists as a *framework* (COMPLIANCE-MATRIX, plan S9-06, ADR-079/091/112) and Paybis *B2B* fee economics are canon (ADR-108) — but the **consumer-facing disclosure of the embedded markup** is uncovered. This ADR **applies** the existing Consumer-Duty obligation to that specific surface; does NOT duplicate the framework, does NOT restate ADR-108 numbers. ADR-151 free on origin/main; no in-flight collision (open PRs: adr138/#881, compute/routing-taxonomy, agenteng04 — none on this topic). Foreign `feat/paybis-agr` execution track NOT touched (Rule 6/7).
+- **RED-zone discipline:** NO tariff/margin values in the ADR (partner-fee %, Banksy-fee) — config-as-data by pointer only (§10); egress = 0 (tariffs never in public docs / external API). The ADR decides *how* disclosure works, not the values.
+- **Governance gate (CLAUDE.md §1/§9 + Ruflo):** Consumer Duty = **compliance decision** → CEO/CTIO/MLRO human-in-the-loop. Factory PREPARES materials only (§9). PROPOSED status; promotion to ACCEPTED only via operator governance approval. **DRAFT PR, DO NOT MERGE.**
+- **Proof:** docs-only (ADR-151 + ledger); **no code / runtime / port / tariff values / new repo / keys / secrets / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `e26a95e` after #881 ADR-138-ACCEPTED merged, base frozen max 730) → **IL-731** via the ADR-143 allocator (729 superseded by a concurrent merge; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier; the audit's `IL-2028` was a numeric-sort artifact, ignored), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T13:00:00Z` strictly > origin/main max. Branch off origin/main `e26a95e` (ADR-120; namespace ADR-060).
+- **Status:** PREPARED — DRAFT ADR-151 + shard. **DRAFT PR; DO NOT MERGE — compliance governance-gate, operator (CEO/CTIO/MLRO) HITL per §1/§9.** Follow-ups (separate, gated): disclosure/UI spec (FE/BFF) + config-as-data tariff values + fair-value assessment (RED-zone, MLRO-owned).
+- **Refs:** `docs/adr/ADR-151-paybis-fee-transparency-consumer-duty.md`; anchors ADR-108/114; ADR-138 (#881); ADR-079/091/112; COMPLIANCE-MATRIX; plan S9-06; PAYBIS-LEGACY-FLOW-MAP; FCA PS22/9, PRIN 2A; ADR-102/119/143/059-A/120/060; BUG-005 (Ruflo). Operator HITL.
