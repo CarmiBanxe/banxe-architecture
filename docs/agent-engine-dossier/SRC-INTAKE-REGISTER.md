@@ -117,3 +117,19 @@ Sprint plan из досье: Sprint A (design) → здесь; Sprint B (runtime
 
 **Dedup:** SRC-01 = landscape+BANXE-STATUS (primary); SRC-04 = decision/recommendation layer (additive).
 **Star-count note:** June 2026 snapshot (distinct from Corpus Part 1 slice in SRC-01).
+
+## SRC-03 — Implementation State (INGESTED 2026-06-28)
+
+**File:** `docs/agent-engine-dossier/SRC-03-implementation-state.md`
+**Branch:** `agent/factory/agenteng07/src03-implementation-state`
+**IL:** agent-factory-agenteng07-src03-implementation-state
+**Source:** Corpus Part 3 + A3 triple-pass audit (G1/R1/R3/G2), 2026-06-28
+**Status:** INGESTED
+
+**Content:**
+- §1 GAP-080 Intent-First UI spine-gap (NOVELTY G1=0): IntentParser/SkillRouter/6 card variants absent; ONE spine-gap cross-ref to PR #842 §7.2 + ADR-049 + planner.yaml-exists/dispatcher-not-deployed; RED OPEN Q3 2026
+- §2 Payment-core ports-mapping (NOVELTY R3): PaymentSwitchPort→Hyperswitch (:8096-8098), IssuerPort→Paymentology, LedgerPort→Midaz (:8095); 297 tests/97%; code-DONE/go-live-BLOCKED BT-001+GAP-074
+- §3 Governance vs runtime divergence (PARTIAL CONFLICT): GAP-087 "LIVE" vs snapshot "inactive"; dossier=runtime-fact; HITL gate CTIO+CFO pending
+- §4 Cross-references table
+
+**Dedup:** Runtime-drift detail = VERIFIED-RUNTIME-SNAPSHOT.md (primary); GAP-081 AGPL = SRC-07 (primary); framework table = SRC-04 (primary); ports inventory = snapshot+PR845 (primary). SRC-03 contains architecture-mapping + gap cross-ref only.
