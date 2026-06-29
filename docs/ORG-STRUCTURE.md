@@ -264,6 +264,7 @@ Treasury decisions >£100k require CFO sign-off.
 | **Scope** | AI platform, infra, integrations, security/IAM |
 | **AI Agents** | All technical platform agents |
 | **Trust Zone** | 🔴 RED (security) / 🟡 AMBER (platform) |
+| **Design system (interim)** | **Interim accountable owner of the Design System / Head-of-Design function** (`docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` §7.2) — operator-assigned 2026-06-29, held until a dedicated Head of Design / Design System Lead is hired. Taste rubric is advisory-not-a-gate; θ threshold value remains AWAITS OPERATOR. |
 
 #### 2.7.1 Data & ML Engineering
 
