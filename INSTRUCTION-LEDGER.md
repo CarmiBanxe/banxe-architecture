@@ -21245,3 +21245,21 @@ Added runtime addendum (A2 audit) section to `VERIFIED-RUNTIME-SNAPSHOT.md`:
 - ADR-144: 0 orphans (pending ledger rebuild)
 
 **Refs:** A2 audit corpus fragment (F/R/G), GMKtec `.claude/agents/openclo.md`, model-cards/, ADR-015, ADR-140, ADR-144 orphan-check.
+
+---
+
+### IL-730 - agent-factory-governance-adr138-proposed-to-accepted @ 2026-06-29T12:30:00Z
+
+- **il_ts:** 2026-06-29T12:30:00Z
+- **session_id:** agent-factory-governance-adr138-proposed-to-accepted
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-governance-adr138-proposed-to-accepted/IL-2026-06-29T12-30-00Z--adr138-proposed-to-accepted.md`
+
+### ADR-138 promotion PROPOSED→ACCEPTED (NeuroNext retired / PAYBIS sole external crypto provider) [docs-only status amendment]
+- **Decision:** Promoted `docs/adr/ADR-138-neuronext-retired-paybis-sole-crypto-provider.md` from **PROPOSED → ACCEPTED** as a **docs-only status amendment to the EXISTING ADR** — NOT a new ADR (ADR-102: duplication forbidden; ADR-151 deliberately NOT used). Substance untouched: NeuroNext fully retired/forbidden-to-reintroduce, PAYBIS sole external crypto processor, no dual-provider, Bitrix/NeuroNext sunset track, and the 2026-06-28 **Bittrex (exchange) ≠ Bitrix (CMS)** amendment all retained verbatim.
+- **ADR-102 dup-check (mandatory, done):** source-of-truth = ADR-138 itself (already on main); supporting canon ADR-108/111/114 + DOSSIER-PAYBIS-CRYPTO-PROVIDER-2026-06-26 + GAP-REGISTER sunset + residual-gap IL-516. Foreign branch `agent/factory/paybis/neuronext-retirement-adr` → **PR #815 already MERGED** (dossier/records, IL-568..595) — not duplicated, not touched (Rule 6/7). No new ADR authored; this is a one-line status flip on the canonical file.
+- **Governance gate (CLAUDE.md §1/§9):** PROPOSED→ACCEPTED is a governance decision requiring CEO/CTIO human-in-the-loop. The factory PREPARES materials only (§9: LLM prepares, human decides). Acceptance line set to record that **the operator/CEO merge of this PR is the acceptance act** — the change is staged in a **DRAFT PR, DO NOT MERGE without explicit operator approval**. No automatic promotion.
+- **Proof:** docs-only (ADR-138 status line + acceptance record; no substance edit); **no code / runtime / port / new ADR / new repo / keys / secrets / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `6bdd87b`, base frozen max 729) → **IL-730** via the ADR-143 allocator (728 superseded after a concurrent merge advanced main; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier; the audit's `IL-2028` was a numeric-sort artifact, ignored), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T12:30:00Z` strictly > origin/main max. Branch `agent/factory/governance/adr138-proposed-to-accepted` off origin/main `6bdd87b` (ADR-120; namespace ADR-060).
+- **Status:** PREPARED — status amendment staged. **DRAFT PR; DO NOT MERGE — governance-gate decision, operator (CEO/CTIO) HITL per CLAUDE.md §1/§9.** If ADR-138 is already ACCEPTED at execution time → STOP, already finalized, do not duplicate.
+- **Refs:** `docs/adr/ADR-138-neuronext-retired-paybis-sole-crypto-provider.md`; ADR-108/111/114/036/102/119/143/059-A/120/060; DOSSIER-PAYBIS-CRYPTO-PROVIDER-2026-06-26; GAP-REGISTER (NeuroNext/Bitrix sunset); residual-gap IL-516; PR #815 (foreign, merged). CLAUDE.md §1/§9 governance gate. Operator HITL.

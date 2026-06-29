@@ -1,7 +1,8 @@
 # ADR-138: NeuroNext retired — PAYBIS is the sole external crypto provider
 
-**Status:** PROPOSED
+**Status:** ACCEPTED
 **Date:** 2026-06-26
+**Accepted:** 2026-06-29 — promoted PROPOSED→ACCEPTED via the governance gate (CLAUDE.md §1/§9, CEO/CTIO human-in-the-loop). This is a docs-only status amendment to the existing ADR (ADR-102: no duplicate/new ADR); the operator/CEO **merge of this PR is the acceptance act**. Substance unchanged — NeuroNext retired, PAYBIS sole external crypto provider, and the 2026-06-28 Bittrex≠Bitrix amendment all retained verbatim.
 **Builds on:** ADR-108 (Paybis distribution model — crypto liability on Paybis), ADR-114 (Travel Rule on Paybis), ADR-036 (CryptoCompliancePort / Travel-Rule gate)
 **Plane:** banxe-architecture = decision/spec only. Ships no runtime code; makes no cross-repo write. Additive (ADR-119 append-only; never renumbers a prior ADR).
 
