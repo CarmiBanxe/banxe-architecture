@@ -21521,3 +21521,23 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 740) → IL-741 via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-30T08:00:00Z` > main max `2026-06-29T20:00:00Z`. Fresh worktree off origin/main `119e33a` (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — θ=on-canon across passport + canon §5A/§8 + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135. Remaining gate: ③ I-27 activation (+ dedicated design-lead hire).**
 - **Refs:** `agents/passports/design_pipeline_agent.yaml`, `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` §5A/§8 OI-5; ADR-102/119/143/144/120/060/135/149. Operator-decided. Operator HITL.
+
+---
+
+### IL-742 - agent-factory-governance-odr1-defi-integrator-keys-addresses @ 2026-06-30T08:00:00Z
+
+- **il_ts:** 2026-06-30T08:00:00Z
+- **session_id:** agent-factory-governance-odr1-defi-integrator-keys-addresses
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-governance-odr1-defi-integrator-keys-addresses/IL-2026-06-30T08-00-00Z--odr1-defi-integrator-keys-addresses.md`
+
+### ODR-1 (DRAFT) — DeFi integrator keys & addresses, operator provisioning decision [docs-only, no values]
+- **Decision:** Created `docs/odr/ODR-1-defi-integrator-keys-and-addresses.md` (status **DRAFT / DECISION-PENDING**, docs-only) — the Operator Decision Record resolving ADR-083 §7 ODR-1. Fixes **which** integrator credentials/addresses are needed, **where** they live (vault), and the **env-var schema** that consumes them — for the S6.4-EN (dYdX live order placement) gate, with full ODR-1 scope (LI.FI, StakeKit-contingent) recorded.
+- **RED-zone (absolute):** **NO key/address/secret values** in the record — vault-pointers + env-schema only; egress = 0. Provisioning the values is the operator's act (vault, their hands); factory never enters credentials (§9 prepare-materials-only). References only the EXISTING public config field NAMES (`dydx_node_url`, `dydx_subaccount_number`, `dydx_builder_address`, `dydx_builder_fee_ppm`, `dydx_submit_enabled` kill-switch, `dydx_submit_timeout_s`) — schema, not secrets.
+- **ADR-102 dup-check (mandatory, done):** clean — no prior ODR-1 record / no `docs/odr/` dir on main → net-new. Backend adapter `ports/dydx_exchange.py` + `services/intent_preview.py` already built & fenced (`dydx_submit_enabled=False`) → S6.4-EN is enable-not-build once unlocked. Foreign `feat/*` untouched (Rule 6/7).
+- **Self-custodial invariant preserved:** even fully provisioned, the **client wallet signs every order**; backend constructs the unsigned intent, holds no wallet keys (ADR-083). `dydx_node_url`/addresses = integrator/submission config, not client-key custody.
+- **Gating:** S6.4-EN unlocks only when **both ODR-1 (this) AND ODR-3 (MiCA stance)** are decided + operator GO; live surface is Ruflo-mandatory + HITL (enforced at build, not here). Sandbox/testnet first; kill-switch fail-closed.
+- **Proof:** docs-only (ODR-1 + ledger); **no code / runtime / values / keys / secrets / provisioning / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `c63503b` after #893 taste-theta took 741, real frozen max 741 from `IL-SEQUENCE.json`; the `IL-2028` grep result is the frozen-typo phantom, ignored) → **IL-742** via the ADR-143 allocator (741 superseded by the concurrent merge; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T08:00:00Z` strictly > origin/main max. Branch off origin/main `c63503b` (ADR-120; namespace ADR-060).
+- **Status:** PREPARED — DRAFT ODR-1 + shard. **DRAFT PR; DO NOT MERGE — operator provisioning + sign-off (§1/§9).** Pairs with ODR-3 before any S6.4-EN build.
+- **Refs:** `docs/odr/ODR-1-defi-integrator-keys-and-addresses.md`; ADR-083 §7 (ODR-1), ADR-114/016/094; `docs/specs/dse-live-providers-options.md`; backend `config.py` (dydx_* fields), `ports/dydx_exchange.py`, `services/intent_preview.py`; pairs with ODR-3; ADR-102/119/143/059-A/120/060. Operator HITL.
