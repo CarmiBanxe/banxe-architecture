@@ -298,3 +298,57 @@ Roadmap evidence PRs. Must be merged (rebased first) before roadmap is dossier-c
 ---
 
 *Append-only. Do not edit existing sections. New sprint decisions → append §7+.*
+
+---
+
+## 7. Sprint-B Completion Report (2026-06-30)
+
+### Adoption Gate — Updated Assessment
+
+Sprint-B B1–B6 are complete. PRs #25 (B5 Redis-streams A2A bus) and #26 (B3 Lerian MCP + B4 gate-exec) are open in banxe-ai-infrastructure pending CodeRabbit review/merge.
+
+| GAP | L2 Status | Evidence |
+|-----|-----------|----------|
+| E4 (A2A contract) | ✅ **L2 READY** | ADR-150 ACCEPTED; Redis-streams A2A bus (PR #25); InMemoryA2ABus CI green |
+| E1 (dispatcher) | ✅ **L2 READY** | ADR-045 amended (concept_only removed); A5 passport revisions MERGED (PR #865); intent-dispatcher v0.3.0 (PR #25+#26) |
+| E2 (MCP binding) | ✅ **L2 READY** | ADR-147 ACCEPTED; InMemoryToolRegistry + LerianMCPClient (PR #26 B3); COMPLIANCE-MATRIX S12-16 → ✅ DEPLOYED (PR #894) |
+| E3 (Qdrant) | ✅ **L2 READY** | :6333 LISTENING on evo1 (VERIFIED-RUNTIME-SNAPSHOT 2026-06-29) |
+| E5 (sandbox) | ✅ **L2 READY** | ADR-146 ACCEPTED; GateExec wired in /dispatch for L1 (PR #26 B4); I-24 audit logged; I-27 HITL enforced |
+
+**Adoption gate: 5/5 at L2** (pending PR #25+#26 merge into main in banxe-ai-infrastructure).
+
+### P1 Blocker Status (L3 gate)
+
+| ID | Status | Notes |
+|----|--------|-------|
+| G-CANON-BYPASS | ✅ RESOLVED | VERIFIED-RUNTIME-SNAPSHOT 2026-06-29; OpenClaw→Ollama direct bypass NOT DETECTED |
+| G-GUARDIAN-WEBHOOK-MISSING | ❌ CTIO-BLOCKED | Spec merged; GitHub App 15368 webhook registration requires CTIO owner access |
+
+**L3 gate: BLOCKED on G-GUARDIAN-WEBHOOK-MISSING** (CTIO action: register App 15368 webhook → n8n :5678).
+
+### Sprint-B Item Summary
+
+| Item | Status | PR / Evidence |
+|------|--------|---------------|
+| B1 Qdrant :6333 deploy | ✅ DONE | VERIFIED-RUNTIME-SNAPSHOT |
+| B2 Intent-dispatcher runtime | ✅ DONE | PR #12/#13 (MERGED); HITL L2 verified |
+| B3 Lerian MCP runtime binding | ✅ DONE | PR #26 (OPEN — pending merge) |
+| B4 gate-exec sandbox extension | ✅ DONE | PR #26 (OPEN — pending merge) |
+| B5 Redis-streams A2A bus | ✅ DONE | PR #25 (OPEN — pending merge) |
+| B6 G-CANON-BYPASS fix | ✅ DONE | VERIFIED-RUNTIME-SNAPSHOT; B6 PR merged |
+| B7 G-GUARDIAN-WEBHOOK-MISSING | ❌ CTIO-BLOCKED | GitHub App 15368 webhook (owner access) |
+| B8 Temporal saga runner | ❌ CTIO-BLOCKED | Depends on ADR-133 |
+| B9 Redis-lease extend | ❌ CTIO-BLOCKED | Depends on B8 |
+
+### Operator Actions Required (to close L2 gate)
+
+1. **Merge PR #25** in banxe-ai-infrastructure (Sprint-B B5 Redis-streams A2A bus).
+2. **Merge PR #26** in banxe-ai-infrastructure after #25 (Sprint-B B3 Lerian MCP + B4 gate-exec).
+3. **Merge PR #894** in banxe-architecture (COMPLIANCE-MATRIX S12-16 → ✅ DEPLOYED).
+
+### Operator Actions Required (to open L3 gate)
+
+4. **G-GUARDIAN-WEBHOOK-MISSING**: CTIO registers GitHub App 15368 webhook → `http://100.68.102.48:5678/webhook/guardian-breach-alert`.
+5. **CTIO sign-off** on L3 gate (per §3 L3 gate conditions).
+
+*Appended 2026-06-30 per ADR-056 (append-only). Author: factory agent/factory/b3cm/cm-s12-16.*
