@@ -1,0 +1,14 @@
+---
+il_ts: 2026-06-29T19:00:00Z
+session_id: agent-factory-docs-s68-fe-bff-mock-wiring-spec
+source: factory
+status: DONE
+---
+### S6.8 — FE↔BFF mock-live wiring enable-spec (enable/wire-not-build, ADR-102 reuse) [docs-only spec]
+- **Decision:** Created `docs/specs/S6.8-FE-BFF-MOCK-WIRING-SPEC-2026-06-29.md` (PROPOSED, **docs-only**) — enable-spec for road map Phase-1 **S6.8** (the only remaining executable Phase-1 item after S6.2-EN shipped; roadmap line 63). Closes the FE↔BFF loop over the **mock** feed: FE renders order-book + places **unsigned** order intents against the mock ExchangePort; backend signs/holds nothing (client wallet signs).
+- **ADR-102 dup-check (mandatory, done):** clean — no S6.8 spec on origin/main (only `HANDOFF-trading-frontend-backend-integration.md` as context, not a spec). Net-new. Reuse-map (verified): backend `api/orders.py`, `ports/exchange_port.py`, `ports/dydx_exchange.py`, `services/intent_preview.py` + FE `src/shared/api/{trade-proxy.ts,ws-client.ts}` (:8080) all **REUSE, do NOT rebuild**; only the FE↔BFF binding is net-new. Foreign `feat/*` NOT touched (Rule 6/7).
+- **Gate:** ✅ **EXECUTABLE** (Phase-1: mock-only, **no keys, no live venue, no ODR, no RED-zone live execution**). Distinct from **S6.4-EN** (live order placement) which is **Phase-2, ODR-gated** (ODR-1 keys/addresses + ODR-3 MiCA stance) — explicitly out of scope. Deterministic mock feed (IL-185) = CI-default; mock-default/fail-closed; I-01 decimal strings; advisory-moat (unsigned intent → client signs).
+- **Build venue:** server-side **evo1** (ADR-103), **two-repo** wiring (FE + backend BFF), PR(s) unmerged §71, operator HITL.
+- **Proof:** docs-only (one spec in `banxe-architecture`); **no code / runtime / port / new repo / keys / secrets / live-venue / ODR / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (base frozen max 736) via the ADR-143 allocator (the audit's `IL-2028` was a numeric-sort artifact, ignored); on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T19:00:00Z` strictly > origin/main max `2026-06-29T18:00:00Z`. Branch off origin/main `d06f5f8` (ADR-120; namespace ADR-060).
+- **Status:** DONE — spec authored. Authorises a later operator-gated two-repo mock-wiring build (own GO). **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
+- **Refs:** `docs/specs/S6.8-FE-BFF-MOCK-WIRING-SPEC-2026-06-29.md`; roadmap (IL-714) §B S6.8 line 69/63; `HANDOFF-trading-frontend-backend-integration.md`; `S6.2-EN-…-SPEC` (#878/IL-722, shipped #61); ADR-083/021/102/103; IL-185; I-01; backend `api/orders`,`ports/{exchange_port,dydx_exchange}`,`services/intent_preview` + FE `trade-proxy.ts`,`ws-client.ts`. Operator HITL.
