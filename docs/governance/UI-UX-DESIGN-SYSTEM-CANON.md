@@ -73,6 +73,7 @@ Changes to them follow the contribution/review governance in §4 and the relevan
 - **Plane assignment & promotion (Developer → Product gate)** →
   `docs/UI-PLANE-OPERATING-MODEL.md` §"Plane Assignment".
 - **Factory mandate & quality-gate KPIs** → `docs/adr/ADR-117-factory-project-perimeter-and-fullcycle-org.md`.
+- **Taste Rubric (advisory bands)** → `docs/BANXE-UI-UX-SYSTEM.md` §"Taste Rubric (advisory)" (governed by §5A below; substance lives there, not here).
 
 ---
 
@@ -162,6 +163,19 @@ Changes to them follow the contribution/review governance in §4 and the relevan
 
 ---
 
+## 5A. Taste & Polish Governance
+
+> **Pointer governance — substance lives in `docs/BANXE-UI-UX-SYSTEM.md` §"Taste Rubric (advisory)" (§2 pointer); not restated here.** Parallels §5 (Accessibility) in shape, but with the opposite enforcement posture: accessibility is a hard gate; taste is advisory.
+
+- **Advisory, never a gate.** The Taste Rubric yields advisory bands (on-canon / drifting / off-canon) only — no numeric score, no pass/fail. Taste output **MUST NOT** block promotion and **MUST NOT** become a merge/governance gate (binding correction: an agent grading its own output ≠ a governance gate).
+- **WCAG 2.1 AA (§5) remains the hard floor.** A taste band can never waive an accessibility failure; §5 is verified independently and blocks — taste does not.
+- **Promotion gate unchanged (taste = advisory input only).** Promotion stays governed by the **Duplication Audit (ADR-102, §4.2)** + the **factory quality-gate KPIs (ADR-117, §4.2)** + §4.1 no-verbatim-promotion. The taste band is advisory input to those gates, never a substitute.
+- **ADR bindings.** Promotion of any taste/polish artifact is **operator HITL via ADR-135** (held-out adoption gate). Authority is **factory-only, non-delegable**; advisory-review execution is **project-side (`banxe-ui`)** per **ADR-145**. Any bounded polish loop (the "impeccable" capability) **instantiates ADR-149** closed-loop completion-criteria (declarative stop-condition + hard max-iteration cap; STOP-at-any-mutation = HITL) — governed here, **declared** in the agent/validator layer (a separate step), not in this canon.
+- **θ threshold (config-as-data).** Any future polish-loop taste-score threshold (θ) lives as **config-as-data** (location parallel to the token machine-source, §3.1), **not** in this canon. Its **value is AWAITS OPERATOR** (§8 OI-5) — this canon sets no θ.
+- **Accountability.** Rubric owner = **Design System Lead / Head of Design — AWAITS OPERATOR** (§7.1 row; §7.2 ownership gap). Until assigned, taste-governance decisions (θ value, taste sign-off) **escalate to the operator** (§7.2). This canon does not invent an owner or a threshold.
+
+---
+
 ## 6. UI/UX Delivery Process (5 stages)
 
 Per the target operating model **§5.3 UI/UX Factory**, the canonical delivery process has
@@ -195,6 +209,7 @@ Accessibility Engineer**.
 | Design System (3) | **Design System Lead** | **Head of Design** *(AWAITS OPERATOR)* | UI Designer, Accessibility Engineer |
 | Front-end (4) | Front-end (Developer plane) | **Design System Lead** | Motion, Accessibility Engineer |
 | Usability (5) | Accessibility Engineer | **Head of Design** *(AWAITS OPERATOR)* | UX Researcher |
+| Taste & Polish governance (§5A) | **Design System Lead** *(AWAITS OPERATOR)* | **Head of Design** *(AWAITS OPERATOR)* | UI Designer, Accessibility Engineer |
 
 ### 7.2 Ownership gap — AWAITS OPERATOR
 - **No `Head of Design` or `Design System Lead` role is defined** in
@@ -217,6 +232,7 @@ Accessibility Engineer**.
 | OI-2 | Accessibility target above the asserted **WCAG 2.1 AA** floor (e.g. 2.2 AA, or AAA for specific flows) | **AWAITS OPERATOR** | Operator decision; if raised, update `docs/BANXE-UI-UX-SYSTEM.md` §"Accessibility Rules" then this canon |
 | OI-3 | Token versioning scheme (semver of `banxe-ui/packages/design-tokens/`, release cadence) | **AWAITS OPERATOR** | Define version policy in token package; reference here |
 | OI-4 | Component-library KPIs specific to UI/UX (beyond ADR-117 factory KPIs) | **AWAITS OPERATOR** | Confirm whether UI-specific KPIs are needed; if so, add to `docs/governance/CANON-RECONCILIATION-ADR117.md` |
+| OI-5 | Taste-score threshold **θ** for the polish loop (config-as-data location + value) + named **Taste & Polish owner** (Design System Lead / Head of Design) | **AWAITS OPERATOR** | Operator sets θ as config-as-data (parallel to token machine-source, §3.1) + assigns owner (see §5A, §7.2); this canon sets no value |
 
 > Per operator canon: unknowns are recorded as **AWAITS OPERATOR**, never invented.
 
