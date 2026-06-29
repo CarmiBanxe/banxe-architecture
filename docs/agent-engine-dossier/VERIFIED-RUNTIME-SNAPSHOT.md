@@ -158,3 +158,144 @@ Operator must re-enable after HITL gate (CTIO + CFO sign-off) per GAP-087 activa
 
 **[ПРИНЦИП]** Этот snapshot НЕ фиксирует значения секретов (ANTHROPIC_API_KEY и пр.).
 Секреты хранятся в `/etc/banxe/secrets.env` и `~/.env.*` — не в документации (I-02, security-policy.md).
+
+---
+
+## Runtime addendum (A-003 audit)
+
+> Источник: A-003 corpus fragment, live shell @ origin/main ad99f63, 2026-06-28.
+> Маркер: [ФАКТ из корпуса A-003]. Только новинки — существующие порты (8094/8195/8196/4000/9000/5678) НЕ дублируются.
+
+---
+
+### OpenClaw instances (новинка A-003)
+
+Обнаружено 4 инстанса OpenClaw, **не присутствовавших в snapshot v2**:
+
+| Instance | Port | Role | Gateway |
+|----------|------|------|---------|
+| ctio | :18791 | CTIO-role agent | OLLAMA direct (see gap below) |
+| guiyon | :18794 | guiyon-role agent | OLLAMA direct (see gap below) |
+| moa | :18789 | MOA — Multi-agent orchestration | OLLAMA direct (see gap below) |
+| mycarmibot | :18793 | mycarmibot-role agent | OLLAMA direct (see gap below) |
+
+> [ФАКТ] Все 4 инстанса обращаются к OLLAMA local напрямую, минуя LiteLLM gateway (:4000).
+
+**Known gap — G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY:**
+- Canon-требование: все агентские вызовы → LiteLLM gateway :4000 (ADR-018, ARL routing tier).
+- Фактический статус: OpenClaw ctio/guiyon/moa/mycarmibot = BYPASS (прямой OLLAMA).
+- Последствия: нет audit-trail токенов через LiteLLM; нет quota-enforcement; нет model-alias routing.
+- Владелец: CTIO. Статус: OPEN P1 gap.
+- Fix-path: переконфигурировать OpenClaw base_url → `http://localhost:4000` (LiteLLM proxy), добавить API-key env var.
+
+---
+
+### ADR-049 dispatcher-spec (новинка A-003)
+
+**ADR-049:** Intent-Layer — client-facing masks (L1→L2 dispatcher specification).
+
+- Отношение к ADR-045: ADR-045 = концептуальный уровень (what intents are). ADR-049 = формальная спецификация (HOW intents surface as governed L2 agent actions).
+- Суть: L1 intent (raw client request) → Intent Dispatcher → L2 governed action (через compliance guardrails + audit-trail).
+- Статус деплоя: **NOT DEPLOYED** (см. target-audit #842, GAP «Intent Dispatcher not deployed»).
+- Gap-source: target-audit #842 идентифицировал отсутствие живого Intent Dispatcher как P1 architectural gap.
+
+> [ФАКТ] ADR-049 = orchestration-spine spec для intent routing. Отсутствие деплоя = разрыв между архитектурным решением (ADR-049) и рантаймом.
+
+**Импликации для дossier:**
+- VERIFIED-RUNTIME-SNAPSHOT v2 §Orchestration (Guardian :8195/:8196) = инфраструктура L2 execution.
+- ADR-049 Intent Dispatcher = L1→L2 routing layer поверх Guardian — пока PLANNED/NOT_DEPLOYED.
+- Путь к закрытию: deploy intent-dispatcher service (порт TBD) → wire в LiteLLM ARL pipeline.
+
+---
+
+### G-GUARDIAN-WEBHOOK-MISSING (новинка A-003)
+
+**Infra gap — G-GUARDIAN-WEBHOOK-MISSING:**
+
+| Field | Value |
+|-------|-------|
+| GitHub App ID | 15368 |
+| Expected webhook target | evo1:8195 / evo1:8196 (Guardian) |
+| Observed status | Webhook NOT delivering checkruns |
+| Severity | P1 (blocks Guardian CI integration) |
+| Impact | Guardian cannot receive GitHub checkrun events; automated PR gates inoperative |
+
+> [ФАКТ] GitHub App id 15368 webhook к evo1:8195/8196 не доставляет checkruns. Guardian listening (PRESENT в snapshot v2 §Orchestration) но не получает события.
+
+**Fix-path:**
+1. Проверить GitHub App webhook delivery log (App → Settings → Advanced).
+2. Убедиться, что evo1:8195/8196 доступен с GitHub webhook IP-диапазонов (firewall/NAT).
+3. Переdelivery или реконфигурация webhook URL.
+- Владелец: CTIO. Статус: OPEN P1 gap.
+
+---
+
+### Сводка новых gaps (A-003)
+
+| Gap ID | Описание | Severity | Владелец |
+|--------|----------|----------|---------|
+| G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY | OpenClaw (4 instances) bypasses LiteLLM :4000 | P1 | CTIO |
+| G-ADR-049-NOT-DEPLOYED | Intent Dispatcher (ADR-049) not deployed; L1→L2 routing absent | P1 | Arch |
+| G-GUARDIAN-WEBHOOK-MISSING | GitHub App 15368 webhook → evo1:8195/8196 not delivering checkruns | P1 | CTIO |
+
+> Существующие gaps (banxe-recon INACTIVE, Qdrant NOT LISTENING, :6379/:5678/:8094 NOT LISTENING) зафиксированы в snapshot v2 — не дублируются.
+
+---
+
+## Runtime addendum (A2 audit — 2026-06-28)
+
+> Источник: A2 audit corpus fragment, тройная прогонка F/R/G @ origin/main, 2026-06-28.
+> Маркер: [ФАКТ из корпуса A2]. Только новинки — все A-003 ports/gaps не дублируются.
+
+---
+
+### Hyperswitch payment processor + Jube infrastructure ports
+
+Обнаружено в A2 audit — не присутствовали в snapshot v2 или addendum A-003:
+
+| Service | Port(s) | Role | ADR/Source | Status |
+|---------|---------|------|-----------|--------|
+| Hyperswitch | :8096 (API), :8098 (web dashboard) | Payment processor router | ADR-015, ADR-140 | PRESENT |
+| Jube-Postgres | :15432 | Jube dedicated PostgreSQL | DEPLOYMENT-ARCHITECTURE | PRESENT |
+| Jube-Redis | :16379 | Jube dedicated Redis | DEPLOYMENT-ARCHITECTURE | PRESENT |
+
+> [ФАКТ] Hyperswitch (:8096/:8098) = основной payment router (ADR-015: Hyperswitch as payment orchestration layer; ADR-140: Amendment 1 confirming deployment). Jube (:5001) уже зафиксирован в snapshot v2 §Compliance — здесь только Jube infra (dedicated PG + Redis), не дублируется.
+
+---
+
+### OpenClaw MoA — состав 10-агентной оркестрации (A2 audit)
+
+Дополнение к OpenClaw instances (addendum A-003): moa-инстанс (:18789) = **MOA (Multi-agent Orchestration Architecture)** с 10 агентами.
+
+**Источник:** `.claude/agents/openclo.md`, GMKtec node @ :18789 [ФАКТ из корпуса A2]
+
+```
+OpenClaw MoA (:18789) = 10 агентов
+├── Размещён на: GMKtec (evo fabric)
+├── Паттерн: MoA — несколько LLM-агентов синтезируют ответы коллективно
+└── Связь с LiteLLM: BYPASS (G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY, зафиксировано A-003)
+```
+
+> [ФАКТ] Состав 10 агентов задокументирован в `.claude/agents/openclo.md`. MoA-архитектура = mixture-of-agents (агрегация нескольких LLM-ответов). Контекст: moa-инстанс не проксирует через LiteLLM :4000 — тот же gateway-bypass gap (A-003).
+
+---
+
+### Model-card alias-резолюция (A2 уточнение)
+
+Уточнение §Models из snapshot v2 — точная резолюция LiteLLM aliases (из `model-cards/`):
+
+| LiteLLM Alias | Resolves to | Model | Location | Notes |
+|--------------|-------------|-------|----------|-------|
+| `project-reason` | qwen3-235b-a22b **Q3_K_S** (235.1B MoE) | Qwen3-235B | evo2 :8082 | Primary reasoning alias |
+| `factory-mid` | qwen3-30b-a3b **MoE** (30B) | Qwen3-30B | evo1/evo2 :11434 (LB) | Load-balanced across evo nodes |
+| `reasoning` | → **legacy alias** → `project-reason` | (same as project-reason) | — | Use project-reason directly; reasoning is deprecated alias |
+
+> [ФАКТ] Snapshot v2 §Models listed aliases without resolution targets. A2 audit adds: (a) Q3_K_S quant for project-reason (qwen3-235b), (b) MoE 30B для factory-mid с load-balancing :11434 evo1+evo2, (c) `reasoning` = deprecated alias → project-reason (see model-cards/). Passport-count = 70 (verified A2, unchanged).
+
+---
+
+### Обновлённые gap-notes (A2)
+
+Существующий G-CANON-PROJECT-AGENTS-BYPASS-GATEWAY (A-003) подтверждён для MoA-инстанса:
+- OpenClaw moa (:18789) с 10 агентами = тот же bypass-gap, что и остальные 3 инстанса.
+- Hyperswitch (:8096/:8098) маршрутизация через LiteLLM: НЕ ПОДТВЕРЖДЕНО в A2 (Hyperswitch — payment router, не LLM-агент; gateway-bypass inapplicable).
