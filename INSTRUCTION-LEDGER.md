@@ -21353,7 +21353,7 @@ Added runtime addendum (A2 audit) section to `VERIFIED-RUNTIME-SNAPSHOT.md`:
 - **status:** PREPARED
 - **shard:** `ledger/entries/agent-factory-p4-adr040-gap032/IL-2026-06-29T17-00-00Z--adr040-amendment-gap032.md`
 
-# IL-733 — ADR-040 Amendment: LiteLLM prod/dev split (canon-v1.39 / Gap-032)
+# IL-734 — ADR-040 Amendment: LiteLLM prod/dev split (canon-v1.39 / Gap-032)
 
 **Scope:** docs/adr/ADR-040-ai-execution-policy.md, INSTRUCTION-LEDGER.md  
 **Canon version:** v1.39  
@@ -21377,7 +21377,7 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - I-24 (append-only): 0 files deleted
 - ADR-119 Rule 8: IL number not hardcoded in commit title
 - ADR-120: isolated worktree `agent/factory/p4/adr040-gap032`
-- ADR-059-A: ONE tail shard; il_ts strictly > origin/main max (IL-732 @ 2026-06-29T13:00:00Z)
+- ADR-059-A: ONE tail shard; il_ts strictly > origin/main max (IL-733 @ 2026-06-29T14:00:00Z)
 - removed=0
 
 ## Proof
