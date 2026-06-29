@@ -21461,3 +21461,26 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** docs-only (ADR-152 + ledger); **no code / runtime / impl / foreign-edit / new repo / keys / secrets / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (base frozen max 735) via the ADR-143 allocator (the audit's `IL-2028` was a numeric-sort artifact, ignored); on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T16:00:00Z` strictly > origin/main max `2026-06-29T15:00:00Z`. Branch off origin/main `1e239a5` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — STUB ADR-152 + shard. **DRAFT PR; DO NOT MERGE — operator HITL.** Not a full spec; externally blocked.
 - **Refs:** `docs/adr/ADR-152-paybis-webhook-sig-stub.md`; anchors ADR-114/138/034; DOSSIER-PAYBIS; SRC-05-06 / SRC-INTAKE / PLAN-ROADMAP-SPRINTS; foreign `agent/factory/paybis/*` (PaybisSignatureService, reference only); ADR-102/119/143/059-A/120/060; FATF R.16. Operator HITL.
+
+---
+
+### IL-739 - agent-factory-governance-il229-accepted-risk-closure @ 2026-06-29T20:00:00Z
+
+- **il_ts:** 2026-06-29T20:00:00Z
+- **session_id:** agent-factory-governance-il229-accepted-risk-closure
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-il229-accepted-risk-closure/IL-2026-06-29T20-00-00Z--il229-accepted-risk-closure.md`
+
+### IL-229 (ex-IL-2028) errata closure — historical gitleaks secrets: OPEN → ACCEPTED-RISK [docs/ledger-only]
+- **Decision:** Closes the long-open security item **IL-229** (canonized read-as of the frozen typo heading "IL-2028" per the IL-235 errata) as **ACCEPTED-RISK**. This is an **append-only closure record** — it does **NOT** edit `ledger/FROZEN-ARCHIVE.md` (frozen, I-28) and does **NOT** alter the original IL-235/IL-2028 lines (same discipline the IL-235 errata itself used: "исходные строки НЕ изменяются").
+- **Evidence (verified read-only, metadata only):** a repo-history gitleaks scan (1404 commits) returns **10 findings, all of one rule** — `aws-presigned-url-credentials` — from a **single commit `9f155b09` dated 2026-04-06**, in `docs/master-document/{01-master-full, 02-unified-stack, 03-gap-overlay}.md`. The **current working tree is clean** (`--no-git` scan = no leaks) — HEAD was scrubbed by **SEC-1 (#873, IL-716)**. So the findings are **history-only**.
+- **Risk classification:** AWS S3 presigned URLs are time-limited (max 7-day signature validity). Dated **2026-04-06 (~2.6 months before closure)** → **definitively expired → zero residual access**. A presigned URL carries an access-key **identifier** plus a derived **time-limited signature** — **not** the secret access key — so even setting aside expiry there is **no standing credential** in them.
+- **Decision = ACCEPTED-RISK (CLOSED):**
+  - **No rotation** — there is nothing rotatable: presigned URLs are not standing credentials, and these are expired.
+  - **No history-rewrite** — rewriting 1404 commits (breaking every clone's SHAs; requiring an ADR + all-clone coordination) to erase **dead** URLs is disproportionate, and consistent with SEC-1's accepted stance (no history rewrite for expired creds).
+  - **Optional precaution (operator hygiene, NOT required):** if the IAM access key that *signed* these URLs is long-lived and still in use, rotating that key in AWS is good practice — but the key identifier alone (no secret, expired signatures) is not a usable credential, so this is precautionary, not urgent.
+- **RED-zone:** no secret values, URLs, keys, or signatures reproduced here — metadata only (rule-id / file / commit / date); egress = 0. Forward detection remains active via the SEC-1 gitleaks rule (#873).
+- **Proof:** docs/ledger-only; **no secret rotation, no history rewrite, no FROZEN-ARCHIVE edit, no code / runtime / keys / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (real frozen max 738 from `IL-SEQUENCE.json`; the `IL-2028` grep result is the frozen-typo phantom, NOT the max) via the ADR-143 allocator; on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T20:00:00Z` strictly > origin/main max `2026-06-29T19:00:00Z`. Branch off origin/main `b288ec9` (ADR-120; namespace ADR-060).
+- **Status:** DONE — IL-229 disposition recorded as **ACCEPTED-RISK**. **DRAFT PR; DO NOT MERGE — security-closure decision, operator HITL.** If IL-229 is already closed at merge time → STOP, do not duplicate.
+- **Refs:** IL-235 errata (`ledger/FROZEN-ARCHIVE.md`, frozen — referenced not edited); SEC-1 #873/IL-716 (`ee6021e`, forward presigned-URL detection); `.gitleaks.toml` (`aws-presigned-url-credentials` rule); ADR-032 (secret-rotation policy); I-28 (append-only); ADR-119/143/059-A/120/060. Operator HITL.
