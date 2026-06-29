@@ -1,0 +1,14 @@
+---
+il_ts: 2026-06-29T16:00:00Z
+session_id: agent-factory-governance-adr152-paybis-webhook-sig-stub
+source: factory
+status: PREPARED
+---
+### ADR-152 (STUB) — Paybis webhook RSA-PSS signature verification, blocked-on-external [docs-only, dependency-record]
+- **Decision:** Created `docs/adr/ADR-152-paybis-webhook-sig-stub.md` (status **STUB / BLOCKED-ON-EXTERNAL**, docs-only). Records the GAP-4 dependency: Paybis webhooks use RSA-PSS SHA-512, but the **canonical verification method** (key provisioning/rotation, payload canonicalization, signed-field set) is **Paybis-owned and not yet supplied** → cannot canonize verification until Paybis delivers SRC-06. The one binding invariant now: webhook signature MUST verify, **fail-closed on mismatch**.
+- **ADR-102 dup-check (mandatory, done) — CONSOLIDATION not new discovery:** the dependency is ALREADY recorded in `SRC-05-06-paybis-integration-map.md:42` ("signature verification method = Paybis"), `SRC-INTAKE-REGISTER` (SRC-06 pending-Paybis), and `PLAN-ROADMAP-SPRINTS:215` (Wave-B/Paybis). A `PaybisSignatureService` (RSA-PSS SHA-512) already exists in the **foreign** `agent/factory/paybis/*` track. This STUB does NOT duplicate them — it **elevates a scattered dependency into one tracked, owned ADR-level blocker**; references (does NOT edit) the foreign service (Rule 6/7); implements nothing. ADR-152 free on origin/main; no in-flight webhook-sig PR collision.
+- **RED-zone:** no keys/secrets/signing material in the ADR — vault + config-as-data, egress=0. No runtime code, no cross-repo write, no foreign-track edit, no guessed verification method (externally blocked).
+- **Blocker:** P-dep — AWAITS Paybis RSA-PSS verification-method spec (SRC-06, Wave-B). Owner: Paybis AM. Stays STUB until delivered; promote to full spec then.
+- **Proof:** docs-only (ADR-152 + ledger); **no code / runtime / impl / foreign-edit / new repo / keys / secrets / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (base frozen max 735) via the ADR-143 allocator (the audit's `IL-2028` was a numeric-sort artifact, ignored); on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T16:00:00Z` strictly > origin/main max `2026-06-29T15:00:00Z`. Branch off origin/main `1e239a5` (ADR-120; namespace ADR-060).
+- **Status:** PREPARED — STUB ADR-152 + shard. **DRAFT PR; DO NOT MERGE — operator HITL.** Not a full spec; externally blocked.
+- **Refs:** `docs/adr/ADR-152-paybis-webhook-sig-stub.md`; anchors ADR-114/138/034; DOSSIER-PAYBIS; SRC-05-06 / SRC-INTAKE / PLAN-ROADMAP-SPRINTS; foreign `agent/factory/paybis/*` (PaybisSignatureService, reference only); ADR-102/119/143/059-A/120/060; FATF R.16. Operator HITL.
