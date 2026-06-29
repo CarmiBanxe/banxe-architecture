@@ -21342,3 +21342,47 @@ Added runtime addendum (A2 audit) section to `VERIFIED-RUNTIME-SNAPSHOT.md`:
 - **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 732) → IL-733 via allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T14:00:00Z` > origin/main max `2026-06-29T13:00:00Z`. Fresh worktree off origin/main `52766fc`, commit-before-push (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — A-substance section + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135. Next: B pointer-governance, then C declaration.**
 - **Refs:** `docs/BANXE-UI-UX-SYSTEM.md` (rubric); `docs/governance/UI-TASTE-SKILLS-AUTHORING-TRANSFER-PACKAGE.md` (the A→B→C package this executes); ADR-102/119/143/144/120/060; B will bind ADR-135/145/149 (later). Operator HITL.
+
+---
+
+### IL-734 - agent-factory-p4-adr040-gap032 @ "2026-06-29T17:00:00Z"
+
+- **il_ts:** "2026-06-29T17:00:00Z"
+- **session_id:** agent-factory-p4-adr040-gap032
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-p4-adr040-gap032/IL-2026-06-29T17-00-00Z--adr040-amendment-gap032.md`
+
+# IL-733 — ADR-040 Amendment: LiteLLM prod/dev split (canon-v1.39 / Gap-032)
+
+**Scope:** docs/adr/ADR-040-ai-execution-policy.md, INSTRUCTION-LEDGER.md  
+**Canon version:** v1.39  
+**Gap closed:** Gap-032
+
+## Decision
+
+Amended ADR-040 (AI Execution Policy) with the Sprint-C production topology change.
+
+Post Sprint-C (`banxe-ai-infrastructure` commits `c23ca48`/`cfe246d`/`1013fac`, closure `9d9f95b`), LiteLLM split into two distinct binds:
+
+| Role | Host | Bind | Purpose |
+|------|------|------|---------|
+| Prod gateway (S1) | evo1 (100.68.102.48) | 0.0.0.0:4000 via Tailscale | BANXE agent/factory prod inference |
+| Dev-proxy | Legion (factory plane) | 127.0.0.1:4000 | Local developer tooling — loopback only |
+
+ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM router. Without this amendment ADR-040 would incorrectly imply a single Legion-only router for all production inference traffic.
+
+## Invariants
+
+- I-24 (append-only): 0 files deleted
+- ADR-119 Rule 8: IL number not hardcoded in commit title
+- ADR-120: isolated worktree `agent/factory/p4/adr040-gap032`
+- ADR-059-A: ONE tail shard; il_ts strictly > origin/main max (IL-732 @ 2026-06-29T13:00:00Z)
+- removed=0
+
+## Proof
+
+- ADR-040 amendment block: `docs/adr/ADR-040-ai-execution-policy.md` (tail)
+- Gap-032 CLOSED: `banxe-ai-infrastructure/docs/infrastructure/audit/gap-hypotheses.md`
+- Sprint-C closure: `banxe-ai-infrastructure` commit `9d9f95b`
+- Implementation: `banxe-ai-infrastructure/deploy/config.yaml`, `deploy/docker-compose.yml`
