@@ -21153,3 +21153,21 @@ target-audit #842 GAP "Intent Dispatcher", ADR-SAF-01/J-ENGINE-BUILD-SPEC/IL-SAF
 - **Status:** SRC-03 implementation-state dossier layer DONE (authored, ledger-coupled). Ready for PR → operator review → merge to `main`.
 
 - **Refs:** `docs/agent-engine-dossier/SRC-03-implementation-state.md` (new); `docs/agent-engine-dossier/SRC-INTAKE-REGISTER.md` (SRC-03 INGESTED entry); GAP-REGISTER:GAP-080/074/087; PR #842 §7.2 (Orchestration Spine); ADR-049 (client-facing masks); ADR-013/014/015 (payment-core); VERIFIED-RUNTIME-SNAPSHOT.md (runtime-fact authority); SRC-04/07 (framework, AGPL — primary sources); ADR-056/057/059/060/102; `planner.yaml` (Intent Dispatcher spec file); BT-001 (Modulr key external blocker).
+
+---
+
+### IL-728 - agent-factory-governance-src09-union-consolidation @ 2026-06-29T06:00:00Z
+
+- **il_ts:** 2026-06-29T06:00:00Z
+- **session_id:** agent-factory-governance-src09-union-consolidation
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-src09-union-consolidation/IL-2026-06-29T06-00-00Z--src09-union-consolidation.md`
+
+### SRC-09 union-consolidation — merge #846 + #851 into one doc (close both)
+- **Decision:** Consolidated the two complementary SRC-09 enrichments into ONE `docs/agent-engine-dossier/SRC-09-preaudit-synthesis.md` (415 lines). **Union, no loss:** #851's fully-resolved base (lines 1-150, incl. all 5 `→ RESOLVED` flips: НЕИЗВЕСТНО header + §7 + ReAct/MCTS/Bayesian rows) + #846's **Agent behavior/decision canon** tail (ADR-025 decision-policy, IL-CANON-04 BEST-DECISION, UNIVERSAL-CANON-TOPOLOGY, behavioral summary) + #851's **§U/§X UNKNOWN-resolution** tail (§U table, §U-1 Math, §U-2 Runtime ports, §U-3 External, §U-4 banxe-recon, §U-5 Passport=70, §X summary). **PREPARE-ONLY**, Draft PR; operator closes #846 + #851.
+- **Anti-dup (ADR-102):** base appears exactly once (Центральный тезис ×1, ENRICHMENT ×1, behavior-canon ×1 — verified); both tails captured in full; §U "ниже" references resolve (§U is below the base flips). Used #851's resolved base (not just line-40) to preserve ALL of #851's resolution work.
+- **Scope:** touched ONLY SRC-09-preaudit-synthesis.md + this IL shard. 0 edits elsewhere. Rule 6/7 (the two source PRs are operator-closed, not force-pushed by this task).
+- **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — minted max+1 over origin/main (max 727) → IL-728 via allocator (ADR-143/143-A); unique, 0 dups; orphan-gate 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-29T06:00:00Z` > origin/main max. Fresh worktree off origin/main (ADR-120/060); commit-before-push. FROZEN/.canon untouched.
+- **Status:** DONE — consolidated SRC-09 + shard. **DRAFT PR; DO NOT MERGE — operator HITL via ADR-135; operator closes #846 + #851.**
+- **Refs:** `docs/agent-engine-dossier/SRC-09-preaudit-synthesis.md`; sources #846 (agenteng05 behavior-canon), #851 (agenteng10 UNKNOWN-resolution); ADR-102/119/143/144/120/060. Operator HITL.
