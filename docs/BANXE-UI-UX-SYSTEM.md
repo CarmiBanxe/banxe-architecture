@@ -21,6 +21,52 @@ BANXE AI BANK must feel:
 
 ---
 
+## Taste Rubric (advisory)
+
+> **Advisory only — NEVER a gate.** This rubric structures the Design Philosophy + anti-patterns above
+> into named dimensions for *advisory* review of authored/generated UI. It yields **bands, not scores**,
+> and **never blocks promotion**. The objective hard gate remains **WCAG 2.1 AA** (§"Accessibility Rules");
+> taste sits *above* that floor and cannot waive an accessibility failure.
+>
+> Governance of this rubric (binding, RACI, promotion mechanics) lives in the design-system **governance
+> canon**, not here. The taste-score **threshold (θ)** for any future polish loop and the rubric **owner**
+> (Design System Lead / Head of Design) are **AWAITS OPERATOR** placeholders — deliberately not set in this
+> substantive document.
+
+### Evaluation model
+Each dimension is assessed as one of three **advisory bands** — **no numeric score, no pass/fail, no θ**:
+- 🟢 **on-canon** — adheres to the documented system; no action needed.
+- 🟡 **drifting** — minor deviation; advisory note, not a blocker.
+- 🔴 **off-canon** — contradicts the philosophy / anti-patterns; advisory flag for rework (still never auto-blocks).
+
+### Dimensions
+1. **Visual hierarchy** — one unambiguous primary action; balance legible as total / available / pending.
+   *on-canon:* primary action dominant, key number reads first · *drifting:* competing equal-weight actions ·
+   *off-canon:* "overpacked equal-weight screens" or ambiguous balance (anti-patterns).
+2. **Spacing & rhythm** — consumes the `--space-*` scale and the card-24 / section-32 / row-64 cadence (§Spacing).
+   *on-canon:* token-consistent rhythm · *drifting:* occasional ad-hoc gaps · *off-canon:* arbitrary, off-token spacing.
+3. **Typographic discipline** — the `--text-*` scale + weights; **monospace for amounts / IBAN / refs** (§Typography).
+   *on-canon:* on-scale, money in mono · *drifting:* off-scale sizes · *off-canon:* mixed or illegible numerics.
+4. **Color & brand fidelity** — semantic tokens (`--color-brand-*`, status, AI) consumed not hardcoded; **premium, not neon**.
+   *on-canon:* documented tokens, premium feel · *drifting:* off-token tints · *off-canon:* "glowing-orb / animated-gradient hero" or "crypto-bro neon" (anti-patterns).
+5. **Consistency & component fidelity** — reuses the documented Component Patterns (Balance Widget, Transaction Row,
+   Financial Card, AI Assistant Panel, Action Bar, Navigation); status conveyed by **icon + text, never colour alone**.
+   *on-canon:* reuses patterns · *drifting:* unmanaged variant drift · *off-canon:* bespoke re-invention of an existing pattern.
+6. **Motion & restraint** — motion is purposeful and explanatory, never "AI-magic" or decorative spectacle (Assistive-AI
+   philosophy; anti-pattern "animated gradient hero"). *on-canon:* restrained, supports legibility · *drifting:* decorative
+   excess · *off-canon:* distracting / magical motion. **[НЕИЗВЕСТНО]** — no motion-token section exists in this document
+   yet, so motion is assessed against *principle*, not defined motion values; a motion-token spec is a separate future addition.
+
+### Subordination (what this rubric does NOT do)
+- **Accessibility is the hard floor, not this rubric.** A 🟢 taste band can **never** waive a WCAG 2.1 AA failure
+  (§"Accessibility Rules"); accessibility is verified independently and blocks — taste does not.
+- **Reuse before regenerate.** A component is taste-assessed only after it is confirmed *not* a duplicate of an existing
+  Component Pattern; the rubric scores adherence, not novelty.
+- **Advisory input, never the gate.** Taste bands are advisory signal for human/agent review; promotion stays governed by
+  the existing quality gates — taste output is never the promotion criterion.
+
+---
+
 ## UI System
 
 ### Color System
