@@ -21263,3 +21263,45 @@ Added runtime addendum (A2 audit) section to `VERIFIED-RUNTIME-SNAPSHOT.md`:
 - **Proof:** docs-only (ADR-138 status line + acceptance record; no substance edit); **no code / runtime / port / new ADR / new repo / keys / secrets / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `6bdd87b`, base frozen max 729) → **IL-730** via the ADR-143 allocator (728 superseded after a concurrent merge advanced main; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier; the audit's `IL-2028` was a numeric-sort artifact, ignored), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-29T12:30:00Z` strictly > origin/main max. Branch `agent/factory/governance/adr138-proposed-to-accepted` off origin/main `6bdd87b` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — status amendment staged. **DRAFT PR; DO NOT MERGE — governance-gate decision, operator (CEO/CTIO) HITL per CLAUDE.md §1/§9.** If ADR-138 is already ACCEPTED at execution time → STOP, already finalized, do not duplicate.
 - **Refs:** `docs/adr/ADR-138-neuronext-retired-paybis-sole-crypto-provider.md`; ADR-108/111/114/036/102/119/143/059-A/120/060; DOSSIER-PAYBIS-CRYPTO-PROVIDER-2026-06-26; GAP-REGISTER (NeuroNext/Bitrix sunset); residual-gap IL-516; PR #815 (foreign, merged). CLAUDE.md §1/§9 governance gate. Operator HITL.
+
+---
+
+### IL-731 - agent-factory-compute-routing-taxonomy @ 2026-06-28T15:00:00Z
+
+- **il_ts:** 2026-06-28T15:00:00Z
+- **session_id:** agent-factory-compute-routing-taxonomy
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-compute-routing-taxonomy/IL-2026-06-28T15-00-00Z--000000.md`
+
+### IL — COMPUTE-ROUTING-TAXONOMY.md
+
+**Date:** 2026-06-28
+**Task:** Create docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md — canonical alias→model→hardware table, task-routing guide, activation-gap register (4 gaps), operator-go steps. Fill empty Target cells in VERIFIED-RUNTIME-SNAPSHOT.md alias table.
+**Status:** PREPARED (operator merge pending)
+**Branch:** agent/factory/compute/routing-taxonomy
+
+**Changes (docs-only):**
+
+1. **CREATE: docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md**
+   - §1 Alias table: 5 aliases × (target, hardware, model, params, speed, use-tier)
+   - §2 Task-routing guide: 9 task types → recommended alias + reason
+   - §3 ACTIVATION-GAP register: 4 gaps (FA-02, AGENT_ROUTING=false, ADR-FUSION-01, infra mismatch)
+   - §4 References: FA-02, ADR-018, ADR-016, ADR-FUSION-01, model-cards, I-32/I-33
+
+2. **EDIT: docs/agent-engine-dossier/VERIFIED-RUNTIME-SNAPSHOT.md**
+   - Fill empty Target cells in canonical alias table (factory-fast → qwen3:4b Legion RTX 4070, factory-mid → qwen3:30b-a3b LB, factory-heavy → llama3.3:70b LB, factory-coder → qwen3-coder-next evo1, project-reason → qwen3-235b evo2:8082)
+
+**Key decisions:**
+- factory-heavy ≠ project-reason: heavy=mid-size LB (Strix Halo iGPU), reason=qwen3-235b 235B standalone (evo2:8082)
+- Activation path: FA-02 → AGENT_ROUTING=true → ADR-FUSION-01 acceptance (sequential gates)
+- No new aliases added (ADR-043 unchanged per ADR-FUSION-01 §Decision(b))
+- Docs-only; no code, no migrations
+
+**Quality Checks:**
+- ADR-144 orphan-check: 0
+- ADR-120: isolated worktree
+- ADR-119 Rule 8: no hardcoded IL-NNN in commit title
+- removed=0 (append-only per I-24)
+
+**Refs:** FA-02, ADR-018, ADR-016, ADR-043, ADR-FUSION-01, ADR-119, ADR-120, ADR-143-A, ADR-144, I-24, I-32, I-33
