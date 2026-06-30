@@ -22,10 +22,10 @@
 | Sprint-A A2 | ADR-045 amendment — PR #860, IL-693, **ACCEPTED** ✅ |
 | Sprint-A A3 | ADR-147 Lerian MCP spec — PR #863, IL-694, **ACCEPTED** ✅ |
 | Sprint-A A4 | ADR-146 sandbox contract — PR #862, IL-692, **ACCEPTED** ✅ |
-| Sprint-A A5 | Passport revisions — PR #865, IL-695, **PROPOSED** (CTIO review) |
+| Sprint-A A5 | Passport revisions — PR #865, IL-695, **ACCEPTED** ✅ (IL-765, PR #917) |
 | Sprint-E E1 | Planner passport L1→L2 routing tests — PR #914, IL-762, **MERGED** ✅ |
 | Sprint-B B1 | Qdrant deploy — infra#3 OPEN (operator merge + evo1 execute pending) |
-| Sprint-B B2 | Dispatcher runtime — BLOCKED (gate-in: A5 ACCEPTED) |
+| Sprint-B B2 | Dispatcher runtime — OPEN (gate-in: A5 ✅ — ready to start) |
 | Sprint-B B3 | Lerian MCP runtime — infra#7 OPEN (CI running, 34 tests / 98%) |
 | Sprint-B B4 | gate-exec enforcement — infra#6 OPEN (CI running, 15 tests / 100%) |
 | Sprint-B B5 | A2A bus RedisStreams — BLOCKED (gate-in: B2) |
@@ -147,7 +147,7 @@ Dependency order: **A1 → A2 → {A3, A4, A5} (parallel after A2)**
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E1 |
-| Status | **PROPOSED** (CTIO review) |
+| Status | **ACCEPTED** ✅ (IL-765, PR #917) |
 | PR | #865 |
 | IL | IL-695 |
 | Gate-in | **[A-GATE: A2 ACCEPTED]** ✅ |
@@ -196,8 +196,8 @@ Dependency order: **B1 (independent) | B2→B5 (chain) | B6/B7 (P1, any time) | 
 | Field | Value |
 |-------|-------|
 | Epic | GAP-E1 |
-| Status | **BLOCKED** (gate-in: A5 ACCEPTED pending) |
-| Gate-in | **[A-GATE: A1 ACCEPTED ✅ + A2 ACCEPTED ✅ + A5 ACCEPTED pending]** |
+| Status | **OPEN** (gate-in: A5 ✅ — ready to start) |
+| Gate-in | **[A-GATE: A1 ACCEPTED ✅ + A2 ACCEPTED ✅ + A5 ACCEPTED ✅]** |
 | Gate-out | Dispatcher running on evo1; integration tests green |
 | Blocks | B5 (A2A bus needs dispatcher) |
 
@@ -356,6 +356,7 @@ B8 ──► B9 (independent of A/B chain)
 | A5 (passport revisions) | TBD | TBD | NOT_STARTED |
 | B1–B9 (banxe-ai-infrastructure) | TBD | TBD | BLOCKED |
 | E1 (planner.yaml routing tests) | #914 | IL-762 | MERGED ✅ |
+| A5 governance accepted | #917 | IL-765 | MERGED ✅ |
 
 ---
 

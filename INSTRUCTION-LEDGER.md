@@ -21977,3 +21977,56 @@ Added row:
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 764) → IL-765 via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T12:00:00Z` > main max `2026-07-01T11:00:00Z`. Fresh worktree off origin/main `6514174` (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — P0 schema + gate-policy + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next: P1 cross-repo contract ADR; P2 uiux-pipeline.sh ingest + first axe-core slice.**
 - **Refs:** `schemas/uiux-audit-findings.schema.json`; `docs/governance/UIUX-GATE-POLICY.md`; UIUX-AUDIT-BLOCK-SPEC.md (#916); UI-UX-DESIGN-SYSTEM-CANON.md; ADR-102/117/135/149; #900. Operator directive 2026-07-01 (P0).
+
+---
+
+### IL-767 - agent-factory-sprintplan04-a5-accepted-b2-unblocked @ 2026-07-01T13:00:00Z
+
+- **il_ts:** 2026-07-01T13:00:00Z
+- **session_id:** agent-factory-sprintplan04-a5-accepted-b2-unblocked
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintplan04-a5-accepted-b2-unblocked/IL-2026-07-01T13-00-00Z--sprintplan04-a5-accepted.md`
+
+### IL-767 — SPRINT-PLAN.md: A5 ACCEPTED, B2 unblocked
+
+**Date:** 2026-07-01
+**Status:** PREPARED
+**Sprint:** Sprint-A/B execution tracking
+**Scope:** SPRINT-PLAN.md §0 (dashboard) + §5 (IL tracking) — append-only rows
+**Branch:** agent/factory/sprintplan04/a5-accepted-b2-unblocked
+
+## Summary
+
+Updated SPRINT-PLAN.md to reflect governance decisions merged 2026-07-01:
+
+- **Sprint-A A5:** PR #917 merged → A5 ACCEPTED ✅ (IL-765)
+- **Sprint-B B2:** Gate-in satisfied (A5 ACCEPTED) → B2 status changed BLOCKED → OPEN
+
+## Changes
+
+### §0 Status Dashboard
+
+- A5 row: PROPOSED (CTIO review) → ACCEPTED ✅ (IL-765, PR #917)
+- B2 row: BLOCKED (gate-in: A5 ACCEPTED) → OPEN (gate-in: A5 ✅ — ready to start)
+
+### §5 IL Tracking
+
+Added row:
+| A5 governance accepted | #917 | IL-765 | MERGED ✅ |
+
+### A5 & B2 Item Details (§2/3)
+
+- A5 § Item table: Status PROPOSED → ACCEPTED ✅
+- B2 § Item table: Status BLOCKED → OPEN; gate-in updated to reflect A1+A2+A5 all ACCEPTED ✅
+
+## Compliance
+
+- **Append-only:** No lines removed from SPRINT-PLAN.md (ADR-056/I-24)
+- **ADR-119 Rule 8:** No IL-NNN in commit title
+
+## References
+
+- **PR #917:** A5 governance shard (MERGED, IL-765)
+- **PR #865:** Sprint-A A5 passport revisions (planner.yaml, MERGED)
+- **SPRINT-PLAN.md:** IL-669, PR #859

@@ -1,0 +1,23 @@
+{
+  "contract_version": "0.1.0",
+  "commit_sha": "a1b2c3d",
+  "generated_at": "2026-07-01T00:00:00Z",
+  "results": [
+    {
+      "requirement": "axe_core_wcag_aa",
+      "status": "unknown",
+      "severity": "blocking",
+      "remediation": "Run axe-core against rendered components; update artefact_ref with report URL."
+    },
+    {
+      "requirement": "viewport_matrix",
+      "status": "unknown",
+      "severity": "advisory"
+    },
+    {
+      "requirement": "tokens",
+      "status": "unknown",
+      "severity": "advisory"
+    }
+  ]
+}
