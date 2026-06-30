@@ -21541,3 +21541,39 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** docs-only (ODR-1 + ledger); **no code / runtime / values / keys / secrets / provisioning / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `c63503b` after #893 taste-theta took 741, real frozen max 741 from `IL-SEQUENCE.json`; the `IL-2028` grep result is the frozen-typo phantom, ignored) → **IL-742** via the ADR-143 allocator (741 superseded by the concurrent merge; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T08:00:00Z` strictly > origin/main max. Branch off origin/main `c63503b` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — DRAFT ODR-1 + shard. **DRAFT PR; DO NOT MERGE — operator provisioning + sign-off (§1/§9).** Pairs with ODR-3 before any S6.4-EN build.
 - **Refs:** `docs/odr/ODR-1-defi-integrator-keys-and-addresses.md`; ADR-083 §7 (ODR-1), ADR-114/016/094; `docs/specs/dse-live-providers-options.md`; backend `config.py` (dydx_* fields), `ports/dydx_exchange.py`, `services/intent_preview.py`; pairs with ODR-3; ADR-102/119/143/059-A/120/060. Operator HITL.
+
+---
+
+### IL-743 - agent-factory-sandbox-mock-rails-service @ 2026-06-30T12:00:00Z
+
+- **il_ts:** 2026-06-30T12:00:00Z
+- **session_id:** agent-factory-sandbox-mock-rails-service
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sandbox-mock-rails-service/IL-2026-06-30T12-00-00Z--sandbox-mock-rails-service.md`
+
+### GAP-042 M-sandbox — Sandbox Mock Rails Service (state machine + REST API) [L2 COMPLETE]
+- **Decision:** Completed **GAP-042 M-sandbox** (Sprint 14, CTIO-tracked) — a sandbox mock Rails service for testing ledger state transitions without external dependencies. Delivered: SandboxPort Protocol (I-01 Decimal safety), InMemorySandboxService (PENDING→PROCESSING→{COMPLETED,FAILED} state machine), FastAPI 6-endpoint router (seed/list/get/advance/reset/health), 17 unit tests (all green), CI 20/20 SUCCESS.
+- **Scope:** banxe-emi-stack repo
+  - `services/sandbox/__init__.py` — module entry point
+  - `services/sandbox/sandbox_port.py` — SandboxPort Protocol + SandboxAccount + SandboxPaymentTransition dataclasses (frozen, I-01 Decimal)
+  - `services/sandbox/sandbox_service.py` — InMemorySandboxService (deterministic state machine, PENDING→PROCESSING transitions)
+  - `services/sandbox/sandbox_api.py` — FastAPI router, 6 REST endpoints at `/v1/sandbox/*`: POST /seed, GET /accounts, GET /accounts/{id}, POST /accounts/{id}/advance, POST /reset, GET /health
+  - `tests/test_sandbox_service.py` — 17 pytest cases (unit, no external deps, all green)
+- **Invariants:** I-01 (Decimal-only amounts), I-24 (append-only state log), I-28 (quality gate)
+- **FCA refs:** None directly; sandbox is internal testing infrastructure (no regulatory footprint)
+- **Branch:** agent/factory/sandbox/mock-rails-service
+- **Commit:** c1d042f
+- **PR:** banxe-emi-stack #266 (CI 20/20 SUCCESS, all tests green, ruff clean, ready for operator merge)
+- **Gap closed:** GAP-042 M-sandbox (Sprint 14, CTIO tracked) → **✅ L2 COMPLETE**
+- **Proof:** 
+  - CI pipeline: 20/20 passes (lint + tests + coverage + security)
+  - Tests: 17 cases in `test_sandbox_service.py`, 100% pass rate
+  - Code: `services/sandbox/` structure matches protocol-DI pattern, no external deps
+  - PR ready: #266 awaits operator merge
+  - Gap register: banxe-architecture PR #896 (reference entry)
+- **Deviations:** None — scope delivered as specified
+- **Anti-dup (ADR-102):** no prior sandbox service on main; SandboxPort is net-new port; no parallel mock-ledger service. Append-only (I-24): state history immutable, no data mutations.
+- **Status:** DONE — GAP-042 M-sandbox ✅ L2 COMPLETE. Operator merge pending (PR #266 awaits HITL approval).
+- **Refs:** banxe-emi-stack PR #266; branch `agent/factory/sandbox/mock-rails-service`; commit c1d042f; `services/sandbox/`; GAP-REGISTER.md (banxe-architecture PR #896); ADR-102/119/143/144/120/060; I-01/I-24/I-28. Operator HITL.
+
