@@ -21685,3 +21685,22 @@ TERMINAL-OWNERSHIP-AND-ANTIDRIFT — canonical 3-terminal model (A=Factory, B=sp
 - **Proof:** docs-only (ODR-1 status line + confirmation note + ledger); **no code / runtime / values / keys / secrets / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (real frozen max 750 from `IL-SEQUENCE.json`; the `IL-784`/`IL-2028` grep results are text artifacts, ignored) via the ADR-143 central allocator (owner = Terminal B); on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T16:00:00Z` strictly > origin/main max `2026-06-30T15:00:00Z`. Branch off origin/main `b1efb4f` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — status flip staged. **DRAFT PR; DO NOT MERGE — the operator merge is the §1/§9 acceptance of the provisioning-confirmed record.** Source = CEO (T3 of the tail-closure plan; operator provided the provisioning factual signal; factory prepared the record per §9).
 - **Refs:** `docs/odr/ODR-1-defi-integrator-keys-and-addresses.md`; ADR-083 §7 (ODR-1), ADR-114/016; pairs with **ODR-3** (MiCA — still pending, gates S6.4-EN); ADR-102/119/143/059-A/120/060. Closes T3. Operator HITL.
+
+---
+
+### IL-753 - agent-factory-governance-conflict-ledger @ 2026-06-30T16:00:00Z
+
+- **il_ts:** 2026-06-30T16:00:00Z
+- **session_id:** agent-factory-governance-conflict-ledger
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-conflict-ledger/IL-2026-06-30T16-00-00Z--conflict-ledger.md`
+
+### Conflict Ledger — inter-terminal deconfliction + merge discipline (line 4 of 7)
+- **Decision:** Authored `docs/governance/CONFLICT-LEDGER.md` — the mechanism by which the factory deconflicts overlapping inter-terminal changes (in time or by files) + merge-discipline rules. Three additions: (1) conflict JOURNAL — factory (arbiter ADR-154) registers overlaps detected vs TERMINAL-OWNERSHIP zones, resolves by time-serialize or file-split, entry = when/who/zone-file/resolution; (2) PRIORITY rule — active operator directive > Terminal B planned work > Terminal A autonomous GAP queue (lower yields/rebases); (3) MERGE DISCIPLINE — all PRs target main never a feature branch; stacked-PRs forbidden without explicit merge-order in PR description; doc-sync/commit-log via separate append-only (ADR-059 shard) not feature branches, to avoid dirty cycles/rebases. **PREPARE-ONLY**, Draft PR.
+- **Anti-dup (ADR-102) — pointer-first, no restatement:** points to ADR-154 (arbiter), LEDGER-MERGE-QUEUE.md (serialization mechanism = the 'by time' axis), TERMINAL-OWNERSHIP.md (overlap-detection basis), parallel-session-isolation Rules 1–8 (rebase-on-behind/lease), ADR-059/057 (append-only doc-sync). Adds ONLY journal+priority+discipline; LEDGER-MERGE-QUEUE already covers serialization/merge-queue so not duplicated.
+- **[НЕИЗВЕСТНО] (not invented):** physical location/format of the conflict journal (file vs ledger section); enforce merge-discipline as CI gate vs advisory — both operator decisions.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints). ONE doc + this shard; 0 off-scope.
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 750) → IL-751 via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-30T16:00:00Z` > main max `2026-06-30T15:00:00Z`. Fresh worktree off origin/main `b1efb4f` (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — mechanism doc + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Line 4 of 7; sequential-to-completion.**
+- **Refs:** `docs/governance/CONFLICT-LEDGER.md`; ADR-154; LEDGER-MERGE-QUEUE.md; TERMINAL-OWNERSHIP.md; parallel-session-isolation; ADR-059/057/060; ADR-102/119/143/144. Operator directive 2026-06-30.
