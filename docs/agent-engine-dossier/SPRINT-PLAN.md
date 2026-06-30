@@ -347,14 +347,95 @@ B8 ──► B9 (independent of A/B chain)
 |------|----|----|--------|
 | ENGINE-ROADMAP-INPUTS.md | #856 | IL-665 | PREPARED |
 | ENGINE-ROADMAP.md | #857 | IL-666 | PREPARED |
-| ADR-150 (A1 — A2A contract) | #858 | IL-667 | PROPOSED |
+| ADR-150 (A1 — A2A contract) | #858 | IL-667 | **DONE (ACCEPTED ✅)** |
 | SPRINT-PLAN.md (this file) | #859 | IL-669 | PREPARED |
-| A2 (ADR-045 amendment) | TBD | TBD | NOT_STARTED |
-| A3 (Lerian MCP spec) | TBD | TBD | NOT_STARTED |
-| A4 (sandbox contract ADR) | TBD | TBD | NOT_STARTED |
-| A5 (passport revisions) | TBD | TBD | NOT_STARTED |
-| B1–B9 (banxe-ai-infrastructure) | TBD | TBD | BLOCKED |
+| A2 (ADR-045 amendment) | #860 | IL-693 | **DONE (ACCEPTED ✅)** |
+| A3 (Lerian MCP spec ADR-147) | #863 | IL-694 | **DONE (ACCEPTED ✅)** |
+| A4 (sandbox contract ADR-146) | #862 | IL-692 | **DONE (ACCEPTED ✅)** |
+| A5 (passport revisions) | #865 | IL-695 | **PROPOSED (CTIO review)** |
+| B1–B9 (banxe-ai-infrastructure) | infra | — | **SPRINT-C/D DEPLOYED** |
 
 ---
 
 *Append-only. Update status in §5 IL Tracking as items complete. New sprint items → append §6+.*
+
+---
+
+## 6. Sprint-C/D Closure & Adoption Gate Update
+
+*Appended: 2026-06-30 | IL-CBS-ENGINE-SPRINT-CD-2026-06-30 | Append-only (ADR-056/I-24)*
+
+### Sprint-C Closure (evo1/evo2 — 2026-06-29)
+
+| Item | Status | Artefact |
+|------|--------|---------|
+| C1 LITELLM_AGENT_KEY | DONE ✅ | evo1 .env |
+| C2 selftest GATE-2 (S1 GREEN) | DONE ✅ | infra commit cfe246d |
+| C3 model-routing-policy.md v1.2 | DONE ✅ | infra commit 1013fac |
+| C4 banxe-monitoring skeleton | DONE ✅ | infra commit a5fe4f1 |
+| C5 n8n guardian webhook | CTIO-BLOCKED | carry-forward → B7 |
+
+S1 FULLY OPERATIONAL as of 2026-06-29: intent-dispatcher :8100 health=200,
+litellm-prod functional (selftest a=200 CANONICAL), Qdrant :6333 functional,
+AGENT_ROUTING_ENABLED=true (evo1 + Legion deploy/.env).
+
+### Sprint-D Closure (evo1/evo2 — 2026-06-29)
+
+| Item | Gap | PR | Status |
+|------|-----|----|--------|
+| n8n webhook doc | Gap-031 | infra#P1 | MERGED ✅ |
+| banxe-monitoring canonical deploy evo2 | Gap-023 | infra#20 | MERGED ✅ |
+| OS-003 incident policy | Gap-038 | infra#15 | MERGED ✅ |
+| ADR-040 LiteLLM split | Gap-032 | infra#16 + arch#884 | MERGED ✅ |
+| shellcheck Legion | Gap-037 | infra#17 | MERGED ✅ |
+| Q-04 cleanup + 58.4 GB reclaim evo1 | Gap-003 | infra#18 (verified #19) | MERGED ✅ |
+| alertmanager env_file fix | — | in main (squashed) | DONE ✅ |
+| Gap-018 Watchdog→Telegram | Gap-018 | — | OPERATOR-BLOCKED (TOKEN pending) |
+
+Carry-forward: Gap-018 awaits `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` from operator,
+then alertmanager restart on evo2.
+
+### Sprint-B Actual Runtime State (evo1/evo2)
+
+Source: banxe-ai-infrastructure/VERIFIED-RUNTIME-SNAPSHOT.md (Sprint-B B6/B7 section, verified 2026-06-28).
+Supersedes §0 Status Dashboard (which reflected Sprint-B OPEN state at plan time).
+
+| Item | Plan state | Actual state |
+|------|-----------|--------------|
+| B1 Qdrant :6333 | OPEN (infra#3) | RESOLVED ✅ |
+| B2 Intent-Dispatcher | BLOCKED (A5 pending) | RESOLVED ✅ (infra PR #12/#13) |
+| B3 Lerian MCP runtime | OPEN (infra#7) | DEPLOYED ✅ |
+| B4 gate-exec enforcement | OPEN (infra#6) | DEPLOYED ✅ |
+| B5 A2A RedisStreams | BLOCKED (B2) | DEPLOYED ✅ (BUS_MODE=redis) |
+| B6 G-CANON-BYPASS | OPEN (infra#5) | RESOLVED ✅ |
+| B7 G-GUARDIAN-WEBHOOK-MISSING | OPEN (infra#4) | CTIO-BLOCKED ⚠️ |
+| B8 Temporal saga runner | BLOCKED (ADR-133) | BLOCKED (unchanged) |
+| B9 Redis-lease saga | BLOCKED (B8) | BLOCKED (unchanged) |
+
+### Adoption Gate — Current State
+
+| GAP | L1 | L2 | Blocker |
+|-----|----|----|---------|
+| E4 (A2A contract) | ✅ ADR-150 ACCEPTED | ✅ B5 DEPLOYED | — |
+| E1 (dispatcher) | ✅ ADR-045 amended | ✅ B2 DEPLOYED | — |
+| E2 (MCP binding) | ✅ ADR-147 ACCEPTED | ✅ B3 DEPLOYED | — |
+| E3 (Qdrant) | ✅ ADRs undeferred | ✅ B1 DEPLOYED | — |
+| E5 (sandbox) | ✅ ADR-146 ACCEPTED | ✅ B4 DEPLOYED | — |
+
+**5 / 5 GAPs at L2 — ADOPTION GATE CONDITION MET (pending L3 gate).**
+
+L3 gate (operator-gated) remaining conditions:
+- B7 G-GUARDIAN-WEBHOOK-MISSING: CTIO registers GitHub App 15368 webhook → http://100.68.102.48:5678/webhook/guardian-breach-alert
+- A5 passport revisions PR #865: CTIO ACCEPTED required
+- CTIO + CEO sign-off (formal L3 gate)
+- FCA-boundary review (CASS 15 applicable if engine touches safeguarding flows)
+- Q-08 evo1: OLLAMA_HOST=127.0.0.1 (systemd override)
+
+### CTIO Carry-Forward Actions
+
+| Action | Blocker | Priority |
+|--------|---------|----------|
+| Review + ACCEPT PR #865 (A5 passport revisions) | CTIO review | P1 |
+| Register App 15368 webhook → n8n :5678 (B7/C5) | CTIO GitHub access | P1 |
+| Set OLLAMA_HOST=127.0.0.1 on evo1 systemd | CTIO non-interactive sudo | P1 |
+| Provide TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID for Gap-018 | Operator | P2 |
