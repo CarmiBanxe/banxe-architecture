@@ -1,7 +1,8 @@
 # ODR-1: DeFi integrator keys & addresses (operator provisioning decision)
 
-**Status:** DRAFT / DECISION-PENDING (operator provisioning)
+**Status:** PROVISIONING-CONFIRMED (operator §1/§9, 2026-06-30)
 **Date:** 2026-06-30
+**Provisioning confirmation:** 2026-06-30 — operator confirms the dYdX integrator values are **provisioned in the vault** and the **env schema below is confirmed** (§1/§9 factual signal). No values are recorded here (RED-zone — vault/secret-store only). This satisfies the **ODR-1** gate for S6.4-EN; **S6.4-EN remains blocked on ODR-3 (MiCA stance) + operator GO** (this confirmation unblocks only ODR-1, not live execution).
 **Type:** Operator Decision Record (ODR) — resolves ADR-083 §"OPERATOR DECISION REQUIRED" item 1
 **Anchors:** ADR-083 (Composable DeFi Stack) §7 ODR-1 · ADR-114 (Travel-Rule / CASP) · ADR-016 (AML/PII routing) · `docs/specs/dse-live-providers-options.md`
 **Gates:** S6.4-EN (dYdX live order placement) · S6.5-EN (LI.FI quote-live) · *(S6.6-EN DROPPED per ADR-094)*
