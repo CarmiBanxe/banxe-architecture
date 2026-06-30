@@ -21941,3 +21941,20 @@ Added row:
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 762) → IL-763 via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T11:00:00Z` > main max `2026-07-01T10:00:00Z`. Fresh worktree off origin/main `e990ba9` (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — spec + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Companion artefacts named (not built); UI findings advisory.**
 - **Refs:** `docs/governance/UIUX-AUDIT-BLOCK-SPEC.md`; `scripts/uiux-pipeline.sh`; taste A/B/C; CONFLICT-LEDGER/TERMINAL-OWNERSHIP/CTIO-CARRY-FORWARD/MASTER-ROADMAP/REPORTING-STYLE-CANON; ADR-102/117/135/149/153/154/103/119/143/144; #900. Operator directive 2026-07-01.
+
+---
+
+### IL-765 - agent-factory-governance-a5-ctio-accepted @ 2026-07-01T12:00:00Z
+
+- **il_ts:** 2026-07-01T12:00:00Z
+- **session_id:** agent-factory-governance-a5-ctio-accepted
+- **source:** factory
+- **status:** ACCEPTED
+- **shard:** `ledger/entries/agent-factory-governance-a5-ctio-accepted/IL-2026-07-01T12-00-00Z--a5-ctio-accepted.md`
+
+### IL-765 — Sprint-A A5 ACCEPTED by CTIO (PR #865)
+- **Decision:** Sprint-A A5 (planner.yaml passport revisions + intent-layer masks) ACCEPTED by CTIO. PR #865 merged into main.
+- **Scope:** A5 gate-in satisfied. Unblocks Sprint-B B2 (Intent-Dispatcher Runtime Wiring).
+- **Proof:** PR #865 merged; A5 planner.yaml and intent-layer masks finalized. ADR-045 amendment applies; ADR-049 intent masks L1/L2 boundary documented.
+- **Status:** ACCEPTED — governance decision recorded. IL provisional, NOT hardcoded (ADR-119 Rule 8) — `build_ledger` mints max+1 over current origin/main. Isolated worktree off origin/main (ADR-120); namespace ADR-060; no git ops outside this branch.
+- **Refs:** PR #865 (planner.yaml passport revisions); ADR-045 (A5 amendment, IL-693); ADR-049 (intent masks L1/L2 boundary); SPRINT-PLAN.md §2 A5 gate-out.
