@@ -23,6 +23,7 @@
 | Sprint-A A3 | ADR-147 Lerian MCP spec — PR #863, IL-694, **ACCEPTED** ✅ |
 | Sprint-A A4 | ADR-146 sandbox contract — PR #862, IL-692, **ACCEPTED** ✅ |
 | Sprint-A A5 | Passport revisions — PR #865, IL-695, **PROPOSED** (CTIO review) |
+| Sprint-E E1 | Planner passport L1→L2 routing tests — PR #914, IL-762, **MERGED** ✅ |
 | Sprint-B B1 | Qdrant deploy — infra#3 OPEN (operator merge + evo1 execute pending) |
 | Sprint-B B2 | Dispatcher runtime — BLOCKED (gate-in: A5 ACCEPTED) |
 | Sprint-B B3 | Lerian MCP runtime — infra#7 OPEN (CI running, 34 tests / 98%) |
@@ -354,6 +355,7 @@ B8 ──► B9 (independent of A/B chain)
 | A4 (sandbox contract ADR) | TBD | TBD | NOT_STARTED |
 | A5 (passport revisions) | TBD | TBD | NOT_STARTED |
 | B1–B9 (banxe-ai-infrastructure) | TBD | TBD | BLOCKED |
+| E1 (planner.yaml routing tests) | #914 | IL-762 | MERGED ✅ |
 
 ---
 
