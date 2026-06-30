@@ -434,5 +434,6 @@
   "agent-factory-governance-adr153-terminal-topology-canon__e25f66122ee2": 744,
   "agent-factory-governance-terminal-ownership__9dd17e376e8e": 745,
   "agent-factory-governance-t1-orchestrating-terminal-rename__9cca440d1ce1": 747,
-  "central-terminal-governance-antidrift-2026-06-30__e40631ae5122": 748
+  "central-terminal-governance-antidrift-2026-06-30__e40631ae5122": 748,
+  "agent-factory-governance-adr154-shared-space-orchestration__879fdd7d508a": 749
 }
