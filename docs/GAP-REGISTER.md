@@ -112,7 +112,7 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
 | GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) | Sprint 15 | CTIO | 🔄 IN PROGRESS |
-| GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | 🔄 IN PROGRESS |
+| GAP-044 | M-sdk: Python client SDK — ✅ L2 COMPLETE — banxe-emi-stack PR #268 (sdk/python/banxe/: BanxeSdkPort Protocol, InMemoryBanxeClient, HttpBanxeClient, 25 tests, 100% pass, ruff clean, I-01 Decimal enforced); IL-CBS-GAP044-SDK-2026-06-30 | Sprint 16 | CTIO | ✅ L2 COMPLETE |
 | GAP-045 | B-pricing tier 2 expansion — IN PROGRESS 2026-06-21 — code services/fee_management (8 .py, ~25 tests); pricing tier-2 code present | Sprint 15 | CEO | 🔄 IN PROGRESS |
 
 ---

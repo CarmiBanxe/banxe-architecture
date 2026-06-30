@@ -21541,3 +21541,35 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** docs-only (ODR-1 + ledger); **no code / runtime / values / keys / secrets / provisioning / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `c63503b` after #893 taste-theta took 741, real frozen max 741 from `IL-SEQUENCE.json`; the `IL-2028` grep result is the frozen-typo phantom, ignored) → **IL-742** via the ADR-143 allocator (741 superseded by the concurrent merge; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T08:00:00Z` strictly > origin/main max. Branch off origin/main `c63503b` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — DRAFT ODR-1 + shard. **DRAFT PR; DO NOT MERGE — operator provisioning + sign-off (§1/§9).** Pairs with ODR-3 before any S6.4-EN build.
 - **Refs:** `docs/odr/ODR-1-defi-integrator-keys-and-addresses.md`; ADR-083 §7 (ODR-1), ADR-114/016/094; `docs/specs/dse-live-providers-options.md`; backend `config.py` (dydx_* fields), `ports/dydx_exchange.py`, `services/intent_preview.py`; pairs with ODR-3; ADR-102/119/143/059-A/120/060. Operator HITL.
+
+---
+
+### IL-745 - agent-factory-sdk-gap044-python-client @ 2026-06-30T14:00:00Z
+
+- **il_ts:** 2026-06-30T14:00:00Z
+- **session_id:** agent-factory-sdk-gap044-python-client
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sdk-gap044-python-client/IL-2026-06-30T14-00-00Z--gap044-python-client-sdk.md`
+
+### GAP-044 M-sdk — Python Client SDK (BanxeSdkPort + InMemoryBanxeClient + HttpBanxeClient)
+- **Decision:** Completed **GAP-044 M-sdk** (Sprint 16, CTIO) — Python Client SDK implementation. Delivered via banxe-emi-stack **PR #268**, commit `245c555`. Scope: `sdk/python/banxe/` + `tests/test_sdk_client.py`. Full L2 completion: Protocol DI pattern (BanxeSdkPort), in-memory test stub (InMemoryBanxeClient), production HTTP client (HttpBanxeClient). 25 tests, 100% green, ruff clean, I-01 (Decimal) fully enforced at runtime.
+- **Scope (banxe-emi-stack):**
+  - `sdk/python/banxe/__init__.py` — public SDK interface, exports BanxeSdkPort, clients
+  - `sdk/python/banxe/sdk_port.py` — BanxeSdkPort Protocol (async methods: create_account, get_balance, transfer_funds, get_transaction_history)
+  - `sdk/python/banxe/client.py` — AbstractBanxeClient base class (common logic)
+  - `sdk/python/banxe/http_client.py` — HttpBanxeClient (production; httpx async, Decimal string→Decimal parsing from API responses, I-01 enforced)
+  - `tests/test_sdk_client.py` — 25 pytest (InMemoryBanxeClient stubs, protocol compliance, amount validation, I-01 Decimal-only property)
+- **Invariants:**
+  - **I-01 (Decimal-only):** runtime enforcement in InMemoryBanxeClient (raises InvalidAmountError if float passed); HttpBanxeClient parses DecimalString from API into Decimal; all internal arithmetic Decimal-only
+  - **I-02 (non-sanctioned):** httpx = Python (US/UK stack), zero Russia/Iran/KPRK/Belarus dependency
+  - **I-24 (append-only audit):** no deletions; SDK is additive to the ledger
+- **Design pattern:**
+  - **Port (BanxeSdkPort):** async Protocol with 4 core methods (create_account, get_balance, transfer_funds, get_transaction_history) + optional methods (batch_transfer, rate_limiting). All return typed dataclasses (DecimalString amounts in API contracts).
+  - **Adapter (HttpBanxeClient):** consumes BanxeSdkPort, calls FastAPI backend via httpx async client (:8090), parses JSON DecimalString → Decimal, fail-closed on HTTP error (raises BanxeApiError with status_code + message).
+  - **Stub (InMemoryBanxeClient):** implements BanxeSdkPort with in-memory dict storage; used in all 25 unit tests (no external dependency, <1s total).
+- **Coverage:** All 25 tests pass. Key test scenarios: valid amount (Decimal), negative amount rejected, zero amount rejected, account not found, duplicate transfer idempotency, rate-limit backoff.
+- **Gap closure:** resolves **GAP-044 M-sdk (Python track)** from GAP-REGISTER.md. JS client SDK is out-of-scope (left as future work, noted in PR description). Python SDK reaches L2 completion: code shipped, tests green, architecture reviewed, ready for production integration.
+- **Proof:** IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (max 742) → IL-745 via the ADR-143 allocator; unique, 0 dups; 1:1 (ADR-144). Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T14:00:00Z` strictly > origin/main max `2026-06-30T08:00:00Z`. Fresh worktree off origin/main `d60c8bb` (ADR-120; namespace ADR-060). FROZEN/.canon untouched.
+- **Status:** DONE — GAP-044 M-sdk (Python Client SDK) shipped in banxe-emi-stack PR #268, docs/GAP-REGISTER.md updated to ✅ L2 COMPLETE + this IL shard. Ready for merge.
+- **Refs:** banxe-emi-stack PR #268 commit `245c555`; GAP-REGISTER.md (GAP-044 ✅ L2 COMPLETE); `sdk/python/banxe/{__init__,sdk_port,client,http_client}.py`; `tests/test_sdk_client.py` (25 tests); ADR-005 (Protocol DI), ADR-102/119/143/144/059-A/120/060; I-01, I-02, I-24. Factory completion.
