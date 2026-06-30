@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://banxe.internal/schemas/uiux-audit-findings.schema.json",
+  "title": "BANXE UI/UX Audit — Findings / Evidence Envelope",
+  "description": "Evidence envelope for the Consolidated UI/UX Audit Block (docs/governance/UIUX-AUDIT-BLOCK-SPEC.md, #916). banxe-ui emits this envelope; the factory ingests it read-only. P0 artefact — schema only; no runner, no uiux-pipeline.sh edit. Absence/staleness of evidence => status 'unknown', NEVER 'pass'.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "commit_sha", "generated_at", "results"],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "description": "Version of the cross-repo runtime contract this envelope conforms to (contract authored in P1; NOT created in P0).",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "commit_sha": {
+      "type": "string",
+      "description": "banxe-ui frontend commit the evidence was generated against (freshness check: must match the audited frontend revision).",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp when the evidence was produced."
+    },
+    "results": {
+      "type": "array",
+      "description": "One entry per audited requirement (static or runtime).",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/result" }
+    }
+  },
+  "definitions": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requirement", "status", "severity"],
+      "properties": {
+        "requirement": {
+          "type": "string",
+          "description": "Audited requirement id, e.g. axe_core_wcag_aa, viewport_matrix, keyboard_focus, visual_regression, state_coverage, key_journeys, mobile_web_parity, tokens, components, drift, duplication."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pass", "advisory", "fail", "unknown"],
+          "default": "unknown",
+          "description": "Conformance status. DEFAULT and MANDATORY fallback is 'unknown' — used whenever evidence is absent or stale. 'pass' MUST NOT be asserted without a fresh artefact_ref."
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["blocking", "advisory"],
+          "description": "Whether a failing result blocks promotion. Hard gates (axe-core/WCAG 2.1 AA, ADR-102 duplication, unsourced-variant) = blocking; runtime requirements other than axe-core remain advisory until the banxe-ui runtime exists; stylistic drift = advisory. Authoritative map: docs/governance/UIUX-GATE-POLICY.md."
+        },
+        "artefact_ref": {
+          "type": "string",
+          "description": "Reference to the supporting evidence artefact (e.g. axe report, screenshot diff, Playwright run). Absent => status MUST be 'unknown'."
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Optional confidence in the result (0..1)."
+        },
+        "file_paths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Impacted source files."
+        },
+        "impacted_flows": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "User flows / journeys impacted."
+        },
+        "remediation": {
+          "type": "string",
+          "description": "Operator-usable remediation hint."
+        }
+      }
+    }
+  }
+}
