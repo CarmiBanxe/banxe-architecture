@@ -172,6 +172,11 @@ Full contract: `docs/runbooks/three-node-execution-fabric-contract.md` and
 
 ## CANON — Best Single Artifact (Right Terminal output discipline)
 
+> **Naming note (ADR-153):** "**Right Terminal**" here is a **behavioural role-name** for the
+> orchestration / output-discipline line — it is **NOT** topological "Terminal B (right)". For the
+> canonical terminal topology (A=left=Software-Factory, Central, B=right=TRADING-001) and the full
+> legacy reconciliation, see **ADR-153**. The rules below are unchanged.
+
 > Behavioural canon for the **Right Terminal** (BANXE operator terminal). Concretises *how*
 > the Right Terminal emits work; it adds to — and never overrides — the security canon,
 > ADR-102 (Duplication Audit), ADR-103 (server-only), ADR-059-A (sharded ledger), the merge
