@@ -21826,7 +21826,7 @@ TERMINAL-OWNERSHIP-AND-ANTIDRIFT — canonical 3-terminal model (A=Factory, B=sp
 
 ## Changes
 
-### 1. tests/test_planner_routing.py (NEW)
+### 1. tests/canon/test_l1_l2_mask_routing.py (NEW)
 
 E2E validation of planner passport routing rules. Read-only checks — no Engine logic changes.
 
