@@ -103,7 +103,7 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 | GAP-039 | H-support: Support ticketing + SLA | Sprint 14 | CEO | 🔄 IN PROGRESS |
 | GAP-040 | L-lake: ClickHouse Data Lake — schema/audit layer DONE; residual = ELT/streaming/lineage (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow) | Sprint 12 | CTIO | ⚠️ IN PROGRESS |
 | GAP-041 | M-gateway: Public REST API + OpenAPI spec (gateway infra DONE in banxe-emi-stack services/api_gateway, GAP-023; residual: unified Public-API governance) | Sprint 14 | CTIO | 🔄 IN PROGRESS |
-| GAP-042 | M-sandbox: Sandbox + mock payment rails | Sprint 14 | CTIO | 🔄 IN PROGRESS |
+| GAP-042 | M-sandbox: Sandbox + mock payment rails — L2 COMPLETE 2026-06-30. Deliverable: services/sandbox/ (SandboxPort Protocol + InMemorySandboxService state machine + FastAPI router with 6 endpoints: seed/list/get/advance/reset/health + 17 tests). Code merged in banxe-emi-stack PR #266 (CI 20/20 green). | Sprint 14 | CTIO | ✅ L2 COMPLETE |
 
 ---
 
