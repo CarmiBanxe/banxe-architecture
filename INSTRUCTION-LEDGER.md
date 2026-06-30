@@ -21616,3 +21616,15 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** docs/canon-only (AGENTS.md + .claude/rules + ADR-060 + ledger); **no code / runtime / values / new repo / keys / secrets / RAR**; 0 files deleted, no ledger-history rewrite (I-28). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `c8c8512` after #903 IL-745 merged) → **IL-747** via the ADR-143 central allocator (745/746 reserved concurrently by other terminals — allocator collision-avoidance; gaps are fine, uniqueness preserved); re-rebased per Rule 2/5 — a rebase signal, not a stop-barrier; `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T13:00:00Z` strictly > origin/main max. Branch off origin/main `c8c8512` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — rename enacted. **DRAFT PR; DO NOT MERGE — behavioural-canon change, operator + CODEOWNERS HITL (§1/§9).** Source = CEO (T1 of the operator's tail-closure plan; factory prepared materials per §9).
 - **Refs:** `AGENTS.md`, `.claude/rules/agents.md` (Best-Single-Artifact, rename+alias); `docs/adr/ADR-060-multi-actor-orchestration.md` (additive reconciliation note); ADR-153 §Follow-up 1 (authority); ADR-102/119/143/059-A/120. Closes T1. T2 = no-op (orchestration canon already covered by ADR-060/120/121/143). Operator HITL.
+
+---
+
+### IL-748 - central-terminal-governance-antidrift-2026-06-30 @ 2026-06-30T09:00:01Z
+
+- **il_ts:** 2026-06-30T09:00:01Z
+- **session_id:** central-terminal-governance-antidrift-2026-06-30
+- **source:** central-terminal
+- **status:** PREPARED
+- **shard:** `ledger/entries/central-terminal-ownership-antidrift/IL-2026-06-30T09-00-01Z--terminal-ownership-antidrift.md`
+
+TERMINAL-OWNERSHIP-AND-ANTIDRIFT — canonical 3-terminal model (A=Factory, B=special-tasks, Central=governance+read-only), OPERATOR-DIRECTIVE SUPREMACY, write-zone ownership table. Affects docs/governance/TERMINAL-OWNERSHIP-AND-ANTIDRIFT.md
