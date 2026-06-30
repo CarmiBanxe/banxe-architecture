@@ -21598,3 +21598,21 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 744) → IL-745 via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-06-30T13:00:00Z` > main max `2026-06-30T12:00:00Z`. Fresh worktree off origin/main `e73c467` (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — registry doc + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Line 1 of 7; sequential-to-completion.**
 - **Refs:** `docs/governance/TERMINAL-OWNERSHIP.md`; AGENTS.md; ADR-060/059/120/121; parallel-session-isolation; #902 (ADR-153 terminal-topology, complementary); ADR-102/119/143/144. Operator directive 2026-06-30.
+
+---
+
+### IL-747 - agent-factory-governance-t1-orchestrating-terminal-rename @ 2026-06-30T13:00:00Z
+
+- **il_ts:** 2026-06-30T13:00:00Z
+- **session_id:** agent-factory-governance-t1-orchestrating-terminal-rename
+- **source:** CEO
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-governance-t1-orchestrating-terminal-rename/IL-2026-06-30T13-00-00Z--t1-orchestrating-terminal-rename.md`
+
+### T1 — "Right Terminal" → "Orchestrating Terminal" rename (behavioural canon), alias-approach [enacts ADR-153 §Follow-up 1]
+- **Decision:** Enacts ADR-153 §Follow-up 1 (operator-gated). Renames the behavioural Best-Single-Artifact role to the canonical **"Orchestrating Terminal"**, with **"Right Terminal" retained as an explicit alias** (zero cross-ref breakage — approach #1). Edits: `AGENTS.md` + `.claude/rules/agents.md` (section heading + naming-note + role-definition line) + an **additive reconciliation note in `docs/adr/ADR-060-multi-actor-orchestration.md`** (the 4th "right terminal" surface found in audit). NOT a new ADR — amendment under ADR-153's authority.
+- **ADR-060 finding (new this turn):** ADR-060:13 carried a 4th, accepted definition — "right terminal — operates autonomously, not orchestrated" — which is the **topological Terminal-B (autonomous executor)** sense, consistent with ADR-153 (NOT the behavioural orchestrator). Reconciled by additive note mapping ADR-060's central/right/factory actors → Central / Terminal-B / Terminal-A, and distinguishing the topological "right terminal" from the behavioural "Orchestrating Terminal".
+- **Adds-to-never-overrides:** the behavioural RULES are unchanged — only the role NAME is renamed (alias preserves every existing "Right Terminal" mention); ADR-060 edit is an additive note (decision body untouched, I-28 append-only spirit). `/.claude/ @mmber` CODEOWNERS review applies at merge (operator gate). Global `~/.claude/CLAUDE.md` (local, not git-tracked) NOT edited — operator out-of-band (ADR-153 §Follow-up 2). No foreign-branch edits (Rule 6/7).
+- **Proof:** docs/canon-only (AGENTS.md + .claude/rules + ADR-060 + ledger); **no code / runtime / values / new repo / keys / secrets / RAR**; 0 files deleted, no ledger-history rewrite (I-28). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `c8c8512` after #903 IL-745 merged) → **IL-747** via the ADR-143 central allocator (745/746 reserved concurrently by other terminals — allocator collision-avoidance; gaps are fine, uniqueness preserved); re-rebased per Rule 2/5 — a rebase signal, not a stop-barrier; `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T13:00:00Z` strictly > origin/main max. Branch off origin/main `c8c8512` (ADR-120; namespace ADR-060).
+- **Status:** PREPARED — rename enacted. **DRAFT PR; DO NOT MERGE — behavioural-canon change, operator + CODEOWNERS HITL (§1/§9).** Source = CEO (T1 of the operator's tail-closure plan; factory prepared materials per §9).
+- **Refs:** `AGENTS.md`, `.claude/rules/agents.md` (Best-Single-Artifact, rename+alias); `docs/adr/ADR-060-multi-actor-orchestration.md` (additive reconciliation note); ADR-153 §Follow-up 1 (authority); ADR-102/119/143/059-A/120. Closes T1. T2 = no-op (orchestration canon already covered by ADR-060/120/121/143). Operator HITL.

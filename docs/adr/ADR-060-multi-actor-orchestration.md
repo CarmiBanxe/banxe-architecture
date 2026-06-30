@@ -13,6 +13,15 @@ Multiple independent actors write to the same repositories, branches and ledger:
 - right terminal — operates autonomously ("as it pleases", not orchestrated);
 - factory — itself mutates as a result of its work.
 
+> **Reconciliation (ADR-153, 2026-06-30).** These actor names predate the canonical terminal
+> topology. Mapping: this ADR's **"central terminal"** = **Central**; its **"right terminal"
+> (autonomous executor)** = topological **Terminal B (RIGHT, special-mandate executor — current
+> mandate TRADING-001)**; its **"factory"** = **Terminal A (LEFT = the Software Factory)**. Note the
+> term "right terminal" here is the **topological** autonomous-executor sense (consistent with
+> ADR-153), distinct from the **behavioural** "Orchestrating Terminal" output-discipline role
+> (alias "Right Terminal") in AGENTS.md / `.claude/rules/agents.md`. See **ADR-153** for the full
+> topology canon and legacy mapping. This note is additive; the decision below is unchanged.
+
 With several writers over shared mutable state and no single arbiter of ordering, conflicts arise around branches, naming and repositories (merge races, stale-green PRs, name collisions, lost updates). ADR-059 already removed the worst case for the ledger by making INSTRUCTION-LEDGER.md a generated read-only projection and routing new entries to append-only per-session shards. This ADR lifts that same principle (single-writer + append-only + generated projection + serialized merge) from the ledger up to the whole branch/repo orchestration layer.
 
 ## Decision
