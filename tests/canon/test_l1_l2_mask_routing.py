@@ -8,7 +8,7 @@ import pathlib
 import pytest
 import yaml
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 PASSPORT_PATH = ROOT / "docs" / "canon" / "passports" / "planner.yaml"
 
 
