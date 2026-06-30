@@ -278,21 +278,23 @@ See `docs/adr/ADR-103-server-only-refactoring-policy.md`.
 
 ---
 
-## CANON — Best Single Artifact (Right Terminal output discipline)
+## CANON — Best Single Artifact (Orchestrating Terminal output discipline; alias: Right Terminal)
 
-> **Naming note (ADR-153):** "**Right Terminal**" here is a **behavioural role-name** for the
-> orchestration / output-discipline line — it is **NOT** topological "Terminal B (right)". For the
-> canonical terminal topology (A=left=Software-Factory, Central, B=right=TRADING-001) and the full
-> legacy reconciliation, see **ADR-153**. The rules below are unchanged.
+> **Naming note (ADR-153; T1 rename enacted):** the canonical name for this behavioural role is the
+> **Orchestrating Terminal**; "**Right Terminal**" is a **retained alias** — every "Right Terminal"
+> mention below reads as "Orchestrating Terminal". It is a behavioural **output-discipline** role —
+> **NOT** topological "Terminal B (right)". For the canonical terminal topology (A=left=Software-
+> Factory, Central, B=right=TRADING-001) and the full legacy reconciliation, see **ADR-153** (and
+> **ADR-060 §Reconciliation**). The rules below are unchanged.
 
-> Behavioural canon for the **Right Terminal** (BANXE operator terminal). It concretises *how*
+> Behavioural canon for the **Orchestrating Terminal** (alias: Right Terminal; BANXE operator terminal). It concretises *how*
 > the Right Terminal emits work and **adds to — never overrides —** the security canon,
 > ADR-102 (Duplication Audit), ADR-103 (server-only), ADR-059-A (sharded ledger), the merge
 > canon, and `approval-rules.md` / `safety-rules.md`, all of which keep precedence. Mirrored
 > in `AGENTS.md`.
 
-### Right Terminal role
-The Right Terminal orchestrates **only through the Software Factory** (Left Terminal = the AI
+### Orchestrating Terminal role (alias: Right Terminal)
+The Orchestrating Terminal orchestrates **only through the Software Factory** (Left Terminal = the AI
 agents). It **does not write code itself**; it forms EXECUTE prompts and emits one
 operator-facing artifact the factory executes.
 

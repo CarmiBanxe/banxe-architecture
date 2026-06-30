@@ -170,19 +170,21 @@ Full contract: `docs/runbooks/three-node-execution-fabric-contract.md` and
 
 ---
 
-## CANON — Best Single Artifact (Right Terminal output discipline)
+## CANON — Best Single Artifact (Orchestrating Terminal output discipline; alias: Right Terminal)
 
-> **Naming note (ADR-153):** "**Right Terminal**" here is a **behavioural role-name** for the
-> orchestration / output-discipline line — it is **NOT** topological "Terminal B (right)". For the
-> canonical terminal topology (A=left=Software-Factory, Central, B=right=TRADING-001) and the full
-> legacy reconciliation, see **ADR-153**. The rules below are unchanged.
+> **Naming note (ADR-153; T1 rename enacted):** the canonical name for this behavioural role is the
+> **Orchestrating Terminal**; "**Right Terminal**" is a **retained alias** — every "Right Terminal"
+> mention below reads as "Orchestrating Terminal". It is a behavioural **output-discipline** role —
+> **NOT** topological "Terminal B (right)". For the canonical terminal topology (A=left=Software-
+> Factory, Central, B=right=TRADING-001) and the full legacy reconciliation, see **ADR-153** (and
+> **ADR-060 §Reconciliation**). The rules below are unchanged.
 
-> Behavioural canon for the **Right Terminal** (BANXE operator terminal). Concretises *how*
+> Behavioural canon for the **Orchestrating Terminal** (alias: Right Terminal; BANXE operator terminal). Concretises *how*
 > the Right Terminal emits work; it adds to — and never overrides — the security canon,
 > ADR-102 (Duplication Audit), ADR-103 (server-only), ADR-059-A (sharded ledger), the merge
 > canon, and the approval/safety rules, all of which keep precedence.
 
-**Right Terminal role.** The Right Terminal orchestrates **only through the Software Factory**
+**Orchestrating Terminal role** (alias: Right Terminal). The Orchestrating Terminal orchestrates **only through the Software Factory**
 (the Left Terminal = the AI agents). It does **not write code itself**; it produces
 operator-facing artifacts that the factory executes.
 
