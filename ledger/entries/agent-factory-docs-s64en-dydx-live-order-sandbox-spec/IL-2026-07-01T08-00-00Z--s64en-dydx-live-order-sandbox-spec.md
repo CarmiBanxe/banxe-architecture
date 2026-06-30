@@ -1,0 +1,16 @@
+---
+il_ts: 2026-07-01T08:00:00Z
+session_id: agent-factory-docs-s64en-dydx-live-order-sandbox-spec
+source: CEO
+status: DONE
+---
+### S6.4-EN — dYdX ExchangePort sandbox-live order-placement enable-spec (enable-not-build, ADR-102 reuse) [docs-only, RED-zone] [OWNER: B]
+- **Decision:** Created `docs/specs/S6.4-EN-DYDX-LIVE-ORDER-SANDBOX-SPEC-2026-07-01.md` (PROPOSED, docs-only) — the enable-spec for road map S6.4-EN (dYdX ExchangePort live order placement). **spec ≠ build ≠ live** — each a separate operator GO. **Authorises a future Phase-2a sandbox/testnet build; executes nothing.**
+- **Both regulatory gates cleared (precondition met):** ODR-1 (#908, provisioning CONFIRMED) + ODR-3 (#910, distributor posture MiCA-CASP-on-Paybis, MLRO/CTIO-confirmed). Operator gave "GO S6.4-EN spec".
+- **ADR-102 reuse-map (verified `banxe-trading-backend@main`):** `ports/dydx_exchange.py` (`DydxExchangeAdapter`, `place_order`, fenced "live submission disabled" until `dydx_submit_enabled` + valid node URL), `ports/exchange_port.py`, `services/intent_preview.py` = **REUSE, do NOT rebuild**; mock stays CI default. Net-new = minimal flag-gate wiring only.
+- **RED-zone discipline (phased, fail-closed):** Phase-2a = sandbox/testnet ONLY (no real money); Phase-2b = mainnet = SEPARATE operator GO + Ruflo sign-off + kill-switch arming. Mandatory controls: **Ruflo** on order surface (BUG-005), **HITL** on live order (BUG-007), kill-switch `dydx_submit_enabled` default False, fail-closed (any flag unset/error → no submit, mock fallback), sandbox-first, idempotency on `clientOrderId`. Self-custodial (ADR-083): backend constructs unsigned intent, client wallet signs, backend holds no keys / executes nothing as principal; live execution = Paybis principal (ODR-3), BANXE routes.
+- **No values:** no keys/secrets/values in the spec (vault only per ODR-1); RED-zone clean; Secrets-Scan expected pass.
+- **Gate status:** Phase-2a regulatory-cleared (ODR-1+ODR-3) → needs **operator GO on BUILD** + §C controls. Phase-2b (mainnet) + S6.x-PROD = separate, NOT authorized here. This spec does NOT authorize the build or live execution.
+- **Proof:** docs-only (one spec in `banxe-architecture`); **no code / runtime / build / live-execution / keys / secrets / values / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (real frozen max 757 from `IL-SEQUENCE.json`; the `IL-784`/`IL-2028` grep results are stale-checkout/text artifacts, ignored) → IL-758 via the ADR-143 central allocator (owner = Terminal B); on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-07-01T08:00:00Z` strictly > origin/main max `2026-06-30T17:00:00Z`. Branch off origin/main `eae484c` (ADR-120; namespace ADR-060).
+- **Status:** DONE — spec authored. Authorises a later operator-gated Phase-2a sandbox/testnet build on evo1 (own GO). **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
+- **Refs:** `docs/specs/S6.4-EN-DYDX-LIVE-ORDER-SANDBOX-SPEC-2026-07-01.md`; roadmap §B S6.4-EN line 78; `S6.2-EN-…-SPEC` (#878/#61); ODR-1 (#908) + ODR-3 (#910); ADR-083/021/114/138/102/103; BUG-005/007; I-01; backend `ports/{dydx_exchange,exchange_port}`, `services/intent_preview`. Operator HITL.
