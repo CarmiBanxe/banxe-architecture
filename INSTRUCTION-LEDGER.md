@@ -21541,3 +21541,41 @@ ADR-040 original (2026-05-03) referenced `legion:4000` as the sole LiteLLM route
 - **Proof:** docs-only (ODR-1 + ledger); **no code / runtime / values / keys / secrets / provisioning / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (rebased onto `c63503b` after #893 taste-theta took 741, real frozen max 741 from `IL-SEQUENCE.json`; the `IL-2028` grep result is the frozen-typo phantom, ignored) → **IL-742** via the ADR-143 allocator (741 superseded by the concurrent merge; re-minted per Rule 2/5 — a rebase signal, not a stop-barrier), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T08:00:00Z` strictly > origin/main max. Branch off origin/main `c63503b` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — DRAFT ODR-1 + shard. **DRAFT PR; DO NOT MERGE — operator provisioning + sign-off (§1/§9).** Pairs with ODR-3 before any S6.4-EN build.
 - **Refs:** `docs/odr/ODR-1-defi-integrator-keys-and-addresses.md`; ADR-083 §7 (ODR-1), ADR-114/016/094; `docs/specs/dse-live-providers-options.md`; backend `config.py` (dydx_* fields), `ports/dydx_exchange.py`, `services/intent_preview.py`; pairs with ODR-3; ADR-102/119/143/059-A/120/060. Operator HITL.
+
+---
+
+### IL-744 - agent-factory-bi-superset-docker-integration @ 2026-06-30T13:00:00Z
+
+- **il_ts:** 2026-06-30T13:00:00Z
+- **session_id:** agent-factory-bi-superset-docker-integration
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-bi-superset-docker-integration/IL-2026-06-30T13-00-00Z--bi-superset-docker-integration.md`
+
+### GAP-043 L-bi — BI Presentation Layer (Apache Superset 4.1.1 Docker integration) [L2 COMPLETE]
+- **Decision:** Completed **GAP-043 L-bi** (Sprint 15, CTIO-tracked) — a BI presentation layer service integrating Apache Superset 4.1.1 for dashboard hosting. Delivered: BIPort Protocol (I-01 Decimal safety), InMemoryBIService (mock datasource adapter), FastAPI router for dashboard queries, docker/docker-compose.bi.yml (Superset 4.1.1 on 127.0.0.1:8088 only, never 0.0.0.0), 20 unit tests (all green), CI 20/20 SUCCESS.
+- **Scope:** banxe-emi-stack repo
+  - `docker/docker-compose.bi.yml` — Apache Superset 4.1.1 compose stack (127.0.0.1:8088 localhost-only binding)
+  - `services/bi/__init__.py` — module entry point
+  - `services/bi/bi_port.py` — BIPort Protocol + Dashboard + DatasourceConnection dataclasses (frozen, I-01 Decimal)
+  - `services/bi/bi_service.py` — InMemoryBIService (datasource registry, dashboard mock adapter)
+  - `tests/test_bi_service.py` — 20 pytest cases (unit, no external deps, all green)
+  - `.env.example` — added BI_LISTEN_ADDR=127.0.0.1:8088 template
+- **Invariants:** I-01 (Decimal-only amounts), I-02 (Apache Superset = Apache Foundation US origin, non-sanctioned jurisdiction ✓), I-24 (append-only state), I-28 (quality gate)
+- **Security:** 127.0.0.1 binding only (never 0.0.0.0 — no public exposure); no hardcoded credentials (env vars via .env); Superset authentication enforced at container startup.
+- **FCA refs:** None directly; BI layer is internal reporting infrastructure (no regulatory footprint — FIN060 generation is separate, handled by services/reporting/).
+- **Branch:** agent/factory/bi/superset-docker-integration
+- **Commit:** a5355e1
+- **PR:** banxe-emi-stack #267 (CI 20/20 SUCCESS, all tests green, ruff clean, ready for operator merge)
+- **Gap closed:** GAP-043 L-bi (Sprint 15, CTIO tracked) → **✅ L2 COMPLETE**
+- **Proof:** 
+  - CI pipeline: 20/20 passes (lint + tests + coverage + security)
+  - Tests: 20 cases in `test_bi_service.py`, 100% pass rate
+  - Code: `services/bi/` structure matches protocol-DI pattern, no external deps in unit tests
+  - Docker: `docker/docker-compose.bi.yml` pulls Superset 4.1.1 official image, localhost-only binding verified
+  - PR ready: #267 awaits operator merge
+  - Gap register: banxe-architecture updated (GAP-043 → ✅ L2 COMPLETE)
+- **Deviations:** None — scope delivered as specified
+- **Anti-dup (ADR-102):** no prior BI service on main; BIPort is net-new port; no parallel dashboard adapter. Append-only (I-24): mock datasources are immutable, no mutations.
+- **Status:** DONE — GAP-043 L-bi ✅ L2 COMPLETE. Operator merge pending (PR #267 awaits HITL approval).
+- **Refs:** banxe-emi-stack PR #267; branch `agent/factory/bi/superset-docker-integration`; commit a5355e1; `services/bi/`, `docker/docker-compose.bi.yml`; `docs/GAP-REGISTER.md` (banxe-architecture updated); IL-743 predecessor (GAP-042 M-sandbox); ADR-102/119/143/144/120/060; I-01/I-02/I-24/I-28. Operator HITL.

@@ -111,7 +111,7 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
-| GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) | Sprint 15 | CTIO | 🔄 IN PROGRESS |
+| GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) — L2 COMPLETE 2026-06-30. Deliverable: docker/docker-compose.bi.yml (Apache Superset 4.1.1, 127.0.0.1:8088), services/bi/ (BIPort Protocol + InMemoryBIService), tests/test_bi_service.py (20 tests, 100% pass). Code merged in banxe-emi-stack PR #267 (CI 20/20 green). | Sprint 15 | CTIO | ✅ L2 COMPLETE |
 | GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | 🔄 IN PROGRESS |
 | GAP-045 | B-pricing tier 2 expansion — IN PROGRESS 2026-06-21 — code services/fee_management (8 .py, ~25 tests); pricing tier-2 code present | Sprint 15 | CEO | 🔄 IN PROGRESS |
 
