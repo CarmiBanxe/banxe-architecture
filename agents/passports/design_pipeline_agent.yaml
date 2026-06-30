@@ -1,12 +1,12 @@
 agent_id: design_pipeline_agent
 name: "DesignPipelineAgent"
-version: "0.1.0"
-status: PROPOSED
+version: "1.0.0"
+status: ACTIVE
 description: >
   Owner agent for the EXISTING banxe-emi-stack runtime service `services/design_pipeline/`
-  (code-derived from its handlers, e.g. CodeGeneratorPort). PROPOSES only (I-27); created by
-  SP-PASSPORT-COV to close the orphan-service governance gap. NOT activated — PROPOSED
-  until a separate operator gate.
+  (code-derived from its handlers, e.g. CodeGeneratorPort). ACTIVATED 2026-07-01 per ADR-155
+  (operator I-27 gate; CLASS_B; CTO+CEO approval); governs the existing services/design_pipeline/
+  runtime. I-27 HITL retained at decision-time (L2_REVIEW); future material change is ADR-135-gated.
 level: 2
 trust_zone: AMBER
 bounded_context: CTX-09-DEVPLATFORM
@@ -16,14 +16,13 @@ capabilities:
   - component_catalog
   - design_token_management
   - visual_regression_config
-  - aesthetic_taste_review        # ADVISORY ONLY (declaration); never a gate. PROPOSED/not-activated (I-27).
+  - aesthetic_taste_review        # ACTIVE; advisory only, never a gate (I-27 HITL at decision-time).
 department: "Engineering / Developer Platform"
 human_double: "CTO"
 non_goals:
   - "Do NOT reimplement services/design_pipeline/ — existing code in banxe-emi-stack"
-  - "Do NOT auto-activate — PROPOSED only (I-27), gated on operator approval"
-  - "Taste review is ADVISORY ONLY — never a promotion/merge/governance gate (canon §5A)"
-  - "Do NOT auto-activate aesthetic_taste_review — declaration only, PROPOSED (I-27); θ=on-canon (set 2026-06-30), owner=interim CTO; activation still operator-gated"
+  - "Taste review (aesthetic_taste_review) is ADVISORY ONLY — never a promotion/merge/governance gate (canon §5A); θ=on-canon feeds the impeccable-loop stop-condition only; owner=interim CTO (canon §7.2)"
+  - "Material change to capabilities / θ / taste-semantics requires operator HITL via ADR-135 (I-27 retained at decision-time)"
 ports:
   inbound:
     - port: DesignSpecPort
@@ -39,7 +38,7 @@ ports:
         docs/BANXE-UI-UX-SYSTEM.md §"Taste Rubric (advisory)") + concrete deltas.
         NOT a gate; never blocks promotion. θ = on-canon (band threshold — impeccable-loop
         stop-condition only, advisory; operator-set 2026-06-30; config-as-data per
-        UI-UX-DESIGN-SYSTEM-CANON §8 OI-5). Declaration only — PROPOSED, not-activated (I-27).
+        UI-UX-DESIGN-SYSTEM-CANON §8 OI-5). ACTIVE; advisory output only (I-27 HITL retained at decision-time).
 allowed_callers:
   - sandbox_rails_governor
 allowed_callees:
@@ -51,9 +50,10 @@ governance:
   change_class: CLASS_B
   owner: "CTO"
   review_cycle: annually
-  last_reviewed: "2026-06-21"
+  last_reviewed: "2026-07-01"
   approvers:
     - CTO
+    - CEO
 fca_references:
   - "FCA SYSC 8 — change management / dev platform"
 
