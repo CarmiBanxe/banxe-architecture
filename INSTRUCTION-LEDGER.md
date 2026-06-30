@@ -21763,3 +21763,24 @@ TERMINAL-OWNERSHIP-AND-ANTIDRIFT — canonical 3-terminal model (A=Factory, B=sp
 - **Proof:** docs-only (ODR-3 + ledger); **no code / runtime / values / keys / secrets / new repo / RAR / legal-opinion**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (re-rebased onto `28abad9` after #911 line-5/7 merged, base max 755) → **IL-757** via the ADR-143 central allocator (756 held in the prior rebase; owner = Terminal B); re-rebased per Rule 2/5 — a rebase signal, not a stop-barrier; `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-06-30T17:00:00Z` strictly > origin/main max. Branch off origin/main `b99f0b1` (ADR-120; namespace ADR-060).
 - **Status:** PREPARED — DRAFT ODR-3. **DRAFT PR; DO NOT MERGE — MLRO/CTIO §1/§9 regulatory sign-off (the merge is the confirmation).** Source = CEO (operator "expand to Phase-2 / author ODR-3" signal + Agreement basis; factory prepared the record per §9). Pairs with ODR-1; with both confirmed + operator GO, S6.4-EN becomes specced/buildable under RED-zone controls.
 - **Refs:** `docs/odr/ODR-3-distributor-regulatory-posture.md`; Agreement §1.1/§D (basis); ADR-138/108/114/151/016/083; ODR-1 (#908); ADR-083 §7; ADR-102/119/143/059-A/120/060. Operator/MLRO HITL.
+
+---
+
+### IL-758 - agent-factory-docs-s64en-dydx-live-order-sandbox-spec @ 2026-07-01T08:00:00Z
+
+- **il_ts:** 2026-07-01T08:00:00Z
+- **session_id:** agent-factory-docs-s64en-dydx-live-order-sandbox-spec
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-docs-s64en-dydx-live-order-sandbox-spec/IL-2026-07-01T08-00-00Z--s64en-dydx-live-order-sandbox-spec.md`
+
+### S6.4-EN — dYdX ExchangePort sandbox-live order-placement enable-spec (enable-not-build, ADR-102 reuse) [docs-only, RED-zone] [OWNER: B]
+- **Decision:** Created `docs/specs/S6.4-EN-DYDX-LIVE-ORDER-SANDBOX-SPEC-2026-07-01.md` (PROPOSED, docs-only) — the enable-spec for road map S6.4-EN (dYdX ExchangePort live order placement). **spec ≠ build ≠ live** — each a separate operator GO. **Authorises a future Phase-2a sandbox/testnet build; executes nothing.**
+- **Both regulatory gates cleared (precondition met):** ODR-1 (#908, provisioning CONFIRMED) + ODR-3 (#910, distributor posture MiCA-CASP-on-Paybis, MLRO/CTIO-confirmed). Operator gave "GO S6.4-EN spec".
+- **ADR-102 reuse-map (verified `banxe-trading-backend@main`):** `ports/dydx_exchange.py` (`DydxExchangeAdapter`, `place_order`, fenced "live submission disabled" until `dydx_submit_enabled` + valid node URL), `ports/exchange_port.py`, `services/intent_preview.py` = **REUSE, do NOT rebuild**; mock stays CI default. Net-new = minimal flag-gate wiring only.
+- **RED-zone discipline (phased, fail-closed):** Phase-2a = sandbox/testnet ONLY (no real money); Phase-2b = mainnet = SEPARATE operator GO + Ruflo sign-off + kill-switch arming. Mandatory controls: **Ruflo** on order surface (BUG-005), **HITL** on live order (BUG-007), kill-switch `dydx_submit_enabled` default False, fail-closed (any flag unset/error → no submit, mock fallback), sandbox-first, idempotency on `clientOrderId`. Self-custodial (ADR-083): backend constructs unsigned intent, client wallet signs, backend holds no keys / executes nothing as principal; live execution = Paybis principal (ODR-3), BANXE routes.
+- **No values:** no keys/secrets/values in the spec (vault only per ODR-1); RED-zone clean; Secrets-Scan expected pass.
+- **Gate status:** Phase-2a regulatory-cleared (ODR-1+ODR-3) → needs **operator GO on BUILD** + §C controls. Phase-2b (mainnet) + S6.x-PROD = separate, NOT authorized here. This spec does NOT authorize the build or live execution.
+- **Proof:** docs-only (one spec in `banxe-architecture`); **no code / runtime / build / live-execution / keys / secrets / values / new repo / RAR**; 0 files deleted (append-only I-24). IL **provisional, NOT hardcoded** (ADR-119 Rule 8) — `build_ledger.py` mints max+1 over current `origin/main` (real frozen max 757 from `IL-SEQUENCE.json`; the `IL-784`/`IL-2028` grep results are stale-checkout/text artifacts, ignored) → IL-758 via the ADR-143 central allocator (owner = Terminal B); on concurrent advance → rebase+regenerate (Rule 2/5), `--force-with-lease` only. Append-only (ADR-059-A): ONE tail shard, il_ts `2026-07-01T08:00:00Z` strictly > origin/main max `2026-06-30T17:00:00Z`. Branch off origin/main `eae484c` (ADR-120; namespace ADR-060).
+- **Status:** DONE — spec authored. Authorises a later operator-gated Phase-2a sandbox/testnet build on evo1 (own GO). **DRAFT PR; DO NOT MERGE — operator-gated (§71).**
+- **Refs:** `docs/specs/S6.4-EN-DYDX-LIVE-ORDER-SANDBOX-SPEC-2026-07-01.md`; roadmap §B S6.4-EN line 78; `S6.2-EN-…-SPEC` (#878/#61); ODR-1 (#908) + ODR-3 (#910); ADR-083/021/114/138/102/103; BUG-005/007; I-01; backend `ports/{dydx_exchange,exchange_port}`, `services/intent_preview`. Operator HITL.
