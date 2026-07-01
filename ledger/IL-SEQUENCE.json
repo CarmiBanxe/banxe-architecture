@@ -469,5 +469,6 @@
   "agent-factory-governance-server-2-slo-ratify__b29b7551c007": 784,
   "agent-factory-govDecisionLineage-v1__57de8e654961": 785,
   "agent-factory-governance-server-2-enforcer-build-prompt__f0df64dc554e": 786,
-  "agent-factory-errorroadmap-reconciliation-2026-07-01__156b8cae6aad": 787
+  "agent-factory-errorroadmap-reconciliation-2026-07-01__156b8cae6aad": 787,
+  "agent-factory-govAiCostPolicy-v1__5b636aa0e216": 789
 }
