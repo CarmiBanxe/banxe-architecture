@@ -8,7 +8,11 @@
 #   • design_pipeline_agent passport present + bound (allowed_skills);
 #   • stages 3-5 gating references quality-gate.sh + invariants (wiring statement);
 #   • [advisory] evidence-ingest: findings envelope per UIUX-RUNTIME-CONTRACT (P1, v1.0.0) —
-#     absent envelope => 'unknown', NEVER runtime-passed (transport [UNKNOWN], P2 project-side).
+#     absent envelope => 'unknown', NEVER runtime-passed (transport [UNKNOWN], P2 project-side);
+#   • [advisory] Layer-B static audit (spec #916): tokens / components / states-declared / drift /
+#     semantic-a11y (on the design-system docs — NOT banxe-ui runtime);
+#   • [BLOCKING] DEDUP (ADR-102): duplicate / unsourced-variant declarations block (the ONLY new
+#     hard-gate term; all other Layer-B checks are advisory and never affect exit).
 #
 # HONESTY BOUNDARY — frontend lives in the SEPARATE banxe-ui repo:
 #   • DELEGATED → banxe-ui: Storybook deploy, design-token machine source
@@ -97,8 +101,33 @@ else:
     ing_status,ing_msg=_ingest()
 sv_ingest="🟢" if ing_status=="present" else "🟡"   # advisory: 🟡 when unknown/absent — NEVER 🔴, NEVER blocking
 
+# Layer B static audit (spec #916) applying UIUX-GATE-POLICY.md (#918) — governance-side, read-only, on THIS
+# repo's design-system docs (NOT banxe-ui runtime). Advisory checks 🟡 NEVER feed `blocking`; DEDUP (ADR-102) is
+# the ONLY new BLOCKING term (duplicate / unsourced-variant per gate-policy §1).
+_UXSYS="docs/BANXE-UI-UX-SYSTEM.md"
+def _read(rel):
+    try: return open(os.path.join(ROOT,rel),encoding='utf-8').read()
+    except FileNotFoundError: return ""
+if SELF:
+    b_tok=b_comp=b_states=b_drift=b_sem=True; dedup_dups=0
+else:
+    _sys=_read(_UXSYS)
+    b_tok=bool(re.search(r'--(space|text|color)-|^##\s*UI System',_sys,re.M))                        # tokens declared
+    b_comp=bool(re.search(r'(?i)component (patterns|catalog)|Balance Widget|Transaction Row',_sys))  # component catalog
+    b_states=bool(re.search(r'(?i)(empty|loading|error)[- ]?state',_sys))                            # states declared (static)
+    b_sem=bool(re.search(r'(?i)WCAG|aria|semantic|keyboard|focus',_sys))                             # a11y/semantic declared
+    b_drift=(_has(_CANON_REL,r'Taste Rubric \(advisory bands\)')==bool(re.search(r'^##\s*Taste Rubric \(advisory\)',_sys,re.M)))  # canon<->doc pointer consistent
+    _heads=re.findall(r'^#{2,3}\s+(.+?)\s*$',_sys,re.M)                                               # DEDUP: duplicate H2/H3 declarations
+    _cnt={}
+    for _h in _heads: _cnt[_h.strip().lower()]=_cnt.get(_h.strip().lower(),0)+1
+    dedup_dups=sum(1 for _c in _cnt.values() if _c>1)
+dedup_ok=(dedup_dups==0)
+va=lambda ok:"🟢" if ok else "🟡"                       # advisory verdict — NEVER 🔴
+sv_tok,sv_comp,sv_states,sv_drift,sv_sem=va(b_tok),va(b_comp),va(b_states),va(b_drift),va(b_sem)
+sv_dedup="🟢" if dedup_ok else "🔴"                     # DEDUP is BLOCKING per ADR-102 / gate-policy §1
+
 n_stage=len(stages); n_in=len(present_inputs)
-blocking = (n_stage!=5) + (n_in!=len(INPUTS)) + (0 if passport_bound else 1) + (0 if gating else 1)
+blocking = (n_stage!=5) + (n_in!=len(INPUTS)) + (0 if passport_bound else 1) + (0 if gating else 1) + (0 if dedup_ok else 1)
 def v(ok): return "🟢" if ok else "🔴"
 sv_stage=v(n_stage==5); sv_in=v(n_in==len(INPUTS)); sv_pp=v(passport_bound); sv_gate=v(gating)
 overall="🟢" if blocking==0 else "🔴"
@@ -113,6 +142,8 @@ if JSON:
         gating_quality_gate_invariants=dict(verdict=sv_gate,present=gating),
         taste_declaration=dict(verdict=sv_taste,advisory=True,a_rubric=t_a,b_governance=t_b,adr149_loop=t_c),
         evidence_ingest=dict(verdict=sv_ingest,advisory=True,status=ing_status,detail=ing_msg,contract_version=_CONTRACT_VERSION,envelope_path=_ENV_PATH),
+        layer_b_static=dict(tokens=dict(verdict=sv_tok,advisory=True,ok=b_tok),components=dict(verdict=sv_comp,advisory=True,ok=b_comp),states_declared=dict(verdict=sv_states,advisory=True,ok=b_states),drift=dict(verdict=sv_drift,advisory=True,ok=b_drift),semantic_a11y=dict(verdict=sv_sem,advisory=True,ok=b_sem)),
+        dedup=dict(verdict=sv_dedup,blocking=True,duplicate_declarations=dedup_dups,ok=dedup_ok),
         delegated_banxe_ui=delegated,awaits_operator=awaits),ensure_ascii=False,indent=2))
     raise SystemExit(0 if blocking==0 else 20)
 
@@ -124,6 +155,12 @@ print(f"{sv_pp} design_pipeline_agent: паспорт {'bound (allowed_skills)' 
 print(f"{sv_gate} стадии 3-5 gating: ссылка на quality-gate.sh + инварианты {'присутствует' if gating else 'ОТСУТСТВУЕТ'} (§6)")
 print(f"{sv_taste} taste declaration (ADVISORY, non-blocking): A-rubric={'✓' if t_a else '✗'} B-governance={'✓' if t_b else '✗'} ADR-149-loop={'✓' if t_c else '✗'} — advisory only; WCAG §5 + 4 governance checks remain the only hard gates")
 print(f"{sv_ingest} evidence ingest (ADVISORY, non-blocking): {ing_status} — {ing_msg}; per UIUX-RUNTIME-CONTRACT v{_CONTRACT_VERSION}; absent envelope = НЕИЗВЕСТНО, never runtime-passed (transport P2 [UNKNOWN])")
+print(f"{sv_tok} tokens (ADVISORY, static): design-system tokens declared={'✓' if b_tok else '✗'}")
+print(f"{sv_comp} components (ADVISORY, static): component catalog declared={'✓' if b_comp else '✗'}")
+print(f"{sv_states} states-declared (ADVISORY, static): empty/loading/error declared={'✓' if b_states else '✗'} (runtime coverage = banxe-ui evidence)")
+print(f"{sv_drift} drift (ADVISORY, static): canon↔design-system pointer consistent={'✓' if b_drift else '✗'}")
+print(f"{sv_sem} semantic/a11y-static (ADVISORY, static): a11y/semantic declared={'✓' if b_sem else '✗'}")
+print(f"{sv_dedup} DEDUP (ADR-102, BLOCKING): duplicate declarations={dedup_dups} — {'clean' if dedup_ok else 'DUPLICATE/unsourced-variant → BLOCKS'}")
 print("\nDELEGATED → banxe-ui (отдельный репо; фронтенд/axe-core НЕ выполняются здесь):")
 for x in delegated: print(f"  ⚪ {x}")
 print("AWAITS OPERATOR:")

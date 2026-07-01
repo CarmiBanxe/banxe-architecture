@@ -453,5 +453,6 @@
   "agent-factory-governance-uiux-runtime-contract__808f97c18c1d": 768,
   "agent-factory-governance-uiux-p2-ingest__5d944e35c8ad": 769,
   "agent-factory-sprintplan04-b2-dispatcher-wiring__d35eb4cf301d": 770,
-  "agent-factory-sprintplan05-b2-accepted-b5-unblock__e39e16b39391": 771
+  "agent-factory-sprintplan05-b2-accepted-b5-unblock__e39e16b39391": 771,
+  "agent-factory-governance-uiux-p2-static-dedup__98b9cbd3adbc": 772
 }
