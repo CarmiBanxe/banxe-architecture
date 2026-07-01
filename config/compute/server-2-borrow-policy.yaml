@@ -3,14 +3,22 @@
 #
 # Policy prose + canon integration: docs/governance/SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION.md
 # This file holds ALL thresholds as data. No threshold lives in code or in the policy doc.
-# PROPOSED DEFAULTS — for operator ratification (not final). Marked [RATIFY] where operator sign-off is due.
+# RATIFIED 2026-07-01 by operator (CEO) — proposed defaults accepted AS-IS. Only the project_critical SLO
+# remains [RATIFY] (project-owned, awaits project SLO — NOT invented here).
 #
 # SCOPE: policy data only. This file configures NO runtime enforcer/scheduler (that is a separate
 # downstream implementation slice, project/infra-side). It does NOT modify any LiteLLM gateway config,
 # does NOT touch hardware, banxe-ui, or uiux-pipeline.sh. Ground-truth is surfaced (pointer), not mutated.
 # ─────────────────────────────────────────────────────────────────────────────
 schema_version: "1.0.0"
-status: proposed            # proposed → ratified (operator flips after reviewing defaults)
+status: ratified            # operator (CEO) accepted the proposed defaults as-is, 2026-07-01
+ratification:
+  ratified: true
+  ratified_by: "operator (CEO)"
+  ratified_at: "2026-07-01"
+  basis: "operator accepted the proposed borrow-threshold defaults as-is"
+  outstanding:
+    - "workload_classes.project_critical.runtime_cap_s / project_critical SLO — project-owned, awaits project SLO (NOT invented)"
 
 # ── Compute pool (ground-truth SURFACED, not owned/mutated here) ──────────────
 pool:
@@ -114,14 +122,19 @@ observability:
   journal_events: [borrow_grant, borrow_deny, revocation, preempt_defer, runaway_kill, budget_exhausted, health_fail]
   journal_fields: [correlation_id, tenant, class, alias, duration_s, tokens, reason]
 
-# ── Items requiring operator ratification / [НЕИЗВЕСТНО] ──────────────────────
+# ── Ratification ledger for the thresholds ────────────────────────────────────
 ratify:
-  - key: "workload_classes.project_critical.runtime_cap_s / project_critical SLO"
-    note: "[RATIFY] exact project_critical SLO is operator/project-owned — null=uncapped is a placeholder default"
+  # RATIFIED 2026-07-01 by operator (CEO) — accepted as-is (values pinned, [RATIFY] cleared):
   - key: "governance.factory_borrow.*"
-    note: "[RATIFY] all borrow thresholds are proposed defaults, not final"
-  - key: "governance.factory_borrow.max_duty_cycle"
-    note: "[RATIFY] 0.30 anti-monopoly cap is a proposed default"
+    status: ratified
+    note: "RATIFIED 2026-07-01 (operator/CEO): concurrent_ceiling=1, idle_grace_s=90, drain_deadline_s=120, max_runtime_s=900, daily_budget_tokens=2000000, runaway_kill_after_s=1200, max_duty_cycle=0.30"
+  - key: "governance.project_batch.max_duty_cycle"
+    status: ratified
+    note: "RATIFIED 2026-07-01 (operator/CEO): 0.60"
+  # STILL OUTSTANDING — project-owned, not invented:
+  - key: "workload_classes.project_critical.runtime_cap_s / project_critical SLO"
+    status: RATIFY
+    note: "[RATIFY] exact project_critical SLO is project-owned — awaits project SLO; null=uncapped is a placeholder default, NOT ratified"
 open_questions_out_of_scope:
   - "evo2-headless-claude host question — separate infra ticket, NOT decided here"
   - "runtime enforcer / scheduler that executes admit/drain/deny/kill — downstream implementation slice"
