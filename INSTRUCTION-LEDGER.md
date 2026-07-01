@@ -22294,3 +22294,71 @@ Added row:
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 777) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T19:00:00Z` > main max. Fresh worktree off origin/main `ee99132` (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — policy doc + config-as-data + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next: operator ratifies config defaults; then the runtime-enforcer slice (project/infra-side, downstream).**
 - **Refs:** `docs/governance/SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION.md`; `config/compute/server-2-borrow-policy.yaml`; ADR-154; TERMINAL-OWNERSHIP; CONFLICT-LEDGER; agents.md; ADR-102/143/143-A/144; CLAUDE.md §10/§11; #900. Operator directive 2026-07-01 (server-2 package authorized).
+
+---
+
+### IL-779 - agent-factory-crt2planes-plan1-plan2-amendment @ 2026-07-01T20:00:00Z
+
+- **il_ts:** 2026-07-01T20:00:00Z
+- **session_id:** agent-factory-crt2planes-plan1-plan2-amendment
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-crt2planes-plan1-plan2-amendment/IL-2026-07-01T18-30-00Z--abd8f6.md`
+
+### IL — COMPUTE-ROUTING-TAXONOMY §5 amendment (two compute planes, 2026-07-01)
+
+**Date:** 2026-07-01
+**Branch:** agent/factory/crt2planes/plan1-plan2-amendment
+**Scope:** docs-only. ADR-102 reconcile-not-duplicate applied to an existing merged doc.
+
+- **Instrukciya:** Amend the existing `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md`
+  (merged as PR #871 / IL-731) by APPENDING one new dated section that adds ONLY the
+  net-new canon the earlier taxonomy lacks. Do NOT duplicate §1/§2/§3. Framing is
+  factory-side (Terminal A orchestrates); NO runtime, NO LiteLLM/ollama config, NO merge.
+
+- **Shagi:**
+  1. Branch `agent/factory/crt2planes/plan1-plan2-amendment` off `origin/main` (ADR-060
+     namespace).
+  2. Append `## §5 — Two compute planes (amendment 2026-07-01)` to
+     `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md` (~65 lines):
+     - §5.1 Plan-1 = Claude-Code build-dispatch (Anthropic API, NOT ollama/LiteLLM;
+       §1 alias table does NOT apply; evo1/evo2 are ADR-103 VENUES not model targets;
+       parallelism lever = Claude-CLI + durable `/login` per host).
+     - §5.2 Plan-2 = LiteLLM/local-ollama (existing §1/§2 — reference only; live gap:
+       `ollama ps` on evo2 EMPTY, 235b idle, heavy load defaults to 70b; precondition:
+       warm 235b before flipping callers to `project-reason`).
+     - §5.3 RPC mesh scaffolding up-but-idle (evo2 rpc-server :50052 + llama-server
+       :8082; evo1 LiteLLM :4000); confirm `project-reason` → distributed RPC master.
+     - §5.4 Verified cluster facts (Legion RTX 4070 ~2%; evo1 Strix-Halo iGPU + Claude
+       CLI present; evo2 Strix-Halo iGPU + 235b/70b models present + Claude CLI ABSENT).
+     - §5.5 Preconditions AWAITS-OPERATOR/factory (evo2 Claude CLI + `/login`; warm 235b
+       + working GPU-util read; confirm `reasoning-235b` → RPC master). NOT actioned.
+     - §5.6 Cross-refs ADR-103 / ADR-018 / FA-02 / ADR-153.
+  3. Append one new tail shard under `ledger/entries/…` (this file). Front-matter
+     `il_ts` strictly > frozen origin/main max (`2026-07-01T17:30:00Z`).
+  4. Regenerate `INSTRUCTION-LEDGER.md` + `ledger/IL-SEQUENCE.json` via
+     `python3 ledger/build_ledger.py` from repo root. IL number minted from
+     `max(origin/main)=774 → 775` provisional (ADR-119; NEVER hardcode `[IL-NNN]`).
+  5. `python3 ledger/build_ledger.py --check` MUST exit 0.
+  6. Commit, push branch, `gh pr create --draft`. DO NOT merge, DO NOT mark ready.
+
+- **Proof:**
+  - `git branch --show-current` → `agent/factory/crt2planes/plan1-plan2-amendment`
+  - `python3 ledger/build_ledger.py --check` → `ledger-build check OK`
+  - `git diff --stat origin/main..HEAD` → 3 files (1 doc amend + 1 new shard + 1
+    regenerated ledger). Removed=0. Append-only per I-24.
+
+- **Deviation:** None. Duplication Audit (ADR-102): `COMPUTE-ROUTING-TAXONOMY.md` already
+  canonises Plan-2 (§1 alias table, §2 task-routing guide, §3 activation-gap register). The
+  net-new material (Plan-1 = Claude-Code build-dispatch, evo2-CLI blocker, 235b-idle
+  live-gap, RPC-mesh readiness) is NOT covered by §1–§4 and is appended as §5 without
+  restating any table. Decision per match: keep §1–§4 as-is; add §5.
+
+- **Blocker:** None (this amendment). Downstream operator-blockers listed in §5.5 are
+  AWAITS-OPERATOR/factory and NOT actioned by this doc.
+
+- **Refs:** ADR-102 (dup-audit reconcile-not-duplicate), ADR-103 (server-only / venue),
+  ADR-059-A (sharded ledger append-only), ADR-060 (branch namespace), ADR-018 / FA-02
+  (LiteLLM aliases), ADR-153 (terminal topology), ADR-119 (stable IL numbering),
+  I-24 (append-only), I-32 / I-33 (LiteLLM :4000 single entrypoint), PR #871 / IL-731
+  (source doc creation).

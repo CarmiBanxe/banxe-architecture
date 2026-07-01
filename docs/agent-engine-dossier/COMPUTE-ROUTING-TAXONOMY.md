@@ -142,3 +142,72 @@ The following gaps prevent immediate production use of this taxonomy. Each gap h
 4. **Lineage:** Per ADR-046, exactly one `AgentDecisionRecord` per fusion call (candidates, judge scores, chosen synthesis, Ruflo verdict, total cost). Carries `process_ref` to resolved business process.
 
 5. **Activation sequence:** GAP-COMPUTE-01 (deploy aliases) → GAP-COMPUTE-02 (meet agents.md enable-conditions) → ADR-FUSION-01 (WG/CEO accept + Terminal-A infra).
+
+---
+
+## §5 — Two compute planes (amendment 2026-07-01)
+
+Additive amendment. Does NOT restate §1/§2. Names the second plane the earlier taxonomy did
+not cover (Claude-Code build-dispatch) and records the live activation-gaps that make the
+existing Plan-2 aliases only partially usable today. Framing is factory-side (Terminal A
+orchestrates); this section MUST NOT be read as mutating runtime — see safety canon.
+
+### §5.1 — Plan 1: Claude-Code build-dispatch (NOT covered by §1)
+
+- `claude -p` (headless Claude-Code) is inference against the **Anthropic API (Claude)**. It
+  is **not** ollama/LiteLLM and does not resolve through :4000. The §1 alias table
+  (`factory-*`, `project-reason`) is scoped to local ollama models and does **NOT** apply to
+  Claude-Code build-dispatch.
+- Routing a Claude build "to the 235b on evo2" is a **category error**: `qwen3:235b-a22b` is a
+  local ollama model on evo2, unrelated to Claude-API inference. `factory-heavy` /
+  `project-reason` cannot be used to steer a Claude-Code build.
+- **evo1 / evo2 are ADR-103 checkout VENUES**, not model targets. Selecting a host for a
+  Claude-Code build is **venue-routing** (which secured server holds the checkout, secrets,
+  and CLI login), not model-routing. Conflating the two produces the category error above.
+- The real parallelism lever for Plan 1 is **Claude-Code CLI + a durable `/login` on each
+  intended host**, not any local-model swap. Verified 2026-07-01: `evo1` has
+  `/usr/bin/claude`; `evo2` returns `claude: command not found`. Consequence: **parallel
+  Claude-Code builds across evo1 and evo2 are BLOCKED** until Claude-Code CLI is installed
+  and a durable `/login` is completed on evo2.
+
+### §5.2 — Plan 2: LiteLLM / local-ollama (existing §1/§2, activation gaps today)
+
+Do not restate the §1 table. Net-new today (2026-07-01):
+
+- Heavy routes exist on paper (`project-reason → qwen3:235b-a22b` on evo2;
+  `factory-heavy → llama3.3:70b` LB). Live check: `ollama ps` on evo2 returned **empty** —
+  235b is **not currently served**. Task-class → alias binding is advisory, so heavy load
+  effectively defaults to `factory-heavy` (70b) and `project-reason` sits idle.
+- **Precondition to actually use `project-reason`:** warm `qwen3:235b-a22b` on evo2 (or the
+  RPC master) and confirm the served endpoint before routing high-stakes reasoning to it. Do
+  NOT flip callers to `project-reason` on the assumption that §1 alone activates it.
+
+### §5.3 — RPC mesh (verified 2026-07-01, up-but-idle)
+
+Scaffolding is **up but idle**: `evo2` runs `rpc-server` on `:50052` and `llama-server` on
+`:8082`; `evo1` runs LiteLLM on `:4000`. Confirm that `project-reason` (a.k.a.
+`reasoning-235b`) resolves to the **distributed RPC master** — and not to a dead standalone
+process — before relying on the alias for production routing.
+
+### §5.4 — Verified cluster facts (2026-07-01, read-only)
+
+| Host   | CPU / RAM         | GPU / accel            | Claude-Code CLI     | Local ollama models present         |
+|--------|-------------------|------------------------|---------------------|-------------------------------------|
+| Legion | 20 cpu / 54 GB    | RTX 4070 8 GB (~2 % util) | present            | (per §1: `qwen3:4b` `factory-fast`) |
+| evo1   | 32 cpu / 123 GB   | Strix Halo iGPU        | **present** (`/usr/bin/claude`) | (per §1: iGPU-hosted 30b/70b/coder) |
+| evo2   | 32 cpu / 123 GB   | Strix Halo iGPU        | **ABSENT** (`command not found`) | `qwen3:235b-a22b` + `llama3.3:70b` |
+
+### §5.5 — Preconditions (AWAITS-OPERATOR / factory; NOT actioned by this doc)
+
+1. Install Claude-Code CLI on `evo2` and complete a **durable `/login`** — unblocks Plan-1
+   parallelism (Claude builds on evo1 and evo2 concurrently).
+2. Warm / confirm `qwen3:235b-a22b` **live** on evo2 and restore a working GPU-utilisation
+   read (`rocm-smi` / `amd-smi` returned no output on 2026-07-01).
+3. Confirm `reasoning-235b` (a.k.a. `project-reason`) resolves to the **RPC master** and not
+   to a dead standalone before routing any production traffic to it.
+
+### §5.6 — Cross-references
+
+- **ADR-103** — server-only refactoring / venue policy (evo1 / evo2 as checkout venues).
+- **ADR-018 / FA-02** — canonical LiteLLM aliases (Plan-2 basis; see §1).
+- **ADR-153** — terminal topology canon (Terminal-A orchestrates; runtime not mutated here).
