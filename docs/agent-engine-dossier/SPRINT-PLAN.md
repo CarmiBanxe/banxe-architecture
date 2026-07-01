@@ -25,10 +25,10 @@
 | Sprint-A A5 | Passport revisions — PR #865, IL-695, **ACCEPTED** ✅ (IL-765, PR #917) |
 | Sprint-E E1 | Planner passport L1→L2 routing tests — PR #914, IL-762, **MERGED** ✅ |
 | Sprint-B B1 | Qdrant deploy — infra#3 OPEN (operator merge + evo1 execute pending) |
-| Sprint-B B2 | Dispatcher runtime — OPEN (gate-in: A5 ✅ — ready to start) |
+| Sprint-B B2 | Dispatcher runtime — infra#27, IL-770, **ACCEPTED** ✅ (92 tests / 100% cov, semgrep 0) |
 | Sprint-B B3 | Lerian MCP runtime — infra#7 OPEN (CI running, 34 tests / 98%) |
 | Sprint-B B4 | gate-exec enforcement — infra#6 OPEN (CI running, 15 tests / 100%) |
-| Sprint-B B5 | A2A bus RedisStreams — BLOCKED (gate-in: B2) |
+| Sprint-B B5 | A2A bus RedisStreams — OPEN (gate-in: B2 ✅ cleared — ready to start) |
 | Sprint-B B6 | G-CANON-BYPASS fix — infra#5 OPEN (operator merge + CTIO execute pending) |
 | Sprint-B B7 | G-GUARDIAN-WEBHOOK-MISSING — infra#4 OPEN (title fix by operator pending) |
 | Sprint-B B8 | Temporal saga runner — BLOCKED (ADR-133 approval) |
