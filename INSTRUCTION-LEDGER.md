@@ -22897,3 +22897,27 @@ MQFIX — Correct Merge-Queue advice inaccuracy in ERROR-RECONCILIATION-ROADMAP-
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 795) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T02:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — assessment fact-record + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (only if operator authorizes, separate tasks): (a) convert legacy skills → SKILL.md; (b) scope Hyperbrowser adoption under ADR-135 gate. Neither is this record.**
 - **Refs:** `docs/governance/HARNESS-INTEGRATION-ASSESSMENT.md`; SKILLS-MATRIX.md / SKILLS-OPERATING-MODEL.md / SKILLS-ORCHESTRATION.md (IL-042/044); `.claude/rules/agents.md` (skills governance/orchestration); ADR-135; ADR-117; CLAUDE.md §9; ADR-102/119. Operator directive 2026-07-02 (document the harness state — fact record only).
+
+---
+
+### IL-797 - agent-factory-governance-eval-hyperbrowser-harness @ 2026-07-02T02:30:00Z
+
+- **il_ts:** 2026-07-02T02:30:00Z
+- **session_id:** agent-factory-governance-eval-hyperbrowser-harness
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-eval-hyperbrowser-harness/IL-2026-07-02T02-30-00Z--eval-hyperbrowser-harness.md`
+
+### [OWNER: A] Eval Hyperbrowser/harness adoption — governance decision-doc (adopt-vs-defer, DEFER default, AWAITS-OPERATOR)
+- **Decision:** Per operator "scope hyperbrowser/harness adoption", authored `docs/governance/ADR-EVAL-HYPERBROWSER-HARNESS.md` — a governance DECISION-doc under ADR-135 evolution gate + CLAUDE.md §9 (external adoption + HITL) + ADR-117 perimeter, continuing HARNESS-INTEGRATION-ASSESSMENT (#948, IL-796). **This is a DECISION, not an installation**: installs 0, downloads 0, creates no `.claude/skills/harness`, fetches no external SKILL.md, touches no perimeter/tool. **PREPARE-ONLY**, Draft PR. Owner A.
+- **What evaluated:** Hyperbrowser CLI (browser automation, absent) + `/harness` Claude Code plugin (self-correcting: agent records its own failures — wrong paths/missing scripts/false assumptions — and AUTO-writes CLAUDE.md); SKILL.md source = external `github.com/hyperbrowserai/examples`.
+- **Value (honest):** self-correcting-harness pattern ≈ what the factory does by hand (corrective runbook #900, manual lesson-capture into canon); automating lesson-capture is a real benefit — the risk is the delivery mechanism, not the idea.
+- **Risks (not minimised):** dual-use (browser automation → security canon + ADR-117 perimeter, external services/data); untrusted external code (blind third-party SKILL.md download = unreviewed code in harness trust boundary); auto-CLAUDE.md mutation (conflicts Config-over-Hardcoding §10 + "CLAUDE.md = governance not auto-generated"; risk of overwriting operator rules in a CODEOWNERS-protected file); supply-chain (external binary + plugin + third-party skill = new attack surface in a regulated FCA/EMI repo).
+- **Guardrails IF adopted (not enacted):** install = operator/Terminal-A only under gate (never factory); external SKILL.md reviewed before entering `.claude/skills` (no blind download); `/harness` MUST NOT auto-mutate canonical CLAUDE.md — output to separate non-canon file, operator ratifies, no auto-commit into governance; sandbox/read-only + egress limits + never on live data; passes quality-gate + I-01..I-28 + ADR-135.
+- **Recommendation:** **DEFER (default)** until (a) external SKILL.md reviewed, (b) auto-CLAUDE.md-mutation guardrailed, (c) dual-use/perimeter risk explicitly accepted by operator. Final adopt/defer = **AWAITS-OPERATOR** (CLAUDE.md §9 HITL + ADR-135) — NOT fabricated here. Noted: the lesson-capture value can be pursued factory-native (propose→operator-ratify, non-canon file) without external-code/dual-use/auto-mutation risk — a separate factory-authorable option (a/b/c = operator's choice, [НЕИЗВЕСТНО]).
+- **Boundaries:** NOTHING installed/downloaded; `.claude/skills` NOT touched; no `.claude/skills/harness` created; ADR-117 perimeter NOT touched; no adopt/defer decision taken. Only the decision-doc + this shard. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references HARNESS-INTEGRATION-ASSESSMENT (#948), ADR-135, CLAUDE.md §9/§10, ADR-117, safety-rules/security canon, corrective runbook #900, CODEOWNERS — restates none; no parallel policy, no code.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (lesson #933).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 796) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T02:30:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — decision-doc + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Final adopt/defer AWAITS-OPERATOR. Next (only if operator decides): adopt under §4 guardrails (operator/infra install), OR factory-native lesson-capture alternative, OR neither.**
+- **Refs:** `docs/governance/ADR-EVAL-HYPERBROWSER-HARNESS.md`; HARNESS-INTEGRATION-ASSESSMENT.md (#948/IL-796); ADR-135; CLAUDE.md §9/§10; ADR-117; safety-rules.md; #900; CODEOWNERS; ADR-102/119. Operator directive 2026-07-02 (scope hyperbrowser/harness adoption — decision-doc only).
