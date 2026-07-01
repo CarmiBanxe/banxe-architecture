@@ -1,0 +1,20 @@
+---
+il_ts: 2026-07-01T18:00:00Z
+session_id: agent-factory-governance-uiux-evidence-emission-spec
+source: CEO
+status: DONE
+---
+### [OWNER: A] UI/UX evidence-emission handoff spec — banxe-ui → factory contract (transport = default)
+- **Decision:** Per operator "transport = default", authored `docs/governance/UIUX-EVIDENCE-EMISSION-SPEC.md` — a **governance handoff document IN banxe-architecture** stating precisely what `banxe-ui` must emit so the evidence-ingest check (#921) in `uiux-pipeline.sh` accepts it and the UI/UX audit block turns runtime `unknown` into real `pass`/`fail`. **Transferable emission spec for the project terminal** — NOT banxe-ui code, NOT an emitter, NOT a runner. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Transport selected (closes P1 [НЕИЗВЕСТНО]):** `banxe-ui` commits the envelope at repo-relative `evidence/uiux-findings.json` — the **exact ingest default** (`UX_EVIDENCE_ENVELOPE` fallback, #921) — read read-only by the factory (no cross-repo write, no secret, no fetch). Signed-manifest noted as a possible later strengthening, not required for the first loop.
+- **Envelope format:** strictly per `schemas/uiux-audit-findings.schema.json` (P0, #918), `contract_version "1.0.0"` — `{contract_version, commit_sha, generated_at, results[]}`, each result `{requirement, status, severity, artefact_ref, confidence, file_paths, impacted_flows, remediation}`; severity read from `UIUX-GATE-POLICY.md` §3 (not invented); `additionalProperties:false` honoured.
+- **First slice (proof-of-loop):** `banxe-ui` emits ONE real `axe_core_wcag_aa` result (severity blocking) with `status` from the **existing quality-gate CI** (axe-core+jest-axe, verified on main `b9645a2`) — lights the **hard WCAG gate end-to-end** (ingest flips from `unknown` to real pass/fail).
+- **Freshness (P0 honesty boundary):** `commit_sha` must match the audited frontend commit; stale ⇒ factory treats as `unknown`, never `pass`. Remaining requirements (Playwright / visual-regression / viewport / states) emitted as `status:unknown` until their runners exist — NOT asserted passed (separate project-side slices).
+- **Acceptance (project terminal):** envelope schema-valid; `commit_sha` fresh; ingest #921 moves `axe_core_wcag_aa` from `unknown` → real pass/fail; other requirements remain `unknown` correctly.
+- **Marked [НЕИЗВЕСТНО] (project-side, not invented):** exact envelope placement inside the banxe-ui tree; the CI step/job that generates+commits it; if/when to strengthen to a signed manifest.
+- **Boundaries:** banxe-ui NOT touched (no code/runner/emitter/PR/files — ADR-117 perimeter); `uiux-pipeline.sh` NOT touched; P0 schema NOT touched; P0/P1 docs NOT touched; no runtime asserted passed without fresh evidence. Only the handoff doc + this shard. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references UIUX-RUNTIME-CONTRACT.md (P1, #920), findings.schema.json + UIUX-GATE-POLICY.md (P0, #918), ingest in uiux-pipeline.sh (#921), UIUX-AUDIT-BLOCK-SPEC.md (#916), Layer D/E (#927) — restates none; no parallel contract, no schema copy, no new agent.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Change = UIUX-EVIDENCE-EMISSION-SPEC.md + this shard.
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 774) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T18:00:00Z` > main max `2026-07-01T17:30:00Z`. Fresh worktree off origin/main `1ebf8c1` (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — emission handoff spec + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next: project terminal builds the emitter in banxe-ui (operator-gated, ADR-117) per this contract; then the 4 runner slices.**
+- **Refs:** `docs/governance/UIUX-EVIDENCE-EMISSION-SPEC.md`; UIUX-RUNTIME-CONTRACT.md (#920); UIUX-GATE-POLICY.md + schema (#918); ingest (#921); UIUX-AUDIT-BLOCK-SPEC.md (#916); Layer D/E (#927); ADR-102/117; #900. Operator directive 2026-07-01 (transport = default).
