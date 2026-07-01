@@ -48,4 +48,6 @@ No edit to the behavioural rules of AGENTS.md/`.claude/rules/agents.md` (only an
 
 AGENTS.md / `.claude/rules/agents.md` (Best-Single-Artifact, reconciled); IL-7840-7842 / IL-7322-7323 (superseded for topology); `PROMPT-CANON-PROJECT.md`, `OPERATOR-PLAYBOOK.md`, `ROADMAP.md`, `ADR-044` (Sub-terminal naming, reconciled); ADR-120/121/060, parallel-session-isolation Rules 1–7, §71; BANXE-TRADING-001 (Terminal B mandate). ADR-102 (this is a reconcile-mapping, not a duplicate).
 
+- Complementary ownership axis — `docs/governance/TERMINAL-OWNERSHIP.md` + `docs/governance/TERMINAL-OWNERSHIP-AND-ANTIDRIFT.md` (registry series #903/#905/#913, 7/7 FINAL). Topology answers WHAT the terminals are (this ADR); the registry answers WHO owns which write-zone. The two reconcile bidirectionally (ADR-102 mapping, not duplication).
+
 > **Governance:** PROPOSED. The factory prepared this record (§9 — LLM prepares materials, human decides). It declares the operator's stated topology as the SoT and reconciles the legacy terms; it does **not** silently override the behavioural "Right Terminal" canon (only an additive pointer). **Operator merge = enactment** (§1/§9). Prepared as a **DRAFT PR — DO NOT MERGE** without operator sign-off.
