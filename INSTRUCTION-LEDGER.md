@@ -22134,3 +22134,28 @@ Added row:
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 770) → IL-771 via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T16:00:00Z` > main max `2026-07-01T15:15:00Z`. Fresh worktree off origin/main `7216ddf` (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — Layer-B + dedup + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next: Phase 4 (consolidated report + orchestration) repo-side, OR project-side runner phases (banxe-ui, operator-gated).**
 - **Refs:** `scripts/uiux-pipeline.sh`; UIUX-AUDIT-BLOCK-SPEC.md (#916); UIUX-GATE-POLICY.md + schema (#918); UIUX-RUNTIME-CONTRACT.md (#920); ingest (#921); ADR-102/117; #900. Operator directive 2026-07-01 (Phase 2 repo-side).
+
+---
+
+### IL-773 - agent-factory-sprintplan06-b5-dashboard-accepted @ 2026-07-01T17:00:00Z
+
+- **il_ts:** 2026-07-01T17:00:00Z
+- **session_id:** agent-factory-sprintplan06-b5-dashboard-accepted
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintplan06-b5-dashboard-accepted/IL-2026-07-01T17-00-00Z--sprintplan06-b5-dashboard-accepted.md`
+
+### IL-773 — Correct Sprint-B B5 dashboard row to ACCEPTED (ADR-150)
+
+- **Task:** Fix §0 dashboard: PR #923 (IL-771) merged with B5 → OPEN (incorrect).
+- **Root cause:** `a2a_bus/redis_streams.py` (`RedisStreamsA2ABus`) was already merged to
+  banxe-ai-infrastructure main via infra#25 *before* B2. The IL-771 commit was amended
+  to ACCEPTED but force-pushed after PR #923 was already merged and branch auto-deleted.
+  GitHub re-created the branch without a PR; the incorrect OPEN content reached main.
+- **Change:** `docs/agent-engine-dossier/SPRINT-PLAN.md` §0 dashboard row B5:
+  `OPEN (gate-in: B2 ✅ cleared — ready to start)` →
+  `infra#25, **ACCEPTED** ✅ (RedisStreamsA2ABus on main; BUS_MODE=redis wired in app.py)`
+- **Evidence:** `a2a_bus/redis_streams.py` present on main; `tests/test_a2a_bus/test_redis_streams.py`
+  green; semgrep 0 findings on a2a_bus/ — confirmed by operator gate-check (2026-07-01).
+- **Gate-out:** Dashboard reflects verified accepted state; append-only (I-24).
+- **Status:** PREPARED — operator HITL before merge.
