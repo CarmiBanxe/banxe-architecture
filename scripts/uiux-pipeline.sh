@@ -6,7 +6,9 @@
 #   • all 5 stages declared in §6 (parsed);
 #   • canonical input artifacts present (BANXE-UI-UX-RESEARCH/SYSTEM + the canon);
 #   • design_pipeline_agent passport present + bound (allowed_skills);
-#   • stages 3-5 gating references quality-gate.sh + invariants (wiring statement).
+#   • stages 3-5 gating references quality-gate.sh + invariants (wiring statement);
+#   • [advisory] evidence-ingest: findings envelope per UIUX-RUNTIME-CONTRACT (P1, v1.0.0) —
+#     absent envelope => 'unknown', NEVER runtime-passed (transport [UNKNOWN], P2 project-side).
 #
 # HONESTY BOUNDARY — frontend lives in the SEPARATE banxe-ui repo:
 #   • DELEGATED → banxe-ui: Storybook deploy, design-token machine source
@@ -72,6 +74,29 @@ else:
 taste_ok=t_a and t_b and t_c
 sv_taste="🟢" if taste_ok else "🟡"   # advisory: 🟡 worst case — NEVER 🔴, NEVER blocking
 
+# ADVISORY (non-blocking) — evidence-ingest per UIUX-RUNTIME-CONTRACT.md (P1, contract_version 1.0.0).
+# The findings envelope is emitted by banxe-ui (project-side); transport/location is [UNKNOWN] (P2 decision).
+# Checks a declared/overridable path; ABSENCE => 'unknown', NEVER asserts runtime as passed. NEVER feeds `blocking`/exit.
+_ENV_PATH=g("UX_EVIDENCE_ENVELOPE") or "evidence/uiux-findings.json"
+_CONTRACT_VERSION="1.0.0"
+def _ingest():
+    p=os.path.join(ROOT,_ENV_PATH)
+    if not os.path.isfile(p):
+        return ("unknown","envelope absent (transport [UNKNOWN], P2 project-side) — runtime NOT asserted passed")
+    try: env=json.load(open(p,encoding='utf-8'))
+    except Exception as e: return ("unknown",f"envelope unreadable: {e}")
+    missing=[k for k in ("contract_version","commit_sha","generated_at","results") if k not in env]
+    if missing: return ("unknown",f"envelope missing required fields {missing}")
+    if env.get("contract_version")!=_CONTRACT_VERSION:
+        return ("unknown",f"contract_version {env.get('contract_version')!r} != {_CONTRACT_VERSION} — re-emit")
+    nres=len(env.get("results") or [])
+    return ("present",f"contract {env['contract_version']}, commit {str(env.get('commit_sha'))[:7]}, {nres} results (freshness vs frontend commit = P2 wiring)")
+if SELF:
+    ing_status,ing_msg=("present","self-test")
+else:
+    ing_status,ing_msg=_ingest()
+sv_ingest="🟢" if ing_status=="present" else "🟡"   # advisory: 🟡 when unknown/absent — NEVER 🔴, NEVER blocking
+
 n_stage=len(stages); n_in=len(present_inputs)
 blocking = (n_stage!=5) + (n_in!=len(INPUTS)) + (0 if passport_bound else 1) + (0 if gating else 1)
 def v(ok): return "🟢" if ok else "🔴"
@@ -87,6 +112,7 @@ if JSON:
         design_pipeline_agent=dict(verdict=sv_pp,bound=passport_bound),
         gating_quality_gate_invariants=dict(verdict=sv_gate,present=gating),
         taste_declaration=dict(verdict=sv_taste,advisory=True,a_rubric=t_a,b_governance=t_b,adr149_loop=t_c),
+        evidence_ingest=dict(verdict=sv_ingest,advisory=True,status=ing_status,detail=ing_msg,contract_version=_CONTRACT_VERSION,envelope_path=_ENV_PATH),
         delegated_banxe_ui=delegated,awaits_operator=awaits),ensure_ascii=False,indent=2))
     raise SystemExit(0 if blocking==0 else 20)
 
@@ -97,6 +123,7 @@ for p in INPUTS: print(f"      {'✓' if p in present_inputs else '✗'} {p}")
 print(f"{sv_pp} design_pipeline_agent: паспорт {'bound (allowed_skills)' if passport_bound else 'НЕ привязан/отсутствует'}")
 print(f"{sv_gate} стадии 3-5 gating: ссылка на quality-gate.sh + инварианты {'присутствует' if gating else 'ОТСУТСТВУЕТ'} (§6)")
 print(f"{sv_taste} taste declaration (ADVISORY, non-blocking): A-rubric={'✓' if t_a else '✗'} B-governance={'✓' if t_b else '✗'} ADR-149-loop={'✓' if t_c else '✗'} — advisory only; WCAG §5 + 4 governance checks remain the only hard gates")
+print(f"{sv_ingest} evidence ingest (ADVISORY, non-blocking): {ing_status} — {ing_msg}; per UIUX-RUNTIME-CONTRACT v{_CONTRACT_VERSION}; absent envelope = НЕИЗВЕСТНО, never runtime-passed (transport P2 [UNKNOWN])")
 print("\nDELEGATED → banxe-ui (отдельный репо; фронтенд/axe-core НЕ выполняются здесь):")
 for x in delegated: print(f"  ⚪ {x}")
 print("AWAITS OPERATOR:")
