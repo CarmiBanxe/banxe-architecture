@@ -13,6 +13,15 @@
 #     semantic-a11y (on the design-system docs — NOT banxe-ui runtime);
 #   • [BLOCKING] DEDUP (ADR-102): duplicate / unsourced-variant declarations block (the ONLY new
 #     hard-gate term; all other Layer-B checks are advisory and never affect exit).
+#   • [Layer D · spec #916] CONSOLIDATED REPORT: every verdict above aggregated into one findings[] array
+#     shaped to schemas/uiux-audit-findings.schema.json (result: requirement/status/severity + file_paths/
+#     confidence/remediation; category/source are report annotations) + one `decision`
+#     (overall/blocking_count/one_next_step). READ-ONLY aggregation — introduces NO new gate; the
+#     `blocking` counter and exit codes are already fixed above and are NOT changed here.
+#   • [Layer E · spec #916] the `decision` is the single repo-side merge-readiness surface the factory
+#     (left terminal) consumes; it binds existing canon by pointer only — CONFLICT-LEDGER (deconfliction) ·
+#     TERMINAL-OWNERSHIP (zones) · ADR-154 (arbiter) · UIUX-GATE-POLICY (severity map) · dedup-before-merge
+#     = the ADR-102 blocking term. No parallel governance model is introduced.
 #
 # HONESTY BOUNDARY — frontend lives in the SEPARATE banxe-ui repo:
 #   • DELEGATED → banxe-ui: Storybook deploy, design-token machine source
@@ -134,6 +143,45 @@ overall="🟢" if blocking==0 else "🔴"
 delegated=["Storybook deploy (banxe-ui)","design-token machine source (banxe-ui/packages/design-tokens)","axe-core accessibility CI (banxe-ui)"]
 awaits=["Head of Design — RACI holder (§7.2)","Design System Lead — named owner (§7.2)"]
 
+# ── Layer D (spec #916): CONSOLIDATED REPORT — aggregates every verdict above into one findings[] array shaped
+# to schemas/uiux-audit-findings.schema.json. Core keys (requirement/status/severity/file_paths/confidence/
+# remediation) match the schema's result object exactly; category/source are report-only annotations. This is a
+# READ-ONLY re-projection of verdicts ALREADY computed — it adds NO gate; `blocking`/exit stay as fixed above.
+def _f(req,status,severity,category,source,paths,remediation,confidence=None):
+    d=dict(requirement=req,status=status,severity=severity,category=category,source=source,file_paths=list(paths),remediation=remediation)
+    if confidence is not None: d["confidence"]=confidence
+    return d
+_ps=lambda ok:"pass" if ok else "fail"       # blocking-class: satisfied→pass, else fail
+_pa=lambda ok:"pass" if ok else "advisory"   # advisory-class: satisfied→pass, else advisory (never fail/block)
+findings=[
+  _f("delivery_stages_5",_ps(n_stage==5),"blocking","governance","design-system-canon §6",[INPUTS[2]],"Declare all 5 §6 delivery stages in the canon" if n_stage!=5 else "clean",1.0),
+  _f("canonical_inputs",_ps(n_in==len(INPUTS)),"blocking","governance","this-repo",[p for p in INPUTS if p not in present_inputs] or INPUTS,"Restore missing canonical input artifact(s)" if n_in!=len(INPUTS) else "clean",1.0),
+  _f("design_pipeline_agent_passport",_ps(passport_bound),"blocking","governance","passport",[PASSPORT],"Bind allowed_skills in the passport" if not passport_bound else "clean",1.0),
+  _f("stage_gating_quality_invariants",_ps(gating),"blocking","governance","design-system-canon §6",[INPUTS[2]],"Reference quality-gate.sh + invariants in §6 stages 3-5" if not gating else "clean",1.0),
+  _f("duplication",_ps(dedup_ok),"blocking","duplication","ADR-102 / gate-policy §1",[_UXSYS],(f"Resolve {dedup_dups} duplicate/unsourced declaration(s) before merge" if not dedup_ok else "clean"),1.0),
+  _f("taste_rubric",_pa(taste_ok),"advisory","taste","UI-UX-DESIGN-SYSTEM-CANON §5A",[INPUTS[1],INPUTS[2]],"Complete taste A/B/C (advisory; θ=on-canon feeds only the impeccable loop, never promotion)" if not taste_ok else "clean"),
+  _f("tokens",_pa(b_tok),"advisory","static","spec #916 Layer-B",[_UXSYS],"Declare design tokens in the design-system doc" if not b_tok else "clean"),
+  _f("components",_pa(b_comp),"advisory","static","spec #916 Layer-B",[_UXSYS],"Declare the component catalog" if not b_comp else "clean"),
+  _f("state_coverage",_pa(b_states),"advisory","static","spec #916 Layer-B",[_UXSYS],"Declare empty/loading/error states (runtime coverage = banxe-ui evidence)" if not b_states else "clean"),
+  _f("drift",_pa(b_drift),"advisory","static","spec #916 Layer-B",[INPUTS[1],INPUTS[2]],"Reconcile canon↔design-system pointer" if not b_drift else "clean"),
+  _f("semantic_a11y_static",_pa(b_sem),"advisory","static","spec #916 Layer-B",[_UXSYS],"Declare a11y/semantic (WCAG runtime gate stays banxe-ui axe-core)" if not b_sem else "clean"),
+  _f("evidence_ingest",("pass" if ing_status=="present" else "unknown"),"advisory","runtime-evidence","UIUX-RUNTIME-CONTRACT v"+_CONTRACT_VERSION,[_ENV_PATH],ing_msg),
+]
+# One next step (deterministic): highest-severity OPEN finding — blocking-fail first (gate order above),
+# then advisory/unknown, else none. This is the ONE Best-Single-Artifact next action (CLAUDE.md §12).
+_open_block=[x for x in findings if x["severity"]=="blocking" and x["status"]!="pass"]
+_open_adv=[x for x in findings if x["severity"]=="advisory" and x["status"]!="pass"]
+if _open_block:
+    _n=_open_block[0]; one_next="[BLOCK] "+_n["requirement"]+": "+_n["remediation"]
+elif _open_adv:
+    _n=_open_adv[0]; one_next="[ADVISORY] "+_n["requirement"]+": "+_n["remediation"]
+else:
+    one_next="No action — 5 hard gates green · dedup clean · advisories satisfied and evidence known."
+decision=dict(overall=overall,blocking_count=blocking,
+    blocking_open=[x["requirement"] for x in _open_block],
+    advisory_open=[x["requirement"] for x in _open_adv],
+    one_next_step=one_next)
+
 if JSON:
     print(json.dumps(dict(overall=overall,blocking=blocking,selftest=SELF,
         stages=dict(verdict=sv_stage,count=n_stage,names=stages),
@@ -144,6 +192,7 @@ if JSON:
         evidence_ingest=dict(verdict=sv_ingest,advisory=True,status=ing_status,detail=ing_msg,contract_version=_CONTRACT_VERSION,envelope_path=_ENV_PATH),
         layer_b_static=dict(tokens=dict(verdict=sv_tok,advisory=True,ok=b_tok),components=dict(verdict=sv_comp,advisory=True,ok=b_comp),states_declared=dict(verdict=sv_states,advisory=True,ok=b_states),drift=dict(verdict=sv_drift,advisory=True,ok=b_drift),semantic_a11y=dict(verdict=sv_sem,advisory=True,ok=b_sem)),
         dedup=dict(verdict=sv_dedup,blocking=True,duplicate_declarations=dedup_dups,ok=dedup_ok),
+        consolidated=dict(findings=findings,decision=decision),
         delegated_banxe_ui=delegated,awaits_operator=awaits),ensure_ascii=False,indent=2))
     raise SystemExit(0 if blocking==0 else 20)
 
@@ -167,5 +216,15 @@ print("AWAITS OPERATOR:")
 for x in awaits: print(f"  ⚪ {x}")
 print("\nВалидатор проверяет ТОЛЬКО governance/process-сторону в этом репо; код фронтенда,")
 print("Storybook и axe-core CI — в banxe-ui (DEVSECOPS/quality-gate проектного CI).")
+# ── Layer D/E CONSOLIDATED DECISION SURFACE (spec #916) — the single repo-side merge-readiness signal.
+_nb=sum(1 for x in findings if x['severity']=='blocking'); _na=sum(1 for x in findings if x['severity']=='advisory')
+print(f"\n═══ CONSOLIDATED DECISION (Layer D/E) — {overall} · blocking={blocking} ═══")
+print(f"  findings: {len(findings)} (blocking-class={_nb}, advisory-class={_na}); severity map per UIUX-GATE-POLICY")
+if decision['blocking_open']: print(f"  ⛔ blocking-open: {', '.join(decision['blocking_open'])}")
+if decision['advisory_open']: print(f"  🟡 advisory-open: {', '.join(decision['advisory_open'])}")
+print(f"  ▶ NEXT (one action): {one_next}")
+print("  orchestration (Layer E): repo-side decision surface for the factory (left terminal); binds")
+print("  CONFLICT-LEDGER · TERMINAL-OWNERSHIP · ADR-154 · UIUX-GATE-POLICY by pointer; dedup-before-merge")
+print("  = ADR-102 blocking term above. No parallel governance model; no runtime asserted passed w/o evidence.")
 raise SystemExit(0 if blocking==0 else 20)
 PY
