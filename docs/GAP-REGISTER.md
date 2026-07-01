@@ -15,6 +15,7 @@
 Per FULL-PROJECT-INSTALLATION-AUDIT-2026-06-21: ~76% L2-complete. Code-gaps closed; all previously-OPEN GAPs have implementing services installed on evo1.
 Remaining work: L3-docs/recon-thin + external owner debts (GAP-079..086: BT-010 FCA RegData key, ufw/Tailscale ACL, ss1 CNIL, bus-factor, product C-02.1/C-37.3). These are owner/external — NOT code gaps.
 This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banxe-recon.timer enabled); GAP-088 BT-010 FCA key pending CEO/CFO; GAP-089 crypto-ledger Wave E deferred P3.
+This session (2026-07-02): GAP-042/043/044 → ✅ DONE (PRs #266/#267/#268 merged). GAP-088/089 formalized as table rows. GAP-090/091/092 new P1 runtime architecture gaps identified. GAP-080 description updated (backend seam EXISTS, DISABLED).
 
 ---
 
@@ -30,6 +31,7 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 | GAP-006 | K-gabriel: FCA Gabriel/RegData returns | Sprint 13 | CEO | Q2 2026 | 🟡 IN PROGRESS |
 | GAP-007 | F-finrpt: FCA regulatory returns (FIN-RPT) — IN PROGRESS 2026-06-21 — code services/regulatory_reporting (7 .py, ~7 tests); residual: FIN-RPT live submission needs FCA RegData key (BT-010) | Sprint 13 | CEO | Q2 2026 | 🔄 IN PROGRESS |
 | GAP-008 | Activate PaymentRouterAgent — get Modulr API key (BT-001) | Sprint 12 | COO | Sprint 12 | ❌ BLOCKED |
+| GAP-088 | **BT-010 FCA RegData API key** — FCA Gabriel submission key pending CEO+CFO approval. Blocks GAP-006 (K-gabriel) and GAP-007 (F-finrpt) live regulatory reporting. services/gabriel/ and services/regulatory_reporting/ code-complete; manual submission only until key obtained. | Sprint-13 | CEO+CFO | Q2-2026 | 🔴 BLOCKED |
 
 ---
 
@@ -103,7 +105,7 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 | GAP-039 | H-support: Support ticketing + SLA | Sprint 14 | CEO | 🔄 IN PROGRESS |
 | GAP-040 | L-lake: ClickHouse Data Lake — schema/audit layer DONE; residual = ELT/streaming/lineage (FA-03 dbt, FA-19 Airbyte, FA-10/15 Debezium+Kafka, FA-18 OpenMetadata, FA-20 Airflow) | Sprint 12 | CTIO | ⚠️ IN PROGRESS |
 | GAP-041 | M-gateway: Public REST API + OpenAPI spec (gateway infra DONE in banxe-emi-stack services/api_gateway, GAP-023; residual: unified Public-API governance) | Sprint 14 | CTIO | 🔄 IN PROGRESS |
-| GAP-042 | M-sandbox: Sandbox + mock payment rails | Sprint 14 | CTIO | 🔄 IN PROGRESS |
+| GAP-042 | M-sandbox: Sandbox + mock payment rails | Sprint 14 | CTIO | ✅ DONE — banxe-emi-stack PR #266 merged 2026-06-30 |
 
 ---
 
@@ -111,8 +113,9 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 
 | ID | Gap | Sprint | Owner | Status |
 |---|---|---|---|---|
-| GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) | Sprint 15 | CTIO | 🔄 IN PROGRESS |
-| GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | 🔄 IN PROGRESS |
+| GAP-043 | L-bi: BI/Dashboards (Superset/Metabase) | Sprint 15 | CTIO | ✅ DONE — banxe-emi-stack PR #267 merged 2026-06-30 |
+| GAP-044 | M-sdk: Python + JS client SDK | Sprint 16 | CTIO | ✅ DONE (Python SDK PR #268; JS SDK deferred P3) — 2026-06-30 |
+| GAP-089 | Crypto-ledger Wave E — deferred to P3 per operator decision 2026-06-27. No sprint assigned. | — | CTIO | 📋 DEFERRED P3 |
 | GAP-045 | B-pricing tier 2 expansion — IN PROGRESS 2026-06-21 — code services/fee_management (8 .py, ~25 tests); pricing tier-2 code present | Sprint 15 | CEO | 🔄 IN PROGRESS |
 
 ---
@@ -146,7 +149,7 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 | ID | Gap | Owner | Deadline | Status |
 |---|---|---|---|---|
 | GAP-079 | **C-02.1 Currency mismatch** — Concept claims 32 currencies; code enforces 10 (GBP/EUR/USD/CHF/PLN/CZK/SEK/NOK/DKK/HUF). FCA PRIN7/Consumer Duty PS22/9 exposure. Fix: correct concept OR expand allowlist (FX/nostro/EDD work). | Operator/Product | Q3 2026 | 🔴 OPEN |
-| GAP-080 | **C-37.3 Intent-First Banking not implemented** — Hybrid Intent Interface, IntentParser, SkillRouter, 6 card variants absent from banxe-frontend (ops console only, no consumer UI). | Product | Q3 2026 | 🔴 OPEN |
+| GAP-080 | **C-37.3 Intent-First Banking not implemented** — Hybrid Intent Interface, IntentParser, SkillRouter, 6 card variants absent from banxe-frontend (ops console only, no consumer UI). NOTE 2026-07-02: backend seam services/intent_layer/ EXISTS in banxe-emi-stack (INTENT_LAYER_ENABLED=false, ADR-049 ACCEPTED/not-deployed). Frontend repo confirmed: CarmiBanxe/banxe-trading-frontend (trading channel only; consumer channel absent). Tracked as GAP-091. | Product | Q3 2026 | 🔴 OPEN |
 | GAP-081 | **AGPL-boundary** — Jube (ADR-004 AGPLv3) + MiroFish (AGPL-3.0) cannot be externalised in BaaS without Apache-2.0 replacement (AGPL §13 copyleft on network exposure). Blocks BaaS channel activation. | Product/Legal | Before BaaS go-live | 🔴 BLOCKED |
 | GAP-082 | **R-09.14 Legion ufw missing** — 8 ports on 0.0.0.0 (LiteLLM :4000, Keycloak :8180/:8181, Hyperswitch :8096/:8098, Jube :5001, :3000, :8765) with no host firewall. Fix: ufw install + allowlist (SSH/LAN/tailscale0) — see ADR-140 Appendix A safe-sequence. Requires physical/console access. | Operator (physical) | ASAP | 🔴 OPEN |
 | GAP-083 | **R-09.15 Tailscale ACL/MagicDNS unconfigured** — getent evo1/evo2 fails; SSH ACL blocks cross-device access. Fix: Tailscale admin console ACL + MagicDNS enable. Unblocks Guardian :8195/:8196, GAP-086 self-hosted runner. | Operator (admin console) | Q3 2026 | 🔴 OPEN |
@@ -184,3 +187,14 @@ This session (2026-06-27): GAP-087 safeguarding LIVE (recon Result=success, banx
 | GAP-087 | **S-PROD-1 Safeguarding Engine — production delivery LIVE** — Full 3-leg tie-out (Leg A Midaz ledger ↔ Leg B safeguarding accounts ↔ Leg C rails) + daily shortfall auto-FCA notification (immutable / no-suppress per CASS 15 §7.15.5) now in production. Completed: banxe-emi-stack PR #218 (Leg C rail-port + 3-leg tie-out merged), recon Result=success, banxe-recon.timer activated 2026-06-27. CASS 15 §7.15 daily reconciliation active. Specs: `docs/safeguarding/J-ENGINE-BUILD-SPEC.md`, `E-SAFEGUARD-CASS15-SPEC.md`, `J-CROSS-REPO-HANDOFF.md`, `E-D-CROSS-REPO-HANDOFF.md`. Regulatory: FCA CASS 15 / PS25/12 / CASS 7.15 — EMI authorisation requirement satisfied. | CTIO / CFO | COMPLETE 2026-06-27 | ✅ LIVE |
 
 *Enforced by: GapTrackerAgent | Last updated: 2026-06-27 (status reconciliation) | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086); ADR-140 Amendment 1: S-PROD-1 (GAP-087 LIVE)*
+
+---
+
+## 🔴 P1 — Runtime Architecture Gaps (audit 2026-07-02)
+> **Source:** Central diagnostic audit 2026-07-02. Code-or-config gaps (not owner/external debts). Require factory sprint assignment.
+
+| ID | Gap | Owner | Deadline | Status |
+|---|---|---|---|---|
+| GAP-090 | **OpenClaw LiteLLM bypass** — 3 OpenClaw processes (ctio/:18791, moa/:18789, mycarmibot/:18793) bypass LiteLLM :4000 directly. No audit trail, no quota enforcement, no cost attribution per IL-789/ADR-047. Fix: route through LiteLLM proxy + revoke direct API keys. Note: GUIYON :18794 categorically excluded from Banxe — absolute prohibition, not in scope. | CTIO | Q2-2026 | 🔴 OPEN |
+| GAP-091 | **ADR-049 Intent-First deployment gap** — 3 conflicting statuses: YAML frontmatter=ACCEPTED, body=PROPOSED-2026-06-07, runtime=NOT_DEPLOYED (INTENT_LAYER_ENABLED=false). services/intent_layer/ code-complete (IntentRouter, catalog, models, canary) but disabled. Consumer frontend: CarmiBanxe/banxe-trading-frontend (trading channel only; general consumer absent). Blocks C-37.3/GAP-080. | Product | Q3-2026 | 🔴 OPEN |
+| GAP-092 | **Guardian webhook delivery gap** — Guardian (:8195/:8196) not delivering required_status_checks to GitHub. Merge without --admin blocked. Fix: repair webhook endpoint or migrate to evo1 self-hosted runner (dependency: GAP-083 Tailscale ACL). | Factory/CTIO | Q2-2026 | 🔴 OPEN |
