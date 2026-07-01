@@ -46,6 +46,7 @@ Each entry is a real failure/correction from the current session; these are the 
 | L-07 | Merged branches mis-labelled "unmerged, holds unique work" | `merge-base --is-ancestor` is wrong under **squash-merge** (squashed content lands under a new SHA) | Classify squash-aware: **matched a merged-PR head OR `git cherry origin/main <br>` == 0 unlanded** ⇒ landed | branch-cleanup sweep |
 | L-08 | "Auto will land at CLEAN" assumed, but PR sat un-merged | Read a stale counter, not the live merge state; `--auto` had silently not armed | On a pending merge, **check `autoMergeRequest` + `mergeStateStatus`**, not just behind/ahead | #934, #942 |
 | L-09 | Pasted multi-line Cyrillic/paren task mangled into `command not found` in bash | Governance task text pasted into a shell instead of the agent | **Route by artifact type** — `[SHELL]` for read-only shell, `[CLAUDE CODE]` for state-changing prompts; task text is not a shell command | heredoc-in-bash incidents |
+| L-10 | `--auto` merge did not land the PR at serialize-flicker, and `gh pr ready` was skipped for a Draft | `gh pr merge --auto` aborted on the `main-merge-serialize` GraphQL error and never armed; `gh pr ready` was omitted from the merge block | At **behind-0 + CLEAN use a direct `gh pr merge` (not `--auto`)**; always include **`gh pr ready` before merge** for a Draft PR (consolidates L-03 + L-04) | #887, #934, #936, #942 |
 
 **Registering a new lesson:** append a row with Symptom / Root cause / Corrective / Ref via a prepare-only
 Draft PR (this file + a paired shard). Do **not** edit `CLAUDE.md`.
@@ -73,5 +74,5 @@ internal) + §10 (Config-over-Hardcoding — why `CLAUDE.md` is not auto-generat
 (canon-promotion gate) · `docs/governance/HARNESS-INTEGRATION-ASSESSMENT.md` (#948, IL-796 — the harness fact
 record) · `.github/CODEOWNERS` (governance / `.claude/` code-owner protection) · ADR-102 (Duplication Audit —
 restates none of the above). **Basis:** operator directive 2026-07-02 (choose by canon → factory-native
-lesson-capture, the safe alternative to `/harness`). Register entries L-01..L-09 are facts observed in the
+lesson-capture, the safe alternative to `/harness`). Register entries L-01..L-10 are facts observed in the
 current session.
