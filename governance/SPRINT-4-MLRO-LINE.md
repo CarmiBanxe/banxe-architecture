@@ -5,7 +5,7 @@
 > parent canon wins for *structure*; this document is authoritative for the *MLRO independent-line operating
 > model*. **Companion:** `governance/STAFF-MATRIX-v2.md` (Sprint-3 staffing record — **NOT modified here**).
 > **Supersedes:** nothing — **append-only** over the Sprint-3 record. The Sprint-3 staffing figures
-> (44/44 passports active, 0 PROPOSED remaining, 21 gated under I-27) are unchanged by this document.
+> (70 passports (STAFF-MATRIX-v3, 2026-07-02) active, 0 PROPOSED remaining, 21 gated under I-27) are unchanged by this document.
 > **Scope:** completion-over-existing (ADR-102 anti-duplication) of the MLRO / Financial-Crime independent
 > line that ORG-CHART-v2 §3 (Dept-6) already establishes. This document adds ONLY the *delta* — the
 > operating model, queue/triage flow, reporting/SAR boundary, case governance, HITL mapping, PROPOSED

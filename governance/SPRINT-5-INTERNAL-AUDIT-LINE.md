@@ -8,7 +8,7 @@
 > record — **NOT modified here**) and `governance/SPRINT-4-MLRO-LINE.md` (the sibling MLRO 2nd-line
 > completion — this document is the 3rd-line counterpart).
 > **Supersedes:** nothing — **append-only** over the Sprint-4 record. The Sprint-3 staffing figures
-> (44/44 passports active, 0 PROPOSED remaining, 21 gated under I-27) are unchanged by this document.
+> (70 passports (STAFF-MATRIX-v3, 2026-07-02) active, 0 PROPOSED remaining, 21 gated under I-27) are unchanged by this document.
 > **Scope:** completion-over-existing (ADR-102 anti-duplication) of the Internal Audit independent **3rd
 > line of defence** that ORG-CHART-v2 §4/§6 (SMF5, outsourced Grant Thornton sandbox) already establishes.
 > This document adds ONLY the *delta* — the operating model, annual safeguarding-audit contour, audit
@@ -220,7 +220,7 @@ is described as "append-only audit trail of findings (I-28)".
 > over inventing new roles**. The single genuine gap not already on an existing passport is the
 > **finding-remediation tracking + Audit-Committee-pack drafting** orchestration described in §4–§6. It is
 > recorded below as a **PROPOSED inline stub only** — it does **NOT** alter STAFF-MATRIX-v2's Sprint-3 record
-> (44/44 active, 0 PROPOSED remaining), is **NOT** created as a separate passport file, is **NOT** activated,
+> (70 passports active+proposed per STAFF-MATRIX-v3 2026-07-02, 0 PROPOSED-dept-heads remaining), is **NOT** created as a separate passport file, is **NOT** activated,
 > and is **NOT** wired. Live execution only after **I-27 HITL-L4 sign-off**.
 
 ```yaml
