@@ -3,8 +3,8 @@
 #
 # Policy prose + canon integration: docs/governance/SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION.md
 # This file holds ALL thresholds as data. No threshold lives in code or in the policy doc.
-# RATIFIED 2026-07-01 by operator (CEO) — proposed defaults accepted AS-IS. Only the project_critical SLO
-# remains [RATIFY] (project-owned, awaits project SLO — NOT invented here).
+# RATIFIED 2026-07-01 by operator (CEO) — proposed defaults accepted AS-IS + project_critical SLO = 120s
+# ratified (best-solution, aligned to drain_deadline_s=120). FULLY RATIFIED — 0 [RATIFY] remaining.
 #
 # SCOPE: policy data only. This file configures NO runtime enforcer/scheduler (that is a separate
 # downstream implementation slice, project/infra-side). It does NOT modify any LiteLLM gateway config,
@@ -17,8 +17,11 @@ ratification:
   ratified_by: "operator (CEO)"
   ratified_at: "2026-07-01"
   basis: "operator accepted the proposed borrow-threshold defaults as-is"
-  outstanding:
-    - "workload_classes.project_critical.runtime_cap_s / project_critical SLO — project-owned, awaits project SLO (NOT invented)"
+  project_critical_slo:
+    value_s: 120
+    ratified_at: "2026-07-01"
+    basis: "best-solution: aligned to ratified drain_deadline_s=120 (project_critical guaranteed the 235b slot no later than drain_deadline under active borrow, effectively immediate on a free slot)"
+  outstanding: []   # fully ratified — no [RATIFY] remaining
 
 # ── Compute pool (ground-truth SURFACED, not owned/mutated here) ──────────────
 pool:
@@ -59,7 +62,7 @@ workload_classes:
     priority: P0
     placement: [server-2-primary-lane]        # project-reason / reasoning-235b
     preemptible_by: []                        # never
-    runtime_cap_s: null                        # generous/uncapped within its HITL envelope
+    runtime_cap_s: 120                         # project_critical SLO ratified 2026-07-01 = 120s (aligned to drain_deadline_s=120)
     notes: "KYC/AML/sanctions & payment-adjacent reasoning, MLRO escalation, prod-state (CLAUDE.md §11)"
   project_batch:
     priority: P1
@@ -131,10 +134,10 @@ ratify:
   - key: "governance.project_batch.max_duty_cycle"
     status: ratified
     note: "RATIFIED 2026-07-01 (operator/CEO): 0.60"
-  # STILL OUTSTANDING — project-owned, not invented:
+  # RATIFIED 2026-07-01 (operator) — best-solution, aligned to drain_deadline_s=120:
   - key: "workload_classes.project_critical.runtime_cap_s / project_critical SLO"
-    status: RATIFY
-    note: "[RATIFY] exact project_critical SLO is project-owned — awaits project SLO; null=uncapped is a placeholder default, NOT ratified"
+    status: ratified
+    note: "RATIFIED 2026-07-01 (operator): project_critical SLO = 120s (best-solution: aligned to ratified drain_deadline_s=120)"
 open_questions_out_of_scope:
   - "evo2-headless-claude host question — separate infra ticket, NOT decided here"
   - "runtime enforcer / scheduler that executes admit/drain/deny/kill — downstream implementation slice"
