@@ -22180,3 +22180,30 @@ Added row:
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 773) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T17:30:00Z` > main max `2026-07-01T17:00:00Z`. Rebased onto current origin/main `2ed195f` (was cut off cf00ca4; #925/IL-773 landed mid-session → re-seeded ledger + regenerated per "a duplicate is a rebase signal, not a question"; sprintplan06 IL-773 retained, append-only, 0 renumber). Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — Layer D consolidated report + Layer E decision surface + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Remaining UI/UX work is project-side, operator-gated: evidence-transport decision (P2 [НЕИЗВЕСТНО]), banxe-ui envelope emission, the 4 runners (Playwright / visual-regression / viewport / state-coverage) — NOT authored from banxe-architecture.**
 - **Refs:** `scripts/uiux-pipeline.sh`; UIUX-AUDIT-BLOCK-SPEC.md Layer D/E (#916); UIUX-GATE-POLICY.md + `schemas/uiux-audit-findings.schema.json` (#918); UIUX-RUNTIME-CONTRACT.md (#920); ingest (#921); Phase 2 Layer-B+dedup (#924); CONFLICT-LEDGER · TERMINAL-OWNERSHIP · ADR-154; ADR-102/117; #900. Operator directive 2026-07-01 (Phase 4 minimal sufficient set).
+
+---
+
+### IL-775 - agent-factory-sprintplan07-sprint-b-all-merged @ 2026-07-01T18:00:00Z
+
+- **il_ts:** 2026-07-01T18:00:00Z
+- **session_id:** agent-factory-sprintplan07-sprint-b-all-merged
+- **source:** factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-sprintplan07-sprint-b-all-merged/IL-2026-07-01T18-00-00Z--sprintplan07-sprint-b-all-merged.md`
+
+### IL-775 — Sprint-B §0 dashboard: mark B1–B7 all MERGED on banxe-ai-infrastructure
+
+- **Task:** Bulk dashboard update — operator merged all Sprint-B infra PRs while architecture
+  work (IL-770–IL-773) was in progress. Dashboard was stale showing B1, B3, B4, B6, B7 as OPEN.
+- **Verified merges (operator gate-check 2026-07-01):**
+  - B1 infra#3 MERGED 2026-06-28 — Qdrant v1.14.0 deploy
+  - B2 infra#27 MERGED 2026-07-01 — Intent-Dispatcher runtime wiring (IL-770)
+  - B3 infra#7 MERGED 2026-06-28 — Lerian MCP central tool registry
+  - B4 infra#6 MERGED 2026-06-28 — gate-exec L1–L4 sandbox enforcement
+  - B5 infra#25 MERGED 2026-06-30 — RedisStreamsA2ABus (IL-773 correction)
+  - B6 infra#5 MERGED 2026-06-28 — G-CANON-BYPASS: OpenClaw → LiteLLM audit path
+  - B7 infra#4 MERGED 2026-06-28 — G-GUARDIAN-WEBHOOK-MISSING: Guardian App 15368
+- **Adoption gate:** 5 / 5 GAP epics code-merged. Remaining: B1 evo1 deploy verification;
+  B8/B9 blocked on ADR-133 approval.
+- **Gate-out:** All B-rows reflect actual merge state; append-only (I-24).
+- **Status:** PREPARED — operator HITL before merge.

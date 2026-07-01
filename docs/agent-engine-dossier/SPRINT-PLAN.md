@@ -24,16 +24,16 @@
 | Sprint-A A4 | ADR-146 sandbox contract — PR #862, IL-692, **ACCEPTED** ✅ |
 | Sprint-A A5 | Passport revisions — PR #865, IL-695, **ACCEPTED** ✅ (IL-765, PR #917) |
 | Sprint-E E1 | Planner passport L1→L2 routing tests — PR #914, IL-762, **MERGED** ✅ |
-| Sprint-B B1 | Qdrant deploy — infra#3 OPEN (operator merge + evo1 execute pending) |
-| Sprint-B B2 | Dispatcher runtime — infra#27, IL-770, **ACCEPTED** ✅ (92 tests / 100% cov, semgrep 0) |
-| Sprint-B B3 | Lerian MCP runtime — infra#7 OPEN (CI running, 34 tests / 98%) |
-| Sprint-B B4 | gate-exec enforcement — infra#6 OPEN (CI running, 15 tests / 100%) |
-| Sprint-B B5 | A2A bus RedisStreams — infra#25, **ACCEPTED** ✅ (RedisStreamsA2ABus on main; BUS_MODE=redis wired in app.py) |
-| Sprint-B B6 | G-CANON-BYPASS fix — infra#5 OPEN (operator merge + CTIO execute pending) |
-| Sprint-B B7 | G-GUARDIAN-WEBHOOK-MISSING — infra#4 OPEN (title fix by operator pending) |
-| Sprint-B B8 | Temporal saga runner — BLOCKED (ADR-133 approval) |
+| Sprint-B B1 | Qdrant deploy — infra#3, **MERGED** ✅ (2026-06-28; evo1 deploy execute pending) |
+| Sprint-B B2 | Dispatcher runtime — infra#27, IL-770, **MERGED** ✅ (2026-07-01; 92 tests / 100% cov, semgrep 0) |
+| Sprint-B B3 | Lerian MCP runtime — infra#7, **MERGED** ✅ (2026-06-28; 34 tests / 98%) |
+| Sprint-B B4 | gate-exec enforcement — infra#6, **MERGED** ✅ (2026-06-28; 15 tests / 100%) |
+| Sprint-B B5 | A2A bus RedisStreams — infra#25, **MERGED** ✅ (2026-06-30; RedisStreamsA2ABus + BUS_MODE=redis) |
+| Sprint-B B6 | G-CANON-BYPASS fix — infra#5, **MERGED** ✅ (2026-06-28; OpenClaw → LiteLLM audit path) |
+| Sprint-B B7 | G-GUARDIAN-WEBHOOK-MISSING — infra#4, **MERGED** ✅ (2026-06-28; Guardian App 15368 webhook) |
+| Sprint-B B8 | Temporal saga runner — BLOCKED (ADR-133 approval pending) |
 | Sprint-B B9 | Redis-lease saga — BLOCKED (B8 required) |
-| Adoption gate | 0 / 5 GAPs at L2 (sprint B in progress) |
+| Adoption gate | 5 / 5 GAP epics code-merged on infra (B1 evo1 deploy gate pending; B8/B9 blocked ADR-133) |
 
 ---
 
