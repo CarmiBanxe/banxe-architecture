@@ -91,5 +91,6 @@ These are named and reserved as future work; this canon does not design them:
 - .claude/rules/agents.md (HITL thresholds)
 - CLAUDE.md §10 (config-over-hardcoding), §11 (production-state mutation gate)
 - INSTRUCTION-LEDGER.md → IL-122-INTENT-FIRST-CANON-2026-06-07
+- docs/runbooks/intent-dispatcher-deployment.md (IL-777 — operational activation spec extracted from ADR-045)
 
 === END OF INTENT-FIRST CANON ===
