@@ -22431,3 +22431,64 @@ Added row:
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 781; #931/IL-781 landed mid-session → re-mint, 781 retained) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-01T20:30:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. (Re-mint discipline if mid-session collision: reset onto origin/main + regenerate; recreate shard AFTER reset — staged-new does not survive reset --hard, lesson #933.)
 - **Status:** DONE — enforcer build-prompt + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next: project/infra side builds the enforcer under operator gate per this spec; project_critical SLO when available.**
 - **Refs:** `docs/governance/SERVER-2-RUNTIME-ENFORCER-SPEC.md`; SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION.md (#932); server-2-borrow-policy.yaml (#933/IL-780); ADR-102/117/154; TERMINAL-OWNERSHIP; CONFLICT-LEDGER; CLAUDE.md §10/§11; #900. Operator directive 2026-07-01 (scope the runtime-enforcer).
+
+---
+
+### IL-783 - agent-factory-governance-r7-guiyon-separation-verified @ 2026-07-01T21:00:00Z
+
+- **il_ts:** 2026-07-01T21:00:00Z
+- **session_id:** agent-factory-governance-r7-guiyon-separation-verified
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-r7-guiyon-separation-verified/IL-2026-07-01T21-00-00Z--r7-guiyon-separation-verified.md`
+
+### IL — R7 GUIYON legal-boundary separation — VERIFIED 2026-07-01
+
+**ID:** IL-OPS-V2-R7-GUIYON-SEPARATION-VERIFIED-2026-07-01
+**Date:** 2026-07-01
+**Parent:** `docs/runbooks/R7-GUIYON-LEGAL-BOUNDARY-CLEANUP-PREP-2026-05-22.md`
+**Scope:** governance audit record only. No prod code changed.
+
+#### Audit evidence
+
+**banxe-architecture production paths** (`docs/architecture/`, `docs/api/`,
+`docs/compliance/`, `docs/security/`, `services/`, `infra/`) — **CLEAN**.
+
+Three hits found, all in explicitly exempt categories:
+- `docs/runbooks/R7-GUIYON-LEGAL-BOUNDARY-CLEANUP-PREP-2026-05-22.md` — this PREP
+  document is an operator-facing canon doc about the separation (R7 AC: allowed).
+- `INSTRUCTION-LEDGER.md` — read-only ledger history (R7 AC: allowed).
+- `ledger/FROZEN-ARCHIVE.md` — read-only frozen archive (R7 AC: allowed).
+
+**banxe-emi-stack production paths** — **CLEAN (with one operator-approved exempt)**.
+
+Two hits found in `infra/guardian-shim/diagnostics/`:
+- `D2-home-settings.json:164  "mcp__guiyon-files__*"`
+- `D2-settings.json:10        "mcp__guiyon-files__*"`
+
+These are Claude Code settings **diagnostic snapshots** (D2 series), not active
+production config. They captured the MCP wildcard permission `mcp__guiyon-files__*`
+that existed in the operator session at snapshot time.
+**Operator decision 2026-07-01: EXEMPT as read-only diagnostic history. Not scrubbed.**
+
+**CarmiBanxe/guiyon `.mcp.json`** — **CLEAN**.
+
+Only `"AUTH_TOKEN"` present — guiyon's own auth token, no BANXE credentials,
+no shared Postgres/Redis/API keys, no BANXE service cross-references.
+
+#### Open follow-up (deferred — S18-S19 window)
+
+- **guiyon README with FR-jurisdiction disclaimer** — `CarmiBanxe/guiyon` repo has no
+  `README.md`. R7 AC requires a README clearly stating FR jurisdiction (Guyon vs SCI
+  Laval, FR civil property law) and no BANXE dependency.
+  **Status:** DEFERRED to S18-S19 GUIYON separation window per
+  `docs/project/SPRINT-EXTENSION-LEGACY-REFACTOR-S18-S25.md`. Separate repo, low risk,
+  no data or IP crossover confirmed.
+
+#### Verdict
+
+R7 separation is **operationally verified** as of 2026-07-01. All production paths in
+banxe-architecture and banxe-emi-stack are clean. No shared secrets between BANXE and
+guiyon repos. One deferred item (guiyon README disclaimer) remains open for S18-S19.
+
+Invariants upheld: I-24 (append-only, no records modified). ADR-059-A (sharded ledger).
