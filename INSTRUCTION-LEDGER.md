@@ -22968,3 +22968,27 @@ MQFIX — Correct Merge-Queue advice inaccuracy in ERROR-RECONCILIATION-ROADMAP-
   - 1i: GAP-092 NEW P1 — Guardian webhook delivery gap: Guardian (:8195/:8196) not delivering required_status_checks to GitHub. Blocks merge without --admin.
 - **Invariants:** I-24 append-only (DONE statuses only added, no rows removed); GUIYON exclusion enforced in GAP-090 text.
 - **Refs:** GAP-042 (PR #266), GAP-043 (PR #267), GAP-044 (PR #268); ADR-049 (Intent-First); ADR-045 §D7 (governance context).
+
+---
+
+### IL-800 - agent-factory-governance-skills-convert-invokable @ 2026-07-02T04:00:00Z
+
+- **il_ts:** 2026-07-02T04:00:00Z
+- **session_id:** agent-factory-governance-skills-convert-invokable
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-skills-convert-invokable/IL-2026-07-02T04-00-00Z--skills-convert-invokable.md`
+
+### [OWNER: A] Convert 3 legacy flat skills → invokable SKILL.md (+ fix spec-writing outdated IL method)
+- **Decision:** Per operator "делай, исправить", converted the three legacy flat skill files into invokable Claude Code `SKILL.md` form (the smallest factory-authorable skill-integration improvement, per HARNESS-INTEGRATION-ASSESSMENT #948 option a; external Hyperbrowser adoption stays DEFERRED per #949). **PREPARE-ONLY**, Draft PR. Owner A.
+- **Actions (atomic, one PR):** CREATE `.claude/skills/github-navigation/SKILL.md`, `.claude/skills/spec-writing/SKILL.md`, `.claude/skills/testing/SKILL.md` — each with conservative YAML frontmatter (name = kebab dir; description = trigger), preserved substance, and one factory-canon binding line. `git rm` the three legacy flat files (`.claude/skills/{github-navigation,spec-writing,testing}.md`). Convert-not-fork: the new SKILL.md carry the substance; flat originals removed same PR → no two definitions.
+- **spec-writing CORRECTED (operator-confirmed):** removed the outdated "hand-write `IL-XXX | …` into `INSTRUCTION-LEDGER.md`" instruction; replaced with current canon — IL minted via `python ledger/build_ledger.py` as a per-session shard, `INSTRUCTION-LEDGER.md` GENERATED never hand-edited (ADR-056/059/119). Marked in-body as a correction of the outdated method (embedding the legacy form would encode a canon violation).
+- **testing:** thresholds preserved (≥80% coverage, 0 ruff, 0 critical semgrep) + exact commands + auto-run rule; added repo-context (banxe-architecture = governance repo, gate = quality-gate.sh + semgrep + schemas validate; pytest/coverage target code repos e.g. banxe-emi-stack) + quality-gate binding.
+- **github-navigation:** repos/actions/key-files preserved + binding (read-only nav ⇒ [SHELL], PR merge ⇒ [CLAUDE CODE]; no skill bypasses quality-gate.sh/I-01..I-28).
+- **Boundaries:** changed ONLY `.claude/skills/*` (3 create + 3 delete) + this shard. CLAUDE.md / `.claude/CLAUDE.md` §БЛОК 5 NOT touched (remains descriptive doc); SKILLS-MATRIX / agents.md / any canon-doc NOT touched; perimeter/tools NOT touched; ArchiMate (no flat file) + 10 matrix procedures OUT of scope. No hook/convention required a CLAUDE.md touch (would have stopped+reported). 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** the 3 SKILL.md are the invokable operationalisation of the skills described in `.claude/CLAUDE.md` §БЛОК 5 (not a parallel policy); flat originals deleted same PR (no duplicate definitions); these 3 (legacy developer-CLI skills) are NOT among the 10 SKILLS-MATRIX project skills (zero overlap); no consumer imports the flat files (docs, not code; guardian-factory checks `.claude/agents`/`agents/*`, not `.claude/skills`).
+- **CODEOWNERS/HITL:** `.github/CODEOWNERS` maps `/.claude/ @mmber` → PR auto-requires @mmber code-owner review (HITL built in, not bypassed).
+- **Scope/flow:** authored per #900 — skills + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05/#933).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 799) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T04:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — 3 SKILL.md + 3 flat removed + shard. **DRAFT PR; DO NOT MERGE — operator HITL (CODEOWNERS @mmber review required).**
+- **Refs:** `.claude/skills/{github-navigation,spec-writing,testing}/SKILL.md`; HARNESS-INTEGRATION-ASSESSMENT.md (#948/IL-796); ADR-EVAL-HYPERBROWSER-HARNESS.md (#949/IL-797); FACTORY-LESSON-CAPTURE.md (#951/IL-798); `.claude/CLAUDE.md` §БЛОК 5; `.claude/rules/agents.md` (skills governance); ADR-056/059/102/119; CODEOWNERS; #900. Operator directive 2026-07-02 (convert 3 legacy skills + fix spec-writing).
