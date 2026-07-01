@@ -1,0 +1,127 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Server-2 borrowable-compute policy — CONFIG-AS-DATA (Config-over-Hardcoding, CLAUDE.md §10)
+#
+# Policy prose + canon integration: docs/governance/SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION.md
+# This file holds ALL thresholds as data. No threshold lives in code or in the policy doc.
+# PROPOSED DEFAULTS — for operator ratification (not final). Marked [RATIFY] where operator sign-off is due.
+#
+# SCOPE: policy data only. This file configures NO runtime enforcer/scheduler (that is a separate
+# downstream implementation slice, project/infra-side). It does NOT modify any LiteLLM gateway config,
+# does NOT touch hardware, banxe-ui, or uiux-pipeline.sh. Ground-truth is surfaced (pointer), not mutated.
+# ─────────────────────────────────────────────────────────────────────────────
+schema_version: "1.0.0"
+status: proposed            # proposed → ratified (operator flips after reviewing defaults)
+
+# ── Compute pool (ground-truth SURFACED, not owned/mutated here) ──────────────
+pool:
+  id: server-2
+  host: evo2                       # 192.168.0.15 (ollama backend) — verified live
+  strongest_model: "qwen3:235b-a22b-banxe"   # 142 GB
+  gateway_unit: litellm-lan-gateway.service  # :4000 — already routes the aliases below (NOT edited here)
+  resource_model: single_serialized_slot     # 142 GB ⇒ no project+borrow co-residency assumed
+
+# ── Tenancy ───────────────────────────────────────────────────────────────────
+tenancy:
+  primary:  project-emi-banxe      # standing reservation on the 235b slot
+  secondary: factory               # revocable lease on UNUSED capacity only
+
+# ── Strict priority order (single source of truth for every scheduling decision) ─
+# Any project_* ALWAYS outranks any factory_*/experimental — hard invariant; the factory
+# allocator may NOT override it.
+priority_order:
+  - project_critical      # P0
+  - project_batch         # P1
+  - factory_heavy_analysis  # P2 (borrow)
+  - factory_audit         # P3 (borrow)
+  - experimental          # P4 (borrow, first revoked)
+
+# ── Lane mapping via EXISTING gateway alias prefixes (no new models/endpoints) ──
+lanes:
+  primary_lane:            # project tenants
+    alias_prefix: "project-"
+    example_aliases: [project-reason, project-mid]
+    strongest_model_alias: reasoning-235b   # canonical route to the 235b slot (agents.md)
+  borrow_lane:             # factory tenants — revocable
+    alias_prefix: "factory-"
+    example_aliases: [factory-heavy, factory-coder, factory-mid, factory-fast]
+
+# ── Workload classes → placement + priority + preemptibility ──────────────────
+workload_classes:
+  project_critical:
+    priority: P0
+    placement: [server-2-primary-lane]        # project-reason / reasoning-235b
+    preemptible_by: []                        # never
+    runtime_cap_s: null                        # generous/uncapped within its HITL envelope
+    notes: "KYC/AML/sanctions & payment-adjacent reasoning, MLRO escalation, prod-state (CLAUDE.md §11)"
+  project_batch:
+    priority: P1
+    placement: [server-2-primary-lane, evo1]
+    preemptible_by: [project_critical]
+    runtime_cap_s: 1800                        # bounded so it cannot starve project_critical
+    notes: "recon / FIN060 report gen / non-realtime analysis"
+  factory_heavy_analysis:
+    priority: P2
+    placement: [server-2-borrow-lane, evo1-factory-tier]   # borrow when idle, else evo1
+    preemptible_by: [project_critical, project_batch]
+    notes: "heavy refactor reasoning, large-context code analysis (factory-heavy/factory-coder)"
+  factory_audit:
+    priority: P3
+    placement: [evo1-factory-tier, server-2-borrow-lane]   # prefer evo1; borrow only idle+capped
+    preemptible_by: [project_critical, project_batch]
+    notes: "review / dedup / consolidation / doc synthesis / journal aggregation"
+  experimental:
+    priority: P4
+    placement: [evo1]                          # server-2 only in explicit idle windows
+    preemptible_by: [project_critical, project_batch, factory_heavy_analysis, factory_audit]
+    notes: "evals / prompt playground / non-critical trials — first revoked"
+
+# ── Resource governance (admission control, NOT fractional GPU partitioning) ──
+governance:
+  project_reserved_floor: true       # project always gets the 235b slot on demand (hard)
+  factory_borrow:
+    concurrent_ceiling: 1            # soft ceiling; auto-clamped to 0 when any project_* is queued/running
+    idle_grace_s: 90                # primary queue must be empty this long before a borrow is admitted
+    drain_deadline_s: 120           # graceful drain window on revocation, then defer/cancel
+    max_runtime_s: 900              # per-borrow-job runtime cap
+    daily_budget_tokens: 2000000    # factory-borrow token budget / rolling 24h
+    runaway_kill_after_s: 1200      # hard-stop for a runaway borrow regardless of drain
+    max_duty_cycle: 0.30            # anti-monopoly: max share of server-2 wall-clock / rolling 24h
+    health_required: true           # borrow admitted only if pre-borrow health-check passes
+  project_batch:
+    max_duty_cycle: 0.60            # batch duty-cap so it cannot starve project_critical
+
+# ── Revocation semantics ──────────────────────────────────────────────────────
+revocation:
+  on_project_demand: stop_admitting_then_drain   # stop new borrow admission; drain in-flight
+  drain_then: defer                              # overrunning borrow (> drain_deadline_s) is deferred/cancelled
+  runaway: hard_stop                             # > runaway_kill_after_s ⇒ hard-stop
+
+# ── Fallback = FAIL-CLOSED ────────────────────────────────────────────────────
+fallback:
+  mode: fail_closed
+  triggers: [telemetry_unavailable, health_check_fail, config_unreadable]
+  effect: "borrowing OFF; server-2 project-only; factory heavy work falls back to factory-* on evo1"
+
+# ── Observability / health ────────────────────────────────────────────────────
+observability:
+  metrics_per_lane: [utilization, queue_time_s, failed_jobs, throughput, idle_window_s, reclaim_events, health_status]
+  metrics_sink: prometheus            # REUSE existing LiteLLM success/failure callback; add only borrow counters
+  periodic_check_cadence_s: 300       # health/utilization sweep + anti-monopoly cap assertion
+  fail_closed_if_telemetry_down: true
+  pre_borrow_health_check:
+    checks: [gateway_to_server2_reachable, strongest_model_loaded_or_loadable, memory_headroom, recent_error_rate_under_threshold]
+    on_fail: deny_borrow_and_log
+  journal_events: [borrow_grant, borrow_deny, revocation, preempt_defer, runaway_kill, budget_exhausted, health_fail]
+  journal_fields: [correlation_id, tenant, class, alias, duration_s, tokens, reason]
+
+# ── Items requiring operator ratification / [НЕИЗВЕСТНО] ──────────────────────
+ratify:
+  - key: "workload_classes.project_critical.runtime_cap_s / project_critical SLO"
+    note: "[RATIFY] exact project_critical SLO is operator/project-owned — null=uncapped is a placeholder default"
+  - key: "governance.factory_borrow.*"
+    note: "[RATIFY] all borrow thresholds are proposed defaults, not final"
+  - key: "governance.factory_borrow.max_duty_cycle"
+    note: "[RATIFY] 0.30 anti-monopoly cap is a proposed default"
+open_questions_out_of_scope:
+  - "evo2-headless-claude host question — separate infra ticket, NOT decided here"
+  - "runtime enforcer / scheduler that executes admit/drain/deny/kill — downstream implementation slice"
