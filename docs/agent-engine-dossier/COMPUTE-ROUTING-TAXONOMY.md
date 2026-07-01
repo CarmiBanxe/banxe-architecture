@@ -170,17 +170,21 @@ orchestrates); this section MUST NOT be read as mutating runtime — see safety 
   Claude-Code builds across evo1 and evo2 are BLOCKED** until Claude-Code CLI is installed
   and a durable `/login` is completed on evo2.
 
-### §5.2 — Plan 2: LiteLLM / local-ollama (existing §1/§2, activation gaps today)
+### §5.2 — Plan 2: LiteLLM / local-ollama (existing §1/§2, activation status)
+
+> §5 correction 2026-07-01: prior §5.2 "235b idle" + §5.5 Redis-precondition were
+> wrong-stack/overstated — corrected per verified read-only audit.
 
 Do not restate the §1 table. Net-new today (2026-07-01):
 
-- Heavy routes exist on paper (`project-reason → qwen3:235b-a22b` on evo2;
-  `factory-heavy → llama3.3:70b` LB). Live check: `ollama ps` on evo2 returned **empty** —
-  235b is **not currently served**. Task-class → alias binding is advisory, so heavy load
-  effectively defaults to `factory-heavy` (70b) and `project-reason` sits idle.
-- **Precondition to actually use `project-reason`:** warm `qwen3:235b-a22b` on evo2 (or the
-  RPC master) and confirm the served endpoint before routing high-stakes reasoning to it. Do
-  NOT flip callers to `project-reason` on the assumption that §1 alone activates it.
+- Heavy routes are **live, not on paper**. `project-reason → qwen3:235b-a22b` is served on
+  evo2 by **`llama-server` at `192.168.0.15:8082`** (`curl :8082/v1/models` returns
+  `qwen3-235b-Q3_K_S.gguf`); LiteLLM `reasoning-235b` targets that backend (see §5.3), so
+  the alias is **functional today**, not idle. `factory-heavy → llama3.3:70b` LB is
+  likewise live per §1.
+- The earlier "`ollama ps` empty ⇒ 235b not served" reading measured the **wrong stack** —
+  a separate, unused ollama copy of 235b on evo2 `:11434`, irrelevant to `reasoning-235b`.
+  It is **not** a precondition on `project-reason`.
 
 ### §5.3 — RPC mesh (verified 2026-07-01, up-but-idle)
 
@@ -199,12 +203,23 @@ process — before relying on the alias for production routing.
 
 ### §5.5 — Preconditions (AWAITS-OPERATOR / factory; NOT actioned by this doc)
 
-1. Install Claude-Code CLI on `evo2` and complete a **durable `/login`** — unblocks Plan-1
-   parallelism (Claude builds on evo1 and evo2 concurrently).
-2. Warm / confirm `qwen3:235b-a22b` **live** on evo2 and restore a working GPU-utilisation
-   read (`rocm-smi` / `amd-smi` returned no output on 2026-07-01).
-3. Confirm `reasoning-235b` (a.k.a. `project-reason`) resolves to the **RPC master** and not
-   to a dead standalone before routing any production traffic to it.
+**Only one genuine open precondition remains** — the earlier list overstated two items
+(see §5.2 correction above and the root-cause note below):
+
+1. Install **Node.js + Claude-Code CLI on `evo2`** and complete a **durable `/login`** —
+   unblocks Plan-1 parallelism (concurrent Claude builds on evo1 and evo2). Verified
+   read-only 2026-07-01 on evo2: `node` = NONE, `npm` = NONE, `claude` = ABSENT.
+
+**Root-cause note (2026-07-01).** The ledger merge-conflict churn observed across recent
+PRs is caused by **concurrent regeneration of `INSTRUCTION-LEDGER.md` / `IL-SEQUENCE.json`
+between parallel PRs**, not by Redis. The durable serializer is the **GitHub Merge Queue
+(ADR-060 §1)**; the Redis IL-allocator (`banxe-redis`, `netmode=host`,
+`restart=unless-stopped`, tailscale `100.68.102.48:6379` + vault AUTH pass-file) mitigates
+number collisions but does not serialize regeneration order. The mid-session
+`WARN unreachable` was a **transient blip**, not a durability gap. (The separate `redis`
+container with `restart=no` on `:16379` belongs to the **jube stack** — a different
+service — not the allocator.) Prior framings that treated "Redis down" or "warm 235b" as
+gating preconditions were **overstated / wrong-stack**.
 
 ### §5.6 — Cross-references
 
