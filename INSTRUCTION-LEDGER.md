@@ -22864,3 +22864,15 @@ regeneration ledger thrash durably.
   business process repository artifact must use **IL-793** (not IL-792).
 - **Refs:** IL-793 (canonical business process repository entry); ADR-045 §D7.3 (CLOSED);
   I-24 (append-only — no rewrite of merged commit permitted).
+
+---
+
+### IL-795 - agent-factory-mqfix-merge-queue-org-caveat-2026-07-01 @ 2026-07-01T15:07:32Z
+
+- **il_ts:** 2026-07-01T15:07:32Z
+- **session_id:** agent-factory-mqfix-merge-queue-org-caveat-2026-07-01
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-mqfix-merge-queue-org-caveat/IL-2026-07-01T15-07-32Z--mqfix-merge-queue-org-caveat.md`
+
+MQFIX — Correct Merge-Queue advice inaccuracy in ERROR-RECONCILIATION-ROADMAP-2026-07-01.md (B4 + R3 + Sprint-E3) and COMPUTE-ROUTING-TAXONOMY.md §5.5. Prior recommendation to "activate native GitHub Merge Queue (ADR-060 §1)" was inaccurate: CarmiBanxe is user-owned → native queue is org-only, unavailable (verified read-only: `gh api graphql {repository{mergeQueue}}` = null; REST returns 422; Settings UI does not persist). Correct mechanism/anchor = the software serializer `.github/workflows/main-serialize.yml` (base-drift guard, canonical spec in docs/governance/MERGE-SERIALIZATION-FALLBACK.md — Variant B). Rebase "thrash" under concurrent ledger writes = software serializer working as designed, not a bug. Durable-fix OPTIONS documented: (A) transfer repo to a GitHub org → native queue becomes available → activate it (+ add merge_group trigger to main-serialize.yml or drop from required checks); (B) keep the software serializer + arm-auto-merge-then-rebase tactic (current, proven — landed #941 / #938); (C) reduce concurrent ledger-PR load. Redis IL-allocator (ADR-143) handles unique numbering, NOT base-drift serialization. Docs-only: 2 file amends (roadmap register row A13 added, B4/R3/Sprint-E3 reframed as strategy choice; §5.5 root-cause note corrected). NO runtime, NO workflow, NO config edit — main-serialize.yml itself untouched. Anchors: docs/governance/MERGE-SERIALIZATION-FALLBACK.md, ADR-060 §1 (applies only under B4 option A), ADR-143 (unique numbering, not serialization), ADR-102 (duplication-audit discipline).

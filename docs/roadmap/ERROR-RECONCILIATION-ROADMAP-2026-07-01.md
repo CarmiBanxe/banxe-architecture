@@ -37,13 +37,15 @@ softening. Statuses distinguish what was corrected in-session
 | B1   | §5.2 / §5.5 canon factually wrong                               | §5 correction PR **#938** is currently OPEN; IL is provisional and needs a re-rebase (IL-785 collided on `main`)      | Rebase-freeze IL per ADR-119; re-mint PR title + shard; merge          | IN-PROGRESS    | Factory prepares / operator merges |
 | B2   | evo2 has no agentic CLI                                         | `node = NONE`, `claude` CLI ABSENT; `python3 + pip` present                                                          | Decide the evo2 agent lane, then provision                            | OPEN           | Operator (decision + install) |
 | B3   | No canon record of the evo2 agent-lane decision                 | The choice between Claude-quality (Plan-1) and Aider-local (Plan-2) is not written into governance                   | Author an ADR + IL that records the decision (docs-only)              | OPEN           | Factory (draft) / operator (accept) |
-| B4   | Ledger-thrash root cause = concurrent regeneration              | Concurrent regeneration of `INSTRUCTION-LEDGER.md` / `IL-SEQUENCE.json` between parallel PRs (**not** Redis).         | Activate GitHub Merge Queue per ADR-060 §1 (canonized, not activated) | OPEN           | Operator (repo settings) |
+| B4   | Ledger-thrash root cause = concurrent regeneration              | Concurrent regeneration of `INSTRUCTION-LEDGER.md` / `IL-SEQUENCE.json` between parallel PRs (**not** Redis).         | Serialization strategy = software base-drift guard (`main-serialize.yml`, `MERGE-SERIALIZATION-FALLBACK.md`) is the current mechanism (proven, landed); durable OPTIONS = (A) transfer repo to a GitHub org → native queue becomes available → activate it (+ `merge_group` trigger on `main-serialize.yml` or drop it from required checks); (B) keep the software serializer + arm-auto-merge-then-rebase tactic (current, proven — landed #941 / #938); (C) reduce concurrent ledger-PR load. Native Merge Queue is org-only and UNAVAILABLE on this user-owned repo. correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md. | OPEN — strategy choice | Operator (strategy: org-transfer vs software-serializer) |
+| **A13** | Merge-Queue advice inaccuracy (this session)                 | Prior recommendation to "activate native GitHub Merge Queue" (as the durable thrash-fix) was inaccurate: `CarmiBanxe` is user-owned → native queue is org-only, unavailable (verified: `gh api graphql {repository{mergeQueue}}` = null). The correct mechanism/anchor is the software serializer (`.github/workflows/main-serialize.yml` base-drift guard, documented in `docs/governance/MERGE-SERIALIZATION-FALLBACK.md`). ADR-060 §1 ("native Merge Queue is the mechanism") assumed an org, so it does NOT apply to this repo. ADR-143 Redis allocator handles unique numbering — NOT base-drift serialization. | Correct §1 B4 / §2 B4 / §3 R3 / §4 Sprint-E3 to describe the software serializer + org-transfer option (A) vs accept-serializer option (B), instead of "activate native Merge Queue"                          | corrected-here | Factory          |
 | **C — Infra (operator-owned; explicitly not factory mutations)**                                                                                                                                                                                                                                                                                                                                 |
 | C1   | Redis allocator (`banxe-redis`, host-net, AUTH)                 | Durable: `restart=unless-stopped`; no action                                                                         | None                                                                   | OK / NO ACTION | Operator (owns) |
 | C2   | 235b live on evo2 `:8082` (llama-server)                        | Serving traffic through governed `:4000` (per ADR-016); no action                                                    | None                                                                   | OK / NO ACTION | Operator (owns) |
 | C3   | evo2 runtime / agent provisioning                               | Awaiting the B2 / B3 decision before install                                                                         | Blocked on B3 outcome (see §4 Sprint-E2 → E4)                          | BLOCKED        | Operator (install per B3) |
 
-Confirmation footprint: **A1–A12 present, B1–B4 present, C1–C3 present.**
+Confirmation footprint: **A1–A13 present, B1–B4 present, C1–C3 present.**
+correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md.
 
 ---
 
@@ -55,8 +57,9 @@ Confirmation footprint: **A1–A12 present, B1–B4 present, C1–C3 present.**
   ledger from root, allow `build_ledger.py` to assign `max+1` (never hardcode
   the number), re-mint the PR title + shard body to match, land the merge.
 - **Owner:** factory prepares the rebase artefact; operator merges via the
-  Merge Queue (when activated per B4) or, until then, via serialized manual
-  merge.
+  software serializer `main-serialize.yml` (B4 option B — current, proven)
+  or, if B4 option A is chosen (org-transfer), via the native Merge Queue
+  once activated.
 - **How:** ADR-119 canonical sequence (fetch → switch → regenerate → verify
   `--check` = 0 → push → PR title/body sync → merge). No skip flags.
 
@@ -81,16 +84,44 @@ Confirmation footprint: **A1–A12 present, B1–B4 present, C1–C3 present.**
 - **How:** docs-only ADR draft under `docs/adr/`, IL shard under
   `ledger/entries/`, no runtime change.
 
-### B4 — Merge Queue activation
+### B4 — Serialization strategy (org-transfer vs software-serializer)
 
-- **What:** enable GitHub native Merge Queue in repo Settings → branch
-  protection for `main`, as required by ADR-060 §1. This is the durable
-  fix that ends the concurrent-regeneration ledger thrash (not Redis;
-  Redis handles allocation, ADR-143, and is already durable per C1).
-- **Owner:** operator (repo settings; needs org-admin).
-- **How:** Settings → Branches → `main` → "Require merge queue"; ensure
-  gating workflows subscribe to `merge_group` (already the case per
-  ADR-060 §1). No code change.
+> correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md.
+
+- **What:** decide the durable serialization mechanism for `main`. The
+  earlier advice to "activate native GitHub Merge Queue (ADR-060 §1)" was
+  **inaccurate**: `CarmiBanxe` is a user account, not an org, and the
+  **native Merge Queue is an org-only feature** (verified read-only —
+  `gh api graphql {repository{mergeQueue}}` returns null; REST returns
+  422; the Settings UI does not persist it). The repo already serializes
+  merges via a **software substitute** — `.github/workflows/main-serialize.yml`
+  (base-drift guard: fails any PR with `behind > 0` vs `origin/main`,
+  forcing rebase-before-merge). That guard is doing exactly what it was
+  designed to do; the "thrash" observed under concurrent ledger writes
+  is the guard **working as designed**, not a bug. ADR-143 Redis
+  allocator handles **unique numbering** (C1) and does NOT serialize
+  merge order.
+- **Owner:** operator (strategy choice; repo settings; no factory
+  runtime change).
+- **How — three options (docs-only inventory):**
+  - **(A) Org-transfer.** Transfer `CarmiBanxe/banxe-architecture` to a
+    GitHub organization → native Merge Queue becomes available →
+    activate it under Settings → Branches → `main` → "Require merge
+    queue"; then either **add a `merge_group` trigger** to
+    `main-serialize.yml` (so the base-drift guard runs inside the
+    queue), or **drop `main-serialize.yml` from required checks** (the
+    queue itself serializes). ADR-060 §1 then applies as originally
+    written.
+  - **(B) Accept the software serializer (current, proven).** Keep
+    `main-serialize.yml` + the arm-auto-merge-then-rebase tactic (as
+    landed on #941 / #938). This is the mechanism operating **today**
+    and is documented in `docs/governance/MERGE-SERIALIZATION-FALLBACK.md`.
+    No repo transfer; no additional infra.
+  - **(C) Reduce concurrent ledger-PR load.** Serialize the *authoring*
+    side (one ledger-touching PR in flight at a time) so the software
+    guard has nothing to trip on. Complements (B); does not replace it.
+- **Anchor:** `docs/governance/MERGE-SERIALIZATION-FALLBACK.md`
+  (Variant B — software base-drift guard; canonical for user-owned repo).
 
 ---
 
@@ -100,7 +131,7 @@ Confirmation footprint: **A1–A12 present, B1–B4 present, C1–C3 present.**
 | ----- | ----------------- | -------------------------------------------------------------------------------------------------------- | ------------ |
 | **R1** | Canon-accuracy    | Land §5 correction PR **#938** (B1) + this ERROR-RECONCILIATION register into main                       | —            |
 | **R2** | evo2 lane decision | Author + accept the agent-lane ADR (B3); RED-zone stays on Claude (BUG-005 / `agents.md`)              | R1           |
-| **R3** | Merge-Queue        | Activate ADR-060 §1 Merge Queue (B4) — ends concurrent-regen ledger thrash durably                       | R1           |
+| **R3** | Serialization strategy | Choose strategy per B4 — **(A)** org-transfer → activate native Merge Queue (ADR-060 §1); **(B)** accept the software serializer `main-serialize.yml` (current, proven — `MERGE-SERIALIZATION-FALLBACK.md`); **(C)** reduce concurrent ledger-PR load. Native queue is org-only; correction 2026-07-01b. | R1           |
 | **R4** | evo2 provisioning | Install per R2: Node + Claude Code (Claude-quality lane) OR Aider (local lane) — all via governed `:4000` | R2 (+ ideally R3) |
 
 R1 / R3 can run in parallel from the operator side (R1 is factory-authored,
@@ -136,17 +167,30 @@ R3 is repo-settings). R2 blocks R4 because provisioning is decision-driven.
 - **Operator:** accept the ADR; approve the install-command inventory.
 - **Exit:** ADR-`<next>` + IL landed on `main`; provisioning unblocked.
 
-### Sprint-E3 — Merge-Queue activation (repo-settings; operator)
+### Sprint-E3 — Serialization strategy (repo-settings; operator)
 
-- **Scope:** activate ADR-060 §1 Merge Queue on `main` (B4). Serializes
-  ledger regen → ends the concurrent-regen thrash root cause.
-- **Factory:** none (this is a repo Setting; no code / docs change is
-  required beyond ADR-060 §1, which already canonizes it).
-- **Operator:** Settings → Branches → `main` → require Merge Queue;
-  confirm gating workflows still subscribe to `merge_group` (they do per
-  ADR-060 §1).
-- **Exit:** Merge Queue active on `main`; next parallel-regen PR pair is
-  serialized by the queue and does not double-mint.
+> correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md.
+
+- **Scope:** pick the durable serialization strategy per B4. Three
+  paths, one choice:
+  - **(A) Org-transfer** → transfer `CarmiBanxe/banxe-architecture` to
+    a GitHub org → Settings → Branches → `main` → "Require merge
+    queue"; either add `merge_group` trigger to `main-serialize.yml`
+    or drop it from required checks.
+  - **(B) Accept the software serializer** (current, proven — landed
+    #941 / #938): `main-serialize.yml` base-drift guard +
+    arm-auto-merge-then-rebase tactic; no repo transfer.
+  - **(C) Reduce concurrent ledger-PR load** so the guard has nothing
+    to trip on (complements B).
+- **Factory:** none (repo Setting or authoring-side discipline; no
+  code / docs change is required beyond this register and
+  `MERGE-SERIALIZATION-FALLBACK.md`).
+- **Operator:** choose the strategy and, if (A), execute the transfer
+  + enable native Merge Queue. If (B), no repo-settings change beyond
+  keeping `main-serialize.yml` on required checks.
+- **Exit:** strategy chosen and documented; if (A), native Merge
+  Queue active on `main`; if (B), the software serializer remains the
+  canonical mechanism.
 
 ### Sprint-E4 — evo2 provisioning (per Sprint-E2 outcome)
 
@@ -217,7 +261,12 @@ factory conclusion / recommendation:
 
 - **COMPUTE-ROUTING-TAXONOMY** §5 + §1 — I-32 / I-33 no-bypass rule
   (`docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md`).
-- **ADR-060 §1** — GitHub native Merge Queue (Sprint-E3 target).
+- **ADR-060 §1** — GitHub native Merge Queue (applies **only** if B4
+  option A is chosen; org-only feature — unavailable on this user-owned
+  repo per correction 2026-07-01b).
+- **`docs/governance/MERGE-SERIALIZATION-FALLBACK.md`** — software
+  base-drift guard (`.github/workflows/main-serialize.yml`); canonical
+  mechanism for a user-owned repo (Sprint-E3 option B).
 - **ADR-119** — IL freeze at merge / re-mint on rebase (Sprint-E1 pattern).
 - **ADR-103** — server-only refactoring venue (evo1 is the authoring host).
 - **ADR-153** — terminal topology canon (Orchestrating Terminal role;

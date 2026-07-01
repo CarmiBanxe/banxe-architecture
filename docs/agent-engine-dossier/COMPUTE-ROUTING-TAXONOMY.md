@@ -210,16 +210,31 @@ process — before relying on the alias for production routing.
    unblocks Plan-1 parallelism (concurrent Claude builds on evo1 and evo2). Verified
    read-only 2026-07-01 on evo2: `node` = NONE, `npm` = NONE, `claude` = ABSENT.
 
-**Root-cause note (2026-07-01).** The ledger merge-conflict churn observed across recent
-PRs is caused by **concurrent regeneration of `INSTRUCTION-LEDGER.md` / `IL-SEQUENCE.json`
-between parallel PRs**, not by Redis. The durable serializer is the **GitHub Merge Queue
-(ADR-060 §1)**; the Redis IL-allocator (`banxe-redis`, `netmode=host`,
-`restart=unless-stopped`, tailscale `100.68.102.48:6379` + vault AUTH pass-file) mitigates
-number collisions but does not serialize regeneration order. The mid-session
-`WARN unreachable` was a **transient blip**, not a durability gap. (The separate `redis`
-container with `restart=no` on `:16379` belongs to the **jube stack** — a different
-service — not the allocator.) Prior framings that treated "Redis down" or "warm 235b" as
-gating preconditions were **overstated / wrong-stack**.
+**Root-cause note (2026-07-01, corrected 2026-07-01b).** The ledger merge-conflict churn
+observed across recent PRs is caused by **concurrent regeneration of `INSTRUCTION-LEDGER.md` /
+`IL-SEQUENCE.json` between parallel PRs**, not by Redis. **Correction:** an earlier draft
+of this section said "the durable serializer is the **GitHub Merge Queue (ADR-060 §1)**" —
+that is **inaccurate for this repo**. `CarmiBanxe` is a **user account, not an
+organization**, and the **native GitHub Merge Queue is an org-only feature** — verified
+read-only: `gh api graphql {repository{mergeQueue}}` returns null; REST returns 422; the
+Settings UI does not persist it. ADR-060 §1 assumed an org and does **not** apply here.
+The repo already serializes merges via a **software substitute** —
+`.github/workflows/main-serialize.yml` (base-drift guard: fails any PR with `behind > 0`
+vs `origin/main`, forcing rebase-before-merge; canonical spec:
+`docs/governance/MERGE-SERIALIZATION-FALLBACK.md`). The rebase "thrash" under concurrent
+ledger writes is the guard **working as designed**, not a bug. The Redis IL-allocator
+(`banxe-redis`, `netmode=host`, `restart=unless-stopped`, tailscale
+`100.68.102.48:6379` + vault AUTH pass-file) handles **unique numbering** (ADR-143) and
+does NOT address base-drift serialization. **Durable-fix options:** **(A)** transfer the
+repo to a GitHub org → native Merge Queue becomes available → activate it (+ add
+`merge_group` trigger to `main-serialize.yml` or drop it from required checks); or **(B)**
+accept the software serializer (current, proven — landed #941 / #938) + the
+arm-auto-merge-then-rebase tactic. The mid-session `WARN unreachable` was a **transient
+blip**, not a durability gap. (The separate `redis` container with `restart=no` on `:16379`
+belongs to the **jube stack** — a different service — not the allocator.) Prior framings
+that treated "Redis down", "warm 235b", or "activate native Merge Queue" as gating
+preconditions were **overstated / wrong-stack / org-only-feature-on-user-repo**.
+correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md.
 
 ### §5.6 — Cross-references
 
