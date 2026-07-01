@@ -28,7 +28,7 @@
 | Sprint-B B2 | Dispatcher runtime — infra#27, IL-770, **ACCEPTED** ✅ (92 tests / 100% cov, semgrep 0) |
 | Sprint-B B3 | Lerian MCP runtime — infra#7 OPEN (CI running, 34 tests / 98%) |
 | Sprint-B B4 | gate-exec enforcement — infra#6 OPEN (CI running, 15 tests / 100%) |
-| Sprint-B B5 | A2A bus RedisStreams — OPEN (gate-in: B2 ✅ cleared — ready to start) |
+| Sprint-B B5 | A2A bus RedisStreams — infra#25, **ACCEPTED** ✅ (RedisStreamsA2ABus on main; BUS_MODE=redis wired in app.py) |
 | Sprint-B B6 | G-CANON-BYPASS fix — infra#5 OPEN (operator merge + CTIO execute pending) |
 | Sprint-B B7 | G-GUARDIAN-WEBHOOK-MISSING — infra#4 OPEN (title fix by operator pending) |
 | Sprint-B B8 | Temporal saga runner — BLOCKED (ADR-133 approval) |
