@@ -23804,3 +23804,40 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 - **shard:** `ledger/entries/agent-factory-t22-payment-core-evidence/IL-2026-07-02T21-00-00Z--t22-payment-core.md`
 
 docs(consolidation): T2.2 banxe-payment-core runtime verification — REFERENCE ONLY, Phase 3 decision pending
+
+---
+
+### IL-845 - agent-factory-t23-gap091-resolution-plan @ 2026-07-02T00:00:00Z
+
+- **il_ts:** 2026-07-02T00:00:00Z
+- **session_id:** agent-factory-t23-gap091-resolution-plan
+- **source:** factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-t23-gap091-resolution-plan/IL-2026-07-02T20-03-45Z--be4c01.md`
+
+### T2.3 GAP-091 resolution plan — Intent-First deployment
+
+- **Task:** Create governance/GAP-091-RESOLUTION-PLAN.md (T2.3 from CONSOLIDATION-PLAN) with 3-path analysis of Intent-First deployment, root causes (ADR-049 status contradiction, Floor1↔Floor3 contract missing, consumer frontend absent), and CTIO/Product decision gates.
+
+- **Discovered assets:**
+  - Floor 1 (banxe-ai-infrastructure/intent_dispatcher): 6 modules (dispatcher, ports, models, bus, registry, __init__)
+  - Floor 3 (banxe-emi-stack/services/intent_layer): 13 modules (router, classifier, catalog, canary, shadow, observability, ports, models, config, composition, canary_metrics, catalog_snapshot, __init__)
+  - ADR-049 spec: 6 client-facing masks (Payments, FX, KYC, Notifications, Referral, Wallet) with 6 mandatory fields (scope, autonomy_level, confirmation_policy, cost_cap, lineage_obligation, compliance_gate)
+  - ADR-045 4-layer model: L1 (Intent), L2 (Execution), L3 (Governance), L4 (Data/Intelligence)
+
+- **Root causes identified:**
+  - RC-1: ADR-049 status contradiction (frontmatter ACCEPTED, body PROPOSED)
+  - RC-2: Floor 1↔Floor 3 integration contract missing (no defined API protocol)
+  - RC-3: Consumer frontend absent (C-37.3 blocking GAP-080)
+  - RC-4: ADR-053/054/055 blocked on ADR-049 deployment clarification
+
+- **Resolution paths:**
+  - Path A (RECOMMENDED): Enable in EMI + Define contract (6-step sequence, Q3-W31 target)
+  - Path B: Consolidate intent_dispatcher into services/intent_layer (architectural trade-off)
+  - Path C: Defer (document-only update, Q4 target)
+
+- **Deliverable:** governance/GAP-091-RESOLUTION-PLAN.md (2700+ lines) with 3 paths, root cause analysis, recommended sequence (Path A: 7 steps), appendices for integration contract template and ADR-049 addendum template.
+
+- **Gate:** CTIO/Product sign-off required on path, protocol (REST/Kafka/gRPC), rollout strategy, timeline, GAP-080 scope. Decision deadline Q3-W27 (2026-07-07).
+
+- **Refs:** ADR-045 (Intent-First), ADR-049 (Masks), ADR-053/054/055 (extensions), GAP-080 (consumer frontend), GAP-091 (this resolution), MASTER-ORG-CODE-RUNTIME-DOSSIER.md (4-floor model)
