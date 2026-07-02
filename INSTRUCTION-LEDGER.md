@@ -23587,3 +23587,27 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 **Quality:** Semgrep 0; ADR-120/121 (worktree-only git); ADR-060 (namespace); GUIYON security rule applied.
 
 **Status:** DONE. Ready for operator review and merge to main.
+
+---
+
+### IL-829 - agent-factory-governance-runtime-addendum @ 2026-07-02T17:00:00Z
+
+- **il_ts:** 2026-07-02T17:00:00Z
+- **session_id:** agent-factory-governance-runtime-addendum
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-runtime-addendum/IL-2026-07-02T17-00-00Z--runtime-addendum.md`
+
+### [OWNER: A] Cross-Host Runtime Addendum to master-plan — evo1 OpenClaw MoA confirmed running; F-RUN-E corrected; Sprint B narrowed
+- **Decision:** Per operator execute-go, appended **§7 Cross-Host Runtime Addendum** to `docs/governance/AGENT-FLEET-MASTER-PLAN.md` (#978/IL-827) + minimal §2 pointer-corrections (F-RUN-L/E/-LIVE) + narrow §3 Sprint-B implementation-cell fix. Based SOLELY on the operator-supplied cross-host SSH/tailscale audit; NO re-SSH, NO auth bypass, NO fresh probe, NO install, NO activation. Changed ONLY this doc + paired shard. NO passport/config/ADR/perimeter/project/legal/ss1 touched. **PREPARE-ONLY**, Draft PR. Owner A.
+- **§7.1 correction:** Legion 0 agent daemons remains true (LLM infra only). evo1 (== former GMKtec) OpenClaw MoA orchestration CONFIRMED RUNNING — openclaw-gateway-moa/ctio/guiyon active/running, openclaw-soul-guard active(exited), live openclaw/openclaw-gateway processes. F-RUN-E moves "neither confirmed nor denied" → confirmed-running; part-4 401 was a live gateway's front door, not absence.
+- **§7.2 reconciled:** 70 bank-passports NOT dead/dormant — on-demand definitions invoked through the live evo1 orchestration gateways; runtime distributed across hosts, not Legion-resident. GAP-2/F-LIVE measurability gap (idle vs dead without liveness contract) still stands.
+- **§7.3 engine-install matrix (host-audit interpretation, NOT repo evidence):** openclaw Legion+evo1 (running evo1); metaclaw Legion; aider Legion (config-only evo2); ruflo evo1 (gateway-adjacent); hermes/mirofish/microfish/ironclaw/nanoclaw absent everywhere; crewai/autogpt/langgraph/autogen/etc absent everywhere.
+- **§7.4 Sprint-B narrowing:** B now targets ONLY still-missing engines — hermes/mirofish/ironclaw/nanoclaw + external absent. openclaw/metaclaw/aider/ruflo NO LONGER framed as to-install (already deployed). Executor unchanged (operator/infra).
+- **§2/§3 pointer-corrections:** F-RUN-L/E/-LIVE each get an "amended by §7" clause (originals retained = audit trail); §3 GAP-3/B implementation-cell narrowed to still-missing engines. §1/§4/§5/§6 substance unchanged.
+- **Boundaries:** ONLY AGENT-FLEET-MASTER-PLAN.md (additive §7 + pointer-clauses + §3 cell) + this shard. NO agent/passport/config/ADR/.claude-agents/swarm/perimeter/project/legal/ss1 change; nothing installed/activated; auth NOT bypassed; no re-SSH; no fresh probe; no runtime over-claim past operator evidence. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** amends #978's own doc in place (additive §7 + pointer clauses) — no parallel plan, restates no policy; cites the operator audit as evidence source. F-NAME (openclo.md naming) deferred, not touched.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06). Sequence self-heal (if stale) = append-only, recorded.
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T17:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Runtime snapshot point-in-time (operator audit).
+- **Status:** DONE — §7 addendum + pointer-corrections + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): Sprint order (C→A→B→D); B now scoped to missing engines only; install/activate = operator/infra.**
+- **Refs:** `docs/governance/AGENT-FLEET-MASTER-PLAN.md` (#978/IL-827); #975 (roadmap); #974 (liveness); #959 (fleet-control); GLOSSARY (GMKtec=evo1); `.claude/agents/openclo.md` (openclo-moa gateway — referenced, not edited); ADR-148/126/135/117; L-02/L-10; ADR-102/119/143/144; #900. Operator execute-go 2026-07-02 (cross-host runtime addendum; operator-audit-only; no re-SSH/auth-bypass/install).
