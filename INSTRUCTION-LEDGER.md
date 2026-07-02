@@ -23467,3 +23467,15 @@ this shard).
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 817) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T14:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Pinned to 69889e8 (point-in-time).
 - **Status:** DONE — gap record + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR / ADR-gated): whether/how to close the gap — passport liveness-contract schema, agent-scoped runtime watcher, or ADR-126 future-item extension — a design+governance decision, NOT authored here.**
 - **Refs:** `docs/governance/AGENT-LIVENESS-GAP.md` (new); ADR-126; `config/fleet/heartbeat-policy.yaml`; `docs/governance/SERVER-CONTROL-ORCHESTRATION.md`; `docs/governance/FLEET-CONFORMANCE-AUDIT.md` (#972/#973); `docs/governance/SELF-IMPROVEMENT-MANDATE.md` §4; L-10; ADR-102/119/143/144; #900. Operator execute-go 2026-07-02 (agent-liveness capability gap; design deferred).
+
+---
+
+### IL-819 - agent-factory-heartbeat-ratify @ 2026-07-02T17:09:39Z
+
+- **il_ts:** 2026-07-02T17:09:39Z
+- **session_id:** agent-factory-heartbeat-ratify
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-heartbeat-ratify/IL-2026-07-02T17-09-39Z--heartbeat-ratify.md`
+
+AGENT-HEARTBEAT-POLICY — ratify factory heartbeat cadence and liveness policy
