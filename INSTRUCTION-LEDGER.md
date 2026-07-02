@@ -23652,3 +23652,26 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T18:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — agent-liveness contract + build-prompt + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): ratify §3 thresholds; provide monitor read-credential; infra builds monitor in banxe-monitoring per §7. Then Sprint A/B/D.**
 - **Refs:** `docs/governance/AGENT-LIVENESS-SPEC.md` (new); #959 (SERVER-CONTROL-ORCHESTRATION + config/fleet); #974 (AGENT-LIVENESS-GAP); #982 (master-plan §7); #963 (FLEET-MONITOR-BUILD-PROMPT); #964 (placement ratify); ADR-126/117; #975 (roadmap Sprint C); #978 (master-plan); CLAUDE.md §10; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (Sprint C agent-liveness; measure 7/24; no activate/install/auth-bypass; passports untouched).
+
+---
+
+### IL-834 - agent-factory-governance-agent-status-normalization @ 2026-07-02T19:00:00Z
+
+- **il_ts:** 2026-07-02T19:00:00Z
+- **session_id:** agent-factory-governance-agent-status-normalization
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-agent-status-normalization/IL-2026-07-02T19-00-00Z--agent-status-normalization.md`
+
+### [OWNER: A] Agent-Status Normalization (Sprint A) — spec + canon-role-passport acknowledgment; SPEC-ONLY, passport edits + activation separate & operator-gated
+- **Decision:** Per operator (sprints in order, C done → A now), authored `docs/governance/AGENT-STATUS-NORMALIZATION.md` (new) — governance normalization spec + canon-role-passport acknowledgment. SPEC-ONLY. Changed ONLY this doc + paired shard. NO passport file edited; NO agent activated; NO ADR/config/perimeter/project-code/legal/ss1 touched. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Problem (§1, from #972/#973/#982):** casing split active(10) vs ACTIVE(3); strict top-level split 39 PROPOSED / 10 active / 3 ACTIVE / 18 no-top-level; 2 indented status (data_lake_elt, treasury_alm); 16 no-status; +10 canon-role passports (docs/canon/passports/) unacknowledged in fleet inventory.
+- **Normalization rule (§2, config-as-data):** canonical enum uppercase {PROPOSED|ACTIVE|DEPRECATED}; active→ACTIVE; top-level ^status: required; indented status = format error → raise to top-level; no-status → PROPOSED default (flagged, never silently active — L-10 honesty). Tallies anchor to ^status:, nested reported separately.
+- **Canon-role acknowledgment (§3):** docs/canon/passports/ = distinct governance-topology class (operator/ctio/planner/reviewer/canon-judge/executor/guardian-factory/guardian-project/mlro/schema), NOT bank agents. Acknowledged inventory (pointer to #978 F-ARCH, not re-tallied): 70 bank + 10 canon-role + 20 souls + 3 swarms + 4 factory. NOT reclassified (scoping = operator).
+- **Scope discipline (§4):** THIS PR = normalization SPEC + acknowledgment only, edits NO passport. [AWAITS-OPERATOR] apply-normalization-to-passports = separate operator-confirmed bulk PR (casing active→ACTIVE, raise 2 indented, add PROPOSED to 16) — so 70+ files never touched blind. [AWAITS-OPERATOR] activation PROPOSED→ACTIVE = separate ADR-135 per-agent gate, NOT here (casing hygiene ≠ activation). Ordering: normalize-rule → apply (operator bulk PR) → activate (ADR-135 per agent).
+- **Boundaries (§5):** spec-only; no passport edited; no activation; no ADR/config/perimeter/project/legal/ss1; 2 indented + 16 no-status named as future-apply targets, NOT edited here. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references #972/#973 (findings/erratum), #982/#978 (master-plan, F-ARCH), L-10 (measurement rule), ADR-135 (activation gate), CLAUDE.md §10 — restates none; spec + acknowledgment, no parallel policy, no passport edit, no code.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T19:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — normalization spec + acknowledgment + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): apply-normalization bulk PR (operator-confirmed, 70+ passports) + activation (ADR-135 per agent). Then Sprint B/D.**
+- **Refs:** `docs/governance/AGENT-STATUS-NORMALIZATION.md` (new); #972/#973 (FLEET-CONFORMANCE-AUDIT + erratum); #978 (AGENT-FLEET-MASTER-PLAN, F-ARCH); #982 (runtime-addendum); FACTORY-LESSON-CAPTURE L-10; ADR-135; CLAUDE.md §10; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (Sprint A normalize + acknowledge; spec-only; apply + activation separate operator-gated).
