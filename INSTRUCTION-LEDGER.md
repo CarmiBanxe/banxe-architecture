@@ -23279,3 +23279,25 @@ this shard).
 - ADR-140 (breach notification governance)
 - GDPR Art.33 / Art.34 / Art.4(12)
 - s15-4 (FCA SUP 15 incident — pattern reference)
+
+---
+
+### IL-811 - agent-factory-governance-fleet-placement-ratify @ 2026-07-02T07:00:00Z
+
+- **il_ts:** 2026-07-02T07:00:00Z
+- **session_id:** agent-factory-governance-fleet-placement-ratify
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-fleet-placement-ratify/IL-2026-07-02T07-00-00Z--fleet-placement-ratify.md`
+
+### [OWNER: A] Fleet placement decision (audit-resolved) + heartbeat-threshold ratification
+- **Decision:** Per operator "placement confirmed (audit-grounded)", (1) appended `Appendix A — Placement Decision (audit-resolved)` to `docs/governance/SERVER-CONTROL-ORCHESTRATION.md` (#959 core policy unchanged — appendix only), and (2) ratified `config/fleet/heartbeat-policy.yaml` (thresholds + placement fields). Changed ONLY these 2 files + paired shard. NO monitor/watcher code written; banxe-monitoring / machines / prometheus systemd-config / perimeter NOT touched. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Placement (audit-resolved, in Appendix + config):** enforcement-locus = **banxe-monitoring** (operator-owned monitoring repo, beyond ADR-117; monitor/watcher code built infra-side there, NOT factory). Watcher node = **Legion, external**, monitors evo1+evo2 over **tailscale** (evo1 100.68.102.48 reachable even when USB4 down) — implements the §4 monitor-survivability constraint (not single-pointed on a falling node). Alert primary = **Prometheus/Alertmanager** (existing, evo2 127.0.0.1:9090/9093); secondary = **Telegram (ADR-002 bot)**. [SERVER-ALERT] routes through these (Hermes/ADR-126 read-only envelope). Split respects ADR-117: read-only monitoring (banxe-monitoring/Legion/tailscale) vs mutating enforcer (#939, project/infra) — this repo authors neither.
+- **[BLOCKING wiring, operator/infra]:** Prometheus on evo2 = systemd INACTIVE but port listening → operator choice (systemctl enable --now prometheus, CTIO-carry-forward) OR keep docker/manual. Marked as open wiring item — **NOT decided/executed here**; doc neither recommends a bypass nor runs any command.
+- **Thresholds ratified:** status proposed→ratified; [RATIFY] cleared off heartbeat_interval_s=30, freshness_window_s=90, missed_beats=3, retry_grace_s=10 (accepted as-is); added placement fields (enforcement_locus/watcher_node/watcher_transport/alert_primary/alert_secondary) + ratification block (operator, 2026-07-02, basis "audit-resolved placement"). 0 [RATIFY] remaining; YAML valid (asserted).
+- **Boundaries:** #959 §0-§9 core policy UNCHANGED (additive Appendix A only); server-2 policy NOT touched; server-inventory.yaml NOT touched; banxe-monitoring / machines / prometheus config/systemd / perimeter NOT touched; no monitor/watcher/daemon code; no systemctl executed. Only the 2 files + this shard. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references #959/IL-807, config/fleet/*, ADR-117, ADR-002 (Telegram bot), ADR-126 (Hermes alerting), existing Prometheus/Alertmanager, tailscale, #939 (enforcer, separate) — restates none; additive appendix + in-place ratification, no parallel policy, no code.
+- **Scope/flow:** authored per #900 — 2 files + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 810; open-PR 811) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T07:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — Appendix A + heartbeat ratification + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (operator/infra): resolve Prometheus-enable wiring; infra builds monitor in banxe-monitoring (Legion/tailscale) per FLEET-MONITOR-BUILD-PROMPT (#963); enforcer #939 project-side.**
+- **Refs:** `docs/governance/SERVER-CONTROL-ORCHESTRATION.md` (#959/IL-807); `config/fleet/heartbeat-policy.yaml`; FLEET-MONITOR-BUILD-PROMPT.md (#963/IL-811); ADR-117; ADR-002; ADR-126; SERVER-2-* (#932/#939); ADR-102/119; #900. Operator directive 2026-07-02 (placement audit-resolved + threshold ratification).
