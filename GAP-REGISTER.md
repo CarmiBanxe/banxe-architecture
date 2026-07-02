@@ -1289,3 +1289,35 @@
     Closing IL: TBD (openclo-moa authored + deployed in ~/.claude/agents/ + verified).
     Anchors: IL-OPS-SPRINT-S3-F2-3-CLAUDE-SUBAGENTS-PARTIAL-DEPLOYMENT-2026-05-09,
     bootstrap canon v3 §5 + §10 Phase F2.3, parent G-FACTORY-CLAUDE-SUBAGENTS-MISSING.
+
+## GAP-093: evo1 sshd DOWN — admin plane unavailable
+
+**Date:** 2026-07-02
+**Severity:** WARNING (operational services alive — LiteLLM :4000 UP, Redis :6379 UP, Ollama :11434 UP, node-exporter :9100 UP)
+**Owner:** Operator (physical access required)
+**Status:** OPEN
+
+### Description
+evo1 (banxe-nucbox-evo-x1, 100.68.102.48) sshd is not running. All remote access methods exhausted:
+- SSH :22 — Connection refused
+- SSH :2222 — Connection refused
+- Tailscale SSH — 502 (disabled in ACL)
+- Cockpit :9090/:9091 — not running
+- Docker API — not exposed
+NucBox EVO X2-1 has no IPMI/BMC. Physical console access required.
+
+### Operational Impact
+NONE on AI workloads: LiteLLM :4000 (Layer 5 router, ADR-018) is UP and passing Prometheus health check. Redis, Ollama, node-exporter all running.
+Admin plane only: no remote management, no log access, no service restart capability.
+
+### Mitigation
+Physical access to evo1 → `sudo systemctl start ssh && sudo systemctl enable ssh`
+
+### Prevention
+Add SSH TCP probe to banxe-monitoring prometheus rules → alert BEFORE sshd goes silent again (see PR for banxe-ai-infrastructure/banxe-monitoring/prometheus/rules/).
+
+### References
+- ADR-018: Layer 5 LiteLLM router on evo1 :4000
+- ADR-143: Redis IL-counter on evo1 :6379
+- config/fleet/server-inventory.yaml (IL-807)
+- config/fleet/heartbeat-policy.yaml (this ratification)
