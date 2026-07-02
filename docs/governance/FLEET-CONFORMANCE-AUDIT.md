@@ -21,20 +21,36 @@
 | Factory-side agents | `.claude/agents/*.md` | **4** (`controller`, `inspector-agent`, `openclo`, `safeguarding-agent`) |
 | Project / bank passports | `agents/passports/**/*.yaml` | **70** |
 | Souls | `agents/souls/*.md` | **20** |
+| Agent swarms (orchestration units) | `agents/swarms/*.yaml` | **3** (`accounting-swarm`, `banxe-aml-swarm`, `monthly-fca-return`) |
+
+> **Erratum E-1 (2026-07-02, additive).** The original §1 inventory (as merged in #972/IL-816) omitted the
+> `agents/swarms/*` class. The three swarm units are added above **as inventory only** — each declares
+> `topology: hierarchical` (per the files); **no runtime, coordinator behaviour, or activation state is
+> asserted or reinterpreted here.** No swarm file is edited.
 
 ## §2. Activation reality
-Measured `status:` field across the 70 passports:
+> **Measurement rule (erratum E-2, 2026-07-02):** counts are measured on the **strict top-level YAML key
+> `^status:`** — anchored, un-indented, case-sensitive field name.
 
-| Value | Count |
+Measured strict top-level `^status:` across the 70 passports:
+
+| Value (top-level `^status:`) | Count |
 |---|---|
-| `PROPOSED` | **41** |
+| `PROPOSED` | **39** |
 | `active` | **10** |
 | `ACTIVE` | **3** |
 | — activated total — | **13** |
-| no parseable top-level `status` | **16** |
+| no top-level `status:` | **18** |
 
-- 54 passports carry a parseable top-level `status`; **16 are silent** (see risk note — state is **not
-  inferred** for these; could be nested or mis-keyed).
+- **Of the 18 without a top-level `status:`:** **2** carry an **indented** `status: PROPOSED` —
+  `agents/passports/data_lake_elt_agent.yaml`, `agents/passports/treasury_alm_agent.yaml` — and **16** carry
+  **no `status:` at all.** State is **not inferred** for any of the 18.
+- **Erratum E-2 correction of #972/IL-816.** The originally-merged reading `41 PROPOSED / 16 no-status` came
+  from a **whitespace-tolerant match** (`^\s*status:`, case-insensitive) that folded those **2 indented**
+  fields into `PROPOSED`. Both readings sum to 70 but answer different questions; the prior label "no
+  parseable top-level status" was **imprecise relative to its counting method**. This erratum anchors §2 to
+  `^status:` and reports indented status **separately** (39 top-level `PROPOSED` + 18 without top-level; of
+  which 2 indented + 16 none). The **activated total of 13 is unchanged and correct.**
 - **Casing inconsistency finding:** `active` (10) vs `ACTIVE` (3) — the same activated state written two ways;
   a conformance gate would normalise this.
 - **This is a conformance observation, NOT an activation instruction.** No agent is activated by this document.
