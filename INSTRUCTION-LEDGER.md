@@ -23560,3 +23560,30 @@ docs(governance): T2.5 per-duplicate verification evidence — OD-1 phantom, tx_
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T16:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Pinned to 1d7a18a (point-in-time).
 - **Status:** DONE — master plan (7 findings + unified cycle + executor split) + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): pick sprint order (proposed C→A→B→D) + the executor-marked operator/infra items — none taken here.**
 - **Refs:** `docs/governance/AGENT-FLEET-MASTER-PLAN.md` (new); #975 (roadmap); #972/#973/#974; #966/#969; #959; #971; #967; ADR-148/126/127/117/135/136/150/154; GLOSSARY; L-02/L-10; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (unify findings → single cycle; activate/install nothing; complement not duplicate #975; I-18/I-20 exclude; no auth bypass).
+
+---
+
+### IL-828 - agent-factory-terminalb-spec-lane @ 2026-07-02T21:35:00Z
+
+- **il_ts:** 2026-07-02T21:35:00Z
+- **session_id:** agent-factory-terminalb-spec-lane
+- **source:** operator
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-terminalb-spec-lane/IL-828-terminalb-spec-lane.md`
+
+### ADR-TERMINAL-B-SPEC-LANE — Parallel Novelty-Hunting Lane with IL Anti-Collision
+
+**Context:** Operator needs to run novelty hunting in parallel to the general line (Terminal A / Factory)
+without blocking; existing infrastructure (Redis IL counter, session-namespace isolation) supports it.
+
+**Decision:** Establish Terminal B as a second Orchestrating-Terminal instance with strict namespace
+separation (`agent/specproj/<id>/<slug>`), shared Redis IL counter (no fork), rebase-freshness invariant,
+and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-only, I-24).
+
+**Files:**
+- `decisions/ADR-TERMINAL-B-SPEC-LANE.md` — formal ADR (ACCEPTED)
+- `governance/NOVELTY-COLLECTION-REGISTER.md` — hand-off register (append-only) with schema + seed entries
+
+**Quality:** Semgrep 0; ADR-120/121 (worktree-only git); ADR-060 (namespace); GUIYON security rule applied.
+
+**Status:** DONE. Ready for operator review and merge to main.
