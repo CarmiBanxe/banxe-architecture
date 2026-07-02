@@ -1,0 +1,45 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Heartbeat / health thresholds — CONFIG-AS-DATA (Config-over-Hardcoding, CLAUDE.md §10)
+#
+# Policy prose: docs/governance/SERVER-CONTROL-ORCHESTRATION.md. Inventory: config/fleet/server-inventory.yaml.
+# Thresholds are READ as data by the infra-side monitor; the monitor MUST NOT hardcode them
+# (a threshold change is a config edit + re-ratification, never a code change).
+#
+# PROPOSED DEFAULTS — [RATIFY] (operator sign-off due). No monitor/daemon/enforcer is configured here.
+# ─────────────────────────────────────────────────────────────────────────────
+schema_version: "1.0.0"
+status: proposed
+
+heartbeat:
+  heartbeat_interval_s: 30      # [RATIFY] each on/always-on host answers a liveness probe this often
+  freshness_window_s: 90        # [RATIFY] heartbeat older than this = stale (= 3× interval)
+  missed_beats: 3               # [RATIFY] consecutive missed beats OR stale ⇒ host = SUSPECT
+  retry_grace_s: 10             # [RATIFY] one-retry wait after a failed health-check
+
+# States a host moves through (policy §heartbeat): HEALTHY → SUSPECT → UNHEALTHY (+ RECOVERED)
+health_states: [HEALTHY, SUSPECT, UNHEALTHY, RECOVERED]
+
+# Retry discipline: on health-check fail, retry ONCE after retry_grace_s; second fail ⇒ UNHEALTHY.
+retry_rule:
+  attempts: 1                   # one retry (total 2 checks) before UNHEALTHY
+
+# Planned vs unexpected (policy §critical-distinction) — drives alert severity:
+#   operator-shutdown-window + SUSPECT      ⇒ planned  ⇒ INFO
+#   on/always-on + SUSPECT + NO window      ⇒ UNEXPECTED_OUTAGE ⇒ CRITICAL   (the evo1 case)
+outage_classification:
+  planned_when: "host.expected_state == operator-shutdown-window (declared in inventory/journal)"
+  unexpected_when: "host.expected_state in {always-on, on-when-scheduled} AND no open shutdown-window"
+
+# Alert severity map (policy §alerting):
+severity_map:
+  UNEXPECTED_OUTAGE: CRITICAL
+  HEALTH_FAIL: WARN
+  planned_shutdown: INFO
+  RECOVERED: INFO
+
+ratify:
+  - key: "heartbeat.*"
+    note: "[RATIFY] all heartbeat thresholds are proposed defaults, not final"
+open_questions:
+  - key: "alert_channel_transport"
+    note: "[BLOCKING] concrete operator signal sink — operator decision (see server-inventory.yaml)"
