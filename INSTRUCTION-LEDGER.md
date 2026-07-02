@@ -24086,3 +24086,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 - **Status:** DONE. IL shard append-only, zero deletions. Document ready for CTIO review and signature.
 
 - **References:** vibe-coding PR #3, banxe-emi-stack PR #269, banxe-architecture `governance/T2.5-OD-4-STEP3-RETIREMENT-PLAN.md`, ADR-024 (deprecation protocol), I-24 (audit trail), ADR-120/121 (worktree discipline).
+
+---
+
+### IL-856 - agent-factory-governance-sprint1-signoff @ 2026-07-02T23:04:50Z
+
+- **il_ts:** 2026-07-02T23:04:50Z
+- **session_id:** agent-factory-governance-sprint1-signoff
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-sprint1-signoff/IL-2026-07-02T23-04-50Z--54a2e0.md`
+
+### agent-factory-governance-sprint1-signoff
+
+- **Instruction:** Sprint 1 sign-off briefing — S-1..S-4 operator package
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
