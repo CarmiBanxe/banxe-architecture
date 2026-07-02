@@ -488,5 +488,6 @@
   "agent-factory-adr018-qwen3inference__889e42a60c35": 806,
   "agent-factory-governance-server-control-orchestration__a8e1452a8988": 807,
   "agent-factory-gap085-cnil__44a95da7e789": 810,
-  "agent-factory-governance-fleet-placement-ratify__07708adb9bea": 811
+  "agent-factory-governance-fleet-placement-ratify__07708adb9bea": 811,
+  "agent-factory-governance-fleet-monitor-build-prompt__46868ca2d489": 812
 }
