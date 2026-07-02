@@ -1,0 +1,18 @@
+---
+il_ts: 2026-07-02T09:00:00Z
+session_id: agent-factory-governance-projection-factory-fork-exception
+source: CEO
+status: DONE
+---
+### [OWNER: A] Projection model — factory-fork-only exception (ADR-136 PRECOND-05); matrix = 0 pending gap
+- **Decision:** Per operator (audit established lesson-capture #951 + skills #953 are NOT a projection gap but factory-fork-only by canon), added **Appendix A — Factory-fork-only exception (ADR-136 PRECOND-05)** to `docs/governance/FACTORY-PROJECT-PROJECTION-MODEL.md` (#967/IL-813) and reclassified the two matrix rows. Changed ONLY this doc + paired shard. NO ADR / project-code / perimeter touched; **no agent-harness project repo fabricated or created.** **PREPARE-ONLY**, Draft PR. Owner A.
+- **Exception recorded:** the "every feature forks to project" principle applies to features of PROJECTABLE nature (runtime/UI/ops): server-2→banxe-emi-stack/infra, UI/UX→banxe-ui, fleet→banxe-monitoring (3/3 projected). EXCEPTION: agent-harness/self-improvement features (lesson-capture #951, skills #953) = factory-fork-only by default (ADR-136 PRECOND-05) — agent does not delegate its self-modification/prompts/capabilities to project (authority non-delegable, ADR-145 PRECOND-07). No agent-harness project repo exists (all project repos = product-runtime: banxe-emi-stack, banxe-ui, banxe-fiat-backend, banxe-dashboard, banxe-payments, banxe-identity, banxe-uikit, …). Projecting them would VIOLATE ADR-136, not satisfy the principle.
+- **Reclassification:** two ❌ NOT-projected matrix rows → ⛔ factory-fork-only (correct-by-canon); matrix now **3 projected + 2 factory-fork-only = 0 pending gap**. Gap-list §4 resolved (no [НЕИЗВЕСТНО] pending build-prompt).
+- **Open option (NOT decided):** projecting an agent-harness feature = ONLY via explicit ADR-136-gated operator decision to create an agent-harness project-fork repo (governance call, not routine) — AWAITS-OPERATOR; no repo fabricated.
+- **Data-quality correction:** SERVER-2-ENFORCER-BUILD-PROMPT (#939) targets banxe-emi-stack/infra, NOT banxe-ui (banxe-ui mention there = ADR-117 exclusion "not banxe-ui", grep artefact).
+- **Boundaries:** ONLY FACTORY-PROJECT-PROJECTION-MODEL.md (additive Appendix A + matrix reclassification) + this shard. NO ADR file edited; NO project code; perimeter/machines NOT touched; NO repo created/invented. §1-§5 body substance unchanged. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references #967 (model), ADR-136 (PRECOND-05), ADR-145 (PRECOND-07), ADR-117, #951, #953 — restates none; additive appendix, no parallel model, no code.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 813) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T09:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — Appendix A + matrix reclassification + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): agent-harness project-fork = explicit ADR-136-gated operator decision only, if ever wanted.**
+- **Refs:** `docs/governance/FACTORY-PROJECT-PROJECTION-MODEL.md` (#967/IL-813); ADR-136 (PRECOND-05); ADR-145 (PRECOND-07); ADR-117; #951; #953; ADR-102/119; #900. Operator directive 2026-07-02 (factory-fork-only exception, no repo invented).
