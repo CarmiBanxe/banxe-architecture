@@ -507,5 +507,6 @@
   "agent-factory-ilshardtool-add-il-shard-script__cfac2a951b46": 832,
   "agent-factory-governance-agent-liveness-spec__b5e135fbee48": 833,
   "agent-factory-governance-agent-status-normalization__df978d365627": 834,
-  "agent-factory-ledgerinfra-redis-host-default__918a4a006aed": 836
+  "agent-factory-ledgerinfra-redis-host-default__918a4a006aed": 836,
+  "agent-factory-guardian-specproj-allow__40039941bed1": 837
 }

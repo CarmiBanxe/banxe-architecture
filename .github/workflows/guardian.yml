@@ -161,12 +161,13 @@ jobs:
         run: |
           set -e
           echo "Head branch: $BRANCH"
-          PATTERN='^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$'
+          # specproj = ADR-TERMINAL-B-SPEC-LANE Terminal-B namespace
+          PATTERN='^agent/(central|right|factory|specproj)/[A-Za-z0-9]+/[a-z0-9._-]+$'
           if echo "$BRANCH" | grep -qE '^(dependabot|renovate|revert)/'; then
             echo "guardian-branch-naming OK (allow-listed prefix)"; exit 0
           fi
           if ! echo "$BRANCH" | grep -qE "$PATTERN"; then
-            echo "FAIL: branch '$BRANCH' violates ADR-060 namespace agent/<actor>/<id>/<slug> (actor=central|right|factory)"; exit 1
+            echo "FAIL: branch '$BRANCH' violates ADR-060 namespace agent/<actor>/<id>/<slug> (actor=central|right|factory|specproj)"; exit 1
           fi
           echo "guardian-branch-naming OK"
 

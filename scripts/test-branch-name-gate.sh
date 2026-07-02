@@ -16,6 +16,7 @@ cases=(
   "agent/central/c1/x|PASS"
   "agent/right/r1/long-slug.with_dots-2|PASS"
   "agent/factory/UPPERID/x|PASS"
+  "agent/specproj/sp01/thin-spec-lane|PASS"
   "main|PASS"
   "dependabot/pip/foo|PASS"
   "refs/heads/agent/factory/archstack002/x|PASS"

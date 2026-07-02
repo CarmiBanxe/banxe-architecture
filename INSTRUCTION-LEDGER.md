@@ -23690,3 +23690,18 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 
 - **Instruction:** fix(ledger): build_ledger REDIS_HOST default 100.68.102.48->127.0.0.1 — evo1 reaches allocator, ends IL-collision thrash (ADR-143)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-837 - agent-factory-guardian-specproj-allow @ 2026-07-02T22:10:13Z
+
+- **il_ts:** 2026-07-02T22:10:13Z
+- **session_id:** agent-factory-guardian-specproj-allow
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-guardian-specproj-allow/IL-2026-07-02T22-10-13Z--964e74.md`
+
+### agent-factory-guardian-specproj-allow
+
+- **Instruction:** ci(guardian): allow agent/specproj/* branch namespace (ADR-TERMINAL-B-SPEC-LANE)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
