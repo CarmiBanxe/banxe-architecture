@@ -23728,3 +23728,52 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T20:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — advance-recommendation + per-engine build-prompts + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): ADR-148 advance via ADR-135; specify ironclaw/nanoclaw roles ([BLOCKING]); operator/infra installs missing engines + wires orchestration. Then Sprint D.**
 - **Refs:** `docs/governance/FRAMEWORK-ADOPTION-SPRINT-B.md` (new); ADR-148/126/127/135/117/154/150; #982 (master-plan §7 host-audit); #988 (liveness); #964 (placement); #959 (server-inventory); #949 (Hyperbrowser dual-use); #978 (master-plan); `.claude/rules/agents.md`; CLAUDE.md §9; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (Sprint B advance + build-prompts; install nothing; no ADR edit; no auth bypass; hosts from inventory).
+
+---
+
+### IL-842 - specproj-compute14bs5-honesty @ 2026-07-02T23:00:02Z
+
+- **il_ts:** 2026-07-02T23:00:02Z
+- **session_id:** specproj-compute14bs5-honesty
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-compute14bs5-honesty/IL-2026-07-02T23-00-02Z--394ee3.md`
+
+### IL — Terminal-B specproj sp01: COMPUTE-ROUTING §5.7 honesty-correction + Legion 14b decommission from routing (docs+config only, 2026-07-03)
+
+**Date:** 2026-07-03 (Terminal-B; TZ-neutral date on top of shard `il_ts` 2026-07-02T23:00:02Z UTC)
+**Branch:** `agent/specproj/sp01/compute-14b-and-s5-correction` (ADR-060 specproj namespace, ADR-TERMINAL-B-SPEC-LANE §1)
+**Scope:** docs + one routing-config script fix. Zero runtime, zero weight, zero secret, zero RED-zone. Draft PR (§71 spec-lane discipline; NO merge).
+
+- **Instruction:** land the Terminal-B compute audit correction as a doc-first amendment: (i) COMPUTE-ROUTING-TAXONOMY §5.7 records the verified truth about `reasoning-235b` (evo2 `:8082` llama-server, Q3_K_S, `--n-gpu-layers=40`, api-key-gated `/v1/chat/completions`, ~2.13 tok/s async-only single-slot, egress-0) and dismisses the ollama-path (142 GB > 123 GB evo2 RAM); (ii) records `glm-air` (evo1 `:8081` llama-server master + evo2 `:50052` rpc-server Vulkan worker) as a second local-reason lane; (iii) records the docs-only recommendation to REMOVE `qwen2.5-coder:14b-banxe-factory` from every alias mapping that targets Legion — 9 GB Q4_K_M does NOT fit Legion's 8 GB RTX 4070 VRAM (CPU-fallback ~7.6 tok/s, GPU util ~3 %); keep `qwen2.5-coder:7b-instruct-q4_K_M` for factory-fast light tasks (~52 tok/s, fits VRAM); (iv) records the overclaim→truth chronology as a permanent audit-methodology lesson.
+
+- **Ground truth (verified read-only 2026-07-03 by Terminal-B on Legion):**
+  1. `qwen2.5-coder:14b-banxe-factory` — 9 GB Q4_K_M package. Legion RTX 4070 VRAM = 8 GB. Model does NOT fit; runs on CPU-fallback ~7.6 tok/s; `nvidia-smi` shows GPU utilisation ~3 %. Unviable on Legion.
+  2. `qwen2.5-coder:7b-instruct-q4_K_M` — fits Legion VRAM; ~52 tok/s; GPU utilised.
+  3. `reasoning-235b` — backend is `llama-server` on evo2 `:8082` (NOT ollama, NOT `:11434`); model `qwen3-235b-Q3_K_S.gguf`; `--n-gpu-layers=40` on Strix Halo iGPU; auth via operator-issued `Authorization: Bearer <RPC_Q235_API_KEY>` header (value in operator vault / `.env`, NOT written to repo); `/v1/models` may 200 without auth (not a liveness proof); throughput ~2.13 tok/s; single-slot ⇒ async-only. Egress-0 (LAN).
+  4. `glm-air` — GLM-4.5-Air served as a distributed pair: evo1 `llama-server :8081` master + evo2 `rpc-server :50052` Vulkan worker. Alias `glm-air` proposed for the canonical `:4000` table (registration is Terminal-A / ADR-103; not done by this PR).
+
+- **Edits (docs + one script alignment, 5 files):**
+  1. `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md` — appended §5.7 (A. reasoning-235b truth, B. glm-air, C. overclaim→truth lesson, D. Legion 14b removal from routing recommendation, E. boundaries). Does NOT restate §1/§5.2/§5.5. No secret literal.
+  2. `docs/runbooks/factory-routing-map.md` — `factory-fast` alias target Legion:`qwen2.5-coder:14b-banxe-factory` → Legion:`qwen2.5-coder:7b-instruct-q4_K_M`; added "Amendment 2026-07-03" section explaining measurement + non-destructive scope.
+  3. `docs/governance/model-cards/factory-fast.md` — alias resolution updated to 7b; prior 14b target noted with cross-ref to COMPUTE-ROUTING-TAXONOMY §5.7-D; card still DRAFT (operator/CRO approval unchanged).
+  4. `governance/NOVELTY-COLLECTION-REGISTER.md` — appended 5 new rows (append-only, I-24): `legion_14b_unfit_8gb_vram`, `legion_7b_viable_factory_fast`, `reasoning_235b_truth_apikey_asyncslot`, `glm_air_distributed_second_reason_lane`, `lesson_v1models_not_generation_proof`. Prior 2 rows untouched (I-24 respected).
+  5. `scripts/add-il-shard.sh` — `REDIS_HOST_DEFAULT` `100.68.102.48` → `127.0.0.1` to align the shard-creator's Redis precheck default with `ledger/build_ledger.py`'s post-#990 canonical default (`127.0.0.1` — `banxe-redis` host-net on localhost). The prior `100.68.102.48` default (evo1 tailscale IP) was unreachable from non-evo1 terminals and caused fail-closed even when a healthy local Redis was available.
+
+- **Boundaries (0 off-scope):**
+  - **NO** runtime edit — LiteLLM `:4000` config, ollama, llama-server, RPC workers, api-keys UNTOUCHED.
+  - **NO** model deletion — weights of `qwen2.5-coder:14b-banxe-factory` remain on Legion disk; `ollama rm` NOT invoked (destructive-op verify-step per `.claude/rules/safety-rules.md`; per-model operator confirmation per HW-MODEL-UPGRADE-matrix §3.2).
+  - **NO** secret literal introduced by this shard — the RPC-Q235 bearer is referenced ONLY as placeholder `<RPC_Q235_API_KEY>`; the live key value lives in operator vault / `.env` and is NOT asserted in this shard nor in the §5.7-A row (per `.claude/rules/security-policy.md`). Pre-existing occurrences of the literal in `docs/sessions/HANDOFF-2026-05-07-*`, `docs/audit/factory-235b-routes-enabled-2026-05-13.md`, and `governance/STAFF-MATRIX-v3.md` are historic and NOT touched by this correction (append-only respect + out-of-scope for a docs-only §5.7 amendment).
+  - **NO** RED-zone touch (SOUL.md / rego / compliance_config).
+  - **NO** cross-terminal write — every edit is inside Terminal-B's namespace + append-only handoff (NOVELTY-COLLECTION-REGISTER.md) per ADR-TERMINAL-B-SPEC-LANE §5. `decisions/`, `constitution/`, GLOBAL-PROGRAM-PLAN, MASTER-ORG-CODE-RUNTIME-DOSSIER, CONSOLIDATION-PLAN, STAFF-MATRIX — all untouched.
+  - **§1 canonical alias table** (COMPUTE-ROUTING-TAXONOMY §1: `factory-fast → qwen3:4b`) NOT restated; §5.7 is additive. The routing-map/model-card change is a separate layer of the alias chain — routing-map documents the on-Legion ollama backend, §1 documents the canonical alias class.
+
+- **Anti-dup (ADR-102) pointer-first:** in-place amendment of the merged §5 (successor to §5.2/§5.5 corrections landed 2026-07-01/-02); no parallel doc; no forked routing map; no duplicated model card. Prior §5 shards referenced (agent-factory-crt2planes-plan1-plan2-amendment IL-779; agent-factory-crts5fix-correct-235b-and-redis IL-790). This correction supersedes only the §5.7-scoped wording and the specific alias mapping named.
+
+- **Proof:** IL-842 minted (Redis allocator OK 127.0.0.1:6379; `ledger/build_ledger.py --check` exit 0). Fresh worktree of `agent/specproj/sp01/compute-14b-and-s5-correction` off `origin/main` (ADR-120/060). Append-only shard tail. `.canon`/FROZEN untouched.
+
+- **Gates target:** semgrep 0, YAML valid, `guardian-ledger`, `append-only`, `shards`, `branch-naming` (ADR-060 `agent/specproj/<id>/<slug>`), `Secrets-Scan` (no secret literal in repo), `adr-traceability` — all green.
+
+- **Status:** DONE — doc + one script-alignment authored, IL minted, shard tail-appended. **Draft PR (§71 spec-lane); DO NOT MERGE — operator HITL per task contract.**
+
+- **Refs:** `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md` §5.7 (this shard); prior §5 shards IL-779 / IL-790; `docs/runbooks/factory-routing-map.md` amendment 2026-07-03; `docs/governance/model-cards/factory-fast.md` alias update; `governance/NOVELTY-COLLECTION-REGISTER.md` 5-row append; `scripts/add-il-shard.sh` Redis default alignment; ADR-060 (branch actor namespace + specproj), ADR-102 (reconcile-not-duplicate), ADR-103 (server-only refactor — runtime NOT mutated here), ADR-117 (Legion factory / evo1+evo2 project perimeter), ADR-119 Rule 8 (IL frozen at merge-time), ADR-143 (Redis IL allocator), ADR-153 (Terminal topology), ADR-TERMINAL-B-SPEC-LANE (§1 namespace, §4 hand-off, §5 write-scope); PR #990 (build_ledger REDIS_HOST default 100.68.102.48→127.0.0.1); I-24 (append-only), I-32/I-33 (LiteLLM :4000 single entrypoint — not mutated); `.claude/rules/safety-rules.md` destructive-op verify-step (weights NOT removed); `.claude/rules/security-policy.md` (no hardcoded secrets — RPC_Q235_API_KEY placeholder only).

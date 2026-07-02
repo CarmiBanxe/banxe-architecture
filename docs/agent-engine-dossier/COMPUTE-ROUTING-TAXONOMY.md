@@ -255,3 +255,94 @@ correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see
 - **ADR-103** — server-only refactoring / venue policy (evo1 / evo2 as checkout venues).
 - **ADR-018 / FA-02** — canonical LiteLLM aliases (Plan-2 basis; see §1).
 - **ADR-153** — terminal topology canon (Terminal-A orchestrates; runtime not mutated here).
+
+### §5.7 — Honesty-correction 2026-07-03 (Terminal-B compute audit; docs-only)
+
+> Additive amendment. **Does NOT restate** §1 / §5.2 / §5.5. Records verified read-only
+> measurements from a Terminal-B compute audit 2026-07-03 that supersede prior overclaims
+> about `reasoning-235b` characteristics and about the on-Legion factory-coder placement.
+> Runtime NOT mutated by this section (docs-only; ADR-103 factory-side).
+
+**A. `reasoning-235b` truth (evo2 `:8082`, verified 2026-07-03, read-only):**
+
+| Field | Value |
+|-------|-------|
+| Backend process | `llama-server` on evo2 (**NOT `ollama`, NOT `:11434`**) |
+| Endpoint | `http://192.168.0.15:8082/v1/chat/completions` (LAN) |
+| Model file | `qwen3-235b-Q3_K_S.gguf` |
+| Quantization | **Q3_K_S** (HW-matrix canonical max on evo2) |
+| GPU offload | `--n-gpu-layers 40` (Strix Halo iGPU, Vulkan) |
+| Auth | **api-key gated** — the operator-issued `Authorization: Bearer <RPC_Q235_API_KEY>` header is required for `/v1/chat/completions`; `/v1/models` MAY answer 200 without auth (this is not a liveness proof — see lesson §5.7-C). Key value lives in operator vault / `.env`; not asserted in-repo per `.claude/rules/security-policy.md`. |
+| Throughput | ~**2.13 tok/s** on Q3_K_S at typical reasoning length; slowest tier by design |
+| Concurrency | **async-only** — single-slot llama-server; treat as batch/queue, not synchronous request-response |
+| Egress | **0** — LAN-only; no external hop |
+| ollama-path viability | **UNVIABLE** — full-precision weights are ~142 GB > 123 GB evo2 RAM; the earlier "ollama copy of 235b on `:11434`" is unusable weight-wise and unrelated to this alias |
+
+**B. Second local-reason option — `glm-air` (distributed, verified 2026-07-03):**
+
+`glm-air` — GLM-4.5-Air served as an RPC-distributed pair:
+- **Master:** evo1 `llama-server` on `:8081` (dispatches layers to RPC workers).
+- **Vulkan worker:** evo2 `rpc-server` on `:50052` (accepts layer shards, offloads to Strix Halo iGPU).
+- Purpose: a second local-reason lane distinct from `project-reason` — cheaper per-token,
+  broader concurrency latitude than the single-slot 235b. It **does not** replace
+  `project-reason` for MLRO/FCA sign-off (that keeps its 235B requirement per §2), but
+  is a viable alternative for lower-stakes reasoning where 235B's precision is not
+  required and 2 tok/s async-only is unacceptable.
+- Alias intent: register `glm-air` in the canonical alias table at gateway update time;
+  this doc does NOT edit `:4000` config (Terminal-A / ADR-103).
+
+**C. Lesson — overclaim → truth chronology (permanent record):**
+
+Two overclaims preceded this correction. Both stemmed from mistaking a scaffolding signal
+for a generation signal. Recording so future audits do not repeat them:
+
+1. **`/v1/models` 200 ≠ generation works.** `llama-server` answers `/v1/models` before
+   loading weights and independent of the chat completions auth header. A 200 on
+   `/v1/models` proves the process is up; it does NOT prove: (i) weights are resident,
+   (ii) an api-key holder can generate, (iii) throughput meets a target. **Liveness proof
+   requires a `/v1/chat/completions` roundtrip with the correct `Authorization` bearer
+   and a bounded response.**
+2. **api-key is a hard gate.** The operator-issued RPC-Q235 bearer (see §5.7-A row "Auth")
+   is required on the generation path. A missing/wrong bearer returns 401/403, which prior
+   notes sometimes read as "backend dead" — it is **auth-failed**, not dead. Verify by
+   comparing `/v1/models` (no-auth OK) vs `/v1/chat/completions` (auth-required)
+   side-by-side.
+
+**D. Legion `qwen2.5-coder:14b-banxe-factory` — remove from routing (docs-only recommendation):**
+
+Verified measurements on Legion (RTX 4070 8 GB VRAM) 2026-07-03:
+
+| Model | Fits VRAM? | Throughput | GPU util | Verdict |
+|-------|-----------|-----------|----------|---------|
+| `qwen2.5-coder:14b-banxe-factory` (9 GB Q4_K_M) | **NO** (9 GB > 8 GB VRAM) | ~**7.6 tok/s** (CPU fallback) | ~**3 %** (GPU idle) | UNVIABLE on Legion |
+| `qwen2.5-coder:7b` (Q4_K_M) | YES | ~**52 tok/s** | high | viable for factory-fast light tasks |
+
+Recommendation (docs-only, factory-side; NO disk deletion):
+
+- **Remove `qwen2.5-coder:14b-banxe-factory` from every alias mapping that points to
+  Legion.** It duplicates the server-side `factory-coder → qwen3-coder-next` (Strix Halo,
+  51B, higher capability) more weakly and cannot exploit Legion's GPU.
+- **Keep `qwen2.5-coder:7b`** as the on-Legion fallback for light factory-fast tasks
+  (autocomplete / lint / single-line edits) — the class §1 already assigns to
+  `factory-fast` on Legion.
+- **Weights on disk are NOT touched by this correction.** Model removal (`ollama rm`) is
+  a destructive operation gated per HW-MODEL-UPGRADE-matrix §3.2 and operator confirmation
+  (safety-rules destructive-op verify-step). This correction updates only alias-target
+  docs (`docs/runbooks/factory-routing-map.md`, `docs/governance/model-cards/factory-fast.md`)
+  so no alias points to Legion:14b; ADR-117 / DEPLOYMENT-ARCHITECTURE prose references to
+  the model as a historical factory model are left in place (append-only respect).
+
+**E. Boundaries:**
+
+- **NOT touched:** §1 canonical alias table (`factory-fast` → `qwen3:4b` per §1 remains as
+  the canonical class model; the routing-map/model-card 14b → 7b change is a separate
+  layer of the alias chain), §5.1 Plan-1, §5.2/§5.3/§5.4/§5.5 wording (§5.5 correction
+  from 2026-07-01b stands).
+- **NO runtime edit** — LiteLLM `:4000` config, ollama, llama-server, RPC workers, api-keys
+  untouched by this doc. Any live-config change is Terminal-A's discipline (ADR-103,
+  server-only refactor).
+- **NO secret written** — the RPC-Q235 bearer key value is referenced ONLY as
+  `<RPC_Q235_API_KEY>` placeholder; the live value lives in operator vault / `.env`
+  and is NOT asserted in this doc (per `.claude/rules/security-policy.md` — no
+  hardcoded secrets in code or docs).
+- **RED-zone** (SOUL.md / rego / compliance_config) NOT touched.

@@ -13,8 +13,8 @@
 - **Binding regulatory classification:** **AWAITS OPERATOR** (operator/CRO; the inferred tier is not a binding FCA/EBA classification — MRM §3).
 
 ## 2. Provenance
-- **Alias resolution:** **alias → `qwen2.5-coder:14b-banxe-factory`** — factory-fast → qwen2.5-coder:14b-banxe-factory, Legion :11434 (factory-routing-map).
-- **Source / weights:** the backing ollama model `qwen2.5-coder:14b-banxe-factory` (verified present via `ollama list`). Callers use the alias only — no direct model IDs in caller config.
+- **Alias resolution:** **alias → `qwen2.5-coder:7b-instruct-q4_K_M`** — factory-fast → qwen2.5-coder:7b-instruct-q4_K_M, Legion :11434 (factory-routing-map, amendment 2026-07-03). *Prior target `qwen2.5-coder:14b-banxe-factory` (9 GB) was measured to not fit Legion's 8 GB VRAM — see COMPUTE-ROUTING-TAXONOMY §5.7-D. Weights remain on disk (historical / rollback) but no alias points at them.*
+- **Source / weights:** the backing ollama model `qwen2.5-coder:7b-instruct-q4_K_M` (verified present via `ollama list`). Callers use the alias only — no direct model IDs in caller config.
 - **Size:** not asserted (HW-matrix has no size row for the legion factory model) (HW-MODEL-UPGRADE-matrix.md).
 - **Quantization:** not asserted in repo.
 - **Host / route:** Legion :11434 (HW-matrix / factory-routing-map).

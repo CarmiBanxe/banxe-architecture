@@ -15,7 +15,7 @@
 
 set -euo pipefail
 
-REDIS_HOST_DEFAULT='100.68.102.48'
+REDIS_HOST_DEFAULT='127.0.0.1'   # align with build_ledger.py post-#990 default (banxe-redis host-net on localhost); prior 100.68.102.48 was the evo1 tailscale IP which is not reachable from every terminal
 REDIS_PORT_DEFAULT='6379'
 REDIS_HOST="${REDIS_HOST:-$REDIS_HOST_DEFAULT}"
 REDIS_PORT="${REDIS_PORT:-$REDIS_PORT_DEFAULT}"
@@ -46,7 +46,7 @@ Behaviour (per ledger/SHARD-WORKFLOW.md):
 Fail-closed Redis precheck (ADR-143 / IL-827 duplicate root cause):
   When BANXE_IL_ALLOCATOR != 'local' (the default 'redis' mode), this script REQUIRES
   the shared allocator to be reachable BEFORE minting. Target:
-    REDIS_HOST (default 100.68.102.48) : REDIS_PORT (default 6379)
+    REDIS_HOST (default 127.0.0.1)     : REDIS_PORT (default 6379)
   If TCP connect fails, the script exits non-zero WITHOUT minting — no automatic
   fallback to local max+1 (that silent fallback caused the IL-827 duplicate on
   concurrent terminals). To mint offline on a single terminal at your own risk:
