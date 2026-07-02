@@ -23467,3 +23467,49 @@ this shard).
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 817) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T14:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Pinned to 69889e8 (point-in-time).
 - **Status:** DONE — gap record + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR / ADR-gated): whether/how to close the gap — passport liveness-contract schema, agent-scoped runtime watcher, or ADR-126 future-item extension — a design+governance decision, NOT authored here.**
 - **Refs:** `docs/governance/AGENT-LIVENESS-GAP.md` (new); ADR-126; `config/fleet/heartbeat-policy.yaml`; `docs/governance/SERVER-CONTROL-ORCHESTRATION.md`; `docs/governance/FLEET-CONFORMANCE-AUDIT.md` (#972/#973); `docs/governance/SELF-IMPROVEMENT-MANDATE.md` §4; L-10; ADR-102/119/143/144; #900. Operator execute-go 2026-07-02 (agent-liveness capability gap; design deferred).
+
+---
+
+### IL-819 - agent-factory-governance-agent-fleet-roadmap @ 2026-07-02T15:00:00Z
+
+- **il_ts:** 2026-07-02T15:00:00Z
+- **session_id:** agent-factory-governance-agent-fleet-roadmap
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-agent-fleet-roadmap/IL-2026-07-02T15-00-00Z--agent-fleet-roadmap.md`
+
+### [OWNER: A] Agent-Fleet Roadmap — consolidated findings-register (#972/#973/#974 + framework sweep) + 4 sprints; activates/installs nothing
+- **Decision:** Per operator directive (consolidate all agent-audit findings into a roadmap + sprints), authored `docs/governance/AGENT-FLEET-ROADMAP.md` (new) @ `origin/main acb43b0`. Consolidation/planning record only. Changed ONLY this doc + paired shard. NO agent activated; NO framework installed; NO passport/ADR/config/perimeter/project-code touched; ADR-148/126/127 NOT duplicated (referenced only); NO framework-status/repo invented. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Findings-register (facts):** INV = 4 factory agents + 70 passports + 3 swarms + framework mentions (canon/prose only). STAT = 39 PROPOSED / 10 active / 3 ACTIVE / 18 no-top-level (2 indented + 16 none); activated 13/70. GAP-1 = 57 not-activated. GAP-2 (#974) = no agent-level 24/7-liveness (node heartbeat #966 exists; agent-level does not; node-vs-agent orthogonal). GAP-3 = frameworks not installed here (services/ absent, runtime project-side per ADR-117); adopt-question OWNED by ADR-148 (PROPOSED, no-install) + ADR-126 (ACCEPTED bounded role-shape) + ADR-127 (PROPOSED) — referenced, not duplicated. GAP-4 = duplicate banxe_aml_orchestrator (2 files) [BLOCKING operator dedup, ADR-102]. GAP-5 = no agent-harness project-fork locus (#971 §4, ADR-136-gated). GAP-6 = status/casing inconsistent + 2 indented + 16 no-status. GAP-7 = existing a2a/ADR-150/swarm/ADR-154 canon = basis for Sprint C.
+- **Sprints (owner/deps/gate/perimeter each):** A Activate&Normalize (GAP-1/6 — factory normalises via build-prompt; activation = operator ADR-135 per-agent). C Orchestration&24/7-Liveness (GAP-2/7 — factory governance-spec+build-prompt for agent-scoped liveness contract; runtime project-side; design [BLOCKING operator/ADR-gated]). B Framework Adoption (GAP-3 — advance/defer ADR-148 via ADR-135, NOT a new adopt doc; install = operator/infra beyond perimeter, dual-use per #949). D Cleanup&Fork (GAP-4/5 — factory writes ADR-102 dedup finding; source-of-truth choice + fork locus = operator/ADR-136-gated; projection #967).
+- **Proposed sequence (final = operator):** A → C (24/7 so agents don't idle — operator principle) → B → D. Marked AWAITS-OPERATOR: dedup source, ADR-148 advance-decision, fork locus, activation gate, framework install.
+- **Boundaries:** ONLY AGENT-FLEET-ROADMAP.md (new) + this shard. NO agent/passport/ADR/config/swarm/framework/perimeter/project change; nothing activated/installed; ADR-148/126/127 referenced not duplicated; no repo/status invented. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references #972/#973/#974, #966, #959, ADR-148/126/127 (adopt track — NOT duplicated), #971 (mandate §4), #967 (projection), ADR-135/136/117/150/154, L-10 — restates none; consolidates existing findings, authors no parallel policy, no code. GAP-3 explicitly defers the adopt analysis to ADR-148 (no duplicate).
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 818) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T15:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Pinned to acb43b0 (point-in-time).
+- **Status:** DONE — roadmap (findings-register + 4 sprints) + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): pick sprint order + the gated decisions (dedup source, ADR-148 advance, fork locus, activation gate, framework install) — none taken here.**
+- **Refs:** `docs/governance/AGENT-FLEET-ROADMAP.md` (new); #972/#973/#974; #966; #959; ADR-148/126/127; #971 (SELF-IMPROVEMENT-MANDATE §4); #967 (FACTORY-PROJECT-PROJECTION-MODEL); ADR-135/136/117/150/154; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (consolidate findings → roadmap + sprints; activate/install nothing; don't duplicate ADR-148).
+
+---
+
+### IL-820 - agent-factory-heartbeat-ratify @ 2026-07-02T17:09:39Z
+
+- **il_ts:** 2026-07-02T17:09:39Z
+- **session_id:** agent-factory-heartbeat-ratify
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-heartbeat-ratify/IL-2026-07-02T17-09-39Z--heartbeat-ratify.md`
+
+AGENT-HEARTBEAT-POLICY — ratify factory heartbeat cadence and liveness policy
+
+---
+
+### IL-821 - agent-factory-gap087-runtime-errata @ 2026-07-02T17:11:21Z
+
+- **il_ts:** 2026-07-02T17:11:21Z
+- **session_id:** agent-factory-gap087-runtime-errata
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-gap087-runtime-errata/IL-2026-07-02T17-11-21Z--gap087-errata.md`
+
+GAP-087-RUNTIME-ERRATA — runtime errata corrections for safeguarding production delivery (GAP-087)
