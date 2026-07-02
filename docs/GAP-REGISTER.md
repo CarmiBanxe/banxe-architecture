@@ -188,6 +188,27 @@ This session (2026-07-02): GAP-042/043/044 → ✅ DONE (PRs #266/#267/#268 merg
 
 *Enforced by: GapTrackerAgent | Last updated: 2026-06-27 (status reconciliation) | IL-GAP-001 | V12.0 residual debts: ADR-140 (GAP-079..086); ADR-140 Amendment 1: S-PROD-1 (GAP-087 LIVE)*
 
+## 🔶 GAP-087 Runtime Reconciliation Erratum — 2026-07-01
+
+> **Source:** VERIFIED-RUNTIME-SNAPSHOT.md + SRC-09-preaudit-synthesis.md (pre-audit).
+> **Finding:** PARTIAL CONFLICT between the governance claim above (GAP-087 `✅ LIVE`,
+> `banxe-recon.timer` enabled 2026-06-27) and the current runtime fact: the CASS 15 daily
+> reconciliation cron is **inactive / drifted** on evo1. The governance row records the
+> production-delivery merge (banxe-emi-stack PR #218, 3-leg tie-out) as COMPLETE — that
+> code-level fact is unchanged — but the live scheduler is NOT currently firing.
+>
+> **Reconciled status:** GAP-087 = code-COMPLETE (governance) / runtime **PENDING-HITL**.
+> The daily recon timer must be re-enabled by the operator **after** the HITL activation
+> gate (CTIO + CFO sign-off) per the GAP-087 activation spec. Until that sign-off and
+> timer re-enable are recorded, S-PROD-1 remains **P0 OVERDUE** at runtime.
+>
+> **Next action (operator, out-of-band):** CTIO + CFO HITL sign-off → re-enable
+> `banxe-recon.timer` on evo1 → verify Result=success → record activation in this register.
+> **No re-spec** (DECLARE-COVERED, reference-only). This erratum is append-only; the
+> historical 2026-06-27 row is retained unaltered for audit lineage.
+
+---
+
 ---
 
 ## 🔴 P1 — Runtime Architecture Gaps (audit 2026-07-02)
