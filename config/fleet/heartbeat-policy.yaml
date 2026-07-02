@@ -61,3 +61,31 @@ ratify:
 open_questions:
   - key: "prometheus_enable_wiring"
     note: "[BLOCKING: operator/infra wiring] Prometheus on evo2 = systemd inactive but port listening → operator choice (systemctl enable --now prometheus, CTIO-carry-forward) OR keep docker/manual. Open wiring item — NOT decided/executed here."
+---
+
+## Amendment — 2026-07-02 (operator-ratified)
+
+enforcement_locus: banxe-ai-infrastructure/banxe-monitoring/
+watcher_node: evo2 (banxe-NucBox-EVO-X2-2, Docker stack)
+probe_method: HTTP blackbox (http_2xx module, existing targets)
+alert_sink: telegram-ops (Gap-017, TELEGRAM_PENDING — operator provides token)
+evo1_confirmed_targets:
+  - http://100.68.102.48:4000/health/liveliness  # LiteLLM Layer 5 router (UP 2026-07-02)
+  - http://100.68.102.48:9100/metrics             # node-exporter (UP)
+  - http://100.68.102.48:4000/metrics             # LiteLLM metrics (UP)
+thresholds_ratified: true
+  # heartbeat_interval_s: 30
+  # freshness_window_s: 90
+  # missed_beats: 3
+  # retry_grace_s: 10
+blackbox_icmp: NOT_CONFIGURED (cap_net_raw not granted to banxe-blackbox container)
+blackbox_tcp_connect: NOT_CONFIGURED (module not in blackbox.yml)
+status: RATIFIED
+ratified_by: operator 2026-07-02
+blocking_resolved:
+  - enforcement_locus: SET (banxe-ai-infrastructure/banxe-monitoring/)
+  - alert_channel: SET (telegram-ops, Gap-017)
+  - thresholds: RATIFIED
+open:
+  - TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID: operator adds to /etc/banxe/secrets.env on evo2
+  - evo1 sshd DOWN: see GAP-093
