@@ -66,3 +66,61 @@
 
 ## Status
 **LOCKED canonical target.** Все будущие архитектурные решения и sprint planning должны соответствовать этой 5-layer структуре.
+
+---
+
+## Implementation Status — P4.3-Q235 COMPLETE (2026-07-02)
+
+> **This section is an append-only addendum (I-24). The decision above is unchanged.**
+
+**Sprint P4.3-Q235 completed.** Pipeline #2 (qwen3:235b GGUF + RPC pipeline) is now live.
+
+### evo2 Deployment State (as-built)
+
+| Property | Value |
+|----------|-------|
+| Host | evo2 (NucBox EVO X2-2) |
+| CPU | 32 cores |
+| RAM | 123 GiB |
+| iGPU | AMD Radeon 8060S (GFX1151), 40 GPU layers loaded |
+| `HSA_OVERRIDE_GFX_VERSION` | 11.5.1 |
+| BIOS UMA split | 32 GiB iGPU / 96 GiB CPU (as spec'd: DB+CPU fallback node) |
+
+### Running Services
+
+| Service | Endpoint | Model | Quant | Systemd reference |
+|---------|----------|-------|-------|------------------|
+| qwen3-235b-master (llama.cpp) | `:8082` | qwen3-235b-A22B | Q3\_K\_S | `banxe-qwen3.service` — "ADR-018 P4.3-Q235" |
+| llama-rpc-worker | `:50052` | GPU offload shard | — | USB4 peer 10.0.0.1 (identity TBD — OD-3) |
+| ollama | `:11434` | Auxiliary models | — | — |
+
+**Note on quant:** As-deployed uses Q3\_K\_S (not Q4\_K\_M as originally planned in the consequences paragraph). The difference is reduced VRAM requirement vs. modestly lower quality — acceptable given evo2 VRAM budget.
+
+### Security Posture (P4.3-Q235 as-built)
+
+- Internal-network only. No external API published.
+- No API key on `:8082` or `:11434` (boundary enforced by network segmentation).
+- Residual risk: network boundary breach exposes inference without credentials. Mitigated by host firewall; see GAP-082 (ufw on Legion) for related review.
+- PII/AML routing constraints from ADR-016 apply — prompts must be sanitised before routing to evo2.
+
+### Open Items
+
+| ID | Item | Owner |
+|----|------|-------|
+| OD-3 | USB4 peer 10.0.0.1 physical identity and hostname not yet documented | Operator |
+| OQ-018-1 | Systemd units for llama-rpc-worker and ollama not yet confirmed | CTIO |
+| OQ-018-2 | Logging/monitoring for qwen3-235b inference requests | CTIO |
+
+### Scope Boundary
+
+This addendum documents as-built state of P4.3-Q235 only. It does NOT:
+- Modify HITL gates, trust zones, or human approver duties
+- Authorise autonomous financial decisions via LLM inference
+- Replace Layer 5 (LiteLLM router) ADRs or runtime/API authoring
+
+Not-allowed via any inference tier regardless of model: SAR filing, sanctions reversal,
+AML/fraud threshold change, FCA RegData submission, production deploy approval,
+AI model update approval, safeguarding shortfall suppression.
+
+Refs: ADR-016 (AI Plane PII/AML routing); GAP-091 (STAFF-MATRIX-v3 §6, IL-800);
+STAFF-MATRIX-v3 §4 (evo2 infrastructure profile, IL-800).
