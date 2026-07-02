@@ -495,5 +495,8 @@
   "agent-factory-governance-self-improvement-mandate__59e0a4b1e4e1": 815,
   "agent-factory-governance-fleet-conformance-audit__da151aaf636f": 816,
   "agent-factory-governance-fleet-audit-erratum__9a96df49541e": 817,
-  "agent-factory-governance-agent-liveness-gap__70c9e3c17caa": 818
+  "agent-factory-governance-agent-liveness-gap__70c9e3c17caa": 818,
+  "agent-factory-governance-agent-fleet-roadmap__5a15b825468d": 819,
+  "agent-factory-heartbeat-ratify__d582be83b5c5": 820,
+  "agent-factory-gap087-runtime-errata__45cc1b7e24f5": 821
 }
