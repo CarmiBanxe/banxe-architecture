@@ -69,3 +69,15 @@ Eight-phase program to establish canonical governance, compliance, and operation
 - **INSTRUCTION-LEDGER.md** — Operator purchase log (IL-803 max)
 - **HITL-MATRIX.yaml** — HITL gate definitions (17 gates, L1-L4 autonomy)
 - **PLANES.md** — Three-plane isolation (Developer / Product / Standby)
+
+
+---
+
+## Phase Status Amendment — 2026-07-02
+
+| Phase | Previous Status | New Status | Date | IL |
+|-------|----------------|-----------|------|-----|
+| 1 | 🟡 IN PROGRESS | ✅ COMPLETE | 2026-07-02 | IL-803 |
+| 2 | PLANNED | 🟡 IN PROGRESS | 2026-07-02 | IL-811 |
+
+*Append-only amendment per I-24. Original table above unchanged.*
