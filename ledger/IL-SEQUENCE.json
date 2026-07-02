@@ -498,5 +498,6 @@
   "agent-factory-governance-agent-liveness-gap__70c9e3c17caa": 818,
   "agent-factory-governance-agent-fleet-roadmap__5a15b825468d": 819,
   "agent-factory-heartbeat-ratify__d582be83b5c5": 820,
-  "agent-factory-gap087-runtime-errata__45cc1b7e24f5": 821
+  "agent-factory-gap087-runtime-errata__45cc1b7e24f5": 821,
+  "agent-factory-ledgersync-add-shard-script__4329eeb7d174": 824
 }

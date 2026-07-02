@@ -23513,3 +23513,15 @@ AGENT-HEARTBEAT-POLICY — ratify factory heartbeat cadence and liveness policy
 - **shard:** `ledger/entries/agent-factory-gap087-runtime-errata/IL-2026-07-02T17-11-21Z--gap087-errata.md`
 
 GAP-087-RUNTIME-ERRATA — runtime errata corrections for safeguarding production delivery (GAP-087)
+
+---
+
+### IL-824 - agent-factory-ledgersync-add-shard-script @ 2026-07-02T18:53:08Z
+
+- **il_ts:** 2026-07-02T18:53:08Z
+- **session_id:** agent-factory-ledgersync-add-shard-script
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-ledgersync-add-shard-script/IL-2026-07-02T18-53-08Z--agent-factory-ledgersync-add-shard-scrip.md`
+
+feat(ledger): add scripts/add-il-shard.sh — one-command IL shard+rebuild (ADR-056/ADR-059)
