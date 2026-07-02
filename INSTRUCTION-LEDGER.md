@@ -23611,3 +23611,18 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T17:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Runtime snapshot point-in-time (operator audit).
 - **Status:** DONE — §7 addendum + pointer-corrections + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): Sprint order (C→A→B→D); B now scoped to missing engines only; install/activate = operator/infra.**
 - **Refs:** `docs/governance/AGENT-FLEET-MASTER-PLAN.md` (#978/IL-827); #975 (roadmap); #974 (liveness); #959 (fleet-control); GLOSSARY (GMKtec=evo1); `.claude/agents/openclo.md` (openclo-moa gateway — referenced, not edited); ADR-148/126/135/117; L-02/L-10; ADR-102/119/143/144; #900. Operator execute-go 2026-07-02 (cross-host runtime addendum; operator-audit-only; no re-SSH/auth-bypass/install).
+
+---
+
+### IL-832 - agent-factory-ilshardtool-add-il-shard-script @ 2026-07-02T21:15:18Z
+
+- **il_ts:** 2026-07-02T21:15:18Z
+- **session_id:** agent-factory-ilshardtool-add-il-shard-script
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-ilshardtool-add-il-shard-script/IL-2026-07-02T21-15-18Z--113566.md`
+
+### agent-factory-ilshardtool-add-il-shard-script
+
+- **Instruction:** feat(ledger): add scripts/add-il-shard.sh — one-command IL shard+rebuild, fail-closed on Redis (fulfills PREPARED ledgersync intent; ADR-056/059)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
