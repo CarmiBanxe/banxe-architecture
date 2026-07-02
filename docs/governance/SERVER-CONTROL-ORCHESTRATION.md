@@ -126,6 +126,29 @@ Log to the existing factory journal (reuse journal + prometheus, per server-2 §
 - **`[НЕИЗВЕСТНО]` (non-blocking)** — Legion LAN address; the survivable monitor locus (§4) — resolved at
   infra build.
 
+## Appendix A — Placement Decision (audit-resolved 2026-07-02)
+> Additive appendix; the §0–§9 core policy is unchanged. Resolves the §7/§9 `[BLOCKING]` items from the
+> 2026-07-02 read-only placement audit. Runtime code is built **infra-side**, not by the factory.
+
+- **Enforcement-locus = `banxe-monitoring`** — an **operator-owned monitoring repo, beyond the ADR-117
+  perimeter**. The actual monitor/watcher code is built there by the infra side; **the factory does not write
+  it** (this repo holds governance + config only).
+- **Watcher node = Legion, external** — it monitors evo1 + evo2 **over tailscale** (evo1 `100.68.102.48` is
+  reachable **even when USB4 is down**). This **implements the §4 monitor-survivability constraint** — the
+  monitor is not single-pointed on a node that can fall, so a monitored node's death cannot silence its own
+  alarm.
+- **Alert primary = Prometheus / Alertmanager** (existing, evo2 `127.0.0.1:9090/9093`); **secondary =
+  Telegram (ADR-002 bot)**. The §3 `[SERVER-ALERT]` signal routes through these; the alert path stays
+  read-only/alerting-first (Hermes envelope, ADR-126) — no merge/deploy/payment/AML action.
+- **Split (respects ADR-117):** **read-only monitoring** (`banxe-monitoring` / Legion, tailscale) is separated
+  from the **mutating enforcer** (#939, project/infra-side) — this repo authors neither.
+- **`[BLOCKING: operator/infra wiring]`** — Prometheus on evo2 is **systemd `inactive` but the port is
+  listening**. The operator chooses: `systemctl enable --now prometheus` (a wiring step, CTIO-carry-forward)
+  **OR** keep the docker/manual run. This is an **open wiring item — not decided or executed here**, and this
+  document neither recommends a bypass nor runs any command.
+- **Ratified thresholds** (see `config/fleet/heartbeat-policy.yaml`, ratified 2026-07-02): `heartbeat_interval_s`
+  30, `freshness_window_s` 90, `missed_beats` 3, `retry_grace_s` 10 — accepted as-is.
+
 ## Anchors
 `config/fleet/server-inventory.yaml` + `config/fleet/heartbeat-policy.yaml` (config-as-data this policy
 governs) · `docs/governance/SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION.md` (#932/IL-778) +

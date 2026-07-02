@@ -5,16 +5,30 @@
 # Thresholds are READ as data by the infra-side monitor; the monitor MUST NOT hardcode them
 # (a threshold change is a config edit + re-ratification, never a code change).
 #
-# PROPOSED DEFAULTS — [RATIFY] (operator sign-off due). No monitor/daemon/enforcer is configured here.
+# RATIFIED 2026-07-02 by operator (audit-resolved placement). No monitor/daemon/enforcer configured here.
 # ─────────────────────────────────────────────────────────────────────────────
 schema_version: "1.0.0"
-status: proposed
+status: ratified            # operator ratified 2026-07-02 (audit-resolved placement); thresholds accepted as-is
+
+ratification:
+  ratified: true
+  ratified_by: "operator"
+  ratified_at: "2026-07-02"
+  basis: "audit-resolved placement (banxe-monitoring locus, Legion/tailscale watcher, Prometheus+Telegram alerts); thresholds accepted as-is"
+
+# ── Placement (audit-resolved 2026-07-02; see policy Appendix). Runtime is infra-side, NOT configured here. ──
+placement:
+  enforcement_locus: banxe-monitoring        # operator-owned monitoring repo, beyond ADR-117 perimeter (code built infra-side, not factory)
+  watcher_node: Legion                       # external watcher; reaches both nodes over tailscale (survives a monitored node's death, policy §4)
+  watcher_transport: tailscale               # evo1 100.68.102.48 reachable even when USB4 is down
+  alert_primary: prometheus-alertmanager     # existing (evo2 127.0.0.1:9090/9093)
+  alert_secondary: telegram-adr002           # ADR-002 Telegram bot
 
 heartbeat:
-  heartbeat_interval_s: 30      # [RATIFY] each on/always-on host answers a liveness probe this often
-  freshness_window_s: 90        # [RATIFY] heartbeat older than this = stale (= 3× interval)
-  missed_beats: 3               # [RATIFY] consecutive missed beats OR stale ⇒ host = SUSPECT
-  retry_grace_s: 10             # [RATIFY] one-retry wait after a failed health-check
+  heartbeat_interval_s: 30      # ratified — each on/always-on host answers a liveness probe this often
+  freshness_window_s: 90        # ratified — heartbeat older than this = stale (= 3× interval)
+  missed_beats: 3               # ratified — consecutive missed beats OR stale ⇒ host = SUSPECT
+  retry_grace_s: 10             # ratified — one-retry wait after a failed health-check
 
 # States a host moves through (policy §heartbeat): HEALTHY → SUSPECT → UNHEALTHY (+ RECOVERED)
 health_states: [HEALTHY, SUSPECT, UNHEALTHY, RECOVERED]
@@ -39,7 +53,11 @@ severity_map:
 
 ratify:
   - key: "heartbeat.*"
-    note: "[RATIFY] all heartbeat thresholds are proposed defaults, not final"
+    status: ratified
+    note: "RATIFIED 2026-07-02 (operator): heartbeat_interval_s=30, freshness_window_s=90, missed_beats=3, retry_grace_s=10 — accepted as-is"
+  - key: "placement.*"
+    status: ratified
+    note: "RATIFIED 2026-07-02 (operator, audit-resolved): banxe-monitoring locus, Legion/tailscale watcher, prometheus-alertmanager primary + telegram-adr002 secondary"
 open_questions:
-  - key: "alert_channel_transport"
-    note: "[BLOCKING] concrete operator signal sink — operator decision (see server-inventory.yaml)"
+  - key: "prometheus_enable_wiring"
+    note: "[BLOCKING: operator/infra wiring] Prometheus on evo2 = systemd inactive but port listening → operator choice (systemctl enable --now prometheus, CTIO-carry-forward) OR keep docker/manual. Open wiring item — NOT decided/executed here."
