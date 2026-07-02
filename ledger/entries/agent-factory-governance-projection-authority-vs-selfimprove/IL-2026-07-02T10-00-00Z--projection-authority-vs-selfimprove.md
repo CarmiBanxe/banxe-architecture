@@ -1,0 +1,17 @@
+---
+il_ts: 2026-07-02T10:00:00Z
+session_id: agent-factory-governance-projection-authority-vs-selfimprove
+source: CEO
+status: DONE
+---
+### [OWNER: A] Projection model — split the two `⛔` rows into authority-half (non-delegable) vs self-improvement-half (fork-by-default)
+- **Decision:** A read-only sweep (operator, 2026-07-02) established that Appendix A of `docs/governance/FACTORY-PROJECT-PROJECTION-MODEL.md` (#968/IL-814) collapses **two distinct canonical non-projection reasons** under one `⛔ factory-fork-only` label. Added **Appendix A.1** sharpening the split and tightened the "open option" wording. Changed ONLY this doc (additive A.1 + one-bullet clarification) + paired shard. NO ADR / project-code / perimeter / matrix touched; no repo fabricated. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Finding (grounded in canon, not invented):** each `⛔` feature (lesson-capture #951, skills #953) has two halves with **different fork rules**: (1) **authority half** — promote-into-canon / ADR-135 adoption gate / IL-mint / merge-authority = **NON-DELEGABLE, never forks** (ADR-145 core invariant "authority is NON-DELEGABLE"; ADR-135 "no authority expansion, ever"); (2) **self-improvement half** — capture-a-lesson (non-canonical) / propose-a-skill-edit = **factory-fork-only by default** (ADR-136 PRECOND-05), the only half the open option could ever project (via the ADR-136 gate).
+- **Already-encoded evidence:** `FACTORY-LESSON-CAPTURE.md` (#951) itself states capture = non-canonical record, promotion-into-canon = separate operator-ratify (HITL) step — i.e. the split pre-exists; A.1 names it. This is why the register never auto-mutates `CLAUDE.md`.
+- **Open-option tightening:** even if an agent-harness project-fork were ever created (A, AWAITS-OPERATOR), it hosts ONLY the self-improvement half; the authority half stays factory-only and NON-DELEGABLE regardless (ADR-145). The open option projects a *mechanism*, never *authority*.
+- **Boundaries:** ONLY FACTORY-PROJECT-PROJECTION-MODEL.md (additive Appendix A.1 + one clarified bullet in A) + this shard. NO ADR file edited; NO project code; NO matrix row/count changed (still 3 projected + 2 factory-fork-only = 0 pending gap); perimeter/machines NOT touched; NO repo created/invented. §1–§5 body unchanged. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references #968 (Appendix A), ADR-145 (core invariant / PRECOND-07), ADR-135 (adoption gate), ADR-136 (PRECOND-05), #951, #953 — restates none; additive refinement, no parallel model, no code.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 814) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T10:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — Appendix A.1 + open-option tightening + shard. **DRAFT PR; DO NOT MERGE — operator HITL.**
+- **Refs:** `docs/governance/FACTORY-PROJECT-PROJECTION-MODEL.md` (#968/IL-814); ADR-145 (core invariant); ADR-135 (adoption gate); ADR-136 (PRECOND-05); #951 (FACTORY-LESSON-CAPTURE); #953 (skills); ADR-102/119; #900. Operator sweep 2026-07-02 (authority vs self-improvement distinction).

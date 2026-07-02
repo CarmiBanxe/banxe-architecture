@@ -91,12 +91,37 @@ not a routine build-prompt; **no such repo is fabricated here.**
 - **Reclassification:** the two `❌ NOT projected` matrix rows are now `⛔ factory-fork-only
   (correct-by-canon)` — **not a pending gap.** The matrix reads **3 projected + 2 factory-fork-only = 0
   pending gap.**
-- **Open option (NOT decided here):** projecting an agent-harness feature is possible **only** via an explicit
-  **ADR-136-gated operator decision to create an agent-harness project-fork repo** — a governance call, not a
-  routine build-prompt, and not covered by the default model. **AWAITS-OPERATOR; no repo fabricated.**
+- **Open option (NOT decided here) — bounded by A.1 below:** projecting an agent-harness feature is possible
+  **only** via an explicit **ADR-136-gated operator decision to create an agent-harness project-fork repo** —
+  a governance call, not a routine build-prompt, and not covered by the default model. It could ever project
+  **only the self-improvement half** (A.1); the **authority half never delegates** even then.
+  **AWAITS-OPERATOR; no repo fabricated.**
 - **Data-quality correction:** the `SERVER-2-ENFORCER-BUILD-PROMPT` (#939) targets **`banxe-emi-stack` /
   infra**, **not** `banxe-ui` (a `banxe-ui` mention in that doc is the ADR-117 *exclusion* — "not banxe-ui";
   a grep artefact). The §3 matrix target for server-2 is `banxe-emi-stack`/infra.
+
+## Appendix A.1 — the two `⛔` rows split into an *authority* half and a *self-improvement* half
+> Additive refinement (2026-07-02). Sharpens — does not alter — the A reclassification: `⛔ factory-fork-only`
+> collapses **two distinct canonical reasons**, which the "open option" must not blur. No matrix change, no
+> ADR touched, no repo invented.
+
+Each `⛔` feature (`lesson-capture` #951, `skills → SKILL.md` #953) contains **two halves with different fork
+rules**:
+
+| Half | What it is | Fork rule | Canon |
+|---|---|---|---|
+| **Authority half** | promote-a-lesson/skill **into canon** — ratify into `CLAUDE.md` / an ADR / a rule; the **ADR-135 held-out adoption gate**; **IL-mint**; merge-authority | **NON-DELEGABLE — never forks**, not even under the "open option" | ADR-145 core invariant ("authority is NON-DELEGABLE"); ADR-135 ("no authority expansion, ever"; promotion factory-only) |
+| **Self-improvement half** | **capture** a lesson to the *non-canonical* register; **propose** a skill edit (no canon change on its own) | **factory-fork-only by default**; the **only** half the "open option" could ever project, **only** via the ADR-136 gate | ADR-136 PRECOND-05 (self-improvement substrate factory-fork-only by default) |
+
+**`FACTORY-LESSON-CAPTURE.md` (#951) already encodes this split:** capturing a lesson is a **non-canonical
+record** (self-improvement half — changes no canon), whereas *promoting* a lesson into canon is a **separate
+operator-ratify (HITL) step** (authority half). This is exactly why the register **never auto-mutates
+`CLAUDE.md`** — the authority half is fenced off from automation by construction.
+
+**Consequence for the open option:** even if an agent-harness project-fork were ever created (A, AWAITS-OPERATOR),
+it could host **only the self-improvement half** (capture / propose, project-side, gated). The **authority half
+— ratify-into-canon / adoption gate / IL-mint — stays factory-only and NON-DELEGABLE regardless** (ADR-145).
+The open option therefore projects *a mechanism*, never *authority*.
 
 ## Anchors
 `docs/adr/ADR-136-agentmemory-shared-memory-substrate.md` (PRECOND-05 — agent-harness/self-improvement
