@@ -23957,3 +23957,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 - Operator reads plan
 - Operator approves Phase 1 execution
 - Operator verifies and approves Phase 2 items individually
+
+---
+
+### IL-850 - agent-factory-gap085-reclassify-outofscope @ 2026-07-02T22:38:28Z
+
+- **il_ts:** 2026-07-02T22:38:28Z
+- **session_id:** agent-factory-gap085-reclassify-outofscope
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gap085-reclassify-outofscope/IL-2026-07-02T22-38-28Z--704a70.md`
+
+### agent-factory-gap085-reclassify-outofscope
+
+- **Instruction:** Reclassify GAP-085 as OUT-OF-SCOPE: ss1 belongs to guiyon (excluded from Banxe per canon/GAP-090), outside Banxe regulatory perimeter, no Banxe CNIL action required, sandbox operator decision
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
