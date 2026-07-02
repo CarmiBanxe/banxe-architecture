@@ -44,23 +44,22 @@ gate → factory-only promotion), stated once as canon-consolidation.
 | **server-2 compute** | policy `SERVER-2-BORROWABLE-COMPUTE-ORCHESTRATION` (#932) + `config/compute/server-2-borrow-policy.yaml` (#933/#936) + `SERVER-2-RUNTIME-ENFORCER-SPEC` (#934) | `SERVER-2-ENFORCER-BUILD-PROMPT` (#939) | `banxe-emi-stack` / infra *(`[BLOCKING: operator]` exact repo)* | **✅ projected** (build-prompt exists) |
 | **UI/UX audit** | spec `UIUX-AUDIT-BLOCK-SPEC` (#916) + schema/gate-policy (#918) + `UIUX-RUNTIME-CONTRACT` (#920) + `UIUX-EVIDENCE-EMISSION-SPEC` (#928) | `BANXE-UI-EMITTER-BUILD-PROMPT` (#942) + `UIUX-RUNNERS-BUILD-PROMPTS` (#944) | `banxe-ui` | **✅ projected** (build-prompts exist) |
 | **fleet-control** | policy `SERVER-CONTROL-ORCHESTRATION` (#959) + placement/ratified `config/fleet/*` (#964) | `FLEET-MONITOR-BUILD-PROMPT` (#963) | `banxe-monitoring` (+ #939 enforcer project-side) | **✅ projected** (build-prompt exists) |
-| **lesson-capture** | `FACTORY-LESSON-CAPTURE` (#951) — factory-native register | — | `[НЕИЗВЕСТНО — forked?]` | **❌ NOT projected** — candidate; no project projection defined (do not invent) |
-| **skills → SKILL.md** | `.claude/skills/{github-navigation,spec-writing,testing}/SKILL.md` (#953) — factory harness | — | `[НЕИЗВЕСТНО]` | **❌ NOT projected** — candidate; no project projection defined (do not invent) |
+| **lesson-capture** | `FACTORY-LESSON-CAPTURE` (#951) — factory-native register | — (**not projectable by default**) | none — agent-harness class | **⛔ factory-fork-only (correct-by-canon)** — ADR-136 PRECOND-05 (see Appendix A) |
+| **skills → SKILL.md** | `.claude/skills/{github-navigation,spec-writing,testing}/SKILL.md` (#953) — factory harness | — (**not projectable by default**) | none — agent-harness class | **⛔ factory-fork-only (correct-by-canon)** — ADR-136 PRECOND-05 (see Appendix A) |
 
 Honest read: **three features are projected** (server-2, UI/UX, fleet-control — each has a project-side
-build-prompt); **two are factory-side only** (lesson-capture, skills) and have **no project projection** yet.
+build-prompt); **two are agent-harness / self-improvement features that are factory-fork-only by canon**
+(lesson-capture, skills) — **not a pending gap**, see Appendix A. **Net: 3 projected + 2 factory-fork-only
+(correct-by-canon) = 0 pending gap.**
 
-## 4. Gap-list (features without a project projection)
-Per §3, the following are **un-projected** and each is a **separate future build-prompt on operator signal —
-NOT authored here**:
-- **lesson-capture (#951)** — factory-native today; whether it forks to a project projection (and to which
-  repo) is **`[НЕИЗВЕСТНО]` / AWAITS-OPERATOR**. (A project projection is plausible — e.g. a project-side
-  lessons feed — but is not defined; not invented.)
-- **skills → SKILL.md (#953)** — factory harness today; a project projection (project-side invokable skills)
-  is **`[НЕИЗВЕСТНО]` / AWAITS-OPERATOR**.
-
-Each gap, when you signal it, becomes its own prepare-only build-prompt (the §2 lifecycle) targeting the repo
-**you** name — no project repo is fabricated here for an un-projected feature.
+## 4. Gap-list — resolved: 0 pending gap
+Per §3 and **Appendix A**, the two features that lack a project projection (lesson-capture #951, skills #953)
+are **agent-harness / self-improvement** features that are **factory-fork-only by canon (ADR-136 PRECOND-05)**
+— **not un-projected gaps.** There is **no `[НЕИЗВЕСТНО]` pending build-prompt** for them; projecting them
+would *violate* ADR-136 by default, not satisfy the projection principle. **Net: 3 projected + 2
+factory-fork-only (correct-by-canon) = 0 pending gap.** The only way either becomes projectable is an explicit
+ADR-136-gated operator decision to create an **agent-harness project fork** (Appendix A) — a governance call,
+not a routine build-prompt; **no such repo is fabricated here.**
 
 ## 5. Boundaries
 - **No new mechanism** — ADR-145 (fork model), ADR-135 (adoption gate), ADR-117 (perimeter) remain the
@@ -73,7 +72,35 @@ Each gap, when you signal it, becomes its own prepare-only build-prompt (the §2
   fork by default**; projecting any RED-ZONE feature is an explicit, separately-gated operator decision, not
   covered by this default model.
 
+## Appendix A — Factory-fork-only exception (ADR-136 PRECOND-05)
+> Additive appendix (audit-resolved 2026-07-02). The §1–§5 body is unchanged in substance; this appendix
+> reclassifies the two matrix rows that appeared as gaps and records the canonical exception to the
+> "every feature forks to the project" principle. It **invents no repo** and **creates none**.
+
+- **The projection principle (§1) applies to features of *projectable* nature** — runtime / UI / ops:
+  server-2 → `banxe-emi-stack`/infra, UI/UX → `banxe-ui`, fleet-control → `banxe-monitoring` (**3/3
+  projected**).
+- **EXCEPTION — agent-harness / self-improvement features are factory-fork-only by default (ADR-136
+  PRECOND-05).** `lesson-capture` (#951) and `skills → SKILL.md` (#953) are the agent's own
+  self-modification / prompts / capabilities. The agent **does not delegate its self-improvement to the
+  project fork** — authority is non-delegable (ADR-145 / PRECOND-07), and the agentmemory/self-improvement
+  substrate is **factory-fork-only by default** (ADR-136 / PRECOND-05). There is **no agent-harness project
+  repo** — **all project repos are product-runtime** (`banxe-emi-stack`, `banxe-ui`, `banxe-fiat-backend`,
+  `banxe-dashboard`, `banxe-payments`, `banxe-identity`, `banxe-uikit`, … — none is an agent-harness/prompts
+  repo).
+- **Reclassification:** the two `❌ NOT projected` matrix rows are now `⛔ factory-fork-only
+  (correct-by-canon)` — **not a pending gap.** The matrix reads **3 projected + 2 factory-fork-only = 0
+  pending gap.**
+- **Open option (NOT decided here):** projecting an agent-harness feature is possible **only** via an explicit
+  **ADR-136-gated operator decision to create an agent-harness project-fork repo** — a governance call, not a
+  routine build-prompt, and not covered by the default model. **AWAITS-OPERATOR; no repo fabricated.**
+- **Data-quality correction:** the `SERVER-2-ENFORCER-BUILD-PROMPT` (#939) targets **`banxe-emi-stack` /
+  infra**, **not** `banxe-ui` (a `banxe-ui` mention in that doc is the ADR-117 *exclusion* — "not banxe-ui";
+  a grep artefact). The §3 matrix target for server-2 is `banxe-emi-stack`/infra.
+
 ## Anchors
+`docs/adr/ADR-136-agentmemory-shared-memory-substrate.md` (PRECOND-05 — agent-harness/self-improvement
+factory-fork-only by default; the exception's source) ·
 `docs/adr/ADR-145-factory-project-fork-target-model.md` (fork model — factory authority, project consumer) ·
 `docs/adr/ADR-135-agent-skill-evolution-gate.md` (held-out adoption gate — factory-only promotion between
 forks) · `docs/adr/ADR-117-factory-project-perimeter-and-fullcycle-org.md` (perimeter) ·
