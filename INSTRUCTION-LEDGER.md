@@ -23987,3 +23987,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 
 - **Instruction:** OD-5 evidence: SAR generation separation verified — vibe prototype vs EMI production (MLRO attestation package)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-852 - agent-factory-od67-audit-recon-separation @ 2026-07-02T22:51:54Z
+
+- **il_ts:** 2026-07-02T22:51:54Z
+- **session_id:** agent-factory-od67-audit-recon-separation
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-od67-audit-recon-separation/IL-2026-07-02T22-51-54Z--8147a5.md`
+
+### agent-factory-od67-audit-recon-separation
+
+- **Instruction:** OD-6/7 evidence: audit trail + reconciliation intentional separation verified (Audit Committee package)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
