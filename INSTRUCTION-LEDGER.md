@@ -23207,3 +23207,30 @@ this shard).
   change, FCA RegData, prod deploy approval, AI model update, safeguarding shortfall suppression.
 - **Open items:** OD-3 (USB4 peer 10.0.0.1 identity), systemd unit for worker/ollama, monitoring.
 - **Refs:** ADR-018 (amended); ADR-016 (PII routing); GAP-091 (IL-800 STAFF-MATRIX-v3 §6).
+
+---
+
+### IL-807 - agent-factory-governance-server-control-orchestration @ 2026-07-02T05:00:00Z
+
+- **il_ts:** 2026-07-02T05:00:00Z
+- **session_id:** agent-factory-governance-server-control-orchestration
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-server-control-orchestration/IL-2026-07-02T05-00-00Z--server-control-orchestration.md`
+
+### [OWNER: A] Server-control + heartbeat orchestration — policy + fleet config-as-data (evo1 incident)
+- **Decision:** Per operator "server-control policy + inventory (steps 1-3)", authored THREE artifacts — `docs/governance/SERVER-CONTROL-ORCHESTRATION.md` (availability-integrity policy), `config/fleet/server-inventory.yaml` (closed-world fleet registry), `config/fleet/heartbeat-policy.yaml` (thresholds as data). Occasioned by the evo1 incident (USB4 10.0.0.1, operator-confirmed, powered off with NO operator signal). Governance + config HERE; monitor/daemon/enforcer/alert-sink are infra-side (ADR-117). **PREPARE-ONLY**, Draft PR. Owner A.
+- **Policy core:** availability = precondition of all orchestration (server-2 #932 assumes 235b host alive; enforcer #939 needs healthy host). Heartbeat/health: on/always-on host answers liveness probe every heartbeat_interval_s; stale > freshness_window_s; missed_beats consecutive OR stale ⇒ SUSPECT; health-check-before-use before ANY placement/borrow (extends server-2 §4 to all hosts); one-retry on fail; UNHEALTHY ⇒ stop placement + fail-closed to healthy + alert. **Critical distinction:** operator-shutdown-window+SUSPECT = planned INFO; on/always-on+SUSPECT+no-window = UNEXPECTED_OUTAGE CRITICAL (the evo1 case). Design-constraint: monitor NOT single-pointed on a host that can fall (evo1 = control-node AND monitored) → always-on locus (Legion) + cross-check.
+- **Alerting:** [SERVER-ALERT] severity/host/event/affected_workloads/probable_cause_class/last_seen/next_action; severity map (on-host UNEXPECTED_OUTAGE=CRITICAL, HEALTH_FAIL=WARN, planned/RECOVERED=INFO).
+- **Integration (additive ADR-154 + server-2 #932):** availability gates placement; borrow only if healthy AND idle/borrowable; closed-world (host off-inventory not orchestrated); reclaim-on-project-demand composes; conflict-free via TERMINAL-OWNERSHIP + CONFLICT-LEDGER (single availability source of truth).
+- **Journal:** reuse existing journal+prometheus — outages/recoveries/borrow/reclaim/health-fail/shutdown-window with correlation_id/host/cause_class/timestamp.
+- **Inventory (facts; [НЕИЗВЕСТНО] not fabricated):** Legion (local WSL2, LAN [НЕИЗВЕСТНО], RTX4070/64GB, factory host+gateway :4000, always-on, not borrowable); evo1 (LAN 192.168.0.72 + USB4 10.0.0.1, 128GB, project compute ollama :11434 + RPC :8081, control-node, on-when-scheduled, secondary/borrow-lane); evo2 (LAN 192.168.0.15, 128GB, strongest-model qwen3:235b-a22b-banxe 142GB, project primary tenant #932, primary+revocable-borrow).
+- **Thresholds ([RATIFY] proposed defaults):** heartbeat_interval_s=30, freshness_window_s=90, missed_beats=3, retry_grace_s=10 — read as data (Config-over-Hardcoding), monitor does not hardcode.
+- **Enforcement placement:** governance+config here (KNOWN); runtime locus = operator/infra ADR-117 — **[BLOCKING] locus-repo + alert-channel = operator decision, NOT fabricated** (observed candidates surfaced not chosen: fabric/ in banxe-architecture, banxe-emi-stack services/deploy; n8n+Telegram safeguarding-alert candidate per GAP-REGISTER, NOT confirmed).
+- **Acceptance = simulation-first:** validation drill (declare evo1 shutdown-window → INFO; simulate unexpected outage in trace → CRITICAL + placement gated + journal); no real power-cycle for acceptance (mirrors server-2 #934).
+- **Boundaries:** NO monitor/daemon/enforcer/alert-sink written (infra-side); machines/gateway/perimeter NOT touched; CLAUDE.md NOT touched; server-2 policy + enforcer-spec NOT touched. Only the 3 files + this shard. 0 off-scope. YAML validated (hosts=[Legion,evo1,evo2], evo1 usb4=10.0.0.1, thresholds 30/90/3/10).
+- **Anti-dup (ADR-102) pointer-first:** references server-2 #932/#934/#939, ADR-154, ADR-117, TERMINAL-OWNERSHIP, CONFLICT-LEDGER, existing prometheus/journal, AGENTS.md, GAP-REGISTER — restates none; additive availability layer, no parallel policy, no code.
+- **Scope/flow:** authored per #900 — 3 files + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 806; #956/#958 et al. landed mid-session → re-mint, prior IL retained) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T05:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — policy + inventory + heartbeat-policy + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (operator-gated): resolve [BLOCKING] locus-repo + alert-channel; then infra-side steps 4-6 (monitor/alert-sink/orchestrator enforcement).**
+- **Refs:** `docs/governance/SERVER-CONTROL-ORCHESTRATION.md`; `config/fleet/server-inventory.yaml`; `config/fleet/heartbeat-policy.yaml`; SERVER-2-* (#932/#933/#934/#936/#939); ADR-154; ADR-117; TERMINAL-OWNERSHIP; CONFLICT-LEDGER; AGENTS.md; GAP-REGISTER; ADR-102/119; #900. Operator directive 2026-07-02 (server-control policy + inventory, evo1 incident).

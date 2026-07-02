@@ -1,0 +1,66 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Server fleet inventory — CONFIG-AS-DATA (Config-over-Hardcoding, CLAUDE.md §10)
+#
+# Closed-world registry of the orchestration substrate. Policy prose + integration:
+# docs/governance/SERVER-CONTROL-ORCHESTRATION.md. Thresholds: config/fleet/heartbeat-policy.yaml.
+#
+# CLOSED-WORLD: a host NOT in this inventory is NOT orchestrated (no hidden off-grid state).
+# SCOPE: data only. No monitor/daemon/enforcer here (that is infra-side, ADR-117 perimeter). Ground-truth
+# is surfaced (pointer), not mutated. [НЕИЗВЕСТНО] = not fabricated; resolved at infra build / by operator.
+# ─────────────────────────────────────────────────────────────────────────────
+schema_version: "1.0.0"
+status: proposed            # proposed → ratified (operator flips after reviewing)
+
+# expected_state ∈ {always-on | on-when-scheduled | operator-shutdown-window | decommissioned}
+hosts:
+  - name: Legion
+    addresses:
+      lan: "[НЕИЗВЕСТНО]"        # local WSL2 workstation; LAN address not fabricated
+    physical_role: "RTX 4070, 64 GB (ADR-117)"
+    logical_role: "Factory host — operator terminal + LiteLLM gateway :4000"
+    ownership: operator/factory
+    expected_state: always-on
+    allowed_workloads: [factory-software-delivery, litellm-gateway, factory-fast-inference]
+    borrowable: false          # factory-owned
+    health_check_method: "gateway :4000 /v1/models reachable + process up"
+    alert_channel: operator    # concrete channel = [BLOCKING] (heartbeat-policy.yaml / operator)
+    escalation_target: operator
+
+  - name: evo1
+    addresses:
+      lan: "192.168.0.72"
+      usb4: "10.0.0.1"          # operator-confirmed; the incident host (powered off, no signal)
+    physical_role: "128 GB (ADR-117)"
+    logical_role: "Project compute — ollama :11434 backend + llama.cpp RPC master :8081; control/orchestration node (AGENTS.md)"
+    ownership: project
+    expected_state: on-when-scheduled
+    allowed_workloads: [project-inference, shared-alias-LB-half, glm-air-RPC]
+    borrowable: secondary/borrow-lane
+    health_check_method: "ollama :11434/api/tags + host ping/ssh + RPC :8081 reachable"
+    alert_channel: operator
+    escalation_target: operator
+    notes: "Dual role (control-node AND monitored backend) — monitor must not be single-pointed here (see policy design-constraint)."
+
+  - name: evo2
+    addresses:
+      lan: "192.168.0.15"
+    physical_role: "128 GB (ADR-117)"
+    logical_role: "Project compute — strongest-model host qwen3:235b-a22b-banxe (142 GB), ollama :11434 ('server-2' of the borrowable-compute policy #932)"
+    ownership: project           # primary tenant per server-2 policy #932
+    expected_state: on-when-scheduled
+    allowed_workloads: [project-star-primary-lane-235b, factory-star-borrow-lane]
+    borrowable: primary-tenant+revocable-borrow   # per #932/#933/#936
+    health_check_method: "ollama :11434/api/tags + 235b model loaded + host ping"
+    alert_channel: operator
+    escalation_target: operator
+
+# ── Operator-owned / [BLOCKING] — surfaced, NOT fabricated ────────────────────
+open_questions:
+  - key: "enforcement_locus_repo"
+    note: "[BLOCKING] operator-owned infra repo hosting the monitor/alert-sink/enforcer (ADR-117 perimeter) — NOT invented; operator decision"
+  - key: "alert_channel_transport"
+    note: "[BLOCKING] concrete operator signal sink (candidate: n8n+Telegram already in stack for safeguarding alerts per GAP-REGISTER — NOT confirmed for fleet alerts); operator chooses"
+  - key: "Legion.addresses.lan"
+    note: "[НЕИЗВЕСТНО] Legion LAN address — not fabricated; resolved at infra build"
+  - key: "monitor_survivability_locus"
+    note: "[НЕИЗВЕСТНО] where the monitor runs so a monitored node's death does not also silence it — design constraint, resolved at infra build"
