@@ -23525,3 +23525,15 @@ GAP-087-RUNTIME-ERRATA — runtime errata corrections for safeguarding productio
 - **shard:** `ledger/entries/agent-factory-ledgersync-add-shard-script/IL-2026-07-02T18-53-08Z--agent-factory-ledgersync-add-shard-scrip.md`
 
 feat(ledger): add scripts/add-il-shard.sh — one-command IL shard+rebuild (ADR-056/ADR-059)
+
+---
+
+### IL-826 - agent-factory-t25-dup-verification-evidence @ 2026-07-02T19:00:10Z
+
+- **il_ts:** 2026-07-02T19:00:10Z
+- **session_id:** agent-factory-t25-dup-verification-evidence
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-t25-dup-verification-evidence/IL-2026-07-02T19-00-10Z--t25-dup-evidence.md`
+
+docs(governance): T2.5 per-duplicate verification evidence — OD-1 phantom, tx_monitor I-01 violation, SAR resolved
