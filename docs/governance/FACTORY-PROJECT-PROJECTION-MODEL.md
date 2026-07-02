@@ -98,6 +98,40 @@ not a routine build-prompt; **no such repo is fabricated here.**
   infra**, **not** `banxe-ui` (a `banxe-ui` mention in that doc is the ADR-117 *exclusion* — "not banxe-ui";
   a grep artefact). The §3 matrix target for server-2 is `banxe-emi-stack`/infra.
 
+## Appendix B — Self-improvement is mandatory; only promote-to-canon is factory-gated (corrects A's over-broad read)
+> Additive appendix (operator principle change 2026-07-02). **Appendix A (#968) is NOT removed** — its
+> **authority-half** fence (promote-to-canon is non-delegable) is correct and stays. Appendix B **corrects only
+> A's treatment of the *improve* half**: A read `⛔ factory-fork-only` over the whole feature, which fenced off
+> self-improvement itself. Canon (ADR-136/145/135/130/128/127) gates **authority-promotion**, **not** learning.
+> B is **self-contained** — it states the full authority/improve split below (it depends on no other appendix).
+> It **supersedes the earlier draft that read the improve half as "factory-fork-only by default"** (that draft's
+> only correct idea — the two-half split — is carried in full here). Full statement:
+> `docs/governance/SELF-IMPROVEMENT-MANDATE.md`. No ADR edited, no matrix count changed, no repo invented.
+
+- **Operator principle (2026-07-02):** **self-improvement is MANDATORY** — for factory agents obligatorily,
+  for **project agents at 100%.** An agent improving itself (capture lessons, optimise its own runs, evolve its
+  own skills within its role) is **delegable execution** (ADR-145) + **permitted skill-evolution** (ADR-135,
+  L2/L3 under ADR-128) — **not** an authority act, so **not** fenced to the factory.
+- **The improve / promote split** (see mandate §2): **IMPROVE** (learning/optimisation) = **mandatory for BOTH
+  forks**, agent improves freely; **PROMOTE-TO-CANON** (change shared rules / expand authority) = **GATED +
+  NON-DELEGABLE**, only via the ADR-135 held-out gate (HITL, factory-only). No authority-expansion, ever
+  (ADR-135).
+- **Re-read of the two `⛔` rows (A NOT deleted):** `lesson-capture` (#951) and `skills → SKILL.md` (#953):
+  - **was** (A): `⛔ factory-fork-only` — over-broad, fenced self-improvement itself;
+  - **now** (B): **`self-improve: both-forks-mandatory` (the IMPROVE mechanism projects to the project fork) ·
+    `promote-to-canon: factory-gated` (authority stays factory-only, non-delegable).**
+  The **authority half** Appendix A isolates is unchanged and correct; only the **improve half** is corrected
+  from "does not fork" to "**must** fork to both."
+- **Project-fork locus = AWAITS-OPERATOR (no repo fabricated):** project-side IMPROVE requires an agent-harness
+  project-fork locus; **no such repo exists** (all project repos are product-runtime). Its concrete repo is a
+  **`[BLOCKING: operator / ADR-136-gated]`** decision — the single operator call before any project-side
+  build. **Not invented here.** The mandate is **in force for the factory fork now**, specified-but-pending for
+  the project fork. The locus would host **only the IMPROVE mechanism**; PROMOTE-TO-CANON authority never
+  delegates (ADR-145).
+- **Matrix unchanged in count:** the §3 coverage matrix is **not** re-tallied here; Appendix B corrects the
+  *interpretation* of the two `⛔` rows (see the mandate for the authoritative statement), and adds no
+  projected/gap count.
+
 ## Anchors
 `docs/adr/ADR-136-agentmemory-shared-memory-substrate.md` (PRECOND-05 — agent-harness/self-improvement
 factory-fork-only by default; the exception's source) ·
