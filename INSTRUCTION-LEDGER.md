@@ -23705,3 +23705,26 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 
 - **Instruction:** ci(guardian): allow agent/specproj/* branch namespace (ADR-TERMINAL-B-SPEC-LANE)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-838 - agent-factory-governance-framework-adoption-sprint-b @ 2026-07-02T20:00:00Z
+
+- **il_ts:** 2026-07-02T20:00:00Z
+- **session_id:** agent-factory-governance-framework-adoption-sprint-b
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-framework-adoption-sprint-b/IL-2026-07-02T20-00-00Z--framework-adoption-sprint-b.md`
+
+### [OWNER: A] Framework Adoption (Sprint B) — ADR-148 advance-recommendation + per-engine build-prompts for MISSING engines; installs nothing
+- **Decision:** Per operator (sprints in order C✅ A✅ → B now), authored `docs/governance/FRAMEWORK-ADOPTION-SPRINT-B.md` (new) — ADR-148 advance-recommendation + build-prompts for missing engines. Changed ONLY this doc + paired shard. NO binary installed; NO ADR file edited (advance = governance reference, not ADR edit); ADR-148/126/127 NOT duplicated; NO passport/config/perimeter/legal/ss1 touched; auth NOT bypassed. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Baseline (§1, from #982 host-audit, verified not re-probed):** already installed = openclaw (Legion+evo1, running evo1), metaclaw (Legion), aider (Legion), ruflo (evo1) — EXCLUDED, not re-installed. MISSING (Sprint B targets) = hermes, mirofish, ironclaw, nanoclaw + external. Orchestration alongside install (operator requirement).
+- **ADR-148 advance (§2):** ADR-148 currently PROPOSED; Sprint B RECOMMENDS advancing via ADR-135 held-out gate (advise Phase-1 factory-side deltas first, defer Phase-2) — but final advance/defer = operator/ADR-135, [AWAITS-OPERATOR]; ADR-148 referenced not edited/duplicated.
+- **Per-engine build-prompts (§3):** each = task for operator/infra (role from canon or [BLOCKING: operator] if unverifiable — not invented; host from inventory Legion/evo1/evo2, final placement [AWAITS-OPERATOR]). hermes = ADR-126 Tier-1 CI/CD watchdog read-only (host cand Legion); mirofish = MiroFish research agent :3001/:5004 per agents.md (host cand evo1/Legion); ironclaw = OpenClaw-family in ADR-126/135/136/137, role [BLOCKING: operator], defer default; nanoclaw = OpenClaw-family in ADR-127, role [BLOCKING: operator], defer default; external (crewai/autogpt/langgraph/autogen) = research-only, defer, license-review per ADR-148. Each adopt-vs-defer = [AWAITS-OPERATOR] (dual-use, ADR-135 gate).
+- **Boundary (§4):** build-prompts + advance-recommendation, NOT install. Factory does NOT install dual-use code/pull binaries/bypass auth; install = operator/infra by their hand beyond ADR-117 perimeter. No ADR edited (advance = reference). No host invented (inventory candidates + AWAITS-OPERATOR). Unknown roles = [BLOCKING: operator].
+- **Unified orchestration (§5):** all engines (installed + new) orchestrated uniformly via EXISTING canon — evo1 MoA gateway + litellm :4000 egress, a2a (ADR-150), arbiter/shared-space (ADR-154), agent-liveness #988 monitoring. Task for infra, [AWAITS-OPERATOR] wiring, not code here.
+- **Anti-dup (ADR-102) pointer-first:** references ADR-148/126/127/135/117/154/150, #982 (host-audit), #949 (dual-use precedent), #988 (liveness), #964 (placement), #959 (inventory), #978 (master-plan), agents.md (MiroFish), agent-engine-dossier (external=research), CLAUDE.md §9 — restates none; advance ADR-148 via reference (no duplicate/edit), no code, no install.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T20:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — advance-recommendation + per-engine build-prompts + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): ADR-148 advance via ADR-135; specify ironclaw/nanoclaw roles ([BLOCKING]); operator/infra installs missing engines + wires orchestration. Then Sprint D.**
+- **Refs:** `docs/governance/FRAMEWORK-ADOPTION-SPRINT-B.md` (new); ADR-148/126/127/135/117/154/150; #982 (master-plan §7 host-audit); #988 (liveness); #964 (placement); #959 (server-inventory); #949 (Hyperbrowser dual-use); #978 (master-plan); `.claude/rules/agents.md`; CLAUDE.md §9; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (Sprint B advance + build-prompts; install nothing; no ADR edit; no auth bypass; hosts from inventory).
