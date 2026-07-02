@@ -154,7 +154,7 @@ def _redis_config():
     Explicit REDIS_HOST/REDIS_PORT override the evo1 default. NOT TL_REDIS_*
     (that is local traffic-light monitoring, a per-host 127.0.0.1 counter).
     """
-    host = os.environ.get("REDIS_HOST", "100.68.102.48")  # evo1 redis over tailscale
+    host = os.environ.get("REDIS_HOST", "127.0.0.1")  # banxe-redis host-net on localhost
     port = int(os.environ.get("REDIS_PORT", "6379"))
     pw = os.environ.get("REDIS_PASS_FILE", os.path.expanduser("~/banxe-fabric/.vault/redis.pass"))
     return host, port, pw
