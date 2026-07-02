@@ -24101,3 +24101,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 
 - **Instruction:** Sprint 1 sign-off briefing — S-1..S-4 operator package
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-857 - agent-factory-od9-orphan-repo-inventory @ 2026-07-03T15:27:16Z
+
+- **il_ts:** 2026-07-03T15:27:16Z
+- **session_id:** agent-factory-od9-orphan-repo-inventory
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-od9-orphan-repo-inventory/IL-2026-07-03T15-27-16Z--651188.md`
+
+### agent-factory-od9-orphan-repo-inventory
+
+- **Instruction:** OD-9 orphan repo inventory — 2 archive-ready, 3 for operator assessment
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
