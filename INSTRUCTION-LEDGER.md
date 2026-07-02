@@ -23675,3 +23675,18 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T19:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — normalization spec + acknowledgment + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): apply-normalization bulk PR (operator-confirmed, 70+ passports) + activation (ADR-135 per agent). Then Sprint B/D.**
 - **Refs:** `docs/governance/AGENT-STATUS-NORMALIZATION.md` (new); #972/#973 (FLEET-CONFORMANCE-AUDIT + erratum); #978 (AGENT-FLEET-MASTER-PLAN, F-ARCH); #982 (runtime-addendum); FACTORY-LESSON-CAPTURE L-10; ADR-135; CLAUDE.md §10; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (Sprint A normalize + acknowledge; spec-only; apply + activation separate operator-gated).
+
+---
+
+### IL-836 - agent-factory-ledgerinfra-redis-host-default @ 2026-07-02T22:08:59Z
+
+- **il_ts:** 2026-07-02T22:08:59Z
+- **session_id:** agent-factory-ledgerinfra-redis-host-default
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-ledgerinfra-redis-host-default/IL-2026-07-02T22-08-59Z--d50dbe.md`
+
+### agent-factory-ledgerinfra-redis-host-default
+
+- **Instruction:** fix(ledger): build_ledger REDIS_HOST default 100.68.102.48->127.0.0.1 — evo1 reaches allocator, ends IL-collision thrash (ADR-143)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
