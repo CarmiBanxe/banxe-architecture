@@ -23537,3 +23537,26 @@ feat(ledger): add scripts/add-il-shard.sh — one-command IL shard+rebuild (ADR-
 - **shard:** `ledger/entries/agent-factory-t25-dup-verification-evidence/IL-2026-07-02T19-00-10Z--t25-dup-evidence.md`
 
 docs(governance): T2.5 per-duplicate verification evidence — OD-1 phantom, tx_monitor I-01 violation, SAR resolved
+
+---
+
+### IL-827 - agent-factory-governance-agent-fleet-master-plan @ 2026-07-02T16:00:00Z
+
+- **il_ts:** 2026-07-02T16:00:00Z
+- **session_id:** agent-factory-governance-agent-fleet-master-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-agent-fleet-master-plan/IL-2026-07-02T16-00-00Z--agent-fleet-master-plan.md`
+
+### [OWNER: A] Agent-Fleet Master Plan — unified cycle (findings→intent→sprint→implementation); complements #975, folds in cross-repo + runtime evidence
+- **Decision:** Per operator directive (unify ALL agent-audit + cross-repo + runtime findings into one plan — findings/intent/sprint/implementation), authored `docs/governance/AGENT-FLEET-MASTER-PLAN.md` (new) @ `origin/main 1d7a18a`, COMPLEMENTING roadmap #975 (pointer, not duplicate). Changed ONLY this doc + paired shard. NO agent activated; NO framework installed; NO passport/ADR/config/perimeter/project-code touched; NO auth bypassed; NO verified project-repo number invented; legal/ss1/GUYON EXCLUDED (I-18/I-20). **PREPARE-ONLY**, Draft PR. Owner A.
+- **Findings consolidated (verified this series):** F-CROSS (distinct Banxe repos, mirrors dropped, legal/ss1 excluded; project-repo counts = UNVERIFIED path-substring L-10, not fleet size; project repos beyond ADR-117, not read). F-ARCH (banxe-architecture verified 70 bank-passports + 20 souls + 3 swarms + 4 factory + NEW 10 canon-role passports docs/canon/passports/ — completeness finding like swarms #973; governance-topology class, not reclassified without operator). F-RUN-L (Legion 0 agent-daemons; LLM infra live litellm:4000/ollama:11434 = models not agents; tunnel→evo1; 13 active NOT process-backed = empirical GAP-1). F-RUN-E (evo1==former GMKtec per GLOSSARY; openclo-moa "10 agents" behind auth-gated tunnel :8080/:4000→401; on-demand neither confirmed nor denied, auth NOT bypassed; evo1 in inventory — NO missing-host gap; my initial hypothesis refuted by verification = method-lesson). F-LIVE (GAP-2 reinforced — active/on-demand/dead indistinguishable → 7/24 not measurable). F-NAME (stale GMKtec in tunnel + openclo.md; canonical = evo1; CODEOWNERS-gated). F-LEDGER (#975 self-heal 820/821; possible guardian-ledger gap — infra follow-up).
+- **Unified cycle (§3):** each GAP → fix-intent → sprint (A/B/C/D of #975, referenced not redefined) → implementation with explicit executor column (factory-authorable vs operator/infra beyond perimeter). Nothing executed.
+- **Priority (empirical, final=operator):** C→A→B→D — C first because F-LIVE proves 7/24-liveness absent + blocks measuring "work" (operator principle); re-orders #975's A→C→B→D on runtime evidence.
+- **Executor split (§5):** factory prepares governance/spec/build-prompt/ADR-148-advance/ADR-102-dedup-writeup/normalization/liveness-schema/naming-note; AWAITS-OPERATOR/infra = framework install (OpenClaw/Hermes/Aider/MetaClaw/MiroFish), agent activation (ADR-135), 7/24 runtime, dedup source, fork locus (ADR-136), guardian-ledger fix, evo1 auth-gated probing — explicitly NOT factory's.
+- **Boundaries:** ONLY AGENT-FLEET-MASTER-PLAN.md (new) + this shard. NO agent/passport/ADR/config/swarm/framework/perimeter/project/legal/ss1 change; nothing activated/installed; auth NOT bypassed; #975 NOT duplicated (complemented); no project-repo verified-number invented. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references #972/#973/#974/#975, #966/#969, ADR-148/126/127/117/135/136/150/154, #959, #971, #967, GLOSSARY (GMKtec=evo1), L-02/L-10 — restates none; complements #975's register/sprints, authors no parallel roadmap, no code. GAP-3 defers adopt to ADR-148 (no duplicate).
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06). Sequence self-heal (if stale siblings) = append-only, recorded.
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T16:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. Pinned to 1d7a18a (point-in-time).
+- **Status:** DONE — master plan (7 findings + unified cycle + executor split) + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): pick sprint order (proposed C→A→B→D) + the executor-marked operator/infra items — none taken here.**
+- **Refs:** `docs/governance/AGENT-FLEET-MASTER-PLAN.md` (new); #975 (roadmap); #972/#973/#974; #966/#969; #959; #971; #967; ADR-148/126/127/117/135/136/150/154; GLOSSARY; L-02/L-10; ADR-102/119/143/144; #900. Operator directive 2026-07-02 (unify findings → single cycle; activate/install nothing; complement not duplicate #975; I-18/I-20 exclude; no auth bypass).
