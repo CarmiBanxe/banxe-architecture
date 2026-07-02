@@ -23587,3 +23587,21 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 **Quality:** Semgrep 0; ADR-120/121 (worktree-only git); ADR-060 (namespace); GUIYON security rule applied.
 
 **Status:** DONE. Ready for operator review and merge to main.
+
+---
+
+### IL-839 - agent-factory-phase2-consolidation-plan @ 2026-07-02T22:29:10Z
+
+- **il_ts:** 2026-07-02T22:29:10Z
+- **session_id:** agent-factory-phase2-consolidation-plan
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-phase2-consolidation-plan/IL-2026-07-02T22:29:10Z--ffe9a5.md`
+
+### CONSOLIDATION-PLAN-PHASE-2 Sprint 1 execution contract: 9 OD resolutions, 5 API contracts, Phase 3 gate
+
+- **Objective:** Document Phase 2 consolidation plan: 9 outstanding defect (OD) resolutions (risk dedup, gap register ingestion), 5 new API contracts (boarding OD/migration targets), BT-001..010 matrix (tech-debt binding), S-1..S-8 sign-off matrix (service readiness), Sprint 1-5 roadmap (execution 2026-07-02 to 2026-09-30), 7 risk items, 29-item Phase 3 post-sprint checklist.
+- **Artifact:** `governance/CONSOLIDATION-PLAN-PHASE-2.md` — 800+ lines; structured as: Executive Summary + 9 OD Table + API Contracts Table + BT Matrix + S Matrix + Sprint Roadmap + Risk Register + Phase 3 Checklist.
+- **Live audit:** banxe-architecture origin/main (base); branch agent/factory/phase2/consolidation-plan@24fa3d4 (commit doc(governance) msg); added single file no schema/code changes.
+- **Status:** DONE. CI pending (awaiting shard registration for guardian-ledger pass). Artifact traceable to PR #985 (GitHub).
+- **Refs:** governance/CONSOLIDATION-PLAN-PHASE-2.md; PR #985; ADR-119 (stable IL numbering); I-28 (append-only); CLAUDE.md (documentation rules).
