@@ -23324,3 +23324,26 @@ this shard).
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 811; #964 took IL-811 mid-session → re-mint, 811 retained) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T06:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — fleet-monitor build-prompt + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next: operator confirms the [BLOCKING] enforcer repo; infra builds monitor (fabric/legion) + alert-sink (Telegram/Hermes) per this prompt; then the #939 enforcer project-side.**
 - **Refs:** `docs/governance/FLEET-MONITOR-BUILD-PROMPT.md`; SERVER-CONTROL-ORCHESTRATION.md (#959/IL-807); config/fleet/server-inventory.yaml + heartbeat-policy.yaml; ADR-126 (Hermes); ADR-117; ADR-154; SERVER-2-* (#932/#939); GAP-066; fabric/legion/; ADR-102/119; #900. Operator directive 2026-07-02 (fleet-monitor build-prompt, placement audit-resolved).
+
+---
+
+### IL-813 - agent-factory-governance-factory-project-projection-model @ 2026-07-02T08:00:00Z
+
+- **il_ts:** 2026-07-02T08:00:00Z
+- **session_id:** agent-factory-governance-factory-project-projection-model
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-factory-project-projection-model/IL-2026-07-02T08-00-00Z--factory-project-projection-model.md`
+
+### [OWNER: A] Factory→Project projection operating model — consolidation (no new mechanism)
+- **Decision:** Per operator "every feature must fork to the project and be used by both factory and project", authored `docs/governance/FACTORY-PROJECT-PROJECTION-MODEL.md` — consolidates the ALREADY-defined factory→project projection pattern into one operating model. Audit established: mechanism already canon (ADR-145 fork + ADR-135 adoption gate + ADR-117 perimeter), applied 6× via the build-prompt pattern; gap = consolidation, NOT a new mechanism. **NO new mechanism introduced, NO authority delegated to project, NO project code written, perimeter/machines NOT touched.** **PREPARE-ONLY**, Draft PR. Owner A.
+- **Principle:** every feature = factory-governance side (rules/spec/config here) + project projection (executable part in project repo); BOTH forks consume the one governance contract; a feature is NOT factory-side only.
+- **Lifecycle (consolidated, not rewritten):** factory authors governance-spec/build-prompt (banxe-architecture) — merge-authority + ADR-135 adoption gate NON-DELEGABLE (ADR-145 PRECOND-07: project = execution consumer, never authority); project/infra builds executable part against contract (banxe-emi-stack/banxe-ui/banxe-monitoring) under operator-gate beyond ADR-117; validated result promoted back via ADR-135 gate (factory-only); shared ledger/ append-only (TERMINAL-OWNERSHIP), both forks read one contract; deconflict via CONFLICT-LEDGER.
+- **Coverage matrix (facts, honest):** server-2 compute (policy #932/config → enforcer build-prompt #939 → banxe-emi-stack/infra) = ✅ projected; UI/UX audit (spec #916/schema #918/contract #920 → emitter #942 + runners #944 → banxe-ui) = ✅ projected; fleet-control (policy #959/placement #964 → monitor build-prompt #963 → banxe-monitoring) = ✅ projected; lesson-capture #951 = ❌ NOT projected ([НЕИЗВЕСТНО forked?] candidate); skills SKILL.md #953 = ❌ NOT projected ([НЕИЗВЕСТНО]). 3 projected, 2 factory-side-only.
+- **Gap-list (AWAITS-OPERATOR):** lesson-capture + skills have NO project projection → each = separate future build-prompt on operator signal, NOT authored here; project repo NOT fabricated for un-projected features.
+- **Boundaries:** no new mechanism (ADR-145/135/117 remain source); no authority delegated to project (PRECOND-07); no project code; RED-ZONE (payment/KYC/AML, ADR-137) excluded from project-fork by default (projecting RED-ZONE = separately-gated operator decision). Only this doc + shard. 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** references ADR-145, ADR-135, ADR-117, ADR-137, TERMINAL-OWNERSHIP, CONFLICT-LEDGER, and the six projections (#920/#928/#939/#942/#944/#963) — restates none; consolidation/index only, no parallel governance model, no code.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). Re-mint discipline if collision: reset onto origin/main + regenerate; recreate shard AFTER reset (L-05); duplicate IL = rebase signal (L-06).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main (max 812) via allocator (ADR-143/143-A); unique, 0 dups; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T08:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — projection operating-model consolidation + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Next (AWAITS-OPERATOR): project-projection build-prompts for the un-projected features (lesson-capture, skills) on operator signal.**
+- **Refs:** `docs/governance/FACTORY-PROJECT-PROJECTION-MODEL.md`; ADR-145/135/117/137; TERMINAL-OWNERSHIP; CONFLICT-LEDGER; #920/#928/#939/#942/#944/#963; #951/#953; ADR-102/119; #900. Operator directive 2026-07-02 (consolidate factory→project projection model).
