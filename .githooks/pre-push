@@ -15,7 +15,8 @@
 set -eu
 
 # Byte-for-byte mirror of guardian.yml guardian-branch-naming PATTERN.
-PATTERN='^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$'
+# specproj = ADR-TERMINAL-B-SPEC-LANE Terminal-B namespace
+PATTERN='^agent/(central|right|factory|specproj)/[A-Za-z0-9]+/[a-z0-9._-]+$'
 
 # Pure validator. arg = branch (refs/heads/ prefix tolerated). return 0 = compliant, 1 = violation.
 is_compliant() {
@@ -28,7 +29,7 @@ is_compliant() {
 
 _violation() {
   echo "✗ pre-push BLOCKED — branch '$1' violates ADR-060 namespace." >&2
-  echo "  Required: agent/(central|right|factory)/<id>/<slug>" >&2
+  echo "  Required: agent/(central|right|factory|specproj)/<id>/<slug>" >&2
   echo "  <id> = [A-Za-z0-9]+  (hyphen FORBIDDEN: archstacksubA ✓, archstack-subA ✗)" >&2
   echo "  <slug> = [a-z0-9._-]+ (lowercase; hyphens allowed here)" >&2
 }

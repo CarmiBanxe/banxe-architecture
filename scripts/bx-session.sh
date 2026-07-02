@@ -13,7 +13,8 @@
 set -eu
 
 WT_ROOT="${BX_WT_ROOT:-$HOME/wt}"               # config-over-hardcode: override via BX_WT_ROOT
-PATTERN='^agent/(central|right|factory)/[A-Za-z0-9]+/[a-z0-9._-]+$'  # ADR-060, mirror of guardian.yml
+# specproj = ADR-TERMINAL-B-SPEC-LANE Terminal-B namespace
+PATTERN='^agent/(central|right|factory|specproj)/[A-Za-z0-9]+/[a-z0-9._-]+$'  # ADR-060, mirror of guardian.yml
 
 die() { echo "✗ bx-session: $*" >&2; exit 1; }
 
