@@ -122,3 +122,58 @@ vibe-coding `tx_monitor.py` has a `CRYPTO_FLAG` rule not present in EMI. EMI has
 ---
 
 *Append-only evidence record. Do not edit. Add new findings as dated addendum sections.*
+
+---
+
+## T2.2 — banxe-payment-core Runtime Verification (2026-07-02)
+
+**Task:** CONSOLIDATION-PLAN T2.2 — verify if banxe-payment-core is deployed as standalone library.  
+**Executor:** Factory sub-agent (read-only diagnostic)  
+**Status:** RESOLVED  
+
+### Evidence
+
+| Question | Answer | Evidence |
+|----------|--------|---------|
+| Pip-installable? | YES | `pyproject.toml` defines `name = "banxe-payment-core"` v0.1.0, setuptools build-backend |
+| Installed in banxe-emi-stack? | NO | `pip show banxe-payment-core` → NOT_INSTALLED; zero imports in services/ |
+| Used in vibe-coding? | NO | Zero grep hits for `banxe_payment_core` or `banxe-payment-core` in vibe-coding/src/ |
+| Code complete? | YES | 297 tests, 97% coverage, ADR-015 ACCEPTED (2026-04-13, CEO approved) |
+| Deployment blocker? | BT-001 | Modulr production API key not obtained — CEO/Operator commercial decision |
+| Integration contract with services/payment/? | UNDEFINED | Two separate domains with no API contract; Phase 3 must decide |
+
+### Repo Structure Summary
+
+```
+banxe-payment-core/src/
+├── ports/          — 3 Protocol ABCs (PaymentSwitchPort, IssuerPort, LedgerPort)
+├── adapters/       — Hyperswitch, Paymentology, Midaz adapters
+├── agents/         — 4 agents (payments, fx_exchange, wallet, lineage)
+├── settlement/     — Mastercard IPM parser + reconciler
+├── compliance_bridge/
+├── authorization/
+└── paymentology/   — XML-RPC remote handler
+```
+
+### Verdict
+
+**REFERENCE ONLY** — banxe-payment-core is architecturally complete (ADR-015 ACCEPTED, code-done, 297 tests)
+but NOT operationally deployed. It functions as a staged development repo and architectural reference.
+It is NOT consumed by banxe-emi-stack or vibe-coding at runtime.
+
+### Phase 3 Decision Required (CTIO)
+
+One of three paths must be chosen in Phase 3 (SSOT consolidation):
+
+1. **Keep separate** — define REST or async event-driven API contract between banxe-payment-core (orchestration) and services/payment/ (EMI runtime).
+2. **Merge** — consolidate orchestration logic into services/payment/ (simpler dependency graph, one repo).
+3. **Archive candidate** — if banxe-payment-core remains blocked post BT-001 resolution, mark for Phase 7 deprecation review.
+
+**Gate:** CTIO sign-off required before Phase 3 entry on this item.
+
+### References
+
+- ADR-015-payment-processing-stack.md (ACCEPTED)
+- GAP-074 (Acquiring/issuing registration — blocked on BT-001)
+- BT-001 (Modulr API key — CEO/Operator)
+- services/payment/ in banxe-emi-stack (separate domain, no cross-import)
