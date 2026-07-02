@@ -189,9 +189,23 @@ Do not restate the §1 table. Net-new today (2026-07-01):
 ### §5.3 — RPC mesh (verified 2026-07-01, up-but-idle)
 
 Scaffolding is **up but idle**: `evo2` runs `rpc-server` on `:50052` and `llama-server` on
-`:8082`; `evo1` runs LiteLLM on `:4000`. Confirm that `project-reason` (a.k.a.
-`reasoning-235b`) resolves to the **distributed RPC master** — and not to a dead standalone
-process — before relying on the alias for production routing.
+`:8082`. The **canonical alias-gateway** (§1 alias table — `factory-fast` / `factory-mid` /
+`factory-heavy` / `factory-coder` / `project-reason`) is served by **Legion's LiteLLM at
+tailscale `100.101.218.26:4000`** — its config, master_key, and alias table live on Legion.
+evo1 runs a separate LiteLLM instance at `100.68.102.48:4000` with a different key; it is
+**NOT** the canonical alias-gateway (verified 2026-07-02: auth rejected against evo1's
+key when addressing the canonical aliases). Confirm that `project-reason` (a.k.a.
+`reasoning-235b`) resolves to the **distributed RPC master** through the Legion
+`:4000` gateway — and not to a dead standalone process — before relying on the alias for
+production routing.
+
+**OpenAI-compatible clients (e.g. Aider) MUST use the `openai/<alias>` model form** (for
+example `openai/factory-coder`) so LiteLLM routes a bare alias through an OpenAI-compatible
+base. This does not change §1 alias names, §5.1 / §5.2 substrate distinctions, or the
+I-32 / I-33 no-bypass rule — all remain in force.
+
+*correction 2026-07-02: alias-gateway = Legion `100.101.218.26:4000` (not evo1
+`100.68.102.48:4000`).*
 
 ### §5.4 — Verified cluster facts (2026-07-01, read-only)
 

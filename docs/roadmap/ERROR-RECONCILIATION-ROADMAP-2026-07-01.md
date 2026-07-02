@@ -35,16 +35,17 @@ softening. Statuses distinguish what was corrected in-session
 | A12  | Recommended raw `:8082` bypass                                  | Raw `:8082` = canon violation (I-32 / I-33 no-bypass; ADR-016 single entrypoint)                                     | Governed `:4000` only; **never** raw `:8082`                          | CORRECTED      | Factory          |
 | **B — Real open discrepancies (drive the roadmap)**                                                                                                                                                                                                                                                                                                                                              |
 | B1   | §5.2 / §5.5 canon factually wrong                               | §5 correction PR **#938** is currently OPEN; IL is provisional and needs a re-rebase (IL-785 collided on `main`)      | Rebase-freeze IL per ADR-119; re-mint PR title + shard; merge          | IN-PROGRESS    | Factory prepares / operator merges |
-| B2   | evo2 has no agentic CLI                                         | `node = NONE`, `claude` CLI ABSENT; `python3 + pip` present                                                          | Decide the evo2 agent lane, then provision                            | OPEN           | Operator (decision + install) |
-| B3   | No canon record of the evo2 agent-lane decision                 | The choice between Claude-quality (Plan-1) and Aider-local (Plan-2) is not written into governance                   | Author an ADR + IL that records the decision (docs-only)              | OPEN           | Factory (draft) / operator (accept) |
+| B2   | evo2 has no agentic CLI                                         | `node = NONE`, `claude` CLI ABSENT; `python3 + pip` present. Provisioned 2026-07-02: **Aider lane** installed (Aider 0.86.2 in `~/aider-venv`), Lane A (Claude/Node) DEFERRED. | Decide the evo2 agent lane, then provision — DONE for Aider lane; Lane A deferred | PARTIALLY CLOSED (Aider lane) | Operator (Lane A deferred) |
+| B3   | No canon record of the evo2 agent-lane decision                 | Decision recorded 2026-07-02: **evo2 agent-lane = Aider-local** (Aider 0.86.2 venv, model `openai/factory-coder` via governed Legion LiteLLM `100.101.218.26:4000`), **validated AIDER-OK**. Lane A (Claude/Node) DEFERRED. RED-zone / regulated code STAYS on Claude per BUG-005 (Ruflo mandatory). | Recorded here + captured in `.claude/rules/agents.md` LiteLLM route map. | **CLOSED / DONE** | Factory (recorded) / operator (accepted) |
 | B4   | Ledger-thrash root cause = concurrent regeneration              | Concurrent regeneration of `INSTRUCTION-LEDGER.md` / `IL-SEQUENCE.json` between parallel PRs (**not** Redis).         | Serialization strategy = software base-drift guard (`main-serialize.yml`, `MERGE-SERIALIZATION-FALLBACK.md`) is the current mechanism (proven, landed); durable OPTIONS = (A) transfer repo to a GitHub org → native queue becomes available → activate it (+ `merge_group` trigger on `main-serialize.yml` or drop it from required checks); (B) keep the software serializer + arm-auto-merge-then-rebase tactic (current, proven — landed #941 / #938); (C) reduce concurrent ledger-PR load. Native Merge Queue is org-only and UNAVAILABLE on this user-owned repo. correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md. | OPEN — strategy choice | Operator (strategy: org-transfer vs software-serializer) |
 | **A13** | Merge-Queue advice inaccuracy (this session)                 | Prior recommendation to "activate native GitHub Merge Queue" (as the durable thrash-fix) was inaccurate: `CarmiBanxe` is user-owned → native queue is org-only, unavailable (verified: `gh api graphql {repository{mergeQueue}}` = null). The correct mechanism/anchor is the software serializer (`.github/workflows/main-serialize.yml` base-drift guard, documented in `docs/governance/MERGE-SERIALIZATION-FALLBACK.md`). ADR-060 §1 ("native Merge Queue is the mechanism") assumed an org, so it does NOT apply to this repo. ADR-143 Redis allocator handles unique numbering — NOT base-drift serialization. | Correct §1 B4 / §2 B4 / §3 R3 / §4 Sprint-E3 to describe the software serializer + org-transfer option (A) vs accept-serializer option (B), instead of "activate native Merge Queue"                          | corrected-here | Factory          |
+| **A17** | LiteLLM gateway-address inaccuracy (Aider guidance)         | Earlier §5 / Aider guidance pointed at evo1's LiteLLM at `100.68.102.48:4000`, but the working alias-gateway (whose config, master_key, and alias table — `factory-*` / `project-reason` — actually live there) is Legion's LiteLLM at tailscale **`100.101.218.26:4000`**. evo1's `:4000` is a DIFFERENT LiteLLM instance with a different key (auth rejected) — NOT the canonical alias-gateway. Additionally, OpenAI-compatible clients (Aider) must use the **`openai/<alias>`** model form (e.g. `openai/factory-coder`) so LiteLLM routes a bare alias through an OpenAI-compatible base. Verified LIVE 2026-07-02: Aider 0.86.2 in `~/aider-venv` returned **AIDER-OK** against `openai/factory-coder` via `100.101.218.26:4000`. | Correct COMPUTE-ROUTING-TAXONOMY §5.3 imprecise line "evo1 runs LiteLLM on :4000" to name Legion `100.101.218.26:4000` as the canonical alias-gateway; add `openai/<alias>` note for OpenAI-compatible clients. Non-secret gateway IP:port only — no master_key values recorded. | corrected-here | Factory          |
 | **C — Infra (operator-owned; explicitly not factory mutations)**                                                                                                                                                                                                                                                                                                                                 |
 | C1   | Redis allocator (`banxe-redis`, host-net, AUTH)                 | Durable: `restart=unless-stopped`; no action                                                                         | None                                                                   | OK / NO ACTION | Operator (owns) |
 | C2   | 235b live on evo2 `:8082` (llama-server)                        | Serving traffic through governed `:4000` (per ADR-016); no action                                                    | None                                                                   | OK / NO ACTION | Operator (owns) |
-| C3   | evo2 runtime / agent provisioning                               | Awaiting the B2 / B3 decision before install                                                                         | Blocked on B3 outcome (see §4 Sprint-E2 → E4)                          | BLOCKED        | Operator (install per B3) |
+| C3   | evo2 runtime / agent provisioning                               | Aider lane installed + validated 2026-07-02 (Aider 0.86.2 in `~/aider-venv`, `openai/factory-coder` via governed Legion `100.101.218.26:4000`, AIDER-OK). Lane A (Claude/Node) DEFERRED. RED-zone stays on Claude (BUG-005). | Aider lane DONE; Lane A remains deferred (out of scope this cycle). | AIDER LANE DONE / LANE A DEFERRED | Operator (Lane A deferred) |
 
-Confirmation footprint: **A1–A13 present, B1–B4 present, C1–C3 present.**
+Confirmation footprint: **A1–A17 present, B1–B4 present, C1–C3 present.**
 correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see MERGE-SERIALIZATION-FALLBACK.md.
 
 ---
@@ -73,16 +74,21 @@ correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see
 - **How:** see §4 Sprint-E4 (post-decision provisioning) — routed via
   `factory-*` / `project-reason` aliases per `agents.md` LiteLLM route map.
 
-### B3 — Author the evo2 agent-lane decision (canon record)
+### B3 — Author the evo2 agent-lane decision (canon record) — **CLOSED / DONE 2026-07-02**
 
-- **What:** an ADR + IL that captures the decision — Claude-quality
-  (Anthropic API, Plan-1) vs. Aider-local (Plan-2) vs. both — with the
-  hardware / plane rationale (Plan-1 ≠ Plan-2, per A7). RED-zone /
-  regulated code stays on Claude per BUG-005 (Ruflo mandatory) and
-  `agents.md` Ruflo review canon.
-- **Owner:** factory drafts, operator accepts.
-- **How:** docs-only ADR draft under `docs/adr/`, IL shard under
-  `ledger/entries/`, no runtime change.
+- **Decision recorded:** evo2 agent-lane = **Aider-local** (Aider 0.86.2 in
+  `~/aider-venv`), model **`openai/factory-coder`** via the governed
+  Legion LiteLLM gateway at tailscale `100.101.218.26:4000`. Validated
+  LIVE 2026-07-02: Aider returned **AIDER-OK**.
+- **Lane A (Claude/Node) DEFERRED.** RED-zone / regulated code paths
+  (payment, compliance, KYC, safeguarding) STAY on Claude per BUG-005
+  (Ruflo mandatory) and `.claude/rules/agents.md` — the Aider lane is
+  scoped to local / non-regulated work only.
+- **Owner:** factory recorded, operator accepted.
+- **How:** docs-only; captured in this register (B3 row + this section)
+  and in `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md`
+  correction (see A17). No runtime / config / secret change authored by
+  this closure.
 
 ### B4 — Serialization strategy (org-transfer vs software-serializer)
 
@@ -130,7 +136,7 @@ correction 2026-07-01b: native Merge Queue is org-only (repo is user-owned); see
 | Phase | Name              | Objective                                                                                                | Depends on   |
 | ----- | ----------------- | -------------------------------------------------------------------------------------------------------- | ------------ |
 | **R1** | Canon-accuracy    | Land §5 correction PR **#938** (B1) + this ERROR-RECONCILIATION register into main                       | —            |
-| **R2** | evo2 lane decision | Author + accept the agent-lane ADR (B3); RED-zone stays on Claude (BUG-005 / `agents.md`)              | R1           |
+| **R2** | evo2 lane decision | **CLOSED / DONE 2026-07-02** — decision recorded: evo2 lane = **Aider-local** (Aider 0.86.2 venv, `openai/factory-coder` via Legion `100.101.218.26:4000`, AIDER-OK); Lane A (Claude/Node) DEFERRED; RED-zone stays on Claude (BUG-005 / `agents.md`) | R1           |
 | **R3** | Serialization strategy | Choose strategy per B4 — **(A)** org-transfer → activate native Merge Queue (ADR-060 §1); **(B)** accept the software serializer `main-serialize.yml` (current, proven — `MERGE-SERIALIZATION-FALLBACK.md`); **(C)** reduce concurrent ledger-PR load. Native queue is org-only; correction 2026-07-01b. | R1           |
 | **R4** | evo2 provisioning | Install per R2: Node + Claude Code (Claude-quality lane) OR Aider (local lane) — all via governed `:4000` | R2 (+ ideally R3) |
 
@@ -153,19 +159,24 @@ R3 is repo-settings). R2 blocks R4 because provisioning is decision-driven.
 - **Exit:** PR #938 merged; this register merged; §5.2 / §5.5 canon
   factually accurate on `main`.
 
-### Sprint-E2 — evo2 agent-lane decision (docs-only)
+### Sprint-E2 — evo2 agent-lane decision (docs-only) — **CLOSED / DONE 2026-07-02**
 
-- **Scope:** operator chooses one of:
-  - **Claude-quality only** (Anthropic API — Plan-1),
-  - **Aider-local only** (local ollama over governed `:4000` — Plan-2),
-  - **Both** (Claude-quality primary + Aider-local for non-RED tasks).
-- **Invariant:** RED-zone / regulated code paths (payment, compliance,
-  KYC, safeguarding) **STAY on Claude** per BUG-005 (Ruflo mandatory) and
-  the agent-chain × GSD-phase matrix in `.claude/rules/agents.md`.
-- **Factory:** draft the ADR + IL capturing the decision (B3), including
-  per-lane install commands (all commands target governed `:4000`).
-- **Operator:** accept the ADR; approve the install-command inventory.
-- **Exit:** ADR-`<next>` + IL landed on `main`; provisioning unblocked.
+- **Decision:** **Aider-local lane** — Aider 0.86.2 installed on evo2 in
+  `~/aider-venv` (Python venv), model `openai/factory-coder` routed via
+  the governed Legion LiteLLM at tailscale `100.101.218.26:4000`.
+  Validated LIVE 2026-07-02: **AIDER-OK**.
+- **Lane A (Claude-quality: Anthropic API + Node/Claude-Code CLI):**
+  **DEFERRED** — RED-zone / regulated code paths (payment, compliance,
+  KYC, safeguarding) STAY on Claude per BUG-005 (Ruflo mandatory) and
+  the agent-chain × GSD-phase matrix in `.claude/rules/agents.md`. The
+  Aider lane is scoped to local / non-regulated work only.
+- **Factory:** recorded the decision in this register (B3 row + §2 B3
+  section + R2 row) + corrected the gateway address in
+  `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md` (see A17).
+- **Operator:** accepted; Lane A remains deferred (out of scope this
+  cycle).
+- **Exit:** closed. Sprint-E4 provisioning row scoped to the Aider lane
+  only (Lane A remains deferred).
 
 ### Sprint-E3 — Serialization strategy (repo-settings; operator)
 
