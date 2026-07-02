@@ -53,6 +53,7 @@ Eight-phase program to establish canonical governance, compliance, and operation
 - ✅ GAP-REGISTER audit (83 total; 5 open P0/FCA blockers; 76% L2-complete)
 - ✅ Runtime & ADR inventory (37 ADRs, 70 agent passports, 5-layer docker stack)
 - ✅ STAFF-MATRIX-v3 (70 total passports; all 4 department lines + support stubs active)
+- ✅ Full repo census (33 GitHub repos catalogued + 1 EXCLUDED; 62 local checkouts; duplicate clone risks documented — §8 ADDENDUM)
 
 **Deliverable:** MASTER-ORG-CODE-RUNTIME-DOSSIER.md (this document) — canonical governance reference (append-only, enforced by Guardian).
 
@@ -65,6 +66,6 @@ Eight-phase program to establish canonical governance, compliance, and operation
 - **MASTER-ORG-CODE-RUNTIME-DOSSIER.md** — Phase 1 output (7 sections: full inventory, system of record, duplicates, thin zones, roadmap, prerequisites)
 - **ADR-019** — AI Guardian architecture (two-family governance)
 - **ADR-020** — Memory governance (append-only contracts)
-- **INSTRUCTION-LEDGER.md** — Operator purchase log (IL-802 max)
+- **INSTRUCTION-LEDGER.md** — Operator purchase log (IL-803 max)
 - **HITL-MATRIX.yaml** — HITL gate definitions (17 gates, L1-L4 autonomy)
 - **PLANES.md** — Three-plane isolation (Developer / Product / Standby)

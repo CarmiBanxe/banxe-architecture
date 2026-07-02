@@ -240,3 +240,239 @@ All items below must be DONE before Phase 3 (single source of truth) can commenc
 ---
 
 **Document Status:** Append-only (I-24 enforced). All sections completed 2026-07-02. Next review: Phase 2 completion (Q3 2026). No edits; new findings → new section appended.
+
+## §8. FULL REPOSITORY CENSUS ADDENDUM (2026-07-02)
+
+Complete GitHub repository inventory and local clone audit discovery by operator via `gh repo list CarmiBanxe --limit 200` and `find ~ -maxdepth 3 -name .git` on Legion system.
+
+---
+
+### §8.1. GitHub Repository Catalogue (33 Active + 1 Excluded = 34 Total)
+
+**Legend:** Floor = Four-floor model assignment (Floor 1-4); Status codes: ✅ ACTIVE, 🟡 SUPPORT, ❌ EXCLUDED, ⚠️ ARCHIVED.
+
+#### BANK-CRITICAL FLOOR 1-3 (Primary Operations)
+
+| Repo | Visibility | Language | Last Push | Four-Floor Assignment | Purpose | Status |
+|------|-----------|----------|-----------|----------------------|---------|--------|
+| **banxe-emi-stack** | PUBLIC | Python 3.12 | 2026-07-02 | Floor 1-3 (Intent + Services) | P0 Financial Analytics (CASS 15): 109 services, 1931 tests, payments, ledger, reconciliation, FIN060, safeguarding | ✅ ACTIVE |
+| **banxe-architecture** | PUBLIC | Markdown/YAML | 2026-07-02 | Floor 2/4 (Governance) | Governance, compliance engine, ADRs (37), STAFF-MATRIX-v3 (70 passports), IL ledger (IL-802), HITL gates, constitution | ✅ ACTIVE |
+| **vibe-coding** | PUBLIC | Python 3.11 | 2026-06-26 | Floor 2/3 (Compliance Ref) | Compliance reference engine: AML orchestration, sanctions screening, KYB, crypto-AML, reconciliation (179 modules, zero coupling) | ✅ ACTIVE |
+| **banxe-ai-infrastructure** | PRIVATE | Python | 2026-07-01 | Floor 1 (Intent-Dispatcher) | Intent-Dispatcher Runtime (b2 branch: `feat(b2): Intent-Dispatcher Runtime`); SUPPLEMENTS banxe-emi-stack/services/intent_layer/ — **GAP-091 tied to this repo** | ✅ ACTIVE |
+| **banxe-payment-core** | PUBLIC | Python | 2026-06-20 | Floor 2/3 (Orchestration) | Payment orchestration core (ADR-015); **NEW DUPLICATE TRAP:** overlaps with banxe-emi-stack/services/payment/ — integration contract undefined | ✅ ACTIVE |
+| **banxe-trading-backend** | PUBLIC | Python | 2026-07-01 | Floor 3 (Domain Services) | Trading network transport / ExchangePort; separate trading plane from EMI core | ✅ ACTIVE |
+| **banxe-trading-frontend** | PUBLIC | TypeScript | 2026-06-29 | Floor 1 (Client UI) | Trading UI; part of customer-facing plane | ✅ ACTIVE |
+
+#### SUPPORT / INFRASTRUCTURE (Floor 4)
+
+| Repo | Visibility | Language | Last Push | Four-Floor Assignment | Purpose | Status |
+|------|-----------|----------|-----------|----------------------|---------|--------|
+| **banxe-platform** | PUBLIC | TypeScript | 2026-06-05 | Floor 4 (Infra) | Platform (TypeScript foundation) | ✅ ACTIVE |
+| **banxe-ui** | PUBLIC | TypeScript | 2026-06-26 | Floor 4 (Infra) | UI prototype / workspace; D2C pipeline via Mitosis (IL-ADDS-01 complete) | ✅ ACTIVE |
+| **developer-core** | PUBLIC | Python | 2026-06-26 | Floor 4 (Governance) | Developer tooling / guardian utilities | ✅ ACTIVE |
+| **crypto-ops-monitor** | PUBLIC | Python | 2026-06-20 | Floor 3 (Domain) | Crypto operations monitoring | ✅ ACTIVE |
+| **banxe-business-processes** | PUBLIC | Python | 2026-06-15 | Floor 4 (Governance) | ArchiMate business process modelling | ✅ ACTIVE |
+| **factory** | PUBLIC | Shell | — | Floor 4 (CANON) | Software Factory governance CANON | 🟡 SUPPORT |
+| **banxe-infra** | PUBLIC | Shell | — | Floor 4 (Infra) | Infrastructure configuration | 🟡 SUPPORT |
+| **banxe-repo-template** | PUBLIC | — | — | Floor 4 (Infra) | Canon template for new repos | 🟡 SUPPORT |
+| **banxe-monitoring** | PRIVATE | Python | 2026-06-08 | Floor 4 (Infra) | Monitoring stack | 🟡 SUPPORT |
+| **banxe-collaboration** | PRIVATE | — | — | Floor 4 (Infra) | Shared dev infrastructure | 🟡 SUPPORT |
+| **banxe-lexisnexis-distro** | PUBLIC | — | — | Floor 4 (Vendor) | LexisNexis AI compliance platform | 🟡 SUPPORT |
+
+#### COMPLIANCE / LEGAL (OUT-OF-SCOPE: Unification Program Phase 1)
+
+| Repo | Visibility | Language | Last Push | Four-Floor Assignment | Purpose | Status |
+|------|-----------|----------|-----------|----------------------|---------|--------|
+| **legal-canon** | PRIVATE | — | — | — | OpenClaw multi-jurisdiction legal engine | ❌ EXCLUDED |
+| **legal-case-guyon-laval** | PRIVATE | — | — | — | Legal case (EXCLUDED from unification scope per operator directive) | ❌ EXCLUDED |
+| **legal-reference-fr** | PRIVATE | — | — | — | French legal reference | ❌ EXCLUDED |
+| **ss1** | PRIVATE | — | — | — | Legal case (ARCHIVED, GDPR GAP-085 pending) | ⚠️ ARCHIVED |
+
+#### TRAINING / KNOWLEDGE / NON-BANK
+
+| Repo | Visibility | Language | Last Push | Four-Floor Assignment | Purpose | Status |
+|------|-----------|----------|-----------|----------------------|---------|--------|
+| **banxe-training-data** | PUBLIC | Python | — | — | Training corpus | 🟡 SUPPORT |
+| **gpt-archive-toolkit** | PUBLIC | Python | — | — | ChatGPT export processing | 🟡 SUPPORT |
+| **obsidian-vault** | PUBLIC | — | — | — | Knowledge vault | 🟡 SUPPORT |
+| **france.code-civil** | PUBLIC | — | — | — | French civil code reference | 🟡 SUPPORT |
+| **legi_fr** | PUBLIC | — | — | — | Legifrance French legal | 🟡 SUPPORT |
+| **braslina** | PUBLIC | Python | — | — | Merchant Onboarding Automation | 🟡 SUPPORT |
+| **MetaClaw** | PUBLIC | Python | — | — | Swarm Intelligence research | 🟡 SUPPORT |
+| **MiroFish** | PUBLIC | Python | — | — | Swarm Intelligence | 🟡 SUPPORT |
+| **banxe-mirofish** | PUBLIC | — | — | — | MiroFish wrapper | 🟡 SUPPORT |
+
+#### ARCHIVED
+
+| Repo | Visibility | Language | Last Push | Four-Floor Assignment | Purpose | Status |
+|------|-----------|----------|-----------|----------------------|---------|--------|
+| **banxe-archive-2026-04-18** | PRIVATE | — | — | — | Archived repo snapshot | ⚠️ ARCHIVED |
+| **collaboration** | PRIVATE | — | 2026-04-12 | — | Early dev infra (superseded by banxe-collaboration) | ⚠️ ARCHIVED |
+
+**Summary:** 33 active repos + 1 EXCLUDED (legal-case-guyon-laval, operator directive) = **34 total catalogued**.
+
+---
+
+### §8.2. LOCAL CLONE AUDIT (62 Git Repositories Found on Legion System)
+
+Operator audit via `find ~ -maxdepth 3 -name .git | wc -l` revealed 62 local checkouts with critical duplication and stale HEAD risks.
+
+#### DUPLICATE CHECKOUTS (Same Repo, Different HEADs — RISK FLAGGED)
+
+| Repo | Primary Checkout | HEAD A | Status A | Secondary Checkout | HEAD B | Status B | Risk Level | ADR-120 Action |
+|------|-------------------|--------|---------|-------------------|--------|---------|------------|----------------|
+| **banxe-architecture** | `/home/mmber/banxe-architecture` | 29a2ee8 | ✅ CURRENT | `/home/mmber/banxe/banxe-architecture` | b288ec9 | 🔴 STALE | 🔴 HIGH | **NEVER use ~/banxe/ for commits** — only ~/wt/ worktrees |
+| **banxe-emi-stack** | `/home/mmber/banxe-emi-stack` | e90ac30 | ✅ CURRENT | `/home/mmber/banxe/banxe-emi-stack` | 3fc21f9 | 🔴 STALE | 🔴 HIGH | Operator commits from main checkout only |
+| **vibe-coding** | `/home/mmber/vibe-coding` | (current) | ✅ CURRENT | `/home/mmber/banxe/vibe-coding` | (factory/ai-onboarding) | 🟡 DIFFERENT BRANCH | 🟡 MEDIUM | ~/banxe/ is AI onboarding env, not production |
+| **banxe-ui** | `/home/mmber/banxe-ui` | (current) | ✅ CURRENT | `/home/mmber/banxe/banxe-ui` | (factory/ai-onboarding) | 🟡 DIFFERENT BRANCH | 🟡 MEDIUM | ~/banxe/ for exploration only |
+| **developer-core** | `/home/mmber/developer-core` | (current) | ✅ CURRENT | `/home/mmber/banxe/developer-core` | (factory/ai-onboarding) | 🟡 DIFFERENT BRANCH | 🟡 MEDIUM | ~/banxe/ for exploration only |
+| **MetaClaw** | `/home/mmber/MetaClaw` | (current) | ✅ CURRENT | `/home/mmber/banxe/MetaClaw` | (factory/ai-onboarding) | 🟢 SAME BRANCH | 🟢 LOW | No action required |
+| **braslina** | `/home/mmber/braslina` | (current) | ✅ CURRENT | `/home/mmber/banxe/braslina` | (different branch) | 🟡 DIFFERENT BRANCH | 🟡 MEDIUM | ~/banxe/ for exploration only |
+
+**Pattern Identified:** `~/banxe/` directory tree contains ~20 repos on `factory/ai-onboarding` branch — appears to be AI onboarding environment for training/research. **MUST NEVER be used for production commits per ADR-120.**
+
+---
+
+#### STALE WORKTREES (Cleanup Recommended)
+
+| Path | Repo | Branch | HEAD | Age | Status | Action |
+|------|------|--------|------|-----|--------|--------|
+| `/home/mmber/wt/temp-clone` | banxe-architecture | `agent-factory-compute-routing-taxonomy` | 9b6b983 | ~30 days old | 🟡 STALE | Confirm branch merged to main, then `git worktree remove ~/wt/temp-clone` |
+
+---
+
+#### ACTIVE WORKTREES (Current Factory Work)
+
+| Path | Repo | Branch | HEAD | Purpose | PR Status | Last Activity |
+|------|------|--------|------|---------|-----------|----------------|
+| `~/wt/factory-masterdossier-v1` | banxe-architecture | `agent/factory/masterdossier/v1` | (current) | Master dossier full repo census + local audit addendum | PR #958 OPEN | 2026-07-02 (in progress) |
+| `~/wt/factory-staffmatrix-v3-rebase` | banxe-architecture | `agent/factory/staffmatrix/v3rebase` | (current) | STAFF-MATRIX-v3 rebase over IL-800/801 + ADR-018 correction | PR #957 OPEN | 2026-07-01 |
+| `~/wt/factory-adr018-qwen3inference` | banxe-architecture | `agent/factory/adr018/qwen3inference` | (current) | ADR-018 Qwen3 inference runtime documentation | PR #956 OPEN | 2026-06-27 |
+
+**Recommendation:** All production commits only via `~/wt/<named-worktree>` pattern per ADR-120. Main checkouts (`~/banxe-architecture`, `~/banxe-emi-stack`) may become stale if not regularly rebased. Operator should periodically prune old worktrees and verify main checkout HEADs match origin/main.
+
+---
+
+### §8.3. Four-Floor Map Impact — New Repos Identified
+
+Based on the full 34-repo census, the four-floor architecture EXPANDS beyond the initial 3-repo mapping in §2:
+
+#### FLOOR 1: CLIENT / INTENT-FIRST (NEW FINDING)
+
+**NEW REPO IDENTIFIED:** `banxe-ai-infrastructure` (PRIVATE, b2 branch active 2026-07-01) contains **Intent-Dispatcher Runtime** — the canonical intent parsing and routing implementation.
+
+**Previous §2 statement:** "banxe-emi-stack / services/intent_layer/ (12 py files) — THIN (scaffolding; GAP-080)"
+
+**Updated finding:** banxe-ai-infrastructure represents the ACTIVE intent layer implementation. GAP-091 (Intent-First deployment gap) is NOW CONFIRMED tied to banxe-ai-infrastructure b2 branch, NOT only EMI stack thin layer.
+
+**Action Item:** Phase 2 consolidation must define integration contract between:
+- **banxe-ai-infrastructure** (b2 Intent-Dispatcher Runtime — canonical intent parsing)
+- **banxe-emi-stack/services/intent_layer/** (thin router — currently GAP-080)
+- **banxe-frontend** (D2C pipeline UI — missing 6 card variants)
+
+**Risk:** Two intent routing layers with undefined integration contract. MLRO/CTIO approval required before Phase 3.
+
+#### FLOOR 2: ORCHESTRATION / EXECUTIVE (NEW FINDING)
+
+**NEW REPO IDENTIFIED:** `banxe-payment-core` (PUBLIC, Python, last push 2026-06-20) implements **payment orchestration core (ADR-015)**.
+
+**Previous §2 statement:** "Repo: banxe-architecture (passports) + banxe-emi-stack (services)"
+
+**Updated finding:** Floor 2 now has THREE repos instead of two:
+- **banxe-architecture** (passports, MLRO/CFO/Audit/COO swarm agents)
+- **banxe-emi-stack** (services/payment/, Modulr adapter)
+- **banxe-payment-core** (ADR-015 payment orchestration)
+
+**NEW DUPLICATE TRAP:** Payment domain split between banxe-payment-core (orchestration) and banxe-emi-stack/services/payment/ (Modulr adapter). Risk: two payment orchestration layers with undefined integration contract. Owner: CTIO. Resolution needed before Phase 3.
+
+#### FLOOR 3: BANKING DOMAIN SERVICES (NEW FINDINGS)
+
+**NEW REPO IDENTIFIED:** `banxe-trading-backend` (PUBLIC, Python, last push 2026-07-01) adds **trading plane** separate from EMI core.
+
+**NEW REPO IDENTIFIED:** `crypto-ops-monitor` (PUBLIC, Python, last push 2026-06-20) adds **crypto operations monitoring** — domain coverage expansion.
+
+Floor 3 now includes:
+- **banxe-emi-stack** (payment, ledger, recon, AML, KYC, fraud, reporting, safeguarding)
+- **banxe-trading-backend** (trading network transport, separate plane)
+- **crypto-ops-monitor** (crypto domain operations)
+
+#### FLOOR 4: GOVERNANCE / HITL / AUDIT / SMCR / RESILIENCE (UNCHANGED)
+
+No new Floor 4 repos identified. `factory` (Software Factory CANON) and `developer-core` (guardian utilities) remain the governance support layer.
+
+---
+
+### §8.4. NEW DUPLICATE TRAPS (§4 ADDENDUM)
+
+Three new potential duplications identified by full 34-repo census and local clone audit. All flagged for Phase 2 consolidation with operator sign-off.
+
+#### DUPLICATE TRAP A: Payment Orchestration Split (🔴 HIGH RISK)
+
+| Field | Location A | Location B | Status | Resolution Path |
+|-------|-----------|-----------|--------|-----------------|
+| **Primary Repo** | `banxe-payment-core` | `banxe-emi-stack/services/payment/` | 🔴 **TWO ACTIVE** | Phase 2: define API contract; decide canonical source (likely banxe-payment-core for orchestration, banxe-emi-stack for adapters) |
+| **Purpose** | ADR-015 payment orchestration core | Modulr + Mock adapters (17 py) | — | Orchestration vs adapter layer must be clearly separated |
+| **Last Push** | 2026-06-20 | 2026-07-02 | Both recent | Integration gap confirmed |
+| **Risk** | Two payment systems without integration contract; customer transaction path unclear | — | 🔴 HIGH | MLRO/CTIO approval required before Phase 3 |
+
+**New Item for §4 Duplicate Traps:** Add row:
+```
+| **Payment Orchestration Split** | banxe-payment-core (ADR-015) | banxe-emi-stack/services/payment/ | 🔴 HIGH | Phase 2: Define API contract; decide canonical source (orchestration vs adapter layer). MLRO/CTIO approval required. | CTIO | 🔴 OPEN (Phase 2 prerequisite) |
+```
+
+#### DUPLICATE TRAP B: Intent-First Layer Split (🔴 HIGH RISK)
+
+| Field | Location A | Location B | Status | Resolution Path |
+|-------|-----------|-----------|--------|-----------------|
+| **Primary Repo** | `banxe-ai-infrastructure` b2 branch | `banxe-emi-stack/services/intent_layer/` | 🔴 **TWO IMPLEMENTATIONS** | Phase 2: Consolidate intent routing; banxe-ai-infrastructure appears more mature (b2 branch) — use as canonical, slim EMI layer |
+| **Purpose** | Intent-Dispatcher Runtime (active) | Thin intent router (GAP-080 scaffolding, 12 py) | — | Both parse customer intent, route to skills |
+| **Last Push** | 2026-07-01 | 2026-07-02 | Both current | Integration gap confirmed |
+| **Risk** | Two intent routing implementations with undefined contract; customer intent path breaks | — | 🔴 HIGH | GAP-091 confirmed; Phase 2 requires formal consolidation plan |
+
+**New Item for §4 Duplicate Traps:** Add row:
+```
+| **Intent Layer Split** | banxe-ai-infrastructure (Intent-Dispatcher) | banxe-emi-stack/services/intent_layer/ | 🔴 HIGH | Phase 2: Consolidate intent routing. banxe-ai-infrastructure b2 branch appears canonical. ADR-049 maps to GAP-091. Integration contract required. | Product/CTIO | 🔴 OPEN (Phase 2 prerequisite) |
+```
+
+#### DUPLICATE TRAP C: Local Clone HEAD Stale Risk (🔴 HIGH RISK)
+
+| Field | Issue | Impact | Resolution |
+|-------|-------|--------|-----------|
+| **Primary Checkout** | `/home/mmber/banxe-architecture` HEAD: 29a2ee8 | ✅ CURRENT | Use for reads; all commits via ~/wt/ worktrees |
+| **Secondary Checkout** | `/home/mmber/banxe/banxe-architecture` HEAD: b288ec9 | 🔴 STALE (behind by ~20 commits) | **OPERATOR: Do not commit from this checkout** |
+| **Risk** | Any operator commit from ~/banxe/banxe-architecture would push from WRONG HEAD, creating duplicate work or lost history | — | 🔴 HIGH |
+| **ADR-120 Enforcement** | "NEVER run git commands on ~/banxe-architecture main checkout — only on ~/wt/ named worktrees" | — | Automated by factory workflow |
+
+**New Item for §4 Duplicate Traps:** Add row:
+```
+| **Local Clone HEAD Stale Risk** | ~/banxe-architecture (29a2ee8) vs ~/banxe/banxe-architecture (b288ec9) | 🔴 HIGH | Operator commits ONLY from ~/wt/ named worktrees per ADR-120. Main checkouts may drift; never used for production commits. | CTIO / Factory Guardian | 🟡 OPEN (requires ADR-120 workflow enforcement) |
+```
+
+---
+
+### §8.5. Floor Map Reconciliation Summary
+
+| Floor | Previous §2 Coverage | New §8 Findings | Expanded To |
+|-------|-------------------|-------------------|------------|
+| **Floor 1** | banxe-emi-stack/services/intent_layer/ (THIN) | + banxe-ai-infrastructure b2 (Intent-Dispatcher Runtime ACTIVE) | Two intent layers; consolidation required Phase 2 |
+| **Floor 2** | banxe-architecture + banxe-emi-stack | + banxe-payment-core (ADR-015 orchestration) | Three repos; payment split identified |
+| **Floor 3** | banxe-emi-stack domains | + banxe-trading-backend + crypto-ops-monitor | Expanded to 3 repos; new trading/crypto planes |
+| **Floor 4** | banxe-architecture (governance) + services/hitl/ | Confirmed; no new repos | Stable; factory + developer-core support |
+
+---
+
+### §8.6. Consolidation Impact Assessment
+
+Full 34-repo census + local clone audit reveals FIVE NEW RISKS not captured in §4:
+
+1. **Intent Layer Split (GAP-091)** — banxe-ai-infrastructure vs banxe-emi-stack/services/intent_layer/ — Phase 2 consolidation required
+2. **Payment Orchestration Split** — banxe-payment-core vs banxe-emi-stack/services/payment/ — Phase 2 consolidation required
+3. **Local Clone Stale HEAD Risk** — ~/banxe/ tree 20 commits behind main — ADR-120 workflow enforcement required
+4. **Duplicate Checkouts (7 repos)** — ~/banxe-architecture / ~/banxe-emi-stack both have stale secondary clones — recommend pruning
+5. **Stale Worktree** — ~/wt/temp-clone 30+ days old — recommend cleanup after verifying branch status
+
+**All Phase 2 prerequisites now identified. Operator sign-off required on all 9 duplicate resolutions (original 4 in §4 + 5 new) before Phase 3 SSOT migration can commence.**
+
+---
+
+**End of §8 Addendum. Document remains append-only (I-24 enforced).**
