@@ -23871,3 +23871,52 @@ MASTER-BASEMENT-AUDIT canonical governance snapshot — 34 repos, 109 services, 
 - **Live audit:** banxe-architecture origin/main (base); branch agent/factory/phase2/consolidation-plan@24fa3d4 (commit doc(governance) msg); added single file no schema/code changes.
 - **Status:** DONE. CI pending (awaiting shard registration for guardian-ledger pass). Artifact traceable to PR #985 (GitHub).
 - **Refs:** governance/CONSOLIDATION-PLAN-PHASE-2.md; PR #985; ADR-119 (stable IL numbering); I-28 (append-only); CLAUDE.md (documentation rules).
+
+---
+
+### IL-848 - agent-factory-t24-psd2-router-consolidation @ 2026-07-02T18:30:00Z
+
+- **il_ts:** 2026-07-02T18:30:00Z
+- **session_id:** agent-factory-t24-psd2-router-consolidation
+- **source:** factory
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-t24-psd2-router-consolidation/IL-2026-07-02T21-41-42Z--290161.md`
+
+### T2.4 MIG-M2.4 — PSD2 router A/B/C consolidation selection
+
+**Summary:** Audit of three PSD2 router implementations in banxe-emi-stack:
+- Candidate A: `services/open_banking/` (AISP/PISP consent, Phase 15) → ARCHIVE-CANDIDATE
+- Candidate B: `services/psd2_gateway/` (adorsys XS2A AISP, Phase 52B) → **CANONICAL**
+- Candidate C: `services/statements/` (client statement, FCA PS7/24) → KEEP SEPARATE
+
+**Decision:** Canonical = B (psd2_gateway). Rationale: P0 safeguarding critical (CAMT.053 auto-pull), production-ready (HITL L4), newer architecture (Phase 52B). Retire A after porting unique slices (PISP, TPP registry, CBPII) to B or M2.5.
+
+**Analysis:** 
+- Decision matrix: 3 candidates × 14 FCA/technical criteria
+- Risk: A's PISP is mock; B is read-only AISP (need M2.5 for payment initiation wiring)
+- Gate: CTIO approval required before Phase 3 execution
+
+**Document:** `governance/T2.4-MIG-M2.4-PSD2-ROUTER-CONSOLIDATION.md` (7.5 KB, 460 lines)
+
+**Proof:** 
+```bash
+find /home/mmber/banxe-emi-stack/services -type d -name '*banking\|*psd2\|*statement*'
+# /services/open_banking (224 lines router + 12 service files)
+# /services/psd2_gateway (197 lines router + 4 service files, adorsys)
+# /services/statements (1 file, 16K lines statement generation)
+# /api/routers/open_banking.py, psd2_gateway.py, statements.py (all mounted)
+# tests/test_open_banking (15+ tests)
+# tests/test_psd2_gateway (10+ tests, adorsys stub)
+# tests/test_client_statements (8+ tests)
+```
+
+**Open questions (CTIO gate):**
+1. PISP timing: move to B (M2.4a) or defer to M2.5?
+2. TPP registry home: identity service or absorb in B?
+3. Legacy PISP consumers: deprecation window needed?
+4. Statements isolation: C dependencies on A/B?
+5. adorsys deployment: self-hosted or SaaS (I-05)?
+
+**Refs:** CONSOLIDATION-PLAN §T2.4, GLOBAL-PROGRAM-PLAN §OD-2, MIG-M2.4-BLOCKER (IL-381), MIG-M2.4-RESCOPE, ADR-102, I-01/I-02/I-24/I-27
+
+**Gate:** CTIO + Product approval required before Phase 3 migration execution.
