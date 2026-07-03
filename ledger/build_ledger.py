@@ -154,7 +154,7 @@ def _redis_config():
     Explicit REDIS_HOST/REDIS_PORT override the evo1 default. NOT TL_REDIS_*
     (that is local traffic-light monitoring, a per-host 127.0.0.1 counter).
     """
-    host = os.environ.get("REDIS_HOST", "127.0.0.1")  # banxe-redis host-net on localhost
+    host = os.environ.get("REDIS_HOST", "100.68.102.48")  # evo1 shared counter over tailscale (matches docstring + test)
     port = int(os.environ.get("REDIS_PORT", "6379"))
     pw = os.environ.get("REDIS_PASS_FILE", os.path.expanduser("~/banxe-fabric/.vault/redis.pass"))
     return host, port, pw
@@ -169,7 +169,8 @@ def _redis_allocate(current_max):
     (SET only when the counter is below it) so a fresh evo1 counter never hands
     out a number below an already-assigned one; the INCR-until-> loop is the
     atomic safety net that also covers any seed race between terminals.
-    Raises on any failure (caller degrades to local max+1 + WARN naming the host).
+    Raises on any failure (caller FAILS LOUD — see _alloc_next — unless the offline
+    path is explicitly requested via BANXE_IL_ALLOCATOR=local).
     """
     RedisStreams, _RedisUnavailable = _load_fabric_redis()
     if RedisStreams is None:
@@ -194,9 +195,12 @@ def _alloc_next(current_max):
     """Allocate the next IL number for a NEW shard (live mint only).
 
     Source = central Redis counter (cross-process atomic anti-collision). On ANY
-    Redis failure, degrade to local max+1 with a loud RACE warning (ADR-104 §5
-    graceful degrade — never crash the build). Set BANXE_IL_ALLOCATOR=local to
-    force the offline path explicitly (used by --check-equivalent deterministic runs).
+    Redis failure the mint FAILS LOUD (RuntimeError) — it does NOT silently fall
+    back to a local max+1 counter, because that silent degrade is exactly what
+    causes cross-terminal IL collisions (the IL-thrash class: two hosts both mint
+    local max+1 off the same base). The offline local counter is available ONLY
+    when explicitly requested via BANXE_IL_ALLOCATOR=local (which accepts the
+    race, e.g. deterministic offline runs). NB: --check never calls this path.
     """
     if os.environ.get("BANXE_IL_ALLOCATOR", "redis").lower() == "local":
         return current_max + 1
@@ -204,13 +208,14 @@ def _alloc_next(current_max):
         return _redis_allocate(current_max)
     except Exception as exc:  # RedisUnavailable or import/config error
         host, port, _pw = _redis_config()
-        sys.stderr.write(
-            "WARN: shared fabric Redis %s:%d unreachable (%s); fallback to local "
-            "max+1 — anti-collision DEGRADED, RACE POSSIBLE across terminals "
-            "(set REDIS_HOST to the evo1 counter or bring it up).\n"
-            % (host, port, exc)
-        )
-        return current_max + 1
+        raise RuntimeError(
+            "FATAL: shared fabric Redis %s:%d unreachable (%s) — IL allocation "
+            "REFUSED to prevent SILENT local-counter collisions (the IL-thrash "
+            "class). Fix: point REDIS_HOST at the evo1 counter (100.68.102.48) and "
+            "provide REDIS_PASSWORD / REDIS_PASS_FILE, or bring Redis up. To use the "
+            "offline local counter DELIBERATELY (accepting cross-terminal race), set "
+            "BANXE_IL_ALLOCATOR=local." % (host, port, exc)
+        ) from exc
 
 
 def find_orphans(records, sequence):
