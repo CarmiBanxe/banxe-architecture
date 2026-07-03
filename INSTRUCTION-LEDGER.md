@@ -24101,3 +24101,43 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 
 - **Instruction:** Sprint 1 sign-off briefing — S-1..S-4 operator package
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-857 - agent-factory-governance-agent-fleet-cleanup-sprint-d @ 2026-07-02T21:00:00Z
+
+- **il_ts:** 2026-07-02T21:00:00Z
+- **session_id:** agent-factory-governance-agent-fleet-cleanup-sprint-d
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-agent-fleet-cleanup-sprint-d/IL-2026-07-02T21-00-00Z--agent-fleet-cleanup-sprint-d.md`
+
+### [OWNER: A] Agent-Fleet Cleanup (Sprint D) — ADR-102 aml diff-audit (DIFFER→escalate) + naming + ledger/redis + fork-locus; write-up only, deletes nothing
+- **Decision:** Per operator (sprints in order C✅ A✅ B✅ → D last), authored `docs/governance/AGENT-FLEET-CLEANUP-SPRINT-D.md` (new) — cleanup write-up. Changed ONLY this doc + paired shard. NOTHING deleted/dedup'd; NO passport/name/service/redis-config/ADR/config/perimeter/legal/ss1 touched; aml pair read READ-ONLY and diffed; auth NOT bypassed. **PREPARE-ONLY**, Draft PR. Owner A.
+- **§1 ADR-102 aml diff-audit (FACT):** the #972 "duplicate" banxe_aml_orchestrator = NOT a duplicate — TWO DISTINCT passports sharing one agent_id, different zones+schemas. aml/banxe_aml_orchestrator.yaml (IL-068, 53 lines) = RED zone, autonomy_level L3, SMF17/HITL passport (human_double, fca_basis SMF17, hitl_gates SAR_filing/AML_threshold_change/Sanctions_reversal/Sanctions_BLOCK, allowed/forbidden_actions, audit, change_class MAJOR). root banxe_aml_orchestrator.yaml (89 lines, v3.0.0) = AMBER zone, level 1, capability/skills passport (name, version, bounded_context CTX-01, capabilities, ports, allowed_callers/callees, invariants, governance, fca_references, aigf_risks, skills). Neither is a subset; CONFLICT flagged: same agent_id, two trust_zones (RED vs AMBER). Classification (b) DIFFER → escalate with diff, NO deletion (ADR-102 fail-closed; AML/FCA-critical).
+- **§1b consumers:** 54 files reference banxe_aml_orchestrator (compliance.md, COMPLIANCE-ARCH, INVARIANTS, banxe-aml-swarm, many passports/souls) — blind dedup = 54 dangling refs on a RED-zone AML id.
+- **§1c decision = AWAITS-OPERATOR:** this PR deletes/merges nothing; keep/merge/delete + RED-vs-AMBER reconciliation = operator governance call (ADR-102 step 5 fail-closed escalate). Advisory (not taken): do not delete; reconcile into canonical passport(s) preserving BOTH SMF17/HITL gates AND v3.0.0 capability contract, then update 54 consumers in a bounded PR.
+- **§2 naming:** GMKtec = legacy alias evo1 (GLOSSARY #982). Stale: .claude/agents/openclo.md ("10 agents on GMKtec"→evo1) + openclaw-tunnel-gmktec.service name. Fix = CODEOWNERS-gated separate step — FLAGGED, not edited. AWAITS-OPERATOR.
+- **§3 ledger/redis follow-up (infra):** (a) ADR-143 redis counter unreachable from Legion (#990 REDIS_HOST=127.0.0.1, counter on evo1) → local/degraded mint → IL-thrash (empirical this session 835→837→838); durable fix operator/infra (counter on Legion OR REDIS_HOST=100.68.102.48 evo1) — redis config NOT touched here. (b) guardian-ledger let de-synced sequence merge (#966/#969 self-healed in #975); gate should reject stale sequence. Both AWAITS-OPERATOR.
+- **§4 fork-locus flag:** agent-harness project-fork locus (#971 §4, ADR-136-gated) remains open AWAITS-OPERATOR; project-side self-improvement + #988 monitor build depend on it; no repo fabricated.
+- **§5 boundary:** write-up only; no delete/dedup; no passport/name/service/redis/ADR/config/perimeter/legal/ss1 edit; aml read read-only; auth not bypassed; every decision AWAITS-OPERATOR.
+- **Anti-dup (ADR-102) pointer-first:** references #972 (aml finding), #982 (naming/GMKtec/F-LEDGER), #990/#991 (redis thrash), #975 (self-heal), #971 (fork §4), ADR-143/136/117/102, CODEOWNERS, CLAUDE.md (AML/KYC) — restates none; diagnoses, no code, no deletion.
+- **Scope/flow:** authored per #900 — doc + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). ⚠️ redis degraded (Legion) → local mint; if collision reset+re-mint (L-06), shard after reset (L-05); duplicate IL = rebase signal.
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143/143-A, DEGRADED local); unique at author time; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-02T21:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
+- **Status:** DONE — cleanup write-up + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Sprint D is the last factory-authorable sprint; all its items are AWAITS-OPERATOR: aml keep/merge/delete + zone reconcile, naming fix (CODEOWNERS), redis-counter + guardian-ledger infra, fork locus (ADR-136).**
+- **Refs:** `docs/governance/AGENT-FLEET-CLEANUP-SPRINT-D.md` (new); #972 (FLEET-CONFORMANCE-AUDIT); #982 (master-plan §7); #975 (self-heal); #990/#991 (redis); #971 (SELF-IMPROVEMENT-MANDATE §4); #978 (master-plan); ADR-102/143/136/117; CODEOWNERS; CLAUDE.md; ADR-119/144; #900. Operator directive 2026-07-02 (Sprint D cleanup; diff-audit aml; delete nothing; decisions operator-gated).
+
+---
+
+### IL-858 - agent-factory-od9-orphan-repo-inventory @ 2026-07-03T15:27:16Z
+
+- **il_ts:** 2026-07-03T15:27:16Z
+- **session_id:** agent-factory-od9-orphan-repo-inventory
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-od9-orphan-repo-inventory/IL-2026-07-03T15-27-16Z--651188.md`
+
+### agent-factory-od9-orphan-repo-inventory
+
+- **Instruction:** OD-9 orphan repo inventory — 2 archive-ready, 3 for operator assessment
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
