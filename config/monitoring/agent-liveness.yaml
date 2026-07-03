@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# agent-liveness.yaml — 7/24 agent liveness schema (CONFIG-AS-DATA, prepare-only)
+#
+# The data contract for FleetLivenessAgent (config/agents/passports/fleet-liveness-agent.yaml).
+# Implements the AGENT-LIVENESS-SPEC (#988) at fleet scope: per-agent expected_state +
+# heartbeat/last_seen, and a dashboard contract (who is live / dormant / silent / dead).
+# Thresholds are [RATIFY] (operator). 7/24 daemonisation (systemd/cron) is OPERATOR-RUN —
+# AWAITS-OPERATOR. This file configures NOTHING at runtime; it is read by the monitor.
+# ─────────────────────────────────────────────────────────────────────────────
+schema_version: "1.0.0"
+status: draft                  # prepare-only; operator-ratified + activated separately
+source: "AGENT-LIVENESS-SPEC #988 at fleet scope; org placement per AGENT-ORG-ASSIGNMENT-MATRIX"
+
+# ── global thresholds (config-over-hardcoding; monitor MUST read, not hardcode) ──
+thresholds:
+  heartbeat_interval_s: "[RATIFY]"   # cadence a live/always-on agent answers
+  freshness_window_s:   "[RATIFY]"   # last_seen older than this ⇒ unknown (never live-by-inertia)
+  silence_alert_s:      "[RATIFY]"   # no signal beyond this ⇒ [AGENT-ALERT] (expected-live only)
+  dormant_idle_s:       "[RATIFY]"   # idle beyond this ⇒ [AGENT-IDLE] observability (not error)
+
+# ── per-agent expected_state (drives who-should-be-alive; NOT an activation) ──
+# expected_state: active (should be running) | on-demand (invoked via gateway, idle-ok) | dormant (PROPOSED, not-yet-activated)
+# last_seen_source: gateway | process | ledger | heartbeat-endpoint
+# alert_on_silence: true only for expected-active agents (on-demand/dormant silence is normal)
+defaults:
+  expected_state: dormant        # default until operator activates (ADR-135) — most passports are PROPOSED
+  last_seen_source: gateway
+  alert_on_silence: false
+
+# States a dashboard reports (per #988 contract): live | idle | silent | dead | unknown | dormant
+dashboard_contract:
+  states: [live, idle, silent, dead, unknown, dormant]
+  live:    "fresh positive signal within freshness_window"
+  idle:    "on-demand agent reachable but no recent invocation (available, not dead)"
+  silent:  "expected-active agent with no signal past silence_alert_s ⇒ [AGENT-ALERT]"
+  dead:    "a failed health-check within window (not mere silence)"
+  unknown: "signal older than freshness_window — never reported as live by inertia"
+  dormant: "PROPOSED / not-yet-activated — expected-absent, not alerted"
+
+# ── agent rows (expected_state seeded from org-matrix activation reality) ──
+# NB: seeded 'dormant' for PROPOSED agents; 'active' only for the org-matrix-confirmed active set.
+# This is expectation config, NOT activation — activation is a separate operator ADR-135 gate.
+agents:
+  # confirmed-active (org-matrix / #973 activation reality) — alert on silence
+  - {agent_id: ceo_orchestration_agent, expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: cfo_orchestration_agent, expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: coo_operations_agent,    expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: cto_platform_agent,      expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: risk_oversight_agent,    expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: compliance_monitoring_agent, expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: internal_audit_agent,    expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: legal_corporate_agent,   expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: front_office_agent,      expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  - {agent_id: board_reporting_agent,   expected_state: active, last_seen_source: gateway, alert_on_silence: true}
+  # on-demand (evo1 MoA gateway; idle-ok, no silence-alert) — the AML/adapter line
+  - {agent_id: banxe_aml_orchestrator,  expected_state: on-demand, last_seen_source: gateway, alert_on_silence: false}
+  - {agent_id: tx_monitor_core,         expected_state: on-demand, last_seen_source: gateway, alert_on_silence: false}
+  - {agent_id: sanctions_check_core,    expected_state: on-demand, last_seen_source: gateway, alert_on_silence: false}
+  # all others default to 'dormant' (PROPOSED) via defaults: — expected-absent until operator activation
+
+# 7/24 runtime is operator-owned (systemd timer / cron) — NOT scheduled here.
+runtime:
+  daemonisation: "AWAITS-OPERATOR — systemd timer / cron; monitor = FleetLivenessAgent (read-only)"
+  alert_channel: "prometheus-alertmanager (evo2, #964) + telegram-adr002 (Hermes ADR-126 read-only envelope)"
+  enforcement_locus: "banxe-monitoring (operator-owned; per #964 placement) — built infra-side, not here"
