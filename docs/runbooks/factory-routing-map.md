@@ -6,7 +6,7 @@ Per Software Factory Canon v1.0 Section 5 + A4-orchestration-proposal.
 
 | Alias | Model | Backend | Use case |
 |-------|-------|---------|----------|
-| factory-fast | qwen2.5-coder:14b-banxe-factory | Legion :11434 | Autocomplete, lint, single-line edits |
+| factory-fast | qwen2.5-coder:7b-instruct-q4_K_M | Legion :11434 | Autocomplete, lint, single-line edits |
 | factory-mid | qwen3:30b-a3b | evo1+evo2 :11434 LB | Multi-file refactor, spec writing |
 | factory-heavy | llama3.3:70b | evo1+evo2 :11434 LB | Heavy reasoning |
 | factory-coder | qwen3-coder-next:q4_K_M | evo1 :11434 | Code-tuned heavy work |
@@ -47,3 +47,14 @@ Production agent traffic MUST use :4000 only.
 
 Refs: Canon v1.0 Section 5, A4-orchestration-proposal,
 PR #273, #277, ADR-043, .claude/rules/agents.md.
+
+## Amendment 2026-07-03 — Legion factory-fast target: 14b → 7b
+
+Per COMPUTE-ROUTING-TAXONOMY §5.7-D (docs-only recommendation), the previous
+alias target `qwen2.5-coder:14b-banxe-factory` (9 GB Q4_K_M) was measured **NOT to fit**
+Legion's RTX 4070 8 GB VRAM (CPU-fallback ~7.6 tok/s, GPU idle ~3 %). Replaced with
+`qwen2.5-coder:7b-instruct-q4_K_M` which fits in VRAM (~52 tok/s). Weights on disk are
+NOT removed by this doc — `ollama rm` remains a destructive op gated per
+HW-MODEL-UPGRADE-matrix §3.2 + operator confirmation. The `qwen2.5-coder:14b-banxe-factory`
+package remains available on disk for historical / rollback purposes but is no longer a
+routing target for any alias.
