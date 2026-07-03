@@ -1,17 +1,16 @@
 """Tests for the central Redis IL allocator (ADR-143).
 
-Covers: incr() monotonicity (mocked RESP, no real socket); graceful fallback to
-local max+1 on RedisUnavailable; --check offline-determinism (no Redis touched);
-two concurrent mints over one shared counter never collide.
+Covers: incr() monotonicity (mocked RESP, no real socket); FAIL-LOUD (RuntimeError)
+on RedisUnavailable — NO silent local fallback unless BANXE_IL_ALLOCATOR=local;
+--check offline-determinism (no Redis touched); two concurrent mints over one shared
+counter never collide.
 
 Pure stdlib (unittest) — no pip, runs without a real Redis.
 """
 import importlib.util
-import io
 import pathlib
 import sys
 import unittest
-from contextlib import redirect_stderr
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -78,20 +77,22 @@ class TestIncr(unittest.TestCase):
             r.incr("k")
 
 
-class TestAllocatorFallback(unittest.TestCase):
-    def test_fallback_on_redis_unavailable(self):
-        """_alloc_next degrades to local max+1 + RACE warning when Redis is down."""
+class TestAllocatorFailLoud(unittest.TestCase):
+    def test_fail_loud_on_redis_unavailable(self):
+        """_alloc_next FAILS LOUD (RuntimeError) when Redis is down — it does NOT
+        silently fall back to a local max+1 counter (the IL-thrash collision cause)."""
+        import os
+        os.environ.pop("BANXE_IL_ALLOCATOR", None)  # ensure no explicit local override
         orig = build_ledger._redis_allocate
         build_ledger._redis_allocate = lambda cur: (_ for _ in ()).throw(
             fabric_redis.RedisUnavailable("down")
         )
         try:
-            buf = io.StringIO()
-            with redirect_stderr(buf):
-                got = build_ledger._alloc_next(612)
-            self.assertEqual(got, 613)                       # local max+1
-            self.assertIn("RACE POSSIBLE", buf.getvalue())   # loud warning
-            self.assertIn("fallback to local max+1", buf.getvalue())
+            with self.assertRaises(RuntimeError) as ctx:
+                build_ledger._alloc_next(612)
+            msg = str(ctx.exception)
+            self.assertIn("REFUSED", msg)                    # refuses silent degrade
+            self.assertIn("BANXE_IL_ALLOCATOR=local", msg)   # names the explicit escape hatch
         finally:
             build_ledger._redis_allocate = orig
 
@@ -186,9 +187,9 @@ class TestSharedHostConfig(unittest.TestCase):
             os.environ.pop("REDIS_HOST", None)
             os.environ.pop("REDIS_PORT", None)
 
-    def test_fallback_warn_names_target_host(self):
-        """When Redis is down, the WARN names the shared host so a miss on the
-        shared counter is visible (not silently 'all ok')."""
+    def test_fail_loud_error_names_target_host(self):
+        """When Redis is down, the RuntimeError names the shared evo1 host so the
+        miss on the shared counter is visible (not silently 'all ok')."""
         import os
         for var in ("REDIS_HOST", "REDIS_PORT", "BANXE_IL_ALLOCATOR"):
             os.environ.pop(var, None)
@@ -197,12 +198,9 @@ class TestSharedHostConfig(unittest.TestCase):
             fabric_redis.RedisUnavailable("connect refused")
         )
         try:
-            buf = io.StringIO()
-            with redirect_stderr(buf):
-                got = build_ledger._alloc_next(613)
-            self.assertEqual(got, 614)
-            self.assertIn("100.68.102.48:6379", buf.getvalue())  # target host named
-            self.assertIn("DEGRADED", buf.getvalue())
+            with self.assertRaises(RuntimeError) as ctx:
+                build_ledger._alloc_next(613)
+            self.assertIn("100.68.102.48:6379", str(ctx.exception))  # evo1 host named
         finally:
             build_ledger._redis_allocate = orig
 
