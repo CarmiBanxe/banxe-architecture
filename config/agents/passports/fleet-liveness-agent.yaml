@@ -1,0 +1,76 @@
+# FleetLivenessAgent — fleet 7/24 liveness monitor passport (PREPARE-ONLY, PROPOSED)
+# Extends the EngineHealthAgent pattern (#1005) to the whole agent fleet. Required schema
+# fields present (schemas/agent_passport.schema.json). NOT activated — status PROPOSED;
+# activation = operator ADR-135 gate. Kept under config/agents/passports/ (prepare-only,
+# not injected into the canonical agents/passports/ fleet).
+agent_id: fleet_liveness_agent
+name: "FleetLivenessAgent"
+version: "0.1.0"
+status: PROPOSED
+description: >
+  Read-only fleet-monitoring agent: collects heartbeat / last_seen for every agent per
+  config/monitoring/agent-liveness.yaml, renders the live/idle/silent/dead/dormant dashboard
+  (#988 contract), and alerts the operator on an expected-active agent going silent/dead.
+  It OBSERVES and ALERTS only — it never activates, starts, stops, or manages any agent.
+level: 1
+trust_zone: GREEN
+autonomy: L1_AUTO                 # L1 auto read-only/observe (ADR-128)
+bounded_context: CTX-PLATFORM     # CTO / AI-Platform block
+department: "Technology / AI Platform"
+role: platform-monitoring
+human_double: "Head of AI Platform"
+reports_to: CTO
+line_of_defence: "1st Line — platform observability (read-only; no control authority)"
+
+capabilities:
+  - fleet_heartbeat_collect        # gather last_seen/heartbeat for all agents (read-only)
+  - liveness_dashboard             # render live/idle/silent/dead/dormant per #988 contract
+  - operator_alert                 # [AGENT-ALERT] on expected-active agent silent/dead
+  - ledger_status_log              # append fleet-health status to the ledger
+
+# fleet-format ports (inbound/outbound) per the fleet convention (channel_c_sepa etc.)
+ports:
+  inbound:
+    - port: SchedulerTriggerPort
+      description: Invoked by the operator's scheduler (systemd timer / cron) — read-only tick
+  outbound:
+    - port: AlertPort
+      description: Emits [AGENT-ALERT]/[AGENT-IDLE] to Prometheus/Alertmanager + Telegram (ADR-126 read-only)
+    - port: LedgerLogPort
+      description: Appends fleet-health observability record to the ledger (read-only log)
+
+allowed_callers: []               # invoked by operator scheduler, not other agents
+allowed_callees: []               # calls nothing; read-only probes only
+
+decision_thresholds:
+  heartbeat_interval_s: "[RATIFY]"
+  freshness_window_s: "[RATIFY]"
+  silence_alert_s: "[RATIFY]"
+
+invariants:
+  - "READ-ONLY: never activates, starts, stops, configures, or manages any agent."
+  - "No authority expansion (ADR-130); no write/dispatch/deploy right."
+  - "expected_state is expectation config (agent-liveness.yaml), NOT activation — activation is ADR-135."
+  - "No auth bypass — gateway reachability / emitted metrics only, no credential misuse."
+
+hitl_gate: none                   # read-only observability ⇒ no HITL gate (ADR-128 L1 auto)
+
+tasks:
+  - "collect heartbeat/last_seen for all agents every [RATIFY] minutes (config/monitoring/agent-liveness.yaml)"
+  - "render the live/idle/silent/dead/dormant dashboard (#988 contract)"
+  - "alert operator on expected-active agent silent/dead ([AGENT-ALERT] via Telegram/Hermes ADR-126)"
+  - "log fleet-health status to the ledger"
+
+governance:
+  parent_canon: "governance/CANONICAL-ORG-CHART-v2.md"
+  liveness_contract: "docs/governance/AGENT-LIVENESS-SPEC.md (#988) + config/monitoring/agent-liveness.yaml"
+  activation: "AWAITS-OPERATOR — PROPOSED→ACTIVE is a separate ADR-135 gate; not activated here"
+  runtime: "AWAITS-OPERATOR — 7/24 daemonisation (systemd/cron) operator-run; monitor built infra-side (banxe-monitoring)"
+
+fca_references: []
+aigf_risks:
+  - "low — read-only monitoring; no client/financial data, no control action, GREEN zone"
+non_goals:
+  - "does NOT activate, start, stop, or manage agents"
+  - "does NOT bypass gateway auth"
+  - "does NOT invent liveness state — stale ⇒ unknown, never live-by-inertia"
