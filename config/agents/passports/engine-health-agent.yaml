@@ -1,0 +1,74 @@
+# EngineHealthAgent — platform-monitoring passport (PREPARE-ONLY, PROPOSED)
+# Schema: schemas/agent_passport.schema.json (required: agent_id, name, version, level,
+# trust_zone, capabilities, ports, bounded_context, invariants, governance).
+# NOT activated — status PROPOSED; activation is a separate operator ADR-135 gate
+# (per AGENT-STATUS-NORMALIZATION #989). Kept under config/agents/passports/ (prepare-only,
+# not injected into the canonical agents/passports/ fleet until operator promotes).
+agent_id: engine_health_agent
+name: "EngineHealthAgent"
+version: "0.1.0"
+status: PROPOSED                # not activated; casing per #989 normalization
+description: >
+  Read-only platform-monitoring agent for the engine fleet (openclaw / aider / metaclaw /
+  mirofish / ruflo). Health-checks each engine's bin + port on a schedule, alerts the
+  operator on unavailability, and logs status to the ledger. It OBSERVES and ALERTS only —
+  it never installs, starts, stops, or manages any engine.
+level: 1
+trust_zone: GREEN               # read-only observability; no client/financial data
+autonomy: L1_AUTO               # L1 auto (read-only/observe) per ADR-128 HITL matrix
+bounded_context: CTX-PLATFORM   # AI-Platform / CTO block (platform monitoring)
+department: "Technology / AI Platform"
+role: platform-monitoring
+human_double: "Head of AI Platform"
+reports_to: CTO
+line_of_defence: "1st Line — platform observability (read-only; no control authority)"
+
+capabilities:
+  - engine_health_check         # probe bin + port of each trusted/source-identified engine
+  - operator_alert              # emit [ENGINE-ALERT] on engine down/stale
+  - ledger_status_log           # append health status to the ledger (observability record)
+
+ports:                          # fleet inbound/outbound format (per fleet convention)
+  inbound:
+    - port: SchedulerTriggerPort
+      description: Invoked by the operator's scheduler (systemd timer / cron) — read-only tick
+  outbound:
+    - port: AlertPort
+      description: Emits [ENGINE-ALERT] to Prometheus/Alertmanager + Telegram (ADR-126 read-only)
+    - port: LedgerLogPort
+      description: Appends engine-health observability record to the ledger (read-only log)
+
+allowed_callers: []             # invoked by the operator's scheduler (systemd/cron), not other agents
+allowed_callees: []             # calls nothing; read-only probes only
+
+decision_thresholds:
+  health_interval_min: "[RATIFY]"   # config-as-data; operator-ratified cadence (not hardcoded)
+  stale_after_min: "[RATIFY]"       # signal older than this ⇒ unknown (never live-by-inertia)
+
+invariants:
+  - "READ-ONLY: never installs, starts, stops, configures, or manages any engine."
+  - "No authority expansion (ADR-130); no write/dispatch/deploy right."
+  - "Blocked engines (hermes, ironclaw) + [BLOCKING] nanoclaw are expected-absent per #1004 — reported, never installed."
+  - "No auth bypass — gateway reachability only, no credential use."
+
+hitl_gate: none                 # read-only observability ⇒ no HITL gate (ADR-128 L1 auto)
+
+tasks:
+  - "health-check every [RATIFY] minutes across all trusted/source-identified engines"
+  - "alert operator on engine unavailable/stale ([ENGINE-ALERT] via Telegram/Hermes-ADR-126 read-only envelope)"
+  - "log health status to the ledger (observability record)"
+
+governance:
+  parent_canon: "governance/CANONICAL-ORG-CHART-v2.md"
+  spec_canon: "docs/governance/ENGINE-FLEET-SPRINT-B.md"
+  provenance_binding: "#1004 Install Provenance Guardrail (trusted/source-identified only)"
+  activation: "AWAITS-OPERATOR — PROPOSED→ACTIVE is a separate ADR-135 gate; not activated here"
+  runtime: "AWAITS-OPERATOR — 7/24 daemonisation (systemd timer/cron) is operator-run; not scheduled here"
+
+fca_references: []              # platform observability; no FCA-bearing action
+aigf_risks:
+  - "low — read-only monitoring; no client/financial data, no control action, GREEN zone"
+non_goals:
+  - "does NOT install, build, start, stop, or manage engines"
+  - "does NOT bypass gateway auth"
+  - "does NOT touch blocked engines beyond reporting expected-absence"
