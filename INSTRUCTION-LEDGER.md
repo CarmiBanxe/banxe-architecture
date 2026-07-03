@@ -24030,3 +24030,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 - **Deviation:** None.
 - **Blocker:** None.
 - **Refs:** CONSOLIDATION-PLAN-PHASE-2.md §1 OD-1, ADR-120 (worktree isolation), ADR-060 (branch naming), I-24 (REMOVED=0 ledger), T2.1–T2.6 consolidation analysis series
+
+---
+
+### IL-854 - specproj-sp01-compute-optimize-flyfast @ 2026-07-03T14:27:15Z
+
+- **il_ts:** 2026-07-03T14:27:15Z
+- **session_id:** specproj-sp01-compute-optimize-flyfast
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp01-compute-optimize-flyfast/IL-2026-07-03T14-27-15Z--8d6493.md`
+
+### specproj-sp01-compute-optimize-flyfast
+
+- **Instruction:** sp01 §5.8 taxonomy compute routing principle + governance/COMPUTE-ROUTING-DIFF-sp01 (docs-only, Terminal-B)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

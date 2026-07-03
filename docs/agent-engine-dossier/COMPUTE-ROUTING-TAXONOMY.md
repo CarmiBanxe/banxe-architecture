@@ -346,3 +346,70 @@ Recommendation (docs-only, factory-side; NO disk deletion):
   and is NOT asserted in this doc (per `.claude/rules/security-policy.md` — no
   hardcoded secrets in code or docs).
 - **RED-zone** (SOUL.md / rego / compliance_config) NOT touched.
+
+### §5.8 — Измеренный tok/s → routing-принцип (Terminal-B specproj sp01, docs-only 2026-07-03)
+
+> Аддитивная секция. **НЕ переписывает** §1 / §5.1–§5.7. Фиксирует финальную таблицу
+> измеренных скоростей (Terminal-B compute audit 2026-07-03) и derived routing-принцип,
+> который Terminal-A применит к `:4000` LiteLLM конфигу в отдельном PR по ADR-103
+> (server-only refactor). Эта секция — только источник истины по данным и принципу; она
+> **не мутирует runtime** (docs-only) и **не переписывает §1 canonical alias table**
+> (§1 остаётся источником истины по формальным алиас-контрактам; §5.8 фиксирует
+> целевое соответствие алиасов моделям, которое Terminal-A промоутит в §1 отдельным
+> обновлением).
+
+**§5.8-A. Финальная таблица скоростей (verified 2026-07-03, read-only):**
+
+| Модель | tok/s | Путь / хост | Роль (целевой алиас) |
+|--------|------:|-------------|----------------------|
+| `qwen3:30b-a3b` | **72.8** | evo1 ollama `:11434` | `factory-mid` |
+| `qwen3-coder-next` | **38.9** | evo1 llama-server (Strix Halo iGPU) | `factory-coder` |
+| `GLM-4.5-Air` | **21.2** | evo1 `:8081` + evo2 RPC `:50052` (Vulkan) | `project-reason` (**новая цель**) |
+| `Legion-7b` (`qwen2.5-coder:7b`) | **52** | Legion RTX 4070 8 GB VRAM | `factory-fast` |
+| `qwen3:235b-a22b` | **2.13** | evo2 llama-server `:8082` Q3_K_S | **async-heavy** (egress-0, single-slot) |
+| `qwen2.5-coder:14b-banxe-factory` | 7.6 | Legion CPU-fallback (9 GB > 8 GB VRAM) | **НЕ РОУТИТСЯ** (см. §5.7-D) |
+
+Все значения — verified read-only; методология измерений совпадает с §5.4 / §5.7
+(bounded `/v1/chat/completions` roundtrip с корректной авторизацией, а не `/v1/models`
+ping — см. §5.7-C lesson).
+
+**§5.8-B. Routing-принцип (derived, целевое состояние для Terminal-A):**
+
+1. **`project-reason` → `GLM-4.5-Air` (evo1 :8081 + evo2 RPC :50052).** ~21 tok/s даёт
+   **≈10× ускорение** по сравнению с 235b (2.13 tok/s) на не-MLRO reasoning-задачах.
+   235b сохраняется как отдельный async-путь (см. п. 2); `project-reason` перестаёт
+   быть синонимом «single-slot 235b sync».
+2. **`qwen3:235b-a22b` → ТОЛЬКО async-heavy, egress-0.** Использование ограничено
+   очередью/batch-режимом (single-slot llama-server, 2.13 tok/s — §5.7-A). Никакой
+   synchronous request-response маршрут не должен указывать на 235b. Для MLRO/FCA
+   sign-off, где §2 требует 235B-precision, используется async-heavy alias
+   (отдельный target, не `project-reason`).
+3. **`factory-coder` → `qwen3-coder-next` (evo1 Strix Halo).** ~38.9 tok/s; серверный
+   coder-next замещает on-Legion 14b полностью (14b на Legion не помещается в VRAM,
+   §5.7-D).
+4. **`factory-mid` → `qwen3:30b-a3b` (evo1 ollama :11434).** ~72.8 tok/s; самый быстрый
+   локальный путь для factory-mid class.
+5. **`factory-fast` → `qwen2.5-coder:7b` (Legion RTX 4070).** ~52 tok/s; помещается в
+   8 GB VRAM; лёгкие factory-задачи (autocomplete / lint / single-line edits) —
+   зона Legion.
+6. **НИ ОДИН алиас НЕ указывает на Legion `qwen2.5-coder:14b-banxe-factory`.** Модель
+   не помещается в VRAM (9 GB > 8 GB), CPU-fallback ~7.6 tok/s, GPU idle. Диск не
+   очищается этой секцией (destructive-op verify-step per safety-rules), но routing
+   на неё запрещён; §5.7-D фиксирует ту же позицию как рекомендацию — §5.8 повышает
+   её до принципа для целевого состояния.
+
+**§5.8-C. Границы:**
+
+- **NOT touched:** §1 canonical alias table (Terminal-A промоутит §5.8-B в §1
+  отдельным PR по ADR-103), §5.1–§5.7 (§5.7 остаётся honesty-record для 2026-07-03
+  audit; §5.8 — derived routing-принцип на том же датасете).
+- **NO runtime edit** — LiteLLM `:4000`, ollama, llama-server, RPC workers, api-keys
+  не мутируются этим docs-PR. Все изменения `:4000` — прерогатива Terminal-A
+  (ADR-103 server-only).
+- **NO secret written** — все ключи-плейсхолдеры (`<RPC_Q235_API_KEY>`,
+  `<GLM_AIR_API_KEY>` — если будет введён) существуют только как имена переменных;
+  значения — в operator vault / `.env` (см. `.claude/rules/security-policy.md`).
+- **Cross-ref для diff:** конкретные строки LiteLLM YAML, которые Terminal-A
+  правит, описаны в `governance/COMPUTE-ROUTING-DIFF-sp01.md` (тот же PR — sp01).
+  DIFF-doc — плейсхолдеры и логика; apply — оператор.
+- **RED-zone** (SOUL.md / rego / compliance_config) NOT touched.
