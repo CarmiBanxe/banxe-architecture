@@ -23792,3 +23792,15 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 
 - **Instruction:** Structural fix: gitignore rebuild files + post-merge ledger-rebuild.yml — eliminates two-terminal merge race [ADR-LEDGER-NO-BRANCH-REBUILD]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-844 - agent-factory-t22-payment-core-evidence @ 2026-07-02T21:00:00Z
+
+- **il_ts:** 2026-07-02T21:00:00Z
+- **session_id:** agent-factory-t22-payment-core-evidence
+- **source:** agent-factory
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-t22-payment-core-evidence/IL-2026-07-02T21-00-00Z--t22-payment-core.md`
+
+docs(consolidation): T2.2 banxe-payment-core runtime verification — REFERENCE ONLY, Phase 3 decision pending
