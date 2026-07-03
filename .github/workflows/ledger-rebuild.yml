@@ -1,0 +1,50 @@
+name: ledger-rebuild
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'INSTRUCTION-LEDGER.md'
+      - 'ledger/IL-SEQUENCE.json'
+
+concurrency:
+  group: ledger-rebuild
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  ledger-rebuild:
+    name: ledger-rebuild
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT || github.token }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Rebuild INSTRUCTION-LEDGER.md + IL-SEQUENCE.json from shards
+        env:
+          BANXE_IL_ALLOCATOR: local
+        run: |
+          set -e
+          python3 ledger/build_ledger.py
+          echo "Rebuild complete"
+
+      - name: Commit rebuilt ledger (if changed)
+        run: |
+          git config user.name "banxe-ledger-bot"
+          git config user.email "ledger-bot@banxe.io"
+          git add INSTRUCTION-LEDGER.md ledger/IL-SEQUENCE.json
+          if git diff --cached --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore(ledger): auto-rebuild from shards [skip ci]"
+            git push origin main
+          fi

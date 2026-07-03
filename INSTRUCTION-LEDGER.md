@@ -23777,3 +23777,18 @@ and hand-off protocol via `governance/NOVELTY-COLLECTION-REGISTER.md` (append-on
 - **Status:** DONE — doc + one script-alignment authored, IL minted, shard tail-appended. **Draft PR (§71 spec-lane); DO NOT MERGE — operator HITL per task contract.**
 
 - **Refs:** `docs/agent-engine-dossier/COMPUTE-ROUTING-TAXONOMY.md` §5.7 (this shard); prior §5 shards IL-779 / IL-790; `docs/runbooks/factory-routing-map.md` amendment 2026-07-03; `docs/governance/model-cards/factory-fast.md` alias update; `governance/NOVELTY-COLLECTION-REGISTER.md` 5-row append; `scripts/add-il-shard.sh` Redis default alignment; ADR-060 (branch actor namespace + specproj), ADR-102 (reconcile-not-duplicate), ADR-103 (server-only refactor — runtime NOT mutated here), ADR-117 (Legion factory / evo1+evo2 project perimeter), ADR-119 Rule 8 (IL frozen at merge-time), ADR-143 (Redis IL allocator), ADR-153 (Terminal topology), ADR-TERMINAL-B-SPEC-LANE (§1 namespace, §4 hand-off, §5 write-scope); PR #990 (build_ledger REDIS_HOST default 100.68.102.48→127.0.0.1); I-24 (append-only), I-32/I-33 (LiteLLM :4000 single entrypoint — not mutated); `.claude/rules/safety-rules.md` destructive-op verify-step (weights NOT removed); `.claude/rules/security-policy.md` (no hardcoded secrets — RPC_Q235_API_KEY placeholder only).
+
+---
+
+### IL-843 - agent-factory-ledgerarch-no-branch-rebuild @ 2026-07-03T10:21:49Z
+
+- **il_ts:** 2026-07-03T10:21:49Z
+- **session_id:** agent-factory-ledgerarch-no-branch-rebuild
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-ledgerarch-no-branch-rebuild/IL-2026-07-03T10-21-49Z--0dc45d.md`
+
+### agent-factory-ledgerarch-no-branch-rebuild
+
+- **Instruction:** Structural fix: gitignore rebuild files + post-merge ledger-rebuild.yml — eliminates two-terminal merge race [ADR-LEDGER-NO-BRANCH-REBUILD]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

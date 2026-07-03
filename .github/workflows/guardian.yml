@@ -71,10 +71,9 @@ jobs:
           NONINFRA=$(echo "$NONLEDGER" | grep -vE "$INFRA_RE" || true)
           if [ -n "$NONLEDGER" ] && [ -z "$NONINFRA" ]; then echo "guardian-ledger OK (pure-infra/tooling change — coupling not required, ADR-056 scope)"; exit 0; fi
           if [ -n "$NONLEDGER" ]; then
-            ADDED_IL=$(git diff "$BASE_SHA" "$HEAD_SHA" -- "$LEDGER" | grep -E '^\+### IL-[0-9]+' || true)
             NEW_SHARD=$(git diff --name-status "$BASE_SHA" "$HEAD_SHA" -- 'ledger/entries/' | grep -E '^A' | grep -E 'IL-.*\.md$' || true)
-            if [ -z "$ADDED_IL" ] && [ -z "$NEW_SHARD" ]; then
-              echo "FAIL: PR changes tracked paths but adds neither a new ### IL-NNN block in $LEDGER nor a new ledger/entries shard (ADR-056 / ADR-060)"; exit 1
+            if [ -z "$NEW_SHARD" ]; then
+              echo "FAIL: PR changes tracked paths but adds no new ledger/entries shard (ADR-056 / ADR-060 — rebuild files are gitignored, add shard via scripts/add-il-shard.sh)"; exit 1
             fi
           fi
           DELETED=$(git diff "$BASE_SHA" "$HEAD_SHA" -- "$LEDGER" | grep -E '^-[^-]' || true)

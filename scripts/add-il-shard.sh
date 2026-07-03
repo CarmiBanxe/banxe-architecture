@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# scripts/add-il-shard.sh — one-command IL shard create + ledger rebuild.
+# scripts/add-il-shard.sh — one-command IL shard create.
 #
 # Fulfils the ORPHANED intent of merged shard `agent-factory-ledgersync-add-shard-script`
 # (status PREPARED, but the actual script file never landed). Canonical procedure lives
 # in ledger/SHARD-WORKFLOW.md (ADR-059 S4) — this script AUTOMATES that procedure and
 # adds a FAIL-CLOSED Redis allocator precheck (ADR-143) so we never silently degrade to
 # the local `max+1` path that caused the IL-827 duplicate.
+#
+# NOTE: INSTRUCTION-LEDGER.md and IL-SEQUENCE.json are gitignored and rebuilt
+# automatically on main by .github/workflows/ledger-rebuild.yml after each merge.
+# This script ONLY creates shard files in branches — no build_ledger.py invocation.
 #
 # Usage:
 #   bash scripts/add-il-shard.sh <session-slug> <description>
@@ -39,9 +43,9 @@ Behaviour (per ledger/SHARD-WORKFLOW.md):
   1. Compute session_id (normalised slug) and salt = sha1(session_id)[:6].
   2. il_ts = current UTC (ISO8601Z); if <= current max shard il_ts, bump strictly greater.
   3. Write ledger/entries/<session_id>/IL-<il_ts_filename>--<salt>.md with front-matter
-     (il_ts, session_id, source=agent-factory, status=DONE) + body. NO il_number.
-  4. Run: python3 ledger/build_ledger.py       (mints IL-NNN via ADR-143 allocator).
-  5. Run: python3 ledger/build_ledger.py --check (must exit 0).
+     (il_ts, session_id, source=agent-factory, status=DONE) + body.
+  4. Stage shard file via git add.
+  (NOTE: IL-SEQUENCE.json and INSTRUCTION-LEDGER.md are rebuilt on main by CI.)
 
 Fail-closed Redis precheck (ADR-143 / IL-827 duplicate root cause):
   When BANXE_IL_ALLOCATOR != 'local' (the default 'redis' mode), this script REQUIRES
@@ -184,27 +188,9 @@ CLEAN_DESC="$(printf '%s' "$DESC" | tr -d '\r' | tr -d '\000-\010\013\014\016-\0
 
 info "wrote shard $SHARD_FILE"
 
-# --- Regenerate ledger (mints IL-NNN via ADR-143 allocator on write path). ---
-if ! python3 ledger/build_ledger.py; then
-  die "build_ledger.py write failed — shard left on disk at $SHARD_FILE for inspection"
-fi
+# --- Stage shard file (ledger rebuild happens on main by CI). ---
+git add "$SHARD_FILE"
+info "staged shard: $SHARD_FILE"
 
-# --- Verify determinism + append-only invariants. ---
-if ! python3 ledger/build_ledger.py --check; then
-  exit 2
-fi
-
-# --- Report the minted IL number. ---
-python3 - "$SHARD_FILE" "$SID" <<'PY'
-import hashlib, json, pathlib, sys
-shard_rel, session_id = sys.argv[1], sys.argv[2]
-root = pathlib.Path.cwd()
-seq_path = root / "ledger" / "IL-SEQUENCE.json"
-seq = json.loads(seq_path.read_text(encoding="utf-8"))
-key = session_id + "__" + hashlib.sha1(shard_rel.encode("utf-8")).hexdigest()[:12]
-num = seq.get(key)
-if num is None:
-    sys.stderr.write("add-il-shard: WARN: minted number for %s not found in IL-SEQUENCE.json\n" % shard_rel)
-    sys.exit(0)
-print("IL-%03d" % num)
-PY
+# --- Note: IL-NNN will be assigned when this PR is merged and the CI rebuild job runs. ---
+info "(IL number will be assigned by ledger-rebuild.yml workflow after merge to main)"
