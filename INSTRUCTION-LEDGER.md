@@ -23972,3 +23972,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 
 - **Instruction:** Reclassify GAP-085 as OUT-OF-SCOPE: ss1 belongs to guiyon (excluded from Banxe per canon/GAP-090), outside Banxe regulatory perimeter, no Banxe CNIL action required, sandbox operator decision
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-851 - agent-factory-od5-sar-verification @ 2026-07-02T22:48:55Z
+
+- **il_ts:** 2026-07-02T22:48:55Z
+- **session_id:** agent-factory-od5-sar-verification
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-od5-sar-verification/IL-2026-07-02T22-48-55Z--eb871e.md`
+
+### agent-factory-od5-sar-verification
+
+- **Instruction:** OD-5 evidence: SAR generation separation verified — vibe prototype vs EMI production (MLRO attestation package)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
