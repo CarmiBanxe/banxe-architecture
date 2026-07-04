@@ -46,6 +46,21 @@ Annotation rows are append-only (I-24) and reference the action row by timestamp
 - `gh pr merge: NO`
 - `settings.json change: NO`
 
+**B→A direction — specproj start and novelty-found events (ADR-160 §H-1/H-3):**
+```
+| <TIMESTAMP> | TERMINAL-B | NOVELTY  | <novelty-id>: <description>                   | banxe-architecture | PENDING  |
+| <TIMESTAMP> | TERMINAL-B | SYNC-CTX | direction=B→A | event=novelty_found | specproj=<id> | novelty=<id> | artifact=PR-NNN | ledger_ref=<PENDING ts> |
+```
+For specproj_start events replace `NOVELTY` with `SPECPROJ-START`.
+
+**LOCK / RELEASE format (ADR-160 §H-4 — shared-file single-writer lock):**
+```
+| <TIMESTAMP> | <ACTOR> | LOCK | file=<repo-relative path> | holder=<ACTOR> | status=HELD     |
+| <TIMESTAMP> | <ACTOR> | LOCK | file=<repo-relative path> | holder=<ACTOR> | status=RELEASED |
+```
+Any terminal seeing `status=HELD` → write `WAIT` row; do NOT write to the locked file.
+Arbiter: Factory. Decision appended to ACTION-LEDGER.
+
 ---
 
 ## Ledger
@@ -56,12 +71,19 @@ Annotation rows are append-only (I-24) and reference the action row by timestamp
 | 2026-07-04T20:30:00Z | FACTORY | gh pr merge | #272 squash (safeguarding recon error paths)   | banxe-emi-stack     | OP-DENIED — operator declined gh pr merge |
 | 2026-07-04T20:42:16Z | FACTORY | AUDIT       | orchestration-guard-audit                      | banxe-architecture  | DONE — 3 gaps identified (ADR-158) |
 | 2026-07-04T21:00:00Z | FACTORY | git push    | agent/factory/adr158/bilateral-orchestration   | banxe-architecture  | PENDING |
+| 2026-07-04T22:28:08Z | FACTORY    | OUTCOME     | agent/factory/adr158/bilateral-orchestration — PR #1018 squash-merged by operator | banxe-architecture | DONE |
+| 2026-07-05T00:00:00Z | TERMINAL-B | LOCK        | file=INSTRUCTION-LEDGER.md | holder=TERMINAL-B | status=HELD |
+| 2026-07-05T00:00:00Z | TERMINAL-B | NOVELTY     | sp04:ADR-159 novelty-pipeline (PR #1017) | banxe-architecture | PENDING — needs rebase on origin/main post-#1018 |
+| 2026-07-05T00:00:00Z | TERMINAL-B | SYNC-CTX    | direction=B→A | event=specproj_start | specproj=sp04 | branch=agent/specproj/sp04/adr-ba-novelty-pipeline | novelty=ADR-159 | ledger_ref=2026-07-05T00:00:00Z |
+| 2026-07-05T00:45:00Z | FACTORY    | LOCK        | file=docs/adr/ADR-158-bilateral-orchestration-write-gate.md | holder=FACTORY | status=HELD |
+| 2026-07-05T00:45:00Z | FACTORY    | LOCK        | file=governance/ACTION-LEDGER.md | holder=FACTORY | status=HELD |
+| 2026-07-05T00:45:00Z | FACTORY    | git push    | agent/factory/adr158b/tri-party-sync-terminal-b | banxe-architecture | PENDING |
 
 ---
 
 ## Invariant Reminder
 
 - I-24: Append-only. NEVER delete or edit rows above.
-- D-5 (ADR-158): Factory MUST NOT modify `~/.claude/settings.json` or merge PRs.
+- D-5 (ADR-160): Factory MUST NOT modify `~/.claude/settings.json` or merge PRs.
 - A PENDING row with no OUTCOME row = action still in progress or lost — investigate before next action.
 - Terminal A seeing a FACTORY PENDING row → log `PAUSE` row, coordinate before proceeding.

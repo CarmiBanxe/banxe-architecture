@@ -24511,3 +24511,44 @@ redis-serialized at ratification.
 
 `docs/adr/ADR-160-bilateral-orchestration-write-gate.md` · `docs/adr/ADR-158-push-safety-versioned-pre-push-guard.md`
 (the surviving 158) · ADR-119 (unique ordinal) · ADR-153/154 (deferred reconciliation). Corrective for #1018.
+
+---
+
+### IL-878 - agent-factory-adr158b-tri-party-sync-terminal-b @ 2026-07-05T00:45:00Z
+
+- **il_ts:** 2026-07-05T00:45:00Z
+- **session_id:** agent-factory-adr158b-tri-party-sync-terminal-b
+- **source:** auto
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr158b-tri-party-sync-terminal-b/IL-2026-07-05T00-45-00Z--873fb2.md`
+
+### ADR-160 §H — Tri-Party Sync: Terminal B (addendum)
+
+- **Instruction:** Extend ADR-158 Bilateral Orchestration & Write-Gate to cover
+  Terminal B (spec-project lane) as a third node in the A↔Factory synchronisation
+  protocol. Register PR #1017 (ADR-159 novelty-pipeline, Terminal B sp04) as first
+  B-entry in ACTION-LEDGER. Supply Terminal B post-merge rebase procedure (Appendix D).
+
+- **Steps:**
+  1. Created worktree `~/wt/adr158b` from origin/main (1999ad4 — post-ADR-158 merge).
+  2. Added §H (H-1..H-6) to `docs/adr/ADR-158-bilateral-orchestration-write-gate.md`:
+     H-1 B→A CONTEXT blocks (specproj_start + novelty_found events),
+     H-2 Write-Gate constraints table (same as Factory),
+     H-3 ACTION-LEDGER B→A integration (eliminates unilateral blind spot),
+     H-4 Single-Writer Lock protocol (HELD/RELEASED rows),
+     H-5 Guardian of Canon extends to B,
+     H-6 Retroactive registration of PR #1017.
+  3. Added Appendix D: Terminal B post-merge rebase procedure for PR #1017.
+  4. Extended `governance/ACTION-LEDGER.md` (append-only I-24):
+     - B→A direction format in Sync-Protocol Fields section.
+     - LOCK/RELEASE format (§H-4).
+     - OUTCOME row for ADR-158 PR #1018 merge (2026-07-04T22:28:08Z).
+     - First Terminal B entries: NOVELTY + SYNC-CTX for sp04:ADR-159 PR #1017.
+     - FACTORY LOCK + PENDING rows for this addendum push.
+
+- **Proof:** `build_ledger.py --check` exit=0; Semgrep 0; git commit verified.
+
+- **Deviation:** none.
+
+- **Refs:** ADR-160 §H (new), ADR-060, ADR-119, ADR-120, PR #1017 (Terminal B,
+  agent/specproj/sp04/adr-ba-novelty-pipeline), PR #1018 (merged 2026-07-04T22:28:08Z).
