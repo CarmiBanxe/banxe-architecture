@@ -15,3 +15,6 @@ docs/incoming/
 # Ledger rebuild files (gitignored; rebuilt on main by CI) — ADR-LEDGER-NO-BRANCH-REBUILD
 INSTRUCTION-LEDGER.md
 ledger/IL-SEQUENCE.json
+
+# Terminal role anchor — local-only, never commit (ADR-158 G-4)
+.TERMINAL-ROLE
