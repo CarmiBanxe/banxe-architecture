@@ -102,6 +102,29 @@ All engines — **already-installed** (openclaw/metaclaw/aider/ruflo) **and newl
 This §5 is a **task for infra** (wire new engines into the above), **not code here.** **`[AWAITS-OPERATOR]`** for
 the actual wiring.
 
+## Install Provenance Guardrail
+> Addendum (2026-07-03, additive). Records **verified install sources** so no engine is pulled by *name-match
+> alone*. Evidence basis: the operator-provided engine-install-audit read + existing local repo docs. **Doc-only;
+> installs nothing, edits no passport/ADR/config, bypasses no auth, invents no provenance.** This closes a gap
+> not yet captured in the §3 build-prompts: **which source is trusted, and which is a wrong/unknown publisher.**
+
+| Engine | Approved source | Status | Required action | Notes |
+|---|---|---|---|---|
+| **openclaw** | npm, publisher **steipete/vincentkoc** (installed 2026.3.24) | **trusted** | none — installed | the trusted openclaw-family publisher |
+| **aider** | pipx package **`aider-chat`** (0.86.2) | **trusted** | install as `aider-chat` | **real package name is `aider-chat`, NOT `aider`** |
+| **metaclaw** | pipx venv | **trusted** | none — installed | — |
+| **mirofish** | **local repo `~/MiroFish`** — build-from-local (Dockerfile, docker-compose.yml, backend/frontend, package.json) | **source-identified — local-only** | build from local `~/MiroFish` (source = CarmiBanxe/MiroFish); do **not** substitute a registry package | `~/banxe-mirofish` is a **different docs/scenarios repo** |
+| **hermes** | **none verified** — BANXE ADR-126 Hermes is a **canon role, not a public package**; public npm `hermes` = Segment's, pip `hermes 0.9.1` = unknown | **blocked (no verified source)** | **do NOT install any public package named `hermes`** | BANXE-role ≠ any public `hermes` package |
+| **nanoclaw** | pip `2026.3.20`, **publisher unverified** | **`[BLOCKING: operator]`** | operator must verify it belongs to the openclaw family **before** any install | do not install until verified |
+| **ironclaw** | public npm `2026.2.22-1.3.1`, publisher **kumareth** | **do NOT install** | reject — wrong publisher | **impersonation / wrong-publisher risk** |
+
+**Policy.** A **public package-name match is not sufficient provenance.** No install proceeds without a
+**verified publisher/source** and **license-review compliance** (ADR-148 no-import-without-license-review;
+CLAUDE.md §9 external-adoption + HITL). **Wrong-publisher** (ironclaw/kumareth) and **unknown-publisher**
+(nanoclaw pip; public hermes) matches are **blocked**. Where the verified origin is a **local source**
+(mirofish → `~/MiroFish`), the install **must remain local-source** — it may not be swapped for a same-named
+registry package. This guardrail is a **precondition** on every §3 build-prompt before any package pull.
+
 ## Anchors
 `docs/adr/ADR-148-handson-ai-adoption-pack-v1.md` (adopt track — **referenced for advance, not edited/duplicated**;
 PROPOSED, ADR-135 gate) · `docs/adr/ADR-126-hermes-tier1-cicd-watchdog-role.md` + `docs/adr/ADR-127-hermes-factory-delegation-contract.md`
