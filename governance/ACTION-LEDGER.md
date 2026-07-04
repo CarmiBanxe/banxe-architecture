@@ -87,3 +87,4 @@ Arbiter: Factory. Decision appended to ACTION-LEDGER.
 - D-5 (ADR-160): Factory MUST NOT modify `~/.claude/settings.json` or merge PRs.
 - A PENDING row with no OUTCOME row = action still in progress or lost — investigate before next action.
 - Terminal A seeing a FACTORY PENDING row → log `PAUSE` row, coordinate before proceeding.
+| 2026-07-05T01:00:00Z | FACTORY | git push | agent/factory/adr158b/fix-adr160-stale-refs | banxe-architecture | PENDING |
