@@ -533,5 +533,7 @@
   "agent-factory-consolidation-sprintb-provenance-guardrail__e8ce0c510f7b": 862,
   "agent-factory-adr156-sandbox-gate-removal__cb6ac78a5c5c": 863,
   "agent-factory-consolidation-repo-manifest__3f3050124e05": 864,
-  "agent-factory-phase3-ssot-plan__28c6cff6639f": 865
+  "agent-factory-phase3-ssot-plan__28c6cff6639f": 865,
+  "specproj-sp02-litellm-4000-runtime-novelty__301dd31be279": 867,
+  "specproj-sp03-single-listener-guard__4599ac490ba0": 868
 }
