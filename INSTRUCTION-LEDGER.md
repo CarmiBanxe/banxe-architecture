@@ -24291,3 +24291,33 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 
 - **Instruction:** Phase 3 SSOT plan + ADR-157 — per-domain source of truth methodology and 3-to-2-repo migration
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-867 - specproj-sp02-litellm-4000-runtime-novelty @ 2026-07-04T19:54:40Z
+
+- **il_ts:** 2026-07-04T19:54:40Z
+- **session_id:** specproj-sp02-litellm-4000-runtime-novelty
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp02-litellm-4000-runtime-novelty/IL-2026-07-04T19-54-40Z--da814c.md`
+
+### specproj-sp02-litellm-4000-runtime-novelty
+
+- **Instruction:** NOVELTY: LiteLLM :4000 runtime novelty — 3 findings (orphan SO_REUSEPORT, NOAUTH redis cache stall, glm-air live applied) appended to NOVELTY-COLLECTION-REGISTER
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-868 - specproj-sp03-single-listener-guard @ 2026-07-04T20:36:26Z
+
+- **il_ts:** 2026-07-04T20:36:26Z
+- **session_id:** specproj-sp03-single-listener-guard
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp03-single-listener-guard/IL-2026-07-04T20-36-26Z--6fbbe2.md`
+
+### specproj-sp03-single-listener-guard
+
+- **Instruction:** NOVELTY: LiteLLM :4000 single-listener guard — proposed systemd drop-in (ExecStartPre kill-stale + Restart=on-failure) preventing SO_REUSEPORT co-bind flicker; apply=operator-Legion, closes GAP systemd single-listener guard (contour-B artefact).
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
