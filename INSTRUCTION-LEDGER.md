@@ -24596,3 +24596,37 @@ ratification (REDIS_HOST=100.68.102.48). Closes the desync flagged in ADR-160's 
 
 `.githooks/pre-push` · `scripts/pre-push-branch-name.sh` · `scripts/install-hooks.sh` (the copy mechanism) ·
 `scripts/test-branch-name-gate.sh` · ADR-160 (renumbered write-gate) · ADR-158 push-safety (#1016) · ADR-119.
+
+---
+
+### IL-881 - agent-factory-adr158b-fix-adr160-stale-refs @ 2026-07-05T01:00:00Z
+
+- **il_ts:** 2026-07-05T01:00:00Z
+- **session_id:** agent-factory-adr158b-fix-adr160-stale-refs
+- **source:** auto
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr158b-fix-adr160-stale-refs/IL-2026-07-05T01-00-00Z--fix001.md`
+
+### ADR-160 stale-ref correction (3 protocol-header refs)
+
+- **Instruction:** Fix 3 non-I-24-protected ADR-158 refs that should have been
+  ADR-160 after the renumber PR #1019. These are protocol-documentation headers,
+  not ledger rows.
+
+- **Steps:**
+  1. `governance/ACTION-LEDGER.md` line 4: `Source: ADR-158 D-3` → `ADR-160 D-3`
+  2. `governance/ACTION-LEDGER.md` line 28: `Sync-Protocol Fields (ADR-158 §F` → `(ADR-160 §F`
+  3. `docs/adr/ADR-160-bilateral-orchestration-write-gate.md` §H-4:
+     `from which ADR-158 was born` → `from which ADR-160 was born`
+
+- **Not changed (I-24 protected ledger rows):**
+  - Line 72: `DONE — 3 gaps identified (ADR-158)` — historical ledger row
+  - Line 78: `file=docs/adr/ADR-158-bilateral-...` — historical LOCK ledger row
+  - Lines 13-14, 21, 27-28 in ADR-160: Renumber Note historical context (correct)
+  - Lines 285, 429 in ADR-160 Appendix D: historical ref to PR #1018 merge (correct)
+
+- **Proof:** Python substitution confirmed 3 changes; build_ledger.py --check exit=0.
+
+- **Deviation:** none.
+
+- **Refs:** ADR-160 §H, ACTION-LEDGER I-24, PR #1020 (merged 2026-07-04T23:15:08Z).
