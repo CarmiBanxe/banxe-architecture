@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# pre-push — ADR-060 branch-name guard + ADR-158 write-gate guards (v2)
+# pre-push — ADR-060 branch-name + ADR-158 push-safety (G-5+) + ADR-160 write-gate (G-1..G-4) guards (v2)
 #
 # Guard stack (all must pass):
-#   G-1 Force-refspec guard  (ADR-158 D-2): block any refspec with '+' prefix
-#   G-2 Worktree guard       (ADR-158 D-2): block push from main checkout (ADR-120)
-#   G-3 Stash guard          (ADR-158 D-2): block push when stash is non-empty
-#   G-4 Role-guard           (ADR-158 D-2): block push if .TERMINAL-ROLE absent (FAIL not WARN)
+#   G-1 Force-refspec guard  (ADR-160 D-2): block any refspec with '+' prefix
+#   G-2 Worktree guard       (ADR-160 D-2): block push from main checkout (ADR-120)
+#   G-3 Stash guard          (ADR-160 D-2): block push when stash is non-empty
+#   G-4 Role-guard           (ADR-160 D-2): block push if .TERMINAL-ROLE absent (FAIL not WARN)
 #   G-5 Branch-name guard    (ADR-060):     block non-compliant branch namespace
 #   G-5+ Protected-ref guard (ADR-158):     block direct push to main/master (remote ref)
 #
@@ -18,7 +18,7 @@
 # Install (banxe-emi-stack):     cp .githooks/pre-push ~/banxe-emi-stack/.githooks/pre-push
 #                                git -C ~/banxe-emi-stack config core.hooksPath .githooks
 #
-# Source: ADR-060 (branch naming), ADR-158 (write-gate), ADR-120 (worktree mandate)
+# Source: ADR-060 (branch naming), ADR-158 (push-safety G-5+), ADR-160 (write-gate G-1..G-4), ADR-120 (worktree mandate)
 set -eu
 
 # ── ADR-060 — Branch naming pattern (G-5) ─────────────────────────────────────
@@ -56,7 +56,7 @@ _push_violation() {
   echo "  Integrate via PR merge (ADR-060/ADR-102). Never push main/master directly." >&2
 }
 
-# ── ADR-158 G-1 — Force-refspec guard ─────────────────────────────────────────
+# ── ADR-160 G-1 — Force-refspec guard ─────────────────────────────────────────
 _check_force_refspec() {
   local rc=0
   if [ -n "${GIT_PUSH_REFSPEC:-}" ]; then
@@ -67,7 +67,7 @@ _check_force_refspec() {
   return "$rc"
 }
 
-# ── ADR-158 G-2 — Worktree guard ──────────────────────────────────────────────
+# ── ADR-160 G-2 — Worktree guard ──────────────────────────────────────────────
 _check_worktree() {
   if [ "${ALLOW_MAIN_CHECKOUT:-0}" = "1" ]; then return 0; fi
   # Portable detection: a linked worktree's git-dir lives under .git/worktrees/
@@ -81,7 +81,7 @@ _check_worktree() {
   esac
 }
 
-# ── ADR-158 G-3 — Stash guard ─────────────────────────────────────────────────
+# ── ADR-160 G-3 — Stash guard ─────────────────────────────────────────────────
 _check_stash() {
   if [ "${ALLOW_STASH:-0}" = "1" ]; then return 0; fi
   local stash_count
@@ -96,7 +96,7 @@ _check_stash() {
   return 0
 }
 
-# ── ADR-158 G-4 — Role-guard (hard FAIL) ──────────────────────────────────────
+# ── ADR-160 G-4 — Role-guard (hard FAIL) ──────────────────────────────────────
 _check_role() {
   local root
   root="$(git rev-parse --show-toplevel 2>/dev/null || echo '')"
@@ -128,7 +128,7 @@ _main() {
   # G-4: Role guard (hard fail)
   _check_role || rc=1
 
-  # Early exit if any ADR-158 guard failed
+  # Early exit if any ADR-160 write-gate (or ADR-158 push-safety) guard failed
   [ "$rc" -eq 0 ] || return "$rc"
 
   # G-5: ADR-060 branch-name guard + G-5+ protected-ref guard (STDIN refs)
