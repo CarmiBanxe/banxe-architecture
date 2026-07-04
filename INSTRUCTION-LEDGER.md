@@ -24683,3 +24683,18 @@ at ratification (REDIS_HOST=100.68.102.48).
 ## Anchors
 
 `docs/adr/ADR-160-bilateral-orchestration-write-gate.md` · ADR-153 (topology/alias) · ADR-154 (concurrency arbiter — unchanged) · operator ruling 2026-07-05.
+
+---
+
+### IL-884 - specproj-sp05-terminal-b-operating-algorithm @ 2026-07-05T01:00:05Z
+
+- **il_ts:** 2026-07-05T01:00:05Z
+- **session_id:** specproj-sp05-terminal-b-operating-algorithm
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp05-terminal-b-operating-algorithm/IL-2026-07-05T01-00-05Z--6c69ef.md`
+
+### specproj-sp05-terminal-b-operating-algorithm
+
+- **Instruction:** specproj sp05 — codify Terminal-B operating algorithm into ADR-159 normative section + set novelty-pipeline-config Central-approved params (threshold 0.85, corpus paths, codeowners_owner @mmber)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-102, ADR-103, ADR-119, ADR-120, ADR-143, ADR-153, ADR-156, ADR-159, ledger/SHARD-WORKFLOW.md
