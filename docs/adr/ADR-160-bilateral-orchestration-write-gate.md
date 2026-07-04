@@ -266,7 +266,7 @@ Rules:
 - **Arbiter**: Factory resolves disputes; decision appended to ACTION-LEDGER
 - Scope: shared governance files only; own-branch private files do not need a lock
 - This prevents the parallel-edit collision that produced the rebase conflict in
-  `.githooks/pre-push` (2026-07-04) — the incident from which ADR-158 was born
+  `.githooks/pre-push` (2026-07-04) — the incident from which ADR-160 was born
 
 #### H-5: Guardian of Canon extends to Terminal B
 

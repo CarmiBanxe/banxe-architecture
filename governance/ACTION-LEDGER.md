@@ -1,7 +1,7 @@
 # ACTION-LEDGER — BANXE Multi-Terminal Action Log
 
 **Status:** Active | **Invariant:** I-24 Append-only — NEVER edit existing rows
-**Source:** ADR-158 D-3 | **Governed by:** Central (arbiter)
+**Source:** ADR-160 D-3 | **Governed by:** Central (arbiter)
 
 ## Purpose
 
@@ -25,7 +25,7 @@ echo "| $(date -u +%FT%TZ) | <ACTOR> | OUTCOME  | <ARTIFACT> | <TARGET> | <DONE/
 **ACTOR values:** `FACTORY` | `CENTRAL` | `TERMINAL-A` | `TERMINAL-B`
 **ACTION values:** `git push` | `gh pr merge` | `git rebase` | `alembic upgrade` | `schema change` | `PAUSE`
 
-### Sync-Protocol Fields (ADR-158 §F — mandatory per exchange)
+### Sync-Protocol Fields (ADR-160 §F — mandatory per exchange)
 
 Every row MUST also include sync metadata as a follow-up annotation row (format below).
 Annotation rows are append-only (I-24) and reference the action row by timestamp.
@@ -87,3 +87,4 @@ Arbiter: Factory. Decision appended to ACTION-LEDGER.
 - D-5 (ADR-160): Factory MUST NOT modify `~/.claude/settings.json` or merge PRs.
 - A PENDING row with no OUTCOME row = action still in progress or lost — investigate before next action.
 - Terminal A seeing a FACTORY PENDING row → log `PAUSE` row, coordinate before proceeding.
+| 2026-07-05T01:00:00Z | FACTORY | git push | agent/factory/adr158b/fix-adr160-stale-refs | banxe-architecture | PENDING |
