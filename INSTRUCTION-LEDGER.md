@@ -24276,3 +24276,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143, DEGRADED local); unique at author time; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-03T09:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. YAML valid (asserted).
 - **Status:** DONE — repo-manifest.yaml + notes + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Precondition for #985 Sprint-1: operator commits the 6 dirty repos (Rule 6). Cleanup of archive mirrors = #987. Consolidation execution = #985 program.**
 - **Refs:** `config/consolidation/repo-manifest.yaml` (new); `docs/governance/REPO-MANIFEST-NOTES.md` (new); #985 (CONSOLIDATION-PLAN-PHASE-2); #987 (stale-clone cleanup); `config/fleet/server-inventory.yaml` (#959); CLAUDE.md §10 / I-18/I-20; parallel-session-isolation Rule 6; ADR-102/119/143/144; #900. Operator directive 2026-07-03 (config-as-data manifest complementing #985; move/delete nothing; Rule-6 report; exclude legal/ss1; notify terminals).
+
+---
+
+### IL-865 - agent-factory-phase3-ssot-plan @ 2026-07-04T19:40:49Z
+
+- **il_ts:** 2026-07-04T19:40:49Z
+- **session_id:** agent-factory-phase3-ssot-plan
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-phase3-ssot-plan/IL-2026-07-04T19-40-49Z--8e9b61.md`
+
+### agent-factory-phase3-ssot-plan
+
+- **Instruction:** Phase 3 SSOT plan + ADR-157 — per-domain source of truth methodology and 3-to-2-repo migration
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
