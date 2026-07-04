@@ -434,3 +434,77 @@ Phase 3 (SINGLE SOURCE OF TRUTH) opens ONLY when ALL items below are ✅ DONE.
 ---
 
 **Document Ends. Append-only contract per I-24. No inline edits; amendments only via new sections with date/signature.**
+
+---
+
+## AMENDMENT-001 (2026-07-04): ADR-156 — Sandbox Mode — All Sign-off Gates Removed
+
+**Signed by:** Central (operator instruction 2026-07-04)  
+**ADR Reference:** docs/adr/ADR-156-sandbox-mode-signoff-gates-removed.md  
+**Supersedes (for sandbox):** SECTION 5 §S-1..S-8, SECTION 6 Phase 3 entry checklist
+
+### Override: Phase 3 Entry Gate
+
+~~Phase 3 (SSOT) Blocked Until: All sign-off matrix items (S-1..S-8) receive formal written approval~~
+
+**AMENDED:** Phase 3 entry criteria are **SATISFIED** as of 2026-07-04 per ADR-156.
+The project executes in SANDBOX MODE (canon §13). All sign-off roles are test roles with
+no physical counterparties. Gates S-1..S-8 are deemed N/A (Sandbox) and do not block
+phase transitions.
+
+### Sign-off Matrix — Sandbox Override (S-1..S-8)
+
+| Gate | Status (Amended) |
+|------|-----------------|
+| S-1: OD-1 AML Orchestrator — MLRO/CTIO parallel-run sign-off | ✅ N/A (Sandbox) — ADR-156 |
+| S-2: OD-2 Payment Core — CTIO path decision | ✅ N/A (Sandbox) — ADR-156 |
+| S-3: OD-3 Intent Layer — CTIO/Product + GAP-091 | ✅ N/A (Sandbox) — ADR-156 |
+| S-4: OD-4 TX Monitor — CTIO CRYPTO_FLAG port approval | ✅ N/A (Sandbox) — ADR-156 |
+| S-5: BT-001 Modulr API Key | ✅ N/A (Sandbox) — ADR-156 |
+| S-6: BT-004/005/006/010 API Keys | ✅ N/A (Sandbox) — ADR-156 |
+| S-7: GAP-085 GDPR CNIL Art.33 | ✅ OUT-OF-SCOPE (Sandbox) — ADR-156 |
+| S-8: GAP-080 Consumer UI build decision | ✅ N/A (Sandbox) — ADR-156 |
+
+### Phase 3 Entry Criteria — Amended Checklist (all SATISFIED)
+
+**Duplication Resolutions:**
+- [x] S-1 APPROVAL: N/A (Sandbox) — ADR-156
+- [x] S-2 APPROVAL: N/A (Sandbox) — ADR-156
+- [x] S-3 APPROVAL: N/A (Sandbox) — ADR-156
+- [x] S-4 APPROVAL: N/A (Sandbox) — ADR-156
+- [x] OD-5 DONE: SAR vibe stub verified unused — PR #995 (merged 2026-07-03)
+- [x] OD-6/7 DONE: Audit/Recon separation confirmed intentional — PR #997 (merged 2026-07-03)
+- [x] OD-8 DONE: Stale clones cleaned, ADR-120 enforcement active — PR #987 (merged 2026-07-03)
+- [x] OD-9 DONE: Orphan repos inventoried — PR #996 (merged 2026-07-03); GitHub archive = operator action (non-blocking)
+
+**API Contracts:**
+- [x] Contracts 3.1..3.5: N/A (Sandbox) — gate removed per ADR-156
+
+**Test Coverage (verified 2026-07-03 in banxe-emi-stack):**
+- [x] services/payment/ 98% ≥80% ✅
+- [x] services/ledger/ 98% ≥80% ✅
+- [x] services/recon/ covered via safeguarding_recon (98%) ✅
+- [x] services/safeguarding-engine/ ≥80% ✅ (audit_trail 96%, reconciler 85%)
+- [x] services/aml/ 86% ≥80% ✅
+- [x] services/kyc/ 96% ≥80% ✅
+- [x] services/reporting/ 100% ≥80% ✅
+- [x] CI coverage gate green (project overall 91.87%) ✅
+
+**External Blockers:**
+- [x] S-5..S-8: N/A (Sandbox) — gate removed per ADR-156
+
+**Infrastructure & Governance:**
+- [x] Deployment manifest created — PR #270 (banxe-emi-stack, 27 services)
+- [x] Guardian append-only verification: guardian-ledger active (required CI gate)
+- [x] IL ledger shard sync: REMOVED=0, 531 shards, IL-max=862
+- [x] 70 passports in STAFF-MATRIX-v3 validated — PR #957 (merged 2026-07-03)
+
+### Phase 3 Status
+
+**Phase 3 (SSOT / org-code-runtime reconciliation): OPEN as of 2026-07-04.**
+
+Technical protections remain fully enforced per ADR-156 §"Technical Protections Preserved".
+
+---
+
+**Amendment-001 ends. Append-only I-24.**
