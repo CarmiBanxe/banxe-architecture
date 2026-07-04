@@ -41,4 +41,25 @@ for c in "${cases[@]}"; do
     printf '✗ EXPECTED %s GOT %s  %s\n' "$exp" "$got" "$b"; fail=1
   fi
 done
-if [ "$fail" -eq 0 ]; then echo "ALL CASES GREEN (${#cases[@]} cases)"; else echo "CASES FAILED"; exit 1; fi
+
+# ── ADR-158 push-safety: pure is_protected_ref() case table (PROTECTED = direct push blocked) ──
+protected_cases=(
+  "refs/heads/main|PROTECTED"
+  "refs/heads/master|PROTECTED"
+  "main|PROTECTED"
+  "master|PROTECTED"
+  "refs/heads/agent/factory/adr158/push-safety-guard|OK"
+  "agent/central/c1/x|OK"
+  "refs/heads/develop|OK"
+)
+for c in "${protected_cases[@]}"; do
+  r="${c%|*}"; exp="${c##*|}"
+  if is_protected_ref "$r"; then got=PROTECTED; else got=OK; fi
+  if [ "$got" = "$exp" ]; then
+    printf '✓ %-9s %s\n' "$got" "$r"
+  else
+    printf '✗ EXPECTED %s GOT %s  %s\n' "$exp" "$got" "$r"; fail=1
+  fi
+done
+
+if [ "$fail" -eq 0 ]; then echo "ALL CASES GREEN (${#cases[@]} name + ${#protected_cases[@]} push-safety)"; else echo "CASES FAILED"; exit 1; fi
