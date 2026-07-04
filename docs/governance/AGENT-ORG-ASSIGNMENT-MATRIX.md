@@ -107,14 +107,17 @@ line to the Board** (canon §4: `banxe_aml_orchestrator` = MLRO/Financial-Crime,
 | internal_audit_agent | Internal Audit (independent) | Internal Audit (Grant Thornton, outsourced) | RED | L2_REVIEW | 3rd Line |
 | safeguarding_audit_agent | Internal Audit / Safeguarding | Head of Internal Audit | RED | L2_REVIEW | 3rd Line |
 
-## §UNMAPPED — escalate to operator (passport has no department AND no clear canon placement — NOT invented)
-| agent_id | signals available | why UNMAPPED |
-|---|---|---|
-| clickhouse_writer | tz=GREEN, no department, no human_double | data-infra utility; department not in passport, no canon placement — **operator to assign (likely CTO/Data)** |
-| spec-first-auditor / spec_first_auditor | tz=AMBER, L2, no department | factory/governance tooling, not a bank department — **operator to confirm (factory-side, may not belong in bank org)** |
+## §UNMAPPED — PLACEMENT PROPOSED (pending operator ratification; see `UNMAPPED-AGENTS-PLACEMENT.md`)
+> Resolved from **passport function only** (not invented); operator ratifies the final org-call. Full rationale
+> + alternatives: `docs/governance/UNMAPPED-AGENTS-PLACEMENT.md`.
+| agent_id | passport function (evidence) | PROPOSED placement | status |
+|---|---|---|---|
+| clickhouse_writer | "ClickHouse Audit Writer" — GREEN L3 adapter persisting DecisionEvents to ClickHouse (CTX-03, DORA 5-yr) | **PROPOSED → CTO / Data-Analytics** (Head of Data; peer of `data_lake_elt_agent`) · alt: Internal Audit (consumer) | **PROPOSED (pending ratification)** |
+| spec-first-auditor / spec_first_auditor | "Spec-First Auditor" — CTX-00-DEVELOPER methodology controller, `~/developer/` audit script | **PROPOSED → Developer/Factory plane governance-tooling (out-of-bank-org)** · alt: CTO / Engineering-Developer-Platform | **PROPOSED (pending ratification)** |
 
-**Summary:** ~**68 of 70** placed by passport-department or canon §4 (aml line); **2 UNMAPPED** (clickhouse_writer,
-spec_first_auditor) escalated — **no department invented for them.** Vertical (V) = `reports_to` per org-chart;
+**Summary:** **70/70 placed** — ~68 by passport-department / canon §4, and the **2 former UNMAPPED now carry an
+evidence-grounded PROPOSED placement** (pending operator ratification; `UNMAPPED-AGENTS-PLACEMENT.md`). **0
+unmapped remaining.** Vertical (V) = `reports_to` per org-chart;
 Horizontal (H) = `collaborates_with` per swarm co-membership. Three Lines of Defence per canon §6.
 
 ## Anchors
