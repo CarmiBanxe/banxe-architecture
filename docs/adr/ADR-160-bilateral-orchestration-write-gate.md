@@ -29,13 +29,14 @@ not renumbered; this forward corrective renames only this document.
   install-hooks, so it is deliberately **not** done in this doc-only renumber.
 - **D-1 (settings.json write-gate, Appendix A) is operator-only and NOT applied.**
 
-**Deferred governance reconciliation (NOT resolved in this renumber — flagged for a follow-up amendment):**
-- §G assigns "GUARDIAN OF CANON | **Terminal A (Central)**", which (a) fuses two distinct actors — per
-  **ADR-153**, Terminal A **is** the Software Factory (LEFT), and Central is a **separate** arbiter; and
-  (b) contradicts **ADR-154**, which canonizes the **factory as the single arbiter** of shared-space
-  boundaries. §F's "A↔Factory" axis is likewise a self-reference (A *is* the Factory). These require a
-  governance decision (amend ADR-154, or restructure §F/§G to actor-named axes Central↔Factory[A] /
-  Central↔TRADING-001[B] per ADR-153's alias note) and are **out of scope for this numbering corrective**.
+**Governance reconciliation — RESOLVED via scope-separation (operator ruling 2026-07-05; no amendment to ADR-154):**
+- The earlier §G fusion "GUARDIAN OF CANON | Terminal A (Central)" is corrected: **Central** (a *separate*
+  actor per **ADR-153**, NOT Terminal A) is the **canon / write-gate authority**; the **Factory** (= Terminal A
+  / LEFT) is the **executor** *and* — per **ADR-154**, at a **different scope** — the shared-space **concurrency**
+  arbiter (IL / branch / ledger / worktree). The two arbiter roles coexist without conflict, so **ADR-154 is
+  referenced, not amended**. §F's "A↔Factory" self-reference is rewritten to actor-named axes
+  **Central↔Factory[A]** / **Central↔TRADING-001[B]** (Central = hub) per ADR-153's alias note. See §F header,
+  the §G "Scope Separation" note, and §H.
 
 ---
 
@@ -59,7 +60,7 @@ factory a soft path around governance.
 
 **Gap 3 — Unilateral visibility.**
 Terminal A (Software Factory) and Central share no real-time action log. Factory
-merges, pushes, and rebases are invisible to Terminal A mid-session, causing
+merges, pushes, and rebases are invisible to Central mid-session, causing
 coordination collisions and duplicate work.
 
 **Scope (Sandbox / ADR-156):** All S-1..S-8 regulatory gates are N/A. This ADR
@@ -119,13 +120,13 @@ Rules:
 - Append-only (I-24): no edits to existing rows
 - Write BEFORE the action (intent record), append OUTCOME row after
 - All terminals (A, B, Factory, Central) write here
-- Terminal A reads ACTION-LEDGER before each session step
+- Central reads ACTION-LEDGER before each session step
 
 ### D-4: SINGLE-WRITER LOCK
 
 Only one terminal writes to a given branch/repo at a time. The writing terminal
 records its intent in ACTION-LEDGER before first push and OUTCOME on completion.
-Terminal A seeing a FACTORY lock must pause and coordinate via ACTION-LEDGER
+Central (or a peer terminal) seeing a FACTORY lock must pause and coordinate via ACTION-LEDGER
 (ACTOR = TERMINAL-A, ACTION = PAUSE).
 
 ### D-5: FACTORY SELF-APPLICATION PROHIBITION
@@ -137,23 +138,28 @@ The factory MUST NOT:
 - Modify `settings.json`, `.claude/` config, or hook scripts without explicit
   per-step operator instruction
 
-### F) SYNC-PROTOCOL (mandatory in every A↔Factory exchange)
+### F) SYNC-PROTOCOL (mandatory in every Central↔Factory exchange)
 
-Every exchange between Terminal A and Factory MUST carry structured sync blocks.
+> **Actor naming (ADR-153 alias note):** the sync axis is **Central ↔ Factory**, not "A↔Factory".
+> Per ADR-153, **Terminal A *is* the Software Factory (LEFT)** — so "A↔Factory" was a self-reference;
+> **Central** is the *separate* governance/arbiter actor. The parallel axis is **Central ↔ TRADING-001
+> (Terminal B, RIGHT)**, with Central the mandatory hub of both (see §H).
+
+Every exchange between Central and the Factory MUST carry structured sync blocks.
 An exchange without a sync block is **invalid** — the action is not credited.
 
-**A→Factory (task assignment) MUST include a CONTEXT block:**
+**Central→Factory (task assignment) MUST include a CONTEXT block:**
 ```
 CONTEXT:
   phase:             <current phase of the master program>
   node/task:         <current node or task identifier>
-  terminal_a_state:  <what Terminal A is working on>
+  central_state:     <what Central is orchestrating>
   expected_from_factory: <what the factory is asked to produce>
   action_ledger_ref: <timestamp/row of PENDING entry already written>
 ```
 A task without this CONTEXT block is invalid and factory MUST NOT execute it.
 
-**Factory→A (response) MUST include a BEST-SOLUTION REPORT:**
+**Factory→Central (response) MUST include a BEST-SOLUTION REPORT:**
 ```
 BEST-SOLUTION REPORT:
   what_done:         <list of changes made>
@@ -163,7 +169,7 @@ BEST-SOLUTION REPORT:
   awaiting_operator: <list of operator actions required>
   action_ledger_ref: <timestamp/row of OUTCOME row written>
 ```
-A response without this BEST-SOLUTION REPORT is invalid and Terminal A MUST reject it.
+A response without this BEST-SOLUTION REPORT is invalid and Central MUST reject it.
 
 **Bidirectional and mandatory:** both sides carry their sync block; a missing block
 from either side invalidates the exchange regardless of technical correctness.
@@ -172,31 +178,41 @@ from either side invalidates the exchange regardless of technical correctness.
 
 | Role | Actor | Responsibilities |
 |------|-------|-----------------|
-| **GUARDIAN OF CANON** | Terminal A (Central) | Sole owner of canon and orchestration rules. Validates every exchange against Sync-Protocol and write-gate. Rejects violations (force-push, main-checkout work, self-push/merge, absent sync block). Maintains ACTION-LEDGER as arbiter. Decides by BEST-DECISION principle after audit. |
-| **Executor** | Factory (Claude Code) | Produces code and verifies quality under Terminal A arbitration. NEVER pushes / merges / modifies `settings.json`. Synchronises via Sync-Protocol. Returns BEST-SOLUTION REPORT. |
+| **GUARDIAN OF CANON** | **Central** (governance arbiter — a *separate* actor per ADR-153, **NOT** Terminal A) | Owner of canon and orchestration rules for the write-gate. Validates every exchange against Sync-Protocol and write-gate. Rejects violations (force-push, main-checkout work, self-push/merge, absent sync block). Maintains ACTION-LEDGER as write-gate arbiter. Decides by BEST-DECISION principle after audit. |
+| **Executor + concurrency arbiter** | **Factory** (= Terminal A / LEFT, Claude Code) | Produces code and verifies quality under Central's canon arbitration. NEVER pushes / merges / modifies `settings.json`. Synchronises via Sync-Protocol. Returns BEST-SOLUTION REPORT. **Separately** — per **ADR-154** — the Factory is the single arbiter of shared-space *concurrency* boundaries (IL / branch / ledger / worktree); that is a **different scope** from Central's canon/write-gate authority and does not conflict (see Scope Separation note). |
 | **Sole remote-write window** | Operator | Only party that executes push/merge/merge-sequence to remote. Applies prepared artefacts (settings.json diff, hook install commands) as supplied by factory. |
-| **Spec projects** | Terminal B | Operates under the same Sync-Protocol and write-gate as Factory; same prohibitions apply. |
+| **Spec projects** | Terminal B (TRADING-001, RIGHT) | Operates under the same Sync-Protocol and write-gate as the Factory; same prohibitions apply. |
 
-Accountability chain: Factory → Terminal A (canon guardian) → Operator (remote write).
-No actor may skip a link. An exchange that bypasses Terminal A arbitration is void.
+Accountability chain: Factory (Terminal A) → **Central** (canon guardian) → Operator (remote write).
+No actor may skip a link. An exchange that bypasses **Central** arbitration is void.
+
+> **Scope Separation (ADR-153 / ADR-154 reconciliation — no amendment to either).** Two *distinct*
+> arbiter roles coexist without conflict: **(1)** the Factory (Terminal A / LEFT) is the **shared-space
+> concurrency arbiter** — IL numbering, branch namespace, ledger, worktree isolation — per **ADR-154**
+> (unchanged); **(2)** **Central** is the **canon / write-gate authority** over the Factory per this ADR.
+> ADR-154's "factory = single arbiter" is scoped to *concurrency boundaries*, not to canon/write-gate
+> governance; this ADR adds the latter and assigns it to Central. Because the scopes differ, ADR-154 is
+> **referenced, not amended**. Naming follows ADR-153 (A = Factory = LEFT; Central = separate arbiter;
+> B = TRADING-001 = RIGHT) — the retained "Right Terminal" behavioural alias of the Orchestrating
+> Terminal is NOT topological Terminal B.
 
 ### H) TRI-PARTY SYNC — TERMINAL B
 
 *Added: 2026-07-05 | Source: ADR-160 addendum (agent/factory/adr158b)*
 
-The bilateral A↔Factory protocol of §F/§G is extended to a **trilateral** loop:
-**A ↔ Factory ↔ B**. Terminal B (spec-project lane — novelty scouting,
-`agent/specproj/*`) enters the same Sync-Protocol and Write-Gate with no
-exceptions.
+The bilateral Central↔Factory protocol of §F/§G is extended to a **trilateral** loop:
+**Central ↔ Factory (Terminal A) ↔ Terminal B**, with **Central the mandatory hub** of both axes
+(Central↔Factory and Central↔TRADING-001). Terminal B (spec-project lane — novelty scouting,
+`agent/specproj/*`) enters the same Sync-Protocol and Write-Gate with no exceptions.
 
 #### H-1: Terminal B — Sync-Protocol (mandatory CONTEXT block)
 
-B MUST send a CONTEXT block to Terminal A in two mandatory events:
+B MUST send a CONTEXT block to **Central** in two mandatory events:
 
 **Event 1 — specproj start** (new branch opened):
 ```
-CONTEXT (B→A):
-  direction:         B→A
+CONTEXT (B→Central):
+  direction:         B→Central
   event:             specproj_start
   specproj_id:       <e.g. sp04>
   branch:            agent/specproj/<id>/<slug>
@@ -205,10 +221,10 @@ CONTEXT (B→A):
   action_ledger_ref: <timestamp of PENDING row already written to ACTION-LEDGER>
 ```
 
-**Event 2 — novelty finding handoff** (B→A/Factory):
+**Event 2 — novelty finding handoff** (B→Central/Factory):
 ```
-CONTEXT (B→A):
-  direction:         B→A
+CONTEXT (B→Central):
+  direction:         B→Central
   event:             novelty_found
   specproj_id:       <e.g. sp04>
   novelty_id:        <NOVELTY-COLLECTION-REGISTER.md id>
@@ -216,7 +232,7 @@ CONTEXT (B→A):
   action_ledger_ref: <timestamp of PENDING row>
 ```
 
-An exchange from B **without** a CONTEXT block is invalid — Terminal A MUST reject it.
+An exchange from B **without** a CONTEXT block is invalid — Central MUST reject it.
 A/Factory response MUST include a BEST-SOLUTION REPORT (§F).
 
 #### H-2: Terminal B — Write-Gate (same constraints as Factory)
@@ -231,20 +247,20 @@ A/Factory response MUST include a BEST-SOLUTION REPORT (§F).
 | Merge | Operator only — B MUST NOT self-merge via `gh pr merge` |
 | Settings | B MUST NOT touch `~/.claude/settings.json` |
 
-#### H-3: Novelty Visibility — ACTION-LEDGER integration (B→A direction)
+#### H-3: Novelty Visibility — ACTION-LEDGER integration (B→Central direction)
 
 Every novelty finding MUST produce two artefacts:
 
 1. **NOVELTY-COLLECTION-REGISTER.md entry** — permanent discovery record
-2. **ACTION-LEDGER row** (direction=B→A) — real-time signal to Terminal A
+2. **ACTION-LEDGER row** (direction=B→Central) — real-time signal to Central
 
-This eliminates the asymmetric blind spot: Terminal A sees B's activity in
+This eliminates the asymmetric blind spot: Central sees B's activity in
 ACTION-LEDGER without waiting for a PR. Symmetric with Factory's push/merge duty.
 
-B→A row format (two rows per event — action + sync-context):
+B→Central row format (two rows per event — action + sync-context):
 ```
 | <TIMESTAMP> | TERMINAL-B | NOVELTY  | <novelty-id>: <description> | banxe-architecture | PENDING  |
-| <TIMESTAMP> | TERMINAL-B | SYNC-CTX | direction=B→A | event=novelty_found | specproj=<id> | novelty=<id> | artifact=PR-NNN | ledger_ref=<PENDING ts> |
+| <TIMESTAMP> | TERMINAL-B | SYNC-CTX | direction=B→Central | event=novelty_found | specproj=<id> | novelty=<id> | artifact=PR-NNN | ledger_ref=<PENDING ts> |
 ```
 
 #### H-4: Single-Writer Lock — shared-file coordination
@@ -270,12 +286,12 @@ Rules:
 
 #### H-5: Guardian of Canon extends to Terminal B
 
-Terminal A (§G — Guardian of Canon) validates ALL exchanges involving B:
+Central (§G — Guardian of Canon) validates ALL exchanges involving B:
 - B's CONTEXT blocks checked against §H-1 format
 - B's PRs checked for: IL shard ✓, rebase on main ✓, no `+HEAD:` ✓, ACTION-LEDGER PENDING row ✓
-- B's ACTION-LEDGER rows checked for direction=B→A correctness
+- B's ACTION-LEDGER rows checked for direction=B→Central correctness
 
-An exchange that bypasses Terminal A arbitration — from B or Factory — is void.
+An exchange that bypasses Central arbitration — from B or Factory — is void.
 
 #### H-6: First registered B-entry — PR #1017 (retroactive registration)
 
