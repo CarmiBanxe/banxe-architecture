@@ -24630,3 +24630,18 @@ ratification (REDIS_HOST=100.68.102.48). Closes the desync flagged in ADR-160's 
 - **Deviation:** none.
 
 - **Refs:** ADR-160 §H, ACTION-LEDGER I-24, PR #1020 (merged 2026-07-04T23:15:08Z).
+
+---
+
+### IL-882 - specproj-sp04-adr-ba-novelty-pipeline @ 2026-07-04T21:50:13Z
+
+- **il_ts:** 2026-07-04T21:50:13Z
+- **session_id:** specproj-sp04-adr-ba-novelty-pipeline
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp04-adr-ba-novelty-pipeline/IL-2026-07-04T21-50-13Z--b194bf.md`
+
+### specproj-sp04-adr-ba-novelty-pipeline
+
+- **Instruction:** ADR-159 PROPOSED: B->A novelty auto-handoff pipeline (design only; CI-detect + factory-watcher on evo1; append-only NOVELTY-COLLECTION-REGISTER (B-owned) + NOVELTY-HANDOFF-QUEUE (A-owned); Config-over-Hardcoding governance/novelty-pipeline-config.yaml; no live workflow/watcher shipped; HITL-merge)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
