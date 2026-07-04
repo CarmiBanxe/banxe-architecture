@@ -24453,3 +24453,18 @@ no server-side branch-protection change, no new standalone guard file (would dup
 `docs/adr/ADR-158-push-safety-versioned-pre-push-guard.md` · `scripts/pre-push-branch-name.sh` ·
 `.githooks/pre-push` · `scripts/test-branch-name-gate.sh`. Co-cites ADR-060/102/120/134/ADR-TERMINAL-B-SPEC-LANE.
 Operator orchestration audit 2026-07-04.
+
+---
+
+### IL-875 - agent-factory-adr158-bilateral-orchestration @ 2026-07-04T20:51:06Z
+
+- **il_ts:** 2026-07-04T20:51:06Z
+- **session_id:** agent-factory-adr158-bilateral-orchestration
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr158-bilateral-orchestration/IL-2026-07-04T20-51-06Z--18a50d.md`
+
+### agent-factory-adr158-bilateral-orchestration
+
+- **Instruction:** ADR-158 Bilateral Orchestration & Write-Gate: close force-push bypass + ACTION-LEDGER
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

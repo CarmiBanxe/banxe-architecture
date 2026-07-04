@@ -538,5 +538,6 @@
   "specproj-sp03-single-listener-guard__4599ac490ba0": 868,
   "agent-factory-governance-unmapped-agents-placement__c9e70fafd360": 871,
   "agent-factory-governance-factory-operating-rules-pointer__b0584a994cdf": 872,
-  "agent-factory-adr158-push-safety-guard__e5886e95040f": 873
+  "agent-factory-adr158-push-safety-guard__e5886e95040f": 873,
+  "agent-factory-adr158-bilateral-orchestration__c51506e0bded": 875
 }
