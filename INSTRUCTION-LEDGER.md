@@ -24239,3 +24239,18 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 - **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143, DEGRADED local); unique at author time; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-03T10:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched.
 - **Status:** DONE — guardrail addendum + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Must land before any operator install activity. Blocked installs (hermes/ironclaw) + [BLOCKING] nanoclaw remain operator-gated; mirofish local-build + aider(aider-chat) are the verified-safe sources.**
 - **Refs:** `docs/governance/FRAMEWORK-ADOPTION-SPRINT-B.md` (#992); ADR-148 (no-import-without-license-review); CLAUDE.md §9; #982 (host-audit); ADR-102/119/143/144; #900. Operator engine-install-audit + directive 2026-07-03 (install-provenance guardrail; install nothing; doc-only; no auth bypass).
+
+---
+
+### IL-863 - agent-factory-adr156-sandbox-gate-removal @ 2026-07-04T19:05:10Z
+
+- **il_ts:** 2026-07-04T19:05:10Z
+- **session_id:** agent-factory-adr156-sandbox-gate-removal
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr156-sandbox-gate-removal/IL-2026-07-04T19-05-10Z--3da8cb.md`
+
+### agent-factory-adr156-sandbox-gate-removal
+
+- **Instruction:** ADR-156 sandbox mode — all sign-off gates S-1..S-8 removed, Phase 3 entry SATISFIED
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

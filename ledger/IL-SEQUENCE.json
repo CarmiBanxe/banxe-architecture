@@ -530,5 +530,6 @@
   "agent-factory-consolidation-agent-org-liveness__78244542c0ab": 859,
   "agent-factory-consolidation-engine-fleet-sprint-b__1d55490e25b4": 860,
   "agent-factory-fix-build-ledger-no-silent-degrade__4b46fbe06db6": 861,
-  "agent-factory-consolidation-sprintb-provenance-guardrail__e8ce0c510f7b": 862
+  "agent-factory-consolidation-sprintb-provenance-guardrail__e8ce0c510f7b": 862,
+  "agent-factory-adr156-sandbox-gate-removal__cb6ac78a5c5c": 863
 }
