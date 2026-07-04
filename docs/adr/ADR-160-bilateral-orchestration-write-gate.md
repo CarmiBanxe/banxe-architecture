@@ -1,10 +1,41 @@
-# ADR-158 — Bilateral Orchestration & Write-Gate
+# ADR-160 — Bilateral Orchestration & Write-Gate
 
 **Date:** 2026-07-04
-**Status:** Accepted
-**Author:** Factory (agent/factory/adr158)
+**Status:** Accepted (renumbered 158 → 160; D-1/D-2 **NOT yet implemented on main** — see Renumber & Status Note)
+**Author:** Factory (authored on branch `agent/factory/adr158/bilateral-orchestration`, merged as #1018)
 **Supersedes:** none (additive; complements ADR-120, ADR-121, ADR-153, ADR-154, ADR-156)
 **Tags:** governance, orchestration, security, write-gate, action-ledger
+
+---
+
+## Renumber & Status Note (corrective, ADR-119)
+
+This ADR merged (#1018) numbered **ADR-158**, which was **already taken** by the merged push-safety ADR
+(`ADR-158-push-safety-versioned-pre-push-guard.md`, #1016) — a duplicate ordinal (ADR-119 unique-number
+invariant). It is renumbered here to **ADR-160** (159 is held by #1017). Per ADR-119 the *merged* number is
+not renumbered; this forward corrective renames only this document.
+
+**Implementation-status (factual, what is actually on `main`) + a landed defect:**
+- **D-2's four write-gate guards DID land** in main's committed `.githooks/pre-push` as a **v2 union**
+  (G-1 force-refspec, G-2 worktree, G-3 stash, G-4 role, G-5 branch-name/ADR-060, **G-5+ protected-ref =
+  the ADR-158 push-safety guard from #1016**). The union is correct and live.
+- **⚠ BUT the installed hook is DESYNCED from its source mirror.** `scripts/pre-push-branch-name.sh`
+  (source of truth per #1016) was **not** updated — it remains push-safety-only. Because
+  `scripts/install-hooks.sh` copies **source → installed**, any bootstrap **silently reverts the four
+  write-gate guards**, breaking the #1016 byte-identical invariant. This is a regression risk that needs a
+  **dedicated hook-sync follow-up** (sync `scripts/pre-push-branch-name.sh` up to the v2 union; extend the
+  test harness). That follow-up is also where the hook's **G-1..G-4 comments are relabeled ADR-158 → ADR-160**
+  (keeping G-5+ = ADR-158 push-safety) — relabeling only the installed copy here would be reverted by
+  install-hooks, so it is deliberately **not** done in this doc-only renumber.
+- **D-1 (settings.json write-gate, Appendix A) is operator-only and NOT applied.**
+
+**Deferred governance reconciliation (NOT resolved in this renumber — flagged for a follow-up amendment):**
+- §G assigns "GUARDIAN OF CANON | **Terminal A (Central)**", which (a) fuses two distinct actors — per
+  **ADR-153**, Terminal A **is** the Software Factory (LEFT), and Central is a **separate** arbiter; and
+  (b) contradicts **ADR-154**, which canonizes the **factory as the single arbiter** of shared-space
+  boundaries. §F's "A↔Factory" axis is likewise a self-reference (A *is* the Factory). These require a
+  governance decision (amend ADR-154, or restructure §F/§G to actor-named axes Central↔Factory[A] /
+  Central↔TRADING-001[B] per ADR-153's alias note) and are **out of scope for this numbering corrective**.
 
 ---
 
