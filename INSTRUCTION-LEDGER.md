@@ -24254,3 +24254,25 @@ Stale local clone and worktree cleanup plan for Legion workstation.
 
 - **Instruction:** ADR-156 sandbox mode — all sign-off gates S-1..S-8 removed, Phase 3 entry SATISFIED
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-864 - agent-factory-consolidation-repo-manifest @ 2026-07-03T09:00:00Z
+
+- **il_ts:** 2026-07-03T09:00:00Z
+- **session_id:** agent-factory-consolidation-repo-manifest
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-consolidation-repo-manifest/IL-2026-07-03T09-00-00Z--repo-manifest.md`
+
+### [OWNER: A] Repo manifest (config-as-data) complementing #985 — moves/deletes nothing; Rule-6 report; I-18/I-20 excluded
+- **Decision:** Per operator, authored `config/consolidation/repo-manifest.yaml` (machine-readable canonical registry) + `docs/governance/REPO-MANIFEST-NOTES.md` (notes/ORCHESTRATION-NOTICE) as the DATA-LAYER complement to `CONSOLIDATION-PLAN-PHASE-2.md` (#985, prose). Step 0 (verify-before-author, L-02) done: read #985 body + file (436-line prose, NO machine-readable manifest) → complementary, not duplicate. Changed ONLY these 2 files + paired shard. NO repo moved/deleted/rewritten; NO dirty checkout touched (Rule 6 report-only); NO legal/ss1/GUYON read; NO auth bypassed; #985 NOT duplicated. **PREPARE-ONLY**, Draft PR. Owner A.
+- **Manifest (config-as-data, CLAUDE.md §10):** per repo — name, canonical_remote, role (canonical|mirror|archive|external|tool), local_paths[], archive_paths[], perimeter_class (banxe|external|EXCLUDED), dirty_uncommitted, last_commit_date, consolidate. Canonical = CarmiBanxe/* remotes; ~/banxe/* + /tmp/banxe-arch-temp + ~/wt/temp-clone = role/archive_paths (LABEL, not delete — cleanup owned by #987). External (AMLGentex=aidotse, AMLSim=IBM, OpenRLHF, llama.cpp=ggml, claude-code=instructkr) = perimeter_class external, consolidate=false. legal-canon/legal-case-guyon-laval/ss1/legal-reference-fr = perimeter_class EXCLUDED (I-18/I-20), consolidate=false.
+- **Rule-6 precondition:** 6 dirty repos MUST be operator-committed/stashed BEFORE any move — banxe-emi-stack=59, AMLGentex=54, MiroFish=37, banxe-ui=29, MetaClaw=10, banxe-architecture=5. Recorded in manifest rule6_dirty_precondition + notes §2. NOTHING moved blind; dirty checkouts NOT touched (operator-owned local state).
+- **ORCHESTRATION-NOTICE (notes §3):** to Central + Right terminals — canonical=CarmiBanxe/*, mirrors=archive-label, external=vendor/consolidate-false, EXCLUDED=I-18/I-20; coordinates with #985 (data layer of its plan), #987 (cleanup), no conflict, no terminal work overwritten.
+- **Boundaries:** ONLY repo-manifest.yaml + REPO-MANIFEST-NOTES.md + this shard. 0 repos moved/deleted; mirrors labelled not deleted; no dirty checkout touched; no legal/ss1/GUYON; #985 not duplicated (Step 0 verified prose-only); no auth bypass; data from operator read-only recon (point-in-time). 0 off-scope.
+- **Anti-dup (ADR-102) pointer-first:** Step 0 read of #985 (prose, no data-manifest) confirms complement-not-duplicate; references #985 (plan), #987 (cleanup), config/fleet/server-inventory.yaml (#959 precedent), CLAUDE.md §10 / I-18/I-20, parallel-session-isolation Rule 6 — restates none; data-file + notes, no code, no repo move.
+- **Scope/flow:** authored per #900 — docs + paired shard ATOMIC; NO hand-edit of generated ledger; NO hardcoded IL (build_ledger mints, ADR-119 Rule 8). ⚠️ redis degraded → local mint; if collision reset+re-mint (L-06), shard after reset (L-05).
+- **Proof:** IL provisional (ADR-119 Rule 8) — max+1 over origin/main via allocator (ADR-143, DEGRADED local); unique at author time; 1:1 (ADR-144). Append-only: ONE tail shard, il_ts `2026-07-03T09:00:00Z` > main max. Fresh worktree off origin/main (ADR-120/060). FROZEN/.canon untouched. YAML valid (asserted).
+- **Status:** DONE — repo-manifest.yaml + notes + shard. **DRAFT PR; DO NOT MERGE — operator HITL. Precondition for #985 Sprint-1: operator commits the 6 dirty repos (Rule 6). Cleanup of archive mirrors = #987. Consolidation execution = #985 program.**
+- **Refs:** `config/consolidation/repo-manifest.yaml` (new); `docs/governance/REPO-MANIFEST-NOTES.md` (new); #985 (CONSOLIDATION-PLAN-PHASE-2); #987 (stale-clone cleanup); `config/fleet/server-inventory.yaml` (#959); CLAUDE.md §10 / I-18/I-20; parallel-session-isolation Rule 6; ADR-102/119/143/144; #900. Operator directive 2026-07-03 (config-as-data manifest complementing #985; move/delete nothing; Rule-6 report; exclude legal/ss1; notify terminals).

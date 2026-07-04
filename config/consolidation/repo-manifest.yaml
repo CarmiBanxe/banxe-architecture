@@ -1,0 +1,326 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Repo manifest — CONFIG-AS-DATA canonical registry (Config-over-Hardcoding, CLAUDE.md §10)
+#
+# COMPLEMENTS docs/governance/CONSOLIDATION-PLAN-PHASE-2.md (#985, prose plan) — it does NOT
+# duplicate it: this is the machine-readable data-file (as config/fleet/server-inventory.yaml
+# complements the fleet policy prose). Notes + Rule-6 precondition: docs/governance/REPO-MANIFEST-NOTES.md.
+#
+# DERIVED from the operator consolidation-recon (2026-07-03), read-only. This file MOVES/DELETES/REWRITES
+# NO repo — it records canonical vs mirror vs external vs EXCLUDED. Mirrors are role=archive (a label,
+# not a delete). legal/ss1/guyon = perimeter_class EXCLUDED (I-18/I-20), consolidate=false.
+# ─────────────────────────────────────────────────────────────────────────────
+schema_version: "1.0.0"
+status: draft                 # prepare-only; operator-ratified consolidation lives in #985 program
+source: "operator consolidation-recon 2026-07-03 (read-only); pinned point-in-time"
+
+# perimeter_class: banxe (CarmiBanxe product/governance) | external (3rd-party, not ours) | EXCLUDED (I-18/I-20)
+# role: canonical (the source-of-truth checkout) | mirror | archive (stale duplicate, KEEP-as-label) | tool
+repos:
+  # ── Banxe canonical (CarmiBanxe/*) ──
+  - name: banxe-architecture
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-architecture.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-architecture"]
+    archive_paths: ["/home/mmber/banxe/banxe-architecture", "/tmp/banxe-arch-temp", "/home/mmber/wt/temp-clone"]
+    perimeter_class: banxe
+    dirty_uncommitted: 5
+    last_commit_date: "2026-07-02"
+    consolidate: true
+  - name: banxe-emi-stack
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-emi-stack.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-emi-stack"]
+    archive_paths: ["/home/mmber/banxe/banxe-emi-stack"]
+    perimeter_class: banxe
+    dirty_uncommitted: 59        # [Rule 6] operator MUST commit/stash before any move
+    last_commit_date: "2026-07-03"
+    consolidate: true
+  - name: banxe-ui
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-ui.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-ui"]
+    archive_paths: ["/home/mmber/banxe/banxe-ui"]
+    perimeter_class: banxe
+    dirty_uncommitted: 29        # [Rule 6]
+    last_commit_date: "2026-06-27"
+    consolidate: true
+  - name: banxe-payment-core
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-payment-core.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-payment-core"]
+    archive_paths: ["/home/mmber/banxe/banxe-payment-core"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-06-09"
+    consolidate: true            # NB: #980 marks REFERENCE-ONLY / Phase-3 gate — see #985 program
+  - name: banxe-platform
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-platform.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-platform"]
+    archive_paths: ["/home/mmber/banxe/banxe-platform"]
+    perimeter_class: banxe
+    dirty_uncommitted: 1
+    last_commit_date: "2026-04-15"
+    consolidate: true
+  - name: banxe-monitoring
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-monitoring.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-monitoring"]
+    archive_paths: []
+    perimeter_class: banxe
+    dirty_uncommitted: 9
+    last_commit_date: "2026-05-22"
+    consolidate: true
+  - name: banxe-infra
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-infra.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-infra"]
+    archive_paths: ["/home/mmber/banxe/banxe-infra"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-04-12"
+    consolidate: true
+  - name: banxe-ai-infrastructure
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-ai-infrastructure.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-ai-infrastructure"]
+    archive_paths: ["/tmp/factory-infra-alertrules", "/tmp/factory-infra-liveness"]
+    perimeter_class: banxe
+    dirty_uncommitted: 2
+    last_commit_date: "2026-07-01"
+    consolidate: true
+  - name: banxe-business-processes
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-business-processes.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-business-processes"]
+    archive_paths: ["/home/mmber/banxe/banxe-business-processes"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-06-08"
+    consolidate: true
+  - name: banxe-training-data
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-training-data.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-training-data"]
+    archive_paths: ["/home/mmber/banxe/banxe-training-data"]
+    perimeter_class: banxe
+    dirty_uncommitted: 8
+    last_commit_date: "2026-04-14"
+    consolidate: true
+  - name: banxe-lexisnexis-distro
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-lexisnexis-distro.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-lexisnexis-distro"]
+    archive_paths: ["/home/mmber/banxe/banxe-lexisnexis-distro"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-04-12"
+    consolidate: true
+  - name: banxe-mirofish
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-mirofish.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-mirofish"]
+    archive_paths: ["/home/mmber/banxe/banxe-mirofish"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-04-12"
+    consolidate: true
+  - name: banxe-repo-template
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-repo-template.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe-repo-template"]
+    archive_paths: ["/home/mmber/factory/banxe-repo-template", "/home/mmber/factory/.tpl-banxe-repo-template"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-06-19"
+    consolidate: true
+  - name: banxe-trading-frontend
+    canonical_remote: "https://github.com/CarmiBanxe/banxe-trading-frontend.git"
+    role: canonical
+    local_paths: ["/home/mmber/factory/banxe-trading-frontend"]
+    archive_paths: []
+    perimeter_class: banxe
+    dirty_uncommitted: 2
+    last_commit_date: "2026-06-15"
+    consolidate: true
+  - name: MetaClaw
+    canonical_remote: "git@github.com:CarmiBanxe/MetaClaw.git"
+    role: canonical
+    local_paths: ["/home/mmber/MetaClaw"]
+    archive_paths: ["/home/mmber/banxe/MetaClaw"]
+    perimeter_class: banxe
+    dirty_uncommitted: 10        # [Rule 6]
+    last_commit_date: "2026-07-02"
+    consolidate: true
+  - name: MiroFish
+    canonical_remote: "git@github.com:CarmiBanxe/MiroFish.git"
+    role: canonical
+    local_paths: ["/home/mmber/MiroFish"]
+    archive_paths: ["/home/mmber/banxe/MiroFish"]
+    perimeter_class: banxe
+    dirty_uncommitted: 37        # [Rule 6]
+    last_commit_date: "2026-04-12"
+    consolidate: true
+  - name: factory
+    canonical_remote: "https://github.com/CarmiBanxe/factory.git"
+    role: canonical
+    local_paths: ["/home/mmber/factory"]
+    archive_paths: []
+    perimeter_class: banxe
+    dirty_uncommitted: 2
+    last_commit_date: "2026-06-06"
+    consolidate: true
+  - name: developer-core
+    canonical_remote: "git@github.com:CarmiBanxe/developer-core.git"
+    role: canonical
+    local_paths: ["/home/mmber/developer-core"]
+    archive_paths: ["/home/mmber/banxe/developer-core"]
+    perimeter_class: banxe
+    dirty_uncommitted: 4
+    last_commit_date: "2026-06-27"
+    consolidate: true
+  - name: crypto-ops-monitor
+    canonical_remote: "git@github.com:CarmiBanxe/crypto-ops-monitor.git"
+    role: canonical
+    local_paths: ["/home/mmber/crypto-ops-monitor"]
+    archive_paths: ["/home/mmber/banxe/crypto-ops-monitor"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-04-20"
+    consolidate: true
+  - name: braslina
+    canonical_remote: "https://github.com/CarmiBanxe/braslina.git"
+    role: canonical
+    local_paths: ["/home/mmber/braslina"]
+    archive_paths: ["/home/mmber/banxe/braslina", "/home/mmber/braslina/repo"]
+    perimeter_class: banxe
+    dirty_uncommitted: 4
+    last_commit_date: "2026-04-20"
+    consolidate: true
+  - name: vibe-coding
+    canonical_remote: "git@github.com:CarmiBanxe/vibe-coding.git"
+    role: canonical
+    local_paths: ["/home/mmber/vibe-coding"]
+    archive_paths: ["/home/mmber/banxe/vibe-coding"]
+    perimeter_class: banxe
+    dirty_uncommitted: 3
+    last_commit_date: "2026-06-27"
+    consolidate: true
+  - name: obsidian-vault
+    canonical_remote: "git@github.com:CarmiBanxe/obsidian-vault.git"
+    role: canonical
+    local_paths: ["/home/mmber/obsidian-vault"]
+    archive_paths: ["/home/mmber/banxe/obsidian-vault"]
+    perimeter_class: banxe
+    dirty_uncommitted: 0
+    last_commit_date: "2026-04-12"
+    consolidate: true
+  - name: gpt-archive-toolkit
+    canonical_remote: "git@github.com:CarmiBanxe/gpt-archive-toolkit.git"
+    role: canonical
+    local_paths: ["/home/mmber/gpt-archive-toolkit"]
+    archive_paths: []
+    perimeter_class: banxe
+    dirty_uncommitted: 11
+    last_commit_date: "2026-04-12"
+    consolidate: true
+  - name: banxe-collaboration
+    canonical_remote: "git@github.com:CarmiBanxe/banxe-collaboration.git"
+    role: canonical
+    local_paths: ["/home/mmber/banxe/banxe-collaboration"]
+    archive_paths: []
+    perimeter_class: banxe
+    dirty_uncommitted: 2
+    last_commit_date: "2026-05-20"
+    consolidate: true
+
+  # ── External (3rd-party — NOT ours; consolidate=false, reference/vendor only) ──
+  - name: AMLGentex
+    canonical_remote: "https://github.com/aidotse/AMLGentex.git"
+    role: external
+    local_paths: ["/home/mmber/AMLGentex"]
+    perimeter_class: external
+    dirty_uncommitted: 54        # [Rule 6] local edits to a 3rd-party checkout — operator review
+    last_commit_date: "2026-02-22"
+    consolidate: false
+  - name: AMLSim
+    canonical_remote: "https://github.com/IBM/AMLSim.git"
+    role: external
+    local_paths: ["/home/mmber/AMLSim"]
+    perimeter_class: external
+    dirty_uncommitted: 3
+    last_commit_date: "2022-02-14"
+    consolidate: false
+  - name: OpenRLHF
+    canonical_remote: "https://github.com/OpenRLHF/OpenRLHF.git"
+    role: external
+    local_paths: ["/home/mmber/OpenRLHF"]
+    perimeter_class: external
+    dirty_uncommitted: 2
+    last_commit_date: "2026-04-03"
+    consolidate: false
+  - name: llama.cpp
+    canonical_remote: "https://github.com/ggml-org/llama.cpp.git"
+    role: external
+    local_paths: ["/home/mmber/llama.cpp"]
+    perimeter_class: external
+    dirty_uncommitted: 0
+    last_commit_date: "2026-05-01"
+    consolidate: false
+  - name: claude-code
+    canonical_remote: "https://github.com/instructkr/claude-code"
+    role: external
+    local_paths: ["/home/mmber/claude-code"]
+    perimeter_class: external
+    dirty_uncommitted: 0
+    last_commit_date: "2026-03-31"
+    consolidate: false
+
+  # ── EXCLUDED — I-18/I-20 (legal / ss1 / GUYON) — NEVER consolidated with Banxe, NEVER read here ──
+  - name: legal-canon
+    canonical_remote: "git@github.com:CarmiBanxe/legal-canon.git"
+    role: canonical
+    local_paths: ["/home/mmber/legal/legal-canon"]
+    perimeter_class: EXCLUDED     # I-18/I-20 — separate contour
+    dirty_uncommitted: 0
+    last_commit_date: "2026-05-20"
+    consolidate: false
+  - name: legal-case-guyon-laval
+    canonical_remote: "git@github.com:CarmiBanxe/legal-case-guyon-laval.git"
+    role: canonical
+    local_paths: ["/home/mmber/legal/legal-case-guyon-laval"]
+    perimeter_class: EXCLUDED     # I-18/I-20 — GUYON separate contour
+    dirty_uncommitted: 0
+    last_commit_date: "2026-05-20"
+    consolidate: false
+  - name: ss1
+    canonical_remote: "git@github.com:CarmiBanxe/ss1.git"
+    role: canonical
+    local_paths: ["/home/mmber/legal/ss1"]
+    perimeter_class: EXCLUDED     # I-18/I-20 — SS1/GUYON separate contour
+    dirty_uncommitted: 0
+    last_commit_date: "2026-05-13"
+    consolidate: false
+  - name: legal-reference-fr
+    canonical_remote: "git@github.com:CarmiBanxe/legal-reference-fr.git"
+    role: canonical
+    local_paths: ["/home/mmber/legal-reference-fr", "/home/mmber/legal/legal-reference-fr"]
+    perimeter_class: EXCLUDED     # I-18/I-20 — legal contour
+    dirty_uncommitted: 0
+    last_commit_date: "2026-06-27"
+    consolidate: false
+
+# Rule-6 precondition (see REPO-MANIFEST-NOTES.md): repos with dirty_uncommitted > 0 MUST be
+# operator-committed/stashed BEFORE any consolidation move. Nothing is moved by this manifest.
+rule6_dirty_precondition:
+  - {repo: banxe-emi-stack, uncommitted: 59}
+  - {repo: AMLGentex, uncommitted: 54}
+  - {repo: MiroFish, uncommitted: 37}
+  - {repo: banxe-ui, uncommitted: 29}
+  - {repo: MetaClaw, uncommitted: 10}
+  - {repo: banxe-architecture, uncommitted: 5}
+
+coordination:
+  extends: "docs/governance/CONSOLIDATION-PLAN-PHASE-2.md (#985) — data-file for its prose plan; NOT a duplicate"
+  cleanup_owner: "#987 (stale-clone cleanup) — archive_paths are labels here, cleanup executed there"
+  excluded_contour: "I-18/I-20 (legal/ss1/GUYON) — perimeter_class=EXCLUDED, consolidate=false, never read"
