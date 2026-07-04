@@ -180,6 +180,114 @@ from either side invalidates the exchange regardless of technical correctness.
 Accountability chain: Factory → Terminal A (canon guardian) → Operator (remote write).
 No actor may skip a link. An exchange that bypasses Terminal A arbitration is void.
 
+### H) TRI-PARTY SYNC — TERMINAL B
+
+*Added: 2026-07-05 | Source: ADR-160 addendum (agent/factory/adr158b)*
+
+The bilateral A↔Factory protocol of §F/§G is extended to a **trilateral** loop:
+**A ↔ Factory ↔ B**. Terminal B (spec-project lane — novelty scouting,
+`agent/specproj/*`) enters the same Sync-Protocol and Write-Gate with no
+exceptions.
+
+#### H-1: Terminal B — Sync-Protocol (mandatory CONTEXT block)
+
+B MUST send a CONTEXT block to Terminal A in two mandatory events:
+
+**Event 1 — specproj start** (new branch opened):
+```
+CONTEXT (B→A):
+  direction:         B→A
+  event:             specproj_start
+  specproj_id:       <e.g. sp04>
+  branch:            agent/specproj/<id>/<slug>
+  target_files:      <files / repos B will write to>
+  novelty_area:      <brief summary of what B is hunting>
+  action_ledger_ref: <timestamp of PENDING row already written to ACTION-LEDGER>
+```
+
+**Event 2 — novelty finding handoff** (B→A/Factory):
+```
+CONTEXT (B→A):
+  direction:         B→A
+  event:             novelty_found
+  specproj_id:       <e.g. sp04>
+  novelty_id:        <NOVELTY-COLLECTION-REGISTER.md id>
+  artifact:          <PR number or branch>
+  action_ledger_ref: <timestamp of PENDING row>
+```
+
+An exchange from B **without** a CONTEXT block is invalid — Terminal A MUST reject it.
+A/Factory response MUST include a BEST-SOLUTION REPORT (§F).
+
+#### H-2: Terminal B — Write-Gate (same constraints as Factory)
+
+| Constraint | Rule |
+|-----------|------|
+| Branch namespace | `agent/specproj/<id>/<slug>` (ADR-060) — G-5 enforced by pre-push |
+| IL shard | Every PR requires a shard (see `ledger/SHARD-WORKFLOW.md`) |
+| Pre-push guards | G-1..G-5+ mandatory in B's circuit (same `.githooks/pre-push`) |
+| Rebase discipline | `git rebase origin/main` BEFORE every push |
+| Force policy | ONLY `--force-with-lease`; `+HEAD:` refspec is **FORBIDDEN** |
+| Merge | Operator only — B MUST NOT self-merge via `gh pr merge` |
+| Settings | B MUST NOT touch `~/.claude/settings.json` |
+
+#### H-3: Novelty Visibility — ACTION-LEDGER integration (B→A direction)
+
+Every novelty finding MUST produce two artefacts:
+
+1. **NOVELTY-COLLECTION-REGISTER.md entry** — permanent discovery record
+2. **ACTION-LEDGER row** (direction=B→A) — real-time signal to Terminal A
+
+This eliminates the asymmetric blind spot: Terminal A sees B's activity in
+ACTION-LEDGER without waiting for a PR. Symmetric with Factory's push/merge duty.
+
+B→A row format (two rows per event — action + sync-context):
+```
+| <TIMESTAMP> | TERMINAL-B | NOVELTY  | <novelty-id>: <description> | banxe-architecture | PENDING  |
+| <TIMESTAMP> | TERMINAL-B | SYNC-CTX | direction=B→A | event=novelty_found | specproj=<id> | novelty=<id> | artifact=PR-NNN | ledger_ref=<PENDING ts> |
+```
+
+#### H-4: Single-Writer Lock — shared-file coordination
+
+Before writing any shared file (governance/*.md, INSTRUCTION-LEDGER.md, any ADR,
+NOVELTY-COLLECTION-REGISTER.md), the writing terminal MUST post a LOCK entry:
+
+```
+| <TIMESTAMP> | <ACTOR> | LOCK | file=<repo-relative path> | holder=<ACTOR> | status=HELD     |
+```
+
+On completion (success or abort), append a RELEASE row (never edit HELD row — I-24):
+```
+| <TIMESTAMP> | <ACTOR> | LOCK | file=<repo-relative path> | holder=<ACTOR> | status=RELEASED |
+```
+
+Rules:
+- Any terminal seeing `status=HELD` for a needed file → write `WAIT` row; do NOT modify the file
+- **Arbiter**: Factory resolves disputes; decision appended to ACTION-LEDGER
+- Scope: shared governance files only; own-branch private files do not need a lock
+- This prevents the parallel-edit collision that produced the rebase conflict in
+  `.githooks/pre-push` (2026-07-04) — the incident from which ADR-158 was born
+
+#### H-5: Guardian of Canon extends to Terminal B
+
+Terminal A (§G — Guardian of Canon) validates ALL exchanges involving B:
+- B's CONTEXT blocks checked against §H-1 format
+- B's PRs checked for: IL shard ✓, rebase on main ✓, no `+HEAD:` ✓, ACTION-LEDGER PENDING row ✓
+- B's ACTION-LEDGER rows checked for direction=B→A correctness
+
+An exchange that bypasses Terminal A arbitration — from B or Factory — is void.
+
+#### H-6: First registered B-entry — PR #1017 (retroactive registration)
+
+PR #1017 (`agent/specproj/sp04/adr-ba-novelty-pipeline`, ADR-159 novelty-pipeline)
+is retroactively registered as the first Terminal B entry in ACTION-LEDGER.
+**Status at addendum date (2026-07-05):** needs `git rebase origin/main` —
+INSTRUCTION-LEDGER.md and IL-SEQUENCE.json conflict with ADR-158 merge
+(squash-merged 2026-07-04T22:28:08Z, PR #1018). Terminal B rebase procedure
+supplied in Appendix D of this addendum.
+
+See ACTION-LEDGER row: `2026-07-05T00:00:00Z | TERMINAL-B | NOVELTY | sp04:ADR-159`.
+
 ---
 
 ## Consequences
@@ -313,3 +421,46 @@ After completion, append an OUTCOME row (never edit the PENDING row — I-24):
 echo "| $(date -u +%FT%TZ) | FACTORY | OUTCOME  | feat/my-branch | banxe-emi-stack | DONE    |" \
   >> ~/banxe-architecture/governance/ACTION-LEDGER.md
 ```
+
+---
+
+## Appendix D — Terminal B post-merge rebase procedure (PR #1017)
+
+After ADR-158 (PR #1018, squash-merged 2026-07-04T22:28:08Z), PR #1017
+(`agent/specproj/sp04/adr-ba-novelty-pipeline`) has a merge conflict in
+`INSTRUCTION-LEDGER.md` and `ledger/IL-SEQUENCE.json`. Terminal B MUST execute
+the following from a worktree (ADR-120):
+
+```bash
+# 1. Open a worktree for B's branch (ADR-120 mandate)
+git -C ~/banxe-architecture fetch origin
+git -C ~/banxe-architecture worktree add ~/wt/sp04-adr159     agent/specproj/sp04/adr-ba-novelty-pipeline
+
+cd ~/wt/sp04-adr159
+
+# 2. Rebase onto current origin/main
+git rebase origin/main
+
+# 3. When conflict appears on INSTRUCTION-LEDGER.md / IL-SEQUENCE.json:
+#    Take origin/main's version (generated artifact — never hand-edit)
+git checkout origin/main -- INSTRUCTION-LEDGER.md ledger/IL-SEQUENCE.json
+
+# 4. Rebuild generated artifacts to include B's own shard
+python3 ledger/build_ledger.py
+python3 ledger/build_ledger.py --check  # must exit 0
+
+# 5. Stage and continue rebase
+git add INSTRUCTION-LEDGER.md ledger/IL-SEQUENCE.json
+git rebase --continue
+
+# 6. Push (force-with-lease only — never +HEAD:)
+ALLOW_STASH=1 git push origin agent/specproj/sp04/adr-ba-novelty-pipeline     --force-with-lease
+
+# 7. Record OUTCOME in ACTION-LEDGER (append-only — I-24)
+echo "| $(date -u +%FT%TZ) | TERMINAL-B | OUTCOME | sp04:ADR-159 rebase on post-#1018 main | banxe-architecture | DONE |"     >> ~/banxe-architecture/governance/ACTION-LEDGER.md
+```
+
+Post-rebase CI checks that MUST pass before merge:
+- `guardian-ledger-shards` — verifies shard + generated ledger sync
+- `ledger-build` — verifies `build_ledger.py --check` exits 0
+- pre-push guards G-1..G-5+ (ADR-158/ADR-160, `.TERMINAL-ROLE=TERMINAL-B` required)
