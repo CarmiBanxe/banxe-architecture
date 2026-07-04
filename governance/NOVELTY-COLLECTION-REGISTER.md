@@ -36,6 +36,9 @@
 | reasoning_235b_truth_apikey_asyncslot | banxe-architecture | 2 | analytics | high | unique (llama-server evo2:8082 Q3_K_S --n-gpu-layers=40, api-key gated /v1/chat, /v1/models≠liveness, 2.13 tok/s async-only) | adopt | NONE (lesson landed §5.7-A + §5.7-C) | RESOLVED |
 | glm_air_distributed_second_reason_lane | banxe-architecture | 2 | feature | med | unique (evo1:8081 llama-server master + evo2:50052 rpc-server Vulkan worker; alias glm-air) | evaluate | GAP-COMPUTE-GLM-AIR-REG (register `glm-air` in `:4000` canonical alias table — Terminal-A / ADR-103) | OPEN |
 | lesson_v1models_not_generation_proof | banxe-architecture | 4 | compliance | high | unique (audit-methodology lesson: 200 on /v1/models does not prove weights loaded / auth OK / throughput; only /v1/chat with correct bearer + bounded response) | adopt | NONE (recorded §5.7-C) | RESOLVED |
+| litellm_4000_orphan_reuseport | banxe-architecture | 2 | analytics | high | unique (2 процесса-зомби co-bound :4000 через SO_REUSEPORT -> round-robin «мерцающий» routing: project-reason то :8081, то :8082) | adopt | GAP: systemd single-listener guard | OPEN |
+| litellm_4000_noauth_redis_cache_stall | banxe-architecture | 2 | compliance | high | unique (cache:true + evo1-redis requirepass (NOAUTH) + отсутствие password -> ~20s столл на всех completions) | adopt | RESOLVED (cache:false, MetaClaw 7288cf8) | RESOLVED |
+| project_reason_glm_air_live_applied | banxe-architecture | 2 | feature | high | unique (project-reason 235b->glm-air применён и замерен 2.54s vs 28.8s (~11x), MetaClaw 7288cf8) | adopt | advances GAP-COMPUTE-GLM-AIR-REG | RESOLVED |
 
 ---
 
