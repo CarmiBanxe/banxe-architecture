@@ -8,6 +8,11 @@ description: >
 level: 3
 trust_zone: GREEN
 bounded_context: CTX-03
+# Org placement — reference to the SSOT (does NOT duplicate/assert; the matrix is authoritative, #1035 doc-sync).
+placement:
+  proposed: "CTO / Technology-Data-AI · Data-Analytics (Head of Data)"
+  status: "PROPOSED (pending operator ratification)"
+  ref: "docs/governance/AGENT-ORG-ASSIGNMENT-MATRIX.md §UNMAPPED + docs/governance/UNMAPPED-AGENTS-PLACEMENT.md (#1012)"
 capabilities:
   - event_write
   - audit_read
