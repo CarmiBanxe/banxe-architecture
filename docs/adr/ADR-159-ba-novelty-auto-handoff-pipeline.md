@@ -151,3 +151,51 @@ Until (1)–(5) are merged (each with its own HITL sign-off), no B→A auto-hand
 ## Anchors
 
 ADR-119 (stable IL numbering; ledger discipline), ADR-060 (branch actor namespace `agent/specproj/<id>/<slug>`), ADR-102 (no smart refactor without duplication verification), ADR-103 (server-only refactoring policy / evo1 build venue), ADR-120 (per-session worktree isolation), ADR-121 (destructive-action protection), ADR-153 (terminal topology reconciliation — A/B/Central roles), ADR-156 (sandbox mode / operator-gated sign-off), `.claude/rules/parallel-session-isolation.md` (Rules 1–7), `governance/COMPUTE-ROUTING-TAXONOMY.md` §5, CLAUDE.md §71 (operator-gated merge canon).
+
+---
+
+## Terminal-B Operating Algorithm (normative)
+
+> Central-approved. Codifies the behavioural algorithm Terminal-B (Spec-Projects) MUST follow on any incoming text/file so that findings feed the B→A auto-handoff pipeline (§D-1..D-5) deterministically. Additive to — never overrides — safety-rules / approval-rules / ADR-102 / ADR-103 / ADR-119 / ADR-120 / ADR-121 / ADR-153 / ADR-156 / parallel-session-isolation / CLAUDE.md §1, §11, §12, §71.
+
+Пошаговый алгоритм B при поступлении входящего текста/файла (Central-approved):
+
+0. **AUTOSTART** — на входящий текст/файл B стартует автономно (best-decision внутри своей зоны; встречный вопрос только на stop-барьере `safety-rules.md`).
+1. **MULTI-PASS READ** — досконально вычитать вход несколькими проходами; извлечь кандидаты-новинки. Крупный вход — тяжёлую вычитку оркеструет фабрика по lane-раскладке (§D-4).
+2. **AUDIT BY FACT** — каждый кандидат сверить с фактом; не галлюцинировать (только верифицированное).
+3. **DUP-CHECK (B-local, ADR-102)** — против корпуса (см. подсекцию ниже); дубли помечать `dedup=duplicate-of:<X>` и не PR-ить; реально новые → в PR.
+4. **SINGLE ARTIFACT (Best-Single-Artifact)** — ровно один next-action артефакт: `[CLAUDE CODE]` для находки-PR, `[SHELL]` для read-only; без «вариант 1/2».
+5. **PR НАХОДКИ** — specproj-PR: ветка `agent/specproj/<id>/<slug>` (ADR-060); append в `NOVELTY-COLLECTION-REGISTER.md` со `status=NEW`; shard+индекс вместе (ADR-119); `REDIS_HOST=127.0.0.1`; на evo1 (ADR-103); serialize rebase-before-merge (`parallel-session-isolation.md` Rule 8).
+6. **INDEPENDENT-VERIFY** — по ЖИВОМУ CI, не по self-report: `guardian-ledger-shards` + `ledger-build` + `Secrets Scan` зелёные, append-only (0 удалений), 0 секретов, файлы верны. Запрещён CI-poll-loop.
+7. **HITL-MERGE** — merge = оператор / §71; B никогда не авто-мержит. Hand-off = находка `status=NEW`, далее A подхватывает через `NOVELTY-HANDOFF-QUEUE.md`.
+
+### Формат находки (следовать существующей схеме реестра)
+
+Строка таблицы `Entries` реестра: `item | source-repo | floor | type | value | dedup | verdict | handoff | status`. B заполняет:
+
+- `item` — уникальный kebab-slug;
+- `source-repo` — репозиторий-источник входа;
+- `floor` — 1..4;
+- `type` — feature / subproject / analytics / compliance / infra;
+- `value` — high / med / low;
+- `dedup` — `unique` или `duplicate-of:<X>`;
+- `verdict` — adopt / evaluate / reject (рекомендация B);
+- `handoff` — GAP-NN / OD-NN / NONE;
+- `status` — **NEW**.
+
+Rationale — в строке как обоснование-новизны. **ЗАПРЕЩЕНО** мутировать / переупорядочивать / удалять чужие строки (только append); менять `status` в реестре (жизненный цикл `NEW → PICKED → PROCESSED` ведёт A в QUEUE, не B).
+
+### Novelty на стороне B (local dup-check)
+
+Ступень B (дешёвая, textual+conceptual): для каждого кандидата искать в корпусе существующую находку / ADR того же концепта. **Корпус B-dup-check = `governance/` + `docs/adr/`.** Ступень A (глубокая semantic-scoring, порог из `governance/novelty-pipeline-config.yaml`) — не зона B.
+
+### Границы B vs A
+
+**B НЕ трогает:**
+- триггер `.github/workflows/novelty-handoff.yml` / factory-watcher / `NOVELTY-HANDOFF-QUEUE.md` (A-owned, CODEOWNERS);
+- индекс-файлы (машинные);
+- живой systemd / gateway;
+- EMI-core (Central + фабрика);
+- чужие ветки / сессии (parallel-session-isolation Rule 6).
+
+**B делает:** вычитка входа → находки → dup-check → append-находки → specproj-PR (shard+индекс) → independent-verify → hand-off `status=NEW`.

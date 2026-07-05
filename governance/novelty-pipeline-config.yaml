@@ -90,6 +90,12 @@ boundaries:
   live_keys_or_mainnet_allowed: false      # ADR-156 sandbox posture
   fail_stop_stage_on_error: true           # no silent retries past a stop-barrier
 
+# HITL code-owner for the pipeline artefacts (Central-approved default). Applied
+# to the CODEOWNERS entries listed in ADR-159 §Ownership. The operator may
+# replace this handle with another factory-actor handle without amending the
+# ADR — this key is the single point where the owner identity is expressed.
+codeowners_owner: "@mmber"
+
 open_items:
   # Mirrors ADR-159 "Open items" — kept here so a config reviewer sees the
   # unresolved decisions without cross-referencing the ADR.

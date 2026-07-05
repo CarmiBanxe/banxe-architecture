@@ -545,5 +545,6 @@
   "agent-factory-adr160b-pre-push-hook-sync__54fb5c589454": 879,
   "agent-factory-adr158b-fix-adr160-stale-refs__2bec7ff5d04f": 881,
   "specproj-sp04-adr-ba-novelty-pipeline__caf15507f5b1": 882,
-  "agent-factory-adr160c-fg-scope-separation__475ed76cb3aa": 883
+  "agent-factory-adr160c-fg-scope-separation__475ed76cb3aa": 883,
+  "specproj-sp05-terminal-b-operating-algorithm__86f6a8e8f1c5": 884
 }
