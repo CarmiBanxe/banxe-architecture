@@ -25364,3 +25364,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Perimeter / canon:** banxe-architecture only; authored in isolated worktree off origin/main (ADR-120), not the shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease` only.
 - **Deliverable:** 5 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge, not hardcoded here.
 - **Refs:** SOUL cohorts #1042 (IL-925) / #1044 (IL-930) / #1046 (IL-934); FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{midaz_mcp,reasoning_bank,ml_pipeline,webhook_orchestrator,webhooks}_agent.yaml; CLAUDE.md §11; I-27; I-28; I-08; I-05; ADR-102; ADR-117/120/121/128; parallel-session-isolation Rule 6.
+
+---
+
+### IL-937 - sp15-canon-full-coverage-mandate @ 2026-07-05T23:20:57Z
+
+- **il_ts:** 2026-07-05T23:20:57Z
+- **session_id:** sp15-canon-full-coverage-mandate
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp15-canon-full-coverage-mandate/IL-2026-07-05T23-20-57Z--8c8f7d.md`
+
+### sp15-canon-full-coverage-mandate
+
+- **Instruction:** Terminal-B full-coverage mandate: always max-full multi-pass parse (>=3 passes), no self-initiated short version, exception only on explicit operator quick-look; extends ADR-159 step-1 MULTI-PASS READ, additive not supersede (ADR-102)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
