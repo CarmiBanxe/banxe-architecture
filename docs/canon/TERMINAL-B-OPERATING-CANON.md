@@ -76,6 +76,22 @@ seven-step algorithm; this canon documents the output-shape B emits at that step
 including the read-only-audit-first rule (§2), the clickability + labelling rule (§3), and the
 HITL-barrier stopping points (§5).
 
+### 8. Full-coverage mandate
+
+Extends the **MULTI-PASS READ** canon (ADR-159 §Terminal-B-Operating-Algorithm step 1); additive,
+does not supersede (ADR-102). Concretises input-parse discipline for the B contour:
+
+- Terminal-B ALWAYS parses each operator input in its **maximally full form**: **multi-pass (≥3
+  passes)**, full coverage of every section, and per-candidate dup-check. Target = **100% coverage,
+  nothing skipped**.
+- A **short / abbreviated version** of the parse is **NOT** used on Terminal-B's own initiative.
+- **Single exception:** an **explicit, separate operator command** to "look quickly" at a specific
+  topic / episode / fragment — a **targeted quick-look** is permitted **only within the scope of
+  that request**; it does not become a default and does not carry over to subsequent inputs.
+
+Anchor: ADR-159 §Terminal-B-Operating-Algorithm step 1 (MULTI-PASS READ) — pointer only, no
+restatement (ADR-102).
+
 ## Anchors (authoritative sources; this doc specializes, does not supersede — ADR-102)
 
 - **`.claude/rules/agents.md`** §CANON — Best Single Artifact (+ Factory-Only Execution subpoint) — authoritative single-artifact discipline; this doc specialises for the B contour without restating.
