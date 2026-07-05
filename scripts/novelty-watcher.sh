@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 # scripts/novelty-watcher.sh
-# B->A novelty auto-handoff pipeline — factory-watcher v1.1 (PROPOSED, in-repo).
+# B->A novelty auto-handoff pipeline — factory-watcher v2 (PROPOSED, in-repo).
+#
+# v2 changes vs v1.1 (see docs/canon/TERMINAL-B-OPERATING-CANON.md pointer,
+# ADR-102 no-restatement — real reference only):
+#   * score-hook un-stubbed: real LiteLLM :4000 semantic-scoring call
+#     (OpenAI-compatible /v1/chat/completions, bearer $LITELLM_KEY, model
+#     project-reason by default with glm-air / config-override supported).
+#   * threshold read from ${CONFIG} .novelty_check.threshold — no hardcode
+#     (>= threshold => duplicate; < threshold => novel; ADR-159 §D-4 / OI-1).
+#   * FAIL-OPEN to "novel" when scoring unavailable — LITELLM_KEY missing /
+#     placeholder ("<...>"), endpoint unreachable, or response unparseable.
+#     Service NEVER crashes on scoring failure (set +e around the network
+#     call, explicit rc capture, exit 0 unchanged). Terminal HITL merge gate
+#     (CLAUDE.md §71) remains the correctness authority.
+#   * Key hygiene: $LITELLM_KEY dereferenced ONLY inside the curl
+#     Authorization header; never echoed to stdout/stderr; no key literal
+#     in code or logs.
 #
 # v1.1 fixes vs v1 (shakeout defects observed 2026-07-05, PR #1033):
 #   1. STATUS FILTER = strict NEW ONLY. Legacy statuses OPEN / IN-PROGRESS /
@@ -37,16 +53,19 @@
 #   * NOT DAEMONIZED HERE — the systemd unit/timer are in-repo templates
 #     only; enable/start on evo1 is operator-driven.
 #
-# Semantic-scoring HOOK (v1.1 = STUB, unchanged from v1):
-#   Real scoring REQUIRES env LITELLM_KEY (bearer to LiteLLM :4000) plus the
-#   evo1 canonical alias table (ADR-103). Until wired the stub always
-#   classifies as "novel" — safe because HITL merge is the terminal gate
-#   (no auto-merge, no client-fund mutation).
-#     - candidate extraction  -> alias glm-air on evo1 (fast, short-context)
-#     - semantic verification -> alias reasoning-235b on evo2 (async lane)
-#     - threshold read from governance/novelty-pipeline-config.yaml
-#       (default cosine < 0.85 == novel; ADR-159 §D-4 / OI-1)
-#     - key from env $LITELLM_KEY (NEVER hardcoded, NEVER logged)
+# Semantic-scoring HOOK (v2 = REAL, un-stubbed):
+#   Real scoring via LiteLLM :4000 (OpenAI-compatible), model project-reason
+#   by default (LITELLM_MODEL env may override to glm-air etc.). Bearer from
+#   env $LITELLM_KEY (systemd EnvironmentFile ~/.config/banxe/novelty-
+#   watcher.env, mode 0600, operator-populated OUTSIDE the repo — NEVER
+#   committed). Threshold from ${CONFIG} .novelty_check.threshold (0.85 per
+#   ADR-159 §D-4 / OI-1). >= threshold => duplicate; < threshold => novel.
+#   FAIL-OPEN to "novel" on any failure (key missing/placeholder, endpoint
+#   down, HTTP != 200, response unparseable) + log "scoring unavailable ->
+#   defaulting novel"; service never crashes (set +e around network call,
+#   explicit rc capture). Endpoint override: LITELLM_ENDPOINT env,
+#   default http://127.0.0.1:4000. Key hygiene: dereferenced only inside
+#   the curl Authorization header; NEVER logged, NEVER printed.
 #
 # Anchors: ADR-159 (B->A pipeline), ADR-120 (per-session worktree),
 # ADR-102 (dup-audit), ADR-103 (server-only build venue = evo1),
@@ -92,24 +111,159 @@ if git remote get-url origin >/dev/null 2>&1; then
 fi
 
 # --------------------------------------------------------------------------
-# Semantic-scoring HOOK — v1.1 stub. Real invocation is a TODO.
+# read_novelty_threshold — parse .novelty_check.threshold from ${CONFIG}.
+# Config-over-Hardcoding (CLAUDE.md §10 / ADR-159 §D-4 / OI-1). On any parse
+# failure returns "0.85" (ADR-159 starting-point default), never fails hard.
+# --------------------------------------------------------------------------
+read_novelty_threshold() {
+  local v
+  v=$(awk '
+    /^novelty_check:/           { in_nc=1; next }
+    in_nc && /^[a-zA-Z_]/       { in_nc=0 }
+    in_nc && /^[[:space:]]+threshold:[[:space:]]*/ {
+      sub(/^[[:space:]]+threshold:[[:space:]]*/, "")
+      sub(/[[:space:]]*#.*$/, "")
+      print; exit
+    }
+  ' "${CONFIG}" 2>/dev/null)
+  [ -n "${v}" ] || v="0.85"
+  echo "${v}"
+}
+
+# --------------------------------------------------------------------------
+# build_corpus_digest — emit a compact "path: heading" list for corpus_paths
+# (governance/, docs/adr/, docs/agent-engine-dossier/), skipping excludes
+# (FROZEN-ARCHIVE.md, *.snapshot.md). Bounded to keep prompt within model
+# context. Read-only.
+# --------------------------------------------------------------------------
+build_corpus_digest() {
+  local max=200
+  # -H prefixes filename; use grep -l to keep it simple + portable.
+  find governance docs/adr docs/agent-engine-dossier -type f -name '*.md' 2>/dev/null \
+    | grep -v -e 'FROZEN-ARCHIVE\.md$' -e '\.snapshot\.md$' \
+    | sort \
+    | head -n "${max}" \
+    | while IFS= read -r f; do
+        local h
+        h=$(awk '/^#+[[:space:]]/ { sub(/^#+[[:space:]]*/, ""); print; exit }' "${f}" 2>/dev/null \
+              | tr -d '\r' | cut -c1-120)
+        printf -- '- %s: %s\n' "${f}" "${h}"
+      done
+}
+
+# --------------------------------------------------------------------------
+# score_hook — v2 REAL semantic-scoring via LiteLLM :4000.
 #
-# TODO(v2): call LiteLLM :4000 with model `project-reason`, split as:
-#     candidate extraction  -> glm-air (evo1)  [fast lane, short context]
-#     semantic verification -> reasoning-235b (evo2, async)
-#   Threshold read from ${CONFIG} .novelty_check.threshold (default 0.85).
-#   Auth: bearer from env $LITELLM_KEY (NEVER hardcoded / NEVER logged).
+# Behaviour:
+#   1. Read threshold from ${CONFIG} (default 0.85).
+#   2. If LITELLM_KEY empty / placeholder (starts with "<") -> FAIL-OPEN
+#      to "novel" + log "scoring unavailable -> defaulting novel". Exit 0.
+#   3. Build corpus digest (path + first heading) from corpus_paths.
+#   4. POST OpenAI-compatible /v1/chat/completions to $LITELLM_ENDPOINT
+#      (default http://127.0.0.1:4000), Authorization: Bearer $LITELLM_KEY.
+#      Model = $LITELLM_MODEL (default project-reason). Prompt asks for a
+#      SINGLE float in [0.0, 1.0] representing max similarity.
+#   5. Parse a float from the response content. If any step fails -> FAIL-
+#      OPEN to "novel" + log reason. Service never crashes.
+#   6. score >= threshold => "duplicate"; else => "novel".
+#
+# Key hygiene: $LITELLM_KEY is dereferenced only inside the curl header
+# argument; never echoed / logged. Prints "novel" or "duplicate" on stdout.
 # --------------------------------------------------------------------------
 score_hook() {
   local item="$1"
-  # LITELLM_KEY referenced to make env-dependency explicit; v1.1 does NOT
-  # dereference it (stub only) and MUST NOT emit it to stdout/stderr.
-  : "${LITELLM_KEY:=unset}"
-  printf 'score-hook: v1.1 stub (needs LITELLM_KEY for real scoring); item=%s classified=novel\n' \
-    "${item}" >&2
-  # v1.1 always classifies as "novel" so the hand-off chain proceeds end-
-  # to-end. HITL merge (CLAUDE.md §71) is the terminal correctness gate.
-  echo "novel"
+  local endpoint model threshold key digest prompt body_file resp_file
+  local http_code rc score verdict
+
+  endpoint="${LITELLM_ENDPOINT:-http://127.0.0.1:4000}"
+  model="${LITELLM_MODEL:-project-reason}"
+  threshold="$(read_novelty_threshold)"
+  key="${LITELLM_KEY:-}"
+
+  # (2) Key preflight — placeholder-detection uses parameter-expansion prefix
+  # strip: if the value starts with "<" (e.g. "<paste-key-here>"), strip
+  # returns the tail; comparing to the original tells us the leading "<" was
+  # there. Never expose the value.
+  if [ -z "${key}" ] || [ "${key#<}" != "${key}" ]; then
+    log "score-hook: LITELLM_KEY missing/placeholder — scoring unavailable -> defaulting novel (item=${item})"
+    echo "novel"
+    return 0
+  fi
+
+  # (3) Corpus digest — bounded; empty digest => fail-open.
+  digest="$(build_corpus_digest 2>/dev/null || true)"
+  if [ -z "${digest}" ]; then
+    log "score-hook: corpus digest empty — scoring unavailable -> defaulting novel (item=${item})"
+    echo "novel"
+    return 0
+  fi
+
+  body_file="$(mktemp 2>/dev/null || echo /tmp/nw-body.$$)"
+  resp_file="$(mktemp 2>/dev/null || echo /tmp/nw-resp.$$)"
+
+  prompt="You are a semantic-similarity judge. Given a candidate finding slug and a governance corpus digest, return ONE floating-point number in [0.0, 1.0] representing the maximum cosine-style similarity between the candidate and the closest corpus item. Output ONLY the number, no prose, no code fence.
+
+Candidate: ${item}
+
+Corpus digest (path: first-heading):
+${digest}
+
+Similarity score (0.0-1.0):"
+
+  # (4) Assemble JSON body via python3 (safe quoting; NEVER embed key here).
+  if ! printf '%s' "${prompt}" | python3 -c "
+import json,sys
+p=sys.stdin.read()
+json.dump({'model':'${model}','messages':[{'role':'user','content':p}],'temperature':0.0,'max_tokens':16}, sys.stdout)
+" > "${body_file}" 2>/dev/null; then
+    log "score-hook: JSON body assembly failed -> defaulting novel (item=${item})"
+    rm -f "${body_file}" "${resp_file}"
+    echo "novel"
+    return 0
+  fi
+
+  # (4) FAIL-OPEN network call — set +e locally; capture rc + http_code.
+  set +e
+  http_code=$(curl -sS -m 30 -o "${resp_file}" -w '%{http_code}' \
+    -H "Authorization: Bearer ${key}" \
+    -H 'Content-Type: application/json' \
+    --data-binary "@${body_file}" \
+    "${endpoint}/v1/chat/completions" 2>/dev/null)
+  rc=$?
+  set -e
+
+  if [ "${rc}" -ne 0 ] || [ "${http_code}" != "200" ]; then
+    log "score-hook: LiteLLM ${endpoint} unavailable (rc=${rc} http=${http_code:-none}) -> defaulting novel (item=${item})"
+    rm -f "${body_file}" "${resp_file}"
+    echo "novel"
+    return 0
+  fi
+
+  # (5) Parse a float from the response content.
+  score=$(python3 - <"${resp_file}" 2>/dev/null <<'PY'
+import json,re,sys
+try:
+    d=json.load(sys.stdin)
+    c=d.get('choices',[{}])[0].get('message',{}).get('content','') or ''
+    m=re.search(r'([0-9]*\.?[0-9]+)', c)
+    print(m.group(1) if m else '')
+except Exception:
+    print('')
+PY
+)
+  rm -f "${body_file}" "${resp_file}"
+
+  if [ -z "${score}" ]; then
+    log "score-hook: response unparseable -> defaulting novel (item=${item})"
+    echo "novel"
+    return 0
+  fi
+
+  # (6) Compare score vs threshold. awk handles floats portably.
+  verdict=$(awk -v s="${score}" -v t="${threshold}" \
+    'BEGIN { print (s+0 >= t+0) ? "duplicate" : "novel" }')
+  log "score-hook: item=${item} score=${score} threshold=${threshold} verdict=${verdict}"
+  echo "${verdict}"
 }
 
 # --------------------------------------------------------------------------
