@@ -92,3 +92,13 @@ Arbiter: Factory. Decision appended to ACTION-LEDGER.
 | 2026-07-05T00:00:54Z | FACTORY | LOCK | file=governance/ACTION-LEDGER.md | holder=FACTORY | status=RELEASED |
 | 2026-07-05T00:00:54Z | FACTORY | OUTCOME | agent/factory/adr158b/tri-party-sync-terminal-b — PR #1020 squash-merged | banxe-architecture | DONE |
 | 2026-07-05T00:00:54Z | FACTORY | OUTCOME | agent/factory/adr158b/fix-adr160-stale-refs — PR #1022 squash-merged | banxe-architecture | DONE |
+| 2026-07-05T02:00:00Z | FACTORY | LOCK | file=governance/ACTION-LEDGER.md | holder=FACTORY | status=HELD |
+| 2026-07-05T02:00:00Z | FACTORY | LOCK | file=governance/PHASE-3-SSOT-PLAN.md | holder=FACTORY | status=HELD |
+| 2026-07-05T02:00:00Z | FACTORY | RELEASED | file=docs/adr/ADR-158-bilateral-orchestration-write-gate.md | reason=stale-lock-cleanup: 00:45 session ended; adr158b work merged as PR #1022 | status=RELEASED |
+| 2026-07-05T02:00:00Z | FACTORY | RELEASED | file=governance/ACTION-LEDGER.md | reason=stale-lock-cleanup: 00:45 HELD from dead session (same FACTORY actor, self-resolution) | status=RELEASED |
+| 2026-07-05T02:00:00Z | FACTORY | OUTCOME | push=agent/factory/adr158/bilateral-orchestration | result=MERGED as PR #1018 (2026-07-04); IL-lock was for ADR-158 file write, superseded | status=DONE |
+| 2026-07-05T02:00:00Z | FACTORY | OUTCOME | push=agent/factory/adr158b/tri-party-sync-terminal-b | result=DROPPED: content absorbed into fix-adr160-stale-refs branch which became PR #1022 | status=DONE |
+| 2026-07-05T02:00:00Z | FACTORY | OUTCOME | push=agent/factory/adr158b/fix-adr160-stale-refs | result=MERGED as PR #1022 (2026-07-05); stale-refs hook fix applied | status=DONE |
+| 2026-07-05T02:00:00Z | FACTORY | git push | agent/factory/phase3ssot/amendment-002-003-cleanup | banxe-architecture | PENDING |
+| 2026-07-05T02:00:00Z | FACTORY | LOCK | file=governance/PHASE-3-SSOT-PLAN.md | holder=FACTORY | status=RELEASED |
+| 2026-07-05T02:00:00Z | FACTORY | LOCK | file=governance/ACTION-LEDGER.md | holder=FACTORY | status=RELEASED |
