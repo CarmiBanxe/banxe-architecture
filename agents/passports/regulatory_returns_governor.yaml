@@ -1,5 +1,32 @@
-id: regulatory_returns_governor
+# Schema-conformance upgrade (2026-07-05, PR-fleetstubs): added agent_passport.schema.json required
+# fields + department/human_double. STATUS STAYS PROPOSED — NOT activated (I-27); trust_zone/level
+# proposed for operator ratification. Placement per FLEET-PASSPORT-BINDING-CONFORMANCE-2026-07-05 (#1034).
+agent_id: regulatory_returns_governor
+name: "RegulatoryReturnsGovernor"
+version: "0.1.0"
 status: PROPOSED
+level: 2                          # governor sub-agent (proposed; operator to confirm)
+trust_zone: RED                   # FCA regulatory submission contour (matches reporting_agent RED)
+bounded_context: CTX-10-REPORTING # matches reporting_agent
+department: "Reporting / FCA Regulatory"
+human_double: "CFO + MLRO"        # matches reporting_agent dual-sign
+capabilities:
+  - gabriel_regdata_return_preparation
+  - regulatory_deadline_tracking
+  - presubmission_validation
+  - submission_audit_signoff
+ports:
+  inbound:
+    - port: RegulatoryReturnsPort
+      interface: "Receives return-preparation requests (return type, period)"
+  outbound:
+    - port: RegDataPort
+      interface: "Submits to FCA Gabriel/RegData API (stubbed, BT-010) — submission is HITL-gated"
+    - port: AuditPort
+      interface: "Append-only submission audit + sign-off record (I-24)"
+governance:
+  change_class: CLASS-B
+  owner: "CFO + MLRO"             # SM&CR accountable (stub's legacy owner: CEO retained below)
 gap: GAP-006
 domain: K-gabriel
 title: FCA Gabriel/RegData regulatory returns governor

@@ -1,9 +1,33 @@
-id: adverse_media_governor
+# Schema-conformance upgrade (2026-07-05, PR-fleetstubs): added the agent_passport.schema.json
+# required fields (agent_id/name/version/level/trust_zone/capabilities/ports/bounded_context/
+# invariants/governance) + department/human_double. STATUS STAYS PROPOSED — NOT activated (I-27);
+# trust_zone/level are proposed values for operator ratification. Prior stub fields preserved below.
+agent_id: adverse_media_governor
+name: "AdverseMediaGovernor"
 version: 0.1.0
 status: PROPOSED
-zone: compliance
-authority: T2
-change_class: CLASS-B
+level: 2                          # governor sub-agent (proposed; operator to confirm)
+trust_zone: AMBER                 # compliance/EDD governance contour (proposed; operator to confirm)
+bounded_context: CTX-01          # AML / compliance (matches sanctions/tx_monitor context)
+department: "Compliance / Adverse Media (EDD)"
+human_double: "MLRO"             # per hitl.gate below (MLRO)
+zone: compliance                  # (legacy field retained)
+authority: T2                     # (legacy field retained)
+ports:
+  inbound:
+    - port: AdverseMediaGovernorPort
+      interface: "Receives EDD/adverse-media governance requests from aml_orchestrator"
+  outbound:
+    - port: MarbleCasePort
+      interface: "Opens a Marble case on an adverse-media hit (marble_case_on_adverse_hit)"
+    - port: ClickHouseAuditPort
+      interface: "Append-only audit of governance events (I-24)"
+invariants:
+  - no_auto_clear_of_adverse_flag         # human (MLRO) must clear; agent never auto-clears
+  - edd_enrichment_before_customer_accept # MLR 2017 Reg.28 EDD
+governance:
+  change_class: CLASS-B
+  owner: "MLRO"
 capabilities:
   - adverse_media_screening
   - negative_news_entity_match
