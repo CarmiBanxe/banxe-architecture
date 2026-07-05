@@ -25379,3 +25379,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** Terminal-B full-coverage mandate: always max-full multi-pass parse (>=3 passes), no self-initiated short version, exception only on explicit operator quick-look; extends ADR-159 step-1 MULTI-PASS READ, additive not supersede (ADR-102)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-941 - agent-specproj-sp16-ledger-quiet-window-directive @ 2026-07-05T23:33:00Z
+
+- **il_ts:** 2026-07-05T23:33:00Z
+- **session_id:** agent-specproj-sp16-ledger-quiet-window-directive
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-specproj-sp16-ledger-quiet-window-directive/IL-2026-07-05T23-33-00Z--4fac52.md`
+
+### agent-specproj-sp16-ledger-quiet-window-directive
+
+- **Instruction:** Terminal-B DIRECTIVE B-QUIET-WINDOW-001 recorded in governance/COORDINATION-NOTES.md — request concurrent factory-sessions hold ledger-writing PRs until #1051 lands; coordination record + Central ack-point, not autonomous enforcement
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
