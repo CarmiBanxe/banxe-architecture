@@ -1,0 +1,56 @@
+# systemd/novelty-watcher.service
+# B->A novelty auto-handoff pipeline — factory-watcher v1 (PROPOSED template).
+#
+# STATUS: IN-REPO TEMPLATE ONLY. NOT INSTALLED. NOT ENABLED. NOT STARTED.
+# Apply = operator, on evo1 (ADR-103 build venue), via:
+#   systemctl --user enable  novelty-watcher.timer
+#   systemctl --user start   novelty-watcher.timer
+# The watcher daemon MUST NOT be activated autonomously by any agent. Any
+# activation is HITL, per CLAUDE.md §71 / ADR-156 sandbox posture.
+#
+# EnvironmentFile carries the LiteLLM key (env var LITELLM_KEY). The path
+# below is a PLACEHOLDER; the operator populates the real file OUTSIDE the
+# repo, with mode 0600, before enabling the timer. The file is NEVER
+# committed to git. This unit contains NO literal keys.
+#
+# Anchors: ADR-159 (B->A pipeline), ADR-103 (server-only), ADR-156 (sandbox),
+# CLAUDE.md §71 (HITL merge), safety-rules.md (destructive-op verify-step).
+
+[Unit]
+Description=Banxe factory-watcher — B->A novelty auto-handoff (v1 PROPOSED, template)
+Documentation=file:%h/banxe-architecture/docs/adr/ADR-159-ba-novelty-auto-handoff-pipeline.md
+# Do not start on boot; timer-driven only.
+ConditionPathExists=%h/banxe-architecture/scripts/novelty-watcher.sh
+
+[Service]
+Type=oneshot
+
+# WorkingDirectory / ExecStart are placeholders — operator adjusts to the
+# actual clone path on evo1 before enabling the timer. No hardcoded absolute
+# paths outside %h are baked in; %h resolves to the user's home.
+WorkingDirectory=%h/banxe-architecture
+ExecStart=%h/banxe-architecture/scripts/novelty-watcher.sh
+
+# EnvironmentFile carries LITELLM_KEY (env-only; the file is OUTSIDE the repo
+# and never committed). Path below is a placeholder for the operator to
+# populate on evo1 with mode 0600 before enabling the timer. The unit file
+# ITSELF contains NO literal keys.
+EnvironmentFile=-%h/.config/banxe/novelty-watcher.env
+
+# Fail-closed: any non-zero exit stops the run; the timer will retry on its
+# next tick. No silent retries past a stop-barrier (ADR-159 §D-5).
+StandardOutput=journal
+StandardError=journal
+
+# Sandbox hardening — read-write only within the working tree; no network
+# writes beyond git-fetch (see the script). Kept conservative for v1.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=%h/banxe-architecture
+
+[Install]
+# Wanted-by intentionally omitted for the .service — activation is via the
+# .timer only. Direct `systemctl start novelty-watcher.service` is possible
+# for one-shot manual runs by the operator on evo1, but is NOT part of the
+# scaffolded activation path.

@@ -208,3 +208,38 @@ Rationale — в строке как обоснование-новизны. **З
 - **Outcome-2 — Coverage-confirmation.** Multi-pass вычитка подтвердила полное покрытие (delta=0, ничего не пропущено) → append в `governance/NOVELTY-COVERAGE-LOG.md`. Это ПОЛОЖИТЕЛЬНЫЙ auditable-результат (proof-of-completeness), НЕ пустой прогон. B-терминальный: hand-off A НЕ происходит (обрабатывать нечего, QUEUE не трогается). Применяется в т.ч. к уже-использованным источникам — оператор прогоняет их, чтобы удостовериться в полной вычитке.
 
 Coverage-log (B-owned, append-only) схема: `source | passes | coverage(full|partial) | gaps-found | dup-refs | corpus-sha | timestamp`. `corpus-sha` анкерит coverage к состоянию корпуса (main HEAD) для воспроизводимости. `partial` → `gaps-found` перечисляет item-ы находок, ушедших в реестр как `status=NEW`.
+
+### Mandatory hand-off chain (A-side, canon)
+
+Каждая находка Outcome-1 (`status=NEW`) ОБЯЗАНА пройти следующую цепочку без пропусков:
+
+```
+NEW (в NOVELTY-COLLECTION-REGISTER.md, B-owned)
+  -> QUEUE picked                     (factory-watcher поднял находку из реестра)
+  -> [semantic-scoring >= порог]      (порог из governance/novelty-pipeline-config.yaml)
+  -> ROADMAP-MATRIX update            (append hand-off маркера в docs/ROADMAP-MATRIX.md)
+  -> sprint-task заведена             (внешняя система планирования — sprint-ref)
+  -> QUEUE ack: planned -> sprint#    (roadmap-ref + sprint-ref фиксируются в QUEUE)
+  -> QUEUE processed                  (терминальное событие A-side для находки)
+```
+
+Неисполнение любого звена (пропуск `planned`, отсутствие `roadmap-ref`, отсутствие `sprint-ref` при переходе в `sprint`, отсутствие терминального `processed`) → **эскалация оператору**; watcher останавливает обработку данного `finding-item` и не переходит к следующему звену цепочки (fail-stop, ADR-159 §D-5 pt.4).
+
+**Владельцы (CODEOWNERS-enforced, `@mmber`):**
+
+| Артефакт | Владелец | Правило |
+|----------|----------|---------|
+| `governance/NOVELTY-HANDOFF-QUEUE.md` | Terminal-A (Factory) | append-only, single-writer = `scripts/novelty-watcher.sh` |
+| `.github/workflows/novelty-handoff.yml` | Terminal-A (Factory) | validator + detector, никогда не коммитит |
+| `scripts/novelty-watcher.sh` | Terminal-A (Factory) | v1 stub scoring; реальный LiteLLM :4000 hook = TODO |
+| `governance/NOVELTY-COLLECTION-REGISTER.md` | Terminal-B (Spec-Projects) | A НЕ мутирует |
+| `governance/NOVELTY-COVERAGE-LOG.md` | Terminal-B (Spec-Projects) | A НЕ мутирует |
+| `governance/novelty-pipeline-config.yaml` | Central | ни A, ни B unilaterally не переписывают |
+
+**HITL-гейты (оператор, не автономно):**
+
+1. **Accept ADR** — этот ADR остаётся `PROPOSED` до явного accept оператором; scaffolding в репо не активирует pipeline.
+2. **Запуск watcher-демона** — systemd unit/timer поставляются как in-repo шаблоны; `systemctl --user enable/start novelty-watcher.timer` на evo1 = оператор.
+3. **Merge** — любой draft-PR, открытый по итогу `processed`, мержит оператор (CLAUDE.md §71 / ADR-156 sandbox).
+
+Cross-refs: §D-1 (SSOT split), §D-3 (two-stage novelty check), §D-5 (safety / merge-gate), CLAUDE.md §11 §71, `.claude/rules/parallel-session-isolation.md` Rules 1–7.

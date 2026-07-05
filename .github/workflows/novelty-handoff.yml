@@ -1,0 +1,146 @@
+# .github/workflows/novelty-handoff.yml
+# B->A novelty auto-handoff pipeline — VALIDATOR + DETECTOR (v1, PROPOSED)
+#
+# Scope of this workflow (v1 scaffolding):
+#   1. VALIDATE that governance/NOVELTY-COLLECTION-REGISTER.md remains
+#      append-only across the PR (0 deleted data rows in the ## Entries
+#      table). Any deletion or in-place mutation of a data row fails the job.
+#   2. DETECT newly-appended rows with `status=NEW` on the PR head vs base
+#      and surface them as a list in $GITHUB_STEP_SUMMARY.
+#
+# EXPLICITLY OUT OF SCOPE (v1):
+#   - This workflow NEVER writes to governance/NOVELTY-HANDOFF-QUEUE.md.
+#     The QUEUE is A-owned append-only and is mutated ONLY by the
+#     factory-watcher (scripts/novelty-watcher.sh) as single-writer. This
+#     workflow is validator + detector only — it reports, it does not commit.
+#   - No calls to any LLM / model host. No secrets are read here.
+#   - No merge action, no PR comments — reporting via step summary only.
+#
+# Trigger: pull_request touching the register file only. The push-to-main
+# orchestration path documented in ADR-159 §D-2 lands in a follow-up PR
+# alongside factory-watcher activation (operator-gated).
+#
+# Anchors: ADR-159 (D-1 SSOT split, D-2 detection, D-5 safety),
+#          .claude/rules/parallel-session-isolation.md (append-only Rule 5).
+
+name: novelty-handoff (validator+detector)
+
+on:
+  pull_request:
+    paths:
+      - governance/NOVELTY-COLLECTION-REGISTER.md
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-detect:
+    name: append-only validate + NEW-row detect
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head (with base for diff)
+        # Pinned SHA per semgrep supply-chain rule (yaml.github-actions.security.github-actions-mutable-action-tag).
+        # v4.2.2 → 11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+
+      - name: Compute base and head SHAs
+        id: shas
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "base=${BASE_SHA}" >> "$GITHUB_OUTPUT"
+          echo "head=${HEAD_SHA}" >> "$GITHUB_OUTPUT"
+          echo "Base: ${BASE_SHA}"
+          echo "Head: ${HEAD_SHA}"
+
+      - name: Validate append-only (0 deleted data rows in Entries table)
+        id: validate
+        run: |
+          set -euo pipefail
+          FILE=governance/NOVELTY-COLLECTION-REGISTER.md
+          BASE="${{ steps.shas.outputs.base }}"
+          HEAD="${{ steps.shas.outputs.head }}"
+
+          # Data rows in the Entries table start with "| " and contain "|",
+          # and are NOT the header/separator lines (which contain "----" or
+          # column names like "item"). We consider any line beginning with
+          # "| " and NOT matching a divider row a data row for this check.
+          #
+          # Count deletions of such lines in the diff of $FILE:
+          DELETED=$(git diff "${BASE}" "${HEAD}" -- "$FILE" \
+            | awk '
+                /^---/ { next }
+                /^\+\+\+/ { next }
+                /^-\| / {
+                  line = substr($0, 2)          # strip leading -
+                  # Ignore separator rows like "|------|..." and pure header rows.
+                  if (line ~ /^\|[[:space:]]*-+/) next
+                  if (line ~ /^\| item[[:space:]]*\|/) next
+                  print line
+                }
+              ' | wc -l)
+
+          echo "deleted_data_rows=${DELETED}" >> "$GITHUB_OUTPUT"
+          if [ "${DELETED}" -gt 0 ]; then
+            {
+              echo "## novelty-handoff — append-only VIOLATION"
+              echo ""
+              echo "Detected \`${DELETED}\` deleted data row(s) in \`${FILE}\`."
+              echo "This register is append-only (I-24 / I-28; ADR-159 §D-1)."
+              echo ""
+              echo "Fix: do not delete or mutate existing rows. Append new"
+              echo "rows at the bottom of the \`## Entries\` table only."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "OK: 0 deleted data rows in ${FILE}."
+
+      - name: Detect newly-appended status=NEW rows
+        id: detect
+        run: |
+          set -euo pipefail
+          FILE=governance/NOVELTY-COLLECTION-REGISTER.md
+          BASE="${{ steps.shas.outputs.base }}"
+          HEAD="${{ steps.shas.outputs.head }}"
+
+          # Added lines starting with "| " that carry status=NEW at the tail
+          # of the row. NEW is expected as a bare token in the last column.
+          ADDED_NEW=$(git diff "${BASE}" "${HEAD}" -- "$FILE" \
+            | awk '
+                /^---/ { next }
+                /^\+\+\+/ { next }
+                /^\+\| / {
+                  line = substr($0, 2)          # strip leading +
+                  if (line ~ /^\|[[:space:]]*-+/) next
+                  if (line ~ /^\| item[[:space:]]*\|/) next
+                  # Match "| NEW |" or trailing "| NEW" possibly with trailing spaces
+                  if (line ~ /\|[[:space:]]*NEW[[:space:]]*\|?[[:space:]]*$/) print line
+                }
+              ')
+
+          {
+            echo "## novelty-handoff — detection summary"
+            echo ""
+            if [ -z "${ADDED_NEW}" ]; then
+              echo "No newly-appended rows with \`status=NEW\` detected in this PR."
+              echo ""
+              echo "_(Detector = read-only; QUEUE is written only by the factory-watcher._"
+              echo "_This workflow never commits — see file header comment.)_"
+            else
+              echo "Newly-appended \`status=NEW\` finding rows:"
+              echo ""
+              echo '```'
+              echo "${ADDED_NEW}"
+              echo '```'
+              echo ""
+              echo "**Next step (out-of-workflow):** factory-watcher on evo1"
+              echo "(\`scripts/novelty-watcher.sh\`) picks these up post-merge and"
+              echo "appends the \`picked\` event to"
+              echo "\`governance/NOVELTY-HANDOFF-QUEUE.md\` as single-writer."
+              echo ""
+              echo "This workflow **does not** write to the QUEUE (validator+detector only)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
