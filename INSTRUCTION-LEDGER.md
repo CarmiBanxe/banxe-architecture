@@ -25082,3 +25082,18 @@ FACTORY-OPERATING-RULES pointer (#1014). IL minted redis-serialized at ratificat
 `docs/runbooks/AGENT-ACTIVATION-PROCEDURE.md` · I-27 (`.claude/rules/compliance.md`) · `HITL-MATRIX.yaml` ·
 ADR-128 / ADR-155 · conditions-abcd-activation-runbook · activation-order · SPRINT-8-COO / SPRINT-4-MLRO ·
 `docs/factory/FACTORY-OPERATING-RULES.md` (template, #1014).
+
+---
+
+### IL-911 - sp09-accept-adr-159 @ 2026-07-05T02:12:35Z
+
+- **il_ts:** 2026-07-05T02:12:35Z
+- **session_id:** sp09-accept-adr-159
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp09-accept-adr-159/IL-2026-07-05T02-12-35Z--9053ec.md`
+
+### sp09-accept-adr-159
+
+- **Instruction:** accept ADR-159 PROPOSED->ACCEPTED (operator go-live approval)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

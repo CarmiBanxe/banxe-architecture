@@ -1,7 +1,7 @@
 # ADR-159 — B→A novelty auto-handoff pipeline
 
 **Date:** 2026-07-04
-**Status:** PROPOSED (Central-approved design; HITL-merge)
+**Status:** ACCEPTED (accepted 2026-07-05, operator go-live approval)
 **Deciders:** Central (approved design), Terminal-B (Spec-Projects), Terminal-A (Factory)
 **Replaces:** N/A
 **Superseded by:** N/A
