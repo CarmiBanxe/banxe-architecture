@@ -1,8 +1,11 @@
 # systemd/novelty-watcher.timer
-# B->A novelty auto-handoff pipeline — factory-watcher v1 (PROPOSED template).
+# B->A novelty auto-handoff pipeline — factory-watcher v1.1 (PROPOSED template).
 #
 # STATUS: IN-REPO TEMPLATE ONLY. NOT INSTALLED. NOT ENABLED. NOT STARTED.
-# Apply = operator, on evo1 (ADR-103 build venue), via:
+#
+# Install venue = evo1 (ADR-103 server-only build venue), NOT Legion. Apply:
+#   ssh evo1
+#   # place unit + timer under ~/.config/systemd/user/
 #   systemctl --user daemon-reload
 #   systemctl --user enable  novelty-watcher.timer
 #   systemctl --user start   novelty-watcher.timer
@@ -13,10 +16,11 @@
 # starting-point default per governance/novelty-pipeline-config.yaml
 # (watcher.poll_interval_seconds); the operator may adjust before enabling.
 #
-# Anchors: ADR-159, governance/novelty-pipeline-config.yaml, ADR-156 sandbox.
+# Anchors: ADR-159, ADR-103 (evo1 build venue), ADR-120 (per-session worktree),
+# governance/novelty-pipeline-config.yaml, ADR-156 sandbox.
 
 [Unit]
-Description=Banxe factory-watcher timer — B->A novelty pipeline (v1 PROPOSED, template)
+Description=Banxe factory-watcher timer — B->A novelty pipeline (v1.1 PROPOSED, template, evo1)
 Documentation=file:%h/banxe-architecture/docs/adr/ADR-159-ba-novelty-auto-handoff-pipeline.md
 
 [Timer]
