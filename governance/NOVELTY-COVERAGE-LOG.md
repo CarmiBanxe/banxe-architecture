@@ -25,3 +25,4 @@
 | source | passes | coverage | gaps-found | dup-refs | corpus-sha | timestamp |
 |---|---|---|---|---|---|---|
 | banxe-agent-engine-conclusion.md | multi | full | 0 | 11/12 фреймворков покрыты (docs/agent-engine-dossier SRC-01/SRC-04) + P0-дефекты в ADR (midaz/CASS/safeguarding) + ANTHROPIC_API_KEY=env-only, 0 hardcoded (не утечка) | 3552e73 | 2026-07-05T00:23:04Z |
+| final-actionable-sweep-banxe-agent-engine-conclusion | multi | full | 0 | midaz-ledger=CLOSED(GAP-087 LIVE 2026-06-27); banxe-recon=OPERATIONAL; CASS-15=GAP-087 LIVE; tool-registry=ADR-147 S15 DEPLOYED; ANTHROPIC_API_KEY=env-only 0-hardcoded; gateway.py-key=not-in-repo 0-hardcoded 0-live-sk; qdrant/intent-engine=dossier-options non-actionable | 7758b1d | 2026-07-05T01:15:43Z |
