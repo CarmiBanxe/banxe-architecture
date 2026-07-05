@@ -24893,22 +24893,7 @@ IL minted redis-serialized at ratification.
 
 ---
 
-### IL-891 - sp07-final-sweep-coverage @ 2026-07-05T01:17:07Z
-
-- **il_ts:** 2026-07-05T01:17:07Z
-- **session_id:** sp07-final-sweep-coverage
-- **source:** agent-factory
-- **status:** DONE
-- **shard:** `ledger/entries/sp07-final-sweep-coverage/IL-2026-07-05T01-17-07Z--c6ec79.md`
-
-### sp07-final-sweep-coverage
-
-- **Instruction:** Outcome-2 coverage-confirmation: final actionable sweep of banxe-agent-engine-conclusion.md — delta=0 (all 8 actionable items CLOSED-by-fact or non-actionable per ADR-159)
-- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
-
----
-
-### IL-914 - agent-factory-phase3ssot-amendment-003 @ 2026-07-05T01:27:58Z
+### IL-892 - agent-factory-phase3ssot-amendment-003 @ 2026-07-05T01:27:58Z
 
 - **il_ts:** 2026-07-05T01:27:58Z
 - **session_id:** agent-factory-phase3ssot-amendment-003
@@ -24940,22 +24925,7 @@ documented. IL minted redis-serialized at ratification.
 
 ---
 
-### IL-915 - sp08-novelty-pipeline-scaffolding @ 2026-07-05T01:32:03Z
-
-- **il_ts:** 2026-07-05T01:32:03Z
-- **session_id:** sp08-novelty-pipeline-scaffolding
-- **source:** agent-factory
-- **status:** DONE
-- **shard:** `ledger/entries/sp08-novelty-pipeline-scaffolding/IL-2026-07-05T01-32-03Z--bbca4e.md`
-
-### sp08-novelty-pipeline-scaffolding
-
-- **Instruction:** NOVELTY: B->A auto-handoff pipeline scaffolding (QUEUE + validator workflow + watcher-v1 stub + systemd templates + ADR-159 hand-off-chain) [PROPOSED, not activated]
-- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
-
----
-
-### IL-916 - agent-factory-fleetaudit-passport-binding-conformance @ 2026-07-05T01:44:40Z
+### IL-897 - agent-factory-fleetaudit-passport-binding-conformance @ 2026-07-05T01:44:40Z
 
 - **il_ts:** 2026-07-05T01:44:40Z
 - **session_id:** agent-factory-fleetaudit-passport-binding-conformance
@@ -24997,7 +24967,22 @@ redis-serialized at ratification.
 
 ---
 
-### IL-917 - agent-factory-fleetstubs-schema-upgrade @ 2026-07-05T01:54:25Z
+### IL-900 - sp08-novelty-pipeline-scaffolding @ 2026-07-05T01:32:03Z
+
+- **il_ts:** 2026-07-05T01:32:03Z
+- **session_id:** sp08-novelty-pipeline-scaffolding
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp08-novelty-pipeline-scaffolding/IL-2026-07-05T01-32-03Z--bbca4e.md`
+
+### sp08-novelty-pipeline-scaffolding
+
+- **Instruction:** NOVELTY: B->A auto-handoff pipeline scaffolding (QUEUE + validator workflow + watcher-v1 stub + systemd templates + ADR-159 hand-off-chain) [PROPOSED, not activated]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-901 - agent-factory-fleetstubs-schema-upgrade @ 2026-07-05T01:54:25Z
 
 - **il_ts:** 2026-07-05T01:54:25Z
 - **session_id:** agent-factory-fleetstubs-schema-upgrade
@@ -25038,7 +25023,7 @@ change. No agent added to AGENT_REGISTRY/swarm.yaml. IL minted redis-serialized 
 
 ---
 
-### IL-918 - agent-factory-phase3ssot-amendment-002-003-cleanup @ 2026-07-05T02:00:00Z
+### IL-902 - agent-factory-phase3ssot-amendment-002-003-cleanup @ 2026-07-05T02:00:00Z
 
 - **il_ts:** 2026-07-05T02:00:00Z
 - **session_id:** agent-factory-phase3ssot-amendment-002-003-cleanup
@@ -25065,7 +25050,7 @@ change. No agent added to AGENT_REGISTRY/swarm.yaml. IL minted redis-serialized 
 
 ---
 
-### IL-919 - agent-factory-fleetsync-placement-backref @ 2026-07-05T02:09:52Z
+### IL-903 - agent-factory-fleetsync-placement-backref @ 2026-07-05T02:09:52Z
 
 - **il_ts:** 2026-07-05T02:09:52Z
 - **session_id:** agent-factory-fleetsync-placement-backref
@@ -25096,22 +25081,7 @@ IL minted redis-serialized at ratification.
 
 ---
 
-### IL-920 - sp09-accept-adr-159 @ 2026-07-05T02:12:35Z
-
-- **il_ts:** 2026-07-05T02:12:35Z
-- **session_id:** sp09-accept-adr-159
-- **source:** agent-factory
-- **status:** DONE
-- **shard:** `ledger/entries/sp09-accept-adr-159/IL-2026-07-05T02-12-35Z--9053ec.md`
-
-### sp09-accept-adr-159
-
-- **Instruction:** accept ADR-159 PROPOSED->ACCEPTED (operator go-live approval)
-- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
-
----
-
-### IL-921 - agent-factory-activation-procedure-index @ 2026-07-05T02:20:55Z
+### IL-909 - agent-factory-activation-procedure-index @ 2026-07-05T02:20:55Z
 
 - **il_ts:** 2026-07-05T02:20:55Z
 - **session_id:** agent-factory-activation-procedure-index
@@ -25142,7 +25112,22 @@ ADR-128 / ADR-155 · conditions-abcd-activation-runbook · activation-order · S
 
 ---
 
-### IL-922 - agent-factory-activation-readiness-audit @ 2026-07-05T02:30:58Z
+### IL-911 - sp09-accept-adr-159 @ 2026-07-05T02:12:35Z
+
+- **il_ts:** 2026-07-05T02:12:35Z
+- **session_id:** sp09-accept-adr-159
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp09-accept-adr-159/IL-2026-07-05T02-12-35Z--9053ec.md`
+
+### sp09-accept-adr-159
+
+- **Instruction:** accept ADR-159 PROPOSED->ACCEPTED (operator go-live approval)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-912 - agent-factory-activation-readiness-audit @ 2026-07-05T02:30:58Z
 
 - **il_ts:** 2026-07-05T02:30:58Z
 - **session_id:** agent-factory-activation-readiness-audit
@@ -25225,3 +25210,18 @@ go-live. No TRADING-001 / agent/specproj/* touched (Rule 6). IL minted redis-ser
 
 `agents/souls/{adverse-media,regulatory-returns,safeguarding-recon}-governor.md` · `agents/souls/_TEMPLATE.md` ·
 `docs/audit/ACTIVATION-READINESS-AUDIT-2026-07-05.md` (#1040) · `docs/runbooks/AGENT-ACTIVATION-PROCEDURE.md` (#1039).
+
+---
+
+### IL-928 - sp07-final-sweep-coverage @ 2026-07-05T01:17:07Z
+
+- **il_ts:** 2026-07-05T01:17:07Z
+- **session_id:** sp07-final-sweep-coverage
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp07-final-sweep-coverage/IL-2026-07-05T01-17-07Z--c6ec79.md`
+
+### sp07-final-sweep-coverage
+
+- **Instruction:** Outcome-2 coverage-confirmation: final actionable sweep of banxe-agent-engine-conclusion.md — delta=0 (all 8 actionable items CLOSED-by-fact or non-actionable per ADR-159)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
