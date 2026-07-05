@@ -7,6 +7,11 @@ trust_zone: AMBER
 autonomy: L2_REVIEW
 plane: DEVELOPER
 bounded_context: CTX-00-DEVELOPER
+# Org placement — reference to the SSOT (plane: DEVELOPER already reflects this; #1035 doc-sync).
+placement:
+  proposed: "Developer / Factory plane — governance-tooling (OUT-OF-BANK-ORG)"
+  status: "PROPOSED (pending operator ratification)"
+  ref: "docs/governance/AGENT-ORG-ASSIGNMENT-MATRIX.md §UNMAPPED + docs/governance/UNMAPPED-AGENTS-PLACEMENT.md (#1012)"
 description: |
   Контролёр исполнения Spec-First Methodology.
   Живёт в Developer Plane (passport в banxe-architecture, скрипт в ~/developer/).
