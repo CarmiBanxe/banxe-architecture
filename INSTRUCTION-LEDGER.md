@@ -24769,3 +24769,18 @@ redis-serialized at ratification (REDIS_HOST=100.68.102.48).
 
 `docs/audit/PHASE-3-SSOT-CONFORMANCE-2026-07-05.md` · `governance/PHASE-3-SSOT-PLAN.md` · ADR-157 ·
 `governance/STAFF-MATRIX-v3.md` · `agents/passports/`.
+
+---
+
+### IL-887 - specproj-sp06-coverage-confirmation-outcome @ 2026-07-05T01:01:35Z
+
+- **il_ts:** 2026-07-05T01:01:35Z
+- **session_id:** specproj-sp06-coverage-confirmation-outcome
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp06-coverage-confirmation-outcome/IL-2026-07-05T01-01-35Z--c72b2e.md`
+
+### specproj-sp06-coverage-confirmation-outcome
+
+- **Instruction:** specproj sp06 — codify Outcome-2 coverage-confirmation as 2nd valid B-terminal outcome (amend ADR-159 §Terminal-B-Operating-Algorithm with `Two valid terminal outcomes` subsection) + create B-owned append-only `governance/NOVELTY-COVERAGE-LOG.md` (schema + first entry: `banxe-agent-engine-conclusion.md` `full`, corpus 3552e73). Central-approved. No new ADR (ADR-102 — amend existing). No live workflow/watcher/systemd — docs only.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-060, ADR-102, ADR-103, ADR-119, ADR-120, ADR-121, ADR-143, ADR-153, ADR-156, ADR-159, ledger/SHARD-WORKFLOW.md
