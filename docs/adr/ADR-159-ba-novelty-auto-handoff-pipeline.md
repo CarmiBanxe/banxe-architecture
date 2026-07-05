@@ -199,3 +199,12 @@ Rationale — в строке как обоснование-новизны. **З
 - чужие ветки / сессии (parallel-session-isolation Rule 6).
 
 **B делает:** вычитка входа → находки → dup-check → append-находки → specproj-PR (shard+индекс) → independent-verify → hand-off `status=NEW`.
+
+### Two valid terminal outcomes
+
+Алгоритм B имеет ДВА валидных терминальных исхода (оба положительные):
+
+- **Outcome-1 — Finding(s).** Найдены реально новые элементы → append в `NOVELTY-COLLECTION-REGISTER.md` со `status=NEW` → hand-off A через `NOVELTY-HANDOFF-QUEUE.md`.
+- **Outcome-2 — Coverage-confirmation.** Multi-pass вычитка подтвердила полное покрытие (delta=0, ничего не пропущено) → append в `governance/NOVELTY-COVERAGE-LOG.md`. Это ПОЛОЖИТЕЛЬНЫЙ auditable-результат (proof-of-completeness), НЕ пустой прогон. B-терминальный: hand-off A НЕ происходит (обрабатывать нечего, QUEUE не трогается). Применяется в т.ч. к уже-использованным источникам — оператор прогоняет их, чтобы удостовериться в полной вычитке.
+
+Coverage-log (B-owned, append-only) схема: `source | passes | coverage(full|partial) | gaps-found | dup-refs | corpus-sha | timestamp`. `corpus-sha` анкерит coverage к состоянию корпуса (main HEAD) для воспроизводимости. `partial` → `gaps-found` перечисляет item-ы находок, ушедших в реестр как `status=NEW`.
