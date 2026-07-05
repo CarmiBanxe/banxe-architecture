@@ -250,3 +250,39 @@ preserved; the values below **supersede** them.
 
 *AMENDMENT-002 is append-only (I-24). It corrects references; it does not activate/deactivate any passport,
 change any SSOT ownership, or mutate `banxe-emi-stack` (the audit was read-only, Rule 6).*
+
+---
+
+## AMENDMENT-003 (2026-07-05) — GAP-count clarification + passport-count confirmation
+
+Closes the two "needs clarification" items the conformance audits (#1026 / #1029) flagged but could not resolve
+to a number. Append-only (I-24); no body cell changed.
+
+### §3.20 GAP Register — the "92 gaps / 18 OPEN" figure is a stale, non-reproducible snapshot
+
+Verified on `origin/main` (`7758b1d`):
+- **Total ~92 is plausible** — the highest GAP id on main is **`GAP-091`**.
+- **The "18 OPEN" sub-count is NOT reproducible**, because the register's statuses are **self-declared stale**.
+  The plan's cited register `docs/GAP-REGISTER.md` yields **8–17** OPEN by different counting methods; its own
+  **GAP-076 note (2026-06-21)** states *"all 13 OPEN GAPs have code (stale statuses)"*; and a **second** register,
+  root `GAP-REGISTER.md` (the intentional two-register split — architecture-canon vs operational), yields **~40**.
+- **Conclusion:** no single authoritative "OPEN" count exists today. §3.20 should (a) name **one** register as the
+  SSOT for this figure, and (b) treat the count as a **dated snapshot** (or live-computed), not a pinned constant —
+  an authoritative OPEN tally first requires a **GAP-register status-reconciliation pass** (separate from this SSOT
+  plan, since the registers' statuses are known-stale per GAP-076).
+
+### §5 / §3.21 passport count — AMENDMENT-001's "70" is confirmed stable (not drifting)
+
+A later survey produced 75/82 via a broad `passport.*\.yaml` glob; those are **counting artifacts** (they match
+subdir/other files beyond the passport registry). The authoritative count — `agents/passports/**/*.yaml` — is
+**70**, matching STAFF-MATRIX-v3 §1's own 2026-07-02 filesystem scan. **AMENDMENT-001's 70 stands; no change.**
+
+### Net Phase-3 status after AMENDMENTs 001–003
+
+Every SSOT claim is now either **verified-and-correct**, **corrected** (STAFF-MATRIX path, passport 74→70, ARL &
+KB emi-stack paths, stale §8 criteria), or **honestly flagged as owner-team/reconciliation work** (operational
+runtime flags for §8 criterion 4; the GAP OPEN tally). The governance-side registry is conformant; the residual
+items are explicitly *not* factory-resolvable.
+
+*AMENDMENT-003 is append-only (I-24). It clarifies figures and confirms a prior correction; it changes no SSOT
+ownership and activates no passport.*
