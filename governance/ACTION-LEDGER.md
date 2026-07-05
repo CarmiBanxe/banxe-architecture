@@ -88,3 +88,7 @@ Arbiter: Factory. Decision appended to ACTION-LEDGER.
 - A PENDING row with no OUTCOME row = action still in progress or lost — investigate before next action.
 - Terminal A seeing a FACTORY PENDING row → log `PAUSE` row, coordinate before proceeding.
 | 2026-07-05T01:00:00Z | FACTORY | git push | agent/factory/adr158b/fix-adr160-stale-refs | banxe-architecture | PENDING |
+| 2026-07-05T00:00:54Z | FACTORY | LOCK | file=docs/adr/ADR-160-bilateral-orchestration-write-gate.md | holder=FACTORY | status=RELEASED |
+| 2026-07-05T00:00:54Z | FACTORY | LOCK | file=governance/ACTION-LEDGER.md | holder=FACTORY | status=RELEASED |
+| 2026-07-05T00:00:54Z | FACTORY | OUTCOME | agent/factory/adr158b/tri-party-sync-terminal-b — PR #1020 squash-merged | banxe-architecture | DONE |
+| 2026-07-05T00:00:54Z | FACTORY | OUTCOME | agent/factory/adr158b/fix-adr160-stale-refs — PR #1022 squash-merged | banxe-architecture | DONE |

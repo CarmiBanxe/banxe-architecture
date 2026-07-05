@@ -24698,3 +24698,35 @@ at ratification (REDIS_HOST=100.68.102.48).
 
 - **Instruction:** specproj sp05 — codify Terminal-B operating algorithm into ADR-159 normative section + set novelty-pipeline-config Central-approved params (threshold 0.85, corpus paths, codeowners_owner @mmber)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-102, ADR-103, ADR-119, ADR-120, ADR-143, ADR-153, ADR-156, ADR-159, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-885 - agent-factory-governance-action-ledger-outcome @ 2026-07-05T00:01:00Z
+
+- **il_ts:** 2026-07-05T00:01:00Z
+- **session_id:** agent-factory-governance-action-ledger-outcome
+- **source:** auto
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-governance-action-ledger-outcome/IL-2026-07-05T00-01-00Z--gov001.md`
+
+### ACTION-LEDGER governance: LOCK RELEASED + OUTCOME PRs #1020 and #1022
+
+- **Instruction:** Close open LOCK/PENDING rows in governance/ACTION-LEDGER.md for PRs
+  #1020 (tri-party-sync-terminal-b) and #1022 (fix-adr160-stale-refs) after successful
+  squash-merge.
+
+- **Steps:**
+  1. Created worktree from origin/main (2746695 / PR #1023).
+  2. Appended 4 rows to governance/ACTION-LEDGER.md (I-24 append-only):
+     - LOCK RELEASED for docs/adr/ADR-160-bilateral-orchestration-write-gate.md
+     - LOCK RELEASED for governance/ACTION-LEDGER.md
+     - OUTCOME DONE for PR #1020 (agent/factory/adr158b/tri-party-sync-terminal-b)
+     - OUTCOME DONE for PR #1022 (agent/factory/adr158b/fix-adr160-stale-refs)
+  3. Rebased on origin/main (71f4959 / PR #1024).
+
+- **Proof:** Semgrep 0; all guardian checks pass post-rebase.
+
+- **Deviation:** Timestamps on RELEASED/OUTCOME rows (00:00:54Z) precede the PENDING row
+  they close (01:00:00Z placeholder from prior session). I-24 forbids editing the PENDING row.
+
+- **Refs:** ADR-160 §D-3, §H-4, I-24, PRs #1020 #1022.
