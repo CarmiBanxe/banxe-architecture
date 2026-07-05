@@ -1,0 +1,33 @@
+# systemd/novelty-watcher.timer
+# B->A novelty auto-handoff pipeline — factory-watcher v1 (PROPOSED template).
+#
+# STATUS: IN-REPO TEMPLATE ONLY. NOT INSTALLED. NOT ENABLED. NOT STARTED.
+# Apply = operator, on evo1 (ADR-103 build venue), via:
+#   systemctl --user daemon-reload
+#   systemctl --user enable  novelty-watcher.timer
+#   systemctl --user start   novelty-watcher.timer
+# The watcher timer MUST NOT be activated autonomously by any agent. Any
+# activation is HITL, per CLAUDE.md §71 / ADR-156 sandbox posture.
+#
+# Poll cadence — 10 minutes (OnUnitActiveSec=10min). The value is a
+# starting-point default per governance/novelty-pipeline-config.yaml
+# (watcher.poll_interval_seconds); the operator may adjust before enabling.
+#
+# Anchors: ADR-159, governance/novelty-pipeline-config.yaml, ADR-156 sandbox.
+
+[Unit]
+Description=Banxe factory-watcher timer — B->A novelty pipeline (v1 PROPOSED, template)
+Documentation=file:%h/banxe-architecture/docs/adr/ADR-159-ba-novelty-auto-handoff-pipeline.md
+
+[Timer]
+Unit=novelty-watcher.service
+# First tick 2 minutes after enable; subsequent ticks every 10 minutes.
+OnBootSec=2min
+OnUnitActiveSec=10min
+# Do not run overlapping instances; each tick waits for the previous ExecStart
+# to finish (the .service is Type=oneshot).
+AccuracySec=30s
+Persistent=false
+
+[Install]
+WantedBy=timers.target

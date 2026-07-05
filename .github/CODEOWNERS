@@ -23,3 +23,11 @@
 # Claude Code configuration — policy files
 /.claude/                        @mmber
 /CLAUDE.md                       @mmber
+
+# B->A novelty auto-handoff pipeline (ADR-159 scaffolding — PROPOSED)
+# QUEUE: A-owned append-only event log (factory-watcher single-writer)
+# Workflow: A-owned validator+detector (no commits)
+# Watcher: A-owned factory-watcher v1 (evo1 systemd, apply=operator)
+/governance/NOVELTY-HANDOFF-QUEUE.md      @mmber
+/.github/workflows/novelty-handoff.yml    @mmber
+/scripts/novelty-watcher.sh               @mmber

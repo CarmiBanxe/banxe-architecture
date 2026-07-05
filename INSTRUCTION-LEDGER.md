@@ -24964,3 +24964,18 @@ redis-serialized at ratification.
 
 `docs/audit/FLEET-PASSPORT-BINDING-CONFORMANCE-2026-07-05.md` · `schemas/agent_passport.schema.json` ·
 `governance/STAFF-MATRIX-v3.md` · `docs/governance/AGENT-ORG-ASSIGNMENT-MATRIX.md` · #1012.
+
+---
+
+### IL-900 - sp08-novelty-pipeline-scaffolding @ 2026-07-05T01:32:03Z
+
+- **il_ts:** 2026-07-05T01:32:03Z
+- **session_id:** sp08-novelty-pipeline-scaffolding
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp08-novelty-pipeline-scaffolding/IL-2026-07-05T01-32-03Z--bbca4e.md`
+
+### sp08-novelty-pipeline-scaffolding
+
+- **Instruction:** NOVELTY: B->A auto-handoff pipeline scaffolding (QUEUE + validator workflow + watcher-v1 stub + systemd templates + ADR-159 hand-off-chain) [PROPOSED, not activated]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
