@@ -25158,3 +25158,24 @@ IL minted redis-serialized at ratification.
 
 `docs/audit/ACTIVATION-READINESS-AUDIT-2026-07-05.md` · `agents/passports/**` · `agents/souls/**` ·
 `docs/runbooks/AGENT-ACTIVATION-PROCEDURE.md` (#1039) · #1034/#1035.
+
+---
+
+### IL-913 - sp10-watcher-v1-1-newfilter @ 2026-07-05T19:58:47Z
+
+- **il_ts:** 2026-07-05T19:58:47Z
+- **session_id:** sp10-watcher-v1-1-newfilter
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp10-watcher-v1-1-newfilter/IL-2026-07-05T19-58-47Z--30fe90.md`
+
+### sp10-watcher-v1-1-newfilter
+
+- **Instruction:** NOVELTY WATCHER v1.1 — NEW-only status filter (legacy grandfathered), isolated-worktree PR-output discipline, evo1 host anchoring; fixes v1 (#1033) shakeout defects; PROPOSED, not activated.
+- **Fixes (3 defects vs v1):**
+  1. STATUS filter = strict NEW only (was `NEW || OPEN`, re-processed already-closed items: `glm_air_distributed_second_reason_lane`, `litellm_4000_orphan_reuseport`, `litellm_4000_single_listener_guard`). Legacy statuses OPEN / IN-PROGRESS / RESOLVED grandfathered.
+  2. OUTPUT = isolated linked worktree via `scripts/bx-session.sh` (ADR-120) + operator `gh pr create --draft` instruction; v1.1 does NOT mutate the shared checkout (fixes parallel-session-isolation Rule 6 violation observed in v1).
+  3. HOST = evo1 (ADR-103 build venue), not Legion. systemd unit WorkingDirectory=%h/banxe-architecture; ExecStart at %h/banxe-architecture/scripts/novelty-watcher.sh; EnvironmentFile placeholder for LITELLM_KEY (score-hook v1.1 still stub — needs LITELLM_KEY for real scoring).
+- **Proof:** dry-run against current register (0 status=NEW) — 11 legacy rows skipped, 0 writes, exit 0; syntax check bash -n clean.
+- **Not activated:** systemd unit/timer remain in-repo templates; no `systemctl enable/start` executed. Merge = HITL per CLAUDE.md §71.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ADR-102 (dup-audit), ADR-103 (server-only = evo1), ADR-120 (per-session worktree), ADR-156 (sandbox), ADR-159 (B->A pipeline §D-1 strict NEW), ledger/SHARD-WORKFLOW.md, .claude/rules/parallel-session-isolation.md Rule 6+7, CLAUDE.md §11 §71.
