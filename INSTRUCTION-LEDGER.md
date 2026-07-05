@@ -25271,3 +25271,18 @@ CLASS-B charters written not activated. No TRADING-001 / agent/specproj/* (Rule 
 
 agents/souls/{crm-dsar,support-sla,user-preferences,document-management}-*.md · agents/souls/_TEMPLATE.md ·
 #1042 (Cohort 1) · #1040 readiness · #1039 activation procedure.
+
+---
+
+### IL-931 - sp12-watcher-v2-real-scoring @ 2026-07-05T21:52:18Z
+
+- **il_ts:** 2026-07-05T21:52:18Z
+- **session_id:** sp12-watcher-v2-real-scoring
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp12-watcher-v2-real-scoring/IL-2026-07-05T21-52-18Z--d99063.md`
+
+### sp12-watcher-v2-real-scoring
+
+- **Instruction:** watcher v2 — un-stub score-hook: real LiteLLM :4000 (project-reason) with fail-open to novel; threshold from config; no hardcoded key (env LITELLM_KEY); watcher NOT restarted; sp12 [PROPOSED]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
