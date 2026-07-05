@@ -25379,3 +25379,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** Terminal-B full-coverage mandate: always max-full multi-pass parse (>=3 passes), no self-initiated short version, exception only on explicit operator quick-look; extends ADR-159 step-1 MULTI-PASS READ, additive not supersede (ADR-102)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-938 - agent-factory-gap042-sprint-cd-closure @ 2026-07-05T23:18:51Z
+
+- **il_ts:** 2026-07-05T23:18:51Z
+- **session_id:** agent-factory-gap042-sprint-cd-closure
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gap042-sprint-cd-closure/IL-2026-07-05T23-18-51Z--1c447d.md`
+
+### agent-factory-gap042-sprint-cd-closure
+
+- **Instruction:** Rescue Sprint-C/D closure §6 (78 lines, append-only ADR-056/I-24) from abandoned operator branch gap042-update (b8a80f9, 2026-06-30). Content: Sprint-C/D closure tables, Sprint-B runtime state, 5/5 GAP L2 adoption gate met, CTIO carry-forward. Gap-018 awaiting TELEGRAM tokens. PR #1049.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
