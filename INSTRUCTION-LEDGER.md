@@ -25435,3 +25435,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** NOVELTY: SP14 Terminal-B intake of external EMI-BANXE-AI-BANK open-source stack review — 8-section coverage, 30 NEW candidates appended to NOVELTY-COLLECTION-REGISTER (agent harnesses, foundation models, GNN-fraud stack, federated learning, AI4Finance stack, OWASP-LLM/NeMo/LIME-SHAP, Langfuse, memory-first/FATE-cross-bank roadmap); dup-check by fact against ADRs/services/DONE; 21 duplicates evidenced in intake log
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-946 - specproj-sp17-emi-strategic-value-signal @ 2026-07-05T23:52:13Z
+
+- **il_ts:** 2026-07-05T23:52:13Z
+- **session_id:** specproj-sp17-emi-strategic-value-signal
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp17-emi-strategic-value-signal/IL-2026-07-05T23-52-13Z--44d663.md`
+
+### specproj-sp17-emi-strategic-value-signal
+
+- **Instruction:** STRATEGIC-SIGNAL: Terminal-B directive-proposal B-STRATEGIC-SIGNAL-001 -> Central; strategic overlay (time/space/moat/sequencing) on the 30 NEW findings from #1051 sp14 register; references not restates (ADR-102); HITL Central-ack.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
