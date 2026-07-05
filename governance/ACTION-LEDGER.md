@@ -102,3 +102,6 @@ Arbiter: Factory. Decision appended to ACTION-LEDGER.
 | 2026-07-05T02:00:00Z | FACTORY | git push | agent/factory/phase3ssot/amendment-002-003-cleanup | banxe-architecture | PENDING |
 | 2026-07-05T02:00:00Z | FACTORY | LOCK | file=governance/PHASE-3-SSOT-PLAN.md | holder=FACTORY | status=RELEASED |
 | 2026-07-05T02:00:00Z | FACTORY | LOCK | file=governance/ACTION-LEDGER.md | holder=FACTORY | status=RELEASED |
+| 2026-07-05T02:10:00Z | FACTORY | RELEASED | file=INSTRUCTION-LEDGER.md | reason=stale-lock-cleanup: Terminal-B lock (00:00Z) self-expired — PR #1017 merged 2026-07-04T23:43:59Z; NOVELTY sp04 completed | status=RELEASED |
+| 2026-07-05T02:10:00Z | FACTORY | LOCK | file=INSTRUCTION-LEDGER.md | holder=FACTORY | status=HELD |
+| 2026-07-05T02:10:00Z | FACTORY | LOCK | file=INSTRUCTION-LEDGER.md | holder=FACTORY | status=RELEASED |

@@ -25023,6 +25023,33 @@ change. No agent added to AGENT_REGISTRY/swarm.yaml. IL minted redis-serialized 
 
 ---
 
+### IL-902 - agent-factory-phase3ssot-amendment-002-003-cleanup @ 2026-07-05T02:00:00Z
+
+- **il_ts:** 2026-07-05T02:00:00Z
+- **session_id:** agent-factory-phase3ssot-amendment-002-003-cleanup
+- **source:** agent-factory
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-phase3ssot-amendment-002-003-cleanup/IL-2026-07-05T02-00-00Z--phase3ssot-amend-002-003.md`
+
+# PHASE-3-SSOT AMENDMENT-002 + AMENDMENT-003 applied + ACTION-LEDGER stale cleanup
+
+## What
+- AMENDMENT-002: fix §3.14 ARL path + §3.17 KB path + §3.12 audit clarification + non-exhaustive scope note
+- AMENDMENT-003: GAP-count clarification (snapshot-dated) + passport 70 confirmed
+- ACTION-LEDGER: release 3 stale FACTORY LOCKs/PENDINGs from adr158b session (00:45 2026-07-05)
+
+## Files changed
+- governance/PHASE-3-SSOT-PLAN.md (append-only, 2 amendment sections)
+- governance/ACTION-LEDGER.md (append-only, cleanup rows)
+- ledger/entries/agent-factory-phase3ssot-amendment-002-003-cleanup/IL-*.md (new shard)
+
+## References
+- Amendment-002 shard: IL-2026-07-05T00-54-04Z--phase3ssot-amendment-002.md
+- Amendment-003 shard: IL-2026-07-05T01-27-58Z--phase3ssot-amendment-003.md
+- Stale locks from: ACTION-LEDGER rows 78-80, 90 (00:45 session)
+
+---
+
 ### IL-903 - agent-factory-fleetsync-placement-backref @ 2026-07-05T02:09:52Z
 
 - **il_ts:** 2026-07-05T02:09:52Z
