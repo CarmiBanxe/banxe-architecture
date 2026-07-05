@@ -173,3 +173,43 @@ Phase 3 → Phase 4 gate: all 6 criteria satisfied + operator confirmation.
 ---
 
 *Append-only (I-24). Amendments via AMENDMENT-NNN sections below.*
+
+---
+
+## AMENDMENT-001 (2026-07-05) — conformance corrections
+
+Source: conformance audit `docs/audit/PHASE-3-SSOT-CONFORMANCE-2026-07-05.md` (PR #1026, merged). Append-only
+(I-24): the body above is preserved; the values below **supersede** the noted body cells.
+
+### Corrections (discrepancies — the body values are wrong)
+
+| Ref | Body value | Corrected value | Basis |
+|---|---|---|---|
+| §5 "Canonical location" + §3.21 path | `docs/STAFF-MATRIX-v3.md` | **`governance/STAFF-MATRIX-v3.md`** | the `docs/` path does not exist; the file lives under `governance/` |
+| §5 "Total passports" + §3.21 count | **74** | **70** | STAFF-MATRIX-v3 §1 states its own total = **70** (filesystem scan 2026-07-02 of `agents/passports/`); internally consistent (§5: 12 L1–L2 heads + 58 PROPOSED = **70**, not 74) |
+
+### Stale statuses now satisfied (flip to ✅ DONE)
+
+| Ref | Body status | Actual |
+|---|---|---|
+| §8 criterion 1 (this plan merged) | ⏳ This PR | ✅ DONE — on `main` |
+| §8 criterion 2 (ADR-157 merged) | ⏳ This PR | ✅ DONE — on `main` |
+| §8 criterion 6 + §7 (#270 DEPLOYMENT-MANIFEST) | ⏳ Awaiting merge | ✅ DONE — #270 **MERGED** |
+
+### Refreshed snapshot values (informational — were point-in-time at Phase-3 open)
+
+- §3.18 IL tip: `IL-864` → current max **IL-887**.
+- §3.19 ADR range: `ADR-001..157` → highest on main **ADR-160**.
+
+### Not amended — clarified only
+
+- **§3.20 GAP register:** two files exist on main — `GAP-REGISTER.md` (root) **and** `docs/GAP-REGISTER.md` (an
+  intentional split, root = architecture-canon gaps, `docs/` = operational). The "92 gaps / 18 OPEN" figure is
+  not reproducible by simple count; it should cite the specific register + its own authoritative tally. Highest
+  GAP on main is `GAP-091` (so ~92 total is plausible; the **18 OPEN** sub-count remains unverified).
+- **§3 domains 1–17, 22** name `banxe-emi-stack` paths + operational flags that were **not** verified in the
+  `banxe-architecture`-scoped audit. A companion emi-stack-side audit is required before §8 criterion 4 (SSOT
+  table approval) is honestly satisfiable.
+
+*AMENDMENT-001 is append-only (I-24). It corrects references; it does not activate/deactivate any passport or
+change any SSOT ownership.*
