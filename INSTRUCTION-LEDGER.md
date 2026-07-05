@@ -25306,3 +25306,18 @@ agents/souls/{crm-dsar,support-sla,user-preferences,document-management}-*.md ·
 - **Perimeter / canon:** banxe-architecture only; authored in isolated worktree off origin/main (ADR-120), not the shared checkout; no secrets; no code/runtime change; signed; `--force-with-lease` only.
 - **Deliverable:** `docs/factory/FACTORY-CANON.md` + this IL shard. Draft PR, prepare-only.
 - **Refs:** CLAUDE.md §11; I-27 (HITL-L4 activation); ADR-117 (perimeter); ADR-120 (worktree); ADR-121 (destructive); ADR-128 (HITL); parallel-session-isolation Rule 6/7; ADR-102; SOUL cohorts #1042 / #1044 / #1046.
+
+---
+
+### IL-933 - specproj-sp13-pipeline-selftest @ 2026-07-05T22:46:48Z
+
+- **il_ts:** 2026-07-05T22:46:48Z
+- **session_id:** specproj-sp13-pipeline-selftest
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp13-pipeline-selftest/IL-2026-07-05T22-46-48Z--19dad2.md`
+
+### specproj-sp13-pipeline-selftest
+
+- **Instruction:** specproj sp13: pipeline self-test — synthetic SELFTEST-PIPELINE-PROBE row + watcher v2 single-shot proof (fail-open novel on placeholder key, QUEUE picked, shared main not mutated)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

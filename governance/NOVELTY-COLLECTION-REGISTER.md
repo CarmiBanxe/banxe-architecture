@@ -40,6 +40,7 @@
 | litellm_4000_noauth_redis_cache_stall | banxe-architecture | 2 | compliance | high | unique (cache:true + evo1-redis requirepass (NOAUTH) + отсутствие password -> ~20s столл на всех completions) | adopt | RESOLVED (cache:false, MetaClaw 7288cf8) | RESOLVED |
 | project_reason_glm_air_live_applied | banxe-architecture | 2 | feature | high | unique (project-reason 235b->glm-air применён и замерен 2.54s vs 28.8s (~11x), MetaClaw 7288cf8) | adopt | advances GAP-COMPUTE-GLM-AIR-REG | RESOLVED |
 | litellm_4000_single_listener_guard | banxe-architecture | 2 | infra | high | unique (systemd drop-in ExecStartPre kill-stale + Restart=on-failure предотвращает orphan co-bind :4000 через SO_REUSEPORT, устраняя мерцающий routing) | adopt | closes GAP "systemd single-listener guard"; apply=operator-Legion | OPEN |
+| SELFTEST-PIPELINE-PROBE | selftest | 4 | infra | low | unique | evaluate | NONE | NEW |
 
 ---
 
