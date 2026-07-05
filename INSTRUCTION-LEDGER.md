@@ -25420,3 +25420,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deliverable:** 3 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge, not hardcoded here.
 - **Fleet impact:** 35 → 38 SOULs; CTX-03 complete (8/8). Remaining SOUL-less after this: 37 of 57 passports.
 - **Refs:** SOUL cohorts #1042 (IL-925) / #1044 (IL-930) / #1046 (IL-934) / #1050 (IL-936); FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{clickhouse_writer,cto_platform_agent,experiment_copilot_agent}.yaml; CLAUDE.md §11; I-27; I-24; I-17; I-08; ADR-102; ADR-117/120/121/128; parallel-session-isolation Rule 6; GAP-078; governance/CANONICAL-ORG-CHART-v2.md.
+
+---
+
+### IL-945 - specproj-sp14-emi-banxe-stack-review-intake @ 2026-07-05T23:09:23Z
+
+- **il_ts:** 2026-07-05T23:09:23Z
+- **session_id:** specproj-sp14-emi-banxe-stack-review-intake
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp14-emi-banxe-stack-review-intake/IL-2026-07-05T23-09-23Z--d21c44.md`
+
+### specproj-sp14-emi-banxe-stack-review-intake
+
+- **Instruction:** NOVELTY: SP14 Terminal-B intake of external EMI-BANXE-AI-BANK open-source stack review — 8-section coverage, 30 NEW candidates appended to NOVELTY-COLLECTION-REGISTER (agent harnesses, foundation models, GNN-fraud stack, federated learning, AI4Finance stack, OWASP-LLM/NeMo/LIME-SHAP, Langfuse, memory-first/FATE-cross-bank roadmap); dup-check by fact against ADRs/services/DONE; 21 duplicates evidenced in intake log
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
