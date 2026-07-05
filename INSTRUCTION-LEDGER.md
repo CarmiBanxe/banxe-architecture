@@ -25225,3 +25225,18 @@ go-live. No TRADING-001 / agent/specproj/* touched (Rule 6). IL minted redis-ser
 
 - **Instruction:** Outcome-2 coverage-confirmation: final actionable sweep of banxe-agent-engine-conclusion.md — delta=0 (all 8 actionable items CLOSED-by-fact or non-actionable per ADR-159)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-929 - sp11-terminal-b-output-canon @ 2026-07-05T21:37:52Z
+
+- **il_ts:** 2026-07-05T21:37:52Z
+- **session_id:** sp11-terminal-b-output-canon
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp11-terminal-b-output-canon/IL-2026-07-05T21-37-52Z--6b3d5a.md`
+
+### sp11-terminal-b-output-canon
+
+- **Instruction:** specproj sp11 — Terminal-B output canon: single-artifact discipline (one CLAUDE CODE or SHELL per operator output; best-decision after read-only audit; HITL barriers merge/publish/keys/daemons stay operator-owned; sandbox ADR-156). ADR-102-safe: references ADR-159 Terminal-B-Operating-Algorithm + agents.md/AGENTS.md Best-Single-Artifact + parallel-session-isolation + CLAUDE.md §71 + ADR-156; does NOT restate. Additive, specializes for B-contour.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
