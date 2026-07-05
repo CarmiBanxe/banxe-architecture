@@ -25306,3 +25306,34 @@ agents/souls/{crm-dsar,support-sla,user-preferences,document-management}-*.md ·
 - **Perimeter / canon:** banxe-architecture only; authored in isolated worktree off origin/main (ADR-120), not the shared checkout; no secrets; no code/runtime change; signed; `--force-with-lease` only.
 - **Deliverable:** `docs/factory/FACTORY-CANON.md` + this IL shard. Draft PR, prepare-only.
 - **Refs:** CLAUDE.md §11; I-27 (HITL-L4 activation); ADR-117 (perimeter); ADR-120 (worktree); ADR-121 (destructive); ADR-128 (HITL); parallel-session-isolation Rule 6/7; ADR-102; SOUL cohorts #1042 / #1044 / #1046.
+
+---
+
+### IL-934 - agent-factory-souls-cohort3-platform-dev @ 2026-07-05T21:59:51Z
+
+- **il_ts:** 2026-07-05T21:59:51Z
+- **session_id:** agent-factory-souls-cohort3-platform-dev
+- **source:** agent-factory
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-cohort3-platform-dev/IL-2026-07-05T21-59-51Z--souls-cohort3-platform-dev.md`
+
+# SOUL authoring — Cohort 3: Platform/Dev governors (prepare-only)
+
+## What
+
+Third tranche of the #1040 forward-path (Cohort 1 #1042/IL-925, Cohort 2 #1044/IL-930). Net-new canonical
+Markdown SOULs (_TEMPLATE.md, 12 sections incl HITL Workflow) for 4 low-customer-risk Platform/Dev governors:
+sandbox_rails_governor (Eng/Dev Platform·Head of Platform Eng·CTX-09), sdk_release_governor (·CTX-09),
+multi_tenancy_agent (·CTO·CTX-09, owns services/multi_tenancy), m_gateway_api_governor (Platform/API·CTIO·CTX-01,
+routes to services/api_gateway). Describe authority, do not expand it; route-not-reimplement.
+
+## Boundaries
+
+Prepare-only. No activation — 4 passports stay PROPOSED (unchanged); PROPOSED→LIVE is I-27 HITL-L4/operator (§11).
+CLASS-B charters written not activated. No TRADING-001 / agent/specproj/* (Rule 6). Authored in worktree (ADR-120).
+IL minted redis-serialized at ratification.
+
+## Anchors
+
+agents/souls/{sandbox-rails-governor,sdk-release-governor,multi-tenancy-agent,m-gateway-api-governor}.md ·
+agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #1039 activation procedure.
