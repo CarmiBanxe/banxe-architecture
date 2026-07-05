@@ -1,5 +1,33 @@
-id: safeguarding_recon_governor
+# Schema-conformance upgrade (2026-07-05, PR-fleetstubs): added agent_passport.schema.json required
+# fields + department/human_double. STATUS STAYS PROPOSED — NOT activated (I-27); trust_zone/level
+# proposed for operator ratification. Placement per FLEET-PASSPORT-BINDING-CONFORMANCE-2026-07-05 (#1034).
+agent_id: safeguarding_recon_governor
+name: "SafeguardingReconGovernor"
+version: "0.1.0"
 status: PROPOSED
+level: 2                          # governor sub-agent (proposed; operator to confirm)
+trust_zone: RED                   # client-money / CASS 15 safeguarding contour (high)
+bounded_context: CTX-01          # safeguarding/compliance (matches safeguarding_audit_agent)
+department: "Finance / Safeguarding (Client Money)"
+human_double: "CFO + MLRO"        # per safeguarding shortfall gate HITL-011 (CFO + MLRO)
+capabilities:
+  - daily_client_money_reconciliation
+  - safeguarding_shortfall_excess_detection
+  - auditable_daily_recon_report      # PS25/12 aligned
+ports:
+  inbound:
+    - port: SafeguardingReconPort
+      interface: "Receives daily reconciliation trigger (cutoff schedule)"
+  outbound:
+    - port: SafeguardingEnginePort
+      interface: "Reads segregated-account balances from services/safeguarding-engine (banxe-emi-stack)"
+    - port: AlertPort
+      interface: "Escalates shortfall/excess to CFO + MLRO (HITL-011)"
+    - port: AuditPort
+      interface: "Append-only daily recon report + audit trail (I-24)"
+governance:
+  change_class: CLASS-B
+  owner: "CFO + MLRO"             # SM&CR accountable (stub's legacy owner: CEO+CTIO retained below)
 gap: GAP-005
 domain: E-safeguard
 title: Segregated client accounts daily reconciliation governor
