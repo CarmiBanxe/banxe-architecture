@@ -213,3 +213,40 @@ Source: conformance audit `docs/audit/PHASE-3-SSOT-CONFORMANCE-2026-07-05.md` (P
 
 *AMENDMENT-001 is append-only (I-24). It corrects references; it does not activate/deactivate any passport or
 change any SSOT ownership.*
+
+---
+
+## AMENDMENT-002 (2026-07-05) — emi-stack domain-path corrections
+
+Source: cross-repo domain-path audit `docs/audit/PHASE-3-SSOT-EMI-STACK-DOMAIN-AUDIT-2026-07-05.md` (PR #1029,
+merged), which verified the §3 `banxe-emi-stack` rows (domains 1–17, 22) that AMENDMENT-001 left cross-repo-
+unverified. 16 of 18 paths were correct; the two below are corrected. Append-only (I-24): the body §3 cells are
+preserved; the values below **supersede** them.
+
+### Corrections (§3 paths — body values are wrong)
+
+| Ref | Body path | Corrected path | Basis (banxe-emi-stack `origin/main` `8ca0ce4`) |
+|---|---|---|---|
+| §3.14 Agent Routing (ARL) | `services/arl/` | **`services/agent_routing/`** | `services/arl/` does not exist; `services/agent_routing/` present |
+| §3.17 Compliance KB | `services/kb/` | **`services/compliance_kb/`** | `services/kb/` does not exist; `services/compliance_kb/` present |
+
+### Clarifications (not path errors)
+
+- **§3.12 Audit Trail** — both `services/audit/` and `services/audit_trail/` exist on emi-stack `origin/main`.
+  The §3.12 canonical path `services/audit/` is retained, but the SSOT should state explicitly whether
+  `services/audit_trail/` is a distinct concern or a duplicate to consolidate.
+- **§3 table is a curated CORE set, not exhaustive.** `banxe-emi-stack` `origin/main` has **~50+**
+  `services/*` directories; §3 lists 22 core domains. §1's "SSOT for **every** domain" is satisfied only for
+  the core set — the uncovered services (`abs`, `adverse_media`, `api_gateway`, `card_issuing`,
+  `client_statements`, `consumer_duty`, `crm`, …) have **no declared SSOT owner** in this table. The plan
+  should either declare §3 "core domains only" or extend coverage in a later amendment.
+
+### Still owed (not resolvable by the factory — path audit ≠ runtime attestation)
+
+- The §3 **operational flags** (✅ LIVE / 🟡 CODE-READY / 🔴 BLOCKED / 🟠 STAGED) attest *runtime* state, which a
+  read-only tree audit cannot verify. **§8 criterion 4 (SSOT-table approval)** therefore requires the owning
+  service teams' runtime attestation, not merely path-existence — this remains an owner-team action before
+  Phase 3 can be honestly declared COMPLETE.
+
+*AMENDMENT-002 is append-only (I-24). It corrects references; it does not activate/deactivate any passport,
+change any SSOT ownership, or mutate `banxe-emi-stack` (the audit was read-only, Rule 6).*
