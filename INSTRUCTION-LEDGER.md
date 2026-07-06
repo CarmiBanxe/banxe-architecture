@@ -25698,3 +25698,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** DIRECTIVE B-EMI-CREDIT-GATE-001: EMI credit/investment constraint note (B->Central, ack-required; TOMPAY UK EMI + PAYBIS crypto white-label; flags tradingagents/qlib as reject-cand, finrl-treasury/finrobot as careful, lightgbm/xgboost/credit-scoring as credit-BLOCKED; references not restates per ADR-102; no register row mutated; additive to B-STRATEGIC-SIGNAL-001)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-978 - specproj-sp23-banxe-concept-v7v9-intake @ 2026-07-06T03:03:09Z
+
+- **il_ts:** 2026-07-06T03:03:09Z
+- **session_id:** specproj-sp23-banxe-concept-v7v9-intake
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp23-banxe-concept-v7v9-intake/IL-2026-07-06T03-03-09Z--5714ec.md`
+
+### specproj-sp23-banxe-concept-v7v9-intake
+
+- **Instruction:** NOVELTY: 5 internal BANXE concept docs (v7 Part2/Part3, v8 Part4, v9 Part3/Part4) — 15 NEW + 2 credit-BLOCKED + coverage-log; internal plan, mostly coverage.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
