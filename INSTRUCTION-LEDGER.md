@@ -25800,3 +25800,26 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); signed; `--force-with-lease` only; NO passport/soul/template diff.
 - **Deliverable:** `docs/sources/emi-banxe-engine-2026-07-06.md` (verbatim) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
 - **Refs:** `docs/sources/README.md` (Intake SSOT convention); ADR-161 (SSOT-persistence); ADR-159 (Terminal-B operating algorithm); ADR-102 (pointer-first); I-24 (append-only); `docs/agent-engine-dossier/` (SRC-01..09 + ENGINE-ROADMAP — structured ingestion); `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` (#1070, synthesis); `docs/sources/best-decision-concept-2026-07-06.md` (sibling source #1).
+
+---
+
+### IL-985 - agent-factory-knowledge-best-decision-concept-verbatim @ 2026-07-06T21:05:08Z
+
+- **il_ts:** 2026-07-06T21:05:08Z
+- **session_id:** agent-factory-knowledge-best-decision-concept-verbatim
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-knowledge-best-decision-concept-verbatim/IL-2026-07-06T21-05-08Z--best-decision-concept-verbatim.md`
+
+### Zero-loss verbatim archival of concept source #1 (v2) — the TRUE original, correcting the "in spirit" v1
+
+- **Objective:** Preserve the operator-delivered **verbatim original** of concept source #1 — "Концепция «Лучшего Решения»: Математические, Научные и Прикладные Подходы" — byte-for-byte at `docs/sources/best-decision-concept-2026-07-06-v2.md`.
+- **Decisive finding (why v2 is needed):** the existing on-main `docs/sources/best-decision-concept-2026-07-06.md` (v1) is **NOT byte-exact** — its own header says "verbatim **in spirit**" and its `sha256` is the placeholder `computed-post-write`. Objective comparison: v1 body = **278 lines / 25866 bytes / sha256 f1301e4c…**; delivered raw original = **681 lines / 37286 bytes / sha256 7fe4718b…**. They differ structurally (different title, section layout, and the full §1–11 synthesis) — v1 is a reconstruction/paraphrase, not the operator's source. The true source was never byte-preserved until now.
+- **Delivery + ingestion test (PASSED):** operator pasted the full markdown via quoted heredoc to `~/banxe-dev/best-decision-theory.md`; bytes=37286, lines=681, sha256=7fe4718bf0351eb5518e67a3aece6f9a3c4013837721cbdd0301678f41f85f2e, concept-markers=13 (von Neumann, Bellman, secretary, prospect, NSGA, MAUT, TOPSIS, Ellsberg, Pareto, Pontryagin, satisficing, RLHF, Arrow, Nash), corruption=0 (Cyrillic + formulae intact).
+- **Zero-loss proof (byte-based, newline-safe):** built `<SSOT header> + <verbatim body>`; re-verified by byte offset `tail -c 37286 <file> | sha256sum == 7fe4718b…f2e` ✓. Header pins `sha256-body` + `body-bytes` + `verify:` command (real hash, not a placeholder). Final file 692 lines / 38330 bytes = 11-line header + 681-line verbatim body. Append-only (I-24); body edits forbidden.
+- **Naming / non-destructive (SSOT convention + I-24):** v1 is **preserved untouched** (per "corrected source = new file, older preserved, append-only"); v2 carries the `-v2` suffix and its header declares it the byte-exact source-of-truth superseding v1. No edit to v1, ADR-162, BEST-DECISION-BOUNDARY, or any reference (a downstream ref-migration to v2 can be a light follow-up; both files coexist per I-24).
+- **Both operator sources now byte-exact in docs/sources/:** #1 concept **v2** (this — verbatim original) + #2 engine (`emi-banxe-engine-2026-07-06.md`, #1073). The earlier concept v1 remains as the historical "in spirit" reconstruction.
+- **Additive only — nothing else touched:** does NOT modify v1, any SOUL, passport, `_TEMPLATE.md`, ADR, dossier, or canon file. No activation. No secrets.
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); signed; `--force-with-lease`; NO passport/soul/template diff. ADR-102 dedup: distinct filename (`-v2`); v1 preserved; net-new byte-exact source-of-truth (not a duplicate — v1 is a non-verbatim reconstruction, this is the true original).
+- **Deliverable:** `docs/sources/best-decision-concept-2026-07-06-v2.md` (verbatim) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
+- **Refs:** `docs/sources/README.md` (Intake SSOT convention); ADR-161 (SSOT-persistence); ADR-102 (pointer-first); I-24 (append-only); `docs/sources/best-decision-concept-2026-07-06.md` (v1, "in spirit"); `docs/canon/BEST-DECISION-BOUNDARY.md`; `docs/adr/ADR-162-best-decision-principle.md`; sibling `docs/sources/emi-banxe-engine-2026-07-06.md` (#1073, source #2 verbatim).
