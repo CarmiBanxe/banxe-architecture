@@ -1,0 +1,28 @@
+id: CASE-C
+name: credit-blocked
+description: >
+  Item drifts into credit issuance — out-of-scope for BANXE EMI perimeter per
+  DIRECTIVE B-EMI-CREDIT-GATE-001 (governance/COORDINATION-NOTES.md). The gate
+  hard-fails on strategic-fit regardless of the other criteria scoring well.
+  Verdict blocked-out-of-scope.
+ssot_ref: docs/sources/best-decision-concept-2026-07-06.md
+regime: risk-known
+scores:
+  value: 0.95                 # would be attractive if in-scope
+  cost_inverse: 0.70
+  risk_inverse: 0.50
+  reversibility: 0.60
+  strategic_fit: 0.00         # OUT of EMI-scope (credit)
+  opportunity_cost_inverse: 0.90
+weights:
+  value: 0.30
+  cost_inverse: 0.15
+  risk_inverse: 0.20
+  reversibility: 0.10
+  strategic_fit: 0.15
+  opportunity_cost_inverse: 0.10
+constraints:
+  emi_scope: out              # explicit out-of-scope tag ⇒ hard block
+  emi_scope_out_reason: credit-issuance
+  reversibility_floor: 0.30
+expected: blocked-out-of-scope

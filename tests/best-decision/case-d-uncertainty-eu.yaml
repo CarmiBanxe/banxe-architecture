@@ -1,0 +1,36 @@
+id: CASE-D
+name: uncertainty-eu
+description: >
+  Ambiguity-heavy regime (regulator has not yet ruled on the exact posture).
+  Two priors: optimistic and pessimistic. Under maxmin-EU (Gilboa–Schmeidler,
+  see SSOT §10) the worst-case is applied; if the worst-case-U falls below the
+  accept threshold, the gate defers pending information (real-option value,
+  SSOT §11). Verdict defer.
+ssot_ref: docs/sources/best-decision-concept-2026-07-06.md
+regime: ambiguity-maxmin
+scores_optimistic:
+  value: 0.75
+  cost_inverse: 0.70
+  risk_inverse: 0.60
+  reversibility: 0.50
+  strategic_fit: 0.90
+  opportunity_cost_inverse: 0.60
+scores_pessimistic:
+  value: 0.30                 # regulator rules against a key assumption
+  cost_inverse: 0.50
+  risk_inverse: 0.30
+  reversibility: 0.20         # low reversibility raises the defer bar
+  strategic_fit: 0.60
+  opportunity_cost_inverse: 0.60
+weights:
+  value: 0.30
+  cost_inverse: 0.15
+  risk_inverse: 0.20
+  reversibility: 0.10
+  strategic_fit: 0.15
+  opportunity_cost_inverse: 0.10
+constraints:
+  emi_scope: in
+  reversibility_floor: 0.30
+  voi_positive: true          # gathering information changes the decision → defer legitimate
+expected: defer

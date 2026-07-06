@@ -1,0 +1,25 @@
+id: CASE-A
+name: accept-high-value-low-cost
+description: >
+  Item scores high on value (EMI-scope compliance win) with low cost, low risk,
+  high reversibility. Passes the multi-criteria audit → verdict accept.
+ssot_ref: docs/sources/best-decision-concept-2026-07-06.md
+regime: risk-known
+scores:
+  value: 0.90
+  cost_inverse: 0.85          # low cost ⇒ inverse close to 1
+  risk_inverse: 0.80          # low risk ⇒ inverse close to 1
+  reversibility: 0.90
+  strategic_fit: 1.00         # in EMI-scope
+  opportunity_cost_inverse: 0.75
+weights:
+  value: 0.30
+  cost_inverse: 0.15
+  risk_inverse: 0.20
+  reversibility: 0.10
+  strategic_fit: 0.15
+  opportunity_cost_inverse: 0.10
+constraints:
+  emi_scope: in
+  reversibility_floor: 0.30
+expected: accept
