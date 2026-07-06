@@ -1,0 +1,54 @@
+# systemd/log-status-report.service
+# Ops reporting utility — read-only summary of /tmp/sp*-*.log style task logs
+# into a single markdown file. Template (in-repo only; NOT installed here).
+#
+# STATUS: TEMPLATE. NOT INSTALLED. NOT ENABLED. Enable via runbook —
+# operator step, HITL (CLAUDE.md §11 / ADR-156 sandbox posture).
+#
+# Pattern reference: systemd/novelty-watcher.service — same %h anchoring,
+# EnvironmentFile-driven config, Type=oneshot shape. ADR-102 reference-not-
+# restate: this unit does NOT duplicate the novelty-watcher's behaviour;
+# it borrows the shape only.
+#
+# The unit itself contains NO secrets and NO literal config values. All
+# tunables (LOG_GLOB, STATUS_PATH, STALE_SECS, JOB_MATCH) come from
+# EnvironmentFile — the sample lives at config/log-status-report.env.sample
+# in this repo. The real env file is populated OUTSIDE the repo (mode 0600)
+# and is NEVER committed.
+
+[Unit]
+Description=Banxe ops — log-status-report (task-log markdown summary)
+Documentation=file:%h/banxe-architecture/docs/runbooks/log-status-report.md
+ConditionPathExists=%h/banxe-architecture/scripts/log-status-report.sh
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/banxe-architecture
+ExecStart=%h/banxe-architecture/scripts/log-status-report.sh
+
+# EnvironmentFile is optional (leading '-') — if absent, the script's
+# documented defaults apply (LOG_GLOB=/tmp/sp*-*.log, STATUS_PATH=%h/
+# banxe-dev/DISPATCH-STATUS.md, STALE_SECS=1800). JOB_MATCH has NO committed
+# default: the operator sets it in the local env under the runner-process
+# pattern in use on the host, and the report counts active jobs matching the
+# configured JOB_MATCH pattern (or reports 'n/a' when unset).
+EnvironmentFile=-%h/.config/banxe/log-status-report.env
+
+StandardOutput=journal
+StandardError=journal
+
+# Sandbox — the script only READS log files under LOG_GLOB and WRITES the
+# atomic tempfile + final DISPATCH-STATUS.md under STATUS_PATH's directory.
+# It does not need any other writable path. Operator adjusts ReadWritePaths
+# if STATUS_PATH is moved outside %h/banxe-dev.
+NoNewPrivileges=yes
+PrivateTmp=no
+ProtectSystem=strict
+ReadWritePaths=%h/banxe-dev
+# /tmp reads are covered by default (PrivateTmp=no keeps the shared /tmp
+# view so the script sees the same sp*-*.log files the operator sees).
+
+[Install]
+# Activation is via the .timer only. A one-shot manual run
+# (`systemctl --user start log-status-report.service`) is allowed for the
+# operator during install verification.

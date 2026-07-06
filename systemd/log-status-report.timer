@@ -1,0 +1,32 @@
+# systemd/log-status-report.timer
+# Ops reporting utility — timer for log-status-report.service.
+#
+# STATUS: TEMPLATE. NOT INSTALLED. NOT ENABLED. Enable via runbook —
+# operator step, HITL (CLAUDE.md §11 / ADR-156 sandbox posture).
+#
+# Pattern reference: systemd/novelty-watcher.timer (ADR-102 reference-not-
+# restate — cadence + Persistent policy are OURS, only the shape is shared).
+#
+# Cadence: OnUnitActiveSec is controlled by the operator via the same
+# EnvironmentFile the service uses. If unset, the default from the [Timer]
+# section below applies (60s). Persistent=true so a missed tick during
+# host downtime fires once on next boot (useful for a report utility).
+
+[Unit]
+Description=Banxe ops — log-status-report timer (task-log markdown summary)
+Documentation=file:%h/banxe-architecture/docs/runbooks/log-status-report.md
+
+[Timer]
+Unit=log-status-report.service
+# First tick 30s after enable; subsequent ticks every 60s by default. The
+# operator can override by dropping a drop-in that reads
+# OnUnitActiveSec from the same EnvironmentFile as the service.
+OnBootSec=30s
+OnUnitActiveSec=60s
+AccuracySec=5s
+# Persistent=true — if the host is down when a tick would fire, run once at
+# next start. Cheap for a read-only report utility.
+Persistent=true
+
+[Install]
+WantedBy=timers.target
