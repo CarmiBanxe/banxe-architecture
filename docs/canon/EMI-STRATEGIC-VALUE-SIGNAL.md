@@ -155,3 +155,102 @@ Central acknowledges by any of:
 
 Until then: status remains **OPEN**; B does NOT act on any adoption; the
 register's per-row `handoff` fields remain the operator's routing surface.
+
+---
+
+## EMI Credit/Investment Constraint (для Central)
+
+- **DIRECTIVE-ID:** B-EMI-CREDIT-GATE-001
+- **From:** Terminal-B (Spec-Projects lane)
+- **To:** Central (idea-owner / EMI-core direction)
+- **Status:** OPEN
+- **Ack-required:** Central
+- **Date:** 2026-07-06
+- **Merge policy:** HITL — do NOT auto-merge; Central ack precedes any adoption
+  path. **Additive only** — this section does **not** mutate any row in
+  `governance/NOVELTY-COLLECTION-REGISTER.md`; per-row `verdict` / `status` remain
+  Central's decision surface.
+- **Precedence:** additive to `B-STRATEGIC-SIGNAL-001` (Dimensions 1–4 above).
+  Where MOAT Dim-3 or SEQUENCING Phase-4 place a treasury/investment slug,
+  this gate refines its adoptability under EMI licence — it does not
+  re-sequence.
+
+> **Operator scope-fact received 2026-07-06.** EMI BANXE is being built on
+> **TOMPAY** (UK EMI — e-money institution) with crypto surface via
+> **PAYBIS** (white-label; replaces the previously-referenced NeuroNext).
+> A UK EMI licence **does not permit** credit / lending / investment /
+> trading / MiFID-scope activity as core product — those require separate
+> permissions (consumer-credit / MiFID / investment-firm). The product surface
+> can remain universal, but **credit-scoring, lending-decision, and
+> investment/trading-execution features must not be adopted as EMI-core.**
+> This directive lists the register slugs where that gate applies.
+
+### Reference-anchor (do not restate)
+
+- Register: `governance/NOVELTY-COLLECTION-REGISTER.md` (per-row values are
+  authoritative; the item-slugs below are lifted **by reference only**, per
+  ADR-102 no-second-source-of-truth).
+- Intake logs (evidence trail): PR #1051 / sp14 (30 NEW) and
+  PR #1059 / sp18 (41 NEW), both merged on `main` at time of writing.
+- Precedent directive on this doc: `B-STRATEGIC-SIGNAL-001` (Dimensions 1–4
+  above) — unchanged by this section.
+
+### Bucket A — REJECT-candidate under EMI (MiFID/investment-firm scope, not e-money)
+
+- `tradingagents-llm-multi-agent` — multi-agent LLM trading system.
+  EMI-verdict: **reject** as EMI-core (product = trade execution → MiFID).
+  Reference-only benchmark permissible.
+- `qlib-quant-research-platform` — quant back-testing/FX platform.
+  EMI-verdict: **reject** as EMI-core (research surface for investment
+  strategies is investment-firm scope, not EMI).
+
+### Bucket B — CAREFUL-review under EMI (treasury OK for own float; autonomy = risk)
+
+- `finrl-deepseek-rl-treasury` — RL agent for treasury / FX policy.
+  EMI-verdict: **careful**. Own-float treasury management on safeguarded
+  balances is permissible; **autonomous RL-driven execution against
+  customer-facing surface = advisory/investment risk** and must be
+  human-in-the-loop, non-customer-facing, and bounded by safeguarding
+  invariants (I-04..I-06).
+- `finrobot-fintech-multi-agent` — AI4Finance financial multi-agent framework.
+  EMI-verdict: **careful — use-dependent**. Non-customer ops/back-office
+  automation is fine; agent surfaces that execute trading / credit
+  decisions fall under Bucket A / Bucket C respectively and inherit those
+  gates.
+
+### Bucket C — credit-BLOCKED (credit-scoring = lending function, outside EMI licence)
+
+Gate applies to the **credit-scoring use** of each library/pipeline. The
+same libraries have a legitimate fraud-detection use inside EMI scope —
+that use is not blocked, but the credit-scoring pathway is.
+
+- `lightgbm-fraud-credit-gbm` — gradient-boosting baseline. Fraud-scoring
+  path: allowed. Credit-scoring path: **BLOCKED** under EMI licence.
+- `xgboost-fraud-credit-gbm` — same shape as above; same split verdict.
+  Fraud path allowed; credit path **BLOCKED**.
+- `credit-scoring-oss-pipeline` — direct consumer-lending readiness kit.
+  EMI-verdict: **BLOCKED** in full (there is no non-lending interpretation).
+
+### Recommendation to Central
+
+Apply an **EMI-credit-gate** at adoption-decision time (row-level `verdict`
+transition NEW → adopt/evaluate/reject): for any slug above, adopt only
+the non-credit / non-investment portion of its capability surface; reject
+lending-decision and trading-execution pathways as EMI-core; allow them
+only under a **separate licensing lane** (consumer-credit / MiFID) that
+Central would open explicitly. This gate is **advisory to Central**, not a
+row mutation — B does not touch the register.
+
+### Ack contract (Central → B) for this directive
+
+Central acknowledges `B-EMI-CREDIT-GATE-001` by any of:
+
+1. Merging this PR after edits accepting / rejecting / re-scoping the gate.
+2. Filing an ADR that codifies the EMI-credit-gate as a canon (or supersedes
+   it via a licensing lane).
+3. Writing a Central directive back to B that closes
+   DIRECTIVE B-EMI-CREDIT-GATE-001.
+
+Until then: status **OPEN**; B does NOT act on any adoption; register rows
+remain unchanged; per-row `handoff` fields remain the operator's routing
+surface (unchanged from `B-STRATEGIC-SIGNAL-001`).
