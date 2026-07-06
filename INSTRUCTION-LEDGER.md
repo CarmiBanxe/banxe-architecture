@@ -25548,3 +25548,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deliverable:** 4 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge, not hardcoded here.
 - **Fleet impact:** 45 → 49 SOULs; **CTX-06-CUSTOMER complete**. Remaining SOUL-less after this: ~26 of 57 passports (CTX-07-AGREEMENT ×2, then CTX-01 compliance/AML ×~17 + CTX-04 payments ×4 as final high-sensitivity tranches).
 - **Refs:** SOUL cohorts #1042/#1044/#1046/#1050/#1053/#1056/#1057; FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{alerting_agent,customer_lifecycle_agent,fatca_crs_reporting_governor,front_office_agent}.yaml; CLAUDE.md §11; I-02; I-06; I-08; I-27; ADR-102; ADR-117/120/121/128; GAP-078; blocker BT-005; UK GDPR Art.5; MLR 2017; FCA COBS 9A / SYSC 8.1; FATCA/CRS/HMRC AEOI.
+
+---
+
+### IL-958 - sp20-watcher-v22-adr060-branchname @ 2026-07-06T00:44:06Z
+
+- **il_ts:** 2026-07-06T00:44:06Z
+- **session_id:** sp20-watcher-v22-adr060-branchname
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp20-watcher-v22-adr060-branchname/IL-2026-07-06T00-44-06Z--c7f196.md`
+
+### sp20-watcher-v22-adr060-branchname
+
+- **Instruction:** watcher v2.2 — ADR-060-compliant worktree branch id (watcher-handoff -> watcherhandoff); v2.1 sync-before-scan, v2 fail-open scoring, v1.1 strict-NEW filter all preserved; dry-run proof docs/runbooks/SP20-WATCHER-V22-DRYRUN-20260706T004205Z.md
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
