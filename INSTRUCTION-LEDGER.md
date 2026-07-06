@@ -25777,3 +25777,26 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deviation:** none. `[IL-NNN]` not hardcoded (Rule 8 / ADR-119 / ADR-133 — mint at merge). PR opened as **draft**; auto-merge NOT armed (HITL).
 - **Blocker:** none for sp27 itself. B6 (ENGINE SRC MISSING) is a downstream operator-input block on Line B, tracked in the dossier.
 - **Refs:** `docs/canon/BEST-DECISION-BOUNDARY.md` §7 (RATIFIED), ADR-162 (formal principle statement, referenced), ADR-159 (B→A pipeline), ADR-161 (intake SSOT-persistence — drives B1 + B2), ADR-163 + `docs/canon/SYNC-CANON.md` (SYNC-CANON compliance for this shard), ADR-102 (reference-not-restate), ADR-119/ADR-133 (IL-freeze at merge), ADR-060 (branch actor namespace `agent/specproj/sp27/…`), ADR-120 (per-session worktree isolation), `.claude/rules/agents.md` §"HITL Confidence Thresholds" (BUG-007 — runtime posture preserved), `.claude/rules/approval-rules.md` §"Правило неоднозначности" (best-decision canon), CLAUDE.md §12 (best-decision canon).
+
+---
+
+### IL-984 - agent-factory-knowledge-emi-banxe-engine-archival @ 2026-07-06T20:59:00Z
+
+- **il_ts:** 2026-07-06T20:59:00Z
+- **session_id:** agent-factory-knowledge-emi-banxe-engine-archival
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-knowledge-emi-banxe-engine-archival/IL-2026-07-06T20-59-00Z--emi-banxe-engine-archival.md`
+
+### Zero-loss verbatim archival of engine source #2 into the Intake SSOT (docs/sources/)
+
+- **Objective:** Preserve the operator-delivered engine research paper — "EMI BANXE AI BANK — Идеальный Open Source Движок Банка-ИИ-Агента: Архитектура, Математика, Мировой Опыт" (source #2) — **byte-for-byte** into the ADR-161 Intake SSOT at `docs/sources/emi-banxe-engine-2026-07-06.md`. Closes the Line-B verbatim gap (the raw original was previously absent from disk and repo; only the structured dossier ingestion existed).
+- **Delivery:** operator pasted the full markdown via a quoted heredoc to `~/banxe-dev/emi-banxe-engine.md` after multiple base64 attempts failed (empty path / unreplaced placeholder). Objective ingestion test PASSED before archival: **bytes=49979, lines=1201, sha256=9ef1b0308d9602a795b408111b1bddb3e127a9728f15b0cc4b3aea4a2257ef34, markers TOTAL=123** (LangGraph 18, Temporal 17, DeerFlow 14, PRAGMA 13, FATE 10, Strands 9, OpenManus 7, Kafka 6, Qdrant 6, nuFormer 6, Formance 4, FISCO 4, NeMo 3, Langfuse 3, VaultGemma 3), **corruption=0** (Cyrillic + formulae intact).
+- **Zero-loss proof (byte-based, newline-safe):** `cp` source → `docs/sources/emi-banxe-engine-2026-07-06.md`; `sha256(saved)==sha256(source)` ✓. Then the SSOT metadata header (ADR-161 convention) was PREPENDED and the verbatim body appended; integrity re-verified by **byte offset**: `tail -c 49979 <file> | sha256sum == 9ef1b0308d…ef34` ✓. The body below the front-matter is byte-for-byte identical to the delivered source. (Improves on the sibling `best-decision-concept-2026-07-06.md`, whose header `sha256` was left as the placeholder `computed-post-write`.)
+- **File:** `docs/sources/emi-banxe-engine-2026-07-06.md` — 1211 lines / 50785 bytes total = 10-line SSOT header + 1201-line verbatim body. Header pins `sha256-body`, `body-bytes`, and the `verify:` command so any future audit re-checks zero-loss in one line. Append-only (I-24) — body edits forbidden; a correction is a new dated file.
+- **Cross-links (pointer-first, ADR-102 — recorded in the file header + here, no body injection, no edits to the referenced files):** the **structured ingestion** of this Corpus already lives in `docs/agent-engine-dossier/SRC-01-engine-landscape.md` (Part 1 architecture/OSS landscape), `SRC-02-theory-principles.md` (Part 2 formal notation), `SRC-03-implementation-state.md` (Part 3, §3 governance-vs-runtime), `ENGINE-ROADMAP.md` (L1→L2→L3), + SRC-04/06/07/09; the **synthesis** linking it to best-decision + 24/7 is `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` (#1070). This archival gives those derivatives their verbatim raw source-of-truth.
+- **Status of the two operator source papers now:** BOTH preserved verbatim in `docs/sources/` — #1 concept (`best-decision-concept-2026-07-06.md`, 278 ln) + #2 engine (`emi-banxe-engine-2026-07-06.md`, this). Zero-loss achieved for both.
+- **Additive only — nothing else touched:** does NOT modify any SOUL, passport, `_TEMPLATE.md`, ADR, dossier file, or `BEST-DECISION-BOUNDARY`/`SYNC-CANON`. No activation. No secrets.
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); signed; `--force-with-lease` only; NO passport/soul/template diff.
+- **Deliverable:** `docs/sources/emi-banxe-engine-2026-07-06.md` (verbatim) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
+- **Refs:** `docs/sources/README.md` (Intake SSOT convention); ADR-161 (SSOT-persistence); ADR-159 (Terminal-B operating algorithm); ADR-102 (pointer-first); I-24 (append-only); `docs/agent-engine-dossier/` (SRC-01..09 + ENGINE-ROADMAP — structured ingestion); `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` (#1070, synthesis); `docs/sources/best-decision-concept-2026-07-06.md` (sibling source #1).
