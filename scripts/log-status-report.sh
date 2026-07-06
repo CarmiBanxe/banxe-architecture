@@ -26,7 +26,10 @@
 #   STATUS_PATH - markdown output path; default $HOME/banxe-dev/DISPATCH-STATUS.md.
 #   STALE_SECS  - a log without a finish marker whose mtime is older than
 #                 this many seconds is classified INCOMPLETE; default 1800.
-#   JOB_MATCH   - pgrep pattern for counting active jobs; default 'claude -p'.
+#   JOB_MATCH   - pgrep -c -f pattern for counting active runner jobs. NO
+#                 default — operator sets it in the local env under the
+#                 runner-process pattern in use on the host. Unset =>
+#                 active-jobs column reports 'n/a (JOB_MATCH unset)'.
 #
 # State classification per log file:
 #   EMPTY       - file size == 0.
@@ -51,7 +54,9 @@ set -euo pipefail
 LOG_GLOB="${LOG_GLOB:-/tmp/sp*-*.log}"
 STATUS_PATH="${STATUS_PATH:-${HOME}/banxe-dev/DISPATCH-STATUS.md}"
 STALE_SECS="${STALE_SECS:-1800}"
-JOB_MATCH="${JOB_MATCH:-claude -p}"
+# JOB_MATCH has NO committed default (config-over-hardcoding). If unset, the
+# active-jobs line reports 'n/a (JOB_MATCH unset)' and pgrep is not invoked.
+JOB_MATCH="${JOB_MATCH:-}"
 
 log() { printf 'log-status-report: %s\n' "$*" >&2; }
 die() { printf 'log-status-report: ERROR: %s\n' "$*" >&2; exit 1; }
@@ -94,9 +99,15 @@ fi
 # --------------------------------------------------------------------------
 # Count active jobs matching JOB_MATCH. `pgrep -c` returns a count; a
 # non-matching pattern exits non-zero which we normalise to 0. No signal is
-# sent, no process is inspected beyond its command line.
+# sent, no process is inspected beyond its command line. When JOB_MATCH is
+# unset (no committed default), the count is reported as 'n/a' and pgrep is
+# not invoked (avoids matching every process on the host).
 # --------------------------------------------------------------------------
-ACTIVE_COUNT="$(pgrep -c -f -- "${JOB_MATCH}" 2>/dev/null || echo 0)"
+if [ -n "${JOB_MATCH}" ]; then
+  ACTIVE_COUNT="$(pgrep -c -f -- "${JOB_MATCH}" 2>/dev/null || echo 0)"
+else
+  ACTIVE_COUNT="n/a (JOB_MATCH unset)"
+fi
 
 # --------------------------------------------------------------------------
 # Classify one file. Prints "STATE|SUMMARY|MTIME_ISO" on stdout.
@@ -169,10 +180,16 @@ trap 'rm -f -- "${TMP}"' EXIT
   printf '# DISPATCH-STATUS\n\n'
   printf '_generated: %s (UTC) on %s by scripts/log-status-report.sh_\n\n' \
     "${now_iso}" "${host_short}"
-  printf -- '- **config:** `LOG_GLOB=%s` / `STATUS_PATH=%s` / `STALE_SECS=%ss` / `JOB_MATCH=%s`\n' \
-    "${LOG_GLOB}" "${STATUS_PATH}" "${STALE_SECS}" "${JOB_MATCH}"
-  printf -- '- **active jobs (pgrep -c -f "%s"):** %s\n\n' \
-    "${JOB_MATCH}" "${ACTIVE_COUNT}"
+  if [ -n "${JOB_MATCH}" ]; then
+    printf -- '- **config:** `LOG_GLOB=%s` / `STATUS_PATH=%s` / `STALE_SECS=%ss` / `JOB_MATCH=%s`\n' \
+      "${LOG_GLOB}" "${STATUS_PATH}" "${STALE_SECS}" "${JOB_MATCH}"
+    printf -- '- **active jobs (pgrep -c -f "%s"):** %s\n\n' \
+      "${JOB_MATCH}" "${ACTIVE_COUNT}"
+  else
+    printf -- '- **config:** `LOG_GLOB=%s` / `STATUS_PATH=%s` / `STALE_SECS=%ss` / `JOB_MATCH=<unset>`\n' \
+      "${LOG_GLOB}" "${STATUS_PATH}" "${STALE_SECS}"
+    printf -- '- **active jobs:** %s\n\n' "${ACTIVE_COUNT}"
+  fi
 
   if [ "${#SORTED_PATHS[@]}" -eq 0 ]; then
     printf '_no log files matched `%s` at scan time._\n' "${LOG_GLOB}"

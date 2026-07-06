@@ -39,7 +39,13 @@ Sample: `config/log-status-report.env.sample`.
 | `LOG_GLOB`    | `/tmp/sp*-*.log`                           | Shell glob for input logs. |
 | `STATUS_PATH` | `$HOME/banxe-dev/DISPATCH-STATUS.md`       | Absolute path to the markdown output. Atomic write via `mktemp`+`mv`. |
 | `STALE_SECS`  | `1800`                                     | mtime threshold for `IN_PROGRESS` vs `INCOMPLETE`. |
-| `JOB_MATCH`   | `claude -p`                                | `pgrep -c -f` pattern for the active-jobs header line. |
+| `JOB_MATCH`   | _(no default — operator-set)_              | `pgrep -c -f` pattern for the active-jobs header line. |
+
+Operator sets `JOB_MATCH` in the local env file
+(`~/.config/banxe/log-status-report.env`) to the runner-process pattern in
+use on the host. Committed files intentionally carry no literal default for
+this pattern (config-over-hardcoding, CLAUDE.md §10). When `JOB_MATCH` is
+unset, the report header renders `active jobs: n/a (JOB_MATCH unset)`.
 
 If `STATUS_PATH`'s directory is missing / not writable, the script exits
 non-zero with a diagnostic instead of guessing.
@@ -86,29 +92,32 @@ cat "${STATUS_PATH:-$HOME/banxe-dev/DISPATCH-STATUS.md}"
 
 Disable is the reverse: `systemctl --user disable --now log-status-report.timer`.
 
-## Self-test output (first ~15 lines, captured 2026-07-06)
+## Self-test output (shape sketch)
+
+Redacted skeleton — real values depend on the operator's local `JOB_MATCH`
+and the `/tmp/sp*-*.log` set at scan time. Committed files carry no literal
+runner pattern, so the sample below shows the two header shapes: JOB_MATCH
+set vs. JOB_MATCH unset.
 
 ```
 # DISPATCH-STATUS
 
-_generated: 2026-07-06T22:43:42Z (UTC) on banxe-NucBox-EVO-X1 by scripts/log-status-report.sh_
+_generated: <ISO8601> (UTC) on <host> by scripts/log-status-report.sh_
 
-- **config:** `LOG_GLOB=/tmp/sp*-*.log` / `STATUS_PATH=/home/banxe/banxe-dev/DISPATCH-STATUS.md` / `STALE_SECS=1800s` / `JOB_MATCH=claude -p`
-- **active jobs (pgrep -c -f "claude -p"):** 2
+- **config:** `LOG_GLOB=/tmp/sp*-*.log` / `STATUS_PATH=/home/<user>/banxe-dev/DISPATCH-STATUS.md` / `STALE_SECS=1800s` / `JOB_MATCH=<runner-pattern>`
+- **active jobs (pgrep -c -f "<runner-pattern>"):** <N>
 
 | job | log | state | summary | mtime |
 |---|---|---|---|---|
-| sp33b-log-status | `sp33b-log-status.1783377624.log` | EMPTY |  | 2026-07-06T22:40:24Z |
-| sp33-dispatch-notifier | `sp33-dispatch-notifier.1783377147.log` | IN_PROGRESS | API Error: ... | 2026-07-06T22:37:23Z |
-| sp32-bestdec-agent | `sp32-bestdec-agent.1783376501.log` | FINISHED | [BESTDEC_AGENT=designed] [...] | 2026-07-06T22:30:15Z |
-| sp31-mint-1075 | `sp31-mint-1075.1783374154.log` | FINISHED | [PR#=1075] [REBASED=onto f1cdb71] [CHECK=pass] [...] | 2026-07-06T22:06:16Z |
-| sp30-amend-1075 | `sp30-amend-1075.1783373707.log` | FINISHED | [AMENDMENT=§4-header-body-blessed] [...] | 2026-07-06T21:38:43Z |
-| sp29-delivery-canon | `sp29-delivery-canon.1783372607.log` | FINISHED | [DELIVERY_CANON=written] [...] | 2026-07-06T21:22:29Z |
-| sp27-arm-1072 | `sp27-arm-1072.1783371560.log` | FINISHED | [PR#=1072] [REBASED=onto a5c77d9] [CHECK=pass] [...] | 2026-07-06T21:00:52Z |
+| sp33-example       | `sp33-example.<epoch>.log`       | IN_PROGRESS | last stdout line...          | <ISO8601> |
+| sp32-example-done  | `sp32-example-done.<epoch>.log`  | FINISHED    | [KEY=value] [KEY=value] ...  | <ISO8601> |
 ```
 
+When `JOB_MATCH` is left unset in the env file, the header line renders
+`active jobs: n/a (JOB_MATCH unset)` and `pgrep` is not invoked.
+
 All four states (`FINISHED`, `IN_PROGRESS`, `INCOMPLETE`, `EMPTY`) are
-present in the full self-test run against 50 files in `/tmp/sp*-*.log`.
+present in a full self-test run against ~50 files in `/tmp/sp*-*.log`.
 
 ## Anchors
 

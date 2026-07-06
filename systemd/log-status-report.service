@@ -28,7 +28,10 @@ ExecStart=%h/banxe-architecture/scripts/log-status-report.sh
 
 # EnvironmentFile is optional (leading '-') — if absent, the script's
 # documented defaults apply (LOG_GLOB=/tmp/sp*-*.log, STATUS_PATH=%h/
-# banxe-dev/DISPATCH-STATUS.md, STALE_SECS=1800, JOB_MATCH='claude -p').
+# banxe-dev/DISPATCH-STATUS.md, STALE_SECS=1800). JOB_MATCH has NO committed
+# default: the operator sets it in the local env under the runner-process
+# pattern in use on the host, and the report counts active jobs matching the
+# configured JOB_MATCH pattern (or reports 'n/a' when unset).
 EnvironmentFile=-%h/.config/banxe/log-status-report.env
 
 StandardOutput=journal
