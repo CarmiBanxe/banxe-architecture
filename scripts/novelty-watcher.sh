@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 # scripts/novelty-watcher.sh
-# B->A novelty auto-handoff pipeline — factory-watcher v2 (PROPOSED, in-repo).
+# B->A novelty auto-handoff pipeline — factory-watcher v2.1 (PROPOSED, in-repo).
+#
+# v2.1 changes vs v2 (sync-before-scan; fixes 1st battle-run stale-checkout
+# defect — see docs/canon/TERMINAL-B-OPERATING-CANON.md pointer, ADR-102
+# no-restatement):
+#   * SYNC-BEFORE-SCAN. Before any REGISTER/QUEUE read, `git fetch origin
+#     main` is executed FAIL-LOUD (no silent degrade to stale local); then
+#     the register and queue are read directly from `git show origin/main:…`
+#     — independent of the local working tree. Fixes the runtime defect
+#     where the live watcher-worktree was pinned to an old HEAD and
+#     therefore missed 30 freshly-merged `status=NEW` findings.
+#   * Idempotency check now reads QUEUE state from origin/main (canonical),
+#     not from a potentially-stale local file, so already-picked/processed
+#     findings are skipped even if the worktree HEAD is behind main.
+#   * v2 real-scoring (:4000 fail-open) and v1.1 strict NEW-only filter
+#     are PRESERVED — this rev ONLY adds sync-before-scan.
 #
 # v2 changes vs v1.1 (see docs/canon/TERMINAL-B-OPERATING-CANON.md pointer,
 # ADR-102 no-restatement — real reference only):
@@ -103,12 +118,25 @@ die() { printf 'novelty-watcher: ERROR: %s\n' "$*" >&2; exit 1; }
 [ -f "${ROADMAP}" ]  || die "missing roadmap: ${ROADMAP}"
 
 # --------------------------------------------------------------------------
-# Fetch origin/main so any operator commit/PR step rebases cleanly. This is
-# a read-only network op; no local branch is mutated by the fetch itself.
+# v2.1 SYNC-BEFORE-SCAN — mandatory fresh origin/main before any read.
+#
+# The 1st battle run defect: the live watcher operated from a checkout
+# stuck on an old HEAD (local-HEAD behind origin/main), read a stale local
+# REGISTER, and therefore missed 30 freshly-merged `status=NEW` findings.
+# Fix: fetch origin/main FAIL-LOUD (never silent degrade to stale) and
+# read REGISTER/QUEUE from `git show origin/main:…` — this is independent
+# of the local working tree so the defect cannot recur even if the daemon
+# is pinned to an old commit.
 # --------------------------------------------------------------------------
-if git remote get-url origin >/dev/null 2>&1; then
-  git fetch origin main --quiet || log "warn: git fetch origin main failed (offline?); continuing"
-fi
+git remote get-url origin >/dev/null 2>&1 \
+  || die "FATAL: fetch failed, cannot guarantee fresh main (no 'origin' remote)"
+git fetch origin main --quiet \
+  || die "FATAL: fetch failed, cannot guarantee fresh main"
+
+REGISTER_MAIN_CONTENT="$(git show "origin/main:${REGISTER}" 2>/dev/null)" \
+  || die "FATAL: fetch failed, cannot guarantee fresh main (cannot read ${REGISTER} from origin/main)"
+QUEUE_MAIN_CONTENT="$(git show "origin/main:${QUEUE}" 2>/dev/null)" \
+  || die "FATAL: fetch failed, cannot guarantee fresh main (cannot read ${QUEUE} from origin/main)"
 
 # --------------------------------------------------------------------------
 # read_novelty_threshold — parse .novelty_check.threshold from ${CONFIG}.
@@ -280,7 +308,9 @@ PY
 # from ADR-159 §D-1.
 # --------------------------------------------------------------------------
 extract_new_items() {
-  awk -F'|' '
+  # v2.1: read from REGISTER_MAIN_CONTENT (origin/main), NOT local file.
+  # Independent of the working-tree HEAD — cannot be spoofed by stale checkout.
+  printf '%s\n' "${REGISTER_MAIN_CONTENT}" | awk -F'|' '
     /^\|[[:space:]]*-+/ { next }         # separator row
     /^\| item[[:space:]]*\|/ { next }    # header row
     /^\|/ {
@@ -294,7 +324,7 @@ extract_new_items() {
         printf "novelty-watcher: skip (grandfathered legacy status=%s): %s\n", $10, $2 > "/dev/stderr"
       }
     }
-  ' "${REGISTER}"
+  '
 }
 
 # --------------------------------------------------------------------------
@@ -302,25 +332,40 @@ extract_new_items() {
 # Read/write only within the isolated worktree once we cd there.
 # --------------------------------------------------------------------------
 queue_has_item() {
+  # v2.1: canonical idempotency check reads QUEUE state from origin/main
+  # (captured into QUEUE_MAIN_CONTENT at fetch time, cannot be stale) AND
+  # any rows already appended to the local QUEUE within this run. An item
+  # that has ANY picked/processed/planned event in either source is
+  # skipped, so a 10-min tick never re-processes already-handled findings.
   local item="$1"
-  awk -F'|' -v item="${item}" '
+  {
+    printf '%s\n' "${QUEUE_MAIN_CONTENT}"
+    [ -f "${QUEUE}" ] && cat "${QUEUE}"
+  } | awk -F'|' -v item="${item}" '
     /^\|[[:space:]]*[0-9]+[[:space:]]*\|/ {
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", $3)
       if ($3 == item) found = 1
     }
     END { exit(found ? 0 : 1) }
-  ' "${QUEUE}"
+  '
 }
 
 next_event_no() {
+  # v2.1: max over BOTH the origin/main-canonical QUEUE (captured at fetch
+  # time — cannot be stale) AND the local worktree QUEUE (which may hold
+  # rows this tick has already appended). Guarantees monotonic event ids
+  # even if the daemon boots against a slightly-behind local file.
   local max
-  max=$(awk -F'|' '
+  max=$({
+    printf '%s\n' "${QUEUE_MAIN_CONTENT}"
+    [ -f "${QUEUE}" ] && cat "${QUEUE}"
+  } | awk -F'|' '
     /^\|[[:space:]]*[0-9]+[[:space:]]*\|/ {
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2)
       if ($2+0 > m) m = $2+0
     }
     END { print m+0 }
-  ' "${QUEUE}")
+  ')
   echo $((max + 1))
 }
 
@@ -340,7 +385,7 @@ append_roadmap_marker() {
   local ts
   ts=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
   {
-    printf '\n<!-- novelty-handoff v1.1: %s @ %s (ADR-159 mandatory hand-off) -->\n' \
+    printf '\n<!-- novelty-handoff v2.1: %s @ %s (ADR-159 mandatory hand-off) -->\n' \
       "${item}" "${ts}"
     printf -- '- **Hand-off (novelty):** `%s` — queued for sprint planning per ADR-159 §D-3.\n' \
       "${item}"
@@ -408,12 +453,12 @@ novelty-watcher:   ${wt_path}
 novelty-watcher: To open the draft-PR for HITL merge:
 novelty-watcher:   cd ${wt_path}
 novelty-watcher:   git add governance/NOVELTY-HANDOFF-QUEUE.md docs/ROADMAP-MATRIX.md
-novelty-watcher:   git commit -m 'feat(pipeline): novelty hand-off batch [factory-watcher v1.1]'
+novelty-watcher:   git commit -m 'feat(pipeline): novelty hand-off batch [factory-watcher v2.1]'
 novelty-watcher:   git fetch origin main --quiet && git rebase origin/main
 novelty-watcher:   git push -u origin HEAD
 novelty-watcher:   gh pr create --repo CarmiBanxe/banxe-architecture --draft \\
-novelty-watcher:     --title 'novelty: hand-off batch (watcher v1.1)' \\
-novelty-watcher:     --body 'auto-generated by scripts/novelty-watcher.sh v1.1; HITL merge per CLAUDE.md §71'
+novelty-watcher:     --title 'novelty: hand-off batch (watcher v2.1)' \\
+novelty-watcher:     --body 'auto-generated by scripts/novelty-watcher.sh v2.1; HITL merge per CLAUDE.md §71'
 novelty-watcher: --- END OPERATOR ACTION ---
 EOF
 }
@@ -452,7 +497,7 @@ while IFS= read -r item; do
   # 1. picked
   append_queue_event "${item}" "picked" "-" "-"
 
-  # 2. semantic-scoring hook (v1.1 stub — always novel)
+  # 2. semantic-scoring hook (v2 real LiteLLM :4000, fail-open to novel)
   verdict="$(score_hook "${item}")"
   if [ "${verdict}" != "novel" ]; then
     append_queue_event "${item}" "processed" "-" "verdict=duplicate"
