@@ -260,3 +260,28 @@ banxe-infra ai-routing rollout. Cross-references ADR-031..ADR-034.
 
 <!-- novelty-handoff v2.2: temporal-knowledge-distillation-fraud @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
 - **Hand-off (novelty):** `temporal-knowledge-distillation-fraud` — queued for sprint planning per ADR-159 §D-3.
+
+---
+
+## BACKLOG appendix (sp27, 2026-07-06)
+
+> Anchored per the canon-path `DOSSIER → ROADMAP → SCRIPT → EXECUTION`. Dossier of record:
+> `governance/BACKLOG-DOSSIER-2026-07-06.md`. All items land here as `OPEN`; transitions to
+> `PLANNED` land only via an ACCEPT verdict of the best-decision adoption-audit gate
+> (`docs/canon/BEST-DECISION-BOUNDARY.md` §3–§4). Reference-only — no restatement (ADR-102).
+
+| Item | Description | Owner | Status | Next-action anchor |
+|------|-------------|-------|--------|--------------------|
+| **B1** | SSOT-retro: restore missing intake source-bodies (OSS EMI-stack + 120-solutions reviews + BANXE concept v7–v9) into `docs/sources/*` per ADR-161 | Terminal-B | OPEN | future sp<N> — `sp<N>-ssot-retro-oss-reviews-and-concept-v7-v9` |
+| **B2** | CI gate: `no SSOT-persist ⇒ PR fail` (ADR-161 hard enforcement) — Guardian check + workflow + spec | Terminal-B + Factory | OPEN | Central adoption-audit → factory sprint `guardian-ssot-persist` |
+| **B3** | Watcher hand-off: 41 findings from #1059 not yet emitted as ROADMAP entries | Terminal-B | OPEN | monitor watcher daemon; fallback sprint if idle |
+| **B4** | Factory best-decision engine PR #1070 — resolution (close-as-superseded / rework under sp27 ratification) | Factory + Central | OPEN | Central files resolution on #1070 |
+| **B5** | 17 SOUL-less passports — author governor SOULs (cohort-batched) | Factory + Central | OPEN | Central publishes list → first cohort sprint shard |
+| **B6** | ENGINE SRC MISSING (`~/banxe-dev/emi-banxe-engine.md` absent) — Line B **BLOCKED** on operator input | **Operator** + Central | OPEN — BLOCKED | surface block in `governance/COORDINATION-NOTES.md` |
+| **B7** | Adoption-audit for 88 findings via best-decision-gate (ACCEPT / REJECT-AS-NOT-WORTH / DEFER + rationale) | Central | OPEN | Central files first adoption-audit batch shard |
+| **B8** | Ratify remaining operator directives: `B-EMI-CREDIT-GATE-001` (credit-scope gate) + `B-QUIET-WINDOW-001` (merge quiet-window); plus follow-up ADR for §7 variant-2 per-role HITL envelope + config schema | Central + operator | OPEN | two sequential ratification sprints using sp27 pattern |
+
+**Cross-refs (pointer only — ADR-102):** dossier `governance/BACKLOG-DOSSIER-2026-07-06.md`;
+canon `docs/canon/BEST-DECISION-BOUNDARY.md`; ADR-159, ADR-161, ADR-162, ADR-163; sync canon
+`docs/canon/SYNC-CANON.md`; runtime posture `.claude/rules/agents.md` §"HITL Confidence
+Thresholds" (BUG-007); queue custody `governance/NOVELTY-HANDOFF-QUEUE.md`.
