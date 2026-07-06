@@ -70,6 +70,47 @@
 | fate-cross-bank-aml-consortium | emi-banxe-stack-review | 4 | subproject | high | unique (FATE-based cross-bank AML consortium concept; multi-EMI federated fraud detection roadmap) | evaluate | GAP-AML-CROSS-BANK | NEW |
 | quantum-gnn-fraud-research | emi-banxe-stack-review | 3 | analytics | low | unique (quantum-annealed GNN for fraud; TRL ≈ 2, research-only horizon — track but do not fund) | reject | NONE | NEW |
 | temporal-knowledge-distillation-fraud | emi-banxe-stack-review | 3 | feature | med | unique (temporal knowledge distillation for streaming fraud model refresh without catastrophic forgetting) | evaluate | GAP-FRAUD-ENGINE | NEW |
+| agno-multimodal-agent-framework | banxe-oss-solutions | 2 | subproject | med | unique (Pythonic multi-modal agent framework; not in SRC-01 landscape of 10 frameworks) | evaluate | GAP-AGENT-ENGINE | NEW |
+| smolagents-hf-micro-agent | banxe-oss-solutions | 2 | subproject | med | unique (Hugging Face micro-agent library; lightweight code-first agents, alt to CrewAI for small footprints) | evaluate | GAP-AGENT-ENGINE | NEW |
+| goose-block-dev-loop-agent | banxe-oss-solutions | 2 | subproject | low | unique (Block/Square Goose dev-loop coding agent; local-only, developer-facing not customer-facing) | evaluate | NONE | NEW |
+| mastra-typescript-agent-framework | banxe-oss-solutions | 2 | subproject | med | unique (TypeScript-first agent framework; possible fit for frontend intent-first surface alongside assistant-ui) | evaluate | GAP-080 (frontend intent-first) | NEW |
+| langchain-js-agent-sdk | banxe-oss-solutions | 1 | feature | med | unique (JS/TS LangChain SDK for browser/edge agent surface; complements floor-1 intent-first) | evaluate | GAP-080 (frontend intent-first) | NEW |
+| openmanus-rl-finetune-variant | banxe-oss-solutions | 2 | subproject | low | unique (RL-fine-tuned OpenManus variant; research-grade, not in SRC-01 OSS Descriptors) | reject | NONE | NEW |
+| openhands-swe-general-agent | banxe-oss-solutions | 2 | subproject | med | unique (formerly OpenDevin; general-purpose SWE agent; possible factory-plane coding assist alt to Goose) | evaluate | NONE | NEW |
+| cline-vscode-coding-agent | banxe-oss-solutions | 2 | subproject | low | unique (IDE-native VS Code coding agent; local dev tooling only, not banking runtime) | reject | NONE | NEW |
+| fingpt-ai4finance-financial-llm | banxe-oss-solutions | 3 | feature | med | unique (AI4Finance FinGPT LLM fine-tuned on financial text; distinct from FinNLP/TradingAgents/Qlib entries in #1051; corpus only cites "FinGPT-style" reference) | evaluate | NONE | NEW |
+| openkyc-agentic-verification | banxe-oss-solutions | 3 | subproject | med | unique (OSS KYC verification framework; alt/complement to commercial identity providers) | evaluate | GAP-KYC-ENGINE | NEW |
+| verifiable-agent-kit-zk-proof | banxe-oss-solutions | 3 | compliance | high | unique (ZK-proof KYC / verifiable credentials; privacy-preserving identity attestation for GDPR-heavy flows) | evaluate | GAP-KYC-ENGINE | NEW |
+| agentic-fraud-detection-pattern | banxe-oss-solutions | 3 | feature | med | unique (reference agentic fraud-detection pattern / OSS bundle; distinct from GNN family in #1051) | evaluate | GAP-FRAUD-ENGINE | NEW |
+| mckinsey-agentic-reference-framework | banxe-oss-solutions | 4 | analytics | low | unique (industry reference framework; not adoptable code — benchmark for governance surface) | reject | NONE | NEW |
+| cyclos-cooperative-banking-core | banxe-oss-solutions | 3 | subproject | low | unique (OSS cooperative-banking core; alt narrative for community-bank / mutual product line, not EMI-fit) | reject | NONE | NEW |
+| ledgersmb-oss-accounting-core | banxe-oss-solutions | 3 | subproject | low | unique (OSS double-entry accounting; too small for EMI ledger substrate — Midaz/Blnk already primary) | reject | NONE | NEW |
+| hyperledger-fabric-permissioned-ledger | banxe-oss-solutions | 3 | subproject | med | unique (Linux Foundation permissioned blockchain; alt/complement to FISCO-BCOS entry in #1051 with LF governance origin — regulator-preferred) | evaluate | NONE | NEW |
+| llamaindex-rag-orchestration | banxe-oss-solutions | 2 | subproject | med | unique (RAG-orchestration framework; not in SRC-01/04; adjacent to Haystack for compliance-KB retrieval) | evaluate | GAP-COMPLIANCE-KB | NEW |
+| weaviate-vector-db-alt | banxe-oss-solutions | 2 | subproject | low | unique (vector DB; ChromaDB already in use for compliance_kb, Qdrant PLANNED — Weaviate is a third alternative, no decisive fit) | reject | NONE | NEW |
+| dify-llm-app-orchestration | banxe-oss-solutions | 2 | subproject | med | unique (LLM-app orchestration platform; alt to LangGraph/n8n for internal ops tooling) | evaluate | NONE | NEW |
+| flowise-visual-llm-flow-builder | banxe-oss-solutions | 2 | subproject | low | unique (visual LangChain / LLM flow builder; ops tooling only) | reject | NONE | NEW |
+| airflow-workflow-orchestrator | banxe-oss-solutions | 2 | subproject | med | unique (Apache Airflow; alt/complement to Temporal for data-pipeline schedules, not saga workflows) | evaluate | NONE | NEW |
+| prefect-python-workflow-orchestrator | banxe-oss-solutions | 2 | subproject | low | unique (modern Python workflow orchestrator; Temporal covers saga requirement — Prefect duplicative) | reject | NONE | NEW |
+| kestra-declarative-workflow | banxe-oss-solutions | 2 | subproject | low | unique (declarative workflow orchestrator; Temporal covers the requirement) | reject | NONE | NEW |
+| bank-mcp-banking-server-family | banxe-oss-solutions | 3 | subproject | med | unique (banking-specific MCP server family; adjacent to banxe_mcp/server.py 34 tools but with external-bank connector focus) | evaluate | GAP-MCP-EXTERNAL-BANK | NEW |
+| stripe-ai-sdk-payments-mcp | banxe-oss-solutions | 3 | feature | med | unique (Stripe AI SDK / MCP for payments-agent surface; alt to bespoke card-scheme tools) | evaluate | NONE | NEW |
+| browser-use-python-web-agent | banxe-oss-solutions | 2 | feature | med | unique (Python browser automation for LLM agents; direct fit for OpenManus-like browser-agent surface) | evaluate | NONE | NEW |
+| stagehand-browserbase-agentic-web | banxe-oss-solutions | 2 | subproject | low | unique (Browserbase Stagehand agentic web framework; SaaS-anchored, on-prem fit weak) | reject | NONE | NEW |
+| skyvern-vision-web-automation | banxe-oss-solutions | 2 | feature | med | unique (vision-based web automation; possible fit for regulatory-portal automation, e.g. FCA Connect uploads) | evaluate | GAP-REG-PORTAL-AUTOMATION | NEW |
+| playwright-microsoft-browser-automation | banxe-oss-solutions | 2 | infra | med | unique (Microsoft Playwright; browser automation lib for both agents and test surface) | evaluate | NONE | NEW |
+| lm-studio-desktop-llm-manager | banxe-oss-solutions | 2 | infra | low | unique (desktop LLM manager; Ollama already covers on-prem serving — LM-Studio duplicative for our stack) | reject | NONE | NEW |
+| open-webui-selfhosted-chat-ui | banxe-oss-solutions | 2 | feature | med | unique (self-hosted chat UI over Ollama; possible operator-side console alt to Telegram OpenClaw bot) | evaluate | NONE | NEW |
+| guardrails-ai-validators | banxe-oss-solutions | 4 | compliance | high | unique (Guardrails.ai OSS validators / structured outputs; complements NeMo-Guardrails at LLM-input layer) | adopt | OD-LLM-SECURITY | NEW |
+| arize-phoenix-llm-tracing | banxe-oss-solutions | 4 | infra | med | unique (Arize Phoenix OSS LLM tracing / evals; alt/complement to Langfuse for eval-side observability) | evaluate | GAP-LLM-OBSERVABILITY | NEW |
+| langsmith-observability | banxe-oss-solutions | 4 | infra | low | unique (LangChain observability; SaaS-anchored, Langfuse already the adopt candidate) | reject | NONE | NEW |
+| deepeval-llm-eval-framework | banxe-oss-solutions | 4 | infra | med | unique (Confident-AI OSS LLM eval framework; direct fit for ADR-141 self-healing eval harness) | evaluate | GAP-LLM-EVAL | NEW |
+| ragas-rag-evaluation | banxe-oss-solutions | 4 | infra | med | unique (RAG-specific evaluation lib; fits compliance_kb RAG quality gate) | evaluate | GAP-COMPLIANCE-KB | NEW |
+| mlflow-ml-lifecycle-tracking | banxe-oss-solutions | 4 | infra | med | unique (Databricks OSS ML/LLM lifecycle tracking; fits fraud/credit model registry and self-healing loop) | evaluate | GAP-FRAUD-ENGINE | NEW |
+| styletts2-neural-tts | banxe-oss-solutions | 2 | feature | low | unique (alt TTS engine; ADR-112 already commits to XTTS/Kokoro — StyleTTS2 not decisive) | reject | NONE | NEW |
+| lightgbm-fraud-credit-gbm | banxe-oss-solutions | 3 | feature | high | unique (Microsoft LightGBM; established gradient-boosting for fraud/credit scoring — production baseline before deep-learning) | adopt | GAP-FRAUD-ENGINE | NEW |
+| xgboost-fraud-credit-gbm | banxe-oss-solutions | 3 | feature | high | unique (XGBoost; established gradient-boosting baseline for fraud/credit — LightGBM sibling) | evaluate | GAP-FRAUD-ENGINE | NEW |
+| credit-scoring-oss-pipeline | banxe-oss-solutions | 3 | subproject | med | unique (OSS credit-scoring pipeline reference; direct fit for consumer-lending readiness) | evaluate | GAP-CREDIT-SCORING | NEW |
 
 ---
 

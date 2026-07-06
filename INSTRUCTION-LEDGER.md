@@ -25606,3 +25606,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** specproj sp21 hand-off — QUEUE 90 events + ROADMAP 30 markers for 30 emi findings (#1051)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-967 - specproj-sp18-banxe-oss-solutions-intake @ 2026-07-06T00:17:50Z
+
+- **il_ts:** 2026-07-06T00:17:50Z
+- **session_id:** specproj-sp18-banxe-oss-solutions-intake
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp18-banxe-oss-solutions-intake/IL-2026-07-06T00-17-50Z--b5c3b4.md`
+
+### specproj-sp18-banxe-oss-solutions-intake
+
+- **Instruction:** NOVELTY: SP18 Terminal-B intake #2 of external BANXE OSS solutions doc — 15-section coverage (agent frameworks / manus / financial-AI / KYC-AML / core-banking / RAG / workflow / MCP / web-automation / local-LLM / guardrails / observability / speech / streaming / fraud-credit); 74 candidates enumerated; 41 NEW appended to NOVELTY-COLLECTION-REGISTER (Agno, Smolagents, Goose, Mastra, LangChain.js, OpenManus-RL, OpenHands, Cline, FinGPT, OpenKYC, Verifiable-Agent-Kit, agentic-fraud-detection, McKinsey-agentic, Cyclos, LedgerSMB, Hyperledger-Fabric, LlamaIndex, Weaviate, Dify, Flowise, Airflow, Prefect, Kestra, Bank-MCP, Stripe-AI-SDK, Browser-Use, Stagehand, Skyvern, Playwright, LM-Studio, Open-WebUI, Guardrails-AI, Arize-Phoenix, LangSmith, DeepEval, Ragas, MLflow, StyleTTS2, LightGBM, XGBoost, credit-scoring); 12 DUP-1051 + 22 DUP-corpus evidenced in intake log; 3-pass read; merge=HITL
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
