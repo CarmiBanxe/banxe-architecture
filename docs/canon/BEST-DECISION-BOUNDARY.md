@@ -1,61 +1,58 @@
-# BEST-DECISION-BOUNDARY — where best-decision applies, and where it must not
+# BEST-DECISION-BOUNDARY
 
-> Additive canon. It **references** the existing best-decision sources and does **not** restate them (ADR-102,
-> pointer-first). It changes no SOUL, no passport, and not `agents/souls/_TEMPLATE.md` / ADR-131. It never
-> overrides a stop-barrier or a HITL gate — additive only.
+## Purpose
 
-## 1. Purpose
+This canon defines where **best-decision** applies and where it must not apply.
 
-Best-decision (act on the best next step without a counter-question) applies to the **orchestrator / Factory**
-on non-production, non-stop-barrier work. It does **NOT** apply to **runtime agents** on the compliance/payment
-contour, which **fail-closed and escalate**. This doc draws that one boundary; the mechanics live in the anchors.
+## Orchestrator scope
 
-## 2. Orchestrator scope (best-decide)
+Best-decision applies to the Orchestrating Terminal / Factory when choosing the best next step outside auto-run whitelists and outside stop-barriers.
 
-The Orchestrating Terminal / Factory chooses the best next step **autonomously** for work **outside** the auto-run
-whitelist and **outside** stop-barriers, and continues **without a counter-question**. A counter-question is
-permitted **only** at a real stop-barrier — data loss, irreversible action, invariant breach, or governance/HITL
-risk — and then it **replaces** the action (no option-menus / "вариант 1 / вариант 2").
+The orchestrator continues without a counter-question unless a real stop-barrier is present: data loss risk, irreversible action, invariant breach, or governance / HITL risk.
 
-- Anchors: `CLAUDE.md` §12 · `.claude/rules/approval-rules.md` §«Правило неоднозначности» · `.claude/rules/agents.md` §"Best Single Artifact".
+This rule is anchored in the existing canon and is pointer-first, not restated here.
 
-## 3. Runtime-agent scope (fail-closed, NOT best-decide)
+## Runtime-agent scope
 
-Every **runtime L2+ agent** on **payment / compliance / KYC / AML** MUST **fail-closed and escalate** on
-ambiguity. A runtime agent **NEVER**:
+Best-decision does **not** apply to runtime L2+ agents on payment, compliance, KYC, or AML contours.
 
-- best-decides to **clear a sanctions/PEP hit**,
-- **releases a payment**,
-- **self-escalates a level** (or lowers a confidence band), or
-- **bypasses a gate** (`--no-verify`, skip-flag, silent retry).
+These agents must fail-closed on ambiguity and escalate through the defined HITL path.
 
-This runtime rule is the **inverse** of §2 and **takes precedence on the compliance/payment contour**: where a
-payment/compliance/KYC/AML decision is in doubt, fail-closed wins over best-decide.
+A runtime agent never best-decides to:
+- clear a sanctions hit;
+- release a payment;
+- self-escalate a level;
+- bypass a gate.
 
-- Anchors: **I-27** (HITL-L4) · **BUG-007** thresholds (AUTO >90 / REVIEW 70–90 / BLOCK <70) · **Ruflo / ARL**
-  regulatory pre-gate (`.claude/rules/agents.md`).
+On the compliance / payment contour, fail-closed and HITL precedence override any orchestrator convenience.
 
-## 4. Where SOULs already encode the method
+## Where SOULs encode this
 
-Runtime SOULs already carry the fail-closed method — no dedicated "decision-method" section is added:
+Runtime SOULs already encode the decision method through:
+- Constraints;
+- Escalation;
+- HITL Workflow;
+- Core Truths.
 
-- **Constraints** — fail-closed on ambiguity; never bypass a gate.
-- **Escalation** — trigger → named human/agent.
-- **HITL Workflow** — agent proposes; the named human disposes.
-- **Core Truths** — customer-fund / compliance decisions are human-gated; the agent never self-escalates a level.
+No dedicated decision-method section is added to `agents/souls/_TEMPLATE.md`.
 
-`agents/souls/_TEMPLATE.md` and **ADR-131** remain **unchanged**; any template-format change is separately gated.
+## Precedence
 
-## 5. Precedence
+Best-decision is additive only.
 
-FCA / regulatory obligations > Invariants **I-01..I-28** > **ADRs** > **quality gates** > **IL**.
-**Best-decision never overrides a stop-barrier or a HITL gate — it is additive only.**
+It never overrides:
+- regulatory obligations;
+- invariants;
+- ADR boundaries;
+- quality gates;
+- HITL gates.
 
-## 6. Anchors
+## Anchors
 
-- `CLAUDE.md` §12 (best-decision canon)
-- `.claude/rules/approval-rules.md` (§«Правило неоднозначности»)
-- `.claude/rules/agents.md` (§"Best Single Artifact"; Ruflo / ARL; BUG-007 HITL thresholds)
-- `AGENTS.md` (§"CANON — Best Single Artifact")
+- `CLAUDE.md` §12
+- `.claude/rules/approval-rules.md`
+- `.claude/rules/agents.md`
+- `AGENTS.md`
 - `canon/rules/DIALOGUE.md`
-- `.claude/rules/safety-rules.md` (stop-barriers) · I-27 (HITL-L4)
+- `I-27`
+- `BUG-007`
