@@ -25591,3 +25591,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deliverable:** 2 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge (churn-resilient: factory re-rebases on conflict, per #1060 lesson).
 - **Fleet impact:** 49 → 51 SOULs; **CTX-07-AGREEMENT complete**. Remaining SOUL-less after this: ~24 of 57 (only CTX-01 compliance/AML + CTX-04 payments + a few unmapped left — the high-sensitivity final tranches).
 - **Refs:** SOUL cohorts #1042/#1044/#1046/#1050/#1053/#1056/#1057/#1060; FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{agreement_agent,legal_corporate_agent}.yaml; CLAUDE.md §11; I-06; I-27; ADR-102; ADR-117/120/121/128; GAP-078; eIDAS Reg.910/2014; FCA COBS 6/4; MLR 2017; governance/CANONICAL-ORG-CHART-v2.md.
+
+---
+
+### IL-960 - sp21-handoff-emi30 @ 2026-07-06T01:12:40Z
+
+- **il_ts:** 2026-07-06T01:12:40Z
+- **session_id:** sp21-handoff-emi30
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp21-handoff-emi30/IL-2026-07-06T01-12-40Z--6133f5.md`
+
+### sp21-handoff-emi30
+
+- **Instruction:** specproj sp21 hand-off — QUEUE 90 events + ROADMAP 30 markers for 30 emi findings (#1051)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

@@ -170,3 +170,93 @@ banxe-infra ai-routing rollout. Cross-references ADR-031..ADR-034.
   `none` = out-of-scope.
 - **Last commit** is the short SHA + date of `git log -1` on each sister repo as of
   2026-05-03 (read-only inspection; no modifications were made to other repos).
+
+<!-- novelty-handoff v2.2: deerflow-banking-orchestrator @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `deerflow-banking-orchestrator` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: agenticseek-privacy-first-agent @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `agenticseek-privacy-first-agent` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: suna-self-hosted-manus-clone @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `suna-self-hosted-manus-clone` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: nuformer-tx-embedding-model @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `nuformer-tx-embedding-model` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: transactiongpt-payments-llm @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `transactiongpt-payments-llm` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: wechatpay-gpt-payments-llm @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `wechatpay-gpt-payments-llm` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: hgnn-heterogeneous-gnn-fraud @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `hgnn-heterogeneous-gnn-fraud` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: fraudgnn-rl-adaptive @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `fraudgnn-rl-adaptive` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: asa-gnn-adversarial-safe @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `asa-gnn-adversarial-safe` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: fate-federated-learning-webank @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `fate-federated-learning-webank` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: fedkt-federated-knowledge-transfer @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `fedkt-federated-knowledge-transfer` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: vaultgemma-dp-private-llm @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `vaultgemma-dp-private-llm` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: finrl-deepseek-rl-treasury @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `finrl-deepseek-rl-treasury` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: assistant-ui-agent-frontend @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `assistant-ui-agent-frontend` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: fisco-bcos-permissioned-ledger @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `fisco-bcos-permissioned-ledger` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: strands-sdk-aws-agent-framework @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `strands-sdk-aws-agent-framework` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: sofastack-financial-cloud-antgroup @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `sofastack-financial-cloud-antgroup` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: finrobot-fintech-multi-agent @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `finrobot-fintech-multi-agent` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: finnlp-domain-nlp-toolkit @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `finnlp-domain-nlp-toolkit` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: tradingagents-llm-multi-agent @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `tradingagents-llm-multi-agent` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: qlib-quant-research-platform @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `qlib-quant-research-platform` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: owasp-llm-top10-supply-chain @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `owasp-llm-top10-supply-chain` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: nemo-guardrails-runtime-safety @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `nemo-guardrails-runtime-safety` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: lime-shap-hitl-explainability @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `lime-shap-hitl-explainability` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: github-agentic-workflows-ci @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `github-agentic-workflows-ci` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: langfuse-llm-observability @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `langfuse-llm-observability` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: memory-first-agent-architecture @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `memory-first-agent-architecture` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: fate-cross-bank-aml-consortium @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `fate-cross-bank-aml-consortium` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: quantum-gnn-fraud-research @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `quantum-gnn-fraud-research` — queued for sprint planning per ADR-159 §D-3.
+
+<!-- novelty-handoff v2.2: temporal-knowledge-distillation-fraud @ 2026-07-06T01:06:59Z (ADR-159 mandatory hand-off) -->
+- **Hand-off (novelty):** `temporal-knowledge-distillation-fraud` — queued for sprint planning per ADR-159 §D-3.
