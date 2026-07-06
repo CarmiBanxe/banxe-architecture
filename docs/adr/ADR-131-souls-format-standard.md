@@ -94,3 +94,22 @@ separate ADR per the ADR-124 precedent), and **does not edit any of the 19 exist
 - ADR-117 (perimeter), ADR-122 (souls/passports/swarms count), ADR-128 (HITL), ADR-121 (destructive),
   ADR-059 (append-only), ADR-119 (IL numbering), ADR-102 (dup), ADR-124 (runner = separate ADR),
   ADR-130/PR #795 (in-flight generic persona layer — reconcile at HITL). Enforcement = CI + ADRs.
+
+## Amendment 2026-07-07 — `## Decision Method` added as a mandatory section (11 → 12)
+
+> Append-only (I-24): the ADR body above is unchanged; this records the additive extension.
+
+Per operator directive (train every factory agent on the **Best-Decision method**), the canonical
+`agents/souls/*.md` format gains **one additional mandatory section — `## Decision Method`** — inserted after
+`## HITL Gate`. The canonical count in **§Decision item 1 moves 11 → 12** (order otherwise unchanged; additive, no
+existing section removed or reordered).
+
+- **Content** (pointer-first, ADR-102 — not restated): enumerate the feasible action set → score (EU/MAUT over the
+  passport's criteria) → **satisfice within the HITL gate** (Simon) → escalate on ambiguity / confidence-drop /
+  invariant risk. Runtime L2+ (payment/compliance/KYC/AML) **fail-closed precedence is unchanged**.
+- **Grounding:** `docs/sources/best-decision-concept-2026-07-06-v2.md` (theory) · `docs/adr/ADR-162-best-decision-principle.md`
+  · `docs/canon/BEST-DECISION-BOUNDARY.md` · `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md`.
+- **Rollout:** `agents/souls/_TEMPLATE.md` carries the section as of this change; the **58 existing souls** are
+  retrofitted per `docs/canon/BEST-DECISION-RETROFIT-PLAN.md` (one PR per batch, prepare-only) — existing souls are
+  **not** edited in this amendment PR.
+- **Effective:** 2026-07-07 (PR #1077). Enforcement = CI + ADRs; `docs/factory/FACTORY-CANON.md` §1.11 mirrors the requirement.

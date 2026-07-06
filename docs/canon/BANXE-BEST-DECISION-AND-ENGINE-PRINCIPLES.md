@@ -3,7 +3,9 @@
 > Additive canon, **pointer-first** (ADR-102). It links the best-decision concept to BANXE architecture and the
 > 24/7 agent runtime. It **references** the theory and the adoption gate; it does **not** restate them, and it
 > changes no SOUL, no passport, and not `agents/souls/_TEMPLATE.md`. Prepare-only; never overrides a stop-barrier
-> or a HITL gate. **Source note:** the mathematics is preserved verbatim in
+> or a HITL gate. (Note 2026-07-07: the SOUL template itself now carries a mandatory `## Decision Method` section
+> per the ADR-131 amendment / FACTORY-CANON §1.11 — this doc *references* that method; it does not add the section.)
+> **Source note:** the mathematics is preserved verbatim in
 > `docs/sources/best-decision-concept-2026-07-06.md` (source #1); the engine content is repo-resident as the
 > **agent-engine dossier** (`docs/agent-engine-dossier/SRC-01…03` + `ENGINE-ROADMAP.md` — the structured ingestion
 > of source #2 "EMI BANXE AI BANK — Идеальный Open Source Движок", "Corpus Part 1–3"), referenced pointer-first.

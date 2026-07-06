@@ -55,14 +55,22 @@
 > authoritative enumeration is `ls agents/souls/*.md | grep -v _TEMPLATE` (58); a SOUL appears in exactly one
 > retrofit PR. Suggested order: **R1 → R6 → R7 → R5 → R4 → R2 → R3** (ascending client-fund sensitivity).
 
-## Governance note (flagged for follow-up — no silent divergence, SYNC-CANON)
+## Governance note — reconciled in this PR (no silent divergence, SYNC-CANON)
 
-Adding `## Decision Method` to the template **exercises the "separately gated" clause** that
-`docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` §4 (and `docs/canon/BEST-DECISION-BOUNDARY.md`) reserved,
-but it **reverses their literal "no dedicated decision-method section is added / `_TEMPLATE.md` unchanged"** wording.
-A **follow-up amendment** to those two docs (and to **ADR-131**, the SOUL-format standard) is required to record that
-the section IS now part of the standard. That amendment is **out of this PR's allowed scope** (this PR touches only
-`_TEMPLATE.md` + `FACTORY-CANON.md` + this plan + shard) and is scheduled as an immediate follow-up.
+Adding `## Decision Method` to the template exercises the "separately gated" clause reserved by the best-decision
+canon, and is now **reconciled in this same PR** so `main` stays internally consistent:
+
+1. **ADR-131 amended (append-only, I-24):** `docs/adr/ADR-131-souls-format-standard.md` gains an "Amendment 2026-07-07"
+   block recording `## Decision Method` as a mandatory section (canonical count 11 → 12). This is the SOUL-format
+   source-of-truth; the amendment makes the standard match the template.
+2. **Synthesis clarified:** `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` frontmatter gets a dated note that
+   the template now carries the section (the doc itself still only *references* the method).
+3. **BEST-DECISION-BOUNDARY — no edit (verified, not a contradiction):** the on-main BOUNDARY §4 is *adoption
+   outcomes* and §5 is *HITL-merge / I-27 / CODEOWNERS / intake / config* — **neither contains a "no dedicated
+   decision-method section" claim**. That wording existed only in a **closed, never-merged draft (#1068)**, so there
+   is nothing to reverse there; editing it would fabricate a fix for absent text (ADR-102 — don't touch what needs no change).
+
+Result: **zero contradiction on `main`** after this PR — template (12 sections) ↔ ADR-131 (amended) ↔ FACTORY-CANON §1.11 ↔ synthesis note all agree.
 
 ## Anchors
 - `agents/souls/_TEMPLATE.md` (`## Decision Method` section, added this PR) · `docs/factory/FACTORY-CANON.md` §1.11
