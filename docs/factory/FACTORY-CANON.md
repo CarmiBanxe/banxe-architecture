@@ -24,6 +24,7 @@ I-27**. The Factory designs, writes, verifies, and proposes; humans decide and t
 8. Facts come from **shell/repo audit, never from memory**.
 9. No HITL gate is bypassed (MLRO / CTIO / CFO / COO / CTO / Head of Platform Eng).
 10. Any breach is **recorded and surfaced, never hidden**.
+11. **Decision Method** — every authored SOUL MUST include the `## Decision Method` section (Best-Decision method, grounded in `docs/sources/best-decision-concept-2026-07-06-v2.md`); runtime L2+ fail-closed precedence per `docs/adr/ADR-162-best-decision-principle.md` / `docs/canon/BEST-DECISION-BOUNDARY.md`.
 
 ## 2. Execution Pattern
 
