@@ -25979,9 +25979,13 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
   - `scripts/log-status-report.sh` — plain bash, `set -euo pipefail`, no LLM
     calls, read-only against every input log (`stat` / `wc` / `grep` /
     `tail` only), atomic write of `$STATUS_PATH` via `mktemp`+`mv -f`.
-    Config-over-hardcoding: `LOG_GLOB`, `STATUS_PATH`, `STALE_SECS` (default
-    1800), `JOB_MATCH` (default `claude -p`) all env-driven; the script
-    exits non-zero if the output directory is missing / not writable.
+    Config-over-hardcoding (CLAUDE.md §10): `LOG_GLOB`, `STATUS_PATH`,
+    `STALE_SECS` (default 1800), and `JOB_MATCH` all env-driven. `JOB_MATCH`
+    intentionally has NO committed default — the operator sets it in the
+    local env under the runner-process pattern in use on the host; when
+    unset, the header reports `active jobs: n/a (JOB_MATCH unset)` and
+    `pgrep` is not invoked. The script exits non-zero if the output
+    directory is missing / not writable.
   - `systemd/log-status-report.service` — Type=oneshot, `WorkingDirectory`
     + `ExecStart` anchored to `%h/banxe-architecture`,
     `EnvironmentFile=-%h/.config/banxe/log-status-report.env`, sandbox
