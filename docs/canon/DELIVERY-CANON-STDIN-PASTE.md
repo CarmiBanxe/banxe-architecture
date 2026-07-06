@@ -57,8 +57,13 @@ Any threshold miss ⇒ STOP; do not archive; re-paste.
 
 ## 4. Zero-loss archival (follow-on)
 
-Preserve to repo **ONLY** via `cp` with an sha256 equality assertion — no re-encode, no
-transform:
+Zero-loss archival admits **TWO** valid forms — pick per SSOT need, per **ADR-161**
+(Intake SSOT-persistence). Both forms preserve the source **byte-for-byte**; they differ
+only in whether provenance/metadata travels **with** the body inside the archived file.
+
+### Form (a) — Pure `cp` (file-level sha equality)
+
+The archived file **is** the source, byte-for-byte. Verification is a file-level sha match:
 
 ```bash
 D="docs/sources/<final-name>.md"
@@ -68,18 +73,58 @@ sha256sum "$D" | awk '{print $1}' > /tmp/_dst.sha
 diff -q /tmp/_src.sha /tmp/_dst.sha || { echo "STOP: sha256 drift"; exit 1; }
 ```
 
-Discipline (follow-on, per FACTORY-CANON Execution Pattern):
+Use when: no header is needed (raw is the artefact), or downstream tooling must see
+byte-identical file hashes.
+
+### Form (b) — Header + body (YAML-metadata header + verbatim body) — **PREFERRED for SSOT**
+
+The archived file carries a small **YAML metadata header** (provenance, slug, intake-date,
+source-type, `sha256-body`, `body-bytes`, verify command) followed by the **verbatim** source
+body. Verification is body-level: `sha256(tail -c <body-bytes> <archived-file>) == sha256(source)`.
+
+**Mandatory header fields:**
+
+- `sha256-body:` — sha256 of the verbatim body (**not** of the file).
+- `body-bytes:` — exact byte count of the verbatim body.
+- `verify:` — the exact command that reproduces the equality
+  (`tail -c <body-bytes> <this-file> | sha256sum  ==  sha256-body`).
+
+**Verify example** (paste-ready, same-chain):
+
+```bash
+D="docs/sources/<final-name>.md"
+BB=$(grep -m1 '^body-bytes:' "$D" | awk '{print $2}')
+SB=$(grep -m1 '^sha256-body:' "$D" | awk '{print $2}')
+CALC=$(tail -c "$BB" "$D" | sha256sum | awk '{print $1}')
+[ "$CALC" = "$SB" ] || { echo "STOP: body sha drift ($CALC != $SB)"; exit 1; }
+[ "$CALC" = "$(sha256sum "$S" | awk '{print $1}')" ] || { echo "STOP: body != source"; exit 1; }
+```
+
+Use when: the source is an SSOT intake artefact and provenance MUST travel with the body
+(academic paper, concept doc, regulatory text). This is the **preferred** form under
+ADR-161 because header+body carries slug, intake-date, source-type, and provenance
+alongside the bytes — a pure `cp` loses them.
+
+### Critical clarification — file-sha of Form (b) is NOT drift
+
+`sha256(<Form-(b) file>) ≠ sha256(<source>)` by construction — the header adds bytes.
+This is **NOT** a zero-loss violation. The zero-loss assertion for Form (b) is
+`sha256(tail -c body-bytes)`, not `sha256(file)`. A file-level sha comparison against
+Form (b) is a **category error**; do not raise a STOP on it.
+
+### Discipline (both forms, per FACTORY-CANON Execution Pattern)
 
 - **Prepare-only** — no activation, no mint, no merge at delivery step.
-- **Worktree (ADR-120)** — the archival `cp` runs inside a session worktree, never in the
+- **Worktree (ADR-120)** — the archival step runs inside a session worktree, never in the
   shared checkout.
 - **Paired PROPOSED shard** — every archival lands with an IL shard at `PROPOSED`; the
   operator mints and merges under HITL.
 
-**Proven baseline** — EMI BANXE engine paper: `49979 bytes`, `123 domain markers`,
-`corruption = 0`, `sha256 =`
-`9ef1b0308d9602a795b408111b1bddb3e127a9728f15b0cc4b3aea4a2257ef34`. This is the reference
-case for what "zero-loss delivery + archival" looks like end-to-end.
+**Proven baseline (Form (b))** — EMI BANXE engine paper archived as
+`docs/sources/emi-banxe-engine-2026-07-06.md`: `body-bytes = 49979`, `123 domain markers`,
+`corruption = 0`,
+`sha256-body = 9ef1b0308d9602a795b408111b1bddb3e127a9728f15b0cc4b3aea4a2257ef34`. This is
+the reference case for what "zero-loss delivery + Form (b) archival" looks like end-to-end.
 
 ## 5. Hard rules (cross-terminal)
 
@@ -103,7 +148,10 @@ case for what "zero-loss delivery + archival" looks like end-to-end.
 ## 6. Anchors
 
 - `docs/factory/FACTORY-CANON.md` — Execution Pattern; worktree authoring; prepare-only.
-- `docs/sources/` — ADR-161 Intake SSOT; where verbatim source documents live post-archival.
+- `docs/sources/` — where verbatim source documents live post-archival.
+- `docs/adr/ADR-161-intake-ssot-persistence.md` — Intake SSOT-persistence; header+body
+  Form (b) is the canonical SSOT persistence pattern (this doc references it, does not
+  restate it).
 - `docs/adr/ADR-102-no-smart-refactor-without-duplication-verification.md` — pointer-first
   discipline; this doc references FACTORY-CANON rather than restating it.
 - `docs/adr/ADR-120-per-session-worktree.md` — worktree isolation for the archival `cp`.
