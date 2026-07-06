@@ -25928,3 +25928,29 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
 - emi-banxe-engine-2026-07-06.md: sha256=9ef1b0308d9602a795b408111b1bddb3e127a9728f15b0cc4b3aea4a2257ef34 bytes=49979
 - best-decision-theory-2026-07-06.md: sha256=7fe4718bf0351eb5518e67a3aece6f9a3c4013837721cbdd0301678f41f85f2e bytes=37286 lines=681
 - Additive only; ADR-120; force-with-lease; I-24
+
+---
+
+### IL-993 - agent-factory-souls-cohort12b-ctx01-governance-monitors @ 2026-07-06T22:25:42Z
+
+- **il_ts:** 2026-07-06T22:25:42Z
+- **session_id:** agent-factory-souls-cohort12b-ctx01-governance-monitors
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-cohort12b-ctx01-governance-monitors/IL-2026-07-06T22-25-42Z--souls-cohort12b-ctx01-governance-monitors.md`
+
+### Cohort 12b — CTX-01 compliance/risk governance monitors: 3 governor SOULs, prepare-only, no activation (first cohort WITH mandatory Decision Method)
+
+- **Objective:** Author 3 SOUL charters for the genuinely-SOUL-less CTX-01 compliance/risk governance monitors: `compliance_monitoring_agent`, `risk_oversight_agent`, `privacy_compliance_agent`. First SOUL cohort authored under the new ADR-131 amendment (2026-07-07) — every SOUL now carries the mandatory `## Decision Method` section (FACTORY-CANON §1.11).
+- **MANDATORY FUZZY ADR-102 DEDUP (applied):** all 3 fuzzy-confirmed **genuinely SOUL-less** (stem + suffix-variant match against `agents/souls/`) — none already had a suffixed SOUL (unlike yente/watchman/jube). No DROP.
+- **Status body-check (facts from passport, [[passport-status-active-on-stub-is-unreliable]]):**
+  - `compliance_monitoring_agent` — `status: active` but body = STUB ("PROPOSES only (I-27); NOT activated; no service code — GAP-078") → **PROPOSED** (stray-active not trusted). L2·AMBER·CLASS_B·CTX-01; Head of Compliance; 2nd-line, **explicitly distinct from MLRO, NO SAR/sanctions authority**; auto_refactor_pro prohibited (independence).
+  - `risk_oversight_agent` — same STUB pattern → **PROPOSED**. L2·AMBER·CLASS_B·CTX-01; **CRO (Elena Vasilenko), SMF4**; 2nd-line risk oversight; no service code (GAP-078); no autonomous risk acceptance / limit change.
+  - `privacy_compliance_agent` — genuine **PROPOSED**. L2·AMBER·CLASS_B·CTX-01; Head of Compliance (approvers +CEO); DPO support (DPIA framework, DSAR triage, privacy-risk flag, UK GDPR Art.37-39 tracking); ports PrivacyRequestPort→CompliancePort/AuditPort; callers customer_lifecycle_agent/admin_panel, callees compliance_officer_v1/notification_agent; invariants I-27 + I-08; UK GDPR Art.37-39 / DPA 2018; **final DPO determination = human Head of Compliance**; PII-sensitive; auto_refactor_pro prohibited.
+- **Format:** each SOUL = **13 sections** = the 12 governor-house sections (Identity, Core Responsibilities, Tools Available, Data Sources, Constraints, Escalation, HITL Gate, HITL Workflow, Voice, Memory Policy, Core Truths, Pet Peeves — matching the ~40 governor siblings) **+ the new mandatory `## Decision Method`** (inserted after HITL Gate per the ADR-131 amendment). Decision Method is grounded per-soul (enumerate feasible monitoring/finding actions → score by the passport's materiality/risk criteria → satisfice within ITS HITL gate → escalate to ITS human double; fail-closed precedence for any compliance/risk action; pointer-first to best-decision-concept-2026-07-06-v2.md + BEST-DECISION-BOUNDARY + ADR-162 — not restated).
+- **Monitor-not-decide discipline (canon):** all 3 are 2nd-line — MONITOR/OVERSEE/SUPPORT and PROPOSE; they never make the final compliance/risk/DSAR decision or enforce autonomously; findings escalate to the human double (Head of Compliance / CRO) and, for SAR/sanctions, the MLRO. SOUL **describes** authority, never expands it (CI + ADR-117/128/121). route-not-reimplement.
+- **ADR-102 duplication audit:** `agents/souls/` fuzzy-checked — no pre-existing/near-duplicate for any of the 3 stems. **Decision: add net-new (3).**
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease`; NO-PASSPORT-DIFF guard before push.
+- **Deliverable:** 3 `agents/souls/*.md` (each with `## Decision Method`) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
+- **Fleet impact:** 58 → 61 SOULs; genuinely-SOUL-less 12 → 9 (remaining: crypto_aml; aml_orchestrator + case_management_agent; internal_audit + safeguarding_audit + resilience + pricing_fee_governor; ceo_orchestration + treasury_alm).
+- **Refs:** SOUL cohorts #1042…#1065; FACTORY-CANON §1.11 + ADR-131 amendment 2026-07-07 (#1077); passports agents/passports/{compliance_monitoring_agent,risk_oversight_agent,privacy_compliance_agent}.yaml; CLAUDE.md §11; I-08; I-27; BUG-007; ADR-102; ADR-117/120/121/128; GAP-078; UK GDPR Art.37-39 / DPA 2018; docs/sources/best-decision-concept-2026-07-06-v2.md; BEST-DECISION-BOUNDARY; ADR-162.
