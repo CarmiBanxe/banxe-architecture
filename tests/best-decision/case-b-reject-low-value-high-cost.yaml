@@ -1,0 +1,27 @@
+id: CASE-B
+name: reject-low-value-high-cost
+description: >
+  Item scores low on value with high cost. Even with acceptable risk and
+  reversibility, the aggregated utility falls below the reject_threshold →
+  verdict reject-as-not-worth (positive terminal outcome; Central chose to
+  spend the compute elsewhere).
+ssot_ref: docs/sources/best-decision-concept-2026-07-06.md
+regime: risk-known
+scores:
+  value: 0.20
+  cost_inverse: 0.15          # high cost
+  risk_inverse: 0.65
+  reversibility: 0.60
+  strategic_fit: 0.70         # in EMI-scope but not strategic
+  opportunity_cost_inverse: 0.30   # displaces a strictly better item
+weights:
+  value: 0.30
+  cost_inverse: 0.15
+  risk_inverse: 0.20
+  reversibility: 0.10
+  strategic_fit: 0.15
+  opportunity_cost_inverse: 0.10
+constraints:
+  emi_scope: in
+  reversibility_floor: 0.30
+expected: reject-as-not-worth

@@ -92,6 +92,28 @@ does not supersede (ADR-102). Concretises input-parse discipline for the B conto
 Anchor: ADR-159 §Terminal-B-Operating-Algorithm step 1 (MULTI-PASS READ) — pointer only, no
 restatement (ADR-102).
 
+### 9. Intake step-0 SSOT-persist (mandatory precondition)
+
+Amends **step 0 (`AUTOSTART`)** of the ADR-159 §Terminal-B-Operating-Algorithm; additive, does not
+supersede (ADR-102 — pointer only, no restatement). Concretises the SSOT-persistence class-defect
+fix for the B contour:
+
+- **Before** MULTI-PASS READ (step 1), **before** AUDIT BY FACT (step 2), **before** DUP-CHECK
+  (step 3), Terminal-B MUST persist the incoming source **verbatim** to
+  `docs/sources/<kebab-slug>-<yyyy-mm-dd>.md` with the front-matter schema defined in
+  `docs/sources/README.md`.
+- Downstream artefacts (register row `rationale`, pointer-doc, ADR, coverage-log entry) **REFERENCE**
+  the SSOT path — they do not restate the body.
+- The SSOT tree is **append-only** (I-24): a corrected source is a new file (`-v2` or new date
+  suffix); older files remain.
+- **Rationale:** without step-0 persistence, intake destroyed body fidelity (a class defect, not a
+  one-off). See ADR-161 §Context for the full defect analysis and ADR-161 §D-1..D-5 for the
+  operational rules.
+
+Anchors: **`docs/adr/ADR-161-intake-ssot-persistence.md`** (normative), **`docs/sources/README.md`**
+(operational), ADR-159 §Terminal-B-Operating-Algorithm step 0 (extended) — pointers only, no
+restatement (ADR-102).
+
 ## Anchors (authoritative sources; this doc specializes, does not supersede — ADR-102)
 
 - **`.claude/rules/agents.md`** §CANON — Best Single Artifact (+ Factory-Only Execution subpoint) — authoritative single-artifact discipline; this doc specialises for the B contour without restating.
@@ -105,3 +127,7 @@ restatement (ADR-102).
 - **`.claude/rules/approval-rules.md`** §Правило неоднозначности — best-decision canon referenced in §2.
 - **`scripts/novelty-watcher.sh`** v2.2 — ADR-060-compliant worktree-branch id (`watcher-handoff` → `watcherhandoff`; `<id>` must match `[A-Za-z0-9]+`, no hyphens); v2.1 sync-before-scan, v2 real-scoring (:4000 fail-open), v1.1 strict NEW-only filter preserved; pointer only, ADR-102 no-restatement.
 - **`.claude/rules/safety-rules.md`** — stop-barriers referenced by §5 (data-loss / irreversibility / invariant breach).
+- **`docs/adr/ADR-161-intake-ssot-persistence.md`** — normative SSOT-persistence rule referenced by §9 (mandatory step-0 persist to `docs/sources/`).
+- **`docs/sources/README.md`** — operational schema (naming, front-matter, append-only semantics) for the intake SSOT tree; referenced by §9.
+- **`docs/canon/BEST-DECISION-BOUNDARY.md`** — sibling canon for the best-decision gate; consumes the SSOT persisted by §9.
+- **`docs/adr/ADR-162-best-decision-principle.md`** — best-decision-gate ADR referencing this canon and the ADR-161 SSOT rule.

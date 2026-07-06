@@ -25713,3 +25713,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** NOVELTY: 5 internal BANXE concept docs (v7 Part2/Part3, v8 Part4, v9 Part3/Part4) — 15 NEW + 2 credit-BLOCKED + coverage-log; internal plan, mostly coverage.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-980 - sp25-intake-ssot-persist-fix @ 2026-07-06T03:54:04Z
+
+- **il_ts:** 2026-07-06T03:54:04Z
+- **session_id:** sp25-intake-ssot-persist-fix
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp25-intake-ssot-persist-fix/IL-2026-07-06T03-54-04Z--bca59f.md`
+
+### sp25-intake-ssot-persist-fix
+
+- **Instruction:** sp25 intake SSOT-persist fix + best-decision adoption-audit gate canon (self-contained; retro-saves best-decision concept; NO runtime autonomy, I-27 preserved; DIRECTIVE B-BESTDEC-SCOPE-001 OPEN, operator-owned)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
