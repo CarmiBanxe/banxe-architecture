@@ -25683,3 +25683,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deliverable:** 4 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient mint (factory re-rebases on conflict).
 - **Fleet impact:** 54 → 58 SOULs; **CTX-04-PAYMENT complete**. Remaining SOUL-less after this: CTX-01 compliance/AML (~16, split into careful sub-cohorts) + treasury_alm_agent.
 - **Refs:** SOUL cohorts #1042…#1064; FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{channel_c_sepa_orchestrator,channel_c_swift_orchestrator,payment_router_agent,coo_operations_agent}.yaml; CLAUDE.md §11 (+ "no float for money — only Decimal"); I-02; I-03; I-05; I-08; I-27; BUG-007 (HITL thresholds); BUG-005 (Ruflo/ARL); ADR-102; ADR-013; ADR-117/120/121/128; GAP-078; blocker BT-001; PSR 2017 Reg.71; FCA PS7/24; PSR APP 2024; CASS 7; EPC SCT/SCT Inst; SWIFT MT/MX; ISO 20022/CBPR+.
+
+---
+
+### IL-974 - specproj-sp22-emi-credit-constraint-note @ 2026-07-06T02:54:11Z
+
+- **il_ts:** 2026-07-06T02:54:11Z
+- **session_id:** specproj-sp22-emi-credit-constraint-note
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp22-emi-credit-constraint-note/IL-2026-07-06T02-54-11Z--3af36d.md`
+
+### specproj-sp22-emi-credit-constraint-note
+
+- **Instruction:** DIRECTIVE B-EMI-CREDIT-GATE-001: EMI credit/investment constraint note (B->Central, ack-required; TOMPAY UK EMI + PAYBIS crypto white-label; flags tradingagents/qlib as reject-cand, finrl-treasury/finrobot as careful, lightgbm/xgboost/credit-scoring as credit-BLOCKED; references not restates per ADR-102; no register row mutated; additive to B-STRATEGIC-SIGNAL-001)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
