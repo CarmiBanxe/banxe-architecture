@@ -25847,3 +25847,45 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* mutated (Rule 6); no secrets; no code/runtime change; NO passport/soul/template diff; signed; `--force-with-lease` only.
 - **Deliverable:** `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
 - **Refs:** docs/sources/best-decision-concept-2026-07-06.md; docs/adr/ADR-162-best-decision-principle.md; docs/canon/BEST-DECISION-BOUNDARY.md (#1068); tests/best-decision/; .claude/rules/agents.md (BUG-007, ARL/Ruflo, Temporal/Kafka); FACTORY-CANON.md (#1047, IL-932); CLAUDE.md §12; I-08/I-17/I-24/I-27; ADR-059/102/120/153; parallel-session-isolation Rule 6; governance/COORDINATION-NOTES.md; source #2 "EMI BANXE AI BANK — Идеальный Open Source Движок" (referenced, not repo-resident).
+
+---
+
+### IL-990 - agent-factory-canon-delivery-stdin-paste @ 2026-07-06T21:18:00Z
+
+- **il_ts:** 2026-07-06T21:18:00Z
+- **session_id:** agent-factory-canon-delivery-stdin-paste
+- **source:** agent-factory
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-canon-delivery-stdin-paste/IL-2026-07-06T21-18-00Z--delivery-stdin-paste.md`
+
+# Delivery canon — STDIN-paste (`cat > file`) as MANDATORY zero-loss delivery method (cross-terminal)
+
+## What
+
+Add `docs/canon/DELIVERY-CANON-STDIN-PASTE.md` — canon doc making STDIN-paste (`cat > file`)
+the MANDATORY zero-loss delivery method for large documents (RU text, formulae, code),
+superseding chat-attachment and inline base64 for this purpose. Applies to ALL terminals:
+Factory (Left / A), Central, Right (Orchestrating). Specifies the method, the same-chain
+ingestion test (bytes > 500; no leftover placeholder; domain-markers > 0; corruption-markers
+→ 0; sha256 baseline), and zero-loss archival in **two admissible forms**: (a) pure `cp`
+with file-level sha256 equality, and (b) YAML-metadata header (`sha256-body`, `body-bytes`,
+verify command) + verbatim body — Form (b) is the **preferred SSOT form** per **ADR-161**
+(header+body carries provenance alongside the bytes; verify is `sha256(tail -c body-bytes)`,
+so the file-level sha of Form (b) differs from source **by design** and is not drift).
+Pointer-first (ADR-102) — this doc references FACTORY-CANON Execution Pattern and ADR-161
+rather than restating them; §4 is edited **in-place** (no second source-of-truth).
+
+## Boundaries
+
+Doc-only; prepare-only; additive. No passport / SOUL / template / activation touched. No
+IL minted at authoring (Rule 8 / ADR-119: build_ledger mints at merge). No merge in this
+step. No TRADING-001 or `agent/specproj/*` contours touched (Rule 6). Written from a
+session worktree, never the shared checkout (ADR-120). Interactive editors (nano / vim /
+code) explicitly forbidden by the canon; shell scripts only.
+
+## Anchors
+
+`docs/canon/DELIVERY-CANON-STDIN-PASTE.md` · `docs/factory/FACTORY-CANON.md` (Execution
+Pattern; worktree; prepare-only) · `docs/adr/ADR-161-intake-ssot-persistence.md` (SSOT
+persistence — Form (b) canonical) · `docs/sources/` (verbatim archives) · ADR-102 (dedup /
+pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only audit).
