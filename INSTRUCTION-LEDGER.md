@@ -25505,3 +25505,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deliverable:** 4 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge, not hardcoded here.
 - **Fleet impact:** 41 → 45 SOULs; **CTX-10-REPORTING complete**. Remaining SOUL-less after this: 30 of 57 passports.
 - **Refs:** SOUL cohorts #1042/#1044/#1046/#1050/#1053/#1056; FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{board_reporting_agent,cfo_orchestration_agent,reporting_agent,wind_down_planning_agent}.yaml; CLAUDE.md §11; I-06; I-07; I-27; ADR-102; ADR-117/120/121/128; GAP-078; blockers BT-010/S1-02; governance/CANONICAL-ORG-CHART-v2.md.
+
+---
+
+### IL-953 - sp19-watcher-v21-sync-before-scan @ 2026-07-06T00:17:32Z
+
+- **il_ts:** 2026-07-06T00:17:32Z
+- **session_id:** sp19-watcher-v21-sync-before-scan
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp19-watcher-v21-sync-before-scan/IL-2026-07-06T00-17-32Z--42d1c4.md`
+
+### sp19-watcher-v21-sync-before-scan
+
+- **Instruction:** specproj sp19: watcher v2.1 sync-before-scan (fixes stale-checkout stale-read defect from 1st battle run)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

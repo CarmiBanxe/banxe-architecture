@@ -103,5 +103,5 @@ restatement (ADR-102).
 - **`docs/adr/ADR-156-sandbox-mode-signoff-gates-removed.md`** — sandbox mode referenced in §6.
 - **`docs/adr/ADR-153-terminal-topology-canon.md`** — canonical terminal topology (A / B / Central); "Terminal-B" here reads per ADR-153.
 - **`.claude/rules/approval-rules.md`** §Правило неоднозначности — best-decision canon referenced in §2.
-- **`scripts/novelty-watcher.sh`** v2 — scoring un-stubbed (real LiteLLM :4000, fail-open to `novel`); pointer only, ADR-102 no-restatement.
+- **`scripts/novelty-watcher.sh`** v2.1 — sync-before-scan (fail-loud `git fetch origin main` + register/queue read via `git show origin/main:…`); v2 real-scoring (:4000 fail-open) and v1.1 strict NEW-only filter preserved; pointer only, ADR-102 no-restatement.
 - **`.claude/rules/safety-rules.md`** — stop-barriers referenced by §5 (data-loss / irreversibility / invariant breach).
