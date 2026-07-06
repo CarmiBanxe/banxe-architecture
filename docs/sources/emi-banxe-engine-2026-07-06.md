@@ -1,13 +1,3 @@
----
-slug: emi-banxe-engine
-intake-date: 2026-07-06
-source-type: paper
-provenance: operator-supplied (heredoc delivery) — EMI BANXE engine research paper "Идеальный Open Source Движок Банка-ИИ-Агента: Архитектура, Математика, Мировой Опыт"
-sha256-body: 9ef1b0308d9602a795b408111b1bddb3e127a9728f15b0cc4b3aea4a2257ef34
-body-bytes: 49979
-verify: tail -c 49979 <this-file> | sha256sum  ==  sha256-body   (zero-loss check)
-context: raw verbatim archival of engine source #2 (append-only, I-24 — do NOT edit; corrections = new dated file). Structured ingestion lives in docs/agent-engine-dossier/SRC-01..09 + ENGINE-ROADMAP.md; synthesis in docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md (#1070). Body below is byte-for-byte verbatim.
----
 EMI BANXE AI BANK — Идеальный Open Source Движок Банка-ИИ-Агента: Архитектура, Математика, Мировой Опыт
 Дополнение к двум предыдущим исследованиям
 Исполнительное резюме
