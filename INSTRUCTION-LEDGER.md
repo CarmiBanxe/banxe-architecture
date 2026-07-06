@@ -25728,3 +25728,18 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 
 - **Instruction:** sp25 intake SSOT-persist fix + best-decision adoption-audit gate canon (self-contained; retro-saves best-decision concept; NO runtime autonomy, I-27 preserved; DIRECTIVE B-BESTDEC-SCOPE-001 OPEN, operator-owned)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-981 - sp26-sync-canon @ 2026-07-06T12:15:52Z
+
+- **il_ts:** 2026-07-06T12:15:52Z
+- **session_id:** sp26-sync-canon
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp26-sync-canon/IL-2026-07-06T12-15-52Z--327369.md`
+
+### sp26-sync-canon
+
+- **Instruction:** sp26 SYNC-CANON (ADR-163 + docs/canon/SYNC-CANON.md): mandatory sync-before-act/ledger-serialize/branch-name-valid/tri-party-sync-point/ssot-first; evidence = 3 battle-run lessons (#1058 stale-checkout, sp16 quiet-window/#833 main-serialize, #1061 branch-name); ADR-102 reference-not-restate; B proposes, Central ratifies; HITL — не мержить
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
