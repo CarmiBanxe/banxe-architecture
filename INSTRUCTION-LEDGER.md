@@ -25477,3 +25477,31 @@ agents/souls/_TEMPLATE.md · #1042/#1044 (Cohorts 1-2) · #1040 readiness · #10
 - **Deliverable:** 3 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge, not hardcoded here.
 - **Fleet impact:** 38 → 41 SOULs; CTX-08-DATA advances; design_pipeline_agent (CTX-09) now has a SOUL. Remaining SOUL-less after this: 34 of 57 passports.
 - **Refs:** SOUL cohorts #1042 (IL-925) / #1044 (IL-930) / #1046 (IL-934) / #1050 (IL-936) / #1053 (IL-942); FACTORY-CANON.md (#1047, IL-932); B-QUIET-WINDOW-001 (sp16 COORDINATION-NOTES.md, gate #1051); passports agents/passports/{bi_dashboard_governor,hr_agent,design_pipeline_agent}.yaml; CLAUDE.md §11; I-27; I-08; ADR-102; ADR-117/120/121/128; ADR-135; ADR-155; parallel-session-isolation Rule 6; GAP-040.
+
+---
+
+### IL-950 - agent-factory-souls-cohort7-ctx10-reporting @ 2026-07-06T00:14:36Z
+
+- **il_ts:** 2026-07-06T00:14:36Z
+- **session_id:** agent-factory-souls-cohort7-ctx10-reporting
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-cohort7-ctx10-reporting/IL-2026-07-06T00-14-36Z--souls-cohort7-ctx10-reporting.md`
+
+### Cohort 7 — complete CTX-10-REPORTING: author 4 governor SOULs, prepare-only, no activation
+
+- **Objective:** Author the 4 SOUL charters that close the CTX-10-REPORTING context: `board_reporting_agent`, `cfo_orchestration_agent`, `reporting_agent`, `wind_down_planning_agent`. Forward-path continuation of the #1040 readiness audit (after Cohorts 1–6: #1042/#1044/#1046/#1050/#1053/#1056).
+- **MATERIAL honesty correction (facts-from-passport, not memory):** the coverage grep earlier read `status: active` for `board_reporting_agent` and `cfo_orchestration_agent` and I provisionally called them "already-live (documentation-only)". Reading the passport BODIES corrected this: **both are STUB passports** — description + non_goals state verbatim *"STUB passport … PROPOSES only (I-27); NOT activated. No service code exists yet — deferred to Sprint 3 (GAP-078)."* They are **NOT genuinely-activated agents** (no ADR-155-style activation, unlike design_pipeline_agent in Cohort 6); the `status: active` header field is contradicted by the body (same pattern as cto_platform_agent, Cohort 5). **Honest cohort composition: all 4 are effectively PROPOSED** — 2 stubs (misleading status field) + 2 genuine PROPOSED. The Factory activated nothing and did not trust the stray field.
+- **Facts grounded per passport (origin/main), NOT normalised:**
+  - `board_reporting_agent` — L1 · **RED** · CLASS_B · STUB (status:active field contradicted → treated PROPOSED). human_double **CEO / Board**; SMF1/Board; no service code (GAP-078); dept-head coordinate/propose only; no autonomous board signoff.
+  - `cfo_orchestration_agent` — L2 · AMBER · CLASS_B · STUB (same). human_double **CFO (David Goldstein)**; SMF2; no service code (GAP-078); no autonomous financial action.
+  - `reporting_agent` — L2 · **RED** · **CLASS_A** · L3_MLRO · PROPOSED. human_double **CFO + MLRO**. Substantial FCA-reporting orchestrator: FIN060 (CASS 15.12.4R), RegData/Gabriel, MLRO annual SAR (MLR 2017 §19), client statements (FCA PS7/24), CASS 10A resolution pack. **DUAL_SIGN gate MLRO(SMF17)+CFO(SMF2)** for FIN060/MLRO_ANNUAL. Invariants **I-06** (5yr retention) + **I-07** (FIN060 15th). Ports ReportingPort↔{Safeguarding,AML,Ledger,RegData,Customer,Audit}Port; callees safeguarding_engine/aml_analyst_v1/ledger_agent/customer_lifecycle_agent. Wraps existing regdata_return.py/fin060_generator.py/resolution_pack.py (route-not-reimplement). `auto_refactor_pro` prohibited. **Blockers BT-010** (RegData API key, CEO) + **S1-02** (MLRO appointment) — no live submission until resolved. migration 65%.
+  - `wind_down_planning_agent` — L2 · AMBER · CLASS_B · PROPOSED. human_double **CFO** (approvers CFO+Board). Run-off scenario modelling + wind-down trigger framework (FCA Approach Document 2026, FCA WDPG). Ports WindDownRequestPort→ReportingPort/AuditPort; callees reporting_agent/notification_agent. Invariant I-27. **Proposes wind-down pack drafts only — never executes a resolution.**
+- **Route-not-reimplement (canon):** each SOUL governs/orchestrates/routes existing services/generators; none reimplements. SOUL **describes** authority, never expands it — enforcement in CI + ADR-117/128/121.
+- **Reporting-domain discipline:** board/regulatory/financial reporting is read-only-then-propose; FIN060/RegData submission is dual-sign human-gated (MLRO+CFO); board signoff human-gated (CEO/Board); wind_down proposes only, never executes resolution.
+- **ADR-102 duplication audit:** `agents/souls/` checked — no pre-existing/near-duplicate SOUL for any of the 4 stems. **Decision: add net-new (4).** No merge/delete; no hidden consumer.
+- **Format:** each SOUL = 12 sections (Identity, Core Responsibilities, Tools Available, Data Sources (read-only), Constraints, Escalation, HITL Gate, HITL Workflow, Voice, Memory Policy, Core Truths, Pet Peeves), 64–71 lines. House style consistent with Cohorts 1–6.
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease` only. Serial single PR (B-QUIET-WINDOW anti-concurrency spirit; window already released by #1051).
+- **Deliverable:** 4 `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8) — minted via build_ledger.py on current origin/main immediately before merge, not hardcoded here.
+- **Fleet impact:** 41 → 45 SOULs; **CTX-10-REPORTING complete**. Remaining SOUL-less after this: 30 of 57 passports.
+- **Refs:** SOUL cohorts #1042/#1044/#1046/#1050/#1053/#1056; FACTORY-CANON.md (#1047, IL-932); passports agents/passports/{board_reporting_agent,cfo_orchestration_agent,reporting_agent,wind_down_planning_agent}.yaml; CLAUDE.md §11; I-06; I-07; I-27; ADR-102; ADR-117/120/121/128; GAP-078; blockers BT-010/S1-02; governance/CANONICAL-ORG-CHART-v2.md.
