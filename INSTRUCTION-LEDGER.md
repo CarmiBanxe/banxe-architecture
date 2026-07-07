@@ -26246,3 +26246,69 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
 - **Proof:** verify command in each file's `verify:` header; index rows in `docs/sources/README.md`; PR #<n> (draft, HITL, do NOT merge).
 - **Deviation:** re-execution of sp36 (which died on evo1 reboot); zero-loss preserved because sources re-staged from Legion by Central with byte-for-byte sha match — no work lost.
 - **Refs:** ADR-159 §"Terminal-B Operating Algorithm", ADR-161 (SSOT persistence), ADR-119 (frozen IL numbering), ADR-120 (per-session worktree isolation), ADR-060 (branch-name gate), DELIVERY-CANON §4, related PRs #1051 (EMI-stack intake) and #1059 (OSS intake).
+
+---
+
+### IL-1011 - agent-factory-knowledge-bestdecision-selflearning-loop-source @ 2026-07-06T23:19:04Z
+
+- **il_ts:** 2026-07-06T23:19:04Z
+- **session_id:** agent-factory-knowledge-bestdecision-selflearning-loop-source
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-knowledge-bestdecision-selflearning-loop-source/IL-2026-07-06T23-19-04Z--bestdecision-selflearning-loop-source.md`
+
+### Verbatim SSOT archival — Best-Decision Self-Learning Loop consultant spec (reference source, NOT canon)
+
+- **Objective:** Preserve, byte-for-byte, the operator-supplied consultant specification on a Best-Decision
+  Self-Learning Loop for the EMI BANXE agent fleet, as a citable **reference source** under the ADR-161 Intake
+  SSOT convention. Prepare-only; no canon, no thresholds, no runtime/schema/config/passport/soul change.
+- **Archived file:** `docs/sources/best-decision-self-learning-loop-2026-07-07.md` (SSOT header + verbatim body).
+- **Zero-loss integrity (proven):** body-bytes=**34974**, body-sha256=**c4f71e729f3791e97429f5482c405c201cee395b4d8daff6d9828ed53c30553f**.
+  Proof: `tail -c 34974 <file> | sha256sum` == body-sha256 (PASS). Total file 37366 bytes (header 2392 + body 34974).
+- **Classification:** reference source, **not canon**. Thresholds/weights in the paper are the CONSULTANT's proposal,
+  **NOT adopted config** — any adoption lands in governance config via a human-gated PR (Config-over-Hardcoding §10).
+  Nothing here sets a live threshold, weight, or gate; nothing is activated.
+- **Alignment (informational, not adoption):** the paper's confidence tiers (AUTO≥0.90 / REVIEW 0.70–0.90 / BLOCK<0.70)
+  correspond to existing **BUG-007**; its DecisionRecord/OutcomeRecord map onto `schemas/agent_decision_record.schema.json`
+  + `clickhouse_writer`; its propose-only, human-gated boundary corresponds to I-27 / `BEST-DECISION-BOUNDARY`.
+- **Forward use:** this source is the citable anchor for the deferred, pointer-first `docs/canon/BEST-DECISION-LEARNING-LOOP.md`
+  (to be authored only after ADR-164 / PR #1080 lands, and after the teachers-first cohort).
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout;
+  no TRADING-001 / agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease`.
+- **Deliverable:** 1 `docs/sources/*.md` (verbatim archival) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8).
+- **Refs:** ADR-161 (Intake SSOT); Config-over-Hardcoding CLAUDE.md §10; I-27; BUG-007; ADR-162; ADR-164 / `docs/design/BEST-DECISION-AGENT.md` (PR #1080, pending);
+  `docs/canon/BEST-DECISION-BOUNDARY.md`; `schemas/agent_decision_record.schema.json`; `tests/best-decision/`;
+  `governance/novelty-pipeline-config.yaml`; `docs/sources/best-decision-concept-2026-07-06-v2.md`; `docs/sources/emi-banxe-engine-2026-07-06.md`.
+
+---
+
+### IL-1012 - agent-factory-knowledge-consultant-escalation-protocol @ 2026-07-07T00:29:48Z
+
+- **il_ts:** 2026-07-07T00:29:48Z
+- **session_id:** agent-factory-knowledge-consultant-escalation-protocol
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-knowledge-consultant-escalation-protocol/IL-2026-07-07T00-29-48Z--consultant-escalation-protocol.md`
+
+### Consultant Escalation & Best-Decision Consultation Protocol — reference source (factory-authored, NOT canon)
+
+- **Objective:** Preserve, as a citable **reference source** (ADR-161 Intake SSOT), the Consultant Escalation &
+  Best-Decision Consultation Protocol — the spec of *when* a decision escalates to the expert-consultant and *how*
+  the consultant applies the Best-Decision method. **Prepare-only**; no canon, no thresholds adopted, no
+  runtime/schema/config/passport/soul change, no activation.
+- **Provenance (honest):** authored **in-session by the factory's expert-consultant role** — NOT an external
+  operator-supplied paper. Written directly into the file (no paste vector), so lossless by construction; the four
+  prior intake attempts had failed only because a wrong document (a 24/7-orchestration synthesis, sha 274dbd3d)
+  kept landing in the operator's paste buffer — that document is a #1070 near-duplicate and was correctly rejected.
+- **Archived file:** `docs/sources/consultant-escalation-protocol-2026-07-07.md` (SSOT header + protocol body).
+- **Classification:** reference source, **not canon**. All thresholds/weights marked "proposal, not adopted"
+  (Config-over-Hardcoding §10 — adoption via human-gated config PR). Advisory-only; vердикт never self-applies;
+  fail-closed on payment/compliance/KYC/AML; I-27 preserved.
+- **Distinctness (ADR-102):** related but NOT a duplicate — #1080 = per-agent advisory *method*; #1070 = engine /
+  24-7 / Factory-Central-Right *principles*; this = the *escalation-and-consultation protocol*.
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120); no TRADING-001 /
+  agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease`.
+- **Deliverable:** 1 `docs/sources/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8).
+- **Refs:** ADR-161; CLAUDE.md §10; I-27; I-24; BUG-007; ADR-162; ADR-164 / `docs/design/BEST-DECISION-AGENT.md` (PR #1080);
+  `docs/canon/BEST-DECISION-BOUNDARY.md`; `docs/sources/best-decision-concept-2026-07-06-v2.md`;
+  `docs/sources/best-decision-self-learning-loop-2026-07-07.md` (PR #1083); ADR-102; Rule 6; ADR-120.
