@@ -26352,3 +26352,18 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
 - **Refs:** ADR-131 (+#1077); FACTORY-CANON §1.11; ADR-117/128/121; I-08; I-12; I-24; I-27; BUG-007; ADR-102; GAP-078;
   FCA SYSC 6; POCA 2002; docs/sources/best-decision-concept-2026-07-06-v2.md;
   docs/sources/consultant-escalation-protocol-2026-07-07.md; docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md.
+
+---
+
+### IL-1019 - sp38-best-decision-consultant-synthesis @ 2026-07-07T08:51:39Z
+
+- **il_ts:** 2026-07-07T08:51:39Z
+- **session_id:** sp38-best-decision-consultant-synthesis
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp38-best-decision-consultant-synthesis/IL-2026-07-07T08-51-39Z--0060a7.md`
+
+### sp38-best-decision-consultant-synthesis
+
+- **Instruction:** SSOT-archive Perplexity Governance/Safety consultant ruling (form b zero-loss, sha256 99e9595a) + convergence synthesis Q1-Q5 of two independent rulings (Central+Perplexity agree 5/5); PROPOSED, ratification=operator+Central; I-27+variant-2 preserved; numbers=governed-config-proposal; ADR-102 pointer-first.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
