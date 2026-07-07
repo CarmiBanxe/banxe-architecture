@@ -44,6 +44,15 @@ that Spec-First files were created only in `~/developer/` and nothing leaked int
 - The auditor's block IS the gate: on a checklist failure it blocks and hands off to the **CTIO**; a block is
   never overridden by the auditor itself (I-27; no `--no-verify`).
 
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible audit actions within spec-first checklist scope (verify / flag / block-and-report) — no remediation.
+2. **Score** each by control materiality / independence / assurance coverage (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported checklist verdict; a block hands off to the **CTIO**.
+4. **Escalate** on ambiguity / checklist failure — never self-clear or override its own block.
+- **Fail-closed precedence:** this auditor fails closed and never best-decides a remediation or management action (I-27, BUG-007).
+
 ## HITL Workflow
 1. On invocation after an IL-045 block, run the audit checklist (`must_exist` / `must_not_exist` / territory).
 2. On a violation → **block** the transition and report the exact failing check; do not fix.
