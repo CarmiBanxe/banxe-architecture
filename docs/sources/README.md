@@ -84,3 +84,4 @@ with `-v2` or a new date suffix; the older file is preserved (append-only, I-24)
 |------|-------|------:|-------------|--------|
 | [emi-banxe-world-experience-2026-07-07](emi-banxe-world-experience-2026-07-07.md) | EMI BANXE AI BANK — Мировой опыт банков-ИИ-агентов: Азия, Китай, Япония, Латинская Америка, Ближний Восток | 68409 | `db72a7ea2b675f50a1a7ad1cedd098651030c8ad11094c45edb0f486fddeeea9` | SSOT-RESTORED |
 | [oss-agent-solutions-banxe-2026-07-07](oss-agent-solutions-banxe-2026-07-07.md) | Open Source & Free AI Agent Solutions for Next-Generation Banking (BANXE AI Bank) | 69737 | `50c2f6677d224d56917dee2f6560947eb334253d102f1a0dab3c6fe44ab6743b` | SSOT-RESTORED |
+| [consultant-response-best-decision-2026-07-07](consultant-response-best-decision-2026-07-07.md) | Advisory Response — Consultant Ruling (Escalation #1084) — Perplexity Governance/Safety | 12238 | `99e9595af3dffaf3dbfa7f3e5c0518ffc7518e19fbc842ec7a3c5ab485f63755` | SSOT-RESTORED |
