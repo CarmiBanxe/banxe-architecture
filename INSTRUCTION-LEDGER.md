@@ -26596,3 +26596,44 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
   - PR #1094 (`banxe_aml_orchestrator` SOUL Decision Method — stays PROPOSED; gated on
     Q1 Step-0 admissibility ADR).
   - ADR-102 (pointer-first, no source restate); ADR-119 / ADR-133 (mint-at-merge).
+
+---
+
+### IL-1032 - specproj-sp41-adoptionaudit88 @ 2026-07-07T10:16:27Z
+
+- **il_ts:** 2026-07-07T10:16:27Z
+- **session_id:** specproj-sp41-adoptionaudit88
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp41-adoptionaudit88/IL-2026-07-07T10-16-27Z--1704f7.md`
+
+### specproj sp41 — ADOPTION-AUDIT of 88 NEW findings (ratified Q4 two-stage triage)
+
+- **Instruction:** Apply the ratified Q4 two-stage triage
+  (`docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md` §Q4, APPROVED by operator + Central in
+  `governance/DIRECTIVE-BESTDEC-RATIFY-001.md`) to the 88 NEW findings in
+  `governance/NOVELTY-COLLECTION-REGISTER.md` (rows 43–130). Emit a PROPOSED audit report;
+  do NOT adopt anything and do NOT mutate the register.
+- **Steps:**
+  1. Stage-1 HARD-GATE (deterministic, first): credit / lending / investment / trading OOS
+     TOMPAY-EMI → DEFER-to-licence (`B-EMI-CREDIT-GATE-001`); sanctions / I-27-incompatible
+     → REJECT-hard. No score for these.
+  2. Stage-2 DEDUP-BY-NEED: collapse capability-need overlaps → keep-best; rest recorded
+     as `dup-of:<item>`.
+  3. Stage-3 SCORE-TRIAGE (survivors): S = 0.35·FCR + 0.15·CGR − 0.30·HGC − 0.20·AC,
+     normalised `[0,1]`. ADOPT ≥ 0.60 / DEFER 0.30 ≤ S < 0.60 / REJECT S < 0.30;
+     lexicographic override FCR ≥ 0.80 → ESCALATE-IMMEDIATE.
+  4. Write `governance/ADOPTION-AUDIT-88.md` (PROPOSED, Central-finalization-required) with
+     summary + per-item table + Central review band; register untouched (append-only).
+- **Proof:** `governance/ADOPTION-AUDIT-88.md` — counts: **88** TOTAL, **9** ADOPT
+  (of which **3** ESCALATE-IMMEDIATE: 64 owasp-llm-top10, 65 nemo-guardrails,
+  104 guardrails-ai-validators), **44** DEFER (Central review band), **19** REJECT
+  (17 score-based + 2 Stage-1 hard-rejects: 48 wechatpay, 59 sofastack), **8** DEFER-to-licence
+  (`B-EMI-CREDIT-GATE-001`), **8** DUP.
+- **Deviation:** none.
+- **Blocker:** n/a — verdicts are PROPOSED, adoption is NOT auto (Central + operator finalize);
+  each ADOPT becomes its own sprint / IL with its own Duplication Audit (ADR-102).
+- **Refs:** `governance/ADOPTION-AUDIT-88.md`, `governance/NOVELTY-COLLECTION-REGISTER.md`
+  (rows 43–130), `docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md` §Q4,
+  `governance/DIRECTIVE-BESTDEC-RATIFY-001.md`, ADR-056, ADR-057, ADR-059, ADR-102, ADR-103,
+  ADR-119, ADR-143, ADR-162, ADR-163, ADR-164, ledger/SHARD-WORKFLOW.md, `B-EMI-CREDIT-GATE-001`.
