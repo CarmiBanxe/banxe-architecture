@@ -1,11 +1,15 @@
 ---
 directive_id: DIRECTIVE-BESTDEC-RATIFY-001
 title: "Ratification checklist — Best-Decision Q1–Q5 consultant convergence (operator + Central ack)"
-status: OPEN
+status: RATIFIED-OPERATOR
 classification: governance directive (pointer-first per ADR-102)
 issued: 2026-07-07
 issuer: Terminal-B (specproj sp39; prepare-only)
 ack_required: [operator, central]
+ack_state:
+  operator: RATIFIED (Moriel Carmi, 2026-07-07, chat-authorized "я всё одобряю" — sp40 ack)
+  central: PENDING (co-sign required to reach CLOSED)
+q_verdicts: {Q1: APPROVE, Q2: APPROVE, Q3: APPROVE, Q4: APPROVE, Q5: APPROVE}
 activation_policy: deferred-to-approved-ADR
 invariants_preserved: [I-27, variant-2]
 related:
@@ -21,7 +25,14 @@ related:
 
 # DIRECTIVE-BESTDEC-RATIFY-001 — Q1–Q5 ratification checklist
 
-> **STATUS: OPEN — ack-required from operator + Central.**
+> **STATUS: RATIFIED-OPERATOR — Central co-sign PENDING (moves to CLOSED once received).**
+>
+> **Operator ratification (2026-07-07, sp40):** Moriel Carmi approved ALL Q1..Q5 in chat
+> ("я всё одобряю"). This ack is append-only and is recorded per-Q below. It endorses
+> ARCHITECTURAL DIRECTION only — **activation of each Q remains deferred to its own
+> human-ratified ADR / governed-config PR** (see per-Q "Next action" blocks). I-27 and
+> variant-2 remain preserved; numeric parameters remain governed-config *proposals* per
+> CLAUDE.md §10; the Best-Decision method is **not** activated by this ack.
 > This directive is a **decision artefact** (ADR-102: pointer-first, no source restate). The
 > substantive verdicts under review live in
 > `docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md` (PR #1091), which itself consolidates two
@@ -59,7 +70,7 @@ separate first stage and execution-class alone is treated as necessary-but-not-s
 (the DAG itself and its rules) requires a separate human-ratified ADR** extending ADR-162 /
 ADR-164; nothing goes live via this checkbox.
 
-- [ ] APPROVE — direction endorsed; open follow-on ADR to activate Step 0.
+- [x] APPROVE — direction endorsed; open follow-on ADR to activate Step 0.
 - [ ] AMEND — direction endorsed with amendments (record below).
 - [ ] REJECT — do not adopt Step 0 admissibility-gate; keep current single-stage flow.
 
@@ -69,8 +80,14 @@ Amendments / notes:
 (operator/Central)
 ```
 
-**Operator ack:** __________________________  date: __________  
-**Central ack:** __________________________  date: __________
+**Operator ack:** RATIFIED by: Operator (Moriel Carmi), 2026-07-07, chat-authorized "я всё одобряю". Central co-sign: PENDING.  
+**Central ack:** PENDING — Central co-sign required to move Q1 to CLOSED.
+
+**Next action (activation, human-gated):** Activation via separate governed ADR/config-PR,
+human-gated (I-27). NOT activated by this ack. Q1 activation opens the ADR for the Step 0
+deterministic admissibility-gate DAG (static, human-authored, append-only), which in turn
+unblocks safe activation of the AML orchestrator Decision Method (PR #1094 — currently
+PROPOSED and gated on Q1 Step-0-gate ADR).
 
 ---
 
@@ -86,7 +103,7 @@ numeric α, weights, or thresholds) requires a separate human-ratified ADR** and
 PR against `governance/novelty-pipeline-config.yaml` (or equivalent). Weights and thresholds
 proposed in the synthesis remain *proposals* until that PR lands.
 
-- [ ] APPROVE — direction endorsed; open follow-on ADR + governed-config PR to activate Level 0/1/2.
+- [x] APPROVE — direction endorsed; open follow-on ADR + governed-config PR to activate Level 0/1/2.
 - [ ] AMEND — direction endorsed with amendments (record below).
 - [ ] REJECT — do not adopt lexicographic aggregation; keep current aggregation.
 
@@ -96,8 +113,14 @@ Amendments / notes:
 (operator/Central)
 ```
 
-**Operator ack:** __________________________  date: __________  
-**Central ack:** __________________________  date: __________
+**Operator ack:** RATIFIED by: Operator (Moriel Carmi), 2026-07-07, chat-authorized "я всё одобряю". Central co-sign: PENDING.  
+**Central ack:** PENDING — Central co-sign required to move Q2 to CLOSED.
+
+**Next action (activation, human-gated):** Activation via separate governed ADR/config-PR,
+human-gated (I-27). NOT activated by this ack. Q2 activation lands via an ADR extending
+ADR-162 / ADR-164 for Level 0/1/2 lexicographic aggregation, plus a governed-config PR
+against `governance/novelty-pipeline-config.yaml` carrying the α threshold, MAUT weights,
+and any Level-boundary numerics as governed-config *proposals* per CLAUDE.md §10.
 
 ---
 
@@ -114,7 +137,7 @@ is **NOT canonical** to the BANXE decision fabric. The concept-v7/v8/v9 backlog 
 scope-level mislabel and belongs to a separate `concept-consolidation` audit (own ADR / IL
 sprint), not this fabric.
 
-- [ ] APPROVE — Criterion A + B endorsed; ASSIGNATION stays external (reference-only).
+- [x] APPROVE — Criterion A + B endorsed; ASSIGNATION stays external (reference-only).
 - [ ] AMEND — endorse with amendments (record below).
 - [ ] REJECT — do not adopt Criterion A + B as canonicity test.
 
@@ -124,8 +147,15 @@ Amendments / notes:
 (operator/Central)
 ```
 
-**Operator ack:** __________________________  date: __________  
-**Central ack:** __________________________  date: __________
+**Operator ack:** RATIFIED by: Operator (Moriel Carmi), 2026-07-07, chat-authorized "я всё одобряю". Central co-sign: PENDING.  
+**Central ack:** PENDING — Central co-sign required to move Q3 to CLOSED.
+
+**Next action (activation, human-gated):** Activation via separate governed ADR/config-PR,
+human-gated (I-27). NOT activated by this ack. Q3 activation records the canonicity
+criterion (A + B) in a dedicated ADR (or as an amendment to ADR-102/ADR-162/ADR-164 as
+scope dictates). ASSIGNATION-of-EACH-1..4 stays external / reference-only; the
+concept-v7/v8/v9 backlog is deferred to a separate `concept-consolidation` audit ADR + IL
+sprint — not this fabric.
 
 ---
 
@@ -143,7 +173,7 @@ thresholds, FCR override threshold, sample size) are governed-config *proposals*
 and require a **separate governed-config PR** against `governance/novelty-pipeline-config.yaml`
 (or equivalent) before any live use. The calibration run itself must be human-gated.
 
-- [ ] APPROVE — direction endorsed; open governed-config PR + calibration IL.
+- [x] APPROVE — direction endorsed; open governed-config PR + calibration IL.
 - [ ] AMEND — direction endorsed with amendments (record below).
 - [ ] REJECT — do not adopt the two-stage triage; keep current triage.
 
@@ -153,8 +183,17 @@ Amendments / notes:
 (operator/Central)
 ```
 
-**Operator ack:** __________________________  date: __________  
-**Central ack:** __________________________  date: __________
+**Operator ack:** RATIFIED by: Operator (Moriel Carmi), 2026-07-07, chat-authorized "я всё одобряю". Central co-sign: PENDING.  
+**Central ack:** PENDING — Central co-sign required to move Q4 to CLOSED.
+
+**Next action (activation, human-gated):** Activation via separate governed ADR/config-PR,
+human-gated (I-27). NOT activated by this ack. Q4 activation opens the adoption-audit of
+the 88 findings under the ratified two-stage triage (hard-gate → dedup-by-need →
+score-triage on HGC/FCR/AC/CGR with bands ADOPT ≥ 0.60 / DEFER / REJECT, plus the
+lexicographic FCR ≥ 0.80 override), plus a governed-config PR against
+`governance/novelty-pipeline-config.yaml` carrying weights, band thresholds, FCR override
+threshold, and calibration sample size as governed-config *proposals* per CLAUDE.md §10.
+The 10–15 sample calibration run is itself human-gated.
 
 ---
 
@@ -170,7 +209,7 @@ commit-index redesign via its own separate ADR + IL, with the "quiet-window" str
 merge-queue-serialize IL for NOW; index-decouple IL for MEDIUM; a dedicated ADR for the tracked
 commit-index redesign debt. Nothing is armed by this checkbox.
 
-- [ ] APPROVE — direction endorsed; open merge-queue-serialize IL + follow-ons per horizon.
+- [x] APPROVE — direction endorsed; open merge-queue-serialize IL + follow-ons per horizon.
 - [ ] AMEND — direction endorsed with amendments (record below).
 - [ ] REJECT — do not adopt this sequencing.
 
@@ -180,8 +219,16 @@ Amendments / notes:
 (operator/Central)
 ```
 
-**Operator ack:** __________________________  date: __________  
-**Central ack:** __________________________  date: __________
+**Operator ack:** RATIFIED by: Operator (Moriel Carmi), 2026-07-07, chat-authorized "я всё одобряю". Central co-sign: PENDING.  
+**Central ack:** PENDING — Central co-sign required to move Q5 to CLOSED.
+
+**Next action (activation, human-gated):** Activation via separate governed ADR/config-PR,
+human-gated (I-27). NOT activated by this ack. Q5 activation opens the **NOW**
+merge-queue-serialize IL (end concurrent-merge race; single ordering) and records the
+**MEDIUM** index-decouple IL (index becomes a derived CI artefact rebuilt on `main`, not
+a source-of-truth committed by branches) and the **TRACKED DEBT** commit-index redesign
+ADR as its own separate debt-item. The "quiet-window" strategy is retained ONLY as
+emergency fallback.
 
 ---
 
@@ -208,3 +255,24 @@ Amendments / notes:
 - `docs/canon/BEST-DECISION-BOUNDARY.md` — I-27 anchor + variant-2.
 - `CLAUDE.md §10` — Configuration-over-Hardcoding (numbers = governed-config proposal).
 - ADR-102 — pointer-first, no source restate (this directive adheres).
+
+## Ratification-ack log (append-only)
+
+### Operator ratification — 2026-07-07 (specproj sp40)
+
+- **Actor:** Operator (Moriel Carmi).
+- **Channel:** Terminal-B chat, verbatim "я всё одобряю" (chat-authorized).
+- **Verdicts:** Q1 APPROVE, Q2 APPROVE, Q3 APPROVE, Q4 APPROVE, Q5 APPROVE (5/5).
+- **Status transition:** `OPEN → RATIFIED-OPERATOR` (Central co-sign PENDING; moves to
+  `CLOSED` only when Central ack lines are filled per Closure protocol §3).
+- **Activation:** DEFERRED per-Q to separate governed ADR/config-PR (see per-Q "Next
+  action" blocks). NOTHING activated by this ack.
+- **Invariants preserved:** I-27 (no autonomous production-state mutation enabled),
+  variant-2 (advisory-only current single-stage flow remains in force), CLAUDE.md §10
+  (all numeric parameters remain governed-config *proposals*), ADR-102 (pointer-first, no
+  source restate), HITL (no auto-merge armed; each downstream landing human-gated).
+- **AML-method note:** the `banxe_aml_orchestrator` Decision Method (PR #1094) remains
+  **PROPOSED** and NOT activated. Safe activation is gated on the Q1 Step-0 admissibility
+  ADR landing first (per Q1 "Next action").
+- **Central co-sign:** PENDING. Fill Central ack lines per-Q above to progress toward
+  CLOSED.
