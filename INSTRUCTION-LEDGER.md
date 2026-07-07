@@ -26429,3 +26429,41 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
 - **Refs:** ADR-131 (+#1077); FACTORY-CANON §1.11; I-27; SMF17; BUG-007; ADR-102; #1092 (identity dedup);
   agents/passports/aml/banxe_aml_orchestrator.yaml; docs/sources/best-decision-concept-2026-07-06-v2.md;
   docs/sources/consultant-escalation-protocol-2026-07-07.md; docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md; [[aml-orchestrator-3passport-identity-conflict]].
+
+---
+
+### IL-1024 - sp39-bestdecratificationdirective @ 2026-07-07T09:17:35Z
+
+- **il_ts:** 2026-07-07T09:17:35Z
+- **session_id:** sp39-bestdecratificationdirective
+- **source:** Terminal-B
+- **status:** REVIEW
+- **shard:** `ledger/entries/sp39-bestdecratificationdirective/IL-2026-07-07T09-17-35Z--190b10.md`
+
+### sp39-bestdecratificationdirective — DIRECTIVE-BESTDEC-RATIFY-001 Q1-Q5 ratification checklist (operator+Central ack, HITL)
+
+- **Instruction (prepare-only, DIRECTIVE):** Author `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` — a governance directive that formalises the ratification pass for the Best-Decision Q1..Q5 consultant convergence synthesis (`docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md`, PR #1091). The directive opens ack-required from operator + Central, remains ADVISORY / PROPOSED until CLOSED, and defers activation of every Q to a separate human-ratified ADR / governed-config PR. Prepare-only; no activation, no auto-merge.
+- **Scope of change:**
+  - `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` (NEW) — status OPEN; ack_required=[operator, central]; activation_policy=deferred-to-approved-ADR; per-Q checklist [APPROVE / AMEND / REJECT] with amendments block and dual ack lines (operator + Central) for Q1..Q5; scope-reminders per Q locking activation to separate governed ADR / config-PR; closure protocol; preservation clauses (I-27 + variant-2 + CLAUDE.md §10 + ADR-102 pointer-first + HITL / no auto-merge).
+- **Meaning guardrails preserved (STOP-critical):**
+  - Directive is a *decision artefact*, not an activation. Best-Decision method stays ADVISORY / PROPOSED while directive is OPEN.
+  - Each Q ratification only endorses ARCHITECTURAL DIRECTION; activation requires a separate human-ratified ADR (Q1, Q2 extend ADR-162 / ADR-164) and, where applicable, a governed-config PR against `governance/novelty-pipeline-config.yaml` (Q2 numeric parameters, Q4 triage weights / bands / FCR override / calibration sample size).
+  - I-27 preserved: no autonomous production-state mutation is enabled by this directive.
+  - Variant-2 preserved: advisory-only until ratified; current single-stage flow remains in force until an activation ADR is merged.
+  - CLAUDE.md §10 (Config-over-Hardcoding): every numeric parameter named in the synthesis stays a governed-config *proposal*.
+  - ADR-102 pointer-first: the directive references the synthesis by pointer, does not restate consultant sources or reasoning.
+  - HITL: no auto-merge is armed; ratification, activation, and each downstream landing are human-gated at every step.
+  - Q3 consequence recorded (ASSIGNATION external / reference-only; concept-v7..v9 backlog = separate concept-consolidation audit) but scope-owner decision explicitly rests with operator + Central per the synthesis.
+- **Deviation:** none. `[IL-NNN]` NOT hardcoded (ADR-119 / ADR-133 mint-at-merge). PR opens as **draft**, auto-merge NOT armed (HITL). ADR-102 preserved: RATIFICATION-SYNTHESIS + Perplexity SSOT + Central inline ruling referenced by pointer, not restated.
+- **CONCURRENCY window:** `origin/main` at `40ba252` (#1092); max IL=1020 pre-shard; no ledger churn observed at branch cut. SYNC-CANON: on any sp39 churn observed at push time → HOLD.
+- **Proof:** `REDIS_HOST=127.0.0.1 python3 ledger/build_ledger.py` (regenerate from ROOT), then `REDIS_HOST=127.0.0.1 python3 ledger/build_ledger.py --check` (exit 0).
+- **Blocker:** none for the DIRECTIVE itself. Ratification (APPROVE / AMEND / REJECT for each of Q1..Q5) is human-gated on operator + Central. Activation of any Q post-ratification lands via a separate governed ADR / config-PR — out of scope for this PR.
+- **Refs:**
+  - `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` (NEW — this PR)
+  - `docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md` (PR #1091 — synthesis under ratification)
+  - `docs/sources/consultant-response-best-decision-2026-07-07.md` (Perplexity Governance/Safety SSOT)
+  - `docs/adr/ADR-162-best-decision-principle.md`, `docs/adr/ADR-164-best-decision-agent-method.md`
+  - `docs/design/BEST-DECISION-AGENT.md` (PR #1080)
+  - `docs/canon/BEST-DECISION-BOUNDARY.md` (I-27 anchor + variant-2)
+  - `CLAUDE.md §10` (Configuration-over-Hardcoding)
+  - ADR-102 (pointer-first, no source restate); ADR-119 / ADR-133 (mint-at-merge)
