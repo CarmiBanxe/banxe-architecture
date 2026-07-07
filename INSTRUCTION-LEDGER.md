@@ -26073,3 +26073,49 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
 - **Deliverable:** 4 `agents/souls/*.md` (each with `## Decision Method`) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
 - **Fleet impact:** 61 → 65 SOULs; genuinely-SOUL-less 9 → 5 (remaining: crypto_aml; aml_orchestrator + case_management_agent [AML-decision]; ceo_orchestration + treasury_alm [C-suite/treasury]).
 - **Refs:** SOUL cohort 12b (#1079); FACTORY-CANON §1.11 + ADR-131 amendment 2026-07-07 (#1077); passports agents/passports/{internal_audit_agent,safeguarding_audit_agent,resilience_agent,pricing_fee_governor}.yaml; CLAUDE.md §11; I-08; I-27; I-28; BUG-007; ADR-102; ADR-117/120/121/128; GAP-078; GAP-019; PS25/12; CASS 15; DORA / FCA SYSC 15A; FCA Consumer Duty / COBS / PSRs 2017; S-FAC-65 traffic-light-audit; docs/sources/best-decision-concept-2026-07-06-v2.md; BEST-DECISION-BOUNDARY; ADR-162.
+
+---
+
+### IL-1003 - sp32-bestdecidagentdesign-adr164 @ 2026-07-06T22:26:58Z
+
+- **il_ts:** 2026-07-06T22:26:58Z
+- **session_id:** sp32-bestdecidagentdesign-adr164
+- **source:** Terminal-B
+- **status:** REVIEW
+- **shard:** `ledger/entries/sp32-bestdecidagentdesign-adr164/IL-2026-07-06T22-26-58Z--dc6c3e.md`
+
+### sp32-bestdecidagentdesign-adr164 — BEST-DECISION-AGENT designed as advisory reusable method (per-agent, not central) + ADR-164 PROPOSED
+
+- **Instruction (prepare-only, DESIGN):** design the BEST-DECISION-AGENT component on top of the SSOT chain (BOUNDARY §7 variant-2 ratified, ADR-162 gate, RETROFIT-PLAN, SOUL `_TEMPLATE.md` `## Decision Method` added in #1077, FACTORY-CANON §1.11) — as an **advisory reusable METHOD embedded per-agent** (ranks the best executing STEP), **not** a separate central decider. Emit the design doc + ADR (PROPOSED); no implementation.
+- **Scope of change:**
+  - `docs/design/BEST-DECISION-AGENT.md` (NEW) — purpose, non-goals (hard boundaries), reference architecture (used-by-all, N embeddings zero central decider), algorithm-shape pointer (SSOT v2, BOUNDARY §3, BUG-007), typed contract (`MethodInput` / `MethodOutput` / `MethodContext` / `Constraints` / `CriteriaWeights` / `CandidateStep`), escalation rule (short-circuit OR: no-feasible → confidence<auto → irreversible-floor → fail-closed contour + compliance-floor → stop-barrier), per-agent embedding template (SOUL runtime wiring, illustrative-only), uniform-application clause (BOUNDARY §7), auditability (ClickHouse contract incl. dropped candidates + escalate_reason), I-27 preservation re-affirmed, anchors (pointer-only ADR-102).
+  - `docs/adr/ADR-164-best-decision-agent-method.md` (NEW, PROPOSED) — D-1 advisory-reusable-method-not-central-agent, D-2 hard prohibition on central decider (service/container/port/passport/RPC/MoA with execute-authority), D-3 per-agent embedding via SOUL `## Decision Method` (retrofit R1..R7 pointer), D-4 I-27 fail-closed absolute on payment/compliance/KYC/AML (method cannot self-clear), D-5 stop-barriers as hard constraints (drop, never trade off), D-6 adoption remains operator-owned (no scope creep), D-7 Config-over-Hardcoding for all numeric parameters (governance/novelty-pipeline-config.yaml), D-8 auditability floor (dropped candidates + escalate_reason first-class), D-9 DESIGN-phase-only. Consequences + risks + mitigations. OI-1..OI-5.
+- **Meaning guardrails preserved (STOP-critical):**
+  - Advisory reusable METHOD per-agent — separate central "decision agent" is FORBIDDEN (would revert variant-1 shape rejected by operator in BOUNDARY §7).
+  - Method ranks the best executing STEP for the operator's decision — does NOT decide adoption / governance / policy (adoption stays operator's prerogative per BOUNDARY §7 meaning-correction).
+  - I-27 preserved ABSOLUTELY — on payment/AML/KYC/compliance the method runs INSIDE fail-closed HITL, cannot override operator, integrates with BUG-007 thresholds via `escalate_flag` (confidence<threshold ⇒ escalate, not act).
+  - SOUL invariants / fail-closed / passport untouched. No `_TEMPLATE.md` edit (already done in #1077). No SOUL edits (retrofit R1..R7 is a separate serial effort).
+- **Deviation:** none. `[IL-NNN]` NOT hardcoded (ADR-119 / ADR-133 mint-at-merge). PR opens as **draft**, auto-merge NOT armed (HITL). ADR-102 preserved: SSOT chain referenced, not restated.
+- **CONCURRENCY window:** `origin/main` at `adbe138` (#1077); max IL=991 pre-shard; no ledger churn observed at branch cut.
+- **Proof:** `REDIS_HOST=127.0.0.1 python ledger/build_ledger.py` (regenerate from ROOT), then `REDIS_HOST=127.0.0.1 python ledger/build_ledger.py --check` (exit 0).
+- **Blocker:** none for the DESIGN itself. Implementation gated on operator ratification of ADR-164 D-1..D-8 (best-decision canon: decision-shape gate, not whitelist auto-run) + follow-up config-PR (OI-2) + retrofit PRs R1..R7 (OI-3) — all out of scope for this PR.
+- **Refs:**
+  - `docs/design/BEST-DECISION-AGENT.md` (NEW — this PR)
+  - `docs/adr/ADR-164-best-decision-agent-method.md` (NEW, PROPOSED — this PR)
+  - `docs/canon/BEST-DECISION-BOUNDARY.md` §7 (RATIFIED variant-2 + meaning-correction + uniform-application clause)
+  - `docs/adr/ADR-162-best-decision-principle.md` (orchestrator-side adoption-audit gate)
+  - `docs/canon/BEST-DECISION-RETROFIT-PLAN.md` (R1..R7 retrofit — OI-3)
+  - `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` (synthesis)
+  - `docs/sources/best-decision-concept-2026-07-06-v2.md` (SSOT theory)
+  - `agents/souls/_TEMPLATE.md` §Decision Method (added #1077)
+  - `docs/factory/FACTORY-CANON.md` §1.11 (Best-Decision training)
+  - `.claude/rules/agents.md` §"HITL Confidence Thresholds" (BUG-007 — preserved)
+  - `.claude/rules/approval-rules.md` §"Правило неоднозначности", CLAUDE.md §12 (best-decision canon)
+  - `.claude/rules/safety-rules.md`, CLAUDE.md §1, §11 (stop-barriers)
+  - CLAUDE.md §10 (Config-over-Hardcoding)
+  - ADR-102 (reference-not-restate discipline enforced across this PR)
+  - ADR-119 / ADR-133 (IL mint-at-merge)
+  - ADR-060 (branch actor namespace `agent/specproj/sp32/…`)
+  - ADR-120 (per-session worktree isolation)
+  - ADR-163 + `docs/canon/SYNC-CANON.md` (SYNC-CANON compliance)
+  - ADR-131 (12-section SOUL standard, amended 2026-07-07 in #1077)
