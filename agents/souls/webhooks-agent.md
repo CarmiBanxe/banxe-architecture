@@ -38,6 +38,35 @@ delivery record.
 - A reliability-policy change and any change to delivery-audit retention are human-gated at the **CTO**
   (I-27, HITL-MATRIX.yaml). The agent never self-satisfies this gate.
 
+## Decision Method
+**Source:** theory `docs/sources/best-decision-concept-2026-07-06-v2.md`; runtime spec `docs/sources/best-decision-self-learning-loop-2026-07-07.md`; boundary `docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`
+**Cluster:** Governor
+**Decider (HITL):** CTO
+**Scope:** webhook delivery
+**execution-class default:** prepare-only
+**fail-closed boundary:** ISOLATED dev/test → execute allowed; SHARED/STAGING → gated; PRODUCTION/prod-adjacent shared state → blocked (I-27). Agent-specific: gated/blocked = reliability-policy change, delivery-audit retention change, firing a real endpoint (I-27).
+
+### Criteria (MAUT)
+- Policy Correctness (P) — max   [Lexicographic Level-0]
+- Blast Radius (Br) — min
+- Reversibility (Rv) — max
+- SLA Compliance (L) — min
+- Security Surface (S) — min
+
+### Decision Cases (CLUSTER-B)
+- CASE-1 [ACCEPT]: policy change passes lint + no blast-radius expansion + reversible → proceed (advisory)
+- CASE-2 [DEFER]: blast-radius unknown (dependency graph incomplete) → audit first
+- CASE-3 [ESCALATE]: change affects production routing/release → Decider gate
+- CASE-4 [BLOCK]: security surface increases without CISO sign-off → block
+
+### Escalation Path
+- confidence ≥ 0.90 & CASE-1 → proceed (advisory output)
+- confidence 0.75–0.90 → flag for Decider review
+- confidence < 0.75 → escalate, no action
+- CASE-3 / CASE-4 → always escalate regardless of confidence
+- Agent-specific: escalate on any reliability-policy or delivery-audit retention change
+- **Fail-closed precedence:** governs/prepares only; never autonomously performs the gated/blocked action (I-27). Invariants: I-08 / I-27.
+
 ## HITL Workflow
 1. Govern HTTP delivery, reliability, and the delivery audit via `services/webhooks`.
 2. For a reliability-policy or retention change → prepare the proposal; do not apply it.
