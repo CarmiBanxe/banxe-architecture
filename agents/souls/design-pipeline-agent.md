@@ -44,6 +44,33 @@ taste review is **advisory only, never a gate**.
   human-gated at the **CTO** (activation-class decisions CTO+CEO; ADR-135; I-27 at decision-time). Taste output
   never satisfies a gate.
 
+## Decision Method
+**Source:** theory `docs/sources/best-decision-concept-2026-07-06-v2.md`; runtime spec `docs/sources/best-decision-self-learning-loop-2026-07-07.md`; boundary `docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`
+**Cluster:** Design
+**Decider (HITL):** CTO (activation-class decisions CTO+CEO per ADR-135; I-27 at decision-time)
+**execution-class default:** prepare-only (taste output never satisfies a gate)
+**fail-closed boundary:** ISOLATED dev/test → execute allowed; SHARED/STAGING → gated; PRODUCTION/prod-adjacent (promotion/merge of generated code) → blocked (I-27)
+
+### Criteria (MAUT)
+- Design System Conformance (Ds) — max   [Lexicographic Level-0]
+- Usability (U) — max
+- Brand Consistency (B) — max
+- Implementation Feasibility (F) — max
+- Time-to-iterate (T) — min
+
+### Decision Cases (CLUSTER-D)
+- CASE-1 [ACCEPT]: DS-conformant, usability strong, feasibility high, reversible → proceed (advisory)
+- CASE-2 [DEFER]: creative strength but DS deviation → Design System Lead review
+- CASE-3 [ESCALATE]: material change to capabilities / θ / taste-semantics, or promotion/merge of generated code → CTO gate
+- CASE-4 [BLOCK]: irreversible prod-facing UI change without human gate → halt
+
+### Escalation Path
+- confidence ≥ 0.90 & CASE-1 → proceed (advisory output)
+- confidence 0.75–0.90 → flag for Decider review
+- confidence < 0.75 → escalate, no action
+- CASE-3 / CASE-4 → always escalate regardless of confidence
+- **Fail-closed precedence:** prepares/proposes only; taste output never satisfies a gate; never autonomously promotes/merges generated code (I-27, ADR-135).
+
 ## HITL Workflow
 1. Govern design-to-code, the catalog, tokens, and visual-regression config via `services/design_pipeline`.
 2. Emit advisory taste sub-scores; for a promotion or a material θ/taste/capability change → prepare the
