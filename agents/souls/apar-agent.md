@@ -49,3 +49,13 @@ statement parsers for CAMT.053/MT940.
 Human double: **Financial Controller** (AP approval) / **Head of Treasury** (payment batches)
 Payments >£50k trigger HITL-016 (COO/CFO gate, HITL-MATRIX.yaml).
 FCA basis: PSR 2017 Reg.71 (strong auth >£30), MLR 2017 record-keeping.
+
+
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible AP/AR actions within scope (reconcile payables/receivables, prepare aging, propose postings) — no autonomous financial-reporting action.
+2. **Score** each by fiscal materiality / accuracy / disclosure adequacy / reporting deadline (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported AP/AR position; the **Financial Controller / Head of Treasury** decides.
+4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
+- **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).

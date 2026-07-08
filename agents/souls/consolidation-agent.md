@@ -49,3 +49,13 @@ statements using **Odoo multicompany / ERPNext multi-subsidiary** and open-sourc
 Human double: **Financial Controller**
 All elimination entries and the consolidated package require Controller sign-off.
 FCA basis: IFRS 10 (consolidated financial statements), FCA SYSC 4.
+
+
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible multi-entity consolidation actions within scope (eliminate intercompany, prepare a consolidated-statements draft) — no autonomous financial-reporting action.
+2. **Score** each by fiscal materiality / accuracy / disclosure adequacy / reporting deadline (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported consolidation draft; the **Financial Controller** decides.
+4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
+- **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).
