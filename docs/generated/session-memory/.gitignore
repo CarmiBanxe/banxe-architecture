@@ -1,0 +1,5 @@
+# Regenerable runtime output — do NOT commit timestamped packs (append-only cache).
+session-pack-*.json
+session-pack-*.md
+# Keep the committed example.
+!sample-session-pack.json
