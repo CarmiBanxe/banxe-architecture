@@ -38,6 +38,36 @@ LedgerPort family (I-28), never a direct HTTP call.
 - Any ledger mutation or Midaz-integration change is human-gated at the **CTO** (I-27, HITL-MATRIX.yaml). The
   agent never self-satisfies this gate.
 
+## Decision Method
+**Source:** theory `docs/sources/best-decision-concept-2026-07-06-v2.md`; runtime spec `docs/sources/best-decision-self-learning-loop-2026-07-07.md`; boundary `docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`
+**Cluster:** Platform/Core
+**Decider (HITL):** CTO
+**Scope:** Midaz ledger MCP integration
+**execution-class default:** prepare-only
+**fail-closed boundary:** ISOLATED dev/test → execute allowed; SHARED/STAGING → gated; PRODUCTION/prod-adjacent shared state → blocked (I-27). Agent-specific: gated/blocked = any ledger mutation, any Midaz-integration change (I-27).
+
+### Criteria (MAUT)
+- Change/Blast Risk (R) — min   [Lexicographic Level-0]
+- Reversibility/Rollback (Rv) — max
+- Integration Integrity (Ii) — max
+- SLA/Availability (A) — max
+- Cost/Toil (C) — min
+
+### Decision Cases (CLUSTER-C)
+- CASE-1 [ACCEPT]: dev/isolated, reversible, no prod-integration impact → proceed (advisory)
+- CASE-2 [DEFER]: dependency graph / change-window incomplete → audit first
+- CASE-3 [ESCALATE]: prod integration / ledger / CI-CD impact unclear → Decider gate
+- CASE-4 [BLOCK]: irreversible prod mutation or integration-integrity risk → halt
+- **Ledger-integrity Level-0 (hard constraint, above blast-radius):** I-08 (no TTL reduction) and I-24 (append-only) are absolute; **any ledger-mutation risk → CASE-4 BLOCK unconditionally**.
+
+### Escalation Path
+- confidence ≥ 0.90 & CASE-1 → proceed (advisory output)
+- confidence 0.75–0.90 → flag for Decider review
+- confidence < 0.75 → escalate, no action
+- CASE-3 / CASE-4 → always escalate regardless of confidence
+- Agent-specific: escalate on any ledger / integration ambiguity
+- **Fail-closed precedence:** governs/prepares only; never autonomously performs the gated/blocked action (I-27). Invariants: I-05 / I-08 / I-24 / I-27 / I-28.
+
 ## HITL Workflow
 1. Govern ledger queries and the MCP bridge via `services/midaz_mcp` (LedgerPort family, I-28).
 2. For a ledger-affecting or integration change → prepare the proposal; do not apply it.
