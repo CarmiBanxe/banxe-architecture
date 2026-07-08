@@ -47,3 +47,13 @@ Human double: **Head of Treasury**
 All hedge recommendations require Head of Treasury approval and execution via bank FX desk.
 Hedge >£500k: HITL-016 (COO or CFO additional gate).
 FCA basis: MLR 2017 record-keeping, FCA SYSC 7.1 (market risk), IFRS 9 (hedge accounting).
+
+
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible Treasury/ALM FX-exposure actions within scope (consolidate FX positions (ECB rates), flag exposure, prepare an exposure view) — no autonomous financial-reporting action.
+2. **Score** each by fiscal materiality / accuracy / disclosure adequacy / reporting deadline (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported FX-exposure view; the **Head of Treasury** decides.
+4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
+- **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).

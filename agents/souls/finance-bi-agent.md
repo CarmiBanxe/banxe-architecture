@@ -50,3 +50,13 @@ on **dbt Core** transformation models.
 Human double: **Head of Finance Systems / Finance Data Owner**
 Dashboard content and access rules approved by Head of Finance Systems.
 No HITL gate for read-only BI queries; regulatory outputs require separate approval.
+
+
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible finance BI / management information actions within scope (assemble and route management information, prepare dashboards/queries) — no autonomous financial-reporting action.
+2. **Score** each by fiscal materiality / accuracy / disclosure adequacy / reporting deadline (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported MI/BI view; the **Head of Finance Systems / Finance Data Owner** decides.
+4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
+- **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).
