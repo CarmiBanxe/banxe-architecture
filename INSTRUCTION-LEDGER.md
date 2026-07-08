@@ -26746,3 +26746,28 @@ right; ratification gate. **STATUS: PROPOSED — NOT ACTIVE** (governed config r
 human-gate). Additive only — inserted after `## HITL Gate`; no section removed/reordered; no passport/config/schema/
 _TEMPLATE/ADR-131 diff; stays PROPOSED. Pointer-first (ADR-102). Completes the fleet Best-Decision retrofit.
 Refs: ADR-131 Amendment; ADR-162; BEST-DECISION-RETROFIT-PLAN; I-27; ADR-102 / ADR-119 / ADR-120.
+
+---
+
+### IL-1046 - agent-factory-session-memory-mvp @ 2026-07-08T20:36:10Z
+
+- **il_ts:** 2026-07-08T20:36:10Z
+- **session_id:** agent-factory-session-memory-mvp
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-session-memory-mvp/IL-2026-07-08T20-36-10Z--session-memory-mvp.md`
+
+### session_memory MVP — deterministic session-memory substrate over existing repo artifacts
+
+Implements a working MVP (`session_memory/`) that normalizes the EXISTING memory/handoff artifacts
+(MEMORY.md + latest docs/handoff/HANDOFF-*.md + latest session-transfer-package-*.md) into one
+machine-readable session-start pack (JSON + optional markdown). Deterministic, read-only against source
+truth, append-only output to the regenerable `docs/generated/session-memory/` cache. Files: schemas.py
+(typed contract), extract_handoff_facts.py (pure markdown→facts, no I/O/clock), build_session_pack.py
+(builder + CLI build/inspect/latest), read_memory_pack.py (read-only loader/renderer), README.md, tests/
+(14 tests: missing doc → warning-not-crash, malformed markdown, duplicate headers, role reorder-not-drop,
+determinism, source-never-mutated). Role-aware (--role central/factory/sub-a/sub-b) reorders relevant
+sections only. ruff clean; pytest 14/14. NO authority expansion, NO daemon, NO external DB, NO CI/canon
+bypass — complements .github/workflows/novelty-handoff.yml (append-only handoff validator). Extension path
+to memoir/substrate (ClickHouse index, embeddings, pack-diff timeline) documented; each step is a separate
+operator-gated ADR. Refs: I-24 append-only; I-28 IL record; HITL/operator merge gate; ADR-102/119/120.
