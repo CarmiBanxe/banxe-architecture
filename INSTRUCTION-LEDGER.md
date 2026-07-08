@@ -26631,3 +26631,25 @@ disclosure adequacy / reporting deadline — MAUT -> own HITL gate -> own human 
 best-decides a financial-reporting action; I-27, BUG-007). Pointer-first. 0 skips. R1 -> 11/58. Clean re-cut off
 origin/main after a --theirs ledger corruption (sp40/IL-1028 preserved; I-24/I-28 append-only). Refs: ADR-131
 (+#1077); BEST-DECISION-RETROFIT-PLAN; I-24/I-27/I-28/BUG-007; ADR-102/119/120; Rule 6.
+
+---
+
+### IL-1041 - agent-factory-souls-retrofit-r6a-data-ml @ 2026-07-08T12:07:53Z
+
+- **il_ts:** 2026-07-08T12:07:53Z
+- **session_id:** agent-factory-souls-retrofit-r6a-data-ml
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r6a-data-ml/IL-2026-07-08T12-07-53Z--retrofit-r6a-data-ml.md`
+
+### Retrofit batch R6a (Data/ML cluster) — add ## Decision Method to 3 factory SOULs (prepare-only, additive)
+
+Adds the mandatory `## Decision Method` (ADR-131 Amendment 2026-07-07; per the ratified R6 Data/ML methodology) to
+3 factory SOULs — data-lake-elt-agent (Decider: CTIO), ml-pipeline-agent (Decider: CTO), clickhouse-writer
+(Decider: Platform Engineering / Head of Data). Each block is grounded in the AUDITED SOUL: verbatim Decider from the
+live HITL Gate, Data/ML MAUT criteria (R/Re/A/L/C), CLUSTER-A decision cases, confidence-tiered escalation, and
+agent-specific fail-closed boundary (ISOLATED→execute / SHARED→gated / PRODUCTION→blocked, I-27). Additive only —
+inserted after `## HITL Gate`, before `## HITL Workflow`; no section removed/reordered; no passport/config/schema/
+_TEMPLATE/ADR-131 diff; all stay PROPOSED. Pointer-first (ADR-102 — theory referenced, not restated). R6a → R6
+sub-batch (3 of 14). Refs: ADR-131 Amendment; BEST-DECISION-RETROFIT-PLAN; R6-methodology; I-08, I-17, I-24, I-27;
+ADR-102 / ADR-119 / ADR-120.
