@@ -26596,3 +26596,17 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
   - PR #1094 (`banxe_aml_orchestrator` SOUL Decision Method — stays PROPOSED; gated on
     Q1 Step-0 admissibility ADR).
   - ADR-102 (pointer-first, no source restate); ADR-119 / ADR-133 (mint-at-merge).
+
+---
+
+### IL-1039 - canon-factory-memo @ 2026-07-07T12:00:00Z
+
+- **il_ts:** 2026-07-07T12:00:00Z
+- **session_id:** canon-factory-memo
+- **source:** agent-factory
+- **status:** PROPOSED
+- **shard:** `ledger/entries/canon-factory-memo/IL-2026-07-07T12-00-00Z--factory-memo.md`
+
+### FACTORY-MEMO canon doc
+- File: docs/canon/FACTORY-MEMO.md
+- 12 hard rules for Factory sessions; ADR-102 pointer-first; I-24 append-only.
