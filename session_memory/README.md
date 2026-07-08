@@ -1,9 +1,13 @@
-# session_memory — deterministic session-memory substrate (MVP)
+# session_memory — deterministic read-only session-pack builder MVP (NOT a memory substrate)
 
 A small, auditable Python package that turns the repo's **existing** memory and
 handoff artifacts into one normalized, machine-readable **session-start pack**.
 It is not "AI memory magic" — it is a deterministic parser + extractor over
 source-of-truth documents, with strict append-only discipline.
+
+> **NOT a memory substrate.** Does NOT participate in ADR-137 PRECOND-04
+> (agentmemory XOR memoir). Read-only over source handoff docs; append-only to a
+> regenerable cache. Complements memoir/agentmemory; never competes.
 
 ## What it reads (never mutates)
 - `MEMORY.md`
@@ -71,5 +75,5 @@ This MVP is the deterministic floor a richer substrate can stand on:
 5. **Cross-repo** — the same schema over `banxe-emi-stack` handoffs; one pack
    format, per-repo extractors.
 
-None of these change the invariant: the substrate **proposes context**; the
+None of these change the invariant: the memory substrate **proposes context**; the
 human decides. Adoption of any runtime/DB step is a separate operator-gated ADR.
