@@ -1,7 +1,8 @@
 ---
 id: ADR-143
 title: Central IL allocator via Redis INCR — atomic cross-process anti-collision (replaces local max+1)
-status: PROPOSED
+status: accepted
+accepted: 2026-07-09
 date: 2026-06-27
 amends: ADR-119
 relates:
@@ -77,3 +78,27 @@ append-only (ADR-057/059-A) holds.
 - `ledger/build_ledger.py` (`_alloc_next` / `_redis_allocate` / `assign(use_allocator=...)`),
   `fabric/common/fabric_redis.py` (`incr`), `tests/test_redis_il_allocator.py`.
   ADR-119/133/142, ADR-057/059-A, ADR-104 §5, `LEDGER-MERGE-QUEUE.md` (queue unavailable → allocator).
+
+## Amendment 2026-07-09 — Ratified (PROPOSED → accepted)
+
+> Append-only (I-24): the body above is unchanged; this records the ratification.
+
+Ratified per orchestration escalation #1084. The allocator has been operating in production
+and is confirmed live; this amendment flips the status to `accepted` and records the evidence.
+
+- **Allocator verified LIVE.** `banxe:il:counter` observed at **1054+** on the shared **evo1**
+  Redis (`100.68.102.48:6379`), incremented by atomic `INCR` — the cross-process anti-collision
+  source this ADR specifies.
+- **Fail-loud guard already implemented — NO code change (ADR-102).** `build_ledger._alloc_next`
+  already **refuses a silent local `max+1` fallback**: on any Redis unreachable / missing
+  `REDIS_PASSWORD`/`REDIS_PASS_FILE` / auth failure it raises a loud `RuntimeError`
+  ("IL allocation REFUSED to prevent SILENT local-counter collisions"). The offline local counter
+  is available **only** via the explicit `BANXE_IL_ALLOCATOR=local` opt-in, and `--check` / rebuild
+  stay **offline-deterministic** (never touch Redis). No hardening is required; touching working
+  code would violate ADR-102.
+- **The "1046/1048" observation was NOT a collision.** It was **monotonic Redis allocation** — IL
+  1046 was reserved by an unmerged branch and 1047/1048 were allocated in order on later mints.
+  Append-only, no renumber, no silent-fallback event; consistent with the guard already enforcing.
+
+Effective: 2026-07-09. Enforcement remains CI (`guardian-ledger`) + `strict` branch protection +
+the live `_alloc_next` guard. Doc-only ratification — no `build_ledger.py` change, no ledger shard.
