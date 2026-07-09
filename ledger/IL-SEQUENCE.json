@@ -632,5 +632,6 @@
   "agent-factory-adopt65-nemo-guardrails__97887c7b9931": 1059,
   "agent-factory-adopt104-guardrails-ai__89ba58b77701": 1060,
   "agent-factory-adopt111-lightgbm-fraud__b49756da1315": 1061,
-  "agent-factory-adopt49-hgnn-fraud__2db8770fc475": 1062
+  "agent-factory-adopt49-hgnn-fraud__2db8770fc475": 1062,
+  "agent-factory-adopt46-nuformer-tx-embedding__10d0fd3ee55a": 1063
 }
