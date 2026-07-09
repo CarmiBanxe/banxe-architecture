@@ -39,10 +39,47 @@ of the call**. Different times, different mechanisms — additive, not overlappi
 - **#64 checklist** (`governance/owasp-llm-top10-checklist.md`) marked LLM01 / LLM05 runtime
   enforcement as *pending*; **this policy is the named runtime enforcer** for those two rows
   (updated by this PR to `runtime-enforced-by: NeMo-Guardrails (#65, proposed)`).
-- **#104 Guardrails.ai** (pending ADOPT) sits at the **LLM-input validation / structured-output**
-  layer; NeMo sits at the **request/response rails** layer. They **compose** — #104 validates
-  payload shape, NeMo enforces policy rails — and are **not** two substrates of the same role (no
-  XOR conflict; cf. ADR-166 role-scoping).
+- **#104 Guardrails.ai** (ADOPT #104, PROPOSED — defined in *LLM-input validation layer* below) sits
+  at the **LLM-input validation / structured-output** layer; NeMo sits at the **request/response
+  rails** layer. They **compose** — #104 validates payload shape, NeMo enforces policy rails — and
+  are **not** two substrates of the same role (no XOR conflict; cf. ADR-166 role-scoping).
+
+## LLM-input validation layer (Guardrails.ai — ADOPT #104, PROPOSED)
+
+> Added 2026-07-09 per SP41 roadmap §4 cluster-1 (ADOPT #104 guardrails-ai-validators,
+> ESCALATE-IMMEDIATE, FCR 0.80 — the **last** of cluster-1, completing the LLM-safety perimeter;
+> handoff **OD-LLM-SECURITY**). **Additive** per ADR-102 — pointer-first, no restate. **Guardrails.ai
+> is referenced, not imported.**
+
+**Guardrails.ai** provides **declarative structured-output validators** at the **LLM I/O boundary** —
+a distinct layer from NeMo's conversational rails:
+
+| Layer | Mechanism | Enforces |
+|-------|-----------|----------|
+| **Guardrails.ai** (#104) | declarative validators on **structured** LLM I/O — Pydantic-style schemas, value/format/range checks, PII detectors, structured re-ask on failure | payload **shape & content** conform to a schema/policy before use |
+| **NeMo rails** (#65) | **conversational** input/output/dialog rails (Colang) | request/response **policy & flow** at call time |
+
+**They compose, they do not compete (no XOR).** Guardrails.ai answers *"does this structured payload
+conform?"*; NeMo answers *"is this call/flow permitted?"*. Different roles at adjacent points — the
+ADR-166 role-scoping that permits distinct-role layers to coexist applies here too. Wiring both is the
+defense-in-depth completion of the LLM-safety perimeter (prompt-canon authoring → Guardrails.ai schema
+validation → NeMo policy rails → audit hook).
+
+**What it closes:**
+- **OWASP LLM05 (Improper Output Handling)** — schema-validated structured output; malformed/policy-
+  violating responses are re-asked or rejected (complements NeMo output rails).
+- **OWASP LLM02 (Sensitive Information Disclosure)** — PII/secret validators on input and output
+  reject or redact sensitive fields at the boundary (complements secrets governance + redaction canon).
+
+**Distinct from existing validators.** The repo's `schemas/validate_schemas.py`, `scripts/mrm-validate.sh`,
+`.github/scripts/validate_mermaid.py`, `validators/check-compliance.sh`, and
+`tests/best-decision/validator.py` are **non-LLM** (JSON-schema / MRM / mermaid / compliance-doc /
+decision-record validation). Guardrails.ai validates **LLM-generated semantic payloads** — a new,
+non-overlapping validator role. Those validators are **KEEP** (referenced, not touched).
+
+**Config-over-hardcoding.** Every validator (allowed value sets, format regexes, PII match lists,
+re-ask limits, on-fail action) is a **governed-config proposal** (CLAUDE.md §10) — held in the
+validator's declarative config under version control when wired, not in code or this policy.
 
 ## No-authority & perimeter (unchanged)
 
@@ -60,11 +97,14 @@ YAML config under version control when wired, **not** in code and **not** in thi
 
 ## Follow-up (NOT this PR)
 
-1. Colang rail configs (input/output/dialog) as governed-config, per perimeter.
-2. LiteLLM `:4000` integration wiring (rails in the request path) — behind a flag, staged.
-3. CI gate: rail-config lint + a rails smoke test; promote LLM01/LLM05 from *manual* to *CI-enforced*
-   in `docs/policies/OSS-SUPPLY-CHAIN-POLICY.md` §6 once wired.
-4. HITL routing for rail blocks on L2+ compliance decisions (I-27).
+1. Colang rail configs (input/output/dialog) **and** Guardrails.ai validator specs (schemas/PII/format)
+   as governed-config, per perimeter.
+2. LiteLLM `:4000` integration wiring (NeMo rails + Guardrails.ai validators in the request path) —
+   behind a flag, staged.
+3. CI gate: rail-config + validator-spec lint + a rails/validator smoke test; promote
+   LLM01/LLM02/LLM05 from *manual* to *CI-enforced* in `docs/policies/OSS-SUPPLY-CHAIN-POLICY.md` §6
+   once wired.
+4. HITL routing for rail/validator blocks on L2+ compliance decisions (I-27).
 
 ## References
 
@@ -73,5 +113,6 @@ YAML config under version control when wired, **not** in code and **not** in thi
 - `PROMPT-CANON-DEVELOPER.md` / `PROMPT-CANON-PROJECT.md` — authoring-time canon (KEEP; not rewritten).
 - `patches/litellm-guardrail-audit-hook-2026-05-12.py` — post-hoc audit trail (KEEP).
 - `docs/agent-engine-dossier/SRC-07-constraints-guardrails.md` — constraints dossier (pointer added).
-- Composes with **#104 guardrails-ai-validators** (pending ADOPT). ADR-102 (additive/pointer-first),
-  ADR-117 (perimeter), ADR-130/127 (no authority), ADR-166 (role-scoped memory/XOR analogy), I-27/I-24/I-28.
+- **#104 guardrails-ai-validators** (ADOPT #104, PROPOSED) — the LLM-input validation layer defined
+  above; completes cluster-1 LLM-safety perimeter. ADR-102 (additive/pointer-first), ADR-117
+  (perimeter), ADR-130/127 (no authority), ADR-166 (role-scoped XOR analogy), I-27/I-24/I-28.
