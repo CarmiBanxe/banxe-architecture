@@ -33,5 +33,5 @@
 
 ## 6. Provenance of this card
 - **Author / date:** Factory (S-MRM T1 cards) / 2026-06-26 — **DRAFT (gap-tracking)**. · **Owner:** **CRO — AWAITS OPERATOR**.
-- **Refs:** `docs/governance/MODEL-RISK-MANAGEMENT.md` §3 (T1 fraud classifier); `docs/DEPLOYMENT-ARCHITECTURE.md` §1.1; `docs/governance/KPI-DORA-FRAMEWORK.md`/JOB-DESCRIPTIONS (>95% fraud accuracy target); `scripts/mrm-validate.sh`; `adrs/ADR-FRAUD-03-lightgbm-gbm-baseline.md` (LightGBM GBM baseline, fraud-only — complementary interpretable baseline; ADOPT #111, PROPOSED).
+- **Refs:** `docs/governance/MODEL-RISK-MANAGEMENT.md` §3 (T1 fraud classifier); `docs/DEPLOYMENT-ARCHITECTURE.md` §1.1; `docs/governance/KPI-DORA-FRAMEWORK.md`/JOB-DESCRIPTIONS (>95% fraud accuracy target); `scripts/mrm-validate.sh`; `adrs/ADR-FRAUD-03-lightgbm-gbm-baseline.md` (LightGBM GBM baseline, fraud-only — complementary interpretable baseline; ADOPT #111, PROPOSED); `adrs/ADR-FRAUD-04-heterogeneous-gnn.md` (heterogeneous GNN over the multi-entity tx graph, atop the GBM baseline; ADOPT #49, PROPOSED).
 - **Action to close:** operator names the evo2 fraud model → rename/replace this card to `<model-slug>.md` with verifiable provenance.
