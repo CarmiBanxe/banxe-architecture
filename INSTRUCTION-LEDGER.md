@@ -26945,3 +26945,37 @@ gate wiring (deferred until #65 nemo-guardrails / #104 guardrails-ai land — LL
 enforcement). Config-over-hardcoding: all thresholds = governed-config proposals (CLAUDE.md §10).
 Refs: ADOPTION-FINALIZATION-SP41 (#64), OD-LLM-SECURITY, ADR-102, OSS-SUPPLY-CHAIN-POLICY, ai-cost-
 policy, ADR-117, ADR-130/127, ADR-030, I-27/I-24/I-28.
+
+---
+
+### IL-1059 - agent-factory-adopt65-nemo-guardrails @ 2026-07-09T14:51:21Z
+
+- **il_ts:** 2026-07-09T14:51:21Z
+- **session_id:** agent-factory-adopt65-nemo-guardrails
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt65-nemo-guardrails/IL-2026-07-09T14-51-21Z--adopt65-nemo.md`
+
+### ADOPT #65 — NeMo-Guardrails runtime layer → complements prompt-canon, closes OWASP LLM01/LLM05 (ESCALATE-IMMEDIATE, FCR 0.80) — PROPOSED
+
+Second ADOPT sprint from SP41 roadmap §4 cluster-1 (LLM-safety perimeter). Defines NVIDIA NeMo
+Guardrails as the RUNTIME LLM input/output policy-enforcement layer — handoff OD-LLM-SECURITY.
+**ADR-102 Duplication Audit:** repo-wide search found NO prior NeMo/runtime-rails policy (NeMo only
+appears in novelty/adoption/ledger references; PROMPT-CANON-PROJECT §14.8 is sandbox-guardrails, a
+distinct authoring/sandbox concern). Verdict: `governance/runtime-guardrails-policy.md` = **ADD**
+(new runtime layer); `governance/owasp-llm-top10-checklist.md` = **EXTEND** (LLM01/LLM05 rows +
+references, pointer only); `docs/agent-engine-dossier/SRC-07-constraints-guardrails.md` = **EXTEND**
+(one-line cross-ref pointer); prompt-canon (DEVELOPER/PROJECT) + litellm-guardrail-audit-hook =
+**KEEP** (referenced pointer-first, NOT rewritten). Distinct-layer rationale: prompt-canon =
+authoring-time (how prompts are written); NeMo = request-time (input/output/dialog rails enforce
+policy live); litellm-hook = post-hoc audit — three different times/mechanisms, additive not
+overlapping. Rails: input rails (prompt-injection/jailbreak → OWASP LLM01), output rails
+(PII/policy/hallucination/structured-output → OWASP LLM05, composing with #104 input-validators),
+dialog rails (Colang flow constraint → LLM06 agency governance). No-authority: rails block/redact
+only, never grant permission or mutate code/ledger/prod/dispatch (ADR-130/127, I-27 HITL for
+customer-facing blocks); single-perimeter (ADR-117). CONSTRAINT: PROPOSED/doc only — NO Colang/runtime
+code, NO LiteLLM config change, NO CI wiring (all explicit follow-up: Colang configs, :4000 wiring
+behind flag, rail-config CI lint+smoke, HITL routing). NeMo referenced NOT imported. Config-over-
+hardcoding: all rail thresholds = governed-config proposals (CLAUDE.md §10). Refs: ADOPTION-
+FINALIZATION-SP41 (#65), OD-LLM-SECURITY, #64 owasp-llm-top10-checklist, ADR-102, prompt-canon,
+litellm-guardrail-audit-hook, #104 (pending), ADR-117, ADR-130/127, ADR-166, I-27/I-24/I-28.
