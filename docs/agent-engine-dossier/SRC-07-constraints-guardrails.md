@@ -303,4 +303,5 @@ Marked here only for cross-reference visibility (hallucination mitigation P-3 de
 | ADR-012 | Verify :8094 (I-09) | Cross-ref only |
 | ADR-019 | MetaClaw Guardian | Cross-ref only |
 | ADR-140 | PR review policy | Cross-ref only |
+| `governance/runtime-guardrails-policy.md` | NeMo-Guardrails runtime rails (input/output/dialog; ADOPT #65, proposed) | Cross-ref only (runtime layer; complements this constraints dossier) |
 
