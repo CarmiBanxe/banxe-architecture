@@ -26913,3 +26913,35 @@ confers no permission. Consequence: two contours canonically complementary (ruli
 intact; a future project working-memory stays XOR-gated within its role, needs its own ADR + IronClaw.
 Status PROPOSED — nothing activated; no code/config/perimeter change. Refs: ADR-136, ADR-137, ADR-059,
 ADR-130, ADR-127, ADR-117, ADR-102, I-27/I-24/I-28.
+
+---
+
+### IL-1058 - agent-factory-adopt64-owasp-llm-top10 @ 2026-07-09T14:05:24Z
+
+- **il_ts:** 2026-07-09T14:05:24Z
+- **session_id:** agent-factory-adopt64-owasp-llm-top10
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt64-owasp-llm-top10/IL-2026-07-09T14-05-24Z--adopt64-owasp.md`
+
+### ADOPT #64 — OWASP LLM Top-10 → ai-cost-policy + OSS-supply-chain (ESCALATE-IMMEDIATE, FCR 0.85) — PROPOSED
+
+First ADOPT sprint from SP41 roadmap §4 cluster-1 (LLM-safety perimeter). Integrates the OWASP LLM
+Top-10 (2025) into BANXE governance as an ADDITIVE checklist mapping — handoff OD-LLM-SECURITY.
+**ADR-102 Duplication Audit:** repo-wide search found NO existing OWASP-LLM-Top10 mapping (SRC-07
+guardrails, prompt-canon, ai-cost-policy, OSS-supply-chain, litellm-guardrail-hook cover adjacent
+surface but not the LLM-risk mapping). Verdict: OSS-SUPPLY-CHAIN-POLICY.md = **EXTEND** (new §6, §1–5
+unchanged); ai-cost-policy/README.md = **EXTEND** (new §7.1 checklist-gate note); prompt-canon +
+litellm-guardrail-hook + budget controls = **KEEP** (referenced pointer-first, not rewritten);
+owasp-llm-top10-checklist.md = **ADD** (new verifiable checklist). Scope (3 docs, additive): (1)
+`docs/policies/OSS-SUPPLY-CHAIN-POLICY.md` §6 — LLM01…LLM10 each mapped pointer-first to an existing
+BANXE control (prompt-canon LLM01; secrets/output-val LLM02; SBOM/SCA §1–3 LLM03; provenance/pin
+LLM04; no-authority LLM05; agent-authority+HITL LLM06; prompt-canon+audit-hook LLM07; vector-store+
+perimeter LLM08; decision-lineage/Art.13 LLM09; ai-cost-policy budget/cap/anomaly/hard-stop LLM10).
+(2) `governance/ai-cost-policy/README.md` §7.1 — OWASP-LLM checklist gate at OSS/LLM dependency
+intake, GAP→OD-LLM-SECURITY. (3) `governance/owasp-llm-top10-checklist.md` — the verifiable
+PASS/GAP/N-A checklist. CONSTRAINT: PROPOSED / governance-doc only — NO runtime code change, NO CI
+gate wiring (deferred until #65 nemo-guardrails / #104 guardrails-ai land — LLM01/LLM05 runtime
+enforcement). Config-over-hardcoding: all thresholds = governed-config proposals (CLAUDE.md §10).
+Refs: ADOPTION-FINALIZATION-SP41 (#64), OD-LLM-SECURITY, ADR-102, OSS-SUPPLY-CHAIN-POLICY, ai-cost-
+policy, ADR-117, ADR-130/127, ADR-030, I-27/I-24/I-28.

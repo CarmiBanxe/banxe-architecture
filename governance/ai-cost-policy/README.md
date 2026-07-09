@@ -213,6 +213,22 @@ before every LLM call. Reset requires manual CTIO action (IL entry required).
 | ClickHouse TTL audit | Platform | Quarterly |
 | Cost anomaly report | ARL | Weekly to Slack `#ai-ops` |
 
+### 7.1 OWASP-LLM checklist gate (ADOPT #64 — PROPOSED)
+
+> Added 2026-07-09 per SP41 roadmap §4 cluster-1 (ADOPT #64, ESCALATE-IMMEDIATE, FCR 0.85;
+> handoff **OD-LLM-SECURITY**). **Additive** per ADR-102 — pointer-first, no restate.
+
+Any **OSS/LLM dependency intake** or new **LLM-using capability** MUST pass the **OWASP LLM Top-10
+(2025) checklist** before prod promotion. The unbounded-consumption risk (**LLM10**) is enforced by
+this policy's budget table (§2), monthly hard-cap (§3), per-call anomaly detection (§4), and
+hard-stop contract (§6); the remaining risks map to their controls in the checklist. A **GAP** on any
+item blocks promotion and routes to **OD-LLM-SECURITY**.
+
+- Checklist artefact: `governance/owasp-llm-top10-checklist.md`
+- Full risk→control mapping: `docs/policies/OSS-SUPPLY-CHAIN-POLICY.md` §6
+- **PROPOSED / governance-only:** no runtime or CI change here; runtime enforcement of prompt/output
+  risks (LLM01/LLM05) is deferred to the guardrail ADOPTs **#65 nemo-guardrails** / **#104 guardrails-ai**.
+
 ---
 
 ## 8. Reserved Future ADRs
