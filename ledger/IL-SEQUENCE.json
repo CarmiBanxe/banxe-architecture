@@ -635,5 +635,6 @@
   "agent-factory-adopt49-hgnn-fraud__2db8770fc475": 1062,
   "agent-factory-adopt46-nuformer-tx-embedding__10d0fd3ee55a": 1063,
   "agent-factory-engine-sync-contracts-v1__88280ac1df32": 1064,
-  "agent-factory-engine-task-registry-v1__17599a3c9d07": 1065
+  "agent-factory-engine-task-registry-v1__17599a3c9d07": 1065,
+  "agent-factory-adr143-ratify__714b7610ab6b": 1066
 }
