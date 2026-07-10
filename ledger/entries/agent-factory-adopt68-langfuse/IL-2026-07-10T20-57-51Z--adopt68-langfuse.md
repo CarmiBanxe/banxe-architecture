@@ -1,0 +1,9 @@
+---
+il_ts: 2026-07-10T20:57:51Z
+session_id: agent-factory-adopt68-langfuse
+source: CEO
+status: PROPOSED
+---
+### ADOPT #68 — langfuse LLM prompt/trace/cost observability over LiteLLM :4000 (PROPOSED, doc-only) — SP41 cluster-3 2nd item
+
+Design/governance decision record only (`docs/adr/ADR-168-langfuse-llm-observability.md`, provisional number per ADR-119) — handoff GAP-LLM-OBSERVABILITY. Adopts langfuse as the LLM prompt/trace/cost observability layer (SP41 §1, ADOPT S=0.6575), attached as a **LiteLLM callback/logging integration** on the canonical :4000 gateway (`decision-litellm-dual-gateway`) — **NOT a second listener** (respects SP03-LITELLM-SINGLE-LISTENER-GUARD; SO_REUSEPORT multi-listener is a known hazard). Scope fixed now: what is traced (prompt, completion, token/cost, latency, model/route), where it attaches (callback), boundaries (telemetry only — does not gate/block/alter requests). **NO deploy code / systemd / new :4000 listener / callback wiring** this sprint. ADR-102 Duplication Audit: IL-OBS-01 (sprint-42, service obs), shadow-tap guardrail-audit-hook (regulated audit→ClickHouse), ADR-046 (lineage schema), dual-gateway canon + SP03 guard all exist → KEEP/cross-ref, distinct altitudes; genuinely-missing = LLM prompt/trace/cost visibility (this ADR). Privacy/perimeter: prompt/response logs may contain PII → DP/redaction + retention REQUIRED before real capture (nothing captured this sprint); regulated audit stays on shadow-tap→ClickHouse; ADR-117 perimeter; no credit/lending (§2); PAYBIS-distribution signposting unchanged (§3, ADR-138); no-authority (ADR-127/130). Follow-ups: integration ADR (callback wiring + PII redaction); next cluster-3 → #66 lime-shap XAI. PROPOSED/gated — nothing activated. Refs: ADOPTION-FINALIZATION-SP41 §1/§2/§3/§4, GAP-LLM-OBSERVABILITY, decision-litellm-dual-gateway, SP03-LITELLM-SINGLE-LISTENER-GUARD, IL-OBS-01, litellm-guardrail-audit-hook, ADR-046, ADR-102, ADR-117, ADR-127/130, ADR-138, I-24.
