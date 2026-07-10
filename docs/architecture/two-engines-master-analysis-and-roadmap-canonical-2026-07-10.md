@@ -1,3 +1,32 @@
+<!-- ============================================================= -->
+<!-- AUDIT OVERRIDE — 2026-07-10 (live shell audit, Legion)        -->
+<!-- CANON: "verify, don't trust labels". Метки [ФАКТ]/[ВЫВОД]/     -->
+<!-- [НЕИЗВЕСТНО] из S-18 НЕ истина — истина = аудит. Приоритет.    -->
+<!-- ============================================================= -->
+
+## §AUDIT-2026-07-10 — Verified Topology & Deployment (OVERRIDES S-18 labels)
+
+**CANON:** любая метка требует прямого аудита. Ниже — live-факты (audit 2026-07-10).
+
+### Nodes (было [НЕИЗВЕСТНО] → установлено)
+| Node | LAN IP | Tailscale | Services (audited) | Status |
+|------|--------|-----------|--------------------|--------|
+| evo1 | 192.168.0.72 | 100.68.102.48 | Ollama :11434, LiteLLM :4000, llama.cpp RPC | via Tailscale; short-name evo1 NOT resolving from Legion |
+| evo2 | 192.168.0.15 | 100.99.208.21 | Ollama :11434, RPC :50052, Prometheus :9090, Grafana :3000 | REGISTERED 2026-05-11; via Tailscale |
+| Legion (mark-legion) | LAN | — | LiteLLM :4000 (active), Grafana/WebUI :3000, ollama.service active | operator/factory node |
+
+### Deployment reality (OVERRIDES blueprint)
+- **Qdrant:** NOT FOUND anywhere → S-18 "[ФАКТ] Qdrant" = **UNVERIFIED / PLANNED**, not deployed.
+- **Private Engine on Legion:** llama-server :8080 + OpenManus :8000 **NOT LISTENING** → **BLUEPRINT / NOT-DEPLOYED**. Live only: Ollama :11434 + LiteLLM :4000.
+- **evo1/evo2 "unavailable":** actually name-resolution from Legion; nodes reachable via Tailscale 100.x. Verify server-side.
+
+### Open items (audit-driven)
+1. Deploy Qdrant (banking evo1/evo2 + private Legion) — absent now.
+2. Deploy Private Engine runtime (llama-server :8080 + OpenManus :8000) — blueprint now.
+3. Fix evo1/evo2 short-name resolution from Legion (hosts/DNS/Tailscale MagicDNS).
+
+<!-- ===================== END AUDIT OVERRIDE ===================== -->
+
 # Two-Engine Architecture: Master Analysis and Unified Roadmap
 # CANONICAL — 2026-07-10
 # Branch: agent/factory/t5/bdsl-activation-prep
