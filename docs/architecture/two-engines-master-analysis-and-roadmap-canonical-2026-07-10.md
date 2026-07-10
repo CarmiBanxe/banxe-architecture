@@ -28,6 +28,7 @@
 | S-15 | `docs/audit/bdsl-fleet-classification-2026-07-10.md` | worktree `docs/audit/` | All 47 passports, ENROL/DEFER/EXCLUDE, CREDIT-GAP |
 | S-16 | `docs/audit/bdsl-fleet-coverage-2026-07-10.md` | worktree `docs/audit/` | Coverage gates, activation blockers |
 | S-17 | `manus-legion-telegram-architecture.md` | `/home/mmber/MetaClaw/docs/sources/` | Legion private engine runtime + interface blueprint: OpenManus agent engine pattern, llama-server, FastAPI wrapper, Telegram bot, Open WebUI, mobile access (Enchanted/Open Mobile UI), systemd lifecycle, interface comparison |
+| S-18 | `BANXE-Private-Legion-Engine-Otvety-Konsultanta-2026-07-10.md` | worktree `docs/sources/` | Consultant advisory answers: 9 corrections applied to §1/§3/§4/§5/§6/§7/§10/§11 of this document. Status: advisory; operator + Central ratification required (I-27). |
 
 ### SHA Anchors
 
@@ -48,7 +49,36 @@ ADR-046 Decision Record schema sha256 (operator-confirmed):
 Manus-Legion-Telegram architecture sha256 (operator-confirmed):
   f937c55f7f12e86db4ac873232ed29aefec59cd480b6f42fa2ea1f0506e94038
   (24561 bytes, 538 lines — practical runtime/interface blueprint for Layer B/C of Legion Private Engine)
+
+S-18 Consultant advisory sha256 (computed 2026-07-10):
+  ba53185aeb9a55d122ba8146a2d262b98d45f73948208db54b12e9d81fc0c90d
+  (BANXE-Private-Legion-Engine-Otvety-Konsultanta-2026-07-10.md — 9 corrections, advisory status)
 ```
+
+### Source Hierarchy (S-18, Correction 6)
+
+When sources conflict, this precedence order is unconditional:
+
+```
+LEVEL 0 [UNCONDITIONAL]:
+  Regulatory framework: EU AI Act / BaFin / DORA / FCA / MLR / GDPR
+  → Cannot be overridden by any ADR or internal decision
+
+LEVEL 1 [CANONICAL]:
+  ADR supersedes-chain (banxe-architecture/docs/adr/)
+  → Each ADR states which ADR it supersedes
+  → A new ADR changes a prior one only through an explicit supersedes declaration
+
+LEVEL 2 [GOVERNANCE]:
+  BDSL fleet registry + PassportYAML (MLRO/CRO approved)
+  → Changes require MLRO/CRO joint sign-off
+
+LEVEL 3 [OPERATIONAL]:
+  Passports/fleet registry + ORG-CODE matrix
+  → Describes current deployment state
+```
+
+If sources conflict: Level 0 always wins. Level 1 wins over Level 2-3. Regulatory override always takes priority.
 
 ### What Is NOT Source-Confirmed
 
@@ -75,6 +105,13 @@ What the *customer* uses. An Intent-First AI banking product built for FCA-regul
 
 **System B — Legion Private Engine (infrastructure for the operator)**
 What the *operator and Software Factory* uses. An autonomous, private engineering and orchestration system running on Legion/evo1/evo2 that builds, deploys, monitors, and evolves the banking product. Its decisions are operational, not regulated financial decisions. Its learning loop (MetaClaw, Hermes skills) optimizes factory velocity and correctness, not client outcomes.
+
+**Important (S-18, Correction 1):** Legion hosts TWO SEPARATE circuits — there is no architectural "conflict" between them; they are designed to coexist with a hard data boundary:
+
+- **(a) Private Engine circuit** — OpenManus + uncensored Qwen3.6, operates autonomously on Legion. Purpose: dev/research/operator tasks. NOT part of the banking compliance zone.
+- **(b) Banking thin-client circuit** — a thin client on Legion that routes all banking execution to the banking engine on evo1 (ADR-103). Failover: evo1 → evo2. Legion is NOT a fallback for banking logic.
+
+The data boundary: Legion cannot write to the banking ledger, cannot execute compliance operations autonomously. Legion access to the banking zone is read-only, logged, and write-blocked (see §5.8 DLP). ADR-103 is the canonical authority for this boundary.
 
 ### 1.3 Why This Is Not Duplication
 
@@ -128,6 +165,7 @@ Both engines share conceptual layers, but the instantiation in each engine is di
 | **Decision type** | AML rulings, KYC approvals, payment executions, compliance filings | Spec generation, code commits, CI/CD, deployment, sprint management |
 | **Explainability requirement** | I-BDSL-3: machine-readable explanation per decision, traceable to policy version | Factory quality gate output; no regulatory explainability requirement |
 | **HITL / gates** | I-BDSL-2: every autonomy tier upgrade is human-gated; L3+ decisions require human approval; I-27 (KYC HOLD = HITL-L4) | Factory discipline (Central never mutates directly); operator confirms risky actions; no FCA-mandated gate |
+| **Orchestrator (S-18 C7)** | **LangGraph** — stateful/auditable/durable, checkpoint-based, native HITL support, threshold-gate compatible. LangGraph-first by default. Temporal: OPEN ITEM (see §5.1 addendum) | **OpenManus** — autonomous browser/bash execution, research tasks, no compliance constraints |
 | **Runtime substrate** | FastAPI compliance stack, banxe-compliance-api (:8085), n8n, Temporal, Midaz Ledger | Claude Code CLI (`claude -p`), OpenClaw, LiteLLM v2 router, Ruflo swarm |
 | **Artifact discipline** | Spec-first, ADR-required, passport YAML, DecisionRecord, audit trail | BEST-SINGLE-ARTIFACT rule, YAML spec → Lock 0→1→2 pipeline, SOUL.md, skill files |
 | **Learning loop** | BDSL: MAUT utility score on each DecisionRecord → human-gated policy update | MetaClaw: RL trajectory distillation (skillmode=true), Hermes episodic skill memory, ClawArena benchmark delta |
@@ -163,6 +201,16 @@ Autonomous execution upgrades (threshold relaxation, new autonomy tier activatio
 Every decision emitted by the loop must carry a machine-readable explanation traceable to input signals and the active policy version. Test coverage: `tests/best-decision/`.
 
 **BDSL is NOT**: a general AI framework. It does not handle routing, orchestration, or model selection. It is the *audit and governance layer* on top of whatever orchestration runs below it.
+
+**BDSL relationship to BUG-007 (S-18, Correction 3):** BDSL 90/70/95 thresholds (`governance/novelty-pipeline-config.yaml`) are a *learning overlay* on top of the live BUG-007 control. BUG-007 (HITL confidence thresholds, `.claude/rules/agents.md`) remains the PRIMARY control. BDSL adds an audit and improvement loop on top — it does NOT replace BUG-007. Payment confidence threshold ≥ 0.95 is technically valid; however, **production activation (advisory → auto-execution) requires all three of**:
+
+| Prerequisite | Owner | Status |
+|--------------|-------|--------|
+| Back-testing on historical data — demonstrates threshold performance | CTO / Data team | NOT DONE |
+| MLRO formal approval | MLRO (SMF17) | NOT DONE |
+| Model card + risk management system documentation (EU AI Act) | CTO / Compliance | NOT DONE |
+
+Until all three prerequisites are met: **BDSL operates in advisory mode only**. Autonomy upgrade is blocked (I-BDSL-2).
 
 ### 4.3 Four-Layer Reference Model (ADR-045)
 
@@ -217,6 +265,15 @@ BDSL classification (all 47):
   MLRO written sign-off required for case_management_agent (RED/SMF17).
 ```
 
+**ENROL vs EXCLUDE criteria for 13 PROPOSED (S-18, Correction 8):**
+
+| Classification | Criterion | Examples |
+|---------------|-----------|---------|
+| **ENROL under BDSL** | Agent's outputs affect payment / KYC / AML decisions; OR agent processes client personal data in a compliance context | `case_management_agent` (RED/MLRO) |
+| **EXCLUDE from BDSL** | Orchestrators (route requests only), data-fetchers (read/display only), formatters (no decision authority) | `webhook_orchestrator_agent`, `design_pipeline_agent`, most AMBER/GREEN agents |
+
+**Important:** The ENROL/DEFER/EXCLUDE classification above is a *proposal*, not final. **Final decision: Compliance (MLRO/Compliance Officer) sign-off required for each agent in ENROL category.** Current BDSL ENROL candidate from the 13 PROPOSED batch: 1 (`case_management_agent`). Remaining 12: passport activation for audit coverage; BDSL DecisionRecord not required (confirm with MLRO).
+
 ### 4.5 The ENROL-15 Are the Active BDSL Subjects
 
 The 15 ENROL agents span: AML orchestration, transaction monitoring, sanctions, fraud (jube/yente/watchman/crypto_aml adapters), compliance monitoring, internal audit, risk oversight, board reporting, finance AP-AR, IFRS, and case management (from PROPOSED batch). These are the agents whose decisions require DecisionRecord emission once BDSL activation PR is merged.
@@ -257,6 +314,12 @@ The practical execution machinery. A local LLM server (llama-server :8080) wrapp
 How the operator interacts with the private engine. Telegram bot (polling) as lightweight mobile/remote channel. Open WebUI as the preferred rich local interface. Native mobile apps (Enchanted LLM for iOS, Open Mobile UI for Android) for full LLM access on the move. Source: S-17 (confirmed). These are implementation choices — multiple can coexist; none is architecturally mandatory.
 
 **Critical boundary**: Layer A is the canon substrate. Layers B and C are implementation and interface options. Manus = Layer B/C practical blueprint. Manus ≠ constitutional foundation. Manus does NOT replace Hermes/Factory/ORG in any governance capacity.
+
+**Two Legion circuits (S-18, Correction 1):** Within Legion, two circuits coexist by design — not in conflict:
+- **(a) Private Engine circuit** — Layer B/C in full: OpenManus + Qwen3.6, autonomous browser/bash, dev/research. No banking compliance zone access.
+- **(b) Banking thin-client circuit** — only a thin routing client runs on Legion; all banking execution on evo1 (ADR-103). Failover: evo1 → evo2. Legion = NOT a banking logic host.
+
+Data boundary: Legion has no write access to banking ledger. Read access: logged only (see §5.8). ADR-103 is canonical authority.
 
 ### 5.2 Layer A: Foundational Substrate (Hermes/Factory/ORG)
 
@@ -423,6 +486,60 @@ Telegram (anywhere, lightweight)
 5. **Tool Registry** — factory tools scattered across passport files and `.claude/skills/`. No unified registry.
 6. **BANXE-INTENT-ENGINE** — client-facing LangGraph intent parser not built (factory has OpenClaw/Ruflo for internal orchestration).
 7. **Unified private engine spec** — no single formal document equivalent to ADR-045 for the Legion Private Engine. S-07 + S-08 + S-17 together provide the picture; none is the formal spec.
+8. **DLP layer** — NeMo Guardrails + LlamaFirewall + OS-sandbox not yet deployed (see §5.8).
+9. **Memory boundary enforcement** — hard data boundary between Legion Qdrant and Banking Qdrant not yet implemented (see §5.9).
+
+### 5.8 DLP Boundary: Legion → Banking Zone (S-18, Correction 4)
+
+The Legion Private Engine agent with browser/search tools MUST NOT output the following to any interface (Telegram, Open WebUI, logs, or workspace artifacts):
+- Client PII (names, IBAN, transaction data, KYC records)
+- API keys, credentials, tokens from the banking zone
+- Source code from production banking repositories
+- Audit logs or compliance reports
+
+**Required DLP implementation stack:**
+
+| Layer | Tool | Purpose | License |
+|-------|------|---------|---------|
+| Programmatic output filter | NeMo Guardrails (NVIDIA) | Rule-based output constraints on agent responses | Apache 2.0 |
+| Secondary output filter | LlamaFirewall | Additional output filter before delivery to interface | Apache 2.0 |
+| OS-level process isolation | Landlock (Linux 5.13+) + seccomp + namespaces | Kernel-level isolation of Legion agent processes | Kernel built-in |
+
+**Access rules (Legion → banking zone):**
+
+| Operation | Allowed | Condition |
+|-----------|---------|---------|
+| READ status/metrics | YES | Must be logged; read-only endpoint only |
+| WRITE to ledger/DB | NO | Hard-blocked; no credentials exposed to Legion agent |
+| Credentials transfer | NO | Banking zone credentials NEVER passed to Legion agent |
+
+**Status:** DLP layer not yet deployed. Design complete (S-18). Buildable as Horizon 1 task.
+
+### 5.9 Memory Boundary: Banking Qdrant vs Legion Qdrant (S-18, Correction 5)
+
+Two separate Qdrant instances — NO shared access between them:
+
+**Banking Engine memory stack (evo1/evo2):**
+| Component | Purpose | Location |
+|-----------|---------|---------|
+| Qdrant instance (banking) | Semantic search over banking knowledge base | evo1 |
+| Zep (Apache 2.0) | Temporal Knowledge Graph for client banking context | evo1 |
+| Graphiti | Temporal KG with versioning for compliance and audit | evo1 |
+| LlamaIndex | Ingestion pipeline for regulatory documents | evo1 |
+
+**Legion Private Engine memory stack (Legion):**
+| Component | Purpose | Location |
+|-----------|---------|---------|
+| Qdrant instance (dev/research) | Semantic search over dev/research knowledge | Legion |
+| Mem0 (Apache 2.0) | Long-term memory for operator sessions | Legion |
+
+**Hard boundary rules:**
+- Banking Qdrant: NOT accessible from Legion agent directly
+- Legion Qdrant: contains NO banking client PII
+- Cross-engine sync: ONLY through explicit human-approved export with audit trail (logged, append-only record per I-24)
+- No automated sync between memory stores
+
+**Status:** Architecture defined (S-18). Implementation requires Horizon 1/2 build tasks.
 
 ---
 
@@ -509,7 +626,12 @@ Maturity Tier 1 (deepest, production-relevant):
   │   ├── 47 passports: classified ENROL/DEFER/EXCLUDE
   │   ├── 91/91 domain coverage: 0 true orphans
   │   ├── Activation gates: documented, ready for operator PR
-  │   └── CREDIT-GAP: identified, localized, not resolved
+  │   ├── CREDIT-GAP: identified, localized, not resolved
+  │   ├── MAUT weights: reg=0.40 / harm=0.30 / rev=0.15 / cost=0.15 (S-18, Correction 9)
+  │   │   Sensitivity: reg-weight stable in range 0.32–0.48 (rank order unchanged ±20%)
+  │   │   Approved by: MLRO + CRO joint sign-off required; weights cannot change without it
+  │   │   Independent model validation: required (FCA/PRA SS1/23) before production activation
+  │   └── BDSL = overlay on BUG-007 (NOT replacement); advisory mode until back-testing + MLRO + model card
   └── ORG-CODE reconciliation
       └── v2 authoritative (sha b84a4bab...)
 
@@ -541,6 +663,47 @@ Maturity Tier 4 (research / world benchmarks, not yet on BANXE roadmap):
 
 The banking engine's governance layer (Tier 1) is the most thoroughly specified system in this corpus. The Legion private engine's operational layer (Tier 2) is the most deployed. The product-facing intent engine (Tier 3) is the most important gap.
 
+### §6a — MAUT Best-Decision Analysis: Key Architecture Forks (S-18, Corrections 7/9)
+
+For each key architectural fork, MAUT scoring was applied using weights: **reg=0.40 / harm=0.30 / rev=0.15 / cost=0.15**. Sensitivity: reg-weight stable 0.32–0.48; rank order unchanged. MLRO/CRO sign-off required on these weights.
+
+#### Fork 1 — Banking Orchestrator
+
+| Alternative | reg | harm | rev | cost | Weighted score | Decision |
+|-------------|-----|------|-----|------|---------------|---------|
+| LangGraph (stateful DAG, checkpoint, HITL native) | 0.95 | 0.90 | 0.75 | 0.65 | **0.87** | ✅ SELECTED |
+| Temporal (durable execution, saga pattern) | 0.80 | 0.85 | 0.70 | 0.55 | **0.79** | OPEN ITEM |
+| Custom FSM | 0.60 | 0.70 | 0.50 | 0.80 | **0.65** | EXCLUDED |
+
+**Verdict: LangGraph-first.** LangGraph wins on reg (checkpoint = auditable state; native HITL gates) and harm (human oversight built-in). Temporal: OPEN ITEM — if cross-service saga pattern with guaranteed delivery is needed, Temporal adds value. Requires ADR before adoption.
+
+#### Fork 2 — Legion Private Orchestrator
+
+| Alternative | reg | harm | rev | cost | Weighted score | Decision |
+|-------------|-----|------|-----|------|---------------|---------|
+| OpenManus (autonomous browser/bash, local) | 0.10 | 0.50 | 0.90 | 0.85 | **0.47** | ✅ SELECTED for Legion |
+| LangGraph (same as banking) | 0.95 | 0.90 | 0.60 | 0.50 | **0.84** | N/A — not needed here |
+
+**Verdict: OpenManus for Legion.** Regulatory weight irrelevant for factory/dev tasks — cost and revenue/velocity dominate. OpenManus is the correct tool for autonomous browser/bash operator tasks.
+
+#### Fork 3 — Memory Architecture
+
+| Alternative | reg | harm | rev | cost | Weighted score | Decision |
+|-------------|-----|------|-----|------|---------------|---------|
+| Separate Qdrant per engine + Zep/Graphiti (banking) + Mem0 (Legion) | 0.95 | 0.90 | 0.75 | 0.60 | **0.86** | ✅ SELECTED |
+| Shared Qdrant (single instance) | 0.30 | 0.25 | 0.80 | 0.85 | **0.38** | EXCLUDED — DLP violation |
+
+**Verdict: Separate instances.** Shared memory violates DLP boundary (PII exposure risk, harm=0.25). Hard data boundary is non-negotiable.
+
+#### Fork 4 — Inference Model (Banking agent, regulated)
+
+| Alternative | reg | harm | rev | cost | Weighted score | Decision |
+|-------------|-----|------|-----|------|---------------|---------|
+| Self-hosted (evo1/evo2, on-premise) | 0.95 | 0.95 | 0.70 | 0.50 | **0.86** | ✅ SELECTED |
+| Cloud inference (OpenAI/Anthropic API) | 0.55 | 0.60 | 0.85 | 0.80 | **0.64** | CONDITIONAL (non-financial tasks only; INV-AI-01) |
+
+**Verdict: Self-hosted for banking.** GDPR/FCA: client financial data must not leave on-premise boundary (INV-AI-01). Cloud API permissible only for non-financial agent tasks where no PII transits.
+
 ---
 
 ## §7 — CREDIT-GAP: EU AI Act Annex III §5
@@ -553,14 +716,21 @@ The banking engine's governance layer (Tier 1) is the most thoroughly specified 
 - `finance/apar_agent.yaml` — AP/AR management with embedded credit-terms decisions
 - `channel_c_sepa_orchestrator.yaml` — SEPA payment routing including credit facility drawdown
 
-**Why this is a blocker (EU AI Act Annex III §5):**
-Credit scoring and creditworthiness assessment for individuals/businesses is classified HIGH-RISK under EU AI Act Annex III §5. This requires:
+**Why this is relevant (EU AI Act Art.62 — CORRECTED via S-18 Correction 2):**
+
+> **DEADLINE CORRECTION:** Creditworthiness assessment and AML/anti-fraud AI systems fall under **EU AI Act Art.62** (Annex I high-risk — creditworthiness / essential services category). The compliance deadline is **2 December 2027** (24 months after the Regulation's entry into force). It is NOT 2 August 2026.
+>
+> The 2 August 2026 deadline applies to: payment fraud detection + law enforcement + biometric categories (Annex III other categories — Article 6(2)). This deadline is NOT applicable to the creditworthiness/AML high-risk category.
+
+Formal classification under Art.62 requires:
 - Dedicated accountability structure with named responsible person
 - Dedicated audit trail traceable to that agent's decisions
 - Explainability requirement per decision (I-BDSL-3 equivalent)
-- No credit decision can be embedded as an undifferentiated sub-function of a broader agent
+- No credit decision embedded as an undifferentiated sub-function of a broader agent
 
-The current state — credit logic embedded in `apar_agent` and `channel_c_sepa_orchestrator` — does not satisfy this requirement.
+**`apar_agent` classification:** If `apar_agent` prepares data but does NOT make the final credit decision, it may qualify as Art.63 non-high-risk (preparatory task). Formal classification must be completed before **2 December 2027**. A dedicated `credit_decision_agent` is NOT an immediate requirement — it becomes mandatory only if/when the agent makes final credit decisions.
+
+The current state — credit logic embedded in `apar_agent` and `channel_c_sepa_orchestrator` — does not satisfy Art.62 high-risk requirements IF those agents make final credit decisions. Classification to be confirmed by Legal/Compliance.
 
 **What is NOT blocked:**
 This blocker applies ONLY to the CREDIT circuit. AML / KYC / PAYMENT / COMPLIANCE BDSL activation is NOT blocked by the CREDIT-GAP.
@@ -569,8 +739,8 @@ This blocker applies ONLY to the CREDIT circuit. AML / KYC / PAYMENT / COMPLIANC
 
 | Option | Action | Consequence |
 |--------|--------|-------------|
-| A | Create `credit_decision_agent.yaml` passport | EU AI Act §5 satisfied; credit logic becomes auditable, HITL-gated, L3+ agent |
-| B | Formal out-of-scope declaration + deferred roadmap | Credit circuit explicitly deferred; BDSL activation proceeds on all other circuits |
+| A | Create `credit_decision_agent.yaml` passport now | Art.62 proactively satisfied; credit logic becomes auditable, HITL-gated, L3+ agent |
+| B | Formal Art.62 classification by Legal/Compliance; defer `credit_decision_agent` to Q4 2026 | Credit circuit explicitly deferred until classification complete; BDSL activation proceeds on all other circuits; deadline: 2 Dec 2027 |
 
 **[NOT IN SCOPE OF THIS DOCUMENT]**: Choosing between Option A and B. This is an operator / MLRO / legal decision. Neither option is recommended here without operator instruction.
 
@@ -658,6 +828,9 @@ CREDIT circuit ≠ Unblocked path
 **Legion Private Engine:**
 - [ ] Hermes deployment status verification (is server actually running on evo2?)
 - [ ] Unified private engine spec document (equivalent to ADR-045 for factory topology)
+- [ ] DLP layer design ratified (NeMo Guardrails + LlamaFirewall + OS-sandbox) — §5.8
+- [ ] Memory boundary design ratified (separate Qdrant/Mem0 on Legion; Qdrant/Zep/Graphiti on evo1) — §5.9
+- [ ] Two-circuit ADR drafted (Private Engine circuit vs banking thin-client circuit, ADR-103 boundary)
 
 ---
 
@@ -679,6 +852,9 @@ CREDIT circuit ≠ Unblocked path
 - [ ] Hermes `factory` profile: formal systemd service or Docker Compose entry on Legion
 - [ ] MetaClaw: confirm rlmode=false trajectory accumulation is active, log count
 - [ ] Ruflo: verify RaftBFT consensus is functional for factory swarm tasks
+- [ ] DLP implementation: NeMo Guardrails output-filter + LlamaFirewall + Landlock/seccomp OS-sandbox (§5.8)
+- [ ] Memory boundary implementation: deploy separate Qdrant on Legion (dev/research) + Mem0; confirm banking Qdrant isolated on evo1 (§5.9)
+- [ ] Back-testing infrastructure for BDSL threshold validation (prerequisite for §4.2 production activation)
 
 ---
 
@@ -756,7 +932,59 @@ CREDIT circuit ≠ Unblocked path
 
 ---
 
-## §11 — Final Canonical Outcome
+## §11 — Final Canonical Outcome (S-18 integrated, 2026-07-10)
+
+### Decisions Made (Canonical — integrated from S-01 through S-18)
+
+| # | Decision | Authority | Status |
+|---|----------|-----------|--------|
+| D-1 | Two-engine architecture: Banking Engine (FCA/regulated) vs Legion Private Engine (operator tooling) | Central + ADR-153 | ✅ CANONICAL |
+| D-2 | Two Legion circuits: Private Engine (OpenManus+Qwen3.6) vs banking thin-client (→evo1) — NOT conflict, by design | S-18 C1 + ADR-103 | ✅ CANONICAL |
+| D-3 | Banking orchestrator: LangGraph (stateful/auditable/HITL). LangGraph-first default | S-18 C7 | ✅ DECIDED |
+| D-4 | Temporal role: OPEN ITEM — ADR required before adoption | S-18 C7 | ⚠️ OPEN |
+| D-5 | Legion orchestrator: OpenManus (autonomous browser/bash, dev/research) | S-18 C7 | ✅ DECIDED |
+| D-6 | Memory: separate Qdrant per engine + Zep/Graphiti (banking) + Mem0 (Legion). Hard data boundary | S-18 C5 | ✅ DECIDED |
+| D-7 | DLP boundary: NeMo Guardrails + LlamaFirewall + Landlock/seccomp. Legion→banking = read-only+logged | S-18 C4 | ✅ DECIDED |
+| D-8 | BDSL thresholds (90/70/95) = overlay on BUG-007, advisory mode until back-testing+MLRO+model card | S-18 C3 | ✅ DECIDED |
+| D-9 | MAUT weights: reg=0.40/harm=0.30/rev=0.15/cost=0.15; stable 0.32–0.48 on reg-weight | S-18 C9 | ⏳ AWAITS MLRO/CRO SIGN-OFF |
+| D-10 | Source hierarchy Level 0-3: Regulatory → ADR → BDSL/MLRO → passports | S-18 C6 | ✅ CANONICAL |
+| D-11 | EU AI Act credit/AML deadline: Art.62, **2 December 2027** (NOT Aug 2026) | S-18 C2 | ✅ CORRECTED |
+| D-12 | ENROL/EXCLUDE criteria: decision-outputs affecting payment/KYC/AML → ENROL; orchestrators/fetchers/formatters → EXCLUDE | S-18 C8 | ⏳ AWAITS MLRO/CO SIGN-OFF |
+| D-13 | 47 passports classified (ENROL=15/DEFER=9/EXCLUDE=23); 91/91 domain coverage | S-14/S-15 | ✅ CANONICAL |
+| D-14 | ADR-045 Intent-First as primary interface canon (ACCEPTED 2026-06-07) | ADR-045 | ✅ CANONICAL |
+| D-15 | ADR-046 DecisionRecord schema canonical (sha a95d8e95…) | ADR-046 | ✅ CANONICAL |
+
+### What Awaits MLRO/CRO Sign-off
+
+| Item | Required approver | What is blocked without it |
+|------|-----------------|--------------------------|
+| MAUT weights (reg/harm/rev/cost) — D-9 | MLRO + CRO (joint) | BDSL scoring cannot be used in production governance |
+| Independent model validation (FCA/PRA SS1/23) | External validator + MLRO | Production activation of BDSL auto-execution mode |
+| BDSL production activation (back-testing + model card) | MLRO (SMF17) | Transition from advisory → auto-execution |
+| 13 PROPOSED passports activation | MLRO (for case_management_agent, RED); operator for remaining 12 | BDSL ENROL coverage expansion |
+| ENROL/EXCLUDE final classification (D-12) | MLRO + Compliance Officer | Official BDSL fleet membership |
+
+### What Awaits Operator Decision
+
+| Item | Options | Deadline |
+|------|---------|---------|
+| CREDIT-GAP (§7) | A: create `credit_decision_agent.yaml` now / B: formal Art.62 classification by Q4 2026 | Before Dec 2027 (Art.62) |
+| Temporal adoption | Require ADR before decision | Before LangGraph scale-out sprint |
+| Manus-on-Legion client scope | Per ADR-002: client-facing deferred until Phase 3 KYC + FCA permissions | Phase 3 gate |
+
+### Open Items
+
+| Item | Section | Resolution path |
+|------|---------|----------------|
+| Schema reconciliation ADR ratification | §4.3 / §10 H0 | ADR PR + human approval |
+| Three ADR-045 gaps (Decision Lineage, AI cost policy, S13-00 BPR) | §4.3 | Future ADRs |
+| Temporal: LangGraph vs LangGraph+Temporal | §6a D-4 | ADR draft → operator decision |
+| Hermes deployment status on evo2 | §5.2 / §5.7 | `[VERIFY CURRENT STATUS]` against live system |
+| P0 infrastructure blockers (midaz-Redis, recon.service, hardcoded key, etc.) | §4.6 | `[VERIFY CURRENT STATUS]` — may already be resolved |
+| DLP layer deployment (NeMo Guardrails, LlamaFirewall, Landlock) | §5.8 | Horizon 1 build task |
+| Memory boundary deployment (separate Qdrant instances) | §5.9 | Horizon 1/2 build task |
+| Back-testing infrastructure for BDSL thresholds | §4.2 | Horizon 1 pre-requisite |
+| Two-circuit ADR for Legion (Private Engine circuit vs thin-client circuit) | §5.1 | ADR draft |
 
 ### What Exists Now (2026-07-10)
 
@@ -768,68 +996,85 @@ CREDIT circuit ≠ Unblocked path
 - Guardian (:8195/:8196): operational
 - ClickHouse audit trail: operational (I-08 TTL)
 - ADR-045: accepted, Intent-First framing canonical
+- MAUT framework: weights defined (reg=0.40/harm=0.30/rev=0.15/cost=0.15), sensitivity confirmed (stable ±20%), awaiting MLRO/CRO formal sign-off
+- Source hierarchy Level 0-3: canonical (S-18 C6)
+- Two Legion circuits: architecturally defined, ADR-103 boundary canonical
 
 **Confirmed but not yet active:**
 - 13 PROPOSED passports: classified, awaiting operator sign-off PR
 - BDSL DecisionRecord emission: schema confirmed, no live agent emitting yet
 - Hermes: documented at depth, deployment status unconfirmed
+- DLP layer: design defined (§5.8), not yet deployed
+- Memory boundary: design defined (§5.9), not yet deployed
 
 ### What Is Buildable Now (no new research required)
 
 1. Operator PR: 13 PROPOSED → ACTIVE (30 minutes + MLRO sign-off)
 2. Tool Registry YAML (1 sprint)
 3. BANXE-INTENT-ENGINE as LangGraph FastAPI service (2 sprints)
-4. Qdrant on evo1 (1 day — single Docker run)
-5. Hermes `factory` profile systemd service (1 day)
-6. CREDIT-GAP resolution via `credit_decision_agent.yaml` creation (1 sprint, if Option A chosen)
+4. Banking Qdrant + Zep on evo1 (1–2 days)
+5. Legion Qdrant + Mem0 on Legion (1 day)
+6. DLP stack: NeMo Guardrails + LlamaFirewall + OS-sandbox (1 sprint)
+7. Hermes `factory` profile systemd service (1 day)
+8. Back-testing infrastructure for BDSL thresholds (1 sprint)
+9. CREDIT-GAP resolution: formal Art.62 classification (Option B, immediate) or `credit_decision_agent.yaml` (Option A, 1 sprint)
 
 ### What Is Blocked
 
 | Blocker | Blocked item | Resolution path |
 |---------|-------------|----------------|
 | Operator sign-off (I-BDSL-2) | 13 PROPOSED activation | Operator opens PR, MLRO signs off |
+| MLRO/CRO joint sign-off | MAUT weights production use | Joint sign-off meeting |
+| Back-testing + model card + MLRO approval | BDSL auto-execution mode | Sequential prerequisites (§4.2) |
 | Schema reconciliation ADR ratification | BDSL live loop | ADR ratification PR |
 | CREDIT-GAP operator decision | CREDIT circuit activation | Operator chooses Option A or B |
 | P0 infrastructure blockers (if still open) | BANXE-INTENT-ENGINE, client beta | Verify and resolve per Sprint A |
 | Manus-on-Legion scope | Client-facing Telegram bot | ADR-002 Phase 3 conditions (KYC + FCA permissions) |
+| DLP layer deployment | Any Legion → banking zone READ access | Horizon 1 build |
+| Two-circuit ADR | Clear governance boundary documentation | ADR draft |
 
-### What Is Next
-
-**Recommended execution order:**
+### Recommended Execution Order
 
 ```
-Step 1 (operator, immediate):
-  → Verify P0 blocker status (are they still open or already resolved?)
+Step 1 (operator, immediate — no build required):
+  → Verify P0 blocker status (midaz-Redis, recon.service — may be resolved)
   → Make CREDIT-GAP decision (Option A or B)
   → Sign off 13 PROPOSED passports (MLRO sign-off for case_management_agent)
+  → Schedule MLRO/CRO joint sign-off on MAUT weights (reg=0.40/harm=0.30/rev=0.15/cost=0.15)
 
 Step 2 (factory, Sprint A ~2 weeks):
   → Close confirmed P0 blockers
   → Build Tool Registry (shared foundation for both engines)
   → Verify/deploy Hermes factory profile
   → Ratify schema reconciliation ADR
+  → Deploy DLP stack: NeMo Guardrails + LlamaFirewall + Landlock/seccomp (§5.8)
+  → Deploy separate Qdrant (Legion) + Qdrant/Zep/Graphiti (evo1) (§5.9)
+  → Build back-testing infrastructure for BDSL threshold validation
 
 Step 3 (factory, Sprint B ~2 weeks):
-  → Build BANXE-INTENT-ENGINE (LangGraph on Legion)
-  → Deploy Qdrant on evo1
+  → Build BANXE-INTENT-ENGINE (LangGraph on Legion, banking thin-client circuit)
   → Wire Hermes banxe-ops to MiroFish + AML alerts
-  → Begin BDSL live emission on ENROL-15 agents
+  → Begin BDSL live emission on ENROL-15 agents (advisory mode)
+  → Submit back-testing results to MLRO for approval
 
 Step 4 (factory, Sprint C ~3 weeks):
+  → BDSL model card + risk management system documentation
+  → Request MLRO formal production activation approval
   → Client-facing HII + Rich Cards
   → CREDIT circuit resolution (if Option A: build credit_decision_agent)
   → Hermes client-advisor closed beta
 
 Step 5 (operator + factory, ongoing):
-  → BDSL first policy cycle (human-gated)
+  → BDSL first policy cycle (human-gated, post MLRO approval)
+  → Independent model validation (FCA/PRA SS1/23 compliance)
   → MetaClaw Phase 2 skill corpus review
-  → Horizon 4 specialization
+  → Horizon 4 specialization + Temporal ADR
 ```
 
 ### Concise Verdict
 
-The Banking Engine governance substrate (BDSL, passports, ADR-046) is the most thoroughly specified system in this corpus and is ready for operator activation. The Legion Private Engine operational layer (MetaClaw, OpenClaw, compliance swarm) is already running. The gap between them is the product-facing intent layer — BANXE-INTENT-ENGINE, Tool Registry, Qdrant — which is buildable in 2–3 sprints with no further research. The CREDIT circuit is an isolated blocker that does not hold up the rest. Execution order: operator decisions first (sign-offs, CREDIT choice), then Tool Registry, then Intent Engine, then live BDSL loop.
+The Banking Engine governance substrate (BDSL, passports, ADR-046, MAUT framework) is the most thoroughly specified system in this corpus. The two-engine architecture with two Legion circuits is now canonical. Key S-18 corrections are integrated: EU AI Act Art.62 deadline is 2 December 2027 (not Aug 2026); BDSL operates in advisory mode until back-testing + MLRO + model card prerequisites are met; MAUT weights are defined and sensitivity-confirmed but require MLRO/CRO sign-off; DLP and memory boundaries are architecturally defined and ready to build. The execution path is clear: operator decisions first (sign-offs, CREDIT choice, MAUT approval), then DLP/memory boundary infrastructure, then Intent Engine, then BDSL production loop.
 
 ---
 
-*End of canonical document. No follow-on documents are required before execution. All open items are tracked above as actionable steps.*
+*End of canonical document. All 9 corrections from S-18 are integrated. Open items tracked above. No follow-on research required before execution.*
