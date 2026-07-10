@@ -27,6 +27,7 @@
 | S-14 | `docs/audit/ORG-CODE-RECONCILIATION-v2.md` | worktree `docs/audit/` | 106/91/47 passport coverage, Matrix A–D |
 | S-15 | `docs/audit/bdsl-fleet-classification-2026-07-10.md` | worktree `docs/audit/` | All 47 passports, ENROL/DEFER/EXCLUDE, CREDIT-GAP |
 | S-16 | `docs/audit/bdsl-fleet-coverage-2026-07-10.md` | worktree `docs/audit/` | Coverage gates, activation blockers |
+| S-17 | `manus-legion-telegram-architecture.md` | `/home/mmber/MetaClaw/docs/sources/` | Legion private engine runtime + interface blueprint: OpenManus agent engine pattern, llama-server, FastAPI wrapper, Telegram bot, Open WebUI, mobile access (Enchanted/Open Mobile UI), systemd lifecycle, interface comparison |
 
 ### SHA Anchors
 
@@ -43,11 +44,15 @@ ORG-CODE-RECONCILIATION-v2 sha256 (operator-confirmed):
 
 ADR-046 Decision Record schema sha256 (operator-confirmed):
   a95d8e959417ad86dbb19e1d07ccd02d036671b92cd12912f640827c82db313b
+
+Manus-Legion-Telegram architecture sha256 (operator-confirmed):
+  f937c55f7f12e86db4ac873232ed29aefec59cd480b6f42fa2ea1f0506e94038
+  (24561 bytes, 538 lines — practical runtime/interface blueprint for Layer B/C of Legion Private Engine)
 ```
 
 ### What Is NOT Source-Confirmed
 
-- **Manus-агент на Legion → Telegram-бот_Архитектура системы** — referenced by operator as important future input; ADR-002-telegram-bot-scope.md found (scope decision: operator terminal only, client-facing deferred to Phase 3 KYC/FCA), but no dedicated "Manus → Legion → Telegram bot architecture" document was found in current corpus. Marked `[NOT SOURCE-CONFIRMED]` where referenced below.
+- **S-17 (Manus) is NOW CONFIRMED** — SHA f937c55f... operator-verified. Used as practical runtime/interface blueprint for Layer B and Layer C of the Legion Private Engine. The source is a research/Q&A document, NOT a deployment report — whether the described stack is actually running on Legion is `[NOT SOURCE-CONFIRMED]`. ADR-002 (telegram-bot-scope) scope decision remains in effect: client-facing deferred to Phase 3 KYC+FCA. Operator terminal use is current scope.
 - BDSL v2 in MetaClaw/docs/sources is `SUPERSEDED` per canon file (S-12). All BDSL facts sourced from pinned file-sha `e8c65d1f...` as directed by canon.
 - Production port numbers, Redis IPs, LiteLLM alias lists (from S-03/S-07) — described as "in production on evo1" in source documents; not independently verified against live system in this synthesis.
 
@@ -238,20 +243,27 @@ P0 blockers from AUDIT_CONCEPT_VS_REAL (referenced in S-03):
 
 ## §5 — Deep Analysis: Legion Private Engine
 
-### 5.1 What the Legion Private Engine Is
+### 5.1 Three-Layer Architecture
 
-The Legion Private Engine is the Software Factory + orchestration infrastructure through which the banking product is built and operated. It runs on Legion (primary terminal) with evo1/evo2 as execution targets. It is the system Moriel (Software Factory Lead) interacts with to produce all project code, manage sprints, run CI/CD, and monitor the banking stack.
+The Legion Private Engine is not a monolithic system. The Manus-Legion source (S-17, confirmed) provides the practical implementation picture and makes it possible to distinguish three architectural layers with different canonical weight:
 
-Per the Central Terminal canon (`CLAUDE.md` global instructions): Central performs NOTHING directly on project repos. EVERYTHING — specs, code, tests, CI fixes, migrations, merges — goes through the factory as a task (`claude -p`). The factory executes and reports. This is the operational discipline of the Legion Private Engine.
+**Layer A — Foundational Substrate (Hermes/Factory/ORG + terminal canon)**
+The constitutional and orchestration foundation. Operator canon, terminal topology, Central/Left/Right discipline, factory quality loop. Sources: S-07, S-08, S-10, ADR-153, CLAUDE.md. This layer is the *governance* of the private engine — analogous to the BDSL governance substrate in the banking engine. It cannot be replaced without a new ADR. It does not describe how agent tasks execute locally; it describes how the operator governs the factory.
 
-### 5.2 Hermes/Factory as Engine Substrate
+**Layer B — Runtime Implementation (agent engine + model serving + tool plane + systemd)**
+The practical execution machinery. A local LLM server (llama-server :8080) wrapped by a FastAPI agent engine (OpenManus-style :8000). Tasks dispatched from Layer A land here for execution. Source: S-17 (confirmed). This layer is buildable and documented but is NOT the constitutional substrate — it could be replaced with a different agent engine without changing Layer A governance.
 
-From S-07 (Hermes Agent BANXE Factory):
+**Layer C — Interface Layer (operator access channels)**
+How the operator interacts with the private engine. Telegram bot (polling) as lightweight mobile/remote channel. Open WebUI as the preferred rich local interface. Native mobile apps (Enchanted LLM for iOS, Open Mobile UI for Android) for full LLM access on the move. Source: S-17 (confirmed). These are implementation choices — multiple can coexist; none is architecturally mandatory.
 
-**Physical topology:**
-- evo1: LiteLLM v2 router, Ollama, banxe-compliance-api, Jube, Marble, ClickHouse, PostgreSQL, Redis, Presidio PII proxy, n8n, Midaz Ledger
-- evo2: IronClaw (WASM sandbox), MicroFish (offline inference), Hyperswitch
-- Legion: MetaClaw, OpenClaw (primary orchestration), NanoClaw, ClawArena, Software Factory Lead terminal
+**Critical boundary**: Layer A is the canon substrate. Layers B and C are implementation and interface options. Manus = Layer B/C practical blueprint. Manus ≠ constitutional foundation. Manus does NOT replace Hermes/Factory/ORG in any governance capacity.
+
+### 5.2 Layer A: Foundational Substrate (Hermes/Factory/ORG)
+
+Source: S-07, S-08, S-10. Physical topology:
+- **evo1**: LiteLLM v2 router, Ollama, banxe-compliance-api, Jube, Marble, ClickHouse, PostgreSQL, Redis, Presidio PII proxy, n8n, Midaz Ledger
+- **evo2**: IronClaw (WASM sandbox), MicroFish (offline inference), Hyperswitch
+- **Legion**: MetaClaw, OpenClaw (primary orchestration), NanoClaw, ClawArena, Software Factory Lead terminal
 
 **Agent stack (confirmed in S-07):**
 
@@ -279,28 +291,209 @@ From CLAUDE.md global instructions and ADR-153:
 - **Terminal A (Left)** = Software Factory — orchestrator-executor. Self-orchestrates. Owns and perfects the factory engine.
 - **Terminal B (Right)** = Special-mandate (TRADING-001). Operates under same Intent-First concept and governance model. No carve-out.
 
-**No-Wait Rule (immutable):** Central NEVER waits for Terminal A. Factory imperfections are A's concern. Central delegates project work to factory continuously regardless of infra-perfection.
+**No-Wait Rule (immutable):** Central NEVER waits for Terminal A. Factory imperfections are A's concern.
 
-**Best-Single-Artifact Rule:** After any output, Central ALWAYS emits exactly ONE next-action artifact (`[CLAUDE CODE]` for state changes, `[SHELL]` for read-only audit). No alternatives, no variations, no menus.
+**Best-Single-Artifact Rule:** After any output, Central ALWAYS emits exactly ONE next-action artifact (`[CLAUDE CODE]` for state changes, `[SHELL]` for read-only audit). No alternatives, no menus.
 
 ### 5.4 MetaClaw Learning Loop
 
-MetaClaw operates as a transparent proxy in front of OpenClaw:
-- Intercepts all trajectories (prompt → response → outcome)
-- Synthesizes skills during idle periods (≥5min threshold → skill distillation)
-- Injects verified skills into subsequent OpenClaw calls (few-shot without fine-tuning)
-- Phase 1 (current): `rlmode: false` — collecting trajectories
-- Phase 3 (future): RL mode via cloud LoRA (`tinkercloud.enabled: true`)
+MetaClaw operates as a transparent proxy in front of OpenClaw. Intercepts all trajectories, synthesizes skills during idle periods (≥5min), injects verified skills into subsequent calls (few-shot ICL, not fine-tuning). Phase 1 (current): `rlmode: false` — accumulating trajectories. Phase 3 (future): RL via cloud LoRA.
 
-This is In-Context Learning (ICL) + episodic memory, not model fine-tuning. The distinction matters: the banking product cannot use this learning model (violates I-BDSL-2 without explicit human-gating), but the factory can use it freely because factory output is reviewed before merging.
+This learning model is NOT applicable to the BDSL loop in the banking engine — it would violate I-BDSL-2 (Human-Gated Activation). The factory uses it freely because factory output is reviewed before merging into the project.
 
-### 5.5 What Is Missing for Legion Private Engine
+### 5.5 Layer B: Runtime Implementation
 
-1. **Hermes server deployment** — documented but not confirmed as running on evo2 VPS. Three profiles defined; actual systemd service / Docker deployment status: `[NOT SOURCE-CONFIRMED]`.
-2. **Tool Registry** — same gap as banking engine but from the factory side. Factory tools are scattered across passport files and `.claude/skills/`.
-3. **BANXE-INTENT-ENGINE** — specifically for client-facing; the factory already has OpenClaw/Ruflo for internal orchestration. But the client-facing intent parser (LangGraph on Legion) is not built.
-4. **Manus-on-Legion → Telegram bot architecture** — `[REFERENCED BY OPERATOR AS IMPORTANT FUTURE INPUT, NOT SOURCE-CONFIRMED IN CURRENT CORPUS]`. ADR-002 (telegram-bot-scope) establishes that current bot = operator terminal only; client-facing deferred to Phase 3 KYC+FCA permissions.
-5. **Unified private orchestration runtime spec** — the Legion Private Engine's overall runtime topology is described across multiple documents (S-07, S-08) but has no single formal spec document equivalent to ADR-045 for the banking engine.
+Source: S-17 (confirmed, SHA f937c55f...).
+
+**Local model-serving substrate (Legion):**
+```
+llama-server :8080
+  model: Qwen3.6-35B-A3B IQ2_M (quantized, local)
+  GPU offload: -ngl 20, --flash-attn
+  context: -c 131072 (128K tokens)
+  KV cache: q8_0 (memory-efficient)
+  systemd: llama-qwen.service (After=network.target)
+```
+
+**Agent engine wrapper (OpenManus-style FastAPI):**
+```
+OpenManus :8000
+  config.toml: base_url = "http://localhost:8080/v1", api_key = "none"
+  POST /run/agent  {"prompt": "..."} → {"status": "ok", "result": "..."}
+  GET  /health     → {"status": "running"}
+  systemd: openmanus-api.service (Requires=llama-qwen.service)
+```
+
+**Tool execution plane (7 tools confirmed in S-17):**
+
+| Tool | Function |
+|------|----------|
+| `bash.py` | Shell command execution |
+| `browser_use_tool.py` | Playwright Chromium — full headless web browser, click/scroll/form/screenshot |
+| `python_execute.py` | Python code execution in agent sandbox |
+| `google_search.py` | Google Custom Search (100 req/day free; needs API key) |
+| `duckduckgo_search.py` | Web search without keys (rate-limited by DDG) |
+| `file_saver.py` | Artifact storage in `workspace/` |
+| `planning.py` | Multi-step task decomposition |
+
+**Systemd startup order:**
+```
+1. llama-qwen.service     → Qwen model loads (~30-60s)
+2. openmanus-api.service  → Requires=llama-qwen.service
+3. (interface services)   → Open WebUI Docker, Telegram bot
+```
+
+**Relationship between Layer B and Layer A:**
+- Layer A agents (OpenClaw/Hermes) dispatch tasks → Layer B executes locally. These are complementary, not competing paths.
+- OpenManus adds browser automation and internet search that the `claude -p` factory terminal does not provide natively — making it the preferred execution target for research, data collection, and web-interaction tasks.
+- Hermes `factory` profile continues to dispatch factory tasks via `claude -p` CLI. Hermes `banxe-ops` runs read-only monitoring. Neither is replaced by OpenManus — they use different backends for different task types.
+
+**Where S-17 conflicts with or supplements the Hermes/Factory worldview:**
+- S-17 is fully compatible with Layer A. It describes the local execution substrate, not the orchestration canon.
+- S-17 does NOT specify how to dispatch tasks from Central — that remains factory discipline (through terminal A / factory task).
+- S-17 describes internet access capabilities (browser, search) that are NOT available from IronClaw zones (payment flows, AES-256 keys) per zero-trust constraint from S-07.
+
+### 5.6 Layer C: Interface Layer
+
+Source: S-17 (confirmed). All three interface categories confirmed with concrete implementation details.
+
+**Telegram bot (polling) — lightweight remote/mobile channel:**
+- Polling mode: Legion polls Telegram API every few seconds. No public IP, no SSL certificate required.
+- Timeout configured at 300s (`httpx.AsyncClient(timeout=300.0)`).
+- **Hard limit: 4096 characters per message.** Long outputs are truncated.
+- Long-output pattern: agent saves artifact to `workspace/`, bot returns file path or sends via `send_document()`.
+- Best for: short remote tasks, status queries, mobile on-the-go operator commands.
+- NOT suitable for: long analysis, code reviews, structured financial reports, multi-file outputs.
+
+**Open WebUI — preferred rich local interface:**
+```bash
+docker run -d -p 3000:8080 \
+  --add-host=host.docker.internal:host-gateway \
+  -e OPENAI_API_BASE_URL=http://host.docker.internal:8080/v1 \
+  -e OPENAI_API_KEY=none \
+  -v open-webui:/app/backend/data \
+  --name open-webui --restart always \
+  ghcr.io/open-webui/open-webui:main
+# Access: http://localhost:3000
+```
+Capabilities: unlimited response length, full Markdown/LaTeX/code rendering, built-in RAG, voice TTS/STT, artifact storage in UI, runs in browser on any LAN device. Direct OpenAI-compatible connection to llama-server — no OpenManus needed for plain LLM chat. For agentic tasks: connect via OpenManus API.
+
+**LibreChat — team/MCP-native alternative:**
+```bash
+# http://localhost:3080 (Docker Compose)
+# Native MCP tool support → direct OpenManus integration
+# Agent Builder UI, code execution in browser, conversation forking
+```
+Best for: multi-user scenarios, MCP tool use from UI, collaborative task management.
+
+**Mobile-native apps (beyond Telegram):**
+
+| App | Platform | Requirement | Agent tasks | Truncation |
+|-----|----------|-------------|-------------|-----------|
+| Enchanted LLM | iOS (App Store, free, iOS 17+) | Cloudflare Tunnel or ngrok | ❌ LLM chat only | ✅ None |
+| Open Mobile UI | Android (Google Play, React Native) | Cloudflare Tunnel or ngrok | ✅ Via Open WebUI | ✅ None |
+
+**Remote access (outside home LAN) — two options from S-17:**
+- **Cloudflare Tunnel** (recommended): permanent URL, free, no public IP. `cloudflared tunnel --url http://localhost:8080`
+- **ngrok**: simpler setup, URL changes on restart on free plan. `ngrok http 8080`
+
+**Operator topology (from S-17):**
+```
+Legion (local)
+├── llama-server :8080
+├── Open WebUI :3000        ← primary rich interface (local/LAN)
+└── cloudflared → https://tunnel.trycloudflare.com
+
+iPhone (anywhere)
+└── Enchanted LLM → https://tunnel.trycloudflare.com  (LLM chat)
+
+Android (anywhere)
+└── Open Mobile UI → https://tunnel.trycloudflare.com (full agentic via Open WebUI)
+
+Telegram (anywhere, lightweight)
+└── Bot polling → OpenManus :8000 → llama-server :8080
+```
+
+### 5.7 What Is Missing for Legion Private Engine
+
+1. **Hermes server deployment** — documented (S-07) but actual evo2 VPS systemd/Docker status: `[NOT SOURCE-CONFIRMED]`.
+2. **OpenManus deployment on Legion** — S-17 is a research/blueprint document. Whether OpenManus is installed and running is `[NOT SOURCE-CONFIRMED]`.
+3. **Open WebUI Docker on Legion** — Docker run command documented in S-17; deployment status: `[NOT SOURCE-CONFIRMED]`.
+4. **Cloudflare Tunnel setup** — required for remote access; configuration status: `[NOT SOURCE-CONFIRMED]`.
+5. **Tool Registry** — factory tools scattered across passport files and `.claude/skills/`. No unified registry.
+6. **BANXE-INTENT-ENGINE** — client-facing LangGraph intent parser not built (factory has OpenClaw/Ruflo for internal orchestration).
+7. **Unified private engine spec** — no single formal document equivalent to ADR-045 for the Legion Private Engine. S-07 + S-08 + S-17 together provide the picture; none is the formal spec.
+
+---
+
+## §5a — Legion Private Engine: Runtime and Interface Comparison
+
+Source: S-17 (confirmed, SHA f937c55f...). All comparison data source-anchored.
+
+### Interface Comparison Table
+
+| Attribute | Telegram | Open WebUI | LibreChat | Enchanted LLM (iOS) | Open Mobile UI (Android) |
+|-----------|----------|------------|-----------|---------------------|--------------------------|
+| Response length | ❌ 4096 chars | ✅ Unlimited | ✅ Unlimited | ✅ Unlimited | ✅ Unlimited |
+| Markdown rendering | ⚠️ Partial | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
+| Native mobile | ✅ Yes | ✅ Browser | ✅ Browser | ✅ Native iOS | ✅ Native Android |
+| OpenManus integration | ✅ Via REST API | ✅ Via REST API | ✅ Via MCP | ⚠️ LLM chat only | ✅ Via Open WebUI |
+| Voice (TTS/STT) | ❌ | ✅ Built-in | ❌ Limited | ❌ | ❌ |
+| RAG (doc retrieval) | ❌ | ✅ Built-in | ✅ Built-in | ❌ | ❌ |
+| Outside home access | ✅ Always (polling) | ⚠️ Needs tunnel | ⚠️ Needs tunnel | ✅ Needs tunnel | ✅ Needs tunnel |
+| Artifact return path | Truncation / send_document() | Full in UI | Full in UI | File sharing | File sharing |
+| Setup complexity | Simple (token only) | Docker (1 command) | Docker Compose | App Store install | Google Play install |
+
+**Operator recommendation (verbatim from S-17):** "Open WebUI для работы дома за ноутом — полный функционал, нет ограничений. Telegram оставить для доступа на ходу с телефона — быстрые короткие задачи."
+
+### Long-Output Handling Pattern (confirmed from S-17)
+
+Telegram's 4096-character limit requires a dedicated pattern for agent output:
+
+```python
+# In telegram_bot.py — long-result handling
+if len(result) > 4000:
+    # Option 1: truncate with notice
+    result = result[:4000] + "\n... [обрезано]"
+    await update.message.reply_text(f"✅ Результат:\n\n{result}")
+    # Option 2 (preferred for full output): save artifact + send file
+    # artifact_path = workspace / f"result_{timestamp}.txt"
+    # artifact_path.write_text(result)
+    # await update.message.reply_document(document=open(artifact_path, "rb"))
+```
+
+For structured outputs (code, reports, analysis): always use artifact path (`workspace/`) + `send_document()`. Truncation is for quick status responses only.
+
+### Conflict Analysis: Hermes Telegram vs OpenManus Telegram
+
+**Are these competing?** No. They are parallel paths for different task types.
+
+| Aspect | Hermes `factory` profile | OpenManus Telegram bot |
+|--------|--------------------------|------------------------|
+| Backend | Claude (claude -p via factory) | Local Qwen3.6 (llama-server :8080) |
+| Use case | Factory task dispatch, CI/CD monitoring, sprint ledger | Local agent tasks: browser, bash, search, file ops |
+| Telegram channel | Factory-specific channel (operators) | General operator channel |
+| Autonomy | L2/L3 per agent-authority.md | Local execution, offline capable |
+| Banking data access | Yes (via factory read-only) | No (local task execution only) |
+| Conflict | None — these are complementary layers | |
+
+Hermes `factory` profile = Layer A governance channel on Telegram.
+OpenManus Telegram bot = Layer B/C execution channel on Telegram.
+Both can coexist on different bot tokens / channels without conflict.
+
+### Deployment Status Summary (2026-07-10)
+
+| Component | Status | Source |
+|-----------|--------|--------|
+| llama-server :8080 with Qwen3.6 | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+| OpenManus FastAPI :8000 | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+| Telegram bot (polling) | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+| Open WebUI Docker :3000 | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+| Cloudflare Tunnel | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+| systemd llama-qwen.service | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+| systemd openmanus-api.service | `[NOT SOURCE-CONFIRMED — deployment]` | S-17 is blueprint |
+
+S-17 is a confirmed architecture/blueprint document. The described stack is well-specified and buildable. None of the above implies the stack is NOT deployed — only that the source corpus does not confirm running state.
 
 ---
 
@@ -336,7 +529,8 @@ Maturity Tier 3 (designed, not yet built):
   ├── Agent Communication Protocol (standardized envelope)
   ├── S13-00 Business Process Repository (future ADR)
   ├── AI cost governance policy (future ADR)
-  └── Manus-on-Legion → Telegram client-facing (future, NOT SOURCE-CONFIRMED)
+  ├── Legion Layer B/C stack (llama-server, OpenManus, Open WebUI, Telegram bot) — source-confirmed blueprint (S-17); deployment status unconfirmed
+  └── Manus-on-Legion → Telegram client-facing scope (ADR-002 deferred, Phase 3 KYC + FCA permissions)
 
 Maturity Tier 4 (research / world benchmarks, not yet on BANXE roadmap):
   ├── PRAGMA (Revolut, 40B transaction events) — referenced in S-02
@@ -507,7 +701,13 @@ CREDIT circuit ≠ Unblocked path
 - [ ] **Hermes `banxe-ops` profile**: connect to MiroFish prediction feed, AML alert stream
 - [ ] **Hermes `factory` profile**: wire to OpenClaw CLI via SSH, monitor CI/CD jobs
 - [ ] **NanoClaw**: automate TDD-first generation before OpenClaw coding pass
-- [ ] Manus-on-Legion → Telegram client advisory interface: `[OPERATOR DECISION REQUIRED]` — define scope per ADR-002 (client-facing deferred until Phase 3 KYC + FCA permissions cleared) `[NOT SOURCE-CONFIRMED AS CURRENTLY SCOPED]`
+- [ ] **Layer B — local model-serving substrate**: `llama-qwen.service` systemd unit (llama-server :8080, Qwen3.6-35B-A3B IQ2_M)
+- [ ] **Layer B — agent API wrapper**: `openmanus-api.service` systemd unit (FastAPI :8000, Requires=llama-qwen.service)
+- [ ] **Layer B — tool execution plane**: confirm 7-tool set functional on Legion (bash, browser_use_tool, python_execute, duckduckgo_search, google_search, file_saver, planning)
+- [ ] **Layer C — preferred rich interface**: Open WebUI Docker (:3000) with Cloudflare Tunnel for remote access
+- [ ] **Layer C — secondary mobile interface**: Telegram bot (polling) for on-the-go short tasks; Enchanted LLM / Open Mobile UI via tunnel
+- [ ] **Artifact return path**: long-output handling via `workspace/` directory + `send_document()` in Telegram bot
+- [ ] Manus-on-Legion client-facing scope: `[OPERATOR DECISION REQUIRED]` — define scope per ADR-002 (client-facing deferred until Phase 3 KYC + FCA permissions cleared)
 
 ---
 
