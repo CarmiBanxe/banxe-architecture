@@ -27127,3 +27127,33 @@ sequence window, pretraining objective, hyperparams, threshold = governed-config
 §10). Cluster-2 fraud engine (#111 GBM + #49 HGNN + #46 tx-embedding) COMPLETE after this merges. Refs:
 ADOPTION-FINALIZATION-SP41 §1.1/§4, GAP-FRAUD-ENGINE, ADR-102, ADR-FRAUD-03, ADR-FRAUD-04, ADR-111
 (distinct), ADR-046, MODEL-RISK-MANAGEMENT, #66 XAI, I-24/I-27.
+
+---
+
+### IL-1064 - agent-factory-engine-sync-contracts-v1 @ 2026-07-06T12:46:46Z
+
+- **il_ts:** 2026-07-06T12:46:46Z
+- **session_id:** agent-factory-engine-sync-contracts-v1
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-engine-sync-contracts-v1/IL-2026-07-06T12-46-46Z--c6b771.md`
+
+### agent-factory-engine-sync-contracts-v1
+
+- **Instruction:** ENGINE sync contracts — TaskStatus(10) + ScopeRef + SyncMessage + 9 subclasses + HMAC-SHA256 + 41 tests [ENGINE-BLUEPRINT §12]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1065 - agent-factory-engine-task-registry-v1 @ 2026-07-06T20:58:35Z
+
+- **il_ts:** 2026-07-06T20:58:35Z
+- **session_id:** agent-factory-engine-task-registry-v1
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-engine-task-registry-v1/IL-2026-07-06T20-58-35Z--037150.md`
+
+### agent-factory-engine-task-registry-v1
+
+- **Instruction:** ENGINE BTR slice-2: TaskRegistryService + InMemoryTaskRegistry + InMemoryScopeLock + TaskValidator (41 tests) [ENGINE-BLUEPRINT §2,4]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
