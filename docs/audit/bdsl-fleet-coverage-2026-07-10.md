@@ -1,6 +1,6 @@
-# BDSL Fleet Coverage Audit — 2026-07-10
-# Status: CORRECTED (v2) — supersedes earlier draft on feat/bdsl-foundation
-# Branch: feat/bdsl-activation-prep
+# BDSL Fleet Coverage Audit — 2026-07-10 (v3)
+# Status: CORRECTED (v3) — supersedes all prior versions
+# Branch: agent/factory/t5/bdsl-activation-prep
 # Authoritative source: docs/audit/ORG-CODE-RECONCILIATION-v2.md
 # Source SHA: b84a4babf36bb0f9cc1618b26970f3cf009620c5780cda45313a4c1b41a2f035
 # Source date: 2026-06-21 | Supersedes: ORG-CODE-RECONCILIATION-2026-06-11.md
@@ -26,18 +26,25 @@
 | Passports total (34 existing + 13 PROPOSED) | **47** | ORG-CODE-RECONCILIATION-v2 §Summary |
 | **Domain coverage (owner assigned)** | **91/91 = 100%** | Matrix C |
 | True orphans (no owner) | **0** | Matrix C |
+| Physical yaml files — primary machine | **42** | Shell audit (root + aml/ + finance/ subdirs) |
+| Physical yaml files — this worktree | **70** | Feature-branch additions included |
+| Deduplicated unique names (all machines) | **67** | 47 v2-canonical + 20 worktree noise |
 
 ---
 
 ## Activation Status
 
 > **BDSL activation as live-config is BLOCKED** pending operator sign-off on:
-> 1. **13 PROPOSED passports** — `status: PROPOSED, autonomy: L2_REVIEW` — NOT activated (I-27).
->    Full list: `docs/audit/bdsl-fleet-classification-2026-07-10.md` § "13 PROPOSED Passports".
-> 2. **ADR-046 Decision Record schema** (`schemas/agent_decision_record.schema.json`, sha a95d8e95…)
+> 1. **13 PROPOSED passports** — `status: PROPOSED, autonomy: L2_REVIEW` — NOT activated.
+>    Full list and ENROL/DEFER/EXCLUDE classification:
+>    `docs/audit/bdsl-fleet-classification-2026-07-10.md` §Part B.
+> 2. **ADR-046 Decision Record schema** (`schemas/agent_decision_record.schema.json`, sha `a95d8e95…`)
 >    is the canonical schema for DecisionRecord. See `docs/audit/bdsl-i27-clarification.md`.
 > 3. **Schema reconciliation ADR** (`docs/adr/ADR-schema-reconciliation-decisionrecord.md`)
 >    status PROPOSED — awaits ratification before any agent emits BDSL records.
+> 4. **CREDIT-GAP operator decision** — no dedicated credit_decision_agent exists; credit logic
+>    embedded in `finance/apar_agent` and `channel_c_sepa_orchestrator` is unaccounted under
+>    EU AI Act Annex III §5. See `bdsl-fleet-classification-2026-07-10.md` §CREDIT-GAP.
 >
 > No thresholds, weights, or gate specs are set here. Those live in
 > `governance/novelty-pipeline-config.yaml`.
@@ -58,8 +65,9 @@ Selected key domain mappings (full list in Matrix A of ORG-CODE-RECONCILIATION-v
 | Compliance | compliance, compliance_automation, sanctions_screening, fatca_crs | compliance_monitoring_agent, sanctions_check / CTX-02 |
 | Safeguarding | safeguarding, safeguarding-engine, recon | safeguarding_recon_governor / CTX-05 |
 | Reporting | reporting, reporting_analytics, fx_exchange | reporting_agent, treasury_alm_agent / CTX-10 |
-| Lending/Credit | lending, savings, insurance, card_issuing | existing agents / CTX-07 |
+| Finance / AP-AR | ap_ar, gl_close, consolidation, ifrs | finance/apar_agent, finance/ifrs_agent / CTX-10 |
 | Open Banking | psd2_gateway, open_banking | existing agents / CTX-04 |
+| Lending/Credit | lending, savings, insurance, card_issuing | ⚠️ **CREDIT-GAP** — no dedicated agent; credit logic embedded in finance/apar_agent and channel_c_sepa_orchestrator. EU AI Act Annex III §5 blocker. See §CREDIT-GAP in bdsl-fleet-classification-2026-07-10.md |
 
 ### Orphan → PROPOSED (13 services — new passports, Matrix B)
 
@@ -96,20 +104,23 @@ These services have NO agent by design; owned by CTO platform (infra custody):
 | Passport coverage | 91/91 domain services have owner | CLEARED (100%) |
 | True orphans | Services with no owner | CLEARED (0) |
 | 13 PROPOSED passports | status=PROPOSED, await operator sign-off | PENDING operator PR |
-| Decision record schema | ADR-046 `schemas/agent_decision_record.schema.json` canonical | CONFIRMED (sha a95d8e95…) |
+| Decision record schema | ADR-046 `schemas/agent_decision_record.schema.json` canonical | CONFIRMED (sha `a95d8e95…`) |
 | I-27 KYC HOLD | HITL-L4 operator stop on KYC/KYB/AML activation | SEPARATE GATE (see bdsl-i27-clarification.md) |
-| Schema reconciliation ADR | Coexistence: ADR-046 lineage + BDSL MAUT (PROPOSED) | PENDING ratification |
+| Schema reconciliation ADR | ADR-schema-reconciliation-decisionrecord.md | PENDING ratification |
+| CREDIT-GAP | No credit_decision_agent; EU AI Act Annex III §5 | BLOCKER (credit circuit only) |
+| BDSL fleet classification | All 47 passports classified ENROL/DEFER/EXCLUDE | ENROL=15 DEFER=9 EXCLUDE=23 (sum=47) |
 | Governance config | Thresholds and weights | `governance/novelty-pipeline-config.yaml` (not in this doc) |
 
-**BDSL activation proceeds only after operator sign-off on the 13 PROPOSED passports.**
-The 0-orphan / 100% domain coverage condition is already satisfied.
+**BDSL activation (AML/KYC/PAYMENT/COMPLIANCE circuits) proceeds after operator sign-off
+on the 13 PROPOSED passports.** The 0-orphan / 100% domain coverage condition is already satisfied.
+CREDIT circuit requires separate CREDIT-GAP operator decision (independent blocker).
 
 ---
 
 ## References
 
 - **Authoritative source:** `docs/audit/ORG-CODE-RECONCILIATION-v2.md` (sha b84a4bab…)
-- **Classification registry (13 PROPOSED):** `docs/audit/bdsl-fleet-classification-2026-07-10.md`
+- **Classification registry (all 47, ENROL/DEFER/EXCLUDE):** `docs/audit/bdsl-fleet-classification-2026-07-10.md`
 - **I-27 clarification:** `docs/audit/bdsl-i27-clarification.md`
 - **ADR-046 decision record:** `schemas/agent_decision_record.schema.json` (sha a95d8e95…)
 - **Schema reconciliation ADR:** `docs/adr/ADR-schema-reconciliation-decisionrecord.md`
