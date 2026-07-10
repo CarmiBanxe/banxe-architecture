@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://banxe.internal/schemas/agent/decisionrecord.schema.json",
+  "$comment": "⚠️ SUPERSEDED — This schema is a DUPLICATE of the canonical Decision Record schema. CANONICAL schema: schemas/agent_decision_record.schema.json (ADR-046, sha a95d8e959417ad86dbb19e1d07ccd02d036671b92cd12912f640827c82db313b). Do NOT use this file. Do NOT emit records against this schema. Canon = ADR-046. Superseded: 2026-07-10 on feat/bdsl-activation-prep. Original purpose: MAUT full-structure evaluation record (BDSL §1.1 body-sha c4f71e72...30553f). Decision: ADR-046 covers the compliance lineage record; this MAUT overlay was identified as a non-canonical duplicate during fleet alignment to ORG-CODE-RECONCILIATION-v2 (sha b84a4bab...). Any future MAUT extension should be done via additive optional fields in ADR-046 schema (Option B in ADR-schema-reconciliation-decisionrecord.md), gated by human-gated PR.",
+  "title": "⚠️ SUPERSEDED — BANXE BDSL DecisionRecord (MAUT Full Structure) — USE schemas/agent_decision_record.schema.json INSTEAD",
+  "description": "SUPERSEDED — This schema is a duplicate. Canonical schema: schemas/agent_decision_record.schema.json (ADR-046). This file exists as a historical artifact of the feat/bdsl-foundation branch and MUST NOT be used for runtime records. Status: SUPERSEDED 2026-07-10 on feat/bdsl-activation-prep. See docs/audit/bdsl-fleet-coverage-2026-07-10.md and docs/adr/ADR-schema-reconciliation-decisionrecord.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "agent_id",
+    "agent_version",
+    "decision_domain",
+    "timestamp_utc",
+    "trace_id",
+    "context",
+    "decision_space",
+    "criteria",
+    "utility_computation",
+    "chosen",
+    "stopping_rule",
+    "bias_flags",
+    "minimax_regret",
+    "human_review",
+    "schema_hash",
+    "prev_record_hash",
+    "emitted_to"
+  ],
+  "properties": {
+    "record_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Immutable primary key — UUID v4. Assigned at emit time; never reused or mutated (I-BDSL-1: append-only immutability)."
+    },
+    "agent_id": {
+      "type": "string",
+      "pattern": "^agent:[a-z][a-z0-9_-]{1,63}:[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Canonical agent identity in the form agent:<name>:<semver>. E.g. agent:kyc-checker:2.3.1."
+    },
+    "agent_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "SemVer of the agent code at emit time. Redundant with agent_id suffix but explicit for query convenience."
+    },
+    "decision_domain": {
+      "type": "string",
+      "enum": ["KYC", "AML", "PAYMENT", "CREDIT", "COMPLIANCE", "ESCALATION"],
+      "description": "Domain of the decision — governs permissible stopping_rule values (e.g. PAYMENT and COMPLIANCE require full_search per §1.2 of pinned source)."
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Decision finalization instant — UTC, RFC 3339, millisecond precision."
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Distributed trace UUID tying this record to the originating request span. Same id space as correlation_id in agent_decision_record.schema.json (ADR-046)."
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_id", "session_id", "input_hash", "input_schema_version"],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Hashed reference to the subject entity (customer/tx/account). Raw identifiers MUST NOT appear here (R-SEC: no PII in lineage fields)."
+        },
+        "session_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Session/request UUID scoping this evaluation."
+        },
+        "input_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "SHA-256 of the full input payload — enables replay without storing the payload. Format: sha256:<hex64>."
+        },
+        "input_schema_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+$",
+          "description": "Version of the input payload schema at eval time."
+        }
+      }
+    },
+    "decision_space": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["D"],
+      "description": "The full set of alternatives considered. INVARIANT: D must contain at least 2 feasible alternatives (single-option decisions are prohibited per §1.2).",
+      "properties": {
+        "D": {
+          "type": "array",
+          "minItems": 2,
+          "description": "Alternatives actually evaluated. Must have >= 2 items (enforced here; business invariant: >= 2 feasible).",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "feasible"],
+            "properties": {
+              "id":       { "type": "string", "pattern": "^d[0-9]+$" },
+              "label":    { "type": "string", "minLength": 1 },
+              "feasible": { "type": "boolean" }
+            }
+          }
+        },
+        "pruned": {
+          "type": "array",
+          "description": "Alternatives eliminated before scoring, with reason.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "reason"],
+            "properties": {
+              "id":     { "type": "string", "pattern": "^d[0-9]+$" },
+              "label":  { "type": "string", "minLength": 1 },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 1,
+      "$comment": "MAUT criterion vector. APPLICATION-LEVEL INVARIANT (not enforceable in JSON Schema): sum(weight) = 1.0 ± 1e-6. Validated by the governance layer at emit time. Weights and target score ranges live in governance/novelty-pipeline-config.yaml — NOT in this schema.",
+      "description": "MAUT evaluation criteria vector. Weights are runtime values, not hardcoded here.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "weight", "score_chosen", "score_method", "normalization"],
+        "properties": {
+          "id":            { "type": "string", "pattern": "^c[0-9]+$" },
+          "name":          { "type": "string", "minLength": 1 },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Criterion weight w_j in MAUT additive formula. Actual values come from governance/novelty-pipeline-config.yaml."
+          },
+          "score_chosen": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Utility score u_j(x_ij) for the chosen alternative, normalized [0,1]."
+          },
+          "score_method":    { "type": "string", "minLength": 1 },
+          "normalization":   { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "utility_computation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "formula", "U_chosen", "U_per_option", "pareto_frontier"],
+      "properties": {
+        "method":  {
+          "type": "string",
+          "enum": ["MAUT_additive", "MAUT_multiplicative"],
+          "description": "Aggregation method. MAUT_additive is standard: U = sum(w_j * u_j)."
+        },
+        "formula": { "type": "string", "minLength": 1 },
+        "U_chosen": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Aggregate utility of the chosen alternative."
+        },
+        "U_per_option": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 },
+          "description": "Map of decision_id → aggregate utility for all evaluated alternatives."
+        },
+        "pareto_dominated_by_chosen": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of alternatives dominated by the chosen decision."
+        },
+        "pareto_frontier": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "IDs of Pareto-optimal alternatives."
+        }
+      }
+    },
+    "chosen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "label", "confidence", "confidence_method", "tier", "rationale"],
+      "properties": {
+        "decision_id":        { "type": "string", "pattern": "^d[0-9]+$" },
+        "label":              { "type": "string", "minLength": 1 },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "$comment": "P(outcome=expected | context). Tier assignment (AUTO/REVIEW/BLOCK) is computed by governance layer using thresholds from governance/novelty-pipeline-config.yaml — thresholds are NOT encoded in this schema."
+        },
+        "confidence_method":  { "type": "string", "minLength": 1 },
+        "tier": {
+          "type": "string",
+          "enum": ["AUTO", "REVIEW", "BLOCK"],
+          "description": "HITL tier derived from confidence score. Tier boundaries live in governance/novelty-pipeline-config.yaml and .claude/rules/agents.md BUG-007."
+        },
+        "rationale":          { "type": "string", "minLength": 1 }
+      }
+    },
+    "stopping_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applied", "threshold_met_at_step", "exploration_ratio"],
+      "$comment": "PAYMENT and COMPLIANCE domains MUST use full_search (§1.2 regulatory constraint). satisficing is permissible only for KYC, AML, CREDIT, ESCALATION domains. Enforcement is application-layer, not schema-layer.",
+      "properties": {
+        "applied": {
+          "type": "string",
+          "enum": ["satisficing", "full_search", "secretary_37pct"],
+          "description": "Stopping algorithm applied. full_search mandatory for PAYMENT and COMPLIANCE."
+        },
+        "threshold_met_at_step": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Which candidate (0-indexed) first satisfied the stopping condition."
+        },
+        "exploration_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0 = immediate accept; 1 = full exploration of all alternatives."
+        },
+        "note": { "type": "string" }
+      }
+    },
+    "bias_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prospect_bias_check", "anchoring_check", "omission_bias_check", "method"],
+      "properties": {
+        "prospect_bias_check":  { "type": "string", "enum": ["PASS", "FAIL", "SKIP"] },
+        "anchoring_check":      { "type": "string", "enum": ["PASS", "FAIL", "SKIP"] },
+        "omission_bias_check":  { "type": "string", "enum": ["PASS", "FAIL", "SKIP"] },
+        "method":               { "type": "string", "minLength": 1 }
+      }
+    },
+    "minimax_regret": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["computed", "minimax_optimal", "chosen_matches_minimax"],
+      "properties": {
+        "computed": { "type": "boolean" },
+        "regret_matrix": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "description": "Map of decision_id → worst-case regret value [0,1]. Present when computed=true."
+        },
+        "minimax_optimal":       { "type": "string", "description": "ID of the minimax-optimal alternative." },
+        "chosen_matches_minimax": { "type": "boolean" }
+      }
+    },
+    "human_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "reviewer_id", "review_ts", "override", "override_reason"],
+      "$comment": "I-27: HITL — AI PROPOSES, human DECIDES. When tier=REVIEW or tier=BLOCK, required=true and reviewer_id/review_ts MUST be non-null before the decision is acted upon. Enforcement is at the governance gate (I-BDSL-2), not JSON Schema.",
+      "properties": {
+        "required":       { "type": "boolean" },
+        "reviewer_id":    { "type": ["string", "null"] },
+        "review_ts":      { "type": ["string", "null"], "format": "date-time" },
+        "override":       { "type": ["string", "null"] },
+        "override_reason":{ "type": ["string", "null"] }
+      }
+    },
+    "schema_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "SHA-256 of this record excluding this field — integrity seal. Computed by the emitting agent; verified by the intake orchestrator."
+    },
+    "prev_record_hash": {
+      "type": "string",
+      "pattern": "^(sha256:[0-9a-f]{64}|GENESIS)$",
+      "description": "Hash-chain link to the previous DecisionRecord for this agent. GENESIS for the first record."
+    },
+    "emitted_to": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Destination sinks this record was dispatched to (e.g. kafka:decision-log-topic, audit-s3-worm). At least one required."
+    }
+  }
+}
