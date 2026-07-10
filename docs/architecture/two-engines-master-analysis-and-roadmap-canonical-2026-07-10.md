@@ -57,8 +57,8 @@
 | S-15 | `docs/audit/bdsl-fleet-classification-2026-07-10.md` | worktree `docs/audit/` | All 47 passports, ENROL/DEFER/EXCLUDE, CREDIT-GAP |
 | S-16 | `docs/audit/bdsl-fleet-coverage-2026-07-10.md` | worktree `docs/audit/` | Coverage gates, activation blockers |
 | S-17 | `manus-legion-telegram-architecture.md` | `/home/mmber/MetaClaw/docs/sources/` | Legion private engine runtime + interface blueprint: OpenManus, llama-server, FastAPI, Telegram, Open WebUI, mobile apps, systemd |
-| S-18 | `BANXE-Private-Legion-Engine-Otvety-Konsultanta-2026-07-10.md` | worktree `docs/sources/` | Consultant advisory: 9 corrections applied to §§1–14. Status: advisory; operator + Central ratification required (I-27). |
-| S-19 | `BANXE-Private-Legion-Engine-Otvety-na-otkrytye-voprosy-arkhitektury-2026-07-10.md` | worktree `docs/sources/` | Open architecture Q&A: framework comparison table, memory layer roles, implementation inventory matrix, EU AI Act article precision, DLP detail, source hierarchy, evo1 risk. 298 lines, 36628 bytes. Integrated into §7–§9, §12. |
+| S-18 | `BANXE-Private-Legion-Engine-Otvety-Konsultanta-2026-07-10.md` | worktree `docs/sources/` | Consultant advisory: 9 corrections applied to §§1–14 (sha ba53185a, 162 lines). Status: advisory; operator + Central ratification required (I-27). Referenced as `(S-18 C1)..(S-18 C9)` throughout. |
+| S-19 | `BANXE-Private-Legion-Engine-Otvety-na-otkrytye-voprosy-arkhitektury-2026-07-10.md` | worktree `docs/sources/` | Open architecture Q&A: framework comparison table, memory layer roles, implementation inventory matrix, EU AI Act article precision, DLP detail, source hierarchy, evo1 risk (sha 719494c4, 298 lines, 36628 bytes). Integrated into §7–§9, §12. Referenced as `(S-19 B1..B6)`, `(S-19 Q1..Q5)` throughout. **PROVENANCE NOTE:** commit `14ad199` subject incorrectly labelled this file "S-18 consultant answers" — informal naming. Formal designation in this document is S-19 (distinct from S-18 above: different SHA ba53185a≠719494c4, different content). S-18 and S-19 are two separate consultation artefacts from the same session. |
 
 ### SHA Anchors
 
@@ -88,7 +88,7 @@ S-19 Open architecture Q&A sha256 (computed 2026-07-10):
   (298 lines, 36628 bytes)
 ```
 
-### Source Hierarchy (S-18 C6, S-19 B6)
+### Source Hierarchy (S-18 C6 + S-19 B6 — complementary, not duplicate)
 
 ```
 LEVEL 0 [UNCONDITIONAL]:
