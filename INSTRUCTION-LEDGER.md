@@ -27169,3 +27169,15 @@ ADOPTION-FINALIZATION-SP41 §1.1/§4, GAP-FRAUD-ENGINE, ADR-102, ADR-FRAUD-03, A
 - **shard:** `ledger/entries/agent-factory-adr143-ratify/IL-2026-07-10T16-06-55Z--adr143-ratify.md`
 
 ### ADR-143 ratification (PROPOSED→accepted) — allocator live-verified; guard per ADR-102; no code change; doc + shard only. Refs: ADR-143, ADR-056, ADR-060 (coupling), ADR-119, #1084.
+
+---
+
+### IL-1067 - agent-factory-r3-ledger-safety-tooling @ 2026-07-10T17:13:59Z
+
+- **il_ts:** 2026-07-10T17:13:59Z
+- **session_id:** agent-factory-r3-ledger-safety-tooling
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-r3-ledger-safety-tooling/IL-2026-07-10T17-13-59Z--r3-tooling.md`
+
+### R3 ledger-safety tooling — factory-preflight.sh + safe-push.sh + ledger-singleton-guard.yml (warn-level); complements main-serialize (base-drift) and LEDGER-MERGE-QUEUE (single-writer). No existing workflow modified except append-only doc pointer. Refs: ADR-143, ADR-056, ADR-060, LEDGER-MERGE-QUEUE.md.

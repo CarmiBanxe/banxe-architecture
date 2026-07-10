@@ -1,0 +1,50 @@
+name: ledger-singleton-guard
+
+# Warn-level advisory guard for the "one ledger PR at a time" single-writer rule
+# (docs/governance/LEDGER-MERGE-QUEUE.md). Complements — does NOT replace —
+# .github/workflows/main-serialize.yml (which hard-fails on base-drift). This job
+# only emits a ::warning:: (never hard-fails) so concurrent ledger PRs cannot deadlock
+# each other; the operator/SMF still serialises merges per LEDGER-MERGE-QUEUE.md.
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  singleton-open-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Warn if another ledger-touching PR is already open
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          LEDGER_RE='INSTRUCTION-LEDGER|IL-SEQUENCE|ledger/entries|governance/'
+          # Is THIS PR ledger-touching?
+          self_paths="$(gh pr view "$PR_NUMBER" --repo "$REPO" --json files --jq '.files[].path' || true)"
+          if ! printf '%s\n' "$self_paths" | grep -qE "$LEDGER_RE"; then
+            echo "This PR is not ledger-touching — singleton guard not applicable."
+            exit 0
+          fi
+          echo "This PR (#$PR_NUMBER) is ledger-touching; scanning other open PRs…"
+          others=""
+          for n in $(gh pr list --repo "$REPO" --state open --json number --jq '.[].number'); do
+            [ "$n" = "$PR_NUMBER" ] && continue
+            paths="$(gh pr view "$n" --repo "$REPO" --json files --jq '.files[].path' || true)"
+            if printf '%s\n' "$paths" | grep -qE "$LEDGER_RE"; then
+              others="$others #$n"
+            fi
+          done
+          others="${others# }"
+          if [ -n "$others" ]; then
+            echo "::warning title=Ledger single-writer::Another ledger-touching PR is already open ($others). Per docs/governance/LEDGER-MERGE-QUEUE.md, only ONE ledger PR should merge at a time — serialise merges (rebase + re-mint after each). This is advisory (non-blocking)."
+          else
+            echo "No other ledger-touching PR open — single-writer rule satisfied."
+          fi
