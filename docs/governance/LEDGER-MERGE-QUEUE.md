@@ -55,3 +55,15 @@ While the queue is off, ledger-touching PRs are merged under a **manual single-w
 Each is re-minted under §"Interim single-writer procedure" only when it is its turn. This is
 governance-only: **no runtime, no cron, no runner, no secret** is added here — only the operating rule
 and the order. The real fix remains: **operator enables the merge queue.**
+
+## Factory tooling (R3, 2026-07-10) — pointer-first
+
+New factory-side helpers complement this procedure (ADR-102: pointer-first, no restate):
+
+- `tools/factory/factory-preflight.sh` — read-only git/ledger preflight (named-branch, fetch,
+  base-drift, **singleton-open** count, Redis allocator PING, optional `--check`). Diagnostics only.
+- `tools/factory/safe-push.sh` — the sanctioned push wrapper: always `--force-with-lease`; refuses
+  `--force` / `--no-verify` / `--admin`.
+- `.github/workflows/ledger-singleton-guard.yml` — **warn-level** CI check that names any other open
+  ledger-touching PR (this rule, previously documented-only, is now surfaced in CI). Non-blocking, to
+  avoid deadlock; the hard base-drift gate remains `main-serialize.yml`.
