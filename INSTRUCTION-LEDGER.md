@@ -27238,3 +27238,18 @@ Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explain
 
 - **Instruction:** S-19 integration + 14-section restructure + EMI dormant scope + provenance fix
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1072 - agent-factory-handoff-recover-consultant-verdicts @ 2026-07-10T23:15:21Z
+
+- **il_ts:** 2026-07-10T23:15:21Z
+- **session_id:** agent-factory-handoff-recover-consultant-verdicts
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-handoff-recover-consultant-verdicts/IL-2026-07-10T23-15-21Z--a4c8e6.md`
+
+### agent-factory-handoff-recover-consultant-verdicts
+
+- **Instruction:** Recover consultant verdicts + 49Q package + design-56 handoff docs from Claude Code file-history/transcript (anti-loss, docs-only) — PR #1123
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
