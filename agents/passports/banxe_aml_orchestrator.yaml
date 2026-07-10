@@ -1,3 +1,9 @@
+# SUPERSEDED 2026-07-07 (ADR-102 dedup, operator ruling) -> merged into the canonical
+# governance passport agents/passports/aml/banxe_aml_orchestrator.yaml (RED / L1-top / autonomy L3).
+# Retained append-only (I-24); do NOT consume this passport. Hard-removal is a separate operator decision.
+status: SUPERSEDED
+superseded_by: agents/passports/aml/banxe_aml_orchestrator.yaml
+
 agent_id: banxe_aml_orchestrator
 name: "Banxe AML Orchestrator"
 version: "3.0.0"

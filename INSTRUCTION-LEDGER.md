@@ -26031,3 +26031,1195 @@ pointer-first; §4 amended in-place) · ADR-120 (worktree) · I-24 (append-only 
   `agent/factory/ops/logstatusreport`), ADR-119 + ADR-133 (IL-freeze at
   merge), ADR-120 (per-session worktree), ADR-156 (sandbox posture),
   ADR-163 + `docs/canon/SYNC-CANON.md` (sync-before-act for this shard).
+
+---
+
+### IL-996 - knowledge-repair-brigade-roadmap @ 2026-07-07T00:00:00Z
+
+- **il_ts:** 2026-07-07T00:00:00Z
+- **session_id:** knowledge-repair-brigade-roadmap
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/knowledge-repair-brigade-roadmap/IL-2026-07-07T00-00-00Z--repair-brigade-roadmap.md`
+
+### Zero-loss archival: BANXE Repair Brigade Roadmap
+- sha256=f6eff5391d69fd74e09ff4c1c85583e093a803484871d82365767f0ca1103ddb bytes=6027 lines=217 corruption=0
+- Sprint 0..5: infra audit -> 24/7 resilience
+- Additive only; ADR-120; I-24; Rule 6
+
+---
+
+### IL-997 - agent-factory-souls-cohort13-ctx01-governance-oversight @ 2026-07-06T22:43:01Z
+
+- **il_ts:** 2026-07-06T22:43:01Z
+- **session_id:** agent-factory-souls-cohort13-ctx01-governance-oversight
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-cohort13-ctx01-governance-oversight/IL-2026-07-06T22-43-01Z--souls-cohort13-ctx01-governance-oversight.md`
+
+### Cohort 13 — CTX-01 governance/oversight: author 4 governor SOULs (w/ Decision Method), prepare-only, no activation
+
+- **Objective:** Author 4 SOUL charters for the genuinely-SOUL-less CTX-01 governance/oversight agents: `internal_audit_agent`, `safeguarding_audit_agent`, `resilience_agent`, `pricing_fee_governor`. Second cohort under the ADR-131 amendment — every SOUL carries the mandatory `## Decision Method` (FACTORY-CANON §1.11). Fleet forward-path (after 12b/#1079).
+- **MANDATORY FUZZY ADR-102 DEDUP (applied):** all 4 fuzzy-confirmed **genuinely SOUL-less** (stem + suffix-variant match) — no DROP.
+- **Status body-check (facts from passport):**
+  - `internal_audit_agent` — `status: active` but body = STUB ("PROPOSES only (I-27); NOT activated; no service code — GAP-078") → **PROPOSED** (stray-active not trusted). **L1 · RED · CLASS_B · CTX-01**; human_double **Internal Audit (Grant Thornton UK, outsourced)**; SMF5; **3rd Line — independent assurance, reports to Audit Committee/Board**; `traffic_light_audit` (S-FAC-65 primary owner, read-only verdict); auto_refactor_pro prohibited (independence). Report findings, no management action.
+  - `safeguarding_audit_agent` — genuine **PROPOSED**. **L2 · RED · CLASS_B · CTX-01**; human_double **Head of Internal Audit** (+CRO); annual safeguarding audit (**PS25/12**, relevant funds >£100k; **CASS 15**); ports AuditRequestPort→CompliancePort/AuditPort; invariants I-27 + I-28 (append-only evidence); sign-off = Head of Internal Audit; auto_refactor prohibited.
+  - `resilience_agent` — genuine **PROPOSED**. L2 · AMBER · CLASS_B · CTX-01; human_double **CTIO** (+COO); operational resilience (**DORA EU 2022/2554, FCA SYSC 15A**) — DR/BCP scenarios, incident-response runbooks, ICT third-party risk; ports ResilienceRequestPort→NotificationPort/AuditPort; invariant I-27; `traffic_light_audit` co-owner (RED escalation); decisions = CTIO+COO; auto_refactor prohibited.
+  - `pricing_fee_governor` — genuine **PROPOSED**. L2 · AMBER · CLASS_B · CTX-01; human_double **CFO** (+CEO); pricing-rules & fee-schedule governance routing existing `services/fee_management` (GAP-019, route-not-reimplement); ports PricingIntentPort→FeeManagementPort/AuditPort; invariants I-27 + I-08; **FCA Consumer Duty (fair value)**, COBS (fee disclosure), PSRs 2017; no autonomous customer-price change.
+- **Format:** each SOUL = **13 sections** (12 governor-house + mandatory `## Decision Method` after HITL Gate, matching cohort 12b). Decision Method grounded per-soul (enumerate feasible actions → score by the passport's criteria → satisfice within ITS HITL gate → escalate to ITS human double; fail-closed precedence I-27/BUG-007; pointer-first to best-decision-concept-2026-07-06-v2.md + BEST-DECISION-BOUNDARY + ADR-162 — not restated).
+- **Oversight-not-decide discipline (canon):** internal_audit = 3rd-line report-only (no management action, independence absolute); safeguarding_audit = evidence/findings → Head of Internal Audit, never a safeguarding sign-off; resilience = model/triage → CTIO+COO, no autonomous DR/runbook/ICT-risk action; pricing_fee = govern/route → CFO, no autonomous customer-price change. SOUL **describes** authority, never expands it (CI + ADR-117/128/121). route-not-reimplement (pricing_fee wraps fee_management).
+- **ADR-102 duplication audit:** `agents/souls/` fuzzy-checked — no pre-existing/near-duplicate for any of the 4 stems. **Decision: add net-new (4).**
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 / agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease`; NO-PASSPORT-DIFF guard before push.
+- **Deliverable:** 4 `agents/souls/*.md` (each with `## Decision Method`) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8); churn-resilient atomic mint.
+- **Fleet impact:** 61 → 65 SOULs; genuinely-SOUL-less 9 → 5 (remaining: crypto_aml; aml_orchestrator + case_management_agent [AML-decision]; ceo_orchestration + treasury_alm [C-suite/treasury]).
+- **Refs:** SOUL cohort 12b (#1079); FACTORY-CANON §1.11 + ADR-131 amendment 2026-07-07 (#1077); passports agents/passports/{internal_audit_agent,safeguarding_audit_agent,resilience_agent,pricing_fee_governor}.yaml; CLAUDE.md §11; I-08; I-27; I-28; BUG-007; ADR-102; ADR-117/120/121/128; GAP-078; GAP-019; PS25/12; CASS 15; DORA / FCA SYSC 15A; FCA Consumer Duty / COBS / PSRs 2017; S-FAC-65 traffic-light-audit; docs/sources/best-decision-concept-2026-07-06-v2.md; BEST-DECISION-BOUNDARY; ADR-162.
+
+---
+
+### IL-1003 - sp32-bestdecidagentdesign-adr164 @ 2026-07-06T22:26:58Z
+
+- **il_ts:** 2026-07-06T22:26:58Z
+- **session_id:** sp32-bestdecidagentdesign-adr164
+- **source:** Terminal-B
+- **status:** REVIEW
+- **shard:** `ledger/entries/sp32-bestdecidagentdesign-adr164/IL-2026-07-06T22-26-58Z--dc6c3e.md`
+
+### sp32-bestdecidagentdesign-adr164 — BEST-DECISION-AGENT designed as advisory reusable method (per-agent, not central) + ADR-164 PROPOSED
+
+- **Instruction (prepare-only, DESIGN):** design the BEST-DECISION-AGENT component on top of the SSOT chain (BOUNDARY §7 variant-2 ratified, ADR-162 gate, RETROFIT-PLAN, SOUL `_TEMPLATE.md` `## Decision Method` added in #1077, FACTORY-CANON §1.11) — as an **advisory reusable METHOD embedded per-agent** (ranks the best executing STEP), **not** a separate central decider. Emit the design doc + ADR (PROPOSED); no implementation.
+- **Scope of change:**
+  - `docs/design/BEST-DECISION-AGENT.md` (NEW) — purpose, non-goals (hard boundaries), reference architecture (used-by-all, N embeddings zero central decider), algorithm-shape pointer (SSOT v2, BOUNDARY §3, BUG-007), typed contract (`MethodInput` / `MethodOutput` / `MethodContext` / `Constraints` / `CriteriaWeights` / `CandidateStep`), escalation rule (short-circuit OR: no-feasible → confidence<auto → irreversible-floor → fail-closed contour + compliance-floor → stop-barrier), per-agent embedding template (SOUL runtime wiring, illustrative-only), uniform-application clause (BOUNDARY §7), auditability (ClickHouse contract incl. dropped candidates + escalate_reason), I-27 preservation re-affirmed, anchors (pointer-only ADR-102).
+  - `docs/adr/ADR-164-best-decision-agent-method.md` (NEW, PROPOSED) — D-1 advisory-reusable-method-not-central-agent, D-2 hard prohibition on central decider (service/container/port/passport/RPC/MoA with execute-authority), D-3 per-agent embedding via SOUL `## Decision Method` (retrofit R1..R7 pointer), D-4 I-27 fail-closed absolute on payment/compliance/KYC/AML (method cannot self-clear), D-5 stop-barriers as hard constraints (drop, never trade off), D-6 adoption remains operator-owned (no scope creep), D-7 Config-over-Hardcoding for all numeric parameters (governance/novelty-pipeline-config.yaml), D-8 auditability floor (dropped candidates + escalate_reason first-class), D-9 DESIGN-phase-only. Consequences + risks + mitigations. OI-1..OI-5.
+- **Meaning guardrails preserved (STOP-critical):**
+  - Advisory reusable METHOD per-agent — separate central "decision agent" is FORBIDDEN (would revert variant-1 shape rejected by operator in BOUNDARY §7).
+  - Method ranks the best executing STEP for the operator's decision — does NOT decide adoption / governance / policy (adoption stays operator's prerogative per BOUNDARY §7 meaning-correction).
+  - I-27 preserved ABSOLUTELY — on payment/AML/KYC/compliance the method runs INSIDE fail-closed HITL, cannot override operator, integrates with BUG-007 thresholds via `escalate_flag` (confidence<threshold ⇒ escalate, not act).
+  - SOUL invariants / fail-closed / passport untouched. No `_TEMPLATE.md` edit (already done in #1077). No SOUL edits (retrofit R1..R7 is a separate serial effort).
+- **Deviation:** none. `[IL-NNN]` NOT hardcoded (ADR-119 / ADR-133 mint-at-merge). PR opens as **draft**, auto-merge NOT armed (HITL). ADR-102 preserved: SSOT chain referenced, not restated.
+- **CONCURRENCY window:** `origin/main` at `adbe138` (#1077); max IL=991 pre-shard; no ledger churn observed at branch cut.
+- **Proof:** `REDIS_HOST=127.0.0.1 python ledger/build_ledger.py` (regenerate from ROOT), then `REDIS_HOST=127.0.0.1 python ledger/build_ledger.py --check` (exit 0).
+- **Blocker:** none for the DESIGN itself. Implementation gated on operator ratification of ADR-164 D-1..D-8 (best-decision canon: decision-shape gate, not whitelist auto-run) + follow-up config-PR (OI-2) + retrofit PRs R1..R7 (OI-3) — all out of scope for this PR.
+- **Refs:**
+  - `docs/design/BEST-DECISION-AGENT.md` (NEW — this PR)
+  - `docs/adr/ADR-164-best-decision-agent-method.md` (NEW, PROPOSED — this PR)
+  - `docs/canon/BEST-DECISION-BOUNDARY.md` §7 (RATIFIED variant-2 + meaning-correction + uniform-application clause)
+  - `docs/adr/ADR-162-best-decision-principle.md` (orchestrator-side adoption-audit gate)
+  - `docs/canon/BEST-DECISION-RETROFIT-PLAN.md` (R1..R7 retrofit — OI-3)
+  - `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` (synthesis)
+  - `docs/sources/best-decision-concept-2026-07-06-v2.md` (SSOT theory)
+  - `agents/souls/_TEMPLATE.md` §Decision Method (added #1077)
+  - `docs/factory/FACTORY-CANON.md` §1.11 (Best-Decision training)
+  - `.claude/rules/agents.md` §"HITL Confidence Thresholds" (BUG-007 — preserved)
+  - `.claude/rules/approval-rules.md` §"Правило неоднозначности", CLAUDE.md §12 (best-decision canon)
+  - `.claude/rules/safety-rules.md`, CLAUDE.md §1, §11 (stop-barriers)
+  - CLAUDE.md §10 (Config-over-Hardcoding)
+  - ADR-102 (reference-not-restate discipline enforced across this PR)
+  - ADR-119 / ADR-133 (IL mint-at-merge)
+  - ADR-060 (branch actor namespace `agent/specproj/sp32/…`)
+  - ADR-120 (per-session worktree isolation)
+  - ADR-163 + `docs/canon/SYNC-CANON.md` (SYNC-CANON compliance)
+  - ADR-131 (12-section SOUL standard, amended 2026-07-07 in #1077)
+
+---
+
+### IL-1006 - agent-factory-souls-teachers-retrofit-auditors @ 2026-07-07T00:44:33Z
+
+- **il_ts:** 2026-07-07T00:44:33Z
+- **session_id:** agent-factory-souls-teachers-retrofit-auditors
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-teachers-retrofit-auditors/IL-2026-07-07T00-44-33Z--teachers-retrofit-auditors.md`
+
+### Teachers-retrofit R-auditors — apply the mandatory ## Decision Method to 3 existing teacher SOULs (prepare-only)
+
+- **Objective:** Retrofit the mandatory `## Decision Method` section (ADR-131 standard, already amended 11→12 in PR #1077)
+  into 3 EXISTING teacher SOULs — auditors first, then CFO. Applies the existing standard to older SOULs authored before
+  the amendment. **Additive section ONLY** — no authority change, no status change (stay PROPOSED), no passport/config/schema,
+  no ADR-131 edit, no activation.
+- **Targets retrofitted (all fuzzy-confirmed SOUL-present, method-absent):**
+  - `spec_first_auditor` → `agents/souls/spec-first-auditor.md` (auditor; report-only; block hands to CTIO).
+  - `gap_tracker_agent` → `agents/souls/gap-tracker-agent.md` (auditor; gap-status proposal; owner / disable→CEO+CTIO).
+  - `cfo_orchestration_agent` → `agents/souls/cfo-orchestration-agent.md` (orchestrator; govern/route finance; CFO, activation CEO).
+- **Skips:** none (all 3 confirmed SOUL-present without `## Decision Method`).
+- **Placement:** inserted immediately AFTER `## HITL Gate` (matching cohort 12b/13). Each grounded to its agent's role —
+  enumerate feasible in-scope actions (no expansion) → score by the agent's own criteria (auditor: control materiality /
+  independence / assurance coverage; CFO: fiscal materiality / fair-value / disclosure) via MAUT → satisfice within ITS HITL
+  gate → escalate to ITS human double → fail-closed precedence (I-27, BUG-007). Pointer-first to
+  best-decision-concept-2026-07-06-v2.md / BEST-DECISION-BOUNDARY / ADR-162 — not restated.
+- **Diff discipline:** additions-only — 27 insertions, 0 deletions, no edit outside the inserted block; SOUL "describes
+  authority, never expands it".
+- **Teachers-track context:** after #1081 (IL-997) landed internal_audit_agent SOUL+method, this method-equips the remaining
+  auditor teachers (spec_first_auditor, gap_tracker) + CFO orchestrator. Remaining teachers = NO-SOUL orchestrators
+  (ceo/coo/aml_orchestrator) + AML-decision pair — later cohorts.
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120); no TRADING-001 /
+  agent/specproj/* (Rule 6); signed; `--force-with-lease`. IL frozen-at-merge (Rule 8).
+- **Deliverable:** 3 retrofitted `agents/souls/*.md` + this IL shard. ONE Draft PR, prepare-only.
+- **Refs:** ADR-131 (+ amendment 2026-07-07, PR #1077); FACTORY-CANON §1.11; I-27; BUG-007; ADR-102; ADR-120; Rule 6;
+  docs/sources/best-decision-concept-2026-07-06-v2.md; docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md;
+  cohort 13 (#1081, IL-997); cohort 12b (#1079).
+
+---
+
+### IL-1007 - agent-factory-souls-teachers-retrofit-coo @ 2026-07-07T00:56:48Z
+
+- **il_ts:** 2026-07-07T00:56:48Z
+- **session_id:** agent-factory-souls-teachers-retrofit-coo
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-teachers-retrofit-coo/IL-2026-07-07T00-56-48Z--teachers-retrofit-coo.md`
+
+### Teachers-retrofit — add ## Decision Method to coo_operations_agent (prepare-only, additive)
+
+- **Objective:** Retrofit the mandatory `## Decision Method` (ADR-131 standard, amended 11→12 in #1077) into the
+  EXISTING `coo_operations_agent` SOUL — the COO operations teacher, missed from the auditor+CFO batch (#1085) due to
+  the coo naming-fuzz. **Additive section ONLY**; no authority/status change (stays PROPOSED); no passport/config/schema/ADR-131.
+- **Target:** `coo_operations_agent` → `agents/souls/coo-operations-agent.md` (L2 · AMBER · CTX-04-PAYMENT; human double
+  **COO (James Hargreaves)**, SMF24; 1st-line operations governor; propose-only). Method inserted after `## HITL Gate`,
+  grounded fail-closed (never best-decides an operational/payment-affecting action). Pointer-first, not restated.
+- **Dedup correction (ADR-102):** `coo_orchestration_agent` is a **phantom** id — no SOUL and **no passport** on main;
+  NOT authored. The real COO agent is `coo_operations_agent` (this retrofit).
+- **Diff discipline:** additions-only (9 insertions, 0 deletions). SOUL describes authority, never expands it.
+- **Teachers-track:** with #1081 (internal_audit) + #1085 (spec_first/gap_tracker/cfo), this method-equips the COO teacher.
+  Remaining: `aml_orchestrator` (SOUL exists at banxe-aml-orchestrator.md — retrofit in careful AML cohort);
+  `ceo_orchestration_agent` + `case_management_agent` (genuinely NO-SOUL — author fresh; case_management = AML-decision, careful final).
+- **Perimeter:** banxe-architecture; worktree off origin/main (ADR-120); no TRADING-001 / agent/specproj/* (Rule 6); signed; --force-with-lease. IL frozen-at-merge (Rule 8).
+- **Refs:** ADR-131 (+#1077 amendment); FACTORY-CANON §1.11; I-27; BUG-007; ADR-102; #1085; #1081; docs/sources/best-decision-concept-2026-07-06-v2.md; docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md.
+
+---
+
+### IL-1009 - agent-factory-souls-ceo-orchestration @ 2026-07-07T01:03:04Z
+
+- **il_ts:** 2026-07-07T01:03:04Z
+- **session_id:** agent-factory-souls-ceo-orchestration
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-ceo-orchestration/IL-2026-07-07T01-03-04Z--ceo-orchestration.md`
+
+### Author CEO Orchestration Agent SOUL (w/ Decision Method) — prepare-only, no activation
+
+- **Objective:** Author the SOUL charter for the genuinely-SOUL-less `ceo_orchestration_agent` — the Level-1
+  executive-orchestration teacher (Board/Executive line). 13 sections incl. mandatory `## Decision Method`
+  (ADR-131 amended 11→12, #1077). **Prepare-only**; passport stays PROPOSED; no passport/config/schema change, no activation.
+- **Grounded facts (from passport on origin/main):** L1 · AMBER · CLASS_B · CTX-01 · autonomy L2_REVIEW; department
+  **Board/Executive**; human double **CEO (Moriel Carmi)**; **SMF1**; STUB (status:active but body = PROPOSES-only,
+  no service code, GAP-078 Sprint-3) → treated PROPOSED; capability department_head_orchestration; mandatory skills
+  context_memory_sync + rapid_spec_builder (PROPOSES IL/ADR, I-27/I-28); FCA SM&CR SMF1.
+- **Discipline:** orchestrates the dept-head fleet and PROPOSES executive governance (IL/ADR); takes **no autonomous
+  executive action**, decides/activates nothing — every activation and executive decision is the CEO's (I-27 HITL-L4).
+  Decision Method grounded: enumerate Level-1 orchestration actions (no decision/activation) → score by governance
+  materiality / cross-dept impact / SM&CR exposure (MAUT) → satisfice within HITL gate → escalate to CEO/Board →
+  fail-closed (never best-decides an executive action/activation; I-27, BUG-007). Pointer-first, not restated.
+  SOUL **describes** authority, never expands it.
+- **ADR-102 dedup:** no pre-existing ceo/executive-orchestration SOUL on main (near-name candidates cfo/aml/channel/webhook
+  are distinct). Decision: add net-new (1).
+- **Teachers-track:** completes the C-suite orchestrator teachers alongside cfo (#1085) + coo (#1087). Remaining teacher
+  work = careful AML cohort (retrofit aml_orchestrator @ banxe-aml-orchestrator.md + resolve its 3-passport dedup;
+  author case_management — AML-decision, careful final).
+- **Perimeter:** banxe-architecture; worktree off origin/main (ADR-120); no TRADING-001 / agent/specproj/* (Rule 6);
+  no secrets; signed; --force-with-lease. IL frozen-at-merge (Rule 8).
+- **Deliverable:** 1 `agents/souls/ceo-orchestration-agent.md` + this shard. ONE Draft PR, prepare-only.
+- **Refs:** ADR-131 (+#1077); FACTORY-CANON §1.11; ADR-117/128/121; I-24; I-27; I-28; BUG-007; ADR-102; GAP-078;
+  SM&CR SMF1; governance/CANONICAL-ORG-CHART-v2.md; docs/sources/best-decision-concept-2026-07-06-v2.md;
+  docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md; #1081; #1085; #1087.
+
+---
+
+### IL-1010 - specproj-sp37-b1ossbodiesssot @ 2026-07-07T02:35:26Z
+
+- **il_ts:** 2026-07-07T02:35:26Z
+- **session_id:** specproj-sp37-b1ossbodiesssot
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/specproj-sp37-b1ossbodiesssot/IL-2026-07-07T02-35-26Z--d94b81.md`
+
+### specproj-sp37-b1ossbodiesssot
+
+- **Instruction:** B1 SSOT-retro: persist 2 confirmed OSS-review bodies verbatim into `docs/sources/` per DELIVERY-CANON §4 form (b) header+body (zero-loss).
+  - A: `docs/sources/emi-banxe-world-experience-2026-07-07.md` (68409 B; sha256-body `db72a7ea2b675f50a1a7ad1cedd098651030c8ad11094c45edb0f486fddeeea9`).
+  - B: `docs/sources/oss-agent-solutions-banxe-2026-07-07.md` (69737 B; sha256-body `50c2f6677d224d56917dee2f6560947eb334253d102f1a0dab3c6fe44ab6743b`).
+- **Steps:**
+  1. Sources staged evo1-local from operator Downloads (Legion) after evo1 reboot; sha256 + bytes verified byte-for-byte; mojibake grep `Ð|Ñ|â€` = 0.
+  2. Compose each SSOT file as YAML front-matter (title, source-origin, intake-date=2026-07-07, sha256-body, body-bytes, verify, related-findings=#1051/#1059, status=SSOT-RESTORED) then verbatim body via `cat header source > file`.
+  3. Verify: `tail -c <body-bytes> <file> | sha256sum` MUST equal `sha256-body` — both files PASSED.
+  4. Update `docs/sources/README.md` with 2 index rows (slug, title, bytes, sha256-body, status).
+  5. Regenerate ledger (shard + IL-SEQUENCE.json + INSTRUCTION-LEDGER.md together) via `python ledger/build_ledger.py` from ROOT; `--check` exit 0.
+- **Proof:** verify command in each file's `verify:` header; index rows in `docs/sources/README.md`; PR #<n> (draft, HITL, do NOT merge).
+- **Deviation:** re-execution of sp36 (which died on evo1 reboot); zero-loss preserved because sources re-staged from Legion by Central with byte-for-byte sha match — no work lost.
+- **Refs:** ADR-159 §"Terminal-B Operating Algorithm", ADR-161 (SSOT persistence), ADR-119 (frozen IL numbering), ADR-120 (per-session worktree isolation), ADR-060 (branch-name gate), DELIVERY-CANON §4, related PRs #1051 (EMI-stack intake) and #1059 (OSS intake).
+
+---
+
+### IL-1011 - agent-factory-knowledge-bestdecision-selflearning-loop-source @ 2026-07-06T23:19:04Z
+
+- **il_ts:** 2026-07-06T23:19:04Z
+- **session_id:** agent-factory-knowledge-bestdecision-selflearning-loop-source
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-knowledge-bestdecision-selflearning-loop-source/IL-2026-07-06T23-19-04Z--bestdecision-selflearning-loop-source.md`
+
+### Verbatim SSOT archival — Best-Decision Self-Learning Loop consultant spec (reference source, NOT canon)
+
+- **Objective:** Preserve, byte-for-byte, the operator-supplied consultant specification on a Best-Decision
+  Self-Learning Loop for the EMI BANXE agent fleet, as a citable **reference source** under the ADR-161 Intake
+  SSOT convention. Prepare-only; no canon, no thresholds, no runtime/schema/config/passport/soul change.
+- **Archived file:** `docs/sources/best-decision-self-learning-loop-2026-07-07.md` (SSOT header + verbatim body).
+- **Zero-loss integrity (proven):** body-bytes=**34974**, body-sha256=**c4f71e729f3791e97429f5482c405c201cee395b4d8daff6d9828ed53c30553f**.
+  Proof: `tail -c 34974 <file> | sha256sum` == body-sha256 (PASS). Total file 37366 bytes (header 2392 + body 34974).
+- **Classification:** reference source, **not canon**. Thresholds/weights in the paper are the CONSULTANT's proposal,
+  **NOT adopted config** — any adoption lands in governance config via a human-gated PR (Config-over-Hardcoding §10).
+  Nothing here sets a live threshold, weight, or gate; nothing is activated.
+- **Alignment (informational, not adoption):** the paper's confidence tiers (AUTO≥0.90 / REVIEW 0.70–0.90 / BLOCK<0.70)
+  correspond to existing **BUG-007**; its DecisionRecord/OutcomeRecord map onto `schemas/agent_decision_record.schema.json`
+  + `clickhouse_writer`; its propose-only, human-gated boundary corresponds to I-27 / `BEST-DECISION-BOUNDARY`.
+- **Forward use:** this source is the citable anchor for the deferred, pointer-first `docs/canon/BEST-DECISION-LEARNING-LOOP.md`
+  (to be authored only after ADR-164 / PR #1080 lands, and after the teachers-first cohort).
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120), not shared checkout;
+  no TRADING-001 / agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease`.
+- **Deliverable:** 1 `docs/sources/*.md` (verbatim archival) + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8).
+- **Refs:** ADR-161 (Intake SSOT); Config-over-Hardcoding CLAUDE.md §10; I-27; BUG-007; ADR-162; ADR-164 / `docs/design/BEST-DECISION-AGENT.md` (PR #1080, pending);
+  `docs/canon/BEST-DECISION-BOUNDARY.md`; `schemas/agent_decision_record.schema.json`; `tests/best-decision/`;
+  `governance/novelty-pipeline-config.yaml`; `docs/sources/best-decision-concept-2026-07-06-v2.md`; `docs/sources/emi-banxe-engine-2026-07-06.md`.
+
+---
+
+### IL-1012 - agent-factory-knowledge-consultant-escalation-protocol @ 2026-07-07T00:29:48Z
+
+- **il_ts:** 2026-07-07T00:29:48Z
+- **session_id:** agent-factory-knowledge-consultant-escalation-protocol
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-knowledge-consultant-escalation-protocol/IL-2026-07-07T00-29-48Z--consultant-escalation-protocol.md`
+
+### Consultant Escalation & Best-Decision Consultation Protocol — reference source (factory-authored, NOT canon)
+
+- **Objective:** Preserve, as a citable **reference source** (ADR-161 Intake SSOT), the Consultant Escalation &
+  Best-Decision Consultation Protocol — the spec of *when* a decision escalates to the expert-consultant and *how*
+  the consultant applies the Best-Decision method. **Prepare-only**; no canon, no thresholds adopted, no
+  runtime/schema/config/passport/soul change, no activation.
+- **Provenance (honest):** authored **in-session by the factory's expert-consultant role** — NOT an external
+  operator-supplied paper. Written directly into the file (no paste vector), so lossless by construction; the four
+  prior intake attempts had failed only because a wrong document (a 24/7-orchestration synthesis, sha 274dbd3d)
+  kept landing in the operator's paste buffer — that document is a #1070 near-duplicate and was correctly rejected.
+- **Archived file:** `docs/sources/consultant-escalation-protocol-2026-07-07.md` (SSOT header + protocol body).
+- **Classification:** reference source, **not canon**. All thresholds/weights marked "proposal, not adopted"
+  (Config-over-Hardcoding §10 — adoption via human-gated config PR). Advisory-only; vердикт never self-applies;
+  fail-closed on payment/compliance/KYC/AML; I-27 preserved.
+- **Distinctness (ADR-102):** related but NOT a duplicate — #1080 = per-agent advisory *method*; #1070 = engine /
+  24-7 / Factory-Central-Right *principles*; this = the *escalation-and-consultation protocol*.
+- **Perimeter / canon:** banxe-architecture only; isolated worktree off origin/main (ADR-120); no TRADING-001 /
+  agent/specproj/* (Rule 6); no secrets; no code/runtime change; signed; `--force-with-lease`.
+- **Deliverable:** 1 `docs/sources/*.md` + this IL shard. ONE Draft PR, prepare-only. IL frozen-at-merge (Rule 8).
+- **Refs:** ADR-161; CLAUDE.md §10; I-27; I-24; BUG-007; ADR-162; ADR-164 / `docs/design/BEST-DECISION-AGENT.md` (PR #1080);
+  `docs/canon/BEST-DECISION-BOUNDARY.md`; `docs/sources/best-decision-concept-2026-07-06-v2.md`;
+  `docs/sources/best-decision-self-learning-loop-2026-07-07.md` (PR #1083); ADR-102; Rule 6; ADR-120.
+
+---
+
+### IL-1016 - agent-factory-souls-case-management-agent @ 2026-07-07T08:40:08Z
+
+- **il_ts:** 2026-07-07T08:40:08Z
+- **session_id:** agent-factory-souls-case-management-agent
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-case-management-agent/IL-2026-07-07T08-40-08Z--case-management-agent.md`
+
+### Author case_management_agent SOUL (w/ Decision Method) — AML-decision contour, prepare-only, no activation
+
+- **Objective:** Author the SOUL charter for the genuinely-SOUL-less `case_management_agent` — owner-governor of the
+  EXISTING `services/case_management/` (banxe-emi-stack; route-not-reimplement). 13 sections incl. mandatory
+  `## Decision Method` (ADR-131 amended 11→12, #1077). **Prepare-only**; passport UNTOUCHED, stays PROPOSED; no activation.
+- **ADR-102 dedup:** fuzzy-confirmed genuinely SOUL-less (no case-management / banxe-case-management SOUL). Net-new (1).
+- **Grounded facts (from passport on origin/main, not memory):** L2 · RED · CTX-01 · CLASS_B; human double **MLRO**
+  (owner/approver MLRO); status **PROPOSED** (genuine — body "PROPOSES only (I-27); NOT activated", no stray-active);
+  capabilities case_create/case_lifecycle_track/marble_case_routing/mlro_case_queue; ports CaseManagementPort →
+  MarbleCasePort/AuditPort; callers aml_orchestrator + banxe_aml_orchestrator; callee clickhouse_writer; invariants
+  **I-27, I-08, I-12**; FCA **SYSC 6 + POCA 2002 (SAR)**; auto_refactor_pro PROHIBITED.
+- **Honest schema note:** passport does NOT cite I-02/I-03/MLR-2017 — NOT attributed to the passport. AML-decision
+  discipline grounded on the cited anchors (POCA 2002 / SAR, SYSC 6, I-27/I-08/I-12) + general fail-closed rigor.
+- **AML-decision discipline (baked into Constraints/HITL Gate/Decision Method/HITL Workflow/Core Truths/Pet Peeves):**
+  prepares & routes the case file — the clear/block/SAR-file disposition is the MLRO's, human-gated (I-27); never
+  auto-files a SAR, never auto-clears a sanctions/PEP/TM hit, never self-escalates a level; a hit at/over the BUG-007
+  threshold fails closed to MLRO; no PII leakage; append-only audit (I-08/I-24). SOUL describes authority, never expands it.
+- **Decision Method:** grounded per this agent (enumerate case-handling actions → score by case-materiality /
+  evidence-completeness / regulatory-deadline (MAUT) → satisfice within its MLRO HITL gate → escalate to MLRO;
+  fail-closed precedence I-27/BUG-007). Pointer-first to best-decision-concept-2026-07-06-v2.md /
+  consultant-escalation-protocol-2026-07-07.md / BEST-DECISION-BOUNDARY / ADR-162 — not restated.
+- **Fleet impact:** genuinely-SOUL-less orchestrator/decision teachers narrowed to the aml_orchestrator identity
+  question (3-passport / 2-id conflict — HELD for MLRO/operator governance decision, not authored here).
+- **Perimeter:** banxe-architecture; worktree off origin/main (ADR-120), not shared checkout; no TRADING-001 /
+  agent/specproj/* (Rule 6); no secrets; signed; --force-with-lease. Factory activates nothing (I-27 = operator+MLRO). IL frozen-at-merge (Rule 8).
+- **Deliverable:** 1 `agents/souls/case-management-agent.md` + this shard. ONE Draft PR, prepare-only.
+- **Refs:** ADR-131 (+#1077); FACTORY-CANON §1.11; ADR-117/128/121; I-08; I-12; I-24; I-27; BUG-007; ADR-102; GAP-078;
+  FCA SYSC 6; POCA 2002; docs/sources/best-decision-concept-2026-07-06-v2.md;
+  docs/sources/consultant-escalation-protocol-2026-07-07.md; docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md.
+
+---
+
+### IL-1019 - sp38-best-decision-consultant-synthesis @ 2026-07-07T08:51:39Z
+
+- **il_ts:** 2026-07-07T08:51:39Z
+- **session_id:** sp38-best-decision-consultant-synthesis
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/sp38-best-decision-consultant-synthesis/IL-2026-07-07T08-51-39Z--0060a7.md`
+
+### sp38-best-decision-consultant-synthesis
+
+- **Instruction:** SSOT-archive Perplexity Governance/Safety consultant ruling (form b zero-loss, sha256 99e9595a) + convergence synthesis Q1-Q5 of two independent rulings (Central+Perplexity agree 5/5); PROPOSED, ratification=operator+Central; I-27+variant-2 preserved; numbers=governed-config-proposal; ADR-102 pointer-first.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1020 - agent-factory-passports-banxe-aml-orchestrator-dedup @ 2026-07-07T09:07:43Z
+
+- **il_ts:** 2026-07-07T09:07:43Z
+- **session_id:** agent-factory-passports-banxe-aml-orchestrator-dedup
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-passports-banxe-aml-orchestrator-dedup/IL-2026-07-07T09-07-43Z--banxe-aml-orchestrator-dedup.md`
+
+### ADR-102 passport dedup — banxe_aml_orchestrator (corrected operator ruling: TWO agents; dedupe only its 2 passports)
+
+- **Corrected ruling:** initial "one agent RED·L2" was contradicted by full grounding — there are **TWO agents**
+  (`aml_orchestrator` L2 sub-orchestrator, called by `banxe_aml_orchestrator` L1 top). Operator re-ruled: TWO agents
+  confirmed; dedupe **only** `banxe_aml_orchestrator`'s two passports.
+- **Canonical:** `agents/passports/aml/banxe_aml_orchestrator.yaml` set to **RED · L1-top · autonomy L3**; merged in the
+  operational layer (ports/skills/callees/capabilities/invariants/fca_references/aigf_risks) from the root passport; kept
+  the governance layer (SMF17, HEAD_OF_FINCRIME+MLRO, HITL gates, forbidden SAR/PEP, audit). Conflicts safer-wins
+  (RED>AMBER, MAJOR>CLASS_B, level 1). No capability lost.
+- **Superseded (NOT hard-deleted):** root `agents/passports/banxe_aml_orchestrator.yaml` → `status: SUPERSEDED` +
+  `superseded_by` header, append-only (I-24). Hard-removal = separate operator decision.
+- **Untouched:** `agents/passports/aml_orchestrator.yaml` (the separate L2 sub-agent). Pipeline edge (top→sub) preserved.
+- **Prepare-only:** identity resolved; NOT activated (I-27 operator+MLRO). No SOUL edit; no config/schema; no hard-delete.
+- **Deliverable:** canonical passport (merged) + root superseded-header + ADR-102 note + this shard. ONE Draft PR.
+- **Follow-up (separate):** retrofit `agents/souls/banxe-aml-orchestrator.md`'s `## Decision Method` now that the
+  banxe_aml_orchestrator identity is fixed (RED/L1/L3). `aml_orchestrator` L2-sub has no SOUL (separate authoring if wanted).
+- **Refs:** ADR-102; operator ruling 2026-07-07; I-24; I-27; SMF17; COMPLIANCE-ARCH/MATRIX; [[aml-orchestrator-3passport-identity-conflict]].
+
+---
+
+### IL-1022 - agent-factory-souls-aml-orchestrator-method-retrofit @ 2026-07-07T09:21:36Z
+
+- **il_ts:** 2026-07-07T09:21:36Z
+- **session_id:** agent-factory-souls-aml-orchestrator-method-retrofit
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-aml-orchestrator-method-retrofit/IL-2026-07-07T09-21-36Z--aml-orchestrator-method-retrofit.md`
+
+### Teachers-retrofit (final) — add ## Decision Method to banxe-aml-orchestrator.md, grounded on resolved identity
+
+- **Objective:** Retrofit the mandatory `## Decision Method` into `agents/souls/banxe-aml-orchestrator.md` (the
+  `banxe_aml_orchestrator` L1-top AML orchestrator), grounded on the NOW-RESOLVED canonical identity from #1092
+  (RED · L1-top · autonomy L3; SMF17; human doubles Head of Financial Crime + MLRO). **Additive section ONLY**; no
+  authority/status change (stays PROPOSED); no passport/_TEMPLATE/ADR-131/config/schema.
+- **Grounding (from canonical passport, not restated):** L1-top orchestrator that dispatches to L2 sub-agents
+  (aml_orchestrator/sanctions_check/tx_monitor/crypto_aml), aggregates scores, builds ExplanationBundle, initiates TM/
+  case/sanctions workflows; HITL gates SAR/threshold/sanctions; forbidden submit_SAR/PEP; MLRO SMF17 non-delegable.
+- **Decision Method (per this agent):** enumerate L1-orchestration actions (initiate-only) → score by aggregate AML
+  risk / evidence sufficiency / regulatory deadline (MAUT) → satisfice within its HITL gate → escalate to Head of
+  FinCrime + MLRO. **AML fail-closed (RED, absolute):** final SAR/PEP/sanctions-reversal/SUBMIT is NEVER the agent's
+  (human-gated I-27, SMF17, BUG-007); never auto-clears a hit, never self-escalates a level, fail-closed on ambiguity.
+  Pointer-first to concept / consultant-escalation-protocol / BEST-DECISION-BOUNDARY / ADR-162 — not restated.
+- **Placement:** inserted immediately after `## HITL Gate` (the SOUL's last section). Additions-only, 0 deletions.
+- **Milestone:** closes the teacher program — every teacher/decision agent method-equipped
+  (internal_audit, spec_first_auditor, gap_tracker, cfo/coo/ceo orchestration, case_management, banxe_aml_orchestrator).
+  `aml_orchestrator` (L2 sub) has no SOUL — optional separate authoring, not required for the teacher set.
+- **Perimeter:** banxe-architecture; worktree off origin/main (ADR-120); no TRADING-001 / agent/specproj/* (Rule 6);
+  signed; --force-with-lease. NOT activated (RED/L1/L3 activation = I-27 operator+MLRO, never factory). IL frozen-at-merge (Rule 8).
+- **Refs:** ADR-131 (+#1077); FACTORY-CANON §1.11; I-27; SMF17; BUG-007; ADR-102; #1092 (identity dedup);
+  agents/passports/aml/banxe_aml_orchestrator.yaml; docs/sources/best-decision-concept-2026-07-06-v2.md;
+  docs/sources/consultant-escalation-protocol-2026-07-07.md; docs/canon/BEST-DECISION-BOUNDARY.md; docs/adr/ADR-162-best-decision-principle.md; [[aml-orchestrator-3passport-identity-conflict]].
+
+---
+
+### IL-1024 - sp39-bestdecratificationdirective @ 2026-07-07T09:17:35Z
+
+- **il_ts:** 2026-07-07T09:17:35Z
+- **session_id:** sp39-bestdecratificationdirective
+- **source:** Terminal-B
+- **status:** REVIEW
+- **shard:** `ledger/entries/sp39-bestdecratificationdirective/IL-2026-07-07T09-17-35Z--190b10.md`
+
+### sp39-bestdecratificationdirective — DIRECTIVE-BESTDEC-RATIFY-001 Q1-Q5 ratification checklist (operator+Central ack, HITL)
+
+- **Instruction (prepare-only, DIRECTIVE):** Author `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` — a governance directive that formalises the ratification pass for the Best-Decision Q1..Q5 consultant convergence synthesis (`docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md`, PR #1091). The directive opens ack-required from operator + Central, remains ADVISORY / PROPOSED until CLOSED, and defers activation of every Q to a separate human-ratified ADR / governed-config PR. Prepare-only; no activation, no auto-merge.
+- **Scope of change:**
+  - `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` (NEW) — status OPEN; ack_required=[operator, central]; activation_policy=deferred-to-approved-ADR; per-Q checklist [APPROVE / AMEND / REJECT] with amendments block and dual ack lines (operator + Central) for Q1..Q5; scope-reminders per Q locking activation to separate governed ADR / config-PR; closure protocol; preservation clauses (I-27 + variant-2 + CLAUDE.md §10 + ADR-102 pointer-first + HITL / no auto-merge).
+- **Meaning guardrails preserved (STOP-critical):**
+  - Directive is a *decision artefact*, not an activation. Best-Decision method stays ADVISORY / PROPOSED while directive is OPEN.
+  - Each Q ratification only endorses ARCHITECTURAL DIRECTION; activation requires a separate human-ratified ADR (Q1, Q2 extend ADR-162 / ADR-164) and, where applicable, a governed-config PR against `governance/novelty-pipeline-config.yaml` (Q2 numeric parameters, Q4 triage weights / bands / FCR override / calibration sample size).
+  - I-27 preserved: no autonomous production-state mutation is enabled by this directive.
+  - Variant-2 preserved: advisory-only until ratified; current single-stage flow remains in force until an activation ADR is merged.
+  - CLAUDE.md §10 (Config-over-Hardcoding): every numeric parameter named in the synthesis stays a governed-config *proposal*.
+  - ADR-102 pointer-first: the directive references the synthesis by pointer, does not restate consultant sources or reasoning.
+  - HITL: no auto-merge is armed; ratification, activation, and each downstream landing are human-gated at every step.
+  - Q3 consequence recorded (ASSIGNATION external / reference-only; concept-v7..v9 backlog = separate concept-consolidation audit) but scope-owner decision explicitly rests with operator + Central per the synthesis.
+- **Deviation:** none. `[IL-NNN]` NOT hardcoded (ADR-119 / ADR-133 mint-at-merge). PR opens as **draft**, auto-merge NOT armed (HITL). ADR-102 preserved: RATIFICATION-SYNTHESIS + Perplexity SSOT + Central inline ruling referenced by pointer, not restated.
+- **CONCURRENCY window:** `origin/main` at `40ba252` (#1092); max IL=1020 pre-shard; no ledger churn observed at branch cut. SYNC-CANON: on any sp39 churn observed at push time → HOLD.
+- **Proof:** `REDIS_HOST=127.0.0.1 python3 ledger/build_ledger.py` (regenerate from ROOT), then `REDIS_HOST=127.0.0.1 python3 ledger/build_ledger.py --check` (exit 0).
+- **Blocker:** none for the DIRECTIVE itself. Ratification (APPROVE / AMEND / REJECT for each of Q1..Q5) is human-gated on operator + Central. Activation of any Q post-ratification lands via a separate governed ADR / config-PR — out of scope for this PR.
+- **Refs:**
+  - `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` (NEW — this PR)
+  - `docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md` (PR #1091 — synthesis under ratification)
+  - `docs/sources/consultant-response-best-decision-2026-07-07.md` (Perplexity Governance/Safety SSOT)
+  - `docs/adr/ADR-162-best-decision-principle.md`, `docs/adr/ADR-164-best-decision-agent-method.md`
+  - `docs/design/BEST-DECISION-AGENT.md` (PR #1080)
+  - `docs/canon/BEST-DECISION-BOUNDARY.md` (I-27 anchor + variant-2)
+  - `CLAUDE.md §10` (Configuration-over-Hardcoding)
+  - ADR-102 (pointer-first, no source restate); ADR-119 / ADR-133 (mint-at-merge)
+
+---
+
+### IL-1026 - agent-factory-canon-best-decision-learning-loop @ 2026-07-07T09:35:25Z
+
+- **il_ts:** 2026-07-07T09:35:25Z
+- **session_id:** agent-factory-canon-best-decision-learning-loop
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-canon-best-decision-learning-loop/IL-2026-07-07T09-35-25Z--best-decision-learning-loop.md`
+
+### Author BEST-DECISION-LEARNING-LOOP.md — bank-runtime decision-quality feedback loop (net-new, pointer-first)
+
+- **Objective:** Author `docs/canon/BEST-DECISION-LEARNING-LOOP.md` — the canon for the **bank runtime
+  decision-quality feedback loop** (decide → record → score → evaluate → propose → human/MLRO gate). Prepare-only;
+  pointer-first (ADR-102); no runtime/config/schema/passport/SOUL change; no activation.
+- **ADR-102 dedup verdict (grounded on main):** net-new. The bank-runtime loop is ABSENT from all candidates —
+  **ADR-141** is `scope: BANXE-factory-only` with RED payment/KYC/AML/sanctions EXCLUDED (PRECOND-06); the sp38
+  `BEST-DECISION-RATIFICATION-SYNTHESIS` has **0** runtime-loop mentions; the Perplexity
+  `consultant-response-best-decision-2026-07-07.md` defines the *decider* (deterministic admissibility gate → scoring),
+  not the loop. This doc is the complement ADR-141 does not cover; it POINTS to ADR-141 (factory loop, distinct) and
+  ADR-164 (method), and does not rival either.
+- **Distinctness declared in the doc:** ADR-164 = method (decider unit); ADR-141 = factory self-healing loop (RED-excluded);
+  sp38 + consultant-response = ratification of the decider; this = the RED/runtime bank decision-quality LOOP.
+- **Loop stages bound to EXISTING infra (nothing invented):** DECIDE (ADR-164 method + deterministic admissibility gate
+  per sp38/consultant Q1) → RECORD (agent_decision_record.schema.json + clickhouse_writer decision_events, append-only
+  I-24) → SCORE/OUTCOME (metrics per self-learning-loop source #1083) → EVALUATE (tests/best-decision + BUG-007 tiers,
+  pointer, no new threshold) → PROPOSE (ImprovementProposal, PROPOSED only) → HUMAN/MLRO GATE (novelty-pipeline-config.yaml
+  via human-gated PR, §10 / I-27).
+- **HARD RULE (stop-barrier):** runtime L2+ on payment/compliance/KYC/AML NEVER self-modify gates/weights; every config
+  change human-ratified; fail-closed on ambiguity. "Предлагает система — утверждает человек."
+- **SYNC-CANON (ADR-163) compliance:** authored sync-before-write off current origin/main; no runtime/config/schema change.
+- **Correction:** source pointer uses the correct date `best-decision-self-learning-loop-2026-07-07.md` (the spec's `-06` would dangle).
+- **Perimeter:** banxe-architecture; worktree off origin/main (ADR-120); no TRADING-001 / agent/specproj/* (Rule 6);
+  signed; --force-with-lease. IL frozen-at-merge (Rule 8). Thresholds are PROPOSALS in config, never canon-hardcoded.
+- **Deliverable:** 1 `docs/canon/BEST-DECISION-LEARNING-LOOP.md` + this shard. ONE Draft PR, prepare-only.
+- **Refs:** ADR-102; ADR-141; ADR-162; ADR-163; ADR-164; ADR-161; CLAUDE.md §10/§11; I-17; I-24; I-27; BUG-007;
+  docs/design/BEST-DECISION-AGENT.md (#1080); docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md (sp38);
+  docs/sources/consultant-response-best-decision-2026-07-07.md; docs/sources/consultant-escalation-protocol-2026-07-07.md (#1084);
+  docs/sources/best-decision-self-learning-loop-2026-07-07.md (#1083); docs/sources/best-decision-concept-2026-07-06-v2.md;
+  docs/canon/BEST-DECISION-BOUNDARY.md; schemas/agent_decision_record.schema.json; tests/best-decision/; governance/novelty-pipeline-config.yaml.
+
+---
+
+### IL-1028 - sp40-bestdecratifyack @ 2026-07-07T09:37:06Z
+
+- **il_ts:** 2026-07-07T09:37:06Z
+- **session_id:** sp40-bestdecratifyack
+- **source:** Terminal-B
+- **status:** REVIEW
+- **shard:** `ledger/entries/sp40-bestdecratifyack/IL-2026-07-07T09-37-06Z--a835b2.md`
+
+### sp40-bestdecratifyack — DIRECTIVE-BESTDEC-RATIFY-001 operator ratification ack (Q1-Q5 APPROVED, Central co-sign PENDING, activation deferred)
+
+- **Instruction (append-only governance ack):** Record the operator ratification of
+  `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` per chat-authorization from Operator
+  (Moriel Carmi), 2026-07-07: verbatim "я всё одобряю" — approve ALL Q1..Q5 (5/5).
+  Directive status transitions `OPEN → RATIFIED-OPERATOR`; Central co-sign remains
+  `PENDING` to reach `CLOSED` per Closure protocol §3. Ack is APPEND-only; no Q is
+  activated; NO ADR is opened here.
+- **Scope of change:**
+  - `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` (EDIT, in-place per ADR-102): frontmatter
+    `status: OPEN → RATIFIED-OPERATOR`; `ack_state.operator = RATIFIED (…)`,
+    `ack_state.central = PENDING`; `q_verdicts = {Q1..Q5: APPROVE}`. Per-Q `[x] APPROVE`
+    check, `Operator ack` line filled with the ratification string, `Central ack` line
+    marked `PENDING`, and a per-Q "Next action" block recording the deferred activation
+    path. New append-only "Ratification-ack log" section appended at the bottom.
+- **Meaning guardrails preserved (STOP-critical):**
+  - **Ack is APPEND-only.** No Q activated; no ADR opened by this ack. Each Q's
+    activation is deferred to its own separate governed ADR / config-PR (human-gated).
+  - **I-27 preserved.** No autonomous production-state mutation is enabled by this ack.
+  - **Variant-2 preserved.** Advisory-only current single-stage flow remains in force
+    until an activation ADR is merged.
+  - **CLAUDE.md §10 (Config-over-Hardcoding).** All numeric parameters (Q2 α / weights /
+    Level-boundaries; Q4 weights, band thresholds, FCR override, calibration sample
+    size) remain governed-config *proposals*.
+  - **ADR-102 pointer-first.** The directive is edited in-place per its own author-side
+    canon; no synthesis, no Perplexity SSOT, no Central inline ruling is restated —
+    references remain pointer-only.
+  - **HITL / no auto-merge.** PR opens as **draft**; auto-merge NOT armed; every
+    downstream landing (per-Q activation ADR + governed-config PR) is human-gated at
+    every step.
+  - **AML-method gate.** `banxe_aml_orchestrator` Decision Method (PR #1094) stays
+    **PROPOSED** and NOT activated; safe activation is gated on the Q1 Step-0
+    admissibility ADR landing first.
+- **Per-Q next-action (deferred, human-gated):**
+  - **Q1 (Step 0 admissibility-gate):** ADR to activate the deterministic Step 0
+    admissibility DAG (static, human-authored, append-only). This ADR unblocks safe
+    activation of the AML orchestrator Decision Method (#1094).
+  - **Q2 (Level 0/1/2 lexicographic):** ADR extending ADR-162 / ADR-164 + governed-config
+    PR against `governance/novelty-pipeline-config.yaml` for α, MAUT weights, Level
+    boundaries.
+  - **Q3 (Canonicity A + B):** ADR recording the joint canonicity criterion; ASSIGNATION
+    stays external / reference-only; concept-v7..v9 backlog deferred to separate
+    `concept-consolidation` audit.
+  - **Q4 (Two-stage triage + FCR override):** adoption-audit of the 88 findings under
+    ratified two-stage triage; governed-config PR for weights, bands, FCR override,
+    calibration sample size; 10–15 sample calibration itself human-gated.
+  - **Q5 (Merge-queue serialize → index-decouple → commit-index redesign):** merge-queue
+    serialize IL (NOW) + index-decouple IL (MEDIUM) + commit-index redesign as tracked
+    debt-item (own separate ADR); "quiet-window" retained only as emergency fallback.
+- **Deviation:** none. `[IL-NNN]` NOT hardcoded (ADR-119 / ADR-133 mint-at-merge). PR
+  opens as **draft**; auto-merge NOT armed (HITL). ADR-102 preserved: directive edited
+  in-place, synthesis + Perplexity SSOT + Central inline ruling referenced by pointer,
+  not restated.
+- **CONCURRENCY window:** `origin/main` at `8b053b2` (#1093 sp39 directive); pre-shard
+  max IL from `ledger/IL-SEQUENCE.json`. SYNC-CANON: on any sp40 churn observed at push
+  time → HOLD "sp40 churned, seize window".
+- **Proof:** `REDIS_HOST=127.0.0.1 python3 ledger/build_ledger.py` (regenerate FROM
+  ROOT), then `REDIS_HOST=127.0.0.1 python3 ledger/build_ledger.py --check` (exit 0).
+- **Blocker:** none for this ack. Central co-sign remains PENDING to move each Q line to
+  CLOSED per Closure protocol §3. Activation of any Q post-ack lands via its own
+  separate governed ADR / config-PR — out of scope for this PR.
+- **Refs:**
+  - `governance/DIRECTIVE-BESTDEC-RATIFY-001.md` (EDIT — this PR: operator ratification
+    ack, in-place per ADR-102).
+  - `docs/design/BEST-DECISION-RATIFICATION-SYNTHESIS.md` (PR #1091 — synthesis
+    referenced by pointer).
+  - `docs/sources/consultant-response-best-decision-2026-07-07.md` (Perplexity SSOT —
+    pointer-only).
+  - `docs/adr/ADR-162-best-decision-principle.md`,
+    `docs/adr/ADR-164-best-decision-agent-method.md` (Best-Decision canon extended by
+    future Q1 / Q2 activation ADRs — NOT opened here).
+  - `docs/canon/BEST-DECISION-BOUNDARY.md` (I-27 anchor + variant-2).
+  - `CLAUDE.md §10` (Configuration-over-Hardcoding — numeric parameters remain
+    governed-config *proposals*).
+  - PR #1094 (`banxe_aml_orchestrator` SOUL Decision Method — stays PROPOSED; gated on
+    Q1 Step-0 admissibility ADR).
+  - ADR-102 (pointer-first, no source restate); ADR-119 / ADR-133 (mint-at-merge).
+
+---
+
+### IL-1039 - canon-factory-memo @ 2026-07-07T12:00:00Z
+
+- **il_ts:** 2026-07-07T12:00:00Z
+- **session_id:** canon-factory-memo
+- **source:** agent-factory
+- **status:** PROPOSED
+- **shard:** `ledger/entries/canon-factory-memo/IL-2026-07-07T12-00-00Z--factory-memo.md`
+
+### FACTORY-MEMO canon doc
+- File: docs/canon/FACTORY-MEMO.md
+- 12 hard rules for Factory sessions; ADR-102 pointer-first; I-24 append-only.
+
+---
+
+### IL-1040 - agent-factory-souls-retrofit-r1-finance @ 2026-07-08T11:20:48Z
+
+- **il_ts:** 2026-07-08T11:20:48Z
+- **session_id:** agent-factory-souls-retrofit-r1-finance
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r1-finance/IL-2026-07-08T11-20-48Z--retrofit-r1-finance.md`
+
+### Retrofit batch R1 (finance) — add ## Decision Method to the 11 finance SOULs (prepare-only, additive)
+
+Adds the mandatory `## Decision Method` (ADR-131 standard, amended #1077) to the 11 R1 finance SOULs (apar-agent,
+beancount-export-agent, budget-agent, cash-position-agent, consolidation-agent, finance-bi-agent, forecast-agent,
+fx-exposure-agent, gl-close-agent, ifrs-agent, tax-compliance-agent). Additive only — no authority/status change, all
+stay PROPOSED; no passport/config/schema/_TEMPLATE/ADR-131. Grounded per finance role (fiscal materiality / accuracy /
+disclosure adequacy / reporting deadline — MAUT -> own HITL gate -> own human double -> fail-closed; never
+best-decides a financial-reporting action; I-27, BUG-007). Pointer-first. 0 skips. R1 -> 11/58. Clean re-cut off
+origin/main after a --theirs ledger corruption (sp40/IL-1028 preserved; I-24/I-28 append-only). Refs: ADR-131
+(+#1077); BEST-DECISION-RETROFIT-PLAN; I-24/I-27/I-28/BUG-007; ADR-102/119/120; Rule 6.
+
+---
+
+### IL-1041 - agent-factory-souls-retrofit-r6a-data-ml @ 2026-07-08T12:07:53Z
+
+- **il_ts:** 2026-07-08T12:07:53Z
+- **session_id:** agent-factory-souls-retrofit-r6a-data-ml
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r6a-data-ml/IL-2026-07-08T12-07-53Z--retrofit-r6a-data-ml.md`
+
+### Retrofit batch R6a (Data/ML cluster) — add ## Decision Method to 3 factory SOULs (prepare-only, additive)
+
+Adds the mandatory `## Decision Method` (ADR-131 Amendment 2026-07-07; per the ratified R6 Data/ML methodology) to
+3 factory SOULs — data-lake-elt-agent (Decider: CTIO), ml-pipeline-agent (Decider: CTO), clickhouse-writer
+(Decider: Platform Engineering / Head of Data). Each block is grounded in the AUDITED SOUL: verbatim Decider from the
+live HITL Gate, Data/ML MAUT criteria (R/Re/A/L/C), CLUSTER-A decision cases, confidence-tiered escalation, and
+agent-specific fail-closed boundary (ISOLATED→execute / SHARED→gated / PRODUCTION→blocked, I-27). Additive only —
+inserted after `## HITL Gate`, before `## HITL Workflow`; no section removed/reordered; no passport/config/schema/
+_TEMPLATE/ADR-131 diff; all stay PROPOSED. Pointer-first (ADR-102 — theory referenced, not restated). R6a → R6
+sub-batch (3 of 14). Refs: ADR-131 Amendment; BEST-DECISION-RETROFIT-PLAN; R6-methodology; I-08, I-17, I-24, I-27;
+ADR-102 / ADR-119 / ADR-120.
+
+---
+
+### IL-1042 - agent-factory-souls-retrofit-r6b-governors @ 2026-07-08T12:49:50Z
+
+- **il_ts:** 2026-07-08T12:49:50Z
+- **session_id:** agent-factory-souls-retrofit-r6b-governors
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r6b-governors/IL-2026-07-08T12-49-50Z--retrofit-r6b-governors.md`
+
+### Retrofit batch R6b (Governor cluster) — add ## Decision Method to 6 factory SOULs (prepare-only, additive)
+
+Adds the mandatory `## Decision Method` (ADR-131 Amendment 2026-07-07; ratified R6 methodology, Governor cluster /
+CLUSTER-B) to 6 factory SOULs — m-gateway-api-governor (Decider: CTIO), sdk-release-governor (Head of Platform
+Engineering), sandbox-rails-governor (Head of Platform Engineering), webhook-orchestrator-agent (CTO), webhooks-agent
+(CTO), multi-tenancy-agent (CTO; extra CASE-5 [BLOCK-SPECIAL] cross-tenant, Lexicographic Level-0). Each block grounded
+in the AUDITED SOUL: verbatim Decider from the live HITL Gate, Governor MAUT criteria (P/Br/Rv/L/S), CLUSTER-B cases,
+confidence-tiered escalation, agent-specific fail-closed boundary (ISOLATED→execute / SHARED→gated / PRODUCTION→blocked,
+I-27). Additive only — inserted after `## HITL Gate`; no section removed/reordered; no passport/config/schema/_TEMPLATE/
+ADR-131 diff; all stay PROPOSED. Pointer-first (ADR-102 — theory referenced, not restated). R6b → R6 sub-batch (6 of 14).
+Refs: ADR-131 Amendment; BEST-DECISION-RETROFIT-PLAN; R6-methodology; I-08, I-24, I-27; ADR-102 / ADR-119 / ADR-120.
+
+---
+
+### IL-1043 - agent-factory-souls-retrofit-r6c-platform-core @ 2026-07-08T13:07:27Z
+
+- **il_ts:** 2026-07-08T13:07:27Z
+- **session_id:** agent-factory-souls-retrofit-r6c-platform-core
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r6c-platform-core/IL-2026-07-08T13-07-27Z--retrofit-r6c-platform-core.md`
+
+### Retrofit batch R6c (Platform/Core cluster) — add ## Decision Method to 4 factory SOULs (prepare-only, additive)
+
+Adds the mandatory `## Decision Method` (ADR-131 Amendment 2026-07-07; ratified R6 methodology, Platform/Core cluster /
+CLUSTER-C) to 4 factory SOULs — cto-platform-agent (Decider: CTO; activation-class CTO+CEO per passport/ADR-135),
+experiment-copilot-agent (CTO), midaz-mcp-agent (CTO; ledger-integrity Level-0 — I-08/I-24 hard, any ledger-mutation
+risk → CASE-4 BLOCK), reasoning-bank-agent (CTO). Each block grounded in the AUDITED SOUL: verbatim Decider from the
+live HITL Gate (double-gate rendered as stated, not invented), Platform/Core MAUT criteria (R/Rv/Ii/A/C), CLUSTER-C
+cases, confidence-tiered escalation, agent-specific fail-closed boundary (ISOLATED→execute / SHARED→gated /
+PRODUCTION→blocked, I-27). Additive only — inserted after `## HITL Gate`; no section removed/reordered; no passport/
+config/schema/_TEMPLATE/ADR-131 diff; all stay PROPOSED. Pointer-first (ADR-102 — theory referenced, not restated).
+R6c → R6 sub-batch (4 of 14); R6 complete after this (3+6+4=13; design-pipeline-agent handled separately per double-gate).
+Refs: ADR-131 Amendment; BEST-DECISION-RETROFIT-PLAN; R6-methodology; I-05, I-08, I-24, I-27, I-28; ADR-102 / ADR-119 / ADR-120.
+
+---
+
+### IL-1044 - agent-factory-souls-retrofit-r6d-design @ 2026-07-08T13:20:30Z
+
+- **il_ts:** 2026-07-08T13:20:30Z
+- **session_id:** agent-factory-souls-retrofit-r6d-design
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r6d-design/IL-2026-07-08T13-20-30Z--retrofit-r6d-design.md`
+
+### Retrofit batch R6d (Design one-off) — add ## Decision Method to design-pipeline-agent (prepare-only, additive; Variant A)
+
+Adds the mandatory `## Decision Method` (ADR-131 Amendment 2026-07-07; ratified R6 methodology, Design cluster /
+CLUSTER-D) to the single SOUL design-pipeline-agent. **Decider verbatim from SOUL:** CTO (activation-class decisions
+CTO+CEO per ADR-135; I-27 at decision-time) — the double-gate is rendered exactly as the SOUL states it; no VP-layer,
+ARB, or co-decider invented. Design MAUT criteria (Ds/U/B/F/T; DS-conformance Lexicographic Level-0), CLUSTER-D cases,
+confidence-tiered escalation, fail-closed (taste output never satisfies a gate; never autonomously promotes/merges
+generated code — I-27, ADR-135). Additive only — inserted after `## HITL Gate`; no section removed/reordered; no
+passport/config/schema/_TEMPLATE/ADR-131 diff; stays PROPOSED. Pointer-first (ADR-102 — theory referenced, not restated).
+
+**WCAG deferral (VARIANT A, intentional):** the WCAG-AA accessibility Level-0 constraint is DEFERRED to a separate
+governance-PR and is NOT added by this retrofit — this batch introduces no accessibility invariant and adds no
+Accessibility Engineer co-decider. R6 complete after this (R6a 3 + R6b 6 + R6c 4 + R6d 1 = 14/14).
+Refs: ADR-131 Amendment; BEST-DECISION-RETROFIT-PLAN; R6-methodology; ADR-135; I-27; ADR-102 / ADR-119 / ADR-120.
+
+---
+
+### IL-1045 - agent-factory-souls-retrofit-r7-bi-dashboard @ 2026-07-08T18:16:03Z
+
+- **il_ts:** 2026-07-08T18:16:03Z
+- **session_id:** agent-factory-souls-retrofit-r7-bi-dashboard
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-souls-retrofit-r7-bi-dashboard/IL-2026-07-08T18-16-03Z--retrofit-r7-bi-dashboard.md`
+
+### Retrofit R7-final (BI Dashboard Governor) — add ## Decision Method (Best-Decision Canon Variant C) — prepare-only, additive
+
+Adds the mandatory `## Decision Method` (ADR-131 Amendment 2026-07-07; **Best-Decision Canon Variant C** applied) to
+the LAST factory SOUL — bi-dashboard-governor. **Decider verbatim from SOUL:** Head of Data. Variant C shape: Role
+(BI Dashboard Governor / Data-Analytics) · Tier STANDARD · Execution-class gated; core algorithm enumerate → score
+(MAUT: value=dashboard/dataset_quality, cost=maintenance_effort, risk=pii_exposure/rls_bypass, reversibility, strategic_fit=
+data_governance, opportunity_cost=stale_insight) → satisfice within HITL → escalate; blockers B1–B5 + HARD (PII/RLS
+bypass → BLOCK unconditionally; publish/certify or RLS/no-PII policy change → gated at Head of Data); explicit no-adoption-
+right; ratification gate. **STATUS: PROPOSED — NOT ACTIVE** (governed config requires a separate operator + Central
+human-gate). Additive only — inserted after `## HITL Gate`; no section removed/reordered; no passport/config/schema/
+_TEMPLATE/ADR-131 diff; stays PROPOSED. Pointer-first (ADR-102). Completes the fleet Best-Decision retrofit.
+Refs: ADR-131 Amendment; ADR-162; BEST-DECISION-RETROFIT-PLAN; I-27; ADR-102 / ADR-119 / ADR-120.
+
+---
+
+### IL-1046 - agent-factory-session-memory-mvp @ 2026-07-08T20:36:10Z
+
+- **il_ts:** 2026-07-08T20:36:10Z
+- **session_id:** agent-factory-session-memory-mvp
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-session-memory-mvp/IL-2026-07-08T20-36-10Z--session-memory-mvp.md`
+
+### session_memory MVP — deterministic session-memory substrate over existing repo artifacts
+
+Implements a working MVP (`session_memory/`) that normalizes the EXISTING memory/handoff artifacts
+(MEMORY.md + latest docs/handoff/HANDOFF-*.md + latest session-transfer-package-*.md) into one
+machine-readable session-start pack (JSON + optional markdown). Deterministic, read-only against source
+truth, append-only output to the regenerable `docs/generated/session-memory/` cache. Files: schemas.py
+(typed contract), extract_handoff_facts.py (pure markdown→facts, no I/O/clock), build_session_pack.py
+(builder + CLI build/inspect/latest), read_memory_pack.py (read-only loader/renderer), README.md, tests/
+(14 tests: missing doc → warning-not-crash, malformed markdown, duplicate headers, role reorder-not-drop,
+determinism, source-never-mutated). Role-aware (--role central/factory/sub-a/sub-b) reorders relevant
+sections only. ruff clean; pytest 14/14. NO authority expansion, NO daemon, NO external DB, NO CI/canon
+bypass — complements .github/workflows/novelty-handoff.yml (append-only handoff validator). Extension path
+to memoir/substrate (ClickHouse index, embeddings, pack-diff timeline) documented; each step is a separate
+operator-gated ADR. Refs: I-24 append-only; I-28 IL record; HITL/operator merge gate; ADR-102/119/120.
+
+---
+
+### IL-1048 - agent-factory-session-memory-mvp-reclassify @ 2026-07-08T21:17:12Z
+
+- **il_ts:** 2026-07-08T21:17:12Z
+- **session_id:** agent-factory-session-memory-mvp-reclassify
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-session-memory-mvp-reclassify/IL-2026-07-08T21-17-12Z--session-memory-reclassify.md`
+
+### Reclassify session_memory — read-only session-pack builder, NOT a memory substrate (text-only correction)
+
+Corrects the terminology on the open session_memory MVP (PR #1104): session_memory is a **read-only
+session-pack builder** over MEMORY.md + docs/handoff/HANDOFF-*.md + the transfer package — it is **NOT a memory
+substrate** and **does NOT participate in ADR-137 PRECOND-04 (agentmemory XOR memoir)**. Read-only over source
+handoff docs; append-only to a regenerable cache; complements memoir/agentmemory, never competes. Removes the
+false PRECOND-04 XOR implication carried by the earlier "substrate" wording. **Text/metadata only — no .py, no
+schema, no behavior change** (README.md + PR title). The prior shard IL-... (agent-factory-session-memory-mvp) is
+NOT edited (append-only, I-24); this is an additive correcting record. Refs: memoir reconciliation; ADR-137
+(memoir pilot) / ADR-165 (memoir HOW); PRECOND-04; I-24; ADR-102/119/120.
+
+---
+
+### IL-1054 - agent-factory-governance-memoir-impl-design @ 2026-07-08T21:07:05Z
+
+- **il_ts:** 2026-07-08T21:07:05Z
+- **session_id:** agent-factory-governance-memoir-impl-design
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-governance-memoir-impl-design/IL-2026-07-08T21-07-05Z--memoir-impl-design.md`
+
+### ADR-165 memoir Implementation Design (HOW-layer) — factory pilot, PROPOSED, document-only
+
+Authors ADR-165 (docs/adr/ADR-165-memoir-implementation-design.md) — the ratifiable HOW for the ADR-137
+factory-only memoir pilot. **Text-3 authoritative** (grounded on real ADR-136/137 + the 8 MEMOIR-PILOT-PRECOND
+docs + live reasoning_bank + PresidioRedactor). **Text-2 REJECTED** on three perimeter/surface violations: C1
+factory-fork-only breach (reasoning_bank is project-side), C2 cross-perimeter storage (shared store), C3
+premature FastAPI/MCP surface. Reconciled HOW: factory/memoir/ path (factory-side only, PRECOND-05); git-plumbing
+bare memory-repo (redact→then commit, raw never stored); Python lib+CLI surface (no daemon/FastAPI/MCP);
+redaction mirroring PresidioRedactor + extended secrets/keys/.env/JWT/high-entropy + RED-zone DROP, fail-closed;
+git-native branch/blame/rollback (rollback = new commit, no history rewrite); config/memoir/retention.yaml
+(max_age/max_entries/hard_cap_bytes/scope, fail-closed if invalid); XOR via config-key + CI guard + runtime
+single-registry; no-authority (VCS content-only, never code/ledger/prod/dispatch). **Acceptance gate = ADR-137
+8-precondition test matrix T01..T15 (NOT ADR-135; ADR-135 governs only expansion beyond pilot, PRECOND-08:
+separate ADR + operator + IronClaw).** session_memory clarified as read-only pack builder, not a substrate,
+outside the XOR constraint. **NO code, NO memoir runtime, NO import of zhangfengcdt/memoir.** Additive; document-only.
+Refs: ADR-137/136/135/130/127/117/120/059; MEMOIR-PILOT-PRECOND-01..08; ADR-102/119/120.
+
+---
+
+### IL-1055 - agent-factory-memoir-mvp-impl @ 2026-07-08T22:00:58Z
+
+- **il_ts:** 2026-07-08T22:00:58Z
+- **session_id:** agent-factory-memoir-mvp-impl
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-memoir-mvp-impl/IL-2026-07-08T22-00-58Z--memoir-mvp-impl.md`
+
+### memoir factory-pilot MVP CODE — per ADR-165 (HOW) + MEMOIR-PILOT-PRECOND-01..08 (WHAT)
+
+First code work item for the memoir pilot (authorised now ADR-165 is on main). Delivers factory/memoir/:
+git-plumbing store over an ISOLATED bare memory-repo (redact→then commit; native branch/commit/blame/checkout;
+rollback = new commit, no history rewrite), fail-closed redaction (RegexEntropyRedactor mirroring the emi-stack
+PresidioRedactor pattern — NO project import — EMAIL/IBAN(mod-97)/CARD(Luhn)/SORT_CODE/PHONE + secrets/keys/.env/
+JWT/high-entropy; RED-zone DROP; uncertainty ⇒ refuse), bounded retention (config/memoir/retention.yaml,
+memoir-retention/v1, fail-closed on absent/unbounded; on-write eviction + purge sweep), XOR (engine config key +
+scripts/check-memory-xor.sh + runtime single-registry), perimeter (factory-fork only; project fork disabled;
+assert_isolated), no-authority (content-only; AST check bans ledger/build_ledger/network imports). CLI: store/
+recall/branch/rollback/blame/checkout/purge — NO daemon/FastAPI/MCP. Tests: ADR-137 8-precondition matrix
+T01..T15 (22 tests) ALL PASS; ruff clean. **ACCEPTANCE = ADR-137 8-precond matrix (NOT ADR-135).** PROPOSED/gated:
+code + tests only — does NOT activate production capture. NO emi-stack/project touched, NO memoir import, NO
+agentmemory instance. Refs: ADR-165, ADR-137, ADR-136, MEMOIR-PILOT-PRECOND-01..08, ADR-130/127/117/120/059,
+I-24/I-28, ADR-102.
+
+---
+
+### IL-1056 - agent-factory-sp41-adoption-finalize @ 2026-07-09T12:36:14Z
+
+- **il_ts:** 2026-07-09T12:36:14Z
+- **session_id:** agent-factory-sp41-adoption-finalize
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-sp41-adoption-finalize/IL-2026-07-09T12-36-14Z--adoption-finalize.md`
+
+### SP41 adoption finalization — self-contained (supersedes closed #1098) — PROPOSED
+
+Central-finalizes the 88-findings adoption triage per operator rulings, as a NEW self-contained
+authoritative record: `governance/ADOPTION-FINALIZATION-SP41.md`. **SUPERSEDES PR #1098** (now
+CLOSED — `ADOPTION-AUDIT-88.md` does NOT land on main); the audit's verdict data (buckets + per-item
+lists + triage method) is EMBEDDED inline so the file stands alone with NO dependency on the closed
+artefact. Keeps `NOVELTY-COLLECTION-REGISTER.md` UNCHANGED (append-only I-24; remains the SSOT of the
+88 raw findings). ADR-102 satisfied by embedding the authoritative record (not a pointer to a
+non-landing file). Verdicts: (§1) CONFIRMED (embedded from the superseded #1098 triage) — 9 ADOPT
+(46,49,56,64,65,66,68,104,111-fraud-only; 3 ESCALATE-IMMEDIATE 64/65/104 first), 8 DUP, 2 Stage-1
+hard REJECT (48,59), 17 score-REJECT. (§2) OPERATOR-OVERRIDE — CREDIT/LENDING REJECTED-OUT-OF-SCOPE
+permanently (NOT DEFER-to-licence): 113,129,130 + #111 credit-portion → REJECT-OOS; `B-EMI-CREDIT-
+GATE-001` holds ZERO open credit items after this (credit is out of EMI remit, not licence-gated).
+(§3) OPERATOR-OVERRIDE — TRADING/treasury/quant via PAYBIS-DISTRIBUTION-TRACK (PAYBIS licensed;
+BANXE distributor, ADR-138 precedent — NOT own-licence): 55,60,62,63,81 → each a consultant Q
+(adopt-as-PAYBIS-distribution yes/no). (§4) ROADMAP best-decision order for the 9 ADOPT: (1) ESCALATE
+LLM-safety perimeter 64/65/104; (2) fraud engine 46/49/111(fraud); (3) UI/observability/XAI 56/68/66
+— each = own sprint/IL + ADR-102 Duplication Audit. (§5) 49 CONSULTANT QUESTIONS (44 DEFER + 5
+PAYBIS-trading), each self-contained (finding-id/name/source/capability/BANXE-context/decision-asked),
+names+sources+capability pulled verbatim from register rows 43–130, grouped by family (agent-frameworks,
+fraud, AML-privacy, KYC, NLP/RAG/eval, web-automation, OSINT/Tor [#116/#118 legal-sensitive sandbox-only],
+ledger/blockchain, payments/card-issuing [#119 Paynetics closest-to-ADOPT, resolves 119/120/121], CI,
+compliance-surface, PAYBIS-track). (§6) INVARIANTS: register UNCHANGED (SSOT); self-contained (no dep
+on closed #1098); I-27 preserved; numbers = governed-config proposal; NOTHING activated. Refs: #1098
+CLOSED/superseded, NOVELTY-COLLECTION-
+REGISTER, DIRECTIVE-BESTDEC-RATIFY-001, ADR-102, ADR-103, ADR-138, B-EMI-CREDIT-GATE-001, I-24/I-27/I-28.
+
+---
+
+### IL-1057 - agent-factory-governance-memory-layering @ 2026-07-09T13:14:20Z
+
+- **il_ts:** 2026-07-09T13:14:20Z
+- **session_id:** agent-factory-governance-memory-layering
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-governance-memory-layering/IL-2026-07-09T13-14-20Z--memory-layering.md`
+
+### ADR-166 memory layering — decision-memory + working-memory + ledger SoT (complementary, XOR clarified) — PROPOSED
+
+DOCUMENT-ONLY ADR (`docs/adr/ADR-166-memory-layering.md`) recording the operator ruling that the two
+memory contours COEXIST and complement each other (not either/or), and clarifying the memoir XOR
+precondition. Three complementary layers by authority: Ledger (ADR-059 supreme SoT) > reasoning_bank
+(emi-stack PROJECT decision-memory — append-only/immutable, EU AI Act Art.13, feedback never
+auto-applied I-27 → authoritative decision-record) > memoir (factory working-memory — git-plumbing
+versioned, NON-authoritative, regenerable, never touches code/ledger/prod/dispatch). Role separation:
+decision-memory (WHAT was decided, immutable, audit-grade) ≠ working-memory (HOW the agent worked,
+versioned, disposable) — different questions, different perimeters (reasoning_bank=project;
+memoir=factory). XOR clarification (PRECOND-04): XOR forbids two substrates OF THE SAME ROLE on one
+fork (agentmemory XOR memoir as working-memory); it does NOT forbid a decision-memory layer +
+working-memory layer coexisting → reasoning_bank + memoir coexistence PERMITTED. Reliability =
+defense-in-depth (losing memoir loses nothing authoritative; ledger + reasoning_bank immutability
+preserve the record). Perimeter (ADR-117): factory memoir and project reasoning_bank share NO store,
+no cross-perimeter memory. No authority (ADR-130/127): all layers read-only w.r.t. authority; recall
+confers no permission. Consequence: two contours canonically complementary (ruling satisfied), XOR
+intact; a future project working-memory stays XOR-gated within its role, needs its own ADR + IronClaw.
+Status PROPOSED — nothing activated; no code/config/perimeter change. Refs: ADR-136, ADR-137, ADR-059,
+ADR-130, ADR-127, ADR-117, ADR-102, I-27/I-24/I-28.
+
+---
+
+### IL-1058 - agent-factory-adopt64-owasp-llm-top10 @ 2026-07-09T14:05:24Z
+
+- **il_ts:** 2026-07-09T14:05:24Z
+- **session_id:** agent-factory-adopt64-owasp-llm-top10
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt64-owasp-llm-top10/IL-2026-07-09T14-05-24Z--adopt64-owasp.md`
+
+### ADOPT #64 — OWASP LLM Top-10 → ai-cost-policy + OSS-supply-chain (ESCALATE-IMMEDIATE, FCR 0.85) — PROPOSED
+
+First ADOPT sprint from SP41 roadmap §4 cluster-1 (LLM-safety perimeter). Integrates the OWASP LLM
+Top-10 (2025) into BANXE governance as an ADDITIVE checklist mapping — handoff OD-LLM-SECURITY.
+**ADR-102 Duplication Audit:** repo-wide search found NO existing OWASP-LLM-Top10 mapping (SRC-07
+guardrails, prompt-canon, ai-cost-policy, OSS-supply-chain, litellm-guardrail-hook cover adjacent
+surface but not the LLM-risk mapping). Verdict: OSS-SUPPLY-CHAIN-POLICY.md = **EXTEND** (new §6, §1–5
+unchanged); ai-cost-policy/README.md = **EXTEND** (new §7.1 checklist-gate note); prompt-canon +
+litellm-guardrail-hook + budget controls = **KEEP** (referenced pointer-first, not rewritten);
+owasp-llm-top10-checklist.md = **ADD** (new verifiable checklist). Scope (3 docs, additive): (1)
+`docs/policies/OSS-SUPPLY-CHAIN-POLICY.md` §6 — LLM01…LLM10 each mapped pointer-first to an existing
+BANXE control (prompt-canon LLM01; secrets/output-val LLM02; SBOM/SCA §1–3 LLM03; provenance/pin
+LLM04; no-authority LLM05; agent-authority+HITL LLM06; prompt-canon+audit-hook LLM07; vector-store+
+perimeter LLM08; decision-lineage/Art.13 LLM09; ai-cost-policy budget/cap/anomaly/hard-stop LLM10).
+(2) `governance/ai-cost-policy/README.md` §7.1 — OWASP-LLM checklist gate at OSS/LLM dependency
+intake, GAP→OD-LLM-SECURITY. (3) `governance/owasp-llm-top10-checklist.md` — the verifiable
+PASS/GAP/N-A checklist. CONSTRAINT: PROPOSED / governance-doc only — NO runtime code change, NO CI
+gate wiring (deferred until #65 nemo-guardrails / #104 guardrails-ai land — LLM01/LLM05 runtime
+enforcement). Config-over-hardcoding: all thresholds = governed-config proposals (CLAUDE.md §10).
+Refs: ADOPTION-FINALIZATION-SP41 (#64), OD-LLM-SECURITY, ADR-102, OSS-SUPPLY-CHAIN-POLICY, ai-cost-
+policy, ADR-117, ADR-130/127, ADR-030, I-27/I-24/I-28.
+
+---
+
+### IL-1059 - agent-factory-adopt65-nemo-guardrails @ 2026-07-09T14:51:21Z
+
+- **il_ts:** 2026-07-09T14:51:21Z
+- **session_id:** agent-factory-adopt65-nemo-guardrails
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt65-nemo-guardrails/IL-2026-07-09T14-51-21Z--adopt65-nemo.md`
+
+### ADOPT #65 — NeMo-Guardrails runtime layer → complements prompt-canon, closes OWASP LLM01/LLM05 (ESCALATE-IMMEDIATE, FCR 0.80) — PROPOSED
+
+Second ADOPT sprint from SP41 roadmap §4 cluster-1 (LLM-safety perimeter). Defines NVIDIA NeMo
+Guardrails as the RUNTIME LLM input/output policy-enforcement layer — handoff OD-LLM-SECURITY.
+**ADR-102 Duplication Audit:** repo-wide search found NO prior NeMo/runtime-rails policy (NeMo only
+appears in novelty/adoption/ledger references; PROMPT-CANON-PROJECT §14.8 is sandbox-guardrails, a
+distinct authoring/sandbox concern). Verdict: `governance/runtime-guardrails-policy.md` = **ADD**
+(new runtime layer); `governance/owasp-llm-top10-checklist.md` = **EXTEND** (LLM01/LLM05 rows +
+references, pointer only); `docs/agent-engine-dossier/SRC-07-constraints-guardrails.md` = **EXTEND**
+(one-line cross-ref pointer); prompt-canon (DEVELOPER/PROJECT) + litellm-guardrail-audit-hook =
+**KEEP** (referenced pointer-first, NOT rewritten). Distinct-layer rationale: prompt-canon =
+authoring-time (how prompts are written); NeMo = request-time (input/output/dialog rails enforce
+policy live); litellm-hook = post-hoc audit — three different times/mechanisms, additive not
+overlapping. Rails: input rails (prompt-injection/jailbreak → OWASP LLM01), output rails
+(PII/policy/hallucination/structured-output → OWASP LLM05, composing with #104 input-validators),
+dialog rails (Colang flow constraint → LLM06 agency governance). No-authority: rails block/redact
+only, never grant permission or mutate code/ledger/prod/dispatch (ADR-130/127, I-27 HITL for
+customer-facing blocks); single-perimeter (ADR-117). CONSTRAINT: PROPOSED/doc only — NO Colang/runtime
+code, NO LiteLLM config change, NO CI wiring (all explicit follow-up: Colang configs, :4000 wiring
+behind flag, rail-config CI lint+smoke, HITL routing). NeMo referenced NOT imported. Config-over-
+hardcoding: all rail thresholds = governed-config proposals (CLAUDE.md §10). Refs: ADOPTION-
+FINALIZATION-SP41 (#65), OD-LLM-SECURITY, #64 owasp-llm-top10-checklist, ADR-102, prompt-canon,
+litellm-guardrail-audit-hook, #104 (pending), ADR-117, ADR-130/127, ADR-166, I-27/I-24/I-28.
+
+---
+
+### IL-1060 - agent-factory-adopt104-guardrails-ai @ 2026-07-09T15:00:18Z
+
+- **il_ts:** 2026-07-09T15:00:18Z
+- **session_id:** agent-factory-adopt104-guardrails-ai
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt104-guardrails-ai/IL-2026-07-09T15-00-18Z--adopt104-guardrails.md`
+
+### ADOPT #104 — Guardrails.ai LLM-input validators → completes LLM-safety perimeter (cluster-1) (ESCALATE-IMMEDIATE, FCR 0.80) — PROPOSED
+
+Third and LAST ADOPT sprint of SP41 roadmap §4 cluster-1 (LLM-safety perimeter). Defines Guardrails.ai
+OSS declarative structured-output validators at the LLM-input/I-O boundary, composing with NeMo (#65)
+conversational rails — handoff OD-LLM-SECURITY. **ADR-102 Duplication Audit:** repo-wide search found
+NO prior LLM-input semantic validator; existing validators (`schemas/validate_schemas.py` JSON-schema,
+`scripts/mrm-validate.sh` MRM, `.github/scripts/validate_mermaid.py` mermaid, `validators/check-
+compliance.sh` compliance-doc, `tests/best-decision/validator.py` decision-record) are all NON-LLM and
+DISTINCT. Verdict: `governance/runtime-guardrails-policy.md` = **EXTEND** (new "LLM-input validation
+layer (Guardrails.ai)" section + follow-up/refs); `governance/owasp-llm-top10-checklist.md` = **EXTEND**
+(LLM02 + LLM05 rows → input/output-validated-by Guardrails.ai #104, pointer only); existing non-LLM
+validators + NeMo policy + prompt-canon = **KEEP** (referenced, NOT rewritten). Layer distinction:
+Guardrails.ai = declarative validators on STRUCTURED LLM I/O (Pydantic-style schemas, value/format/PII
+checks, structured re-ask) answering "does this payload conform?"; NeMo = conversational input/output/
+dialog rails answering "is this call/flow permitted?" — different roles at adjacent points, they COMPOSE
+(no XOR, per ADR-166 role-scoping). Closes OWASP LLM05 (improper output handling — schema-validated,
+re-ask/reject) and LLM02 (sensitive-info disclosure — PII/secret validators at the boundary). Full
+perimeter defense-in-depth: prompt-canon authoring → Guardrails.ai schema validation → NeMo policy rails
+→ litellm audit hook. CONSTRAINT: PROPOSED/doc only — NO validator code, NO Guardrails.ai import, NO CI
+wiring (all follow-up: validator specs as governed-config, :4000 wiring behind flag, CI lint+smoke, HITL
+routing). Guardrails.ai referenced NOT imported. Config-over-hardcoding: all validator params (value
+sets, format regexes, PII lists, re-ask limits, on-fail action) = governed-config proposals (CLAUDE.md
+§10). Cluster-1 LLM-safety perimeter (#64 OWASP mapping + #65 NeMo rails + #104 Guardrails.ai validators)
+COMPLETE after this merges. Refs: ADOPTION-FINALIZATION-SP41 (#104), OD-LLM-SECURITY, #64 owasp-llm-
+top10-checklist, #65 nemo-guardrails runtime-guardrails-policy, ADR-102, ADR-166, ADR-117, ADR-130/127,
+I-27/I-24/I-28.
+
+---
+
+### IL-1061 - agent-factory-adopt111-lightgbm-fraud @ 2026-07-09T15:17:03Z
+
+- **il_ts:** 2026-07-09T15:17:03Z
+- **session_id:** agent-factory-adopt111-lightgbm-fraud
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt111-lightgbm-fraud/IL-2026-07-09T15-17-03Z--adopt111-lightgbm.md`
+
+### ADOPT #111 — LightGBM GBM baseline, FRAUD-USE ONLY (credit REJECTED-OOS per SP41 §2) — PROPOSED
+
+First item of SP41 roadmap §4 cluster-2 (fraud engine): the GBM baseline that precedes the deep GNN
+(#49) and tx-embedding (#46) work. Decision record only (`adrs/ADR-FRAUD-03-lightgbm-gbm-baseline.md`)
+— handoff GAP-FRAUD-ENGINE. **HARD SCOPE (SP41 §2):** LightGBM adopted STRICTLY as an EMI-scope FRAUD
+discriminator; credit/lending use is REJECTED-OUT-OF-SCOPE permanently (NOT licence-gated); the ADR
+states fraud-only and proposes NO credit-scoring use; NO B-EMI-CREDIT-GATE-001 holding. **ADR-102
+Duplication Audit:** repo-wide search found NO prior lightgbm/xgboost/GBM ADR or model doc (GBM hits
+are novelty/adoption/ledger references only). Verdict: `adrs/ADR-FRAUD-03-lightgbm-gbm-baseline.md` =
+**ADD** (new; next in ADR-FRAUD series after 01/02); `docs/governance/model-cards/fraud-classifier-
+evo2.md` = **EXTEND** (one-line §6 Refs pointer, format-consistent); `ADR-FRAUD-01` (device
+fingerprinting), `ADR-FRAUD-02` (ATO velocity), fraud-classifier-evo2 model-card = **KEEP** (referenced,
+NOT rewritten). #112 xgboost = DUP-of-#111 sibling — noted as evaluated alternative (LightGBM chosen
+keep-best: native categorical, lower latency/memory, faster training), NO second adopt created.
+Position: interpretable low-latency tabular baseline / comparison floor before high-AC deep models;
+complements (does not replace) ADR-FRAUD-01/02 and the T1 evo2 classifier role. Governance: output feeds
+HITL (no autonomous regulated fraud action, I-27), feature-attribution for MLRO rationale (#66 XAI,
+ADR-046), MRM tiering when a trained model exists. CONSTRAINT: PROPOSED/doc only — NO model code, NO
+LightGBM import, NO training pipeline, NO CI; model-training + trained-model model-card + serving wiring
+= FOLLOW-UP under GAP-FRAUD-ENGINE. Config-over-hardcoding: all hyperparams (num_leaves, learning_rate,
+max_depth, class weights, score cutoff) = governed-config proposals (CLAUDE.md §10). Refs: ADOPTION-
+FINALIZATION-SP41 §1.1/§2/§4, GAP-FRAUD-ENGINE, ADR-102, ADR-FRAUD-01, ADR-FRAUD-02, ADR-046, MODEL-RISK-
+MANAGEMENT, #49/#46 (later cluster-2), #112 (DUP sibling), I-01/I-02/I-24/I-27.
+
+---
+
+### IL-1062 - agent-factory-adopt49-hgnn-fraud @ 2026-07-09T17:36:03Z
+
+- **il_ts:** 2026-07-09T17:36:03Z
+- **session_id:** agent-factory-adopt49-hgnn-fraud
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt49-hgnn-fraud/IL-2026-07-09T17-36-03Z--adopt49-hgnn.md`
+
+### ADOPT #49 — Heterogeneous GNN over multi-entity tx graph (atop LightGBM baseline #111) — PROPOSED
+
+Item 2 of SP41 roadmap §4 cluster-2 (fraud engine): the deep graph model above the GBM baseline
+(ADR-FRAUD-03/#111). Decision record only (`adrs/ADR-FRAUD-04-heterogeneous-gnn.md`) — handoff
+GAP-FRAUD-ENGINE. **ADR-102 Duplication Audit:** repo-wide search found NO prior fraud-GNN ADR; next in
+ADR-FRAUD series after 01/02/03. Search surfaced an ADJACENT graph ADR NOT in the task list —
+`docs/adr/ADR-111-crypto-aml-graph-analytics.md` (GraphSAGE on Elliptic++ + peel-chain RF for
+CRYPTO-AML/laundering on the blockchain-address graph; MiCA/FATF Travel Rule; GAP-021/022/025). Verdict:
+DISTINCT DOMAIN — ADR-111 = crypto laundering on the blockchain graph; ADR-FRAUD-04 = FIAT
+payments/account fraud on the multi-entity graph (accounts/devices/merchants/counterparties),
+heterogeneous multi-entity GNN vs ADR-111's homogeneous GraphSAGE+RF. Complementary, NOT duplicate →
+ADR-111 = **KEEP** + cross-referenced (boundary section written into the ADR). Full verdict:
+`adrs/ADR-FRAUD-04-heterogeneous-gnn.md` = **ADD** (new); `docs/governance/model-cards/fraud-classifier-
+evo2.md` = **EXTEND** (one-line §6 Refs pointer, format-consistent); ADR-FRAUD-01/02/03 + ADR-111 +
+fraud-classifier-evo2 model-card = **KEEP** (referenced, NOT rewritten). #50 fraudgnn-rl-adaptive =
+DUP-of-#49 (GNN+RL online-adaptive-threshold variant) — noted as DEFERRED follow-on extension over this
+HGNN, NOT a second adopt. Position: HGNN sits ABOVE the LightGBM floor — GBM = interpretable low-latency
+per-tx baseline + fallback; HGNN = higher-accuracy layer for cross-entity fraud (mule rings, shared-
+device, collusion). Explicit accuracy/AC trade-off: HGNN higher-AC (graph build/maintenance, GPU
+train/serve, weaker intrinsic explainability — mitigated by graph-attribution rationale + HITL). Heterogeneous
+(typed nodes/edges) chosen over homogeneous (loses cross-type signal). Governance: score feeds HITL (no
+autonomous regulated action, I-27), graph-attribution for MLRO (#66 XAI, ADR-046), MRM tiering when
+trained. CONSTRAINT: PROPOSED/doc only — NO GNN model code, NO graph pipeline, NO import, NO CI; graph
+construction + training + serving + trained-model model-card = FOLLOW-UP under GAP-FRAUD-ENGINE. Fraud-
+scope (no credit). Config-over-hardcoding: graph schema + model hyperparams + threshold = governed-config
+proposals (CLAUDE.md §10). Refs: ADOPTION-FINALIZATION-SP41 §1.1/§4, GAP-FRAUD-ENGINE, ADR-102,
+ADR-FRAUD-01/02/03, ADR-111 (distinct crypto-AML graph), ADR-046, MODEL-RISK-MANAGEMENT, #50 (DUP
+follow-on), #46 (later cluster-2), #111/#112 (baseline), I-24/I-27.
+
+---
+
+### IL-1063 - agent-factory-adopt46-nuformer-tx-embedding @ 2026-07-09T17:54:53Z
+
+- **il_ts:** 2026-07-09T17:54:53Z
+- **session_id:** agent-factory-adopt46-nuformer-tx-embedding
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt46-nuformer-tx-embedding/IL-2026-07-09T17-54-53Z--adopt46-nuformer.md`
+
+### ADOPT #46 — tx-embedding transformer (nuformer) → completes fraud engine (GBM+HGNN+embedding) — PROPOSED
+
+LAST item of SP41 roadmap §4 cluster-2 (fraud engine): a transformer pre-trained (self-supervised) on
+merchant transaction sequences, emitting tx embeddings as the temporal/sequence fraud discriminator.
+Decision record only (`adrs/ADR-FRAUD-05-tx-embedding-transformer.md`) — handoff GAP-FRAUD-ENGINE.
+**ADR-102 Duplication Audit:** repo-wide search found NO prior tx-embedding/transformer/nuformer fraud
+ADR (hits are novelty/adoption/ledger + ADR-FRAUD-03/04 refs + emi-banxe-engine sources); next in
+ADR-FRAUD series after 01/02/03/04. Verdict: `adrs/ADR-FRAUD-05-tx-embedding-transformer.md` = **ADD**
+(new); `docs/governance/model-cards/fraud-classifier-evo2.md` = **EXTEND** (one-line §6 Refs pointer,
+format-consistent); ADR-FRAUD-01/02/03/04 + ADR-111 (distinct crypto-AML graph, cross-ref) + fraud-
+classifier-evo2 model-card = **KEEP** (referenced, NOT rewritten). Position: THIRD ML layer of the fraud
+engine — tabular GBM (ADR-FRAUD-03, interpretable floor+fallback) + heterogeneous GNN (ADR-FRAUD-04,
+cross-entity relational) + tx-embedding (ADR-FRAUD-05, temporal/sequence). Embedding used both as a
+standalone sequence discriminator AND as embedding features into GBM/HGNN (ensemble, not competing).
+Ensemble/layering section documents the completed fraud engine as defense-in-depth (baseline→graph→
+sequence, analogous to the cluster-1 LLM-safety layering #64→#65→#104): layers compose + reinforce,
+graceful degradation to the GBM floor, uniform HITL/MRM/XAI governance envelope. Explicit accuracy/AC
+trade-off: highest-AC (self-supervised pretraining compute + tx-sequence corpus, embedding-serving,
+weaker intrinsic explainability — mitigated by attribution rationale + HITL, I-27). Governance: feeds
+HITL (no autonomous regulated action), attention/attribution for MLRO (#66 XAI, ADR-046), MRM tiering
+when trained. CONSTRAINT: PROPOSED/doc only — NO model code, NO transformer/pretraining pipeline, NO
+import, NO CI; pretraining + embedding-serving + feature-pipeline into GBM/HGNN + trained-model model-
+card = FOLLOW-UP under GAP-FRAUD-ENGINE. Fraud-scope (no credit). Config-over-hardcoding: embedding dim,
+sequence window, pretraining objective, hyperparams, threshold = governed-config proposals (CLAUDE.md
+§10). Cluster-2 fraud engine (#111 GBM + #49 HGNN + #46 tx-embedding) COMPLETE after this merges. Refs:
+ADOPTION-FINALIZATION-SP41 §1.1/§4, GAP-FRAUD-ENGINE, ADR-102, ADR-FRAUD-03, ADR-FRAUD-04, ADR-111
+(distinct), ADR-046, MODEL-RISK-MANAGEMENT, #66 XAI, I-24/I-27.
+
+---
+
+### IL-1064 - agent-factory-engine-sync-contracts-v1 @ 2026-07-06T12:46:46Z
+
+- **il_ts:** 2026-07-06T12:46:46Z
+- **session_id:** agent-factory-engine-sync-contracts-v1
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-engine-sync-contracts-v1/IL-2026-07-06T12-46-46Z--c6b771.md`
+
+### agent-factory-engine-sync-contracts-v1
+
+- **Instruction:** ENGINE sync contracts — TaskStatus(10) + ScopeRef + SyncMessage + 9 subclasses + HMAC-SHA256 + 41 tests [ENGINE-BLUEPRINT §12]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1065 - agent-factory-engine-task-registry-v1 @ 2026-07-06T20:58:35Z
+
+- **il_ts:** 2026-07-06T20:58:35Z
+- **session_id:** agent-factory-engine-task-registry-v1
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-engine-task-registry-v1/IL-2026-07-06T20-58-35Z--037150.md`
+
+### agent-factory-engine-task-registry-v1
+
+- **Instruction:** ENGINE BTR slice-2: TaskRegistryService + InMemoryTaskRegistry + InMemoryScopeLock + TaskValidator (41 tests) [ENGINE-BLUEPRINT §2,4]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1066 - agent-factory-adr143-ratify @ 2026-07-10T16:06:55Z
+
+- **il_ts:** 2026-07-10T16:06:55Z
+- **session_id:** agent-factory-adr143-ratify
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr143-ratify/IL-2026-07-10T16-06-55Z--adr143-ratify.md`
+
+### ADR-143 ratification (PROPOSED→accepted) — allocator live-verified; guard per ADR-102; no code change; doc + shard only. Refs: ADR-143, ADR-056, ADR-060 (coupling), ADR-119, #1084.
+
+---
+
+### IL-1067 - agent-factory-r3-ledger-safety-tooling @ 2026-07-10T17:13:59Z
+
+- **il_ts:** 2026-07-10T17:13:59Z
+- **session_id:** agent-factory-r3-ledger-safety-tooling
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-r3-ledger-safety-tooling/IL-2026-07-10T17-13-59Z--r3-tooling.md`
+
+### R3 ledger-safety tooling — factory-preflight.sh + safe-push.sh + ledger-singleton-guard.yml (warn-level); complements main-serialize (base-drift) and LEDGER-MERGE-QUEUE (single-writer). No existing workflow modified except append-only doc pointer. Refs: ADR-143, ADR-056, ADR-060, LEDGER-MERGE-QUEUE.md.
+
+---
+
+### IL-1068 - agent-factory-adopt56-assistant-ui @ 2026-07-10T20:28:39Z
+
+- **il_ts:** 2026-07-10T20:28:39Z
+- **session_id:** agent-factory-adopt56-assistant-ui
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt56-assistant-ui/IL-2026-07-10T20-28-39Z--adopt56-assistant-ui.md`
+
+### ADOPT #56 — assistant-ui-agent-frontend → GAP-080 floor-1 intent-first UI (PROPOSED, doc-only) — first item of SP41 cluster-3
+
+Design/governance decision record only (`docs/adr/ADR-167-assistant-ui-intent-first-floor1.md`, provisional number per ADR-119) — handoff GAP-080. Defines #56 as the intent-first interaction surface (SP41 §1, ADOPT S=0.6125), framework-agnostic at ADR level; consumes ADR-045 + UI-UX-DESIGN-SYSTEM-CANON pointer-first (ADR-102, no restate). Records consultant recommendation: **Mastra (#76) = CANDIDATE** TS-first framework (follow-up framework-selection ADR; licence NOASSERTION → confirm before implementation; gate on assistant-ui integration milestone + API-boundary no-bypass review); **LangChain-JS (#77) = fallback-only**. Scope fixed now: component intent taxonomy (inform/confirm/act/escalate → design-system tokens), HITL-aware surfacing (I-27), governance boundaries. **NO frontend code / framework commitment / package installs** this sprint. ADR-102 Duplication Audit: ADR-045 + UI-UX-DESIGN-SYSTEM-CANON + DESIGN-56 note exist → KEEP/cross-ref; genuinely-missing piece = the governance decision (this ADR). Licensing/perimeter: no credit/lending (§2); trading/quant = PAYBIS-distribution external/signposted (§3, ADR-138); frontend agents MUST route through payment-authorisation, no bypass; project-perimeter (ADR-117); no-authority (ADR-127/130). Next cluster-3 sequence: #68 langfuse → #66 lime-shap. PROPOSED/gated — nothing activated. Refs: ADOPTION-FINALIZATION-SP41 §1/§2/§3/§4, GAP-080, ADR-045, UI-UX-DESIGN-SYSTEM-CANON, ADR-102, ADR-117, ADR-127/130, ADR-138, ADR-046, I-27; consultant #76/#77.
+
+---
+
+### IL-1069 - agent-factory-adopt68-langfuse @ 2026-07-10T20:57:51Z
+
+- **il_ts:** 2026-07-10T20:57:51Z
+- **session_id:** agent-factory-adopt68-langfuse
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt68-langfuse/IL-2026-07-10T20-57-51Z--adopt68-langfuse.md`
+
+### ADOPT #68 — langfuse LLM prompt/trace/cost observability over LiteLLM :4000 (PROPOSED, doc-only) — SP41 cluster-3 2nd item
+
+Design/governance decision record only (`docs/adr/ADR-168-langfuse-llm-observability.md`, provisional number per ADR-119) — handoff GAP-LLM-OBSERVABILITY. Adopts langfuse as the LLM prompt/trace/cost observability layer (SP41 §1, ADOPT S=0.6575), attached as a **LiteLLM callback/logging integration** on the canonical :4000 gateway (`decision-litellm-dual-gateway`) — **NOT a second listener** (respects SP03-LITELLM-SINGLE-LISTENER-GUARD; SO_REUSEPORT multi-listener is a known hazard). Scope fixed now: what is traced (prompt, completion, token/cost, latency, model/route), where it attaches (callback), boundaries (telemetry only — does not gate/block/alter requests). **NO deploy code / systemd / new :4000 listener / callback wiring** this sprint. ADR-102 Duplication Audit: IL-OBS-01 (sprint-42, service obs), shadow-tap guardrail-audit-hook (regulated audit→ClickHouse), ADR-046 (lineage schema), dual-gateway canon + SP03 guard all exist → KEEP/cross-ref, distinct altitudes; genuinely-missing = LLM prompt/trace/cost visibility (this ADR). Privacy/perimeter: prompt/response logs may contain PII → DP/redaction + retention REQUIRED before real capture (nothing captured this sprint); regulated audit stays on shadow-tap→ClickHouse; ADR-117 perimeter; no credit/lending (§2); PAYBIS-distribution signposting unchanged (§3, ADR-138); no-authority (ADR-127/130). Follow-ups: integration ADR (callback wiring + PII redaction); next cluster-3 → #66 lime-shap XAI. PROPOSED/gated — nothing activated. Refs: ADOPTION-FINALIZATION-SP41 §1/§2/§3/§4, GAP-LLM-OBSERVABILITY, decision-litellm-dual-gateway, SP03-LITELLM-SINGLE-LISTENER-GUARD, IL-OBS-01, litellm-guardrail-audit-hook, ADR-046, ADR-102, ADR-117, ADR-127/130, ADR-138, I-24.
+
+---
+
+### IL-1070 - agent-factory-adopt66-lime-shap @ 2026-07-10T21:28:59Z
+
+- **il_ts:** 2026-07-10T21:28:59Z
+- **session_id:** agent-factory-adopt66-lime-shap
+- **source:** CEO
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-adopt66-lime-shap/IL-2026-07-10T21-28-59Z--adopt66-lime-shap.md`
+
+### ADOPT #66 — LIME/SHAP decision-rationale XAI + HITL (PROPOSED, doc-only) — SP41 cluster-3 FINAL; completes ADOPT roadmap 9/9
+
+Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explainability.md`, provisional number per ADR-119) — handoff GAP-DECISION-LINEAGE-XAI. Adopts LIME + SHAP as the feature-attribution explainability layer (SP41 §1, ADOPT S=0.6275): produces a human-readable WHY (feature attribution) attached to the AgentDecisionRecord (ADR-046, the WHAT) and surfaced to the HITL reviewer (ADR-128 + HITL-MATRIX.yaml, the WHO/WHEN). Primary target: fraud models ADR-FRAUD-03/04/05; secondary: LLM outputs. Scope fixed now: what is explained (model inputs→attribution), where it attaches (rationale field + HITL review surface), advisory-only boundary. **NO code / model integration / installs** this sprint. ADR-102 Duplication Audit: ADR-046 (lineage schema WHAT), ADR-128/HITL-MATRIX (WHO/WHEN gate), decision-lineage README + hitl runbooks/policy (machinery), ADR-FRAUD-03/04/05 (decisions to explain) all exist → KEEP/cross-ref, distinct; genuinely-missing = feature-attribution rationale WHY (this ADR). Governance/perimeter: explanations ADVISORY input to HITL — never an autonomous decision or override of a human gate (I-27); PII/DP for explainer inputs before real explanation; fraud-use only, no credit/lending (§2, consistent with ADR-FRAUD-03); ADR-117 perimeter; no-authority (ADR-127/130). Follow-ups: integration ADR (LIME/SHAP wiring into decision-lineage + HITL surface + PII/DP). **Completes ADOPT roadmap 9/9** — cluster-1 (#64/#65/#104) + cluster-2 (#111/#49/#46) + cluster-3 (#56/#68/#66) all landed as PROPOSED design records. PROPOSED/gated — nothing activated. Refs: ADOPTION-FINALIZATION-SP41 §1/§2/§4, GAP-DECISION-LINEAGE-XAI, ADR-046, ADR-128, HITL-MATRIX, decision-lineage/README, hitl-decision-recording, hitl-l3-agent-gate, ADR-FRAUD-03/04/05, ADR-102, ADR-117, ADR-127/130, I-27, I-24.

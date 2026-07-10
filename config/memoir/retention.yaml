@@ -1,0 +1,15 @@
+# memoir factory-pilot retention — config-as-data (PRECOND-02, ADR-165 §6).
+# owner: Head of Platform (factory). Change = operator-gated PR.
+# Fail-closed: absent / unparseable / unbounded / schema-invalid ⇒ no start, no writes.
+schema: memoir-retention/v1
+engine: memoir                 # XOR selector (PRECOND-04) — agentmemory XOR memoir
+scope:
+  fork: factory                # factory ONLY (PRECOND-05)
+  perimeter: factory           # ADR-117; no cross-perimeter (PRECOND-03)
+bounds:
+  max_age: P30D                # ISO-8601 duration; entries older are purged
+  max_entries: 20000           # finite, per fork (bounds the LIVE recallable set)
+  hard_cap_bytes: 268435456    # 256 MiB ceiling; above ⇒ store() refuses (fail-closed)
+purge:
+  purge_schedule: "0 3 * * *"  # daily 03:00 sweep; on-write eviction also applies
+  strategy: oldest_first

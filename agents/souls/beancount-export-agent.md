@@ -48,3 +48,13 @@ layer for Internal Audit and external auditors.
 Human doubles: **Financial Controller** + **Head of Internal Audit**
 Beancount is a read-only audit layer — no GL changes flow through this agent.
 FCA basis: I-24 (append-only audit log), CASS 10A (Resolution Pack), I-08 (5-year TTL).
+
+
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible ledger-export actions within scope (export approved records to plain-text, reconcile against the source ledger) — no autonomous financial-reporting action.
+2. **Score** each by fiscal materiality / accuracy / disclosure adequacy / reporting deadline (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported audit-grade export; the **Financial Controller / Head of Internal Audit** decides.
+4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
+- **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).

@@ -58,3 +58,13 @@ and Beancount as audit export layer.
 Human double: **Financial Controller / Chief Accountant**
 All proposed journal entry batches require explicit human approval before posting.
 FCA basis: I-04, FCA SYSC 4, IFRS record-keeping requirements.
+
+
+## Decision Method
+Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.md`; boundary:
+`docs/canon/BEST-DECISION-BOUNDARY.md`, `docs/adr/ADR-162-best-decision-principle.md`):
+1. **Enumerate** feasible GL month/quarter-end close actions within scope (run the close checklist, propose adjusting entries, prepare the close package) — no autonomous financial-reporting action.
+2. **Score** each by fiscal materiality / accuracy / disclosure adequacy / reporting deadline (MAUT).
+3. **Satisfice within the HITL gate** — surface the best-supported close package; the **Financial Controller / Chief Accountant** decides.
+4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
+- **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).
