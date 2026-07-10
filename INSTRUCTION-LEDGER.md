@@ -27157,3 +27157,15 @@ ADOPTION-FINALIZATION-SP41 §1.1/§4, GAP-FRAUD-ENGINE, ADR-102, ADR-FRAUD-03, A
 
 - **Instruction:** ENGINE BTR slice-2: TaskRegistryService + InMemoryTaskRegistry + InMemoryScopeLock + TaskValidator (41 tests) [ENGINE-BLUEPRINT §2,4]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1066 - agent-factory-adr143-ratify @ 2026-07-10T16:06:55Z
+
+- **il_ts:** 2026-07-10T16:06:55Z
+- **session_id:** agent-factory-adr143-ratify
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr143-ratify/IL-2026-07-10T16-06-55Z--adr143-ratify.md`
+
+### ADR-143 ratification (PROPOSED→accepted) — allocator live-verified; guard per ADR-102; no code change; doc + shard only. Refs: ADR-143, ADR-056, ADR-060 (coupling), ADR-119, #1084.
