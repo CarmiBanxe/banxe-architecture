@@ -27298,3 +27298,18 @@ Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explain
 
 - **Instruction:** factory-preflight.sh gains ADR-060 branch-name parity check (STEP-0), mirroring guardian-branch-naming; surfaces non-compliant <id> (e.g. hyphen) before push, not at push (see #1125). Regex verbatim-matched to guardian. Refs: ADR-060, ADR-153, ADR-056, ADR-060
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1076 - agent-factory-sp41-consultant-verdicts-record @ 2026-07-11T01:58:30Z
+
+- **il_ts:** 2026-07-11T01:58:30Z
+- **session_id:** agent-factory-sp41-consultant-verdicts-record
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-sp41-consultant-verdicts-record/IL-2026-07-11T01-58-30Z--2af01e.md`
+
+### agent-factory-sp41-consultant-verdicts-record
+
+- **Instruction:** SP41 §5 consultant-verdicts governance record (ADVISORY/PROPOSED, pointer-first): records receipt of independent-consultant verdicts for all 48 items (43 DEFER + 5 PAYBIS), pointer to docs/handoff/CONSULTANT-VERDICTS-SP41-2026-07-09.md (965L, 5x ADOPT-AS-PAYBIS=YES) + 49Q package; carries 4 HARD conditions/red-line forward: #52 FATE DEFER (Flower/OpenFL eval mandatory), #61 FinNLP ADOPT (fork-validation+accuracy benchmark), #100 Skyvern ADOPT (AGPL-3.0 legal review), #116/#118 DEFER/LEGAL-RED-LINE (no sandbox without UK counsel CMA1990 + DPIA); #67-absent known-issue noted not fixed. NOTHING activated — adopt/reject + red-line clearance are operator/SMF. Refs: ADOPTION-FINALIZATION-SP41, ADR-102, ADR-056, ADR-060, PR #1123
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
