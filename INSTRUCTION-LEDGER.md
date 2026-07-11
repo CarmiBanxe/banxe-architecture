@@ -27283,3 +27283,18 @@ Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explain
 
 - **Instruction:** Active-account guard + #1124 preflight regression hotfix: (1) fix(preflight) — guard ledger-writer-lock grep under set -e with || true (was aborting preflight on every clean branch, regression from #1124); (2) add HARD active-gh-account check (must be CarmiBanxe; Carmi61 confirmations-only) + docs/governance/CANONICAL-GH-ACCOUNT.md. Refs: ADR-170, ADR-120, ADR-056, ADR-060, PR #1124
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1075 - agent-factory-preflight-branchname-check @ 2026-07-11T01:35:09Z
+
+- **il_ts:** 2026-07-11T01:35:09Z
+- **session_id:** agent-factory-preflight-branchname-check
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-preflight-branchname-check/IL-2026-07-11T01-35-09Z--06ee1c.md`
+
+### agent-factory-preflight-branchname-check
+
+- **Instruction:** factory-preflight.sh gains ADR-060 branch-name parity check (STEP-0), mirroring guardian-branch-naming; surfaces non-compliant <id> (e.g. hyphen) before push, not at push (see #1125). Regex verbatim-matched to guardian. Refs: ADR-060, ADR-153, ADR-056, ADR-060
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

@@ -25,6 +25,20 @@ echo "== factory-preflight (read-only) =="
 if BR="$(git symbolic-ref --quiet --short HEAD)"; then pass "named branch: $BR"
 else fail "detached HEAD — check out a named branch before any push"; BR=""; fi
 
+# 1a. BRANCH-NAME (ADR-060) — verbatim parity with .github/workflows/guardian.yml
+#     (guardian-branch-naming). Surfaces a non-compliant <id> (e.g. a hyphen) at STEP-0
+#     instead of only at push-time (see PR #1125's 'gh-guard' block).
+if [ -n "$BR" ]; then
+  ADR060_PATTERN='^agent/(central|right|factory|specproj)/[A-Za-z0-9]+/[a-z0-9._-]+$'
+  if printf '%s' "$BR" | grep -qE '^(dependabot|renovate|revert)/'; then
+    pass "branch-name (ADR-060): allow-listed prefix ($BR)"
+  elif printf '%s' "$BR" | grep -qE "$ADR060_PATTERN"; then
+    pass "branch-name (ADR-060): $BR"
+  else
+    fail "branch '$BR' violates ADR-060 agent/<actor>/<id>/<slug> — <id> must be [A-Za-z0-9]+ (no hyphen); see guardian-branch-naming"
+  fi
+fi
+
 # 1b. ACTIVE-GH-ACCOUNT (HARD): factory git/gh ops MUST run as the canonical account.
 #     Carmi61 is retained for occasional operator confirmations only — never the active
 #     account during factory work (docs/governance/CANONICAL-GH-ACCOUNT.md, ADR-170).
