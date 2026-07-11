@@ -27268,3 +27268,18 @@ Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explain
 
 - **Instruction:** R-SYNC cross-terminal registration: preflight HARD stale-main gate (A) + fabric_redis set_nx_ex/release_if_owner advisory lock (B) + preflight ledger-writer-lock read (C) + WORKING-FILE-DURABILITY anti-untracked rule (D) + ADR-170 (E). Narrow delta; does not duplicate ADR-120/121/134/153. Refs: ADR-170, ADR-056, ADR-060, ADR-120, ADR-121, ADR-134, ADR-153, PR #1123
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1074 - agent-factory-canonical-gh-account @ 2026-07-11T01:10:57Z
+
+- **il_ts:** 2026-07-11T01:10:57Z
+- **session_id:** agent-factory-canonical-gh-account
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-canonical-gh-account/IL-2026-07-11T01-10-57Z--1ecead.md`
+
+### agent-factory-canonical-gh-account
+
+- **Instruction:** Active-account guard + #1124 preflight regression hotfix: (1) fix(preflight) — guard ledger-writer-lock grep under set -e with || true (was aborting preflight on every clean branch, regression from #1124); (2) add HARD active-gh-account check (must be CarmiBanxe; Carmi61 confirmations-only) + docs/governance/CANONICAL-GH-ACCOUNT.md. Refs: ADR-170, ADR-120, ADR-056, ADR-060, PR #1124
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
