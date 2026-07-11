@@ -118,6 +118,49 @@ class RedisStreams:
         """
         return self._call("SET", key, value)
 
+    def set_nx_ex(self, key: str, value: Any, ttl_seconds: int) -> bool:
+        """Atomic advisory-lock acquire: SET key value NX EX ttl.
+
+        Returns True iff the key was set (lock acquired); False if the key is
+        already held by another owner (NX prevented the write). The single
+        SET ... NX EX round-trip is atomic in Redis, so two terminals racing to
+        acquire cannot both win. TTL bounds the lock so a crashed holder cannot
+        wedge the writer slot forever (ADR-170 cross-terminal writer-lock).
+
+        Any connect / AUTH / IO failure raises RedisUnavailable (via _call), so
+        callers fail-closed and degrade per ADR-104 §5 (never a silent 'acquired').
+
+        Unit-test notes: (1) first call on a fresh key => True; (2) second call
+        with a different value while the key is live => False; (3) after DEL/expiry
+        => True again; (4) a broken socket => RedisUnavailable, not False.
+        """
+        # RESP: SET key value NX EX ttl -> 'OK' on set, nil (None) when NX blocks.
+        return self._call("SET", key, value, "NX", "EX", int(ttl_seconds)) == "OK"
+
+    def release_if_owner(self, key: str, expected_value: Any) -> bool:
+        """Best-effort advisory-lock release: DEL key only if we still own it.
+
+        GET key; if it equals ``expected_value`` (this terminal's token), DEL it
+        and return True. Returns False if the key is unset or held by someone else
+        (do NOT delete another owner's lock).
+
+        CAVEAT — NOT fully atomic: the GET and DEL are two round-trips, so a
+        pathological interleave (our TTL expires and another terminal acquires
+        between our GET and DEL) could delete the new owner's lock. A Redis Lua
+        CAS (GET==value ? DEL) is the atomic ideal and is listed as an ADR-170
+        follow-up; for this ADVISORY lock the GET+DEL window is acceptable because
+        TTL already bounds staleness and push-time re-check is the real guard.
+
+        Fail-closed: connect / AUTH / IO failure raises RedisUnavailable via _call.
+
+        Unit-test notes: (1) release with the owning token after acquire => True and
+        key gone; (2) release with a wrong token => False and key untouched;
+        (3) release on an unset key => False.
+        """
+        if self._call("GET", key) != expected_value:
+            return False
+        return int(self._call("DEL", key) or 0) == 1
+
     def xadd(self, stream: str, fields: Dict[str, str]) -> str:
         flat: List[str] = []
         for k, v in fields.items():

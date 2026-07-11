@@ -34,7 +34,7 @@ if git rev-parse --verify --quiet origin/main >/dev/null; then
   BEHIND="$(git rev-list --count HEAD..origin/main 2>/dev/null || echo '?')"
   AHEAD="$(git rev-list --count origin/main..HEAD 2>/dev/null || echo '?')"
   if [ "$BEHIND" = "0" ]; then pass "base-drift: behind=0 ahead=$AHEAD (up-to-date with origin/main)"
-  else warn "base-drift: behind=$BEHIND ahead=$AHEAD — rebase before merge (CI main-serialize enforces)"; fi
+  else fail "stale main: behind=$BEHIND — run git pull --ff-only origin main before starting a sprint (ADR-170)"; fi
 else warn "origin/main not found — cannot compute base-drift"; fi
 
 # 4. SINGLETON-OPEN: at most one OTHER open ledger-touching PR (LEDGER-MERGE-QUEUE single-writer)
@@ -70,6 +70,28 @@ if [ -f "$ENV_FILE" ]; then
   fi
   unset REDISCLI_AUTH
 else warn "redis env file not found ($ENV_FILE) — allocator check skipped"; fi
+
+# 5b. LEDGER-WRITER-LOCK (advisory, read-only). Surfaces cross-terminal contention
+#     EARLY: if this branch is ledger-touching and another terminal currently holds
+#     banxe:ledger:writer, warn (do NOT fail — the lock is acquired at PUSH time, not
+#     preflight; this is just an early heads-up). ADR-170 advisory writer-lock.
+LEDGER_RE_LOCK='INSTRUCTION-LEDGER|IL-SEQUENCE|ledger/entries|governance/|docs/adr/|\.py$'
+# branch is ledger-touching if its committed delta OR working-tree changes hit those paths
+LEDGER_TOUCH="$( { git diff --name-only origin/main...HEAD 2>/dev/null; git status --porcelain 2>/dev/null | sed 's/^...//'; } | grep -E "$LEDGER_RE_LOCK" | head -1 )"
+if [ -n "$LEDGER_TOUCH" ] && [ -f "$ENV_FILE" ] && command -v redis-cli >/dev/null 2>&1; then
+  # shellcheck disable=SC1090
+  set -a; . "$ENV_FILE"; set +a
+  RH="${REDIS_HOST:-100.68.102.48}"; RP="${REDIS_PORT:-6379}"
+  REDISCLI_AUTH="${REDIS_PASSWORD:-${REDIS_AUTH:-${REDIS_PASS:-}}}"; export REDISCLI_AUTH
+  MY_ID="$( [ -f .TERMINAL-ROLE ] && head -1 .TERMINAL-ROLE || hostname )"
+  HOLDER="$(redis-cli -h "$RH" -p "$RP" GET banxe:ledger:writer 2>/dev/null || true)"
+  if [ -n "$HOLDER" ] && [ "$HOLDER" != "$MY_ID" ]; then
+    warn "ledger-writer-lock: held by '$HOLDER' (you are '$MY_ID') — another terminal may be mid-ledger-write; coordinate before push (advisory, ADR-170)"
+  else
+    pass "ledger-writer-lock: free or self ('${HOLDER:-unset}'; you are '$MY_ID')"
+  fi
+  unset REDISCLI_AUTH
+fi
 
 # 6. Optional --check (offline-deterministic ledger rebuild verify)
 if [ "${1:-}" = "--check" ]; then
