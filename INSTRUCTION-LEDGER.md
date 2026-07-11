@@ -27253,3 +27253,18 @@ Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explain
 
 - **Instruction:** Recover consultant verdicts + 49Q package + design-56 handoff docs from Claude Code file-history/transcript (anti-loss, docs-only) — PR #1123
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1073 - agent-factory-rsync-registration @ 2026-07-10T23:43:32Z
+
+- **il_ts:** 2026-07-10T23:43:32Z
+- **session_id:** agent-factory-rsync-registration
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-rsync-registration/IL-2026-07-10T23-43-32Z--7d92a5.md`
+
+### agent-factory-rsync-registration
+
+- **Instruction:** R-SYNC cross-terminal registration: preflight HARD stale-main gate (A) + fabric_redis set_nx_ex/release_if_owner advisory lock (B) + preflight ledger-writer-lock read (C) + WORKING-FILE-DURABILITY anti-untracked rule (D) + ADR-170 (E). Narrow delta; does not duplicate ADR-120/121/134/153. Refs: ADR-170, ADR-056, ADR-060, ADR-120, ADR-121, ADR-134, ADR-153, PR #1123
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
