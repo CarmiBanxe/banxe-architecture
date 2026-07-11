@@ -25,6 +25,15 @@ echo "== factory-preflight (read-only) =="
 if BR="$(git symbolic-ref --quiet --short HEAD)"; then pass "named branch: $BR"
 else fail "detached HEAD — check out a named branch before any push"; BR=""; fi
 
+# 1b. ACTIVE-GH-ACCOUNT (HARD): factory git/gh ops MUST run as the canonical account.
+#     Carmi61 is retained for occasional operator confirmations only — never the active
+#     account during factory work (docs/governance/CANONICAL-GH-ACCOUNT.md, ADR-170).
+EXPECT_GH="CarmiBanxe"
+ACTIVE_GH="$(gh api user -q .login 2>/dev/null || echo "")"
+if [ -z "$ACTIVE_GH" ]; then warn "gh not authenticated / offline — cannot verify active account (expected $EXPECT_GH)"
+elif [ "$ACTIVE_GH" = "$EXPECT_GH" ]; then pass "active-gh-account: $ACTIVE_GH"
+else fail "active gh account '$ACTIVE_GH' != '$EXPECT_GH' — run: gh auth switch --user $EXPECT_GH  (Carmi61 is confirmations-only)"; fi
+
 # 2. FETCH
 if git fetch --all --prune >/dev/null 2>&1; then pass "git fetch --all --prune"
 else warn "git fetch failed (offline?) — base-drift/singleton checks may be stale"; fi
@@ -77,7 +86,7 @@ else warn "redis env file not found ($ENV_FILE) — allocator check skipped"; fi
 #     preflight; this is just an early heads-up). ADR-170 advisory writer-lock.
 LEDGER_RE_LOCK='INSTRUCTION-LEDGER|IL-SEQUENCE|ledger/entries|governance/|docs/adr/|\.py$'
 # branch is ledger-touching if its committed delta OR working-tree changes hit those paths
-LEDGER_TOUCH="$( { git diff --name-only origin/main...HEAD 2>/dev/null; git status --porcelain 2>/dev/null | sed 's/^...//'; } | grep -E "$LEDGER_RE_LOCK" | head -1 )"
+LEDGER_TOUCH="$( { git diff --name-only origin/main...HEAD 2>/dev/null; git status --porcelain 2>/dev/null | sed 's/^...//'; } | grep -E "$LEDGER_RE_LOCK" | head -1 || true )"
 if [ -n "$LEDGER_TOUCH" ] && [ -f "$ENV_FILE" ] && command -v redis-cli >/dev/null 2>&1; then
   # shellcheck disable=SC1090
   set -a; . "$ENV_FILE"; set +a
