@@ -1,0 +1,101 @@
+# BANXE Private Legion Engine — OpenManus config
+# Artifact status: DRAFT — operator must review + copy to /home/mmber/OpenManus/config/config.toml
+# Branch: agent/factory/private-engine/openmanus-config
+# Created: 2026-07-11 | Updated: 2026-07-11 (multi-layer redesign)
+#
+# ENGINE PROFILE: POWERFUL MULTI-LAYER — tiered remote routing via LiteLLM :4000.
+# This is NOT a light single-model assistant. Primary tier = qwen3:30b-a3b on evo2.
+#
+# NOTE: "banxe-general" is intentionally NOT used here — it is reserved for the Banking Engine.
+# NOTE: The source blueprint manus-legion-private-engine.md references uncensored/abliterated
+#       models on llama-server :8080. Those are NOT used. This engine routes through LiteLLM :4000
+#       with standard models only.
+# IPv4 only: LiteLLM listens on 0.0.0.0:4000 (IPv4); IPv6 ::1:4000 is refused — use 127.0.0.1.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# MULTI-LAYER MODEL MAP (all tiers via LiteLLM :4000 aliases unless noted)
+# ─────────────────────────────────────────────────────────────────────────────
+# VRAM CONSTRAINT: Legion RTX 4070 Laptop = 8GB VRAM total.
+#   Only models ≤7B fit locally on GPU. 30B–235B MUST run remotely via :4000.
+#   Never configure a >13B model to run on Legion GPU — it will OOM.
+#
+# TIER 1 — Local fast (optional, Legion GPU only):
+#   model    = "qwen2.5-coder:7b-instruct-q4_K_M"
+#   base_url = "http://127.0.0.1:11434/v1"   ← local Ollama, bypasses :4000
+#   Fits:    4.7GB VRAM (safe within 8GB)
+#   Use:     cheap/low-latency tool calls, trivial one-shot ops, no internet needed.
+#   Limit:   limited reasoning — not suitable for deep autonomous tasks.
+#
+# TIER 2 — Primary agent tier (DEFAULT, remote via :4000 → evo2/evo1):
+#   alias = "qwen3-30b"   → qwen3:30b-a3b  (18GB VRAM on evo2, 30B MoE)
+#   alias = "project-mid" → alternate mid-tier routing
+#   Use:  main autonomous agent loop — web browsing, tool use, multi-step planning,
+#         document analysis. Balanced capability × speed.
+#   Failover: evo1 (100.68.102.48) online and mirrors qwen3:30b — LiteLLM routes auto.
+#
+# TIER 3 — Heavy reasoning tier (remote via :4000 → evo1/evo2):
+#   alias = "reasoning"       → qwen3 heavy (large) on evo1/evo2
+#   alias = "reasoning-235b"  → qwen3:235b-a22b (142GB on evo2) — maximum depth
+#   alias = "ai-heavy"        → alternate heavy routing
+#   Use:  deep system design, architecture analysis, long multi-step research,
+#         complex code reasoning. Slowest; reserve for tasks that need it.
+#
+# TIER 4 — Coding tier (remote via :4000 → evo2):
+#   alias = "coding"         → qwen3-coder-next or similar on evo2
+#   alias = "factory-coder"  → factory coding model
+#   Use:  code generation, debugging, PR review, test writing.
+#
+# OPERATOR TIER-SWITCH (change [llm].model to activate a different tier — only one active):
+#   Tier 2 default:    model = "qwen3-30b"
+#   Tier 2 alt:        model = "project-mid"
+#   Tier 3 heavy:      model = "reasoning"
+#   Tier 3 max:        model = "reasoning-235b"
+#   Tier 4 coding:     model = "coding"
+#   Tier 1 local:      model = "qwen2.5-coder:7b-instruct-q4_K_M"
+#                      base_url = "http://127.0.0.1:11434/v1"  (Ollama, not :4000)
+#
+# BANNED: "banxe-general" — RESERVED for Banking Engine. Never appear in this file.
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# DLP HARD RULE (Correction 4 / ADR-103):
+#   - NEVER place banking credentials, Postgres password, customer PII, or IBANs here.
+#   - NEVER grant Legion write access to banking ledger from this config.
+#   - api_key MUST be LiteLLM master key ONLY (not banking service credentials).
+#
+# SCHEMA NOTE: OpenManus config.toml supports exactly two LLM blocks: [llm] and [llm.vision].
+#   There is no per-agent named profile support in the TOML config. Tier-switching is done
+#   by editing [llm].model (operator action). Per-agent routing can be implemented by
+#   wrapping api_server.py to accept a "model_tier" param and call LiteLLM directly —
+#   see RUNBOOK.md §Advanced for the pattern.
+
+[llm]
+# ACTIVE TIER: Tier 2 — qwen3:30b-a3b via evo2, routed through LiteLLM :4000.
+# Change model= to switch tier (see MULTI-LAYER MODEL MAP above).
+api_type    = "openai"
+model       = "qwen3-30b"
+base_url    = "http://127.0.0.1:4000/v1"
+api_key     = "sk-banxe-llm-gateway-2026"
+max_tokens  = 8192
+temperature = 0.6
+top_p       = 0.95
+
+[llm.vision]
+# Vision tasks (browser screenshots, image analysis) — same Tier 2 model.
+# Switch to "project-mid" if qwen3-30b vision throughput is too slow for browsing.
+api_type    = "openai"
+model       = "qwen3-30b"
+base_url    = "http://127.0.0.1:4000/v1"
+api_key     = "sk-banxe-llm-gateway-2026"
+max_tokens  = 4096
+temperature = 0.6
+
+[sandbox]
+# OpenManus browser/bash sandbox isolation.
+# Operator MUST review OpenManus docs for sandbox config before enabling browser tools.
+use_sandbox = false
+
+[browser]
+# Headless browser support — disabled until operator enables Playwright install.
+headless  = true
+width     = 1280
+height    = 800
