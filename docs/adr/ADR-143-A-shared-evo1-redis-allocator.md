@@ -1,7 +1,8 @@
 ---
 id: ADR-143-A
 title: Central IL allocator targets the SHARED evo1 Redis (amends ADR-143 — fixes the local-127.0.0.1 config gap)
-status: PROPOSED
+status: ACCEPTED
+accepted: 2026-07-12
 date: 2026-06-27
 amends: ADR-143
 relates:
@@ -76,3 +77,20 @@ reconciled via the ADR-142 append-only corrective pattern. Documented in `fabric
 - `ledger/build_ledger.py` (`_redis_config` / `_redis_allocate` seed / `_alloc_next` WARN),
   `fabric/common/fabric_redis.py` (`get`/`set`), `tests/test_redis_il_allocator.py` (host-config + WARN
   tests), `fabric/legion/README.md` (operational requirement). Amends ADR-143; ADR-119/057/059-A/104 §5.
+
+## Ratified 2026-07-12 (PROPOSED → ACCEPTED)
+
+> Append-only (I-24): the decision text above is unchanged; this records ratification only.
+
+Ratified 2026-07-12. The shared allocator is confirmed **LIVE**: a `PING` to the canonical
+target **evo1 `100.68.102.48:6379`** returned **`PONG`** today, authenticated via the vault-file
+credential (`REDIS_PASS_FILE`, path-only — never the secret in code, exactly as
+`fabric/legion/gate_exec_consumer.py`). The `build_ledger._alloc_next` path mints IL numbers against
+this shared counter and **fails loud** (RuntimeError) when the allocator is unreachable — no silent
+local `max+1` fallback (offline mint requires the explicit `BANXE_IL_ALLOCATOR=local` opt-in).
+
+- **Config verified:** `REDIS_HOST=100.68.102.48`, `REDIS_PORT=6379`, `REDIS_PASS_FILE` vault path
+  (matches `gate_exec_consumer.py` canon).
+- **No allocator code change** — this amendment is doc/governance only; the technical decision and
+  implementation described above are unchanged.
+- **Enforcement:** the fail-loud `_alloc_next` guard + `guardian-ledger` CI coupling remain in force.
