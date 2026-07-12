@@ -27313,3 +27313,24 @@ Design/governance decision record only (`docs/adr/ADR-169-lime-shap-hitl-explain
 
 - **Instruction:** SP41 §5 consultant-verdicts governance record (ADVISORY/PROPOSED, pointer-first): records receipt of independent-consultant verdicts for all 48 items (43 DEFER + 5 PAYBIS), pointer to docs/handoff/CONSULTANT-VERDICTS-SP41-2026-07-09.md (965L, 5x ADOPT-AS-PAYBIS=YES) + 49Q package; carries 4 HARD conditions/red-line forward: #52 FATE DEFER (Flower/OpenFL eval mandatory), #61 FinNLP ADOPT (fork-validation+accuracy benchmark), #100 Skyvern ADOPT (AGPL-3.0 legal review), #116/#118 DEFER/LEGAL-RED-LINE (no sandbox without UK counsel CMA1990 + DPIA); #67-absent known-issue noted not fixed. NOTHING activated — adopt/reject + red-line clearance are operator/SMF. Refs: ADOPTION-FINALIZATION-SP41, ADR-102, ADR-056, ADR-060, PR #1123
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1077 - agent-factory-gap042-archive @ 2026-07-12T01:06:42Z
+
+- **il_ts:** 2026-07-12T01:06:42Z
+- **session_id:** agent-factory-gap042-archive
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gap042-archive/IL-2026-07-12T01-06-42Z--gap042-archive.md`
+
+### gap042 engine Sprint-C/D closure — ARCHIVED, NOT MERGED (superseded).
+
+Branch agent/factory/gap042/engine-sprint-cd-closure (commit b8a80f9, dated 2026-06-30) was
+rescued from detached HEAD (PR-context earlier) but is behind origin/main by 216 commits.
+Audit: 534 changed files = 3 NEW + 531 DIFF (stale) + 0 SAME; 0 new ledger shards. Merging it
+would REVERT 531 files (ledger, guardian CI, fraud ADR-FRAUD-03/04/05, passports/souls,
+INSTRUCTION-LEDGER, .gitignore) to June-30 versions. The 3 'new' files
+(.claude/skills/{github-navigation,spec-writing,testing}.md) are the OLD flat format, already
+SUPERSEDED on main by .claude/skills/<name>/SKILL.md directories. Decision: archive the branch,
+do NOT merge; no content carried. Refs: ADR-059 (append-only), ADR-120, PR #1123 (rescue origin).
