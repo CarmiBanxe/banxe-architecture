@@ -27334,3 +27334,23 @@ INSTRUCTION-LEDGER, .gitignore) to June-30 versions. The 3 'new' files
 (.claude/skills/{github-navigation,spec-writing,testing}.md) are the OLD flat format, already
 SUPERSEDED on main by .claude/skills/<name>/SKILL.md directories. Decision: archive the branch,
 do NOT merge; no content carried. Refs: ADR-059 (append-only), ADR-120, PR #1123 (rescue origin).
+
+---
+
+### IL-1078 - agent-factory-adr143a-ratify @ 2026-07-12T13:43:28Z
+
+- **il_ts:** 2026-07-12T13:43:28Z
+- **session_id:** agent-factory-adr143a-ratify
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr143a-ratify/IL-2026-07-12T13-43-28Z--adr143a-ratify.md`
+
+### ADR-143-A ratification (PROPOSED→ACCEPTED) — shared evo1 Redis IL allocator
+
+Ratifies `docs/adr/ADR-143-A-shared-evo1-redis-allocator.md` PROPOSED→ACCEPTED (append-only, I-24;
+decision text unchanged, ADR-102 pointer-first). Shared allocator confirmed LIVE today: PING to evo1
+100.68.102.48:6379 → PONG, auth via vault-file REDIS_PASS_FILE (path-only, per gate_exec_consumer.py).
+build_ledger._alloc_next mints against the shared counter and fails loud on unreachable (no silent local
+max+1; offline via explicit BANXE_IL_ALLOCATOR=local). NO allocator code change — doc/governance only.
+Carries this shard for guardian-ledger (ADR-056/060) coupling. Refs: ADR-143-A, ADR-143, ADR-056,
+ADR-060, ADR-119, ADR-104 §5, I-24.
