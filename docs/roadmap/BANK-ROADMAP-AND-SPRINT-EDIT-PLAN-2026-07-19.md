@@ -38,4 +38,36 @@
 **5. Status:** PLAN ONLY, DRAFT, NOT FOR MERGE.
 
 ---
-*Producer: factory sandbox terminal. Источники: BANK-FOUR-FLOOR-MEMO, BANK-MASTER-ROADMAP, BANK-SPRINT-PLAN, INTENT-LAUNCH-SLICE-SPEC, LINEAGE-EXPLORER-SPEC, ADR-046/047/049/128/171/172/173, agent-budget-policy, runtime-guardrails-policy, runbooks intent_slice.*
+
+### Floor 2 – Operational alignment (EMI / core bank)
+
+**1. Observations** (по BANK-MASTER-ROADMAP, DELTA-MEMO, BANK-SPRINT-PLAN и новой floor-2 плитке FULL-BANK-INSTALLATION-AUDIT-PLAN):
+- **Roadmap опережает реализацию:** cards-контур упомянут в WS8 без спеки/кода (UNK-09); внешняя API/BaaS-поверхность (WS13/S-A11) — спеки I-API/M-GATEWAY есть, реализация/audit нет; live FIN060→RegData цикл — future.
+- **Реализация опережает roadmap:** 16/16 core-сервисов REAL и recon v2 DONE (EMI-IMPL-STATE) — при этом S-A6/S-A7 в sprint-плане местами читаются как «строительство», а фактическая работа = активация+ключи; 17 BUILD-SPEC'ов операционного слоя вообще не отражены в BANK-SPRINT-PLAN как исполненный слой спецификаций.
+- **Дубли/противоречия между roadmap'ами:** FACTORY-ROADMAP (R0–R5) — фабричный, не bank-scope, но пересекается по observability/tools с WS14; TARGET-MODEL-CONFORMANCE-2026-06-24 superseded версией 06-25 (86%) — ссылки должны идти только на 06-25; ERROR-RECONCILIATION-ROADMAP и TRADING-BLOCK-ROADMAP ведут собственные спринт-серии (S6.x), не синхронизированные с S-A нумерацией — риск двойного учёта задач recon/trading.
+
+**2. Proposed roadmap edits (PLAN ONLY):**
+- Для `BANK-MASTER-ROADMAP`:
+  - пометить floor-2 блоки WS7 (safeguarding/recon) и core-часть WS8 как **already partially implemented** (со ссылкой на EMI-IMPL-STATE + floor-2 плитку), а BUILD-SPEC-слой (B/D/E/G/H/I/L/M-серии) — как **require fresh audit before go-live**;
+  - очерёдность: сначала SSOT/EMI-конформность (PHASE-3-SSOT + per-spec audit), затем новые функции (BaaS/cards/deep-analytics);
+  - ссылки на conformance — только TARGET-MODEL-2026-06-25 (06-24 superseded).
+- Для `BANK-SPRINT-PLAN`:
+  - S-A6/S-A7: перевести формулировки в режим **"audit & conformance + activation"** вместо «новых фич» (код REAL — работа = live-режим, ключи, HITL-циклы);
+  - S-A12: добавить под-задачу «per-spec implementation audit 17 BUILD-SPEC'ов» либо вынести в отдельный audit-спринт при плитке floor-2;
+  - S-A8/S-A11: сфокусировать на GAP'ах floor-2 плитки (FIN060 live, API-поверхность по I-API/M-GATEWAY спекам), убрать пересечения с trading S6.x (мандат Terminal B);
+  - убрать дубликаты: задачи recon-строительства (recon v2 уже DONE), error-handling задачи, уже покрытые ERROR-RECONCILIATION-ROADMAP.
+
+**3. Dependencies:**
+- installation-audits внешних EMI-репо (по EMI-CANON-COVERAGE-10-REPOS/COMPLETE; snapshot 2026-06-06 устарел → план A2);
+- PHASE-3-SSOT-CONFORMANCE — предусловие статуса «floor-2 готов»;
+- связь с floor-1: без исправного операционного слоя floor-1 intent-demo не может исполнять реальные операции (сейчас sandbox-ledger-стаб) — цепочка D1 (Dispatcher) → floor-2 activation.
+
+**4. Next change-sets:**
+- **R2:** фактический update `BANK-MASTER-ROADMAP` по floor-2.
+- **S2:** фактический update `BANK-SPRINT-PLAN` по floor-2 (EMI/core).
+- **A2:** отдельный installation-audit change-set для внешних EMI-репо (PLAN: refresh EMI-CANON-COVERAGE + per-spec audit 17 BUILD-SPEC'ов).
+
+**5. Status:** PLAN ONLY, DRAFT, NOT FOR MERGE.
+
+---
+*Producer: factory sandbox terminal. Источники: BANK-FOUR-FLOOR-MEMO, BANK-MASTER-ROADMAP, BANK-SPRINT-PLAN, INTENT-LAUNCH-SLICE-SPEC, LINEAGE-EXPLORER-SPEC, ADR-046/047/049/128/171/172/173, agent-budget-policy, runtime-guardrails-policy, runbooks intent_slice; floor-2: EMI-IMPL-STATE-REFRESH, *-BUILD-SPEC, EMI-CANON-COVERAGE-*, FULL-PROJECT-INSTALLATION-AUDIT, PHASE-3-SSOT-CONFORMANCE, TARGET-MODEL-CONFORMANCE-06-25, ERROR-RECONCILIATION-ROADMAP, TRADING-BLOCK-ROADMAP, ADR-045/056/057/078..081/096..101.*
