@@ -45,5 +45,14 @@
 - **C-2 halt-on-exceed semantics:** обработка BudgetExceededError во всех agent-раннерах → стоп + запись в Decision Lineage (ADR-046) + постановка в `escalation_path`-очередь (не тихий retry).
 - **C-3 BudgetExceeded test:** интеграционный тест: агент с искусственно низким cap → превышение → halt → эскалационная запись; exit-критерий S-A2.
 
+## 5. Runtime enforcement status (S-A2, 2026-07-18)
+
+[ФАКТ] C-1..C-3 реализованы в изолированных ветках `agent/factory/costgov/s-a2-20260718` (DRAFT, не merged):
+- **C-1:** `banxe-ai-infrastructure/deploy/agent-keys.yaml` (agent-keys/v1, key_alias=agent_id) + идемпотентный `scripts/provision-agent-keys.py` (dry-run default) + runbook §4a.
+- **C-2:** `banxe-emi-stack/services/runtime_gate/budget_halt.py` — `BudgetHaltGate`: OverBudget → durable lineage-запись (budget_breach_flag=BREACH, escalated_to из §2) → HITL-очередь (`HitlQueuePort`) → `BudgetExceededError` (subclass OverBudget, обратная совместимость). Опирается на уже существовавший `runtime_gate/budget.py` (fail-closed BudgetManager) — reuse, не rebuild.
+- **C-3:** `services/runtime_gate/tests/test_budget_halt_integration.py` — 5 интеграционных тестов полной цепочки; 26/26 runtime_gate зелёные.
+
+[ФАКТ] Обнаружен второй runtime-реестр бюджетов: `banxe-emi-stack/config/runtime_gate/agent-budget-policy.yaml` (schema agent-budget-policy/v1, RED-агенты, GBP-окна). Ростер его агентов НЕ совпадает с таблицей §2 (audit_trail/beneficiary/fraud_tracer/ato_prevention/midaz_mcp/scheduled_payments/disputes...). **Followup C-4 [op+code]:** сверка ростеров трёх слоёв (§2 этой политики ↔ emi yaml ↔ infra agent-keys.yaml) — единый источник истины назначает CTIO.
+
 ---
 *DRAFT / NOT FOR MERGE. Красная линия: governed autonomy only; политика — product feature (клиент видит max_cost в IntentRecord); граница Banking/Private Engine соблюдена (§1).*
