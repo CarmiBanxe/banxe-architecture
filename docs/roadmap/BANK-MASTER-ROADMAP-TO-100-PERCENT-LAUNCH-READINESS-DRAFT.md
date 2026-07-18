@@ -113,6 +113,7 @@
 | ED-11 | Grant Thornton engagement | WS1/S-A13 |
 | ED-12 | Legal: GDPR, MiCA | WS15/S-A1,A9 |
 | ED-13 | BIN sponsor / card scheme partner — только если cards войдут в scope [UNK] | WS8/[PX] |
+| ED-14 | LexisNexis minimal contract — anchor для EDD high/critical (OSINT-S4) [PLAN-CONCEPT] | WS6/[PL], OSINT-S4 |
 
 # 8. Unknowns register [UNKNOWN]
 
@@ -151,6 +152,8 @@
 # 11. Epic extensions addendum (rev. 3, additive)
 
 [INFERENCE] Эпик-надстройка P0/P1/P2 добавлена в sprint plan (`BANK-SPRINT-PLAN-EXECUTION-DRAFT-2026-07-18.md` §Epic addendum): P0 «Governed Intent Layer v1» (G1–G4 → S-A2/A3/A4; новые **ADR-171** ClientIntentRecord, **ADR-172** Autonomy Ladder L0–L4 — оба PROPOSED/DRAFT; lineage/cost — конкретизации существующих ADR-046/047 без новых номеров, ADR-102 reuse) и «Delegation Center v1» (S-A10.1, revocation = [LC]); P1 — SME Co-Pilot v1, Compliance Co-Pilot v1, Rich Cards Core v1 [PL]; P2 — Partner API, MCP Server v1, Business Co-Pilot v2 [PX]. OD-R21 теперь частично материализован draft-ADR'ами 171/172 — ратификация остаётся операторской.
+
+[PLAN-CONCEPT, аддитивно] Добавлен P1-эпик «Compliance Intelligence Stack v2 (OSINT Core)» (OSINT-S1..S4: Sanctions&PEP yente+Watchman; Corporate Registers OpenCorporates/CH/BOI; Adverse Media&Courts GDELT/Aleph/CourtListener; LexisNexis anchor для EDD high/critical [ED-14]) как data layer для Compliance Co-Pilot v1 (разукрупнён в CompCoPilot-S1..S4). Уточняет Lane 4 §10. Компоненты источника вне OSINT Core — out of scope до отдельного решения MLRO/Board.
 
 ---
 *DRAFT / NOT FOR MERGE. v2 supersedes v1-структуру этого же файла (delta: см. BANK-ROADMAP-CONSOLIDATION-DELTA-MEMO-2026-07-18.md); rev.3 — аддитивная секция §11.*

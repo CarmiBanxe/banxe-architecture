@@ -193,8 +193,19 @@
 | Epic | Sprints | Примечание |
 |---|---|---|
 | SME Business Co-Pilot v1 (Cashflow+Debt) | SME-C1 (Cashflow Forecast Engine + Cashflow Insight Card), SME-C2 (Debt Dispatcher v1) | поверх работающего L2; кандидат в WS18-Commercial |
-| Compliance Co-Pilot v1 | SME-Comp1 (Compliance Readiness Score + KYC/KYB Gap Finder), SME-Comp2 (Transaction Risk Overlay + Audit Pack Builder) | переиспользует overlay из S-A5 |
+| Compliance Co-Pilot v1 | CompCoPilot-S1 (OSINT-backed Compliance Readiness Score), CompCoPilot-S2 (OSINT-backed KYC/KYB Gap Finder), CompCoPilot-S3 (Transaction Risk Overlay, OSINT signals), CompCoPilot-S4 (Audit Pack Builder with OSINT sources) — прежние SME-Comp1/2 разукрупнены аддитивно (S1/S2←Comp1, S3/S4←Comp2) | data layer = Epic «Compliance Intelligence Stack v2 (OSINT Core)» ниже; переиспользует overlay из S-A5 |
 | Rich Cards Core v1 | UX-Rich1 (ConfirmationCard, FXRateCard), UX-Rich2 (Cashflow Insight Card, ExplanationCard) | ConfirmationCard уже в S-A10-минимуме; UX-Rich1 частично [LC] |
+
+### P1 — Epic «Compliance Intelligence Stack v2 (OSINT Core)» [PL]
+
+Data layer для Compliance Co-Pilot v1 и усиление S-A5-overlay. Источник: операторский [PLAN-CONCEPT]-вход 2026-07-18 (исходный файл `BANXE-Compliance-Stack-v2-*.md` на диске отсутствует — контент задан prompt'ом); только clearnet-OSINT; компоненты источника, не вошедшие в OSINT Core, — **out of scope до отдельного решения MLRO/Board**. Статус инструментов по коду [FACT-REPO]: Watchman IN-REPO; yente CONCEPT-ONLY; `services/adverse_media/` есть без GDELT-адаптера; остальные — новые интеграции.
+
+| Sprint | Содержание | Статус базы |
+|---|---|---|
+| OSINT-S1 | Sanctions & PEP Engine: OpenSanctions/yente + Moov Watchman | Watchman IN-REPO; yente — новый адаптер |
+| OSINT-S2 | Corporate Registers: OpenCorporates, UK Companies House, FinCEN BOI | новые интеграции |
+| OSINT-S3 | Adverse Media & Courts Feed: GDELT, OCCRP Aleph, CourtListener | adverse_media-сервис есть; адаптеры новые |
+| OSINT-S4 | LexisNexis minimal contract (anchor role для EDD high/critical) + AML Policy update | [ext ED-14] + [op MLRO] |
 
 ### P2 — Epics (platform/scale, после первых клиентов) [PX]
 
