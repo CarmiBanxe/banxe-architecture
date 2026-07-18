@@ -167,5 +167,44 @@
 | S-A12 | 0 P1 security-GAP |
 | S-A13 | go-live executed + post-launch мониторинг |
 
+## Epic addendum (rev. 3 — additive, P0/P1/P2)
+
+Аддитивная надстройка: эпики привязаны к существующим спринтам, ничего из плана выше не удалено. Приоритеты: P0 = до production Intent Layer, P1 = дифференциатор после P0-ADR, P2 = platform/scale после первых клиентов.
+
+### P0 — Epic «Governed Intent Layer v1» [LC]
+
+Закрывает 3 частично закрытых guardrails Unified Concept (cost-policy, Decision Lineage schema, HITL-threshold policy) [PLAN-CONCEPT→канон через ADR].
+
+| Sprint | Содержание | Привязка | ADR |
+|---|---|---|---|
+| G1 IntentRecord Schema + lifecycle | схема, SCA consent-at-delegation, revocation | = S-A4.2 | **ADR-171** (new, PROPOSED) |
+| G2 Decision Lineage + Lineage Explorer | конкретизация v1.0 (ClickHouse TTL 7yr, wrapper) + внутренний Lineage Explorer UI [code, new deliverable] | = S-A4.1 (+Explorer) | ADR-046 (существует, ACCEPTED — амендмент-конкретизация, НЕ новый номер, ADR-102 reuse) |
+| G3 Autonomy Ladder + HITL-policy | лестница L0–L4, пороги повышения | = S-A3 + S-A4 | **ADR-172** (new, PROPOSED; расширяет ADR-128) |
+| G4 Cost-Policy Engine + guardrails | per-agent caps, stop-conditions, circuit breakers | = S-A2 | ADR-047 (существует, ACCEPTED — runtime-конкретизация, НЕ новый номер) |
+
+### P0 — Epic «Delegation Center v1» [LC-min/PL]
+
+| Sprint | Содержание | Привязка |
+|---|---|---|
+| UX-Delegation-1 | UI управления Intent'ами: список активных ClientIntentRecord, лимиты, уровень автономии, **revocation** | новый под-спринт **S-A10.1**; revocation-часть = [LC] (право отзыва должно быть клиентски реализуемо в slice), остальное [PL] |
+
+### P1 — Epics (после P0-ADR, до платформы) [PL]
+
+| Epic | Sprints | Примечание |
+|---|---|---|
+| SME Business Co-Pilot v1 (Cashflow+Debt) | SME-C1 (Cashflow Forecast Engine + Cashflow Insight Card), SME-C2 (Debt Dispatcher v1) | поверх работающего L2; кандидат в WS18-Commercial |
+| Compliance Co-Pilot v1 | SME-Comp1 (Compliance Readiness Score + KYC/KYB Gap Finder), SME-Comp2 (Transaction Risk Overlay + Audit Pack Builder) | переиспользует overlay из S-A5 |
+| Rich Cards Core v1 | UX-Rich1 (ConfirmationCard, FXRateCard), UX-Rich2 (Cashflow Insight Card, ExplanationCard) | ConfirmationCard уже в S-A10-минимуме; UX-Rich1 частично [LC] |
+
+### P2 — Epics (platform/scale, после первых клиентов) [PX]
+
+| Epic | Sprints | Привязка |
+|---|---|---|
+| Intent-First Partner API | BaaS-1 (ClientIntentRecord API CRUD+docs), BaaS-2 (Partner Dashboard v1: intents/lineage/compliance) | детализация S-A11/WS13; гейт OD-R18 |
+| MCP Server v1 | MCP-1 (core + регистрация внешних агентов), MCP-2 (governance adapter: autonomy levels + cost-caps) | детализация S-A11; внешняя экспозиция только после S-A12 |
+| Business Co-Pilot v2 | SME-C3 Client Radar, SME-C4 Supplier Watchdog, SME-C5 Scenario Board, SME-C6 Budget Coach, SME-Comp3 Compliance Navigator + Auto Healthcheck | требует UNK-13 (commercial-допущения) |
+
+**GitHub Projects/issues:** интеграция из фабрики не выполняется (I-71: никаких gh-мутаций). Список issue-кандидатов = строки таблиц выше (эпик → milestone, спринт → issue); заведение — операторски/Central после ратификации.
+
 ---
-*DRAFT / NOT FOR MERGE. Producer: factory sandbox terminal, 2026-07-18 (rev. 2).*
+*DRAFT / NOT FOR MERGE. Producer: factory sandbox terminal, 2026-07-18 (rev. 3 — epic addendum).*

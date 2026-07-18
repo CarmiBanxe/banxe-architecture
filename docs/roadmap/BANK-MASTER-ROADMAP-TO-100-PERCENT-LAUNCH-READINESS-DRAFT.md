@@ -148,5 +148,9 @@
 - **Lane 4 — OSINT deepening [PL/PX]:** Yente-адаптер (частично есть), GDELT adverse-media, OpenCorporates/Companies House/FinCEN BOI (KYB), OCCRP Aleph, SpiderFoot/Maltego CE, Reputell, FATE federated learning (замена World-Check/LexisNexis) — минимально достаточный launch-стек уже IN-REPO [FACT-REPO].
 - **Lane 5 — Engine advanced [PX, PLAN-CONCEPT]:** Temporal saga (B8/B9, ADR-133), PRAGMA/GNN/FinRL-идеи из engine-v2 — строго после запуска, через канон-гейты.
 
+# 11. Epic extensions addendum (rev. 3, additive)
+
+[INFERENCE] Эпик-надстройка P0/P1/P2 добавлена в sprint plan (`BANK-SPRINT-PLAN-EXECUTION-DRAFT-2026-07-18.md` §Epic addendum): P0 «Governed Intent Layer v1» (G1–G4 → S-A2/A3/A4; новые **ADR-171** ClientIntentRecord, **ADR-172** Autonomy Ladder L0–L4 — оба PROPOSED/DRAFT; lineage/cost — конкретизации существующих ADR-046/047 без новых номеров, ADR-102 reuse) и «Delegation Center v1» (S-A10.1, revocation = [LC]); P1 — SME Co-Pilot v1, Compliance Co-Pilot v1, Rich Cards Core v1 [PL]; P2 — Partner API, MCP Server v1, Business Co-Pilot v2 [PX]. OD-R21 теперь частично материализован draft-ADR'ами 171/172 — ратификация остаётся операторской.
+
 ---
-*DRAFT / NOT FOR MERGE. v2 supersedes v1-структуру этого же файла (delta: см. BANK-ROADMAP-CONSOLIDATION-DELTA-MEMO-2026-07-18.md).*
+*DRAFT / NOT FOR MERGE. v2 supersedes v1-структуру этого же файла (delta: см. BANK-ROADMAP-CONSOLIDATION-DELTA-MEMO-2026-07-18.md); rev.3 — аддитивная секция §11.*
