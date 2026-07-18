@@ -231,5 +231,11 @@
 
 **GitHub Projects/issues:** интеграция из фабрики не выполняется (I-71: никаких gh-мутаций). Список issue-кандидатов = строки таблиц выше (эпик → milestone, спринт → issue); заведение — операторски/Central после ратификации.
 
+## Findings log (build-mode, аддитивно)
+
+**F-01 (2026-07-18) — UNK-11 существенно закрыт.** [FACT-REPO] LiteLLM gateway УЖЕ имеет budget-слой: глобальный `max_budget: 500 USD / budget_duration: 30d` (`banxe-ai-infrastructure/deploy/config.yaml:124-127`, с явной ADR-047 привязкой), per-key бюджеты через `/key/generate`, per-class caps с алёртами на 80% (`docs/llm/auth-and-quotas.md` S5-T4 §5). Остаток для S-A2: (а) связка agent→key (per-AGENT бюджеты из agent-budget-policy, не только per-key/per-class), (б) halt-on-exceed/circuit-breaker семантика per agent (BudgetExceededError-тест). S-A2-скоуп сужается с «построить cost-caps» до «домапить и дотестировать».
+
+**F-02 (2026-07-18) — UNK-07 идентифицирован.** [FACT-REPO] «Intent-first missing 6 variants» (MASTER-ORG-DOSSIER §2:70) уточняется собственным §3:371 того же досье: «banxe-frontend (D2C pipeline UI — **missing 6 card variants**)» — это карточные варианты UI, не варианты масок. [INFERENCE, высокая уверенность] Перечень = 6 rich-cards концепт-корпуса: TransferCard, FXRailCard, SpendingInsightCard, CryptoOrderCard, CardControlCard, KYCProgressCard. Проверка кода: в `banxe-emi-stack/frontend/src` НИ ОДНОЙ из 9 card-компонент (6 выше + ConfirmationCard/FXRateCard/ExplanationCard) — S-A10/UX-Rich стартуют с нуля. [UNKNOWN-остаток] целевой репозиторий: досье называет `banxe-frontend` (отдельный от emi-stack `frontend/`) — интеграционный контракт двух intent-роутингов (GAP-080) требует MLRO/CTIO решения до Phase 3 (там же, §3:373). Для launch slice [LC]-минимум: TransferCard + KYCProgressCard (+ConfirmationCard-паттерн).
+
 ---
-*DRAFT / NOT FOR MERGE. Producer: factory sandbox terminal, 2026-07-18 (rev. 3 — epic addendum).*
+*DRAFT / NOT FOR MERGE. Producer: factory sandbox terminal, 2026-07-18 (rev. 3 — epic addendum; rev. 3.1 — findings log).*
