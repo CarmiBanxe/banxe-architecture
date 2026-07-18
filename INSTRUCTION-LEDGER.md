@@ -27354,3 +27354,65 @@ build_ledger._alloc_next mints against the shared counter and fails loud on unre
 max+1; offline via explicit BANXE_IL_ALLOCATOR=local). NO allocator code change — doc/governance only.
 Carries this shard for guardian-ledger (ADR-056/060) coupling. Refs: ADR-143-A, ADR-143, ADR-056,
 ADR-060, ADR-119, ADR-104 §5, I-24.
+
+---
+
+### IL-1079 - agent-factory-govops-s-fac-60-61-67-session-state @ 2026-07-18T21:47:13Z
+
+- **il_ts:** 2026-07-18T21:47:13Z
+- **session_id:** agent-factory-govops-s-fac-60-61-67-session-state
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-govops-s-fac-60-61-67-session-state/IL-2026-07-18T21-47-13Z--s-fac-60-61-67-session-state.md`
+
+### R0/R3 runbooks — evo1 remediation (S-FAC-60), health contract (S-FAC-61), orchestration-enforcement spec (S-FAC-67) + factory session-state handoff (docs-only, PROPOSED)
+- **Date:** 2026-07-18 · **Type:** docs-only runbook/spec set, drafted while the evo1 Redis
+  IL-allocator was down (12h+, SSH:22 + 6379 refused) and minted here once it was repaired and
+  confirmed back (`redis-cli -h 100.68.102.48 -p 6379 ... ping` == PONG; `banxe:il:counter`
+  intact at 1078 before this mint — see the separate evo1-repair record for that fix itself).
+- **Decision:** Record 4 new docs added to `docs/runbooks/` in one coherent shard for this
+  R0/R3 tail, per `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` §2.
+- **Files added (docs-only, no code, no activation):**
+  1. `docs/runbooks/S-FAC-60-evo1-remediation-2026-07-18.md` — S-FAC-60 (R0) evo1 RED-service
+     triage runbook: confirmed incident (ICMP OK, SSH+Redis refused), 4 ranked root-cause
+     hypotheses (none asserted as fact), operator/repair-crew console command blocks A–G,
+     Legion-side verification block, quarantine fallback (flags no machine-readable quarantine
+     mechanism exists yet), `[UNKNOWN]` section, post-recovery TODO.
+  2. `docs/runbooks/S-FAC-61-health-contract-2026-07-18.md` — S-FAC-61 (R0) health-contract
+     runbook: de-facto contract table derived from `config/traffic-light.env` +
+     `scripts/traffic-light.sh`. **Finding:** the keycloak root-cause+fix and legion `redis-cli`
+     install were already DONE per `INSTRUCTION-LEDGER.md` IL-487 (2026-06-23), independently
+     re-verified live (keycloak container healthy 30h+, `redis-cli 7.0.15` present) — the new
+     artifact is the contract table itself. Flags an S-FAC-61-vs-S-FAC-62 sprint-numbering
+     discrepancy between IL-487 and the current roadmap table (not resolved here).
+  3. `docs/runbooks/S-FAC-67-orchestration-enforcement-2026-07-18.md` — S-FAC-67 (R3)
+     orchestration-enforcement spec (design only, no code). Verdict: skill-sequence ordering
+     (CMS→RSB→ACG→…) is not mechanically enforced anywhere (the 6 named hooks don't exist as
+     files in either repo); `quality-gate.sh` IS genuinely enforced, verified live via GitHub
+     branch-protection required-status-checks on both `banxe-architecture` and
+     `banxe-emi-stack`. Flags 3 unreconciled scenario→sequence sources
+     (`.claude/rules/agents.md` compact table + its own later "FA-5" chain table, plus
+     `docs/SKILLS-ORCHESTRATION.md`'s full MUST/SHOULD table).
+  4. `docs/runbooks/FACTORY-SESSION-STATE-2026-07-18.md` — session handoff summarizing the
+     evo1-blocker pause, the 3 runbooks above, the resume sequence, 4 open operator decisions
+     carried forward, and a pointer to this session's separate bank-building architecture memo
+     (transcript + `agent-fleet-audit.html` artifact, recommended for permanent save elsewhere).
+- **Basis (evidence, not memory):** live reads of `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md`,
+  `config/traffic-light.env`, `scripts/traffic-light.sh`, `INSTRUCTION-LEDGER.md` IL-487,
+  `.claude/rules/agents.md`, `docs/SKILLS-ORCHESTRATION.md`, `docs/SKILLS-OPERATING-MODEL.md`,
+  live `gh api .../branches/main/protection` on both repos, and live SSH/`docker`/`curl`/
+  `redis-cli` checks against evo1 and legion — all cited per-file inside the docs themselves.
+- **DoD:** these are DRAFT docs satisfying the S-FAC-60/S-FAC-61 remediation-runbook and
+  health-contract-documentation requirements, and a design-only spec for S-FAC-67 (the
+  implementation itself is explicitly out of scope, deferred to a separate gated PR per the
+  spec's own §6).
+- **Canon compliance:** docs-only, no code, no activation, no yaml/config edits, no service
+  mutation; authored in an ISOLATED worktree off `origin/main` (ADR-120, NOT the shared
+  checkout); branch ADR-060-compliant (`agent/factory/govops/s-fac-60-evo1-remediation`); no
+  S320; hooks enabled (no `--no-verify`/`--admin`/bypass); STOP before merge for operator.
+- **Coupling/append-only:** branch off `origin/main@c66c198`; single new shard covering all 4
+  docs; no prior entry modified.
+- **Proof (ledger):** `build_ledger.py --check` exit 0 (confirmed after this mint); IL number
+  assigned live via the evo1 Redis allocator (`banxe:il:counter`), not hand-picked.
+- **Refs:** `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` §S-FAC-60/61/66/67; `INSTRUCTION-LEDGER.md`
+  IL-487 (S-FAC-61/62 numbering cross-reference); ADR-102, ADR-119, ADR-120, ADR-060.
