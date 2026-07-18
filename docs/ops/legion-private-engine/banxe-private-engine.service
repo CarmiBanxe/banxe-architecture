@@ -1,0 +1,38 @@
+# banxe-private-engine.service — DRAFT ONLY
+# Artifact status: DRAFT — operator must review, place at /etc/systemd/system/ and enable.
+# Branch: agent/factory/private-engine/openmanus-config
+# Created: 2026-07-11
+#
+# ENABLING IS AN OPERATOR-ONLY HITL STEP.
+# Do NOT run: sudo systemctl enable banxe-private-engine — without operator approval.
+# Do NOT run: sudo systemctl start banxe-private-engine — until OpenManus is installed.
+#
+# Prerequisites before enabling (operator checklist — see RUNBOOK.md):
+#   1. git clone OpenManus into /home/mmber/OpenManus
+#   2. python3 -m venv /home/mmber/OpenManus/.venv && pip install -r requirements.txt
+#   3. Copy config.toml to /home/mmber/OpenManus/config/config.toml
+#   4. Verify litellm-lan-gateway.service is running: systemctl is-active litellm-lan-gateway
+#   5. Verify evo2 reachable: curl -s http://192.168.0.15:11434/api/tags | jq .models[0]
+#   6. Test LiteLLM primary alias (model=qwen3-30b): curl -H "Authorization: Bearer sk-banxe-llm-gateway-2026" http://127.0.0.1:4000/v1/models | jq '[.data[].id]' | grep qwen3-30b
+#   7. DLP review: confirm no banking credentials in config.toml
+#   8. MLRO/CTO awareness memo filed (Private Engine operates in non-banking zone)
+
+[Unit]
+Description=BANXE Private Legion Engine (OpenManus API)
+After=network.target litellm-lan-gateway.service
+Wants=litellm-lan-gateway.service
+
+[Service]
+Type=simple
+User=mmber
+WorkingDirectory=/home/mmber/OpenManus
+Environment=PYTHONPATH=/home/mmber/OpenManus
+ExecStart=/home/mmber/OpenManus/.venv/bin/python api_server.py
+Restart=on-failure
+RestartSec=10
+# Security hardening (operator may tighten further):
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
