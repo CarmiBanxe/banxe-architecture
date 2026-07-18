@@ -196,16 +196,29 @@
 | Compliance Co-Pilot v1 | CompCoPilot-S1 (OSINT-backed Compliance Readiness Score), CompCoPilot-S2 (OSINT-backed KYC/KYB Gap Finder), CompCoPilot-S3 (Transaction Risk Overlay, OSINT signals), CompCoPilot-S4 (Audit Pack Builder with OSINT sources) — прежние SME-Comp1/2 разукрупнены аддитивно (S1/S2←Comp1, S3/S4←Comp2) | data layer = Epic «Compliance Intelligence Stack v2 (OSINT Core)» ниже; переиспользует overlay из S-A5 |
 | Rich Cards Core v1 | UX-Rich1 (ConfirmationCard, FXRateCard), UX-Rich2 (Cashflow Insight Card, ExplanationCard) | ConfirmationCard уже в S-A10-минимуме; UX-Rich1 частично [LC] |
 
+### P0 — Epic «Compliance Source Governance & Regulator Anchor» [LC]
+
+Цель P0: regulator anchor + базовый sanctions/PEP screening + формализация source governance как части compliance policy — до production Intent Layer. Только clearnet/official sources; компоненты вне этого периметра — **explicitly out of scope до отдельного решения MLRO/Board**. Привязка к хребту: screening baseline входит в S-A5-контур; policy/ADR — S-A0/S-A1.
+
+| Sprint | Содержание | Привязка / статус базы |
+|---|---|---|
+| OSINT-P0-1 | LexisNexis minimal contract **definition** для EDD high/critical (anchor role) | [op MLRO]+[ext ED-14]; сам контракт — внешний |
+| OSINT-P0-2 | OpenSanctions **yente baseline deployment** | yente CONCEPT-ONLY [FACT-REPO] — новый деплой+адаптер [code] |
+| OSINT-P0-3 | Multi-list sanctions/PEP screening baseline (Moov Watchman или эквивалент) | Watchman IN-REPO [FACT-REPO] — довести до multi-list baseline [code] |
+| OSINT-P0-4 | AML Policy update + **ADR source governance** (иерархия источников, risk weighting, evidence usage) | **ADR-173** (new, PROPOSED) + [op MLRO] |
+
 ### P1 — Epic «Compliance Intelligence Stack v2 (OSINT Core)» [PL]
 
-Data layer для Compliance Co-Pilot v1 и усиление S-A5-overlay. Источник: операторский [PLAN-CONCEPT]-вход 2026-07-18 (исходный файл `BANXE-Compliance-Stack-v2-*.md` на диске отсутствует — контент задан prompt'ом); только clearnet-OSINT; компоненты источника, не вошедшие в OSINT Core, — **out of scope до отдельного решения MLRO/Board**. Статус инструментов по коду [FACT-REPO]: Watchman IN-REPO; yente CONCEPT-ONLY; `services/adverse_media/` есть без GDELT-адаптера; остальные — новые интеграции.
+Цель P1: превратить Compliance Co-Pilot в OSINT-backed product layer (onboarding, EDD, KYB, transaction monitoring). Data layer для Compliance Co-Pilot v1. Источник: операторский [PLAN-CONCEPT]-вход 2026-07-18 (исходный файл `BANXE-Compliance-Stack-v2-*.md` на диске отсутствует — контент задан prompt'ами). Alias-маппинг прежних ID (аддитивность): OSINT-S1→P0-2/P0-3; OSINT-S4→P0-1/P0-4; OSINT-S2→P1-1; OSINT-S3→P1-2; CompCoPilot-S1..S4→P1-3..P1-6.
 
 | Sprint | Содержание | Статус базы |
 |---|---|---|
-| OSINT-S1 | Sanctions & PEP Engine: OpenSanctions/yente + Moov Watchman | Watchman IN-REPO; yente — новый адаптер |
-| OSINT-S2 | Corporate Registers: OpenCorporates, UK Companies House, FinCEN BOI | новые интеграции |
-| OSINT-S3 | Adverse Media & Courts Feed: GDELT, OCCRP Aleph, CourtListener | adverse_media-сервис есть; адаптеры новые |
-| OSINT-S4 | LexisNexis minimal contract (anchor role для EDD high/critical) + AML Policy update | [ext ED-14] + [op MLRO] |
+| OSINT-P1-1 | Corporate Registers Integration: OpenCorporates, UK Companies House, FinCEN BOI | новые интеграции |
+| OSINT-P1-2 | Adverse Media & Courts Feed: GDELT, OCCRP Aleph, CourtListener | `services/adverse_media/` есть без адаптеров [FACT-REPO] |
+| OSINT-P1-3 | OSINT-backed Compliance Readiness Score | поверх P0-baseline |
+| OSINT-P1-4 | OSINT-backed KYC/KYB Gap Finder | поверх P1-1 |
+| OSINT-P1-5 | Transaction Risk Overlay с sanctions/media/court сигналами | усиливает S-A5-overlay |
+| OSINT-P1-6 | Audit Pack Builder с source traceability | опирается на ADR-173 evidence-правила |
 
 ### P2 — Epics (platform/scale, после первых клиентов) [PX]
 
@@ -214,6 +227,7 @@ Data layer для Compliance Co-Pilot v1 и усиление S-A5-overlay. Ис�
 | Intent-First Partner API | BaaS-1 (ClientIntentRecord API CRUD+docs), BaaS-2 (Partner Dashboard v1: intents/lineage/compliance) | детализация S-A11/WS13; гейт OD-R18 |
 | MCP Server v1 | MCP-1 (core + регистрация внешних агентов), MCP-2 (governance adapter: autonomy levels + cost-caps) | детализация S-A11; внешняя экспозиция только после S-A12 |
 | Business Co-Pilot v2 | SME-C3 Client Radar, SME-C4 Supplier Watchdog, SME-C5 Scenario Board, SME-C6 Budget Coach, SME-Comp3 Compliance Navigator + Auto Healthcheck | требует UNK-13 (commercial-допущения) |
+| Compliance Intelligence v3 | deeper entity resolution / graph analytics; internal compliance dashboards; case triage automation; policy copilot improvements — **исчерпывающий разрешённый перечень**; источники строго в периметре ADR-173 | поверх P0/P1 OSINT-эпиков |
 
 **GitHub Projects/issues:** интеграция из фабрики не выполняется (I-71: никаких gh-мутаций). Список issue-кандидатов = строки таблиц выше (эпик → milestone, спринт → issue); заведение — операторски/Central после ратификации.
 
