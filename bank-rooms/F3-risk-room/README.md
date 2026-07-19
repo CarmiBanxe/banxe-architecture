@@ -13,3 +13,6 @@ Fraud, ATO, credit, risk oversight, Consumer Duty.
 
 ### Sprint 2 (AI-governance)
 `../../docs/sprints/sprint-2-high-risk-map.md` · `sprint-2-ai-act-compliance-timeline.md` — grid-строки этой комнаты: CreditScoring/lending (Annex III credit?), FraudScoring/AML-cluster (Recital 58 exclusion — counsel; internal канон: high-risk). Пометка «INTERNAL HIGHER STANDARD by policy» обязательна там, где internal шире legal.
+
+### AI-oversight artefacts (Workstream B)
+`../../docs/governance/ai-oversight/FraudScoringAgent-notes.md` · `CreditScoringAgent-notes.md` — Art.14-style stop/override/explainability по коду.

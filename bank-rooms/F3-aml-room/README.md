@@ -16,3 +16,6 @@ AML/CFT мониторинг, санкции, CDD/EDD, compliance ops, tx-scorin
 
 ### Sprint 2 cross-link
 High-Risk Map строки AML-кластера — см. `../../docs/sprints/sprint-2-high-risk-map.md`.
+
+### AI-oversight artefacts (Workstream B)
+`../../docs/governance/ai-oversight/SanctionsScreeningAgent-notes.md` — Art.14-style notes по коду скрининга.
