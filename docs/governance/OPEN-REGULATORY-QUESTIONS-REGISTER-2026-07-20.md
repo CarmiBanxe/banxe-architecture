@@ -126,3 +126,31 @@ Traffic-light: GREEN = нет блокирующей правовой неодн
 | 8 | AI-governance | AMBER | CRO+CTO | cross-room |
 
 *Producer: factory terminal. Области 4–8 — операторский текст без изменений; 1–3 — фабричная композиция, подтвердить.*
+
+---
+
+## Evidence links (Sprint 1–4 artefacts — planning/evidence, NOT compliance determinations)
+
+Материализованные шаблоны (2026-07-20); **статусы/светофоры выше НЕ изменены** — переходы только по Register Usage Rules (evidence-backed).
+
+- **#2 (Cards):** `docs/sprints/sprint-1-card-functional-scope-note.md` — TEMPLATE, к заполнению.
+- **#3 (Crypto/MiCA/TR):** `docs/sprints/sprint-1-casp-perimeter-memo.md` · `docs/sprints/sprint-1-travel-rule-split-note.md` — TEMPLATE.
+- **#4 (New Products):** `docs/sprints/sprint-3-product-evidence-pack-template.md` · `sprint-3-per-product-evidence-packs.md` · `sprint-3-permissions-map-per-product.md` — TEMPLATE; gate H-017 + pack = combined requirement.
+- **#5 (Consent/DPO):** `docs/sprints/sprint-2-art37-applicability-assessment.md` · `sprint-2-interim-consent-owner-decision.md` — TEMPLATE.
+- **#7 (webhook/DORA):** `docs/sprints/sprint-4-webhook-event-lifecycle.md` · `sprint-4-dora-ict-risk-framework.md` — TEMPLATE.
+- **#8 (AI-governance):** `docs/sprints/sprint-2-high-risk-map.md` · `sprint-2-ai-act-compliance-timeline.md` — TEMPLATE.
+- Аудит наличия: `docs/sprints/sprint-1-4-shell-audit.md` · сводка: `docs/sprints/sprint-1-4-status-summary.md`.
+
+## Proposed future entries (PROPOSED — NOT approved facts; добавление в основной реестр = операторский акт)
+
+### PROPOSED #9. DORA / ICT risk management framework — предлагаемый свет: AMBER
+- Status: PROPOSED — framework существует только как TEMPLATE (`docs/sprints/sprint-4-dora-ict-risk-framework.md`); RACI не утверждён, контроли не заполнены.
+- Risk: инцидент-пути и контроль-библиотека без governance-утверждения; DORA-ожидания не картированы counsel'ом.
+- Action: утвердить RACI (ADR-кандидат); заполнить контроль-таксономию; counsel — применимые статьи/notification-timelines/TLPT-обязательность.
+- Owner (предлагаемый): CTO/COO · Rooms: F4/devops-room, F4/security-room.
+
+### PROPOSED #10. Third-party / Register-of-Information — предлагаемый свет: AMBER
+- Status: PROPOSED — внутренний skeleton существует (`docs/sprints/sprint-4-third-party-roi-skeleton.md`); инвентарь провайдеров не заполнен, критичность не классифицирована.
+- Risk: концентрационные риски и SPOF не описаны; формальные RoI-дедлайны не зафиксированы.
+- Action: Risk/Legal заполняют инвентарь (Modulr/ClearBank/SumSub/Paybis/cloud); классификация критичности; дедлайны отчётности [Legal].
+- Owner (предлагаемый): Risk/Legal · Rooms: governance docs (+devops/payments cross-links).

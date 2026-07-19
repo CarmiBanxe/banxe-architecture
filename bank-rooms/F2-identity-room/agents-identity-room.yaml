@@ -1,0 +1,8 @@
+room: F2/identity-room
+sprint_refs: [sprint-2]
+key_agents:
+  - KYC-Specialist-v2
+  - kyb_agent
+  - consent_agent
+register_refs: ["#5", "#8"]
+notes: "DPO VACANT — interim owner per sprint-2 decision doc; Art.37 outcome pending counsel."

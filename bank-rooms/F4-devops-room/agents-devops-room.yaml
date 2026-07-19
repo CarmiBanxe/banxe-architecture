@@ -1,0 +1,8 @@
+room: F4/devops-room
+sprint_refs: [sprint-4]
+key_agents:
+  - DeployAgent
+  - MonitoringAgent
+  - observability_agent
+register_refs: ["#7", "proposed #9", "proposed #10"]
+notes: "ICT framework/RoI skeletons are templates; DORA compliance not asserted."
