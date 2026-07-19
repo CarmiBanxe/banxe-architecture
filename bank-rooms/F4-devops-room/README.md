@@ -13,3 +13,6 @@ Deploys, monitoring, observability, alerting.
 
 ### Sprint 4 (ICT/DORA)
 Artefacts: `../../docs/sprints/sprint-4-dora-ict-risk-framework.md` (акцент: контроли, мониторинг, incident path) · `sprint-4-webhook-event-lifecycle.md` · `sprint-4-third-party-roi-skeleton.md`.
+
+### ICT/controls artefact (Workstream C)
+`../../docs/governance/ict/webhook-agent-control-model.md` — фактический control-model webhook-диспетчера (bounded retry 6, DLQ, подпись).

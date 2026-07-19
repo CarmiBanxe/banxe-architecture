@@ -16,3 +16,6 @@ IAM/OIDC, incident response, device fingerprinting; incident-контур H-015.
 
 ### Sprint 4 (ICT/DORA)
 `../../docs/sprints/sprint-4-dora-ict-risk-framework.md` — акцент: классификация, эскалация (H-015 CTO+CEO ≤2h), отчётные шаблоны.
+
+### ICT/controls artefact (Workstream C)
+`../../docs/governance/ict/webhook-agent-control-model.md` — HMAC-секреты/дeletion-L4 периметр этой комнаты.
