@@ -20,3 +20,7 @@ Trigger analysis (PLACEHOLDERS ONLY): public authority [N/A/edge cases]; large-s
 - Считается ли наш мониторинг «large-scale systematic monitoring» по EDPB-guidance?
 - Есть ли large-scale обработка Art.9/Art.10 данных в core-активностях?
 - Релевантны ли partner-модели (Paybis, SumSub, BIN-sponsor) для DPO-триггера?
+
+## See also
+- Sprint 2 набор: `sprint-2-art37-applicability-assessment.md` · `sprint-2-interim-consent-owner-decision.md` · `sprint-2-high-risk-map.md` · `sprint-2-ai-act-compliance-timeline.md`
+- Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`

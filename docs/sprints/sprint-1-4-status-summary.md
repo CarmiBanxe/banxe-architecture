@@ -22,3 +22,4 @@ Legend: REAL = файл существует в репо · TEMPLATE = мате�
 | — | Room YAML anchors (5) | bank-rooms/*/agents-*.yaml | REAL (minimal) | расширить до полного room-kit при Phase 2 |
 
 Notes: «REAL (TEMPLATE)» = файл материализован, но контент — плейсхолдеры; статусы register'а НЕ менялись (все переходы — только через evidence по Register Usage Rules). Полные room-kit YAML (16 комнат) и bank-rooms/README.md + basement-registry.yaml — следующие Phase-1/2 шаги.
+

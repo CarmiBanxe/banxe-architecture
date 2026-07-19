@@ -21,3 +21,7 @@ Status: TEMPLATE / TRACKING SKELETON / NOT FOR MERGE
 
 ## Open questions
 - Скоуп «Other product» строк — по roadmap-решению оператора.
+
+## See also
+- Sprint 3 набор: `sprint-3-product-evidence-pack-template.md` · `sprint-3-per-product-evidence-packs.md` · `sprint-3-permissions-map-per-product.md`
+- Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`

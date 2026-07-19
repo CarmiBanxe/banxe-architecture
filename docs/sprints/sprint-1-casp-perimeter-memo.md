@@ -22,3 +22,7 @@ Status: DRAFT / INTERNAL ONLY / NOT FOR MERGE
 - Exact CASP status of the bank in the documented model.
 - Shared responsibilities в гибридных моделях (TR-данные, санкции, отчётность).
 - Cross-border implications (UK/EU расхождения по MiCA-периметру).
+
+## See also
+- Sprint 1 набор: `sprint-1-card-functional-scope-note.md` · `sprint-1-casp-perimeter-memo.md` · `sprint-1-travel-rule-split-note.md`
+- Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`

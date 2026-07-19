@@ -19,3 +19,7 @@ Status: DRAFT / INTERNAL ONLY / NOT FOR MERGE
 ## Open questions / counsel placeholders
 - Когда (если вообще) human approval per transfer юридически обязателен (юрисдикционные случаи).
 - Как Travel Rule взаимодействует с AI-based decision-making, если вообще.
+
+## See also
+- Sprint 1 набор: `sprint-1-card-functional-scope-note.md` · `sprint-1-casp-perimeter-memo.md` · `sprint-1-travel-rule-split-note.md`
+- Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`

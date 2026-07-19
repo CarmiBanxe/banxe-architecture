@@ -33,3 +33,4 @@ ls services/card_issuing/card_agent.py services/crypto_custody/crypto_agent.py \
 - Совпадение только в планах/register → PLANNING-ONLY.
 - Тишина → NOT FOUND / TO CREATE.
 Статусы register'а этим аудитом не меняются; ни один спринт не объявляется complete/compliant.
+

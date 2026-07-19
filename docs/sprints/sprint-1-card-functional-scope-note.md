@@ -23,3 +23,7 @@ Status: DRAFT / INTERNAL ONLY / NOT FOR MERGE
 - Минимальный HITL для card-issuing под scheme rules / PSR: [counsel]
 - Annex III credit scoring relevance; Recital 58 fraud/AML exclusion применимость: [counsel]
 > Legal classification MUST be supplied by external counsel; not to be filled by internal opinion.
+
+## See also
+- Sprint 1 набор: `sprint-1-card-functional-scope-note.md` · `sprint-1-casp-perimeter-memo.md` · `sprint-1-travel-rule-split-note.md`
+- Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`

@@ -18,3 +18,7 @@ Status: TEMPLATE / INTERNAL SKELETON / NOT FOR MERGE
 
 ## Open questions / counsel placeholders
 - Формальные RoI-дедлайны и формат [Legal]; критичность-классификация по DORA-критериям.
+
+## See also
+- Sprint 4 набор: `sprint-4-dora-ict-risk-framework.md` · `sprint-4-webhook-event-lifecycle.md` · `sprint-4-third-party-roi-skeleton.md`
+- Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`
