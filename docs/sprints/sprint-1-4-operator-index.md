@@ -38,3 +38,4 @@ Status: DRAFT / NOT FOR MERGE · 2026-07-20 · Навигационная сво
 - Светофоры меняются только через evidence-backed update реестра (Register Usage Rules); «по мнению» — запрещено.
 - Room-статус не может быть «зеленее» худшей затрагивающей записи.
 - Все counsel-плейсхолдеры в Sprint 1–4 доках — OFF-LIMITS для внутренних правовых выводов.
+- High-risk AI register (draft): `../governance/HIGH-RISK-AI-REGISTER-DRAFT.md`
