@@ -24,12 +24,12 @@ Operators list, read-only:
 
 ### A2. Inventory table template
 
-To be filled by humans; rows left empty.
+To be filled by humans. The rows below marked **SANDBOX / DEMO** are synthetic examples only — fictional components in the Banksy sandbox, no connection to any real bank, EMI, customer, or endpoint. Delete them before real inventory begins; leave real rows empty until filled by an operator.
 
 | Family ID | Component(s) | Location (repo/service) | Lane candidate (identity / ledger / gateway / other) | Owner (role) | Risk level (low/medium/high) | Notes |
 |---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
+| DEMO-FAM-LEDGER-TEST (SANDBOX) | demo_ledger_sidecar.py; sandbox_mcp_adapter.yaml | banksy-sandbox-repo / services/demo-ledger-sidecar | ledger | Ledger / Safeguarding Engineer | medium | Synthetic components in Banksy sandbox; no connection to real EMI. |
+| DEMO-FAM-IDV-STUB (SANDBOX) | demo_idv_stub.py | banksy-sandbox-repo / services/demo-idv-stub | identity | Identity Lane Engineer | medium | Synthetic identity stub; sandbox only, no real customer data. |
 |  |  |  |  |  |  |  |
 
 ### A3. Inventory steps
@@ -48,24 +48,28 @@ Uses the canon from the S-A6 verification sprint (no second ledger; no direct MC
 
 ### B1. Evidence log structure
 
-Templates; do not fill with real data here.
+Templates; do not fill with real data here. Each type below shows one **SANDBOX / DEMO** example (synthetic, sandbox artefacts only) followed by the blank template to fill for real work.
 
 **Architecture evidence**
+- Example (SANDBOX): Evidence ID `DEMO-ARCH-LEDGER-FLOW-001` — Diagram of sandbox Midaz→LedgerPort→LedgerAgent→DemoLedger flow. Source: `docs/sandbox/diagrams/demo-ledger-flow.png`.
 - [ ] Evidence ID:
 - [ ] Description:
 - [ ] Source (diagram / config / text):
 
 **Configuration evidence**
+- Example (SANDBOX): Evidence ID `DEMO-CONF-LEDGER-CREDS-001` — Redacted sandbox config showing only LedgerPort/LedgerAgent hold write credentials to `ledger.demo.local`; MCP adapter is read-only. Source: `docs/sandbox/config/demo-ledger-acl.redacted.yaml`.
 - [ ] Evidence ID:
 - [ ] Description:
 - [ ] Source (file / path / redacted snippet):
 
 **Code-path evidence**
+- Example (SANDBOX): Evidence ID `DEMO-CODE-MIDAZ-PATH-001` — `sandbox_mcp_adapter` calls `LedgerPort.post_journal_entry()`, never the DemoLedger store directly. Module ref: `services/demo-ledger-sidecar/sandbox_mcp_adapter.py`.
 - [ ] Evidence ID:
 - [ ] Description:
 - [ ] Module / method reference:
 
 **Operational evidence**
+- Example (SANDBOX): Evidence ID `DEMO-OPS-WRITE-TRACE-001` — Sandbox log sample for one demo write event traced back through LedgerAgent with a demo HITL approval record. Source: `docs/sandbox/logs/demo-ledger-write-trace.log`.
 - [ ] Evidence ID:
 - [ ] Description:
 - [ ] Log sample / HITL record reference:
@@ -89,6 +93,14 @@ One block per canon statement; filled by humans.
 - Impact level: low / medium / high
 - Self-repair permitted: yes (config-hardening, adding checks) / no — design change required (project brain)
 - Notes:
+
+**Canon 2 (SANDBOX DEMO)** — synthetic example only; not a real finding.
+- Canon statement: No direct MCP→ledger writes in Banksy sandbox.
+- Classification: Confirmed-with-caveats
+- Evidence refs: DEMO-ARCH-LEDGER-FLOW-001; DEMO-CONF-LEDGER-CREDS-001; DEMO-CODE-MIDAZ-PATH-001
+- Impact level: medium
+- Self-repair permitted: yes (tighten sandbox config); no impact on real bank
+- Notes: sandbox-only verification; real EMI/ledger to be treated separately under future install-audits.
 
 **Canon 3**
 - Canon statement: All writes via LedgerPort + LedgerAgent under HITL, with append-only and decision-trace constraints.
