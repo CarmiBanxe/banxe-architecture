@@ -12,3 +12,6 @@ Campaigns, content, lead scoring, referral/loyalty, CRM.
 
 ### Sprint 3 cross-link
 Промо-материалы продуктовых паков (Evidence Pack §4 communications) проходят COBS4→MLRO этой комнаты — см. `../../docs/sprints/sprint-3-product-evidence-pack-template.md`.
+
+#### Sprint 3 products touching this room
+Insurance v1 промо-материалы (COBS4→MLRO гейт этой комнаты): `../../docs/sprints/sprint-3-per-product-evidence-packs.md` §Insurance.

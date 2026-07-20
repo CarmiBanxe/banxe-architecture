@@ -13,3 +13,6 @@ Lifecycle, churn, notifications, preferences; dormant product agents (savings/in
 
 ### Sprint 3 (New Products)
 Artefacts: `../../docs/sprints/sprint-3-product-evidence-pack-template.md` · `sprint-3-per-product-evidence-packs.md` · `sprint-3-permissions-map-per-product.md`. Акцент комнаты: customer outcomes, support, fair-value evidence. Per-product паки заполняются до пилота; связь с #4 — до любого AMBER→GREEN.
+
+#### Sprint 3 products touching this room
+Savings v1 + Insurance v1 (evidence-pack stubs): `../../docs/sprints/sprint-3-per-product-evidence-packs.md` (Приложение A) · permissions wiring: `sprint-3-permissions-map-per-product.md`. Статусы продуктов: Pre-pilot only [counsel]; room не «зеленее» #4 (AMBER).

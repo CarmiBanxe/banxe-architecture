@@ -39,3 +39,4 @@ Status: DRAFT / NOT FOR MERGE · 2026-07-20 · Навигационная сво
 - Room-статус не может быть «зеленее» худшей затрагивающей записи.
 - Все counsel-плейсхолдеры в Sprint 1–4 доках — OFF-LIMITS для внутренних правовых выводов.
 - High-risk AI register (draft): `../governance/HIGH-RISK-AI-REGISTER-DRAFT.md`
+- Sprint 3 deepening: per-product stubs (savings/insurance/merchant/card) + non-legal permissions wiring — Приложения A в sprint-3 доках

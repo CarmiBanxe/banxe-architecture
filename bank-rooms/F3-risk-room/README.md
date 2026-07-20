@@ -16,3 +16,6 @@ Fraud, ATO, credit, risk oversight, Consumer Duty.
 
 ### AI-oversight artefacts (Workstream B)
 `../../docs/governance/ai-oversight/FraudScoringAgent-notes.md` · `CreditScoringAgent-notes.md` — Art.14-style stop/override/explainability по коду.
+
+### Sprint 3 cross-link (products)
+ConsumerDutyAgent-контур — outcomes-мониторинг продуктовых паков; CARD_TRANSACTION-события → fraud-скоринг этой комнаты. См. `../../docs/sprints/sprint-3-permissions-map-per-product.md` (Приложение A).

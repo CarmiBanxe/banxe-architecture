@@ -24,3 +24,4 @@ Narrative rules: определения обеих осей; везде, где 
 - Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`
 - AI-oversight артефакты: `../governance/ai-oversight/art14-per-agent-notes-template.md` + notes (Fraud/Credit/Sanctions)
 - High-risk AI register (draft): `../governance/HIGH-RISK-AI-REGISTER-DRAFT.md`
+- Sprint 3 permissions wiring (products→gates, non-legal): `sprint-3-permissions-map-per-product.md` Приложение A

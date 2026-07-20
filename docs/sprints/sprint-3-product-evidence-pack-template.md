@@ -26,3 +26,8 @@ Status: TEMPLATE / NOT FOR MERGE
 ## See also
 - Sprint 3 набор: `sprint-3-product-evidence-pack-template.md` · `sprint-3-per-product-evidence-packs.md` · `sprint-3-permissions-map-per-product.md`
 - Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`
+
+## Приложение A (Sprint 3 deepening): требуемая структура per-product пака — ARO-выравнивание
+
+Каждый экземпляр пака обязан содержать секции (маппинг на §2–§9 выше указан в скобках):
+1. **Product description** (§2) · 2. **Target market — WHO/WHAT/WHY** (§3: кто клиент / что за нужда / почему этот продукт) · 3. **Features & flows (ARO-style: Actor→Resource→Outcome)** — по фактическим методам агента · 4. **Risk/threats** (misuse, detriment, operational) · 5. **HITL / governance hooks** (ссылки на H-коды, не решения) · 6. **Evidence artefacts** (пути кода/доков) · 7. **Open questions — permissions/licensing/legal [counsel]** (§9-совместимо).

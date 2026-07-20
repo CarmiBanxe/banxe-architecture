@@ -19,3 +19,6 @@ Artefacts: `../../docs/sprints/sprint-1-card-functional-scope-note.md` · `sprin
 
 ### Sprint 4 (ICT/DORA/Webhooks)
 `../../docs/sprints/sprint-4-webhook-event-lifecycle.md` — lifecycle платёжных событий; связка с Framework и proposed #9/#10.
+
+#### Sprint 3 products touching this room
+Merchant v1 + Card v1 (stubs + permissions wiring): `../../docs/sprints/sprint-3-per-product-evidence-packs.md` (Приложение A) · `sprint-3-permissions-map-per-product.md`. Card остаётся под #2 (RED); статусы Pre-pilot [counsel].

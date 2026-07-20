@@ -25,3 +25,14 @@ Gap flags: каждый «licence unknown/unclear» → строка в register
 ## See also
 - Sprint 3 набор: `sprint-3-product-evidence-pack-template.md` · `sprint-3-per-product-evidence-packs.md` · `sprint-3-permissions-map-per-product.md`
 - Сводка/аудит: `sprint-1-4-status-summary.md` · `sprint-1-4-shell-audit.md` · Register: `../governance/OPEN-REGULATORY-QUESTIONS-REGISTER-2026-07-20.md`
+
+## Приложение A (Sprint 3 deepening): non-legal wiring per product
+
+Формат: internal actors → human gates (references, не решения) → regulator touchpoints (labels) → status.
+
+| Product | Internal actors (agents/rooms) | Human gates (refs) | External touchpoints (labels) | Status |
+|---|---|---|---|---|
+| Savings v1 | SavingsAgent · F1/customer-ops · LedgerAgent (F2/ledger) | H-017; Consumer Duty review; adj-гейты ledger | “requires FCA permission [counsel]” — deposit boundary | Pre-pilot only / permissions unresolved [counsel] |
+| Insurance v1 | InsuranceAgent · F1/customer-ops · Marketing (промо COBS4→MLRO) | H-017; MLRO (regulated disclosures) | “distribution regime [counsel]”; partner licence [counsel] | Pre-pilot only / permissions unresolved [counsel] |
+| Merchant v1 | MerchantAgent · F2/payments · kyb_agent (F2/identity) | H-017; KYB approve (actor/CO); H-016 (крупные settlement) | “acquiring permission / scheme [counsel]” | Pre-pilot only / permissions unresolved [counsel] |
+| Card v1 | CardAgent · F2/payments · risk-контур (F3/risk: fraud on CARD_TRANSACTION) | actor-гейты freeze/issue; гейт issuance — после S1 Scope Note | “BIN sponsor / scheme [counsel]” | Pre-pilot only / permissions unresolved [counsel]; register #2 RED |
