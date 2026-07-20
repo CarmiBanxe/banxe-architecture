@@ -36,3 +36,8 @@ Gap flags: каждый «licence unknown/unclear» → строка в register
 | Insurance v1 | InsuranceAgent · F1/customer-ops · Marketing (промо COBS4→MLRO) | H-017; MLRO (regulated disclosures) | “distribution regime [counsel]”; partner licence [counsel] | Pre-pilot only / permissions unresolved [counsel] |
 | Merchant v1 | MerchantAgent · F2/payments · kyb_agent (F2/identity) | H-017; KYB approve (actor/CO); H-016 (крупные settlement) | “acquiring permission / scheme [counsel]” | Pre-pilot only / permissions unresolved [counsel] |
 | Card v1 | CardAgent · F2/payments · risk-контур (F3/risk: fraud on CARD_TRANSACTION) | actor-гейты freeze/issue; гейт issuance — после S1 Scope Note | “BIN sponsor / scheme [counsel]” | Pre-pilot only / permissions unresolved [counsel]; register #2 RED |
+
+## KYB perimeter note
+- KYB не оценивается изолированно там, где KYB-исход гейтит активацию merchant-acquiring (`approve_kyb(actor)` — вход эквайринг-цикла).
+- Product-permissions review (строка Merchant выше) и KYB-периметр читаются ВМЕСТЕ — раздельные вердикты по ним не валидны для activation-решений.
+- Лицензионный/правовой исход связки — [counsel]; операционная связка модулей — факт кода (S-A5 KYB-аудит).

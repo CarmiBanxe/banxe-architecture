@@ -25,3 +25,8 @@ Narrative rules: определения обеих осей; везде, где 
 - AI-oversight артефакты: `../governance/ai-oversight/art14-per-agent-notes-template.md` + notes (Fraud/Credit/Sanctions)
 - High-risk AI register (draft): `../governance/HIGH-RISK-AI-REGISTER-DRAFT.md`
 - Sprint 3 permissions wiring (products→gates, non-legal): `sprint-3-permissions-map-per-product.md` Приложение A
+
+## IDV/KYC internal classification note
+- IDV/KYC здесь НЕ трактуются как expressly named Annex III категории финансового сектора; это НЕ правовой вывод — финальная классификация остаётся [counsel].
+- Внутренняя политика может (и в текущем каноне склонна) трактовать IDV/KYC как heightened-risk: формула — **“non-Annex-III, treated as high-risk internally by policy”**.
+- Источник ориентации: принятый external-reviewer ввод (2026-07-20); grid-колонка LEGAL для KYC/kyb-строк не предзаполняется этим примечанием.
