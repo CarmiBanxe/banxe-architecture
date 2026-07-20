@@ -30,6 +30,13 @@ To be filled by humans. The rows below marked **SANDBOX / DEMO** are synthetic e
 |---|---|---|---|---|---|---|
 | DEMO-FAM-LEDGER-TEST (SANDBOX) | demo_ledger_sidecar.py; sandbox_mcp_adapter.yaml | banksy-sandbox-repo / services/demo-ledger-sidecar | ledger | Ledger / Safeguarding Engineer | medium | Synthetic components in Banksy sandbox; no connection to real EMI. |
 | DEMO-FAM-IDV-STUB (SANDBOX) | demo_idv_stub.py | banksy-sandbox-repo / services/demo-idv-stub | identity | Identity Lane Engineer | medium | Synthetic identity stub; sandbox only, no real customer data. |
+| DEMO-FAM-KYB-STUB (SANDBOX) | demo_kyb_stub.py; sandbox_ubo_checker.py | banksy-sandbox-repo / services/demo-kyb-stub | identity | Identity Lane Engineer | high | Synthetic KYB/UBO stub; sandbox only, no real business data. Remove before real inventory. |
+| DEMO-FAM-LEDGER-RECON (SANDBOX) | demo_recon_job.py | banksy-sandbox-repo / services/demo-ledger-recon | ledger | Ledger / Safeguarding Engineer | medium | Synthetic reconciliation job over DemoLedger; sandbox only. Remove before real inventory. |
+| DEMO-FAM-GATEWAY-EDGE (SANDBOX) | demo_gateway_edge.py; sandbox_ratelimit.yaml | banksy-sandbox-repo / services/demo-gateway-edge | gateway | Gateway / Web Engineer | high | Synthetic gateway edge with sandbox rate-limit config; no real routes. Remove before real inventory. |
+| DEMO-FAM-PAYMENTS-STUB (SANDBOX) | demo_payments_router.py; sandbox_card_tokenizer.py | banksy-sandbox-repo / services/demo-payments-router | payments | Payments Lane Engineer | medium | Synthetic payments router; sandbox-only flows, no live cards. Remove before real inventory. |
+| DEMO-FAM-PAYOUT-BATCH (SANDBOX) | demo_payout_batch.py | banksy-sandbox-repo / services/demo-payout-batch | payments | Payments Lane Engineer | high | Synthetic batch payout worker; sandbox only, no real beneficiaries. Remove before real inventory. |
+| DEMO-FAM-REPORTING-VIEW (SANDBOX) | demo_report_builder.py | banksy-sandbox-repo / services/demo-reporting-view | other | Reporting / Analytics Engineer | low | Synthetic read-only reporting view over demo data; sandbox only. Remove before real inventory. |
+| DEMO-FAM-ANALYTICS-SIDECAR (SANDBOX) | demo_analytics_sidecar.py | banksy-sandbox-repo / services/demo-analytics-sidecar | other | Reporting / Analytics Engineer | low | Synthetic analytics sidecar; sandbox only, no real metrics. Remove before real inventory. |
 |  |  |  |  |  |  |  |
 
 ### A3. Inventory steps
@@ -86,6 +93,14 @@ One block per canon statement; filled by humans.
 - Self-repair permitted: yes (config-hardening, adding checks) / no — design change required (project brain)
 - Notes:
 
+**Canon 1 (SANDBOX DEMO)** — synthetic example only; not a real finding.
+- Canon statement: No second ledger in Banksy sandbox — only DemoLedger as authoritative store.
+- Classification: Confirmed
+- Evidence refs: DEMO-ARCH-LEDGER-FLOW-001
+- Impact level: low
+- Self-repair permitted: yes (keep sandbox single-ledger); no impact on real bank
+- Notes: sandbox-only; real multi-ledger questions reserved for future design.
+
 **Canon 2**
 - Canon statement: No direct MCP→ledger writes — Midaz/MCP components cannot write directly to the ledger datastore.
 - Classification: Confirmed / Confirmed-with-caveats / Not proven / Broken
@@ -109,6 +124,14 @@ One block per canon statement; filled by humans.
 - Impact level: low / medium / high
 - Self-repair permitted: yes (config-hardening, adding checks) / no — design change required (project brain)
 - Notes:
+
+**Canon 3 (SANDBOX DEMO)** — synthetic example only; not a real finding.
+- Canon statement: All writes via LedgerPort + LedgerAgent under HITL in Banksy sandbox.
+- Classification: Not proven
+- Evidence refs: DEMO-OPS-WRITE-TRACE-001
+- Impact level: medium
+- Self-repair permitted: yes (add missing sandbox traces); no impact on real bank
+- Notes: sandbox gap; shows how "Not proven" should be handled — escalate and collect more evidence before any real migration, never assume pass.
 
 ### B3. Execution notes
 
