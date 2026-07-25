@@ -281,3 +281,27 @@ dbt/models/
 ---
 
 *IL-009 Step 1 DONE | Source: CEO research report 2026-04-06*
+
+---
+
+## Delta 2026-07-26 — Engine-Reference Top-10 (ENGREF01, PROPOSED)
+
+> Delta-merge into the 50+/13-blocks catalog above (no renumbering of Блок 1–13).
+> Source: consolidated engine reference rebuilt v2 (block K), session analytics.
+> License-gate applies: production core = MIT/Apache-2.0 only (ADR-171 §3); AutoGen (CC-BY-NC-4.0) excluded from prod
+> (OP-N1: verify AG2 fork separately). Sanctions/jurisdiction review per «Исключённые технологии» above stands.
+
+| Repo | License | Role in engine (layer) |
+|------|---------|------------------------|
+| deer-flow (ByteDance) | MIT ~20k⭐ | L6 long-horizon SuperAgent harness (KYC doc analysis, reports) |
+| strands-sdk (AWS) | Apache-2.0 | L6 MCP-native multi-agent production candidate |
+| langgraph | MIT ~12k⭐ | L6 real-time StateGraph (<300ms interactive core) |
+| FATE | Apache-2.0 ~5.7k⭐ | L4 federated learning (GDPR-preserving training; Блок 6 adjunct) |
+| FinRobot | MIT | L4 multi-agent financial analysis (Блок 13 adjunct) |
+| FinGPT | MIT | L4 financial NLP/sentiment (already in Блок 13) |
+| FISCO-BCOS | Apache-2.0 ~3.4k⭐ | L2 blockchain audit trail candidate (~5000 TPS; Блок 8 adjunct) |
+| qdrant | Apache-2.0 ~22k⭐ | L3 vector store (Rust, sub-ms) |
+| temporal | MIT ~12k⭐ | L1 durable workflows (already Блок 7; Forrester TEI: $14.3M preserved revenue) |
+| langfuse | MIT ~8k⭐ | L5-obs LLM observability (Блок 12 adjunct; ADR-168) |
+
+Cross-ref: `docs/engine/BANXE-AI-ENGINE-REFERENCE.md` (7-layer map), ADR-171 (adoption decisions, Duplication Audit).
