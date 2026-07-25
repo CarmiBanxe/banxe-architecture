@@ -83,6 +83,64 @@ ClickHouse (no code consumers in this repo detected). No delete/merge of any exi
 - Two operator decisions + license-audit (OP-N1) + prompt-tooling choice (OP-J2) are the unblock path.
 - QGNN/VQC parked (research-track, 2027–2028); not part of any E-phase.
 
+## RESOLVED (PROPOSED) — Fable5 auditor verdicts, 2026-07-26
+
+> Read-only evidence audit per FACTORY→Fable5 delegation. Verdicts are PROPOSED — operator ratifies.
+> Evidence gathered 2026-07-26 (shell audit, no writes outside this section).
+
+### DECISION 1 — Wave order: **Option B (back-office-first)** · confidence **0.95** (≥0.90 → auto-decide permitted, ratification pending)
+
+**Verdict:** E1 is re-scoped: the first production agents are back-office — safeguarding daily
+reconciliation, CASS reporting support, BI/insight — BEFORE any customer-facing TransferAgent.
+TransferAgent remains the first *customer-facing* agent but moves behind the back-office wave.
+
+**Rationale (regulatory > dependency > revenue):**
+1. *Regulatory (hard constraint):* `docs/ROADMAP-STATUS-2026-06-23.md` S-PROD-1 — Safeguarding Engine is
+   **P0 and OVERDUE (deadline 2026-05-07 passed)**; priority stack (agents.md) puts FCA regulations above
+   everything. An EMI moving client money via a new AI agent while its CASS 7.15 daily-recon proof has a
+   documented gap would invert the licence-risk hierarchy.
+2. *Dependency:* `docs/D-RECON-DESIGN.md` — Midaz internal balances have **no automated link to the
+   external safeguarding statement ("BANXE cannot prove CASS 7.15 compliance")**; and S-PROD-3 records
+   D-gl ≈ 5% (largest core gap). TransferAgent's execute path REQUIRES ledger integrity + live daily
+   reconciliation as preconditions — the dependency graph itself orders back-office first.
+3. *Convergence:* BCG insight (analytics #3: back-office yields more value at lower client risk) agrees
+   with the regulatory ordering; revenue argument for Option A does not outweigh licence conditions.
+
+**Prerequisites for the wave:** emi-stack UNFREEZE (runtime for safeguarding/recon agents lives in
+banxe-emi-stack, FROZEN 2026-07-18) — operator action; ledger via LedgerPort only (unchanged).
+
+### DECISION 2 — Branch reconciliation: **origin/main authoritative; rebase + serialized re-mint path recommended** · confidence **0.80 → HITL ESCALATION (< 0.90, do NOT auto-decide)**
+
+**Evidence:** drift measured 2026-07-26: `agent/factory/bank-operating-model/20260718` = **ahead 63 /
+behind 3** vs origin/main (stable since the c02f8d8 baseline audit 2026-07-25, not growing; behind-set =
+#1131/#1126/#1132 — no file-conflict-obvious overlap, but 63 commits include the 910-file GENERAL-LINE
+commit c02f8d8).
+
+**Recommended path (canon-backed direction, high confidence):** origin/main = source of truth; the branch
+reconciles by rebase onto current main + ledger re-mint per Rule 8 / ADR-119 (IL numbers frozen at merge,
+`build_ledger.py` on the rebased base) + serialized PR merges (strict branch protection). No force
+operations beyond `--force-with-lease` on the branch's own ref.
+
+**Why HITL (< 0.90):** the *strategy* is canon-clear, but the *shape* is an operator-scale judgment:
+(a) merge the 63-commit line as one PR series vs split the 910-file GENERAL-LINE commit into reviewable
+change-sets vs selective cherry-pick; (b) review burden and rollback surface are material;
+(c) irreversibility-adjacent (merge into protected main). These are exactly the stop-barrier class
+reserved for the operator.
+
+**Correction to the delegation premise:** *branch* reconciliation lives in **banxe-architecture** (the
+branch is in this repo) — emi-stack UNFREEZE is **NOT a prerequisite for D2**. The unfreeze prerequisite
+attaches to **D1 execution** (the reconciliation *engine/agents* runtime lives in emi-stack). Premise
+conflated D-recon (engine) with branch reconciliation; recorded here to prevent mis-sequencing.
+
+**Ordering vs D1:** D2 (branch merge) and D1 wave-start are independent workstreams; recommended sequence:
+ratify D1 immediately (unblocks spec-side prep), schedule D2 as its own serialized merge campaign; D2 must
+complete before any S-A5/S-A6/S-A7 status uplift lands on main (those artifacts live on the drifted branch).
+
+### Deliverable summary
+- D1: **B, back-office-first**, confidence 0.95 — PROPOSED for ratification.
+- D2: direction fixed (main authoritative, rebase+re-mint+serialize), shape **escalated to operator (HITL)**, confidence 0.80.
+- Prerequisites: emi-stack unfreeze (for D1 wave execution); no unfreeze needed for D2; drift stable at 63/3.
+
 ## Anchors
 
 ADR-013, ADR-030, ADR-102, ADR-103, ADR-060, ADR-119/120/121, ADR-167 (assistant-ui intent-first),
