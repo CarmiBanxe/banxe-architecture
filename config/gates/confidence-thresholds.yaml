@@ -1,0 +1,40 @@
+# config/gates/confidence-thresholds.yaml
+# STATUS: PROPOSED — NO ACTIVATION. ENGREF01, 2026-07-26.
+# Source: engine reference rebuilt v2 (block D) + CI/CD job graph (block G).
+# Nothing reads this file yet; wiring it into any pipeline/agent requires ADR-171 acceptance
+# plus the Promotion Gate (CLAUDE.md §11). Configuration-over-Hardcoding (§10): thresholds
+# live HERE, never in code or prompts.
+#
+# Relation to existing canon (additive, does not modify):
+#   - HITL runtime thresholds (.claude/rules/agents.md BUG-007): AUTO >0.90 / REVIEW 0.70-0.90 / BLOCK <0.70
+#   - ADR-030 runtime_gate budgets: config/runtime_gate/agent-budget-policy.yaml (owned by redgate track)
+# This file covers DEPLOYMENT gates (CI/CD), not runtime decision gates.
+
+meta:
+  status: PROPOSED
+  activation: none
+  owner_decision_required: true
+  source: "engine-reference rebuilt v2, blocks D+G (session analytics, OP-A: no disk sources)"
+  cross_refs:
+    - docs/adr/ADR-171-ai-engine-adoption.md
+    - docs/engine/BANXE-SECURITY-OWASP.md
+    - .claude/rules/agents.md#hitl-confidence-thresholds
+
+deployment_gates:
+  staging:
+    min_confidence: 0.75
+    human_approval: false
+  production:
+    min_confidence: 0.90
+    human_approval: true          # HITL mandatory (EU AI Act Art.14; Finance Agent Benchmark ~57%)
+    environment: production
+
+excessive_agency_gate:
+  # OWASP LLM Top-10 "Excessive Agency" mitigation
+  production_threshold: 0.90
+
+runtime_alignment:
+  # Informative mirror of the existing runtime HITL canon (authoritative source: agents.md BUG-007).
+  auto_above: 0.90
+  review_band: [0.70, 0.90]
+  block_below: 0.70
