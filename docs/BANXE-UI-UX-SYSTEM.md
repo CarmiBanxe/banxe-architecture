@@ -490,3 +490,40 @@ AI limitations (shown in UI):
 - Biometric authentication (Face ID / Fingerprint)
 - Push notifications
 - Compact transaction row (reduced columns)
+
+---
+
+## Delta 2026-07-26 — Analytic #2 UX mechanics fold-in (ENGREF01, PROPOSED)
+
+> Additive; existing Design Philosophy / UI System / UX System stand. Source: analytics #2 (blocks SS, B9, C9, G9, H10, I9).
+
+### Rich Cards (typed agent output — catalog)
+TransferCard (recipient, amount, rate, fee, ETA, **Confirm/Edit**) · FXRailCard (live rate, SEPA vs SWIFT, fee breakdown) ·
+SpendingInsightCard (category, amount, delta, sparkline) · CryptoOrderCard (**gated backlog — OP-J3**) ·
+CardControlCard (freeze, limits — gated) · ProductDiscoveryCard · KYCProgressCard ("Step 2 of 4").
+Principle: agent returns typed JSON → UI renders; card = UI form of propose-only; Confirm = human approval;
+ConfidenceIndicator on cards = client-facing form of HITL thresholds.
+
+### Streaming mechanics ("agent shows its work")
+- Skeletons for content zones (never spinner-only — already canon in SCREEN-INVENTORY Shared States).
+- AgentThinking with STATUS TEXT ("Checking rates…"), not a bare spinner; typing indicator.
+- Streaming + auto-scroll + retry; inline errors in red with ACTIONABLE text
+  ("Amount must be between €1 and €10,000" — never "Invalid amount").
+
+### SCA in UX (PSD2/PSD3)
+Face ID/PIN inside the payment flow (existing SCAChallenge module extends to Rich-Card Confirm);
+receipt card after success; lock icon on all payment confirmations; biometric confirmation animation.
+
+### Token rules (architectural, additive to UI System)
+Semantic text tokens point ONLY to accessibility-safe primitives; **tabular-nums for ALL financial figures**;
+monetary amounts always Bold; light AND dark mode from the start.
+
+### Tone rule (friendly-mode boundary, OP-B3/G)
+FORBIDDEN: empty empathy ("I understand that banking can be stressful…").
+REQUIRED: fact + action + result ("Done. €500 sent to Maria. Arrives in 15 min").
+Friendliness = efficiency and brevity, inside guardrails.
+
+### Hard UX prohibitions (generation rules; candidates for the UI quality gate)
+GDPR consent is never a wall (in-context toggle, progressive disclosure) · never `outline:none` without a
+focus-ring replacement · never color as the only carrier of meaning · descriptive alt text on all images ·
+**Human Support button always visible, NEVER hidden** · loading = skeleton, not spinner.

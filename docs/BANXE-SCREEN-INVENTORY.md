@@ -305,3 +305,28 @@
 | EmptyState | All lists (with contextual icon + CTA) |
 | SkeletonRow | All loading states |
 | ComplianceFlag | Transactions (BLOCKED, REVIEW status) |
+
+---
+
+## Delta 2026-07-26 — W-05 extension + gated channel backlog (ENGREF01, PROPOSED)
+
+### W-05 AI Assistant — additive extension (analytics #2)
+
+Added to Required components (existing W-05 list stands):
+- **RichCardRenderer** — typed JSON → card (TransferCard, SpendingInsightCard, KYCProgressCard, …; catalog in BANXE-UI-UX-SYSTEM.md delta)
+- **AgentThinking** (status text, not bare spinner) · **ExplainabilityScreen** trigger ("Why did you suggest this?" → decision factors, confidence, data sources, 1-tap human escalation)
+- **AgentActionLog** entry point (Settings→Activity) — client-visible log of agent actions
+- **ConversationThreads** (episodic memory surface)
+
+> **Canon guard (NOT overridden):** existing W-05 notice **"AI cannot initiate payments or change settings"
+> remains in force.** State-changing Rich Cards (TransferCard Confirm, CardControlCard) are a **gated
+> backlog item**: they require operator ratification of the propose-only+SCA contract (Confirm+SCA =
+> human approval, CLAUDE.md §11) BEFORE the notice text may change. Until then W-05 renders
+> advisory/read-only cards only.
+
+### Gated channel backlog (registered, NOT implemented — own gates required)
+
+| Item | Gate required | Refs |
+|------|--------------|------|
+| **OP-J1 Messenger channels** (Slack/WhatsApp/Telegram via Chat SDK) | data-residency (GDPR: non-EU servers) + client identity strength; SCA actions app-only; advisory/notification scope until decided | analytics #2 v10-D10 |
+| **OP-J3 Crypto channel** (Crypto Hub, TradingView Pro Mode, CryptoOrderCard) | separate FCA cryptoasset perimeter — no crypto canon exists in repo yet; operator decision, not a UI task | analytics #2 v10-F10 |

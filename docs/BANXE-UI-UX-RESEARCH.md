@@ -158,3 +158,18 @@ UNCERTAIN (mark and monitor):
 4. **shadcn/ui is preferred** because you own the code (copy-paste model, not npm black-box).
 5. **Storybook is mandatory** — serves as component contract and visual regression baseline.
 6. **Figma is approved for non-code artifacts** — designs, clickable demo, token definitions.
+
+---
+
+## Delta 2026-07-26 — §5 Context/Memory/MCP additions (ENGREF01, PROPOSED)
+
+> Extends section 5 (Context / Memory / MCP / Hooks Tools); classification columns as in §5. Source: analytics #2 (block UU) + #4.
+
+| Tool | License | Plane | Note |
+|------|---------|-------|------|
+| Figma-Context-MCP (GLips) | MIT ~10.3k⭐ | Dev ✅ | Figma → MCP → shadcn/ui generation; respects Key Decision 2 (Claude Code = sole Product-Plane author) |
+| better-design MCP | MIT | Dev ✅ | brand-grade tokens, WCAG checks |
+| Open CoDesign | MIT | Dev ✅ | prompt-to-prototype, local-first DESIGN.md; prototype-only per Key Decision 3 |
+| Latitude | MIT | Dev ✅ | prompt versioning — implements prompt-as-versioned-artifact (triple-confirmed: DSPy + Latitude + Nubank PSV; tooling choice = OP-J2) |
+| Mem0 / Zep | Apache-2.0 | Product (gated) | client memory graph — PII-scoped only; ties to L3 of `docs/engine/BANXE-AI-ENGINE-REFERENCE.md` |
+| GitHub Agentic Workflows (ui-review) | n/a (Preview) | Dev ✅ | WCAG 2.1 AA auto-check in CI — candidate to carry the "Hard UX prohibitions" from BANXE-UI-UX-SYSTEM.md delta (OP-J4) |
