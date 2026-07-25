@@ -68,6 +68,19 @@ S-A7 фокусируется на BIF/M2.5-части в контексте pay
 
 - Закрывает ли `MIG-CLOSURE-non-gated-complete.md` BIF — главный вопрос Блока 1 (pre-scan дал только упоминание).
 - Repo-носитель I-API internal gateway runtime (A2 OPEN POINT, не решён).
+  **Note (2026-07-20, FLR2-S-A7-P1 — additive, does not close Block 2 or change this
+  plan's status):** this specific sub-question is answered by
+  `I-API-INSTALL-AUDIT-2026-07-20.md` (cited as an input by this worktree's own
+  `S-GATE-REPAIR-EXECUTION-PLAN-UNIFIED-GATEWAY-AUTH-LEDGER-PAYMENTS-2026-07-20.md`), which
+  identifies two carrier surfaces in `banxe-emi-stack`: `src/api/gateway.py` (a
+  framework-agnostic API-key/rate-limit/idempotency pipeline, present but **orphaned** —
+  zero consumers outside its own test file, never wired into the live app) and
+  `services/api_gateway/` + `api/deps.py::require_auth` (Keycloak-backed, **partially
+  wired** into a minority of routers). This does not itself complete Block 2's wiring
+  audit — the ledger-endpoint wiring map and "no second ledger" verdict Block 2 requires
+  are not re-derived here — it only removes the "repo-carrier unconfirmed" uncertainty so
+  a future Block 2 execution does not need to re-establish it from zero. Naming per
+  `docs/canon/S-A-NAMESPACE-MODEL-2026-07-20.md` (line `floor2-install-audit`).
 - Возможные обходы web→ledger мимо port'ов — до grep-проверки не утверждается ни наличие, ни отсутствие.
 - Ключи rails (ED-01/02) и OD-R07 — вне S-A7 (внешние гейты), но их статус влияет на глубину проверяемого wiring (стабы vs live).
 - Cross-floor: web-экспозиция затрагивает floor-3/4 HITL/security-гейты — фиксация, не расширение scope.

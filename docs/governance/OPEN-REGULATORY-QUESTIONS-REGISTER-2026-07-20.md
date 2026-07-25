@@ -154,3 +154,19 @@ Traffic-light: GREEN = нет блокирующей правовой неодн
 - Risk: концентрационные риски и SPOF не описаны; формальные RoI-дедлайны не зафиксированы.
 - Action: Risk/Legal заполняют инвентарь (Modulr/ClearBank/SumSub/Paybis/cloud); классификация критичности; дедлайны отчётности [Legal].
 - Owner (предлагаемый): Risk/Legal · Rooms: governance docs (+devops/payments cross-links).
+
+---
+
+## ADDENDUM — 2026-07-21 (external consultant response; append-only, no prior entry edited)
+
+Source: `../briefs/CONSULTANT-RESPONSE-ORGCHART-CENSUS-2026-07-21.md`. Status deltas recorded per freeze rule (RED→AMBER→GREEN transitions still require evidence; existing traffic-lights above are NOT changed by this addendum — these are recorded status characterisations from the consultant response).
+
+- **Annex III — IDV/KYC** → status: **policy-confirmed, legal open**. Consultant confirms "non-Annex-III, high-risk by policy" is consistent with the Annex III text (credit scoring of natural persons + life/health insurance pricing); remains internal control posture, legal determination stays `[counsel]`.
+- **Article 12 traceability — correlation_id** → status: **insufficient, decision-layer required**. Mandatory fields: initiator, input data, decision outcome, override trail; retention ≥ 6 months (high-risk lanes). Moves "open" → "required".
+- **KYB ↔ merchant-acquiring** (area #4 cross-link) → status: **gated-counsel**. Working position: KYB as embedded element of acquiring-onboarding until counsel concludes. `[counsel]`
+- **Crypto CASP** (area #3) → status: **gated-counsel**. CASP ownership depends on who holds CASP status (bank/Paybis/custodian). `[counsel]`
+- **Open-banking AISP/PISP** → status: **gated-counsel** — licence follows AISP (read-only) vs PISP (initiation) determination. `[counsel] [needs-function-clarification]`
+
+New action items (see brief §3): decision-agent vs tooling-agent criterion; functional F4 audit by purpose; formal agent REGISTRY as source of truth; decision-layer logging design; board-level SMF Consumer Duty champion appointment.
+
+*Internal-policy stances labelled as such; legal classifications remain `[counsel]`. This does not replace legal advice.*

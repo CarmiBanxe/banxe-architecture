@@ -1,0 +1,61 @@
+# F2/ledger-room — agents kit (ledger/EMI cluster: D-GL + B-EMI)
+# Canonical ledger agents-* kit. Docs-only mirror; no runtime code here. Roster in stack/capability
+# form where no concrete *_agent.py mapping is asserted by architecture docs (do not invent files).
+room: F2/ledger-room
+floor: 2
+sprint_refs: [sprint-5]           # Tax/RegData; D-GL sprint-8, B-EMI sprint-10 per build specs
+build_specs: [D-GL, B-EMI]
+perimeter: "General Ledger core (D-GL) + EMI product catalogue (B-EMI)"
+
+owner_roles:                       # SMF mapping (ORG-STRUCTURE.md)
+  - role: CFO
+    smf: SMF2
+    scope: "financial control + regulatory reporting; RegData submission; adjustment >£10k sign-off"
+  - role: COO
+    smf: SMF24
+    scope: "safeguarding + payments ops (shortfall double with CFO)"
+  - role: MLRO
+    smf: SMF17
+    scope: "AML escalation touching ledger customer blocks (carve-out, not room-owned)"
+  - role: Internal Audit
+    smf: SMF5
+    scope: "read-only assurance over ledger/audit evidence"
+
+coverage:
+  - GL / double-entry posting (via LedgerPort → midaz_adapter; Midaz PRIMARY, Fineract FALLBACK)
+  - reconciliation (D-recon reads GL as Leg A via LedgerPort.get_balance)
+  - statements / fees / period-close swarm
+  - EMI product catalogue (accounts, cards, IBAN) mapping to GL accounts
+  - tax / RegData line (FIN060 → CFO)
+
+# Stack/capability roster (canonical form; runtime lives in basement, not moved here)
+room_stack_capabilities:
+  - LedgerAgent            # services/ledger/ (Midaz) — all writes via LedgerPort
+  - ReconciliationAgent    # D-recon Leg A consumer
+  - TaxComplianceAgent     # accounting-swarm / Odoo (Sprint 5)
+  - RegDataAgent           # FIN060 generation → CFO submission
+  - FIN060Generator        # services/reporting/fin060_generator.py
+  - BeancountExportAgent   # audit-feed (dual F4/audit-cell)
+  - midaz_agent            # services/midaz_mcp/ — WATCH: all writes must route via LedgerPort
+
+autonomy_posture:
+  default: "L2 propose-only / human-submit for financial-materiality (I-27)"
+  tax_agent: "L2 propose-only, human-submit (ADR ratification pending)"
+  regdata: "no automated submission; CFO-only (HITL-010)"
+
+hitl_gates: [HITL-010, HITL-011, HITL-016, HITL-017]   # see hitl-summary.md; matrix not modified
+
+register_refs: ["#1", "#6"]
+
+control_notes:
+  invariants: "append-only ledger (ADR-056/057, ADR-059-A/119, I-24); Decimal-only (I-01); no second ledger / no dual-write (ADR-102)"
+  adjustment: "adj >£10k → CFO"
+  midaz_mcp: "all writes via LedgerPort; direct MCP→ledger mutation NOT assumed — gated [external reviewer], register #6 AMBER"
+
+consultant_topics:                 # from FLOOR2-A-CHAIN-CONTEXT + register
+  - "[external reviewer] Midaz/MCP/ledger-port coupling: proof that no direct MCP→ledger write path exists"
+  - "[counsel] Tax-agent autonomy ratification + RegData submission authority"
+
+notes: >
+  Documentation/governance layer above runtime. Roster is stack/capability wording where architecture
+  docs do not assert a concrete *_agent.py mapping. Gate IDs reference ../../HITL-MATRIX.yaml (unchanged).

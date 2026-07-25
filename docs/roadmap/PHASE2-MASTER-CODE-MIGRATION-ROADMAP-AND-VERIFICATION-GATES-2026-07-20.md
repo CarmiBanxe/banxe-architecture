@@ -88,3 +88,7 @@ Such blockers do not reopen the Phase-1 roadmap. They feed either repair executi
 - Does not authorize migration by itself.
 - Does not replace execution plans or install-audits.
 - Does not assert compliance or readiness — all such matters remain [counsel]/auditor.
+
+
+---
+> **SUPERSEDED (2026-07-23):** consolidated into the single **GENERAL-LINE** roadmap → `../roadmap/GENERAL-LINE-ROADMAP-2026-07-23.md` (see its §4 mapping / §5 register). This file is retained for history; the GENERAL-LINE is the source of truth. IL-ledger unaffected.

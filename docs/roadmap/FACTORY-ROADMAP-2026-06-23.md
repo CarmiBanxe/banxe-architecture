@@ -9,6 +9,20 @@
 > runner, traffic-light, skill adoption). For **project/EMI status** see the companion
 > `docs/ROADMAP-STATUS-2026-06-23.md` (PR #716, canonical for *status*) — referenced, not duplicated.
 
+## Status note (2026-07-20, S-FAC-R3)
+
+The `Status: PROPOSED (awaits operator merge)` line above is **left unchanged** — no
+operator ratification of this document has occurred. This note records, without altering
+that header, that two later artefacts already treat this roadmap as a live source:
+`docs/governance/MASTER-ROADMAP.md` §2.1 lists it **AGGREGATED**, and
+`docs/roadmap/TARGET-MODEL-CONFORMANCE-2026-06-25.md` cites its `S-FAC-68` sprint ID as a
+going concern. Until an explicit operator ratification resolves this, read this document
+as **ACTIVE-in-practice / PROPOSED-in-name** — its content is already being relied on
+elsewhere, but it has not received the formal sign-off its own header still awaits. Full
+interpretation rule: `docs/roadmap/FACTORY-CANON-CONSOLIDATED-MASTER-2026-07-20.md`
+§"Document status model". Underlying finding: `docs/audit/FACTORY-CANON-STATUS-AND-SUPERSESSION-AUDIT-2026-07-20.md`
+Gap 4.
+
 ## 0. Audit-derived problem statement (v2, verbatim findings → roadmap drivers)
 
 | # | Audited fact (v2) | Roadmap driver |

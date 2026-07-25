@@ -72,3 +72,7 @@ Current-view статусы в MASTER-ROADMAP местами «future/строи
 
 **Status: PLAN ONLY, DRAFT, NOT FOR MERGE.**
 Ссылки: `BANK-MASTER-ROADMAP-TO-100-PERCENT-LAUNCH-READINESS-DRAFT.md` · `BANK-ROADMAP-AND-SPRINT-EDIT-PLAN-2026-07-19.md` · `FULL-BANK-INSTALLATION-AUDIT-PLAN-2026-07-19.md` · `FLOOR2-BUILD-SPECS-INSTALLATION-AUDIT-PLAN-2026-07-19.md` · `FLOOR2-MIG-STATUS-MATRIX-2026-07-19.md` · `output/audit-FLOOR2-MIG-STATUS-SNAPSHOT-20260719T011601.txt`.
+
+
+---
+> **SUPERSEDED (2026-07-23):** consolidated into the single **GENERAL-LINE** roadmap → `../roadmap/GENERAL-LINE-ROADMAP-2026-07-23.md` (see its §4 mapping / §5 register). This file is retained for history; the GENERAL-LINE is the source of truth. IL-ledger unaffected.

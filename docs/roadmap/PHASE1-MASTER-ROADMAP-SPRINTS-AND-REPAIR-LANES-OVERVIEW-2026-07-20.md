@@ -85,3 +85,7 @@ Hints, not commitments:
 - Does not prove compliance or readiness.
 - Does not commit to specific next-cycle dates or scopes.
 - Does not create or alter legal positions — all such matters remain [counsel].
+
+
+---
+> **SUPERSEDED (2026-07-23):** consolidated into the single **GENERAL-LINE** roadmap → `../roadmap/GENERAL-LINE-ROADMAP-2026-07-23.md` (see its §4 mapping / §5 register). This file is retained for history; the GENERAL-LINE is the source of truth. IL-ledger unaffected.

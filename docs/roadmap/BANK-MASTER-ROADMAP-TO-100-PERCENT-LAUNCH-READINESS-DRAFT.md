@@ -157,3 +157,7 @@
 
 ---
 *DRAFT / NOT FOR MERGE. v2 supersedes v1-структуру этого же файла (delta: см. BANK-ROADMAP-CONSOLIDATION-DELTA-MEMO-2026-07-18.md); rev.3 — аддитивная секция §11.*
+
+
+---
+> **SUPERSEDED (2026-07-23):** consolidated into the single **GENERAL-LINE** roadmap → `../roadmap/GENERAL-LINE-ROADMAP-2026-07-23.md` (see its §4 mapping / §5 register). This file is retained for history; the GENERAL-LINE is the source of truth. IL-ledger unaffected.

@@ -120,3 +120,7 @@ Board / Audit Committee
 5. **Внешние двери (F3, после 2–4):** credentials-wiring Modulr/ClearBank, Sumsub/Sardine/Twilio; Paybis Wave B/C по мере SRC-06/07 + ADR-114 (MLRO). До этого — только sandbox-рельсы.
 6. **Замыкание фазы 8:** 8 операторских решений → conformance 86%→100%; L3-gate движка (CTIO+CEO+FCA-boundary) — как финальный переключатель «здание → действующий банк».
 7. **Параллельно, без блокировки:** фабрика (фаза 6) идёт к adoption-gate; Private Engine остаётся вне регулируемой зоны до отдельного операторского решения о его месте.
+
+
+---
+> **SUPERSEDED (2026-07-23):** consolidated into the single **GENERAL-LINE** roadmap → `../roadmap/GENERAL-LINE-ROADMAP-2026-07-23.md` (see its §4 mapping / §5 register). This file is retained for history; the GENERAL-LINE is the source of truth. IL-ledger unaffected.

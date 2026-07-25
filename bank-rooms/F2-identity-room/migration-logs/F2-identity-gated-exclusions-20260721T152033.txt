@@ -1,0 +1,10 @@
+### F2-IDENTITY GATED EXCLUSIONS R1
+STAMP: 20260721T152033
+
+
+## GATED / NOT-YET-MOVABLE
+EXCLUDED: services/kyc/mock_kyc_workflow.py :: Contains BallerineAdapter, httpx, BALLERINE_URL, live/provider orchestration signals
+EXCLUDED: services/compliance/legacy/ :: PARKED legacy KYC/KYB adapters; verify non-use and separate governance decision first
+EXCLUDED: services/compliance/production/sumsub_http_stub.py :: Compliance/live-provider coupling under I-27 / boundary register references
+EXCLUDED: Any direct provider HTTP/runtime adapters not explicitly copied above :: Out of cabinet-aligned scope for R1
+EXCLUDED: Any MLRO approval execution internals not explicitly copied above :: Remain under carve-out / gated review
