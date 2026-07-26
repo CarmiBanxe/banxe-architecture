@@ -168,6 +168,16 @@ complete before any S-A5/S-A6/S-A7 status uplift lands on main (those artifacts 
 - ENGREF01 branch (this one, 11+ local commits) also awaits main-terminal push/PR — ordering to be
   coordinated with the D2 campaign by main terminal.
 
+### §Unfreeze — emi-stack (executed STEP 1 of unified order, 2026-07-26)
+
+- **Operator-approved unfreeze EXECUTED as record:** banxe-emi-stack FROZEN(2026-07-18) status is lifted
+  effective 2026-07-26 (unified execution order, operator-authorized 02:xx CEST).
+- **Scope limit (binding):** writes permitted ONLY for the back-office wave — safeguarding / daily-recon /
+  CASS reporting / BI agents. All other emi-stack surfaces remain change-frozen until their own gates.
+- Mechanics: no `.FROZEN` flag file exists — the freeze was operational; this ADR section is the canonical
+  unfreeze record. Executor: main terminal. emi-stack verified writable (fetch OK, tree clean,
+  origin/main = 562cc99).
+
 ### Status after ratification
 - Engine artifacts: still **PROPOSED / no activation** — Promotion Gate (CLAUDE.md §11) remains a separate
   operator-gated change-set; ratification of D1/D2 changes SEQUENCING, not activation.
