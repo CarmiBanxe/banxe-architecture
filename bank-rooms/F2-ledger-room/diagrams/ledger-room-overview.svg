@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="580" viewBox="0 0 880 580" font-family="sans-serif" font-size="13">
+  <rect x="0" y="0" width="880" height="580" fill="#ffffff"/>
+  <text x="440" y="30" text-anchor="middle" font-size="18" font-weight="bold">F2 / ledger-room — overview (D-GL + B-EMI)</text>
+  <text x="440" y="50" text-anchor="middle" fill="#666">Docs-only cabinet above runtime · no second ledger · all writes via LedgerPort</text>
+
+  <!-- Basement -->
+  <rect x="30" y="80" width="370" height="210" rx="8" fill="#eef3fb" stroke="#3b6db3"/>
+  <text x="215" y="104" text-anchor="middle" font-weight="bold">BASEMENT — ~/banxe-emi-stack (runtime)</text>
+  <text x="48" y="128">services/ledger/ledger_port.py</text>
+  <text x="48" y="148">services/ledger/midaz_adapter.py</text>
+  <text x="48" y="168">services/ledger/midaz_agent.py</text>
+  <text x="48" y="188">api/routers/ledger.py · api/models/ledger.py</text>
+  <text x="48" y="212" fill="#b00">services/midaz_mcp/  (MCP path — control topic)</text>
+  <text x="48" y="238" fill="#333">identified by shell audit R1;</text>
+  <text x="48" y="256" fill="#333">NOT modified by this hardening step</text>
+
+  <!-- Cabinet -->
+  <rect x="480" y="80" width="370" height="210" rx="8" fill="#eefbef" stroke="#3b9b57"/>
+  <text x="665" y="104" text-anchor="middle" font-weight="bold">CABINET — architecture repo (this room)</text>
+  <text x="498" y="128">D-GL-BUILD-SPEC · B-EMI-BUILD-SPEC</text>
+  <text x="498" y="148">S-A6 execution plan · MIG-status matrix</text>
+  <text x="498" y="168">README · agents-ledger-room.yaml</text>
+  <text x="498" y="188">hitl-summary · diagram</text>
+  <text x="498" y="214" fill="#333">documentation / governance / navigation</text>
+  <text x="498" y="238" fill="#333">reuse-not-rebuild (ADR-102) · ADR-173</text>
+  <text x="498" y="256" fill="#333">append-only I-24 · Decimal I-01</text>
+
+  <line x1="400" y1="185" x2="480" y2="185" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+  <text x="440" y="177" text-anchor="middle" fill="#555">describes</text>
+
+  <!-- D-GL / B-EMI relationship -->
+  <rect x="30" y="320" width="370" height="110" rx="8" fill="#fbf6ee" stroke="#b3843b"/>
+  <text x="215" y="344" text-anchor="middle" font-weight="bold">D-GL (GL core)  +  B-EMI (product catalogue)</text>
+  <text x="48" y="368">B-EMI defines products → accounts MAP TO GL</text>
+  <text x="48" y="388">D-GL posts via LedgerPort (Midaz PRIMARY,</text>
+  <text x="48" y="406">Fineract FALLBACK swap — no concurrent 2nd ledger)</text>
+
+  <!-- Coupling topic -->
+  <rect x="480" y="320" width="370" height="110" rx="8" fill="#fdf2f2" stroke="#c06">
+  </rect>
+  <text x="665" y="344" text-anchor="middle" font-weight="bold">LedgerPort / Midaz / MCP — controlled coupling</text>
+  <text x="498" y="368">all writes MUST route via LedgerPort (append-only)</text>
+  <text x="498" y="388" fill="#b00">direct MCP→ledger mutation NOT assumed as fact</text>
+  <text x="498" y="406" fill="#b00">gated [external reviewer] · register #6 AMBER</text>
+
+  <!-- HITL layer -->
+  <rect x="30" y="450" width="820" height="110" rx="8" fill="#fbeef0" stroke="#b33b57"/>
+  <text x="440" y="474" text-anchor="middle" font-weight="bold">HUMAN SIGN-OFF / HITL (I-27: AI proposes, human decides)</text>
+  <text x="48" y="498">HITL-010 FCA RegData → CFO (SMF2)   ·   HITL-011 Safeguarding shortfall → CFO + MLRO</text>
+  <text x="48" y="518">HITL-016 Large tx &gt;£50k → COO/CFO   ·   HITL-017 New EMI product → CEO   ·   adj &gt;£10k → CFO</text>
+  <text x="48" y="540" fill="#333">layers kept distinct: technical routing ≠ financial authority ≠ regulatory/audit escalation</text>
+
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

@@ -27566,3 +27566,24 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** branch agent/factory/ENGREF01/engine-reference-adoption, 14 commits ae5bd5e..94ef900, pre-commit auditor PASS x14 (semgrep 0 findings); evidence: ROADMAP-STATUS-2026-06-23.md:69 (S-PROD-1 P0 OVERDUE), D-RECON-DESIGN.md:24 (CASS 7.15 gap), drift 63/3 stable.
 - **Deviation:** legacy ~/banxe-dev/emi-banxe-engine.md non-repo -> superseded by docs/engine/BANXE-AI-ENGINE-REFERENCE.md (Duplication Audit in ADR-171); proposed workflow kept OUTSIDE .github/workflows until Promotion Gate.
 - **Refs:** ADR-171 (new), ADR-013, ADR-030, ADR-102, ADR-119 Rule 8, CLAUDE.md §10/§11; W-05 guard intact; config/runtime_gate untouched (§72).
+
+---
+
+### IL-1084 - agent-factory-engref01-d2-cs1-ledger-recon @ 2026-07-26T00:54:26Z
+
+- **il_ts:** 2026-07-26T00:54:26Z
+- **session_id:** agent-factory-engref01-d2-cs1-ledger-recon
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs1-ledger-recon/IL-2026-07-26T00-54-26Z--22da0b.md`
+
+### D2-CS1 ledger-recon perimeter migration (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS1: migrate F2-ledger-room (room docs + runtime/reconciliation-perimeter) + LEDGER/S-A6 install-audit docs from drift line c02f8d8 onto fresh main as serialized PR #1135.
+- **Shagi:** branch from origin/main (post-#1134); checkout c02f8d8 payload paths (33 files); sandbox labels in commit trailers; shard + build_ledger mint (evo1 Redis allocator); INSTRUCTION-LEDGER.md restored to generated version (hand-carried drift copy removed per ADR-057/ADR-059).
+- **Proof:** PR #1135; payload = bank-rooms/F2-ledger-room/** + docs (LEDGER-EMI-INSTALL-AUDIT, FLOOR2-LEDGER-ROOM-HARDENING, GL13-EXEC-ROOM1-RECON); pre-commit auditor PASS; ledger-build --check OK.
+- **Deviation:** first push carried drift-branch INSTRUCTION-LEDGER.md -> 3 required checks FAIL (out-of-sync) -> repaired by regenerating from shards (this shard added; no hand edit of monolith/IL-SEQUENCE.json).
+- **Deviation-2:** CodeQL flagged 4 HIGH py/clear-text-logging-sensitive-data in migrated statement_poller.py (full IBAN in logs) -> fixed in-CS: IBAN masked to last4, HTTP response body dropped from logs, tainted path removed from info-log. Migrated code security-hardened, no functional change.
+- **Refs:** ADR-171 (D2 campaign §Ratification), ADR-119 Rule 8, ADR-057/059, ADR-013/I-28 (LedgerPort untouched); sandbox amendment S0/S3.
