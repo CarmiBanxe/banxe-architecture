@@ -6,7 +6,7 @@
 agent_id: fleet_liveness_agent
 name: "FleetLivenessAgent"
 version: "0.1.0"
-status: PROPOSED
+status: sandbox-active           # STEP4 Promotion Gate 2026-07-26 — SANDBOX only; prod stays PROPOSED/gated
 description: >
   Read-only fleet-monitoring agent: collects heartbeat / last_seen for every agent per
   config/monitoring/agent-liveness.yaml, renders the live/idle/silent/dead/dormant dashboard

@@ -1,0 +1,51 @@
+# config/sandbox/sandbox-activation.yaml
+# STEP 4 SANDBOX ACTIVATION MANIFEST — operator Promotion Gate §11 = SANDBOX, 2026-07-26.
+# ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION.
+# BANXE_ENV=sandbox ; BANXE_DATA_CLASS=TRAINING ; BANXE_PROD_READY=false
+# Prod activation = separate PROD Promotion Gate (ADR-171 §PROD-CUTOVER CONTRACT):
+# purge TRAINING data first; data_class=TRAINING rows BLOCKED from prod.
+
+meta:
+  status: sandbox-active
+  gate: "operator Promotion Gate 2026-07-26 (sandbox amendment S2/S4)"
+  prod_ready: false
+  cross_refs:
+    - docs/adr/ADR-171-ai-engine-adoption.md#step-4--sandbox-activation
+    - config/gates/confidence-thresholds.yaml
+    - docs/engine/BANXE-SECURITY-OWASP.md
+
+components:
+  transfer_agent:
+    enabled: sandbox
+    rails: TRAINING ledger via LedgerPort ONLY (ADR-013/I-28); no real funds
+    controls: propose-only + SCA(mock) + HITL confirm; confidence gates per config/gates
+
+  rich_cards_state_changing:
+    enabled: sandbox
+    note: "W-05 'AI cannot initiate payments' LIFTED in SANDBOX ONLY — prod stays gated (BANXE-SCREEN-INVENTORY delta)"
+    cards: [TransferCard, CardControlCard, CryptoOrderCard]
+    controls: Confirm+SCA(mock) on every state change; typed JSON contract; ConfidenceIndicator mandatory
+
+  messenger_channels:
+    enabled: sandbox
+    scope: test bots only (no real client identities; no PII residency exposure)
+    channels: [slack-test, telegram-test]
+    controls: advisory + sandbox transactions only; SCA-class actions remain app-only even in sandbox
+
+  crypto_channel:
+    enabled: sandbox
+    scope: testnet only (no FCA cryptoasset perimeter engagement)
+    components: [crypto-hub-testnet, quick-trade-testnet, tradingview-webview]
+    controls: CryptoOrderCard with confidence indicator; testnet assets only
+
+  monitoring:
+    engine_health_agent: sandbox-active
+    fleet_liveness_agent: sandbox-active
+    agent_liveness: sandbox-active
+
+barriers_surviving_sandbox:
+  - "SQL-ALTER: SANDBOX ClickHouse only, operator-run manual — NEVER live/prod cluster"
+  - "config/runtime_gate/ = foreign track (§72) — cross-ref only"
+  - "real ledger only via LedgerPort (ADR-013); no direct CBS HTTP (I-28)"
+  - "AutoGen excluded (CC-BY-NC) even in sandbox; AG2 verify separately (OP-N1)"
+  - "MEMORY.md, PR #1133, foreign stashes untouched"

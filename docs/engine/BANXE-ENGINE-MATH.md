@@ -1,6 +1,6 @@
 # BANXE-ENGINE-MATH.md — Canonical Math & Rules for the AI Engine
 
-> **STATUS: PROPOSED / REFERENCE — no runtime activation.**
+> **STATUS: ACTIVE in SANDBOX (TRAINING data) per operator Promotion Gate 2026-07-26 — prod activation remains gated.**
 > Source: consolidated engine reference rebuilt v2 (blocks C, C-bench), analytics #1/#4, session 2026-07-26 (ENGREF01).
 > Formulas are reproduced VERBATIM from the analytics ground truth. Any change requires a new ADR.
 > Companion docs: `BANXE-AI-ENGINE-REFERENCE.md` (architecture), `BANXE-SECURITY-OWASP.md` (security map),

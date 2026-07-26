@@ -27729,3 +27729,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK; post-rebase verification: no stray ADR-171 refs, merged ADR-171 present.
 - **Deviation:** CLAUDE.md is a canon file — flagged for operator review in PR (adds drift canon sections: best-decision rule, feature-implementation canon, artifact canon, shell-command canon, apple-design default).
 - **Refs:** ADR-171 §Ratification (D2 form-b complete), ADR-119 Rule 8 (incl. named-ordinal clause), ADR-057/059, sandbox amendment S0/S3; campaign: IL-1084..IL-1091, PRs #1135-#1142.
+
+---
+
+### IL-1092 - agent-factory-engref01-step4-sandbox-activation @ 2026-07-26T02:16:12Z
+
+- **il_ts:** 2026-07-26T02:16:12Z
+- **session_id:** agent-factory-engref01-step4-sandbox-activation
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step4-sandbox-activation/IL-2026-07-26T02-16-12Z--ad93e1.md`
+
+### STEP 4 — sandbox activation of engine-reference set (Promotion Gate §11 = SANDBOX)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING, PROD_READY=false)
+
+- **Instrukciya:** operator-authorized sandbox activation after D2 close (IL-1084..1091): flip engine-reference set PROPOSED->ACTIVE(sandbox); enable sandbox-only components; record PROD-CUTOVER CONTRACT.
+- **Shagi:** confidence-thresholds ACTIVE/active_environment=sandbox; sandbox CI workflow in .github/workflows (sandbox-branch triggers only; proposed source superseded); ADR-171 +STEP4 +PROD-CUTOVER; engine docs x3 + roadmap sandbox-active; passports engine-health/fleet-liveness/agent-liveness sandbox-active; manifest config/sandbox/sandbox-activation.yaml (TransferAgent, W-05 lifted SANDBOX ONLY, messenger test-bots, crypto testnet); W-05 sandbox-lift note in SCREEN-INVENTORY.
+- **Proof:** commit ef3deb0 (13 files); pre-commit auditor PASS; ledger-build --check OK; PR #1143.
+- **Deviation:** SQL-ALTER NOT executed by sub-A — operator runs manually on SANDBOX ClickHouse only (never live/prod).
+- **Refs:** ADR-171 (§STEP4, §PROD-CUTOVER CONTRACT), sandbox amendment S0/S2/S4/S5/S6, ADR-119 Rule 8, ADR-013/I-28, §72 runtime_gate untouched.

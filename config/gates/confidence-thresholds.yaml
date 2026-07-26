@@ -1,5 +1,6 @@
 # config/gates/confidence-thresholds.yaml
-# STATUS: PROPOSED — NO ACTIVATION. ENGREF01, 2026-07-26.
+# STATUS: ACTIVE (SANDBOX). ACTIVE in SANDBOX (TRAINING data) per operator Promotion Gate 2026-07-26 — prod activation remains gated. ENGREF01/STEP4.
+# BANXE_ENV=sandbox ; BANXE_DATA_CLASS=TRAINING ; BANXE_PROD_READY=false
 # Source: engine reference rebuilt v2 (block D) + CI/CD job graph (block G).
 # Nothing reads this file yet; wiring it into any pipeline/agent requires ADR-171 acceptance
 # plus the Promotion Gate (CLAUDE.md §11). Configuration-over-Hardcoding (§10): thresholds
@@ -11,8 +12,9 @@
 # This file covers DEPLOYMENT gates (CI/CD), not runtime decision gates.
 
 meta:
-  status: PROPOSED
-  activation: none
+  status: ACTIVE
+  active_environment: sandbox   # prod stays gated; thresholds below are definitions for both envs
+  activation: sandbox-only
   owner_decision_required: true
   source: "engine-reference rebuilt v2, blocks D+G (session analytics, OP-A: no disk sources)"
   cross_refs:
