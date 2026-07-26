@@ -1,0 +1,8 @@
+room: F4/security-room
+sprint_refs: [sprint-2, sprint-4]
+key_agents:
+  - IAMAgent
+  - IncidentResponseAgent
+  - SecurityAgent
+register_refs: ["#7", "#8", "proposed #9"]
+notes: "H-015 incident path; High-Risk Map/Timeline holder for AI-governance."
