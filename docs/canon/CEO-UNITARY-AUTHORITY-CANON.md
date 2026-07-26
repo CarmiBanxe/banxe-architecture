@@ -1,6 +1,12 @@
+---
+status: RATIFIED
+ratified-by: CEO Moriel Carmi (SMF1)
+ratified-date: 2026-07-27
+ratification-act: HITL-L4 operator act (STEP12, IL shard agent-factory-engref01-step12-ratify-ceo-unitary)
+---
 # CEO-UNITARY-AUTHORITY-CANON — конституционный принцип единоначалия CEO
 
-> **STATUS: NORMATIVE, PROPOSED — ратификация оператором обязательна; ничего не активировано.**
+> **STATUS: NORMATIVE, RATIFIED — 2026-07-27 (CEO: Moriel Carmi, SMF1).** Оговорки C1/C2 приняты и остаются частью ратифицированной формулировки.
 > ⚠ SANDBOX / TRAINING context (BANXE_ENV=sandbox, data_class=TRAINING, PROD_READY=false).
 > STEP10, ENGREF01, 2026-07-26. Закрывает пробел аудита: до этого документа ни один артефакт прямо не
 > провозглашал единоначалие (grep "single accountable executive" = 0 hits).
@@ -56,4 +62,4 @@
 независимых линий действует org-chart-v2 §4 + I-12.
 
 ---
-*STEP10 | ENGREF01 | NORMATIVE-PROPOSED | Fable5 verdict 0.92 (C1/C2) | ратификация оператором обязательна.*
+*STEP10/STEP12 | ENGREF01 | NORMATIVE-RATIFIED | operator-ratified 2026-07-27 CEO Moriel Carmi | Fable5 0.92 (C1/C2 accepted).*

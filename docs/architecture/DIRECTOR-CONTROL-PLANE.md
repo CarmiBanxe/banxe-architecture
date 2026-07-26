@@ -10,7 +10,7 @@
 
 **Право РЕШАТЬ — у CEO-человека.** **CEO (SMF1, Moriel Carmi) = единоличный распорядитель**: принимает
 ВСЕ управленческие решения банка и несёт ответственность перед Board/собственником
-(`../canon/CEO-UNITARY-AUTHORITY-CANON.md`, NORMATIVE-PROPOSED; Fable5 verdict 0.92). Оговорки Fable5:
+(`../canon/CEO-UNITARY-AUTHORITY-CANON.md`, NORMATIVE-**RATIFIED 2026-07-27**; Fable5 verdict 0.92). Оговорки Fable5:
 **C1** — делегирование через SMF-мандаты НЕ отменяет персональную ответственность каждого SMF-держателя
 перед FCA (duty of responsibility); **C2** — Board reserved matters (назначение/снятие CEO, стратегия,
 risk appetite) остаются за Board. Исключения из вертикали CEO — только независимые линии SMF17 (MLRO) и
