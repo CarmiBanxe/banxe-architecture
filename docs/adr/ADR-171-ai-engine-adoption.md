@@ -141,6 +141,39 @@ complete before any S-A5/S-A6/S-A7 status uplift lands on main (those artifacts 
 - D2: direction fixed (main authoritative, rebase+re-mint+serialize), shape **escalated to operator (HITL)**, confidence 0.80.
 - Prerequisites: emi-stack unfreeze (for D1 wave execution); no unfreeze needed for D2; drift stable at 63/3.
 
+## RATIFICATION UPDATE — operator-approved 2026-07-26 (factory task, post-eba1d79)
+
+### D1 — **RATIFIED: back-office-first (Option B)**
+- Operator approval recorded 2026-07-26 02:xx CEST. Rationale as verdicted: S-PROD-1 Safeguarding P0
+  OVERDUE (`docs/ROADMAP-STATUS-2026-06-23.md:69`); CASS 7.15 gap (`docs/D-RECON-DESIGN.md:24`);
+  D-gl ≈ 5%; dependency graph (TransferAgent execute-path requires ledger integrity + live daily recon).
+- Wave order is now binding for spec prep: E0 Foundation → **back-office wave (safeguarding / recon / BI
+  agents)** → THEN E1 TransferAgent. **TransferAgent (customer-facing) is BLOCKED until ledger integrity
+  + live daily reconciliation are green.** Reflected in `roadmap/BANXE-E0-E6.md`.
+- **emi-stack UNFREEZE: operator-APPROVED** as D1-execution prerequisite (runtime safeguarding/recon
+  agents live in banxe-emi-stack, frozen 2026-07-18). Unfreeze **execution = MAIN TERMINAL** (sub-A
+  cannot unfreeze). Post-unfreeze scope: back-office agents ONLY; everything else in emi-stack stays
+  change-frozen until its own gate.
+
+### D2 — HITL resolved by operator: **form (b) — change-set split**
+- Confidence gap (0.80) closed by operator choice, not auto-decision. Campaign (MAIN TERMINAL, serialized):
+  1. Rebase `agent/factory/bank-operating-model/20260718` onto current origin/main (07870b6+); absorb
+     behind-3 first (#1131 / #1126 / #1132).
+  2. **Split the 910-file GENERAL-LINE commit (c02f8d8) into reviewable change-sets by bounded
+     context/layer** (ledger-recon, safeguarding, BI, UI, engine-ref, …) — one change-set = one PR.
+  3. Serialize: one PR open at a time, atomic lifecycle §74, pre-commit auditor PASS per PR.
+  4. Ledger re-mint per Rule 8 / ADR-119 on the rebased base — IL numbers minted at merge via
+     build_ledger, never before.
+  5. **D2 completes BEFORE any S-A5 / S-A6 / S-A7 status uplift lands on main.**
+- ENGREF01 branch (this one, 11+ local commits) also awaits main-terminal push/PR — ordering to be
+  coordinated with the D2 campaign by main terminal.
+
+### Status after ratification
+- Engine artifacts: still **PROPOSED / no activation** — Promotion Gate (CLAUDE.md §11) remains a separate
+  operator-gated change-set; ratification of D1/D2 changes SEQUENCING, not activation.
+- All barriers unchanged (LedgerPort-only, W-05 guard, runtime_gate foreign track, MEMORY.md, OP-N1,
+  legacy banxe-dev doc superseded/double-source flag).
+
 ## Anchors
 
 ADR-013, ADR-030, ADR-102, ADR-103, ADR-060, ADR-119/120/121, ADR-167 (assistant-ui intent-first),
