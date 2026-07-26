@@ -27627,3 +27627,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
 - **Deviation:** none at shard time; campaign canon: non-required checks (CodeQL/CodeRabbit) not blocking, not repaired.
 - **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, I-27 carve-out (identity), Ruflo/ARL mandatory-middleware canon (payments/kyc — runtime wiring deferred to sandbox activation S4), sandbox amendment S0/S3.
+
+---
+
+### IL-1087 - agent-factory-engref01-d2-cs4-floor3 @ 2026-07-26T01:29:18Z
+
+- **il_ts:** 2026-07-26T01:29:18Z
+- **session_id:** agent-factory-engref01-d2-cs4-floor3
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs4-floor3/IL-2026-07-26T01-29-18Z--c7062c.md`
+
+### D2-CS4 floor-3 rooms migration: aml/regrep/finbi/treasury/risk (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS4 (4/8): migrate F3-aml-room (87) + F3-regrep-room (23) + F3-finbi-room (22) + F3-treasury-room (13) + F3-risk-room (12) from drift line c02f8d8 onto fresh main (post-CS3 b999b4c) as serialized PR.
+- **Shagi:** payload commit d1a8533 branched post-CS2; rebased onto b999b4c; shard+mint AFTER rebase per Rule 8; sandbox labels in commit trailers.
+- **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
+- **Deviation:** none at shard time; campaign canon: CodeQL/CodeRabbit non-blocking, not repaired.
+- **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, HITL thresholds (aml L2 agents — runtime wiring deferred to S4 sandbox activation), sandbox amendment S0/S3.
