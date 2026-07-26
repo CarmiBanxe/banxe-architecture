@@ -2,7 +2,7 @@
 
 > **STATUS: PROPOSED — каждый спринт требует отдельной операторской авторизации; ничего не активировано.**
 > ⚠ SANDBOX / TRAINING context (BANXE_ENV=sandbox, data_class=TRAINING, PROD_READY=false).
-> STEP9 v2, ENGREF01, 2026-07-26. СВОДИТ существующий канон (ссылки, не дубли) + закрывает 6 пробелов
+> STEP9 v3, ENGREF01, 2026-07-26. СВОДИТ существующий канон (ссылки, не дубли) + закрывает 6 пробелов
 > аналитик Intent-First / BDSL / мировой-опыт. Companion: `../architecture/DIRECTOR-CONTROL-PLANE.md`.
 > Барьеры на всех спринтах: LedgerPort-only (ADR-013/I-28), `config/runtime_gate/` §72, MEMORY.md,
 > `decisions/` заморожены (73+ ссылки), ADR-102 Duplication Audit перед любым переносом.
@@ -56,10 +56,13 @@ Fable5 не пишет код и не активирует. Хуки — в сп
 | Тема | Содержание | Canon-запрос |
 |---|---|---|
 | FCA agentic-AI payments | PSR 2017; SCA для machine-initiated платежей; consent-at-delegation | F5-REG-1 |
-| SM&CR personal liability | связка SMF-holder ↔ Decision Lineage (каждое агентное решение прослеживается к SMF-человеку) | F5-REG-2 |
+| SM&CR personal liability | связка SMF-holder ↔ Decision Lineage (каждое агентное решение прослеживается к SMF-человеку; 2026-02-24) | F5-REG-2 |
 | Safeguarding PS25/12 | дедлайн 2026-05-07 (S-PROD-1 OVERDUE) — приоритет back-office волны (D1) | F5-REG-3 |
 | Consumer Duty reversibility | `revocation_method` обязателен в ClientIntentRecord | F5-REG-4 |
 | DORA / PSD3 | continuous reconciliation, операционная устойчивость | F5-REG-5 |
+| EU AI Act | Art.9 (risk mgmt) / Art.14 (human oversight) / Art.15 (accuracy) / Art.17 (QMS) + Annex III/IV; **Art.49 — регистрация в EU DB к Aug 2026** | F5-REG-6 |
+| GDPR Art.22 | право не подпадать под чисто автоматизированное решение — HITL-контракт для клиентских решений | F5-REG-7 |
+| BaFin HITL | немецкий надзорный паттерн human-in-the-loop (EU-экспансия) | F5-REG-8 |
 
 ## §4. СПРИНТЫ (все PROPOSED, по-спринтно operator-gated)
 
@@ -115,7 +118,8 @@ parsed_params, consent_timestamp, consent_method, scope_limits, revocation_metho
 linked_agent_id, linked_budget_policy_id) — базис: `docs/adr/ADR-172-client-intent-record-schema.md`,
 `tools/sandbox/intent_slice/` (уже на main, D2-CS6).
 Поток: **Intent Capture → Business Process Repository lookup → Agent Budget check → Execution → Decision Lineage.**
-SCA consent-at-delegation (PSR 2017). **Director: intent-маршрутизация через L6.**
+SCA consent-at-delegation (PSR 2017). **Dual-track UX** (AI-трек + классический параллельно — паттерн
+Alipay/KakaoBank, analytics #3): Classic Layer равноправен, не деградация. **Director: intent-маршрутизация через L6.**
 **Fable5 F5-REG-1: canon FCA agentic-payments.** Риск: W-05 prod-guard (снят только в sandbox). Зависимости: S13-00, S-COST.
 DoD: intent-поток работает в sandbox на TRAINING; каждый intent в lineage.
 
@@ -129,13 +133,16 @@ DoD: халт-контур в sandbox; 0 путей исполнения мим�
 
 ### S-BDSL — Best-Decision Self-Learning Loop (спецификация аналитики BDSL — реализовать)
 - DecisionRecord + OutcomeRecord schema (append-only, hash-chain `prev_record_hash`, WORM/Kafka);
-- MAUT-утилиты (U=Σ wj·uj), decision_space, Pareto frontier, stopping_rule (satisficing vs full-search);
-- MetricsEngine: Regret · Brier ≤0.15 · ECE ≤0.08 · Pareto Efficiency ≥0.95 · Escalation Recall ≥0.98 ·
-  Minimax suboptimal ≤5%;
+- MAUT-утилиты (U=Σ wj·uj), decision_space, Pareto frontier, stopping_rule (satisficing vs full-search;
+  secretary-правило 37%);
+- MetricsEngine: **Regret R̄ ≤0.05** · Brier ≤0.15 · ECE ≤0.08 · Pareto Efficiency ≥0.95 ·
+  Escalation Recall ≥0.98 · Minimax suboptimal ≤5%; counterfactual-оценка: **IPW / causal forest**;
 - **Best-Decision Test Gate (BDT):** authoring blocking + runtime 24h, окно 90d;
 - Confidence tiers: AUTO ≥0.90 / REVIEW 0.70–0.90 / BLOCK <0.70; **compliance/payment AUTO ≥0.95**;
-- **NEVER-AUTONOMOUS LIST** (payments/compliance всегда human; RLHF self-mod human-gated);
+- **NEVER-AUTONOMOUS LIST**: payments/compliance всегда human; RLHF self-mod human-gated;
+  **no satisficing в payment/compliance** (только full-search); **no auto-unblock**;
 - RLHF Reward Model (human-approved only); bias probes (prospect/anchoring/omission, contrastive);
+- **Drift-контроль: PSI > 0.25 → эскалация**;
 - ImprovementProposal → Human Review Queue (SLA: CRITICAL 4h / MAJOR 24h);
 - EU AI Act Art.9/14/15/17 + GDPR Art.22 маппинг.
 **Director: потребитель метрик, узел Review Queue.** **Fable5 F5-BDSL-1: canon Never-Autonomous + tiers.**
@@ -150,8 +157,13 @@ DoD: халт-контур в sandbox; 0 путей исполнения мим�
 ### S-LINEAGE — расширение Decision Lineage
 Цель: апгрейд `banxe_audit.hitl_decisions` до **AgentDecisionRecord**: + triggering_event,
 intent_id (→ClientIntentRecord), policies_evaluated (→BPR), reasoning_summary, confidence_score,
-action_taken, action_params, halt_triggered, halt_reason, outcome; согласовать со схемой Intent-First.
+action_taken, action_params, **human_reviewed_by, human_override**, halt_triggered, halt_reason, outcome;
+согласовать со STEP5-схемой (уже применённой в sandbox: 14+8 колонок).
 Метод: **DELTA ALTER** (прецедент engine-ref +8; вторая таблица запрещена, ADR-102); sandbox → prod по G1.
+⚠ Примечание к заданию: предложенный `ORDER BY (agent_id, created_at)` **конфликтует** с канонической
+сортировкой STEP5 `ORDER BY (decision_id, ts)` — sorting key в ClickHouse не меняется ALTER'ом;
+разрешение (оставить каноническую / проекция / materialized view по agent_id) = решение внутри спринта
+с operator-ревью, НЕ вторая таблица. TTL 7Y сохраняется.
 **Director: lineage = его аудиторская память.** Fable5 F5-REG-2 (SM&CR-связка). Зависимость: S-INTENT (intent_id).
 DoD: расширенная схема в sandbox; каждый intent-путь пишет полный record.
 
@@ -160,10 +172,12 @@ R1 canon-консолидация (operator-review 20+37 diff-строк) + R2 �
 кандидатов + STEP8-аудит для каждого CORE/PLATFORM репо + cross-repo doc-index + сверка controlled-copy canon
 (banxe-repo-template). Зависимости: нет. DoD: R1–R3 закрыты; controlled-copies синхронны/ратифицированы.
 
-### S7 — Валидация *(перенесено из v1-каркаса)*
-Каждый агент = {место + инструкция + код + reports_to→Director}; 0 бесхозных коробок; 0 сотрудников без
-кабинета; cross-repo canon синхронен; **Director control plane видит 100% штата**; intent/lineage/BDT-контуры
-зелёные в sandbox. Выход: VALIDATION-REPORT.md → go/no-go к PROD-gate G0–G6. Fable5: финальный advisory (confidence-scored).
+### S7 — Валидация
+Каждый агент = {место + инструкция (reports_to) + код + SMF/level}; 0 бесхозных коробок; 0 сотрудников без
+кабинета; **Director control plane видит 100% штата**; **3LoD целостны**; cross-repo canon синхронен;
+**GAPS master-doc (payment rails 0% / Treasury 0% / CBS ~5%) трекаются** явным списком; **BDSL-метрики
+зелёные** (R̄≤0.05, Brier≤0.15, ECE≤0.08, Recall≥0.98). Выход: VALIDATION-REPORT.md → go/no-go к PROD-gate
+G0–G6. Fable5: финальный advisory (confidence-scored).
 
 ### Фаза Z — ARCHIVE (9 репо)
 Только опись + заморозка; включение любого архивного репо = отдельное операторское решение.
@@ -176,9 +190,9 @@ advisory (S7) = 10 хуков** · Director-роль явно прописана
 Рекомендуемый порядок волн: S0→S1→S2 (фундамент) ∥ S-COST+S6 (независимые, ранние) → S3→S4 →
 S13-00→S-INTENT→S-LINEAGE→S-BDSL (intent-контур) → S5 → S7. Всё PROPOSED; авторизация по-спринтно.
 
-> **OPEN POINT (обрыв задания):** формулировка STEP9-v2 оборвалась на S-LINEAGE («согласовать со схемой
-> Intent-First») — хвост (возможные доп. спринты/инструкции после S-LINEAGE и спецификация второго документа)
-> не получен. S6/S7/Z сохранены из v1-каркаса как best-decision; при доставке хвоста — дополнить отдельным коммитом.
+> **OPEN POINT v2 — ЗАКРЫТ:** хвост доставлен в STEP9-v3 (S6/S7/Z подтверждены — совпали с v1-сохранением;
+> добавлен Документ 2 `../architecture/BANK-NEXT-GEN-CONCEPT.md`). Остаточный обрыв v3 («Обновить
+> docs/DOCUMENTATION-MASTER-INDE…») тривиален — индекс обновлён по установленному паттерну.
 
 ---
 *STEP9 v2 | ENGREF01 | PROPOSED | sandbox-labeled | сведение канона + 6 пробелов аналитик; Director-centric + Fable5-canon-on-demand.*
