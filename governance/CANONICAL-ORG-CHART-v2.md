@@ -29,6 +29,10 @@ base. This replaces the scattered/implicit org views with one authoritative char
    plus the mandatory functions that MUST exist in the target model (flagged, not invented).
 7. **Minimal breakage** — supersedes by annotation/pointer; existing docs are not rewritten destructively.
 
+5. **Unitary executive authority (pointer)** — единоначалие CEO (SMF1) как конституционный принцип
+   провозглашено в `docs/canon/CEO-UNITARY-AUTHORITY-CANON.md` (NORMATIVE, PROPOSED; STEP10): sole
+   accountable executive, исключения только SMF17/SMF5-линии (§4 ниже), комитеты готовят — решает CEO.
+
 ## 3. The 8 Core Departments
 
 | # | Department | SM&CR owner | Line of Defence |
