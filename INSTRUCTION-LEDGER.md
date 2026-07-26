@@ -27827,3 +27827,22 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** read-only canon diff on origin/main: canon/CANON.md vs .canon/CANON.md DIVERGED (20 lines); modules/CORE.md DIVERGED (37); DECISION/DEV/DOC match; LEGAL.md only in canon/. decisions/ refs = 73 files (freeze paths). Zero .md moved/renamed/deleted; pre-commit PASS; ledger-build --check OK.
 - **Deviation:** task header referenced stale numbers (IL-1095/PR#1146 — consumed by STEP7); actual per Rule 8: this shard mints max+1 on rebased base (post-#1146).
 - **Refs:** ADR-119 Rule 8, ADR-057/059, DOC canon module, sandbox amendment S0; perimeter: MEMORY.md/.claude/.canon/INSTRUCTION-LEDGER.md/runtime_gate §72/#1133/foreign stashes untouched.
+
+---
+
+### IL-1097 - agent-factory-engref01-step9-org-roadmap @ 2026-07-26T03:24:51Z
+
+- **il_ts:** 2026-07-26T03:24:51Z
+- **session_id:** agent-factory-engref01-step9-org-roadmap
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step9-org-roadmap/IL-2026-07-26T03-24-51Z--5d08f3.md`
+
+### STEP9 — bank organization roadmap (35 repos) + Director control plane spec (PROPOSED)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** create docs/roadmap/BANK-ORGANIZATION-ROADMAP.md (director-centric principle: engine = bank director/central control plane; Fable5 banking-canon on request via factory, <0.90 -> HITL; 35 repos in 5 categories + archive; sprints S0-S7 + phase Z, each with goal/inputs/outputs/Director-role/Fable5-hooks/risks/deps/DoD) + docs/architecture/DIRECTOR-CONTROL-PLANE.md (sees/controls/registry-interface/HITL-escalation/Fable5-link/boundaries); link both from DOCUMENTATION-MASTER-INDEX.md §6. Nothing moved/activated.
+- **Proof:** commit c4dd978 (2 new docs + index link); pre-commit PASS; ledger-build --check OK. Director role explicit in all 8 sprints; Fable5 canon-requests embedded in S1/S3/S4 (+S7 advisory).
+- **Deviation:** none.
+- **Refs:** ADR-171, BANXE-AI-ENGINE-REFERENCE §2 (single registry), ADR-030/§72 (cross-ref only), STEP8 audit R1-R3 (folded into S6), ADR-102/ADR-119; all sprints PROPOSED, per-sprint operator authorization.
