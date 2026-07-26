@@ -132,3 +132,13 @@ onboarding" gap so the ADR-060 branch-name gate is never silently inactive.
 - Это правило распространяется на все сессии Claude Code в данном репозитории до отдельной отмены через CLAUDE.md / MEMORY.md.
 
 ---
+
+---
+# GitNexus code-contour directive (operator, permanent — STEP14)
+
+- GitNexus = обязательный код-контур fleet-репозиториев. При ЛЮБОЙ правке кода: **enrich → impact → act**
+  (граф-контекст до правки; blast-radius/risk до коммита; высокий risk без явного подтверждения оператора = fail-closed).
+- Каждый промт фабрики обязан напоминать этот контур. Игнор графа при правке связанного кода = нарушение канона.
+- Scope: только код-связи (calls/imports/inheritance/flows); орг-связи — отдельным решением (ждёт Fable5).
+- Полный текст + состояние применимости (MCP pre-condition, PROD-gate-спринт внедрения):
+  `docs/canon/GITNEXUS-CODE-CONTOUR-DIRECTIVE.md`.
