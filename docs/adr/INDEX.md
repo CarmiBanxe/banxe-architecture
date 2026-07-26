@@ -1,5 +1,7 @@
 # ADR Index — banxe-architecture (unified)
 
+> Навигация по ВСЕЙ документации (3 ADR-серии, canon-корни, docs/-карта): [docs/DOCUMENTATION-MASTER-INDEX.md](../DOCUMENTATION-MASTER-INDEX.md) — STEP8.
+
 Generated: 2026-05-12 (regenerated 2026-05-14 per Sprint D3.2d.3-FU)
 Generator: Sprint D3.2d.3 (rewrite from D2 single-catalogue scope to unified scope);
 Sprint D3.2d.3-FU (ADR Status backfill — 20 UNKNOWN → Accepted)
