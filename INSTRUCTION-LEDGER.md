@@ -27866,3 +27866,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** commits a16e1b5/be4ba00 (rebased) + reconciliation commit; pre-commit PASS; ledger-build --check OK; D-2/I-27/I-28/BOUNDARY§7v2 explicitly preserved (canon point 6: fail-closed on conflict).
 - **Deviation:** task header referenced stale numbers (main cc40eb3/IL-1096); actual base 2c0b947/IL-1097 -> this shard mints IL-1098 (Rule 8); mint held until #1148 merge (collision guard) — executed now.
 - **Refs:** I-12/I-27/I-28, ADR-164 D-2, BOUNDARY §7 v2, org-chart-v2 §2/§4/§8, ORG-STRUCTURE §2.1, JOB-DESCRIPTIONS §1.1, sandbox amendment S0.
+
+---
+
+### IL-1099 - agent-factory-engref01-step11-adr102-dedup @ 2026-07-26T22:18:55Z
+
+- **il_ts:** 2026-07-26T22:18:55Z
+- **session_id:** agent-factory-engref01-step11-adr102-dedup
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step11-adr102-dedup/IL-2026-07-26T22-18-55Z--0ac075.md`
+
+### STEP11 — ADR-102 dedup: curriculum+BDSL pointer-first, methods delta to new SSOT extension
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** eliminate dangling-duplicate risk: BEST-DECISION-CURRICULUM + BANKSY-TRAINING-BDSL -> pointer-first per ADR-102; real methods delta into SSOT.
+- **Deviation (fail-closed on I-24):** task said add delta to v1 "or v2"; BOTH are write-sealed (v2 sha256-body verbatim "do NOT edit"; v1 canonical-at-intake) -> delta lands in NEW dated append-only SSOT file docs/sources/best-decision-concept-2026-07-27-methods-extension.md; v2 §11 method-map delta carried as §M-MAP there. Audit refinement: Arrow already v1 §13, Monte-Carlo already v2 — NOT re-added (no duplication).
+- **Shagi:** extension E1-E5 (Pontryagin/LQR, Fuzzy, A*, Trees/RF, fairness triad+impossibility) + §M-MAP; curriculum rewritten as training TRAJECTORY with task->method pointer table (no formulas); BDSL doc reduced to unique 8-loop operational cycle + rollout (schemas/thresholds -> canon BEST-DECISION-SELF-LEARNING-LOOP + ADR-046 + emi-stack decision_records); master index lines re-bound to SSOT.
+- **Proof:** grep-verified missing set before add; both engine docs contain ADR-102 pointer-first header + refs ADR-162/164/BOUNDARY§7v2/SOUL-Decision-Method; D-2/I-27/I-28 + CEO-UNITARY consistency stated in both; pre-commit PASS; ledger-build --check OK.
+- **Refs:** ADR-102, I-24 (append-only SSOT), ADR-046, ADR-162/164, canon BEST-DECISION-*, CEO-UNITARY-AUTHORITY-CANON, sandbox amendment S0.

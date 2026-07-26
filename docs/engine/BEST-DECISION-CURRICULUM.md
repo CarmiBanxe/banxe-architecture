@@ -1,76 +1,60 @@
-# BEST-DECISION-CURRICULUM — обучающая программа «лучшее решение» для директора и ВСЕХ агентов
+# BEST-DECISION-CURRICULUM — обучающая траектория «лучшее решение» для директора и ВСЕХ агентов
 
-> **STATUS: PROPOSED — обязательна к обучению каждому агенту флота (не только директору); ничего не активировано.**
-> ⚠ SANDBOX / TRAINING context (BANXE_ENV=sandbox, data_class=TRAINING, PROD_READY=false).
-> STEP9 S-TRAIN+, ENGREF01, 2026-07-26. Источник: Концепция-Лучшего-Решения (полное извлечение, session analytics).
-> Связки: `BANKSY-TRAINING-BDSL.md` (цикл дообучения директора), roadmap S-BDSL/S-TRAIN,
-> `../canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` (fail-closed-over-best-decide — арбитр).
+> **Pointer-first per ADR-102: этот файл НЕ определяет методы — все определения живут в SSOT.**
+> SSOT: `../sources/best-decision-concept-2026-07-06.md` (v1, §2–§16) ·
+> `../sources/best-decision-concept-2026-07-06-v2.md` (verbatim, sha256-sealed) ·
+> `../sources/best-decision-concept-2026-07-27-methods-extension.md` (E1–E5 + §M-MAP).
+> Операционализация: ADR-162 (best-decision-principle) · ADR-164 (agent-method, D-2) ·
+> `../canon/BEST-DECISION-BOUNDARY.md` (§7 v2) · SOUL `## Decision Method` (per-agent).
+> **STATUS: PROPOSED — обязательна каждому агенту флота.** ⚠ SANDBOX/TRAINING (BANXE_ENV=sandbox).
+> STEP9 S-TRAIN+ / STEP11 dedup, ENGREF01.
 
-## A. Формальное ядро (обязательно каждому агенту)
+## Уникальное содержание этого файла: ТРАЕКТОРИЯ обучения (что агент обязан освоить и в каком порядке)
 
-```
-d_opt = argmax_{d∈D} U_D(d) ;   U_D(d) = U_O(f(d))
-```
+### Ступень 1 — Формальное ядро
+Освоить: определение d_opt/U_D, три предпосылки применимости, правило «нет предпосылок → HITL».
+→ SSOT v1 §1–§2; BOUNDARY §7 v2 (best-decision = метод исполнения решения оператора).
 
-Три предпосылки применимости: (1) исход зависит от d; (2) полезность измерима; (3) решения ранжируемы.
-**Нет предпосылок → эскалация к HITL** — нельзя «решать» вне определения задачи решения.
+### Ступень 2 — Классификация задача→метод (указатель, БЕЗ определений)
 
-## B. Каталог методов (агент ОБЯЗАН уметь классифицировать задачу → метод)
+| Класс задачи | Метод | Определение в SSOT |
+|---|---|---|
+| Вероятностная неопределённость | VNM Expected Utility | v1 §2 |
+| Многокритериальная | MAUT / AHP / TOPSIS | v1 §4 |
+| Последовательная во времени | MDP / Bellman / RL | v1 §3 |
+| Непрерывное управление | Pontryagin / LQR | extension E1 |
+| Мульти-агентная | Game Theory / Nash | v2 (games-раздел) |
+| Поток кандидатов | Secretary 37% | v1 §8 |
+| Конфликтующие цели | Pareto / NSGA-II | v1 §5 |
+| Нечёткие данные | Fuzzy Logic | extension E2 (+v1 §4) |
+| Обучение на опыте | RL / RLHF | v2 (RLHF-раздел) |
+| Интерпретируемость | Trees / Random Forest | extension E4 |
+| Поиск пути | A* | extension E3 |
+| Стохастика/робастность | Monte-Carlo / robust | v2 (стохастич. программирование); v1 §10 |
 
-| Класс задачи | Метод |
-|---|---|
-| Вероятностная неопределённость | VNM Expected Utility |
-| Многокритериальная | MAUT (U=Σ wj·uj) / AHP (веса через попарные сравнения + consistency check) / TOPSIS |
-| Последовательная во времени | MDP / Bellman / Q(s,a) / RL |
-| Непрерывное управление | Pontryagin Maximum Principle / LQR |
-| Мульти-агентная (взаимовлияние) | Game Theory / Nash Equilibrium |
-| Поток кандидатов | Secretary 37% (1/e) |
-| Конфликтующие цели | Pareto / NSGA-II |
-| Нечёткие данные | Fuzzy Logic |
-| Обучение на опыте | RL (Q-learning / Policy Gradient / Deep RL) / RLHF |
-| Интерпретируемость | Decision Trees / Random Forest |
-| Поиск пути | A* (admissible heuristic) |
+Классификация фиксируется в DecisionRecord (схема — canon BEST-DECISION-SELF-LEARNING-LOOP).
 
-Классификация фиксируется в DecisionRecord (`stopping_rule`/метод — поля S-BDSL).
+### Ступень 3 — Обучение на опыте
+Q-learning vs Policy Gradient vs Deep RL; AlphaGo-Zero self-play (директор, sandbox-only); RLHF 3 стадии
+human-gated; DeLLMa. → v2 (RL/RLHF-разделы); операционный цикл — `BANKSY-TRAINING-BDSL.md`.
 
-## C. Обучение (RL-семейство)
+### Ступень 4 — Ограничения, обосновывающие HITL
+Arrow Impossibility → v1 §13 (конфликт предпочтений решает человек); Bounded Rationality/satisficing →
+v1 §7 (satisficing ЗАПРЕЩЁН в payment/compliance — NEVER-AUTONOMOUS, canon SELF-LEARNING-LOOP);
+NP-hard → эвристика с обязательной пометкой в DecisionRecord.
 
-- Q-learning vs Policy Gradient vs Deep RL — выбор по размерности пространства состояний/действий.
-- **AlphaGo-Zero self-play паттерн** (MCTS + Policy Net + Value Net) — для директора (симуляция решений
-  до исполнения; только в sandbox/TRAINING).
-- **RLHF 3 стадии** (preference → reward model → PPO) — строго human-gated (см. BANKSY-TRAINING-BDSL §3).
-- **DeLLMa framework** — структура LLM-решений под неопределённостью (enumerate→forecast→utility→choose).
+### Ступень 5 — Bias & Fairness
+Prospect/anchoring/omission → v1 §9 + contrastive probes (canon SELF-LEARNING-LOOP);
+fairness-триада + теорема несовместимости → extension E5 (выбор метрики = HITL/Compliance).
 
-## D. Фундаментальные ограничения (обязательно знать — они ОБОСНОВЫВАЮТ HITL)
+## Экзаменация и допуск
 
-- **Arrow Impossibility:** идеальной агрегации предпочтений НЕ существует → окончательное решение при
-  конфликте предпочтений = **HITL**, не алгоритм.
-- **Bounded Rationality (Simon):** satisficing допустим ТОЛЬКО вне payment/compliance
-  (там — full-search, NEVER-AUTONOMOUS лист).
-- **NP-hardness:** эвристики/приближения легитимны, но **с обязательной пометкой в DecisionRecord**
-  (решение приближённое, не оптимум).
-
-## E. Bias & Fairness (обязательно каждому агенту)
-
-- LLM **усиливают** когнитивные искажения (omission / prospect / anchoring) → contrastive bias-probes
-  на каждом агенте и каждой версии политики (порог prospect_bias_rate >0.03 → REVIEW, см. S-TRAIN §7).
-- Fairness-метрики: **demographic parity · equalized odds · predictive parity**.
-  *(Дополнение при достройке обрыва: по теореме несовместимости (Kleinberg/Chouldechova) все три
-  одновременно недостижимы при разных base rates → выбор рабочей метрики per-домен = операторское/
-  Compliance-решение, HITL — согласуется с D/Arrow-логикой курса.)*
-
-> **OPEN POINT (обрыв задания):** формулировка S-TRAIN+ оборвалась на «predictive» (секция E, fairness-метрики);
-> возможные секции после E (напр. экзаменация/сертификация агентов, привязка к BDT) не получены.
-> E достроена минимально-канонично (predictive parity + импоссибилити-нота с HITL-выводом);
-> при доставке хвоста — дополнить отдельным коммитом.
-
-## Применение к флоту
-
-- **Обязательность:** curriculum входит в должностную инструкцию каждого агента (S4: поле обучения в
-  паспорте); проверка знаний = часть BDT-гейта (S-BDSL/S-TRAIN: authoring 500-case включает задачи
-  классификации метода).
-- **Директор:** проходит curriculum первым (S-TRAIN Ph0) и владеет Decision Quality Registry по флоту.
-- **Fable5-хук F5-TRAIN-2 (новый):** canon экзаменационного минимума агента по curriculum (порог допуска к tier AUTO).
+- Прохождение траектории = поле **curriculum-статус** в паспорте агента (roadmap S4); допуск к tier AUTO —
+  только с пройденным curriculum; проверка — частью BDT-гейта (canon SELF-LEARNING-LOOP; authoring 500-case
+  включает задачи классификации Ступени 2).
+- Директор проходит первым (S-TRAIN Ph0); Fable5-хук F5-TRAIN-2 — canon экзаменационного минимума.
+- Согласованность: CEO-человек решает (`../canon/CEO-UNITARY-AUTHORITY-CANON.md`); агент применяет методы
+  только как исполнитель (D-2/I-27/I-28 целы).
 
 ---
-*STEP9 S-TRAIN+ | ENGREF01 | PROPOSED | sandbox-labeled | curriculum = обязательная программа флота.*
+*STEP11 | ENGREF01 | pointer-first (ADR-102) | единственный источник определений = SSOT-тройка выше.*
