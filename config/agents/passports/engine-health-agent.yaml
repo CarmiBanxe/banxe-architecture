@@ -7,7 +7,7 @@
 agent_id: engine_health_agent
 name: "EngineHealthAgent"
 version: "0.1.0"
-status: PROPOSED                # not activated; casing per #989 normalization
+status: sandbox-active           # STEP4 Promotion Gate 2026-07-26 — SANDBOX only; prod stays PROPOSED/gated
 description: >
   Read-only platform-monitoring agent for the engine fleet (openclaw / aider / metaclaw /
   mirofish / ruflo). Health-checks each engine's bin + port on a schedule, alerts the

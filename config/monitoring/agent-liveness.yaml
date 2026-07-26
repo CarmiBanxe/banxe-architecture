@@ -8,7 +8,7 @@
 # AWAITS-OPERATOR. This file configures NOTHING at runtime; it is read by the monitor.
 # ─────────────────────────────────────────────────────────────────────────────
 schema_version: "1.0.0"
-status: draft                  # prepare-only; operator-ratified + activated separately
+status: sandbox-active           # STEP4 Promotion Gate 2026-07-26 — SANDBOX only; prod activation separate
 source: "AGENT-LIVENESS-SPEC #988 at fleet scope; org placement per AGENT-ORG-ASSIGNMENT-MATRIX"
 
 # ── global thresholds (config-over-hardcoding; monitor MUST read, not hardcode) ──

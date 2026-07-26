@@ -330,3 +330,12 @@ Added to Required components (existing W-05 list stands):
 |------|--------------|------|
 | **OP-J1 Messenger channels** (Slack/WhatsApp/Telegram via Chat SDK) | data-residency (GDPR: non-EU servers) + client identity strength; SCA actions app-only; advisory/notification scope until decided | analytics #2 v10-D10 |
 | **OP-J3 Crypto channel** (Crypto Hub, TradingView Pro Mode, CryptoOrderCard) | separate FCA cryptoasset perimeter — no crypto canon exists in repo yet; operator decision, not a UI task | analytics #2 v10-F10 |
+
+### STEP 4 sandbox-lift note (2026-07-26, operator Promotion Gate)
+
+> **W-05 guard lifted in SANDBOX ONLY:** state-changing Rich Cards (TransferCard Confirm, CardControlCard,
+> CryptoOrderCard) are ENABLED in the sandbox environment on TRAINING data (mock SCA, TRAINING ledger via
+> LedgerPort, testnet crypto). **Production W-05 notice "AI cannot initiate payments or change settings"
+> remains in force** — prod lift requires the separate PROD Promotion Gate (ADR-171 §PROD-CUTOVER CONTRACT).
+> Manifest: `config/sandbox/sandbox-activation.yaml`. OP-J1 (messengers) / OP-J3 (crypto) run as test-bots /
+> testnet respectively; their real-perimeter gates stay open items.

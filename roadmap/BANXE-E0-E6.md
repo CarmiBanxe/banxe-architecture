@@ -1,11 +1,11 @@
 # BANXE-E0-E6.md — AI Engine Adoption Phases
 
-> **STATUS: PROPOSED / no activation.** ENGREF01, 2026-07-26.
+> **STATUS: ACTIVE in SANDBOX (TRAINING data) per operator Promotion Gate 2026-07-26 — prod activation remains gated.** ENGREF01/STEP4, 2026-07-26.
 > Naming: engine phases are **E0–E6** — deliberately distinct from the calendar phases of
 > `banxe-emi-stack/docs/BANXE-master-roadmap-v3.md` (P0 sprints, PHASE 1/2). roadmap-v3 is NOT edited by this file.
 > Evidence appendix: §3. Operator decisions pending: §4.
 
-## 1. Phases
+## 1. Phases (status: **sandbox-active** per STEP 4 Promotion Gate 2026-07-26; prod gated)
 
 | Phase | Content | Layer focus |
 |---|---|---|

@@ -1,20 +1,25 @@
 # ═══════════════════════════════════════════════════════════════════════════
-# SUPERSEDED (STEP 4, 2026-07-26): activated as .github/workflows/banxe-agent-review.yml (SANDBOX-restricted triggers).
-# Kept as lineage source. Prod activation = separate PROD Promotion Gate.
-# Deliberately stored under docs/engine/proposed-workflows/ and NOT .github/workflows/:
-# placing it in .github/workflows/ would self-activate on merge, violating the
-# "PROPOSED, no activation" safe-mode (ADR-171 §8). Promotion to live workflows is a
-# separate operator-gated change-set (CLAUDE.md §11 Promotion Gate).
-#
-# Lineage: extends the embedded YAML block from the legacy engine doc
-# (~/banxe-dev/emi-banxe-engine.md, Part VI §6.1) — Duplication Audit: merge, no fork.
-# Additions vs legacy block: concrete security-agent steps, schema-validation wiring to
-# sql/alter-banxe-audit-hitl-decisions-engine-ref-2026-07-26.sql contract, gate config
-# sourced from config/gates/confidence-thresholds.yaml (Configuration-over-Hardcoding).
+# BANXE AI Agent Pipeline — ACTIVE in SANDBOX ONLY (STEP 4 Promotion Gate 2026-07-26)
+# BANXE_ENV=sandbox ; BANXE_DATA_CLASS=TRAINING ; BANXE_PROD_READY=false
+# Triggers restricted to sandbox branch patterns — prod pipeline untouched.
+# Source lineage: docs/engine/proposed-workflows/banxe-agent-review.yml (superseded).
+# Prod activation = separate PROD Promotion Gate (ADR-171 §PROD-CUTOVER CONTRACT).
 # ═══════════════════════════════════════════════════════════════════════════
-name: BANXE AI Agent Pipeline (PROPOSED)
+name: BANXE AI Agent Pipeline (SANDBOX)
 
-on: [pull_request, push]
+on:
+  push:
+    branches:
+      - 'sandbox/**'
+      - 'agent/*/sandbox/**'
+  pull_request:
+    branches:
+      - 'sandbox/**'
+
+env:
+  BANXE_ENV: sandbox
+  BANXE_DATA_CLASS: TRAINING
+  BANXE_PROD_READY: "false"
 
 jobs:
   analysis-agent:
@@ -34,23 +39,21 @@ jobs:
       - name: LLM security scan (prompt-injection / insecure-output / excessive-agency)
         run: |
           # Mitigation map: docs/engine/BANXE-SECURITY-OWASP.md
-          # semgrep ruleset + guardrails static checks; blocks on critical findings
           semgrep --config .semgrep/ --error
 
   compliance-gate:
-    name: EU AI Act Compliance Check
+    name: EU AI Act Compliance Check (sandbox)
     needs: [analysis-agent, security-agent]
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: AI Decision Audit Schema Validation
-        # Contract: banxe_audit.hitl_decisions (14 canonical + 8 engine-ref columns,
-        # see sql/alter-banxe-audit-hitl-decisions-engine-ref-2026-07-26.sql)
+        # Contract: banxe_audit.hitl_decisions on SANDBOX ClickHouse
+        # (sql/alter-banxe-audit-hitl-decisions-engine-ref-2026-07-26.sql, operator-run)
         run: python validate_decision_schema.py
 
   deploy-staging:
-    name: Deploy to Staging (confidence >= staging gate)
+    name: Deploy to Sandbox-Staging (confidence >= staging gate)
     needs: compliance-gate
     runs-on: ubuntu-latest
     steps:
@@ -60,16 +63,12 @@ jobs:
         run: python tools/check_confidence_gate.py --stage staging
 
   deploy-production:
-    name: Deploy to Production (confidence >= prod gate + human approval)
+    name: Deploy to Sandbox-Prod (confidence >= prod gate + human approval)
     needs: deploy-staging
     runs-on: ubuntu-latest
-    environment: production   # human approval required (HITL, EU AI Act Art.14)
+    environment: sandbox-production   # human approval required (HITL); TRAINING data only
     steps:
       - uses: actions/checkout@v4
       - name: Confidence gate (config-as-data)
         # threshold source: config/gates/confidence-thresholds.yaml (deployment_gates.production = 0.90)
         run: python tools/check_confidence_gate.py --stage production
-
-# Observability (all jobs): Langfuse traces — latency per agent/tool, token usage & cost,
-# LLM-as-judge quality score, prompt A/B (ADR-168). Referenced tools (validate_decision_schema.py,
-# check_confidence_gate.py) do not exist yet — they are part of the activation change-set, not this PROPOSED artifact.

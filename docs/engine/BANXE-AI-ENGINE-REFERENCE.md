@@ -1,6 +1,6 @@
 # BANXE-AI-ENGINE-REFERENCE.md — 7-Layer Architecture + Agent Registry (canonical)
 
-> **STATUS: PROPOSED / no activation.** ENGREF01, 2026-07-26.
+> **STATUS: ACTIVE in SANDBOX (TRAINING data) per operator Promotion Gate 2026-07-26 — prod activation remains gated.** ENGREF01/STEP4, 2026-07-26.
 > **Source-of-truth declaration (ADR-171 §Duplication Audit):** this file supersedes
 > `~/banxe-dev/emi-banxe-engine.md` (non-repo location, uncommittable) as the canonical engine
 > reference and the **single Agent Registry**. The banxe-dev copy is legacy input — do not evolve it.

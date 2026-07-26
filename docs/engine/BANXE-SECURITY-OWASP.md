@@ -1,6 +1,6 @@
 # BANXE-SECURITY-OWASP.md — OWASP LLM Top-10 → BANXE Mitigations
 
-> **STATUS: PROPOSED / REFERENCE — no runtime activation.**
+> **STATUS: ACTIVE in SANDBOX (TRAINING data) per operator Promotion Gate 2026-07-26 — prod activation remains gated.**
 > Source: engine reference rebuilt v2 (block F) + analytics #1 (OWASP Agents ASI06–ASI10), session 2026-07-26 (ENGREF01).
 > Context justifying runtime gates: State-of-AI-Agents 2026 — **81% of teams are past planning, only 14.4% have full security**.
 > Companion: `config/gates/confidence-thresholds.yaml` (PROPOSED), `BANXE-ENGINE-MATH.md`, ADR-171.

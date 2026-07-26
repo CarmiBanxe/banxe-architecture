@@ -1,6 +1,6 @@
 # ADR-171: AI Engine Reference Adoption (BANXE Banksy engine, E0–E6)
 
-**Status:** PROPOSED — no activation
+**Status:** ACTIVE in SANDBOX (TRAINING data) per operator Promotion Gate 2026-07-26 — prod activation remains gated
 **Date:** 2026-07-26
 **Track:** ENGREF01 (`agent/factory/ENGREF01/engine-reference-adoption`)
 **Sources:** consolidated engine reference rebuilt v2 (A–N) built from session analytics #1 (OSS catalog),
@@ -189,3 +189,25 @@ complete before any S-A5/S-A6/S-A7 status uplift lands on main (those artifacts 
 ADR-013, ADR-030, ADR-102, ADR-103, ADR-060, ADR-119/120/121, ADR-167 (assistant-ui intent-first),
 ADR-168 (Langfuse), ADR-169 (LIME/SHAP), CLAUDE.md §10/§11, SANCTIONS-POLICY.md,
 `docs/engine/BANXE-ENGINE-MATH.md`, `docs/engine/BANXE-SECURITY-OWASP.md`, `roadmap/BANXE-E0-E6.md`.
+
+## STEP 4 — SANDBOX ACTIVATION (operator Promotion Gate §11 = SANDBOX, 2026-07-26)
+
+- Entire engine-reference set flipped PROPOSED → **ACTIVE in SANDBOX** on TRAINING data
+  (BANXE_ENV=sandbox, BANXE_DATA_CLASS=TRAINING, **BANXE_PROD_READY=false** — unchanged).
+- Activated (sandbox only): confidence gates (active_environment=sandbox), agentic CI pipeline
+  (`.github/workflows/banxe-agent-review.yml`, triggers restricted to sandbox branch patterns; source
+  in `docs/engine/proposed-workflows/` marked superseded), monitoring passports (engine-health,
+  fleet-liveness, agent-liveness → sandbox-active), TransferAgent, state-changing Rich Cards
+  (**W-05 lifted in SANDBOX only; prod stays gated**), messenger channels (test bots only),
+  crypto channel (testnet only) — manifest: `config/sandbox/sandbox-activation.yaml`.
+- SQL-ALTER (`sql/alter-banxe-audit-hitl-decisions-engine-ref-2026-07-26.sql`): operator runs MANUALLY
+  on **SANDBOX ClickHouse only** — never on live/prod cluster.
+
+### PROD-CUTOVER CONTRACT (binding, per sandbox amendment S5)
+1. Before ANY prod activation: **PURGE all TRAINING data**; re-seed real data under a separate
+   operator-gated change-set.
+2. `BANXE_PROD_READY` flips true ONLY via an explicit **PROD Promotion Gate** (separate authorization —
+   NOT granted by this sandbox pass).
+3. Any artifact/row with `data_class=TRAINING` is **BLOCKED from prod**.
+4. Standing barriers survive sandbox: ledger via LedgerPort only (ADR-013), config/runtime_gate/ foreign
+   (§72), AutoGen excluded / AG2 verify (OP-N1), MEMORY.md untouched.
