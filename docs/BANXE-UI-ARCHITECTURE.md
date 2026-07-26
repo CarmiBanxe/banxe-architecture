@@ -262,3 +262,16 @@ Before any prototype artifact is promoted to Product Plane:
 4. Compliance review: does it correctly display all sensitive states (BLOCKED, REVIEW, EDD)?
 5. IL entry in INSTRUCTION-LEDGER.md with proof
 6. Claude Code review (not automated — actual code read)
+
+---
+
+## Delta 2026-07-26 — Analytic #2 stack fold-in (ENGREF01, PROPOSED)
+
+> Additive to Component Strategy above; nothing existing is overridden. Source: analytics #2 (UX/UI, blocks TT/UU), ADR-171.
+
+**Conversational-layer stack (Hybrid Intent Interface):**
+- **assistant-ui** (MIT, React) — chat surface: streaming, retry, Generative UI, Human Tool Calls; composes with the intent-first direction of ADR-167.
+- **Vercel AI SDK** (Apache-2.0) — `generateObject`/`streamObject` structured outputs = the **Rich Card contract**: an L5 agent returns typed JSON, UI renders the card. State-changing cards (Transfer/CardControl) are propose-only + SCA (see SCREEN-INVENTORY delta — gated).
+- **Voice:** Whisper (MIT, STT) + Coqui/Piper (TTS) — voice channel candidates; same quality gate as all UI.
+- **Design-to-code pipeline:** Figma MCP → AI generates shadcn/ui → PR; consistent with Key Decisions in BANXE-UI-UX-RESEARCH.md (Claude Code = sole Product-Plane author; prototypes = reference only).
+- Three UI tracks: AI Layer / Adaptive (Rich Cards) / Classic fallback — Classic = graceful degradation, the bank stays usable if the AI layer is down.

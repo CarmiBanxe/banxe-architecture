@@ -27548,3 +27548,21 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
   `docs/runbooks/S-FAC-60-evo1-remediation-2026-07-18.md`,
   `docs/runbooks/S-FAC-61-health-contract-2026-07-18.md` (original `:9108`/`:9207`
   discrepancy flag), ADR-143-A, ADR-102, ADR-120, ADR-060.
+
+---
+
+### IL-1083 - agent-factory-engref01-engine-reference-adoption @ 2026-07-26T00:17:58Z
+
+- **il_ts:** 2026-07-26T00:17:58Z
+- **session_id:** agent-factory-engref01-engine-reference-adoption
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-engine-reference-adoption/IL-2026-07-26T00-17-58Z--a32cad.md`
+
+### Engine-reference adoption (PROPOSED set) + D1/D2 ratification + emi-stack unfreeze record
+
+- **Instrukciya:** consolidate analytics #1-#4 into engine-reference artifacts (11 items, PROPOSED/no-activation); record Fable5 verdicts (D1 back-office-first 0.95; D2 HITL 0.80); record operator ratification (D1=Option B; D2=form(b) change-set split) and emi-stack unfreeze (scope=back-office only).
+- **Shagi:** STEP A diff vs repo; STEP B materialize NEW(5)+EXTEND(4)+DELTA(2); Fable5 evidence audit; ADR-171 RESOLVED+RATIFICATION+Unfreeze sections; roadmap wave-table rebind.
+- **Proof:** branch agent/factory/ENGREF01/engine-reference-adoption, 14 commits ae5bd5e..94ef900, pre-commit auditor PASS x14 (semgrep 0 findings); evidence: ROADMAP-STATUS-2026-06-23.md:69 (S-PROD-1 P0 OVERDUE), D-RECON-DESIGN.md:24 (CASS 7.15 gap), drift 63/3 stable.
+- **Deviation:** legacy ~/banxe-dev/emi-banxe-engine.md non-repo -> superseded by docs/engine/BANXE-AI-ENGINE-REFERENCE.md (Duplication Audit in ADR-171); proposed workflow kept OUTSIDE .github/workflows until Promotion Gate.
+- **Refs:** ADR-171 (new), ADR-013, ADR-030, ADR-102, ADR-119 Rule 8, CLAUDE.md §10/§11; W-05 guard intact; config/runtime_gate untouched (§72).
