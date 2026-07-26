@@ -65,4 +65,9 @@
 - `ledger/README.md` / `ledger/SHARD-WORKFLOW.md` — реестр и правило шардов
 
 ---
+## 6. Организационный roadmap (STEP9)
+
+- `docs/roadmap/BANK-ORGANIZATION-ROADMAP.md` — сквозной roadmap организации банка (35 репо, S0–S7+Z, Director-centric, Fable5-canon-on-demand) — PROPOSED
+- `docs/architecture/DIRECTOR-CONTROL-PLANE.md` — спецификация «директора банка» (central control plane) — PROPOSED
+
 *STEP8 | ENGREF01 | навигация без перемещений; рекомендации по уборке — в `DOCUMENTATION-AUDIT-2026-07-26.md` (все PROPOSED).*
