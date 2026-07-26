@@ -27769,3 +27769,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** container healthy; SHOW DATABASES -> banxe_audit; DESCRIBE = 22 columns (14 canonical + 8 engine-ref); engine_full = ReplacingMergeTree(ts) PARTITION toYYYYMM(ts) ORDER (decision_id,ts) TTL toDateTime(ts)+7Y.
 - **Deviation:** canonical CREATE DDL rejected by CH 24.8 (BAD_TTL_EXPRESSION: DateTime64 in TTL) -> sandbox-adapted copy ops/sandbox/create-hitl-decisions-sandbox-ch24.8.sql (toDateTime(ts) wrap, 7Y semantics unchanged); canonical sql/ file NOT modified. **OPEN POINT (prod):** canonical DDL needs operator review before prod application — same error will fire on restrictive CH versions.
 - **Refs:** ADR-171 §STEP4/§PROD-CUTOVER, sandbox amendment S4.1/S6, docker_clickhouse_data + banxe-clickhouse/fu2 containers untouched.
+
+---
+
+### IL-1094 - agent-factory-engref01-step6-ttl-ddl-fix @ 2026-07-26T02:43:16Z
+
+- **il_ts:** 2026-07-26T02:43:16Z
+- **session_id:** agent-factory-engref01-step6-ttl-ddl-fix
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step6-ttl-ddl-fix/IL-2026-07-26T02-43-16Z--71523e.md`
+
+### STEP6 — canonical CREATE-DDL TTL fix for CH >=24.x (STEP5 OPEN POINT resolved)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** point-fix canonical sql/create-banxe-audit-hitl-decisions-2026-05-12.sql TTL line (DateTime64 rejected in TTL by CH >=24.x) + sync ALTER header comment; verify on sandbox instance in clean temp DB only; update ADR-171.
+- **Shagi:** TTL ts -> TTL toDateTime(ts) (+comment); nothing else changed; ALTER body untouched; temp-DB verification banxe_audit_ttltest -> dropped after.
+- **Proof:** CREATE OK on CH 24.8 (no BAD_TTL_EXPRESSION); 14 cols; engine TTL toDateTime(ts)+toIntervalYear(7); working sandbox banxe_audit untouched (22 cols); ADR-171 §STEP6 RESOLVED note.
+- **Deviation:** none.
+- **Refs:** ADR-171 §STEP5-OPEN-POINT/§STEP6/§PROD-CUTOVER, sandbox amendment S6 (no live/prod CH), ADR-119 Rule 8.

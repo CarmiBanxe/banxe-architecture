@@ -662,5 +662,6 @@
   "agent-factory-engref01-d2-cs7-floor4ops__a376cec3dbcd": 1090,
   "agent-factory-engref01-d2-cs8-docs__e5f5181e812a": 1091,
   "agent-factory-engref01-step4-sandbox-activation__c00526d7a5e3": 1092,
-  "agent-factory-engref01-step5-sandbox-clickhouse__52c3be8cc3d8": 1093
+  "agent-factory-engref01-step5-sandbox-clickhouse__52c3be8cc3d8": 1093,
+  "agent-factory-engref01-step6-ttl-ddl-fix__9aba467891c9": 1094
 }
