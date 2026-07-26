@@ -77,6 +77,9 @@ Board of Directors
 
 ---
 
+
+> **Unitary authority (STEP10, PROPOSED):** единоначалие CEO провозглашено конституционным каноном — `docs/canon/CEO-UNITARY-AUTHORITY-CANON.md` (sole accountable executive; исключения: SMF17, SMF5; Fable5 verdict 0.92 c C1/C2).
+
 ### 2.2 CRO — Chief Risk Officer (SMF4)
 
 | Attribute | Value |
