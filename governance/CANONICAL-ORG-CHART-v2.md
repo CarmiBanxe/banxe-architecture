@@ -32,6 +32,8 @@ base. This replaces the scattered/implicit org views with one authoritative char
 5. **Unitary executive authority (pointer)** — единоначалие CEO (SMF1) как конституционный принцип
    провозглашено в `docs/canon/CEO-UNITARY-AUTHORITY-CANON.md` (NORMATIVE, **RATIFIED 2026-07-27**, CEO Moriel Carmi SMF1; STEP10/12): sole
    accountable executive, исключения только SMF17/SMF5-линии (§4 ниже), комитеты готовят — решает CEO.
+6. **No-credit perimeter (pointer)** — BANXE EMI не предоставляет кредитных продуктов; Annex III §5
+   out-of-scope: `docs/canon/NO-CREDIT-PRODUCTS-CANON.md` (STEP13, PROPOSED).
 
 ## 3. The 8 Core Departments
 

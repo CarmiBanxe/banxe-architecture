@@ -59,3 +59,9 @@ Best-Decision method (theory: `docs/sources/best-decision-concept-2026-07-06-v2.
 3. **Satisfice within the HITL gate** — surface the best-supported AP/AR position; the **Financial Controller / Head of Treasury** decides.
 4. **Escalate** on ambiguity / material fiscal or accuracy concern — never self-clear.
 - **Fail-closed precedence:** this agent prepares and fails closed; it never best-decides a financial-reporting or production action (I-27, BUG-007).
+---
+## Scope limit (STEP13, NO-CREDIT-PRODUCTS-CANON, 2026-07-27)
+
+Credit sub-function **disabled**: никакого credit-terms decisioning / creditworthiness assessment —
+BANXE EMI не предоставляет кредитных продуктов (`docs/canon/NO-CREDIT-PRODUCTS-CANON.md`, Fable5 0.93).
+AP/AR-скоуп без изменений; декларация не меняет код.
