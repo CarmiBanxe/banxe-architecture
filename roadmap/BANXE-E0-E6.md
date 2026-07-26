@@ -37,14 +37,30 @@ Research-track, parked outside E0–E6: QGNN/VQC fraud (AUC 0.85, horizon 2027�
 - **FISCO BCOS**: ~5000 TPS audit trail. **Qdrant**: Rust, sub-millisecond. **DBS "Joy"**: ~15,000 AI insights.
 - External eval anchors: Finance Agent Benchmark ≈57% (⇒ HITL mandatory), McKinsey agentic KYC/AML ≈80% resolution.
 
-## 4. OPERATOR DECISIONS — pending, nothing implemented for either path
+## 4. OPERATOR DECISIONS — status after ratification 2026-07-26
 
-1. **Wave order (OP-F1/M4):** E1 = client-facing TransferAgent-first (engine reference) vs **back-office-first**
-   (BCG insight: back-office yields more value, lower client risk). Name collision resolved (E≠P); sequencing open.
-2. **Branch reconciliation (OP-L1):** bank-operating-model branch divergence vs origin/main (was ahead 63 / behind 3
-   at c02f8d8; main has advanced since). Merge/rebase strategy = operator call before any cross-track uplift.
-3. **L2 ledger slot:** Formance/Blnk are engine-reference candidates ONLY behind `LedgerPort` (ADR-013 Midaz
-   PRIMARY / Fineract FALLBACK stands; I-28: no direct CBS HTTP). No ledger rewiring in any E-phase without its own ADR.
+1. **Wave order (OP-F1/M4): RATIFIED — back-office-first (Option B).** Binding sequence:
+   **E0 Foundation → back-office wave (safeguarding daily-recon / CASS reporting support / BI-insight
+   agents) → THEN E1 TransferAgent.** TransferAgent (customer-facing) is **BLOCKED until ledger integrity
+   + live daily reconciliation are green** (S-PROD-1 P0 OVERDUE; CASS 7.15 gap, D-RECON-DESIGN.md:24;
+   D-gl ≈ 5%). emi-stack unfreeze operator-APPROVED as execution prerequisite (main terminal executes;
+   post-unfreeze scope = back-office agents only). See ADR-171 §Ratification Update.
+2. **Branch reconciliation (OP-L1): RESOLVED — form (b) change-set split.** origin/main authoritative;
+   rebase + split 910-file GENERAL-LINE commit into per-context PRs + serialized merges + ledger re-mint
+   (Rule 8 / ADR-119). Campaign owner: MAIN TERMINAL. **Must complete before any S-A5/S-A6/S-A7 uplift on
+   main.** See ADR-171 §Ratification Update.
+3. **L2 ledger slot (unchanged, reserved):** Formance/Blnk are engine-reference candidates ONLY behind
+   `LedgerPort` (ADR-013 Midaz PRIMARY / Fineract FALLBACK stands; I-28: no direct CBS HTTP). No ledger
+   rewiring in any E-phase without its own ADR.
+
+### Revised wave table (post-D1 ratification)
+
+| Order | Wave | Content | Gate |
+|---|---|---|---|
+| 1 | E0 Foundation | Temporal + Kafka + K8s substrate (ledger via LedgerPort) | license-audit; §11 |
+| 2 | **E-BO back-office** | safeguarding daily-recon agent, CASS reporting support, BI/insight | emi-stack unfreeze (approved, main-terminal executes); S-PROD-1 closure |
+| 3 | E1 TransferAgent | customer-facing money movement (propose-only + SCA + HITL) | ledger integrity + daily recon GREEN; W-05 guard ratification |
+| 4+ | E2–E6 | per §1 | per-phase gates |
 
 ---
 *ENGREF01 | 2026-07-26 | PROPOSED, no activation. Cross-ref: ADR-171, BANXE-ENGINE-MATH.md, BANXE-SECURITY-OWASP.md.*
