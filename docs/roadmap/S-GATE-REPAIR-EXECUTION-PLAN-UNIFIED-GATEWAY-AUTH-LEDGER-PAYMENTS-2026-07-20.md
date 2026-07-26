@@ -1,5 +1,3 @@
-> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION
-
 # S-GATE-REPAIR Execution Plan — Unified Gateway/Auth Perimeter for Ledger and Payments
 
 **FLOOR-2 / REPAIR-PLANNING / GATEWAY-AUTH / NO LEGAL STATUS**

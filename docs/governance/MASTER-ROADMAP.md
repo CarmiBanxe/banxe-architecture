@@ -41,6 +41,7 @@ the **source** column (pointer, not copied); values not determinable without inv
 | `docs/roadmap/TARGET-MODEL-CONFORMANCE-2026-06-25.md` | target-model conformance (latest) |
 | `docs/architecture/EMI-IMPL-STATE-REFRESH-2026-06-26.md` | EMI implementation-state (latest) |
 | `docs/paybis-dossier/PLAN-ROADMAP-SPRINTS-NEURONEXT-TO-PAYBIS.md` | Neuronext→Paybis migration |
+| `docs/roadmap/FACTORY-AUDIT-INDEX-2026-07-20.md` | audit-plane discoverability hook (S-FAC-R3) — indexes `docs/audit/*` factory artefacts this index does not itself cover |
 
 ### 2.2 SUPERSEDED / historical — retained, NOT deleted (superseding a file is a separate operator-gated action)
 | Fragment | Superseded by / role |
@@ -61,7 +62,38 @@ the **source** column (pointer, not copied); values not determinable without inv
 - Phase **owner / gate** values marked **[НЕИЗВЕСТНО]** above await determination from the source fragments or
   operator decision; they are not invented here.
 
+## 4. Factory-canon repair notes (S-FAC-R3, 2026-07-20 — additive, does not reclassify §1–§3)
+
+> Path note: `S-FAC-R3`'s repair scope named this file as `docs/roadmap/MASTER-ROADMAP.md`; no
+> such file exists. This is the actual consolidation index (`docs/governance/MASTER-ROADMAP.md`),
+> identified as the intended target by `FACTORY-CANON-STATUS-AND-SUPERSESSION-AUDIT-2026-07-20.md`
+> and edited here instead of creating a duplicate roadmap-plane file at the stated path.
+
+### 4.1 Sprint-namespace note
+"Sprint N" / "S-A-N" prefixes are **ambiguous without qualification** — at least five
+non-communicating sprint-ID namespaces exist across this repo (Sprint 1/3/7/8 Software-
+Factory-Canon lineage; S1–S6 governance-artifact lineage; S-FAC-60–69 factory build-out;
+S-FAC-R1/R2/R3 factory-canon repair line; S-A0–S-A13 BANK launch-readiness). Canonical
+explanation and full table: `docs/roadmap/FACTORY-CANON-CONSOLIDATED-MASTER-2026-07-20.md`
+§"Sprint namespace model". This index does not rename or reassign any existing sprint ID.
+
+### 4.2 Dependency/override note — Sprint 3 → Sprint 7/8
+Neither this index nor `docs/roadmap/BANK-MASTER-ROADMAP-TO-100-PERCENT-LAUNCH-READINESS-DRAFT.md`
+previously described the relationship between `docs/audit/sprint3-routing-canon-enforcement-2026-05-14.md`
+(status OPEN; exit criteria — Guardian rules F9/F10 — unmet) and
+`docs/audit/sprint{7,8}-*-2026-05-14.md` (both declared DONE despite listing Sprint 3 as a
+hard dependency). Per the dependency/override model in
+`docs/roadmap/FACTORY-CANON-CONSOLIDATED-MASTER-2026-07-20.md`, both should be read as
+**DONE-WITH-OVERRIDE (skips: Sprint 3 F9/F10)**, not clean DONE. Recorded here, once, as the
+consolidation index's note of record; the two sprint documents themselves are not edited.
+
 ## Anchors
 ADR-102 (Duplication Audit — consolidation discipline) · `docs/governance/TERMINAL-OWNERSHIP.md` (owner-terminals) ·
 `docs/governance/CTIO-CARRY-FORWARD.md` (deletion is operator-owned) · ADR-103 (server-only refactor) · ADR-138
 (Paybis) · ADR-135 (HITL) · the 25 roadmap fragments registered in §2. Operator directive 2026-06-30 (line 5 of 7).
+· §4 added 2026-07-20 (S-FAC-R3), pointing to `FACTORY-CANON-STATUS-AND-SUPERSESSION-AUDIT-2026-07-20.md` and
+`FACTORY-CANON-CONSOLIDATED-MASTER-2026-07-20.md`.
+
+
+---
+> **SUPERSEDED (2026-07-23):** consolidated into the single **GENERAL-LINE** roadmap → `../roadmap/GENERAL-LINE-ROADMAP-2026-07-23.md` (see its §4 mapping / §5 register). This file is retained for history; the GENERAL-LINE is the source of truth. IL-ledger unaffected.

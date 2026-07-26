@@ -1,5 +1,3 @@
-> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION
-
 # Sprint 9 — Tax, Ledger and Audit-Cell Governance Overview
 
 **PHASE-1 ROADMAP / GOVERNANCE / FIRST MATERIALISATION / NO LEGAL STATUS**
