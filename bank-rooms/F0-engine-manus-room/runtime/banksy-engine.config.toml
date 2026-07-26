@@ -1,0 +1,66 @@
+# BANKSY ENGINE — zone config (SANDBOX SCAFFOLD) — 2026-07-23
+# Deployed in Banksy's OWN zone. Templated from OpenManus config (read-only) — NOT compiled over Legion.
+# Secrets are NOT copied here — use environment variables. Banksy = limited bank profile.
+
+[engine]
+name          = "banksy-engine"
+role_1        = "ceo-conductor"            # chairman/CEO brain; PROPOSES only (I-27/HITL-L4)
+role_2        = "client-pm-friend"         # client personal manager & friend
+profile       = "bank-limited"             # NOT the full Legion profile
+zone          = "banksy-own-zone"          # separate zone; NOT over Legion runtime
+compiled_over_legion = false               # template tech only
+banksy_bind_port = 8200                     # free; avoid 4000(litellm)/8080(legion)/8095(midaz)/8100(taken)/11434(ollama). Do NOT bind Legion ports.
+status = "online"                           # HITL-L4 signed by operator 2026-07-24
+hitl_l4_signed = "2026-07-24"
+
+# --- Banksy's OWN inference (NOT Legion's private llama-server:8080) ---
+[llm]
+api_type      = "openai"
+model         = "${BANKSY_MODEL}"          # Banksy-own model; env-provided
+base_url      = "${BANKSY_INFERENCE_URL}"  # Banksy-own inference; NOT 127.0.0.1:8080 (Legion private)
+api_key       = "${BANKSY_LLM_KEY}"        # env only; no secret in repo
+max_tokens    = 8192
+temperature   = 0.4                         # conservative for bank profile
+
+# --- Legion-extra functions EXCLUDED for Banksy (limited profile) ---
+[excluded_legion_functions]
+tor_networking      = false   # EXCLUDED — Legion-only
+headless_browser    = false   # EXCLUDED — Legion-only
+web_crawl_osint     = false   # EXCLUDED — Legion-only
+direct_legion_infer = false   # EXCLUDED — no direct use of Legion private inference (8080)
+proxy_scrape        = false   # EXCLUDED — Legion-only
+
+[sandbox]
+use_sandbox   = false
+
+# --- Bank profile components (assembled later by the factory) ---
+[components]
+orchestrator  = ["graph_sandbox", "tier_workers"]          # Role-1 (ref: banxe-emi-stack, read-only)
+intent_layer  = ["canary", "composition", "observability", "shadow"]  # Role-2 substrate
+client_pm     = ["intent", "support", "notifications_hub", "quant_advisory"]  # Role-2 routers
+substrate     = ["midaz_mcp", "runtime_gate/budget", "agents/_lineage", "agents/recorders"]
+guardrails    = "banking-engine/compliance/guardrails_config.yaml"
+status        = "SCAFFOLD — not started; factory to assemble runtime code"
+
+# --- MCP tools: BANK tools only ---
+[mcp]
+profile       = "bank"
+midaz_ledger  = "gated"        # Midaz/MCP -> ledger remains [counsel]; no direct write
+
+# --- Banksy -> Legion = EXTERNAL trusted supplier (request/response only) ---
+[legion_interface]
+type          = "external-request-client"   # customer -> trusted supplier
+purpose       = "client-info gathering + special databases"
+shared_runtime = false                       # NOT a shared runtime
+trust_boundary = "external"                   # Legion is outside the bank
+endpoint      = "${LEGION_DATA_ENDPOINT}"     # env-provided; Legion's own laptop/zone
+mode          = "read-request-response"       # data-gathering only
+
+# --- LIVE bank MCP tools (GL-post-21 re-cutover 2026-07-24). endpoint_set=true; backend :8000 reachable, read round-trip green. ---
+[tools_staged]
+endpoint_set = true
+endpoint = "http://127.0.0.1:8000"
+declared = ["get_balance", "initiate_payment", "get_fx_quote", "wallet_validate_address", "kyc_status", "notify_client"]
+adr = "ADR-049 client-masks"
+roundtrip = "fx_get_rates -> :8000/v1/fx/rates HTTP 200 (real data, non-mutating)"
+note = "LIVE read path enabled after HITL (2026-07-24). WRITE tools (initiate_payment / ledger) remain [counsel] — declared but not authorized for live write use."
