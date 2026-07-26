@@ -1,0 +1,35 @@
+# F2/identity-room — agents kit (identity cluster: IDV/KYC/KYB/consent)
+# Canonical identity `agents-*` kit file. Docs-only mirror of runtime roster; no runtime code here.
+room: F2/identity-room
+floor: 2
+sprint_refs: [sprint-2]
+build_specs: [A-IDV, A-KYC, A-KYB]
+delegation:
+  ports: [KYCProviderPort, RegistryProviderPort]
+  discipline: "reuse-not-rebuild (ADR-102); DELEGATED to licensed providers (SumSub, RegistryProviderPort); no in-house OCR/biometrics/registry-scraping"
+
+key_agents:
+  - name: KYC-Specialist-v2
+    runtime: services/agents/kyc_onboarding_agent.py   # basement (banxe-emi-stack), not moved here
+    autonomy: L3            # auto up to gate; proposes, human decides (I-27)
+    hitl_gates: [HITL-006, HITL-007]
+  - name: kyb_agent
+    autonomy: L3
+    hitl_gates: [HITL-002, HITL-007]   # EDD corporate ≥£50k; PEP; read WITH merchant-acquiring perimeter [counsel]
+  - name: consent_agent
+    autonomy: L2            # act-and-alert; consent/lawful-basis changes are human-only
+    hitl_gates: []          # no matrix gate; consent/DPO governed via register #5 (DPO VACANT)
+  - name: document_agent
+    autonomy: L2
+    hitl_gates: []
+
+register_refs: ["#5", "#8"]
+
+policy_stance:                     # internal policy, NOT legal advice / classification
+  idv_kyc: "non-Annex-III, treated as high-risk internally by policy [counsel]"
+  kyb: "assess WITH merchant-acquiring permissions, not in isolation [counsel]"
+  traceability: "correlation_id = technical fault tracing only; regulatory decision traceability needs initiator/input/decision/override [counsel|external-reviewer]"
+
+notes: >
+  DPO VACANT — interim owner per sprint-2 decision doc; Art.37 outcome pending counsel.
+  HITL gate IDs reference ../../HITL-MATRIX.yaml (not modified here). Autonomy per ADR-005/I-27.

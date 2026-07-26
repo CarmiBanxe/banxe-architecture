@@ -1,0 +1,9 @@
+room: F2/payments-room
+sprint_refs: [sprint-1, sprint-3, sprint-4]
+key_agents:
+  - PaymentRouterAgent
+  - card_agent
+  - crypto_agent
+  - merchant_agent
+register_refs: ["#2", "#3", "#4", "#7"]
+notes: "Cards/Crypto RED; product rails dormant (A-OPEN); webhook lifecycle per sprint-4 template. No GREEN without register evidence."
