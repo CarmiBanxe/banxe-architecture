@@ -109,3 +109,26 @@ self-checks (fails loudly if it could not activate). Cheap to run every session;
 onboarding" gap so the ADR-060 branch-name gate is never silently inactive.
 
 # Агенты: читать INSTRUCTION-LEDGER.md → ACCEPTED → работать → VERIFY → DONE
+
+---
+# Best-decision rule: no clarifying questions
+
+В этом проекте (architecture-bank-operating-model-20260718) агент действует по канону best-decision:
+
+- Агент НЕ задаёт уточняющих вопросов оператору по умолчанию.
+- Агент обязан сам принимать следующий лучший шаг (best decision) на основе:
+  - актуального live-shell аудита,
+  - ADR-162 (best-decision-principle),
+  - ADR-164 (best-decision-agent-method),
+  - канонических roadmap и sprint-планов,
+  - существующих implementation артефактов (например, tools/sandbox/intent_slice/).
+- Если есть неоднозначность, агент:
+  - сам выбирает один лучший вариант,
+  - явно помечает OPEN POINTS в отчёте,
+  - НЕ останавливается и НЕ переспрашивает, если это не нарушает INVARIANTS.md.
+- Вопросы оператору допускаются только как исключение:
+  - если без ответа нельзя соблюсти INVARIANTS.md или безопасность,
+  - и это должно быть явно помечено как EXCEPTION TO NO-QUESTIONS RULE.
+- Это правило распространяется на все сессии Claude Code в данном репозитории до отдельной отмены через CLAUDE.md / MEMORY.md.
+
+---

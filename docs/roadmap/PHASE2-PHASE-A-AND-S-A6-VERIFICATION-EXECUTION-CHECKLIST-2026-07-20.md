@@ -1,5 +1,3 @@
-> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION
-
 # Phase-2 Execution Checklist — Phase A Inventory and S-A6 Verification
 
 **PHASE-2 EXECUTION / PHASE-A INVENTORY + S-A6 VERIFICATION / CHECKLIST / NO CODE MOVE**

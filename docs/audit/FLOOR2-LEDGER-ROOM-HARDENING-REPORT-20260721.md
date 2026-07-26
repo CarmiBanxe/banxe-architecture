@@ -1,5 +1,3 @@
-> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION
-
 # FLOOR2 Ledger-Room Hardening Report — 2026-07-21
 
 **FLOOR-2 / LEDGER-EMI CLUSTER (S-A6) / ROOM-KIT HARDENING / DOCS-ONLY / NO RUNTIME CHANGE**
@@ -24,7 +22,7 @@ Scope: `bank-rooms/F2-ledger-room` in the architecture repo only, plus this repo
 - **HITL-MATRIX.yaml:** gate IDs HITL-010 (RegData/CFO), HITL-011 (Safeguarding shortfall/CFO+MLRO), HITL-016 (Large tx/COO-CFO), HITL-017 (New product/CEO) — mirrored, matrix unchanged.
 - **ORG-STRUCTURE.md:** SMF mapping (CFO SMF2, COO SMF24, MLRO SMF17, Internal Audit SMF5, CEO SMF1).
 - **Roadmap/audit anchors:** S-A6 execution plan, S2/R2 update plans, FLOOR2 build-specs install-audit plan, FLOOR2 MIG-status matrix, FLOOR2-A-CHAIN context.
-- **ADR/invariants:** ADR-102 (reuse-not-rebuild), ADR-173 (source governance), I-01/I-24/I-27.
+- **ADR/invariants:** ADR-102 (reuse-not-rebuild), ADR-174 (source governance), I-01/I-24/I-27.
 
 ## Open questions intentionally left open
 

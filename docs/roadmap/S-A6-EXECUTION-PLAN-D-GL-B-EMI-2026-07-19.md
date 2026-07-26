@@ -1,5 +1,3 @@
-> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION
-
 # S-A6 EXECUTION PLAN — Ledger/EMI cluster D-GL / B-EMI + M2.5-BIF verdict — 2026-07-19
 
 **Status: EXECUTION PLAN ONLY, DRAFT, NOT FOR MERGE** · ветка `agent/factory/bank-operating-model/20260718` · producer: factory sandbox terminal
