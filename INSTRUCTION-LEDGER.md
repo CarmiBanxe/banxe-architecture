@@ -27688,3 +27688,24 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
 - **Deviation:** none at shard time; .bak pre-cutover runtime artifacts excluded (not in drift commit either); campaign canon: CodeQL/CodeRabbit non-blocking.
 - **Refs:** ADR-171 (engine-reference on main NOT overridden — room-specific migration only), ADR-119 Rule 8, ADR-057/059, OP-C2/G6 (engine = prototype base, layering on top), sandbox amendment S0/S3.
+
+---
+
+### IL-1090 - agent-factory-engref01-d2-cs7-floor4ops @ 2026-07-26T01:51:15Z
+
+- **il_ts:** 2026-07-26T01:51:15Z
+- **session_id:** agent-factory-engref01-d2-cs7-floor4ops
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs7-floor4ops/IL-2026-07-26T01-51-15Z--6d70c4.md`
+
+### D2-CS7 floor-4 ops rooms migration: devops/security/audit-cell (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS7 (7/8): migrate F4-devops-room (99) + F4-security-room (22) + F4-audit-cell-room (36) from drift line c02f8d8 onto fresh main (post-CS6 12efffd) as serialized PR.
+- **Shagi:** payload commit 2fbdccc branched post-CS5; rebased onto 12efffd; shard+mint AFTER rebase per Rule 8; sandbox labels in trailers.
+- **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
+- **Perimeter note:** audit-cell independence (3LoD) preserved as migrated; NO changes to live .github/workflows/ — engine-reference workflow stays in docs/engine/proposed-workflows/ until its own Promotion Gate.
+- **Deviation:** none at shard time; campaign canon: CodeQL/CodeRabbit non-blocking.
+- **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, audit-independence canon (c02f8d8 governance), sandbox amendment S0/S3.
