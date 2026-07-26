@@ -27587,3 +27587,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Deviation:** first push carried drift-branch INSTRUCTION-LEDGER.md -> 3 required checks FAIL (out-of-sync) -> repaired by regenerating from shards (this shard added; no hand edit of monolith/IL-SEQUENCE.json).
 - **Deviation-2:** CodeQL flagged 4 HIGH py/clear-text-logging-sensitive-data in migrated statement_poller.py (full IBAN in logs) -> fixed in-CS: IBAN masked to last4, HTTP response body dropped from logs, tainted path removed from info-log. Migrated code security-hardened, no functional change.
 - **Refs:** ADR-171 (D2 campaign §Ratification), ADR-119 Rule 8, ADR-057/059, ADR-013/I-28 (LedgerPort untouched); sandbox amendment S0/S3.
+
+---
+
+### IL-1085 - agent-factory-engref01-d2-cs2-safeguarding @ 2026-07-26T01:17:39Z
+
+- **il_ts:** 2026-07-26T01:17:39Z
+- **session_id:** agent-factory-engref01-d2-cs2-safeguarding
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs2-safeguarding/IL-2026-07-26T01-17-39Z--323ddc.md`
+
+### D2-CS2 safeguarding-room migration (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS2 (2/8): migrate F2-safeguarding-room (room docs + runtime/safeguarding-engine + alembic schema) from drift line c02f8d8 onto fresh main (post-CS1 9913901) as serialized PR.
+- **Shagi:** payload commit 6050165 (41 files) branched pre-CS1-merge; rebased onto 9913901; shard+mint AFTER rebase per Rule 8 (no IL-sequence gap); sandbox labels in commit trailers.
+- **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK; PII-log pre-scan clean (informational).
+- **Deviation:** none.
+- **Refs:** ADR-171 §Ratification (D2 form-b campaign; CS priority ledger/safeguarding first per D1 back-office-first), ADR-119 Rule 8, ADR-057/059, S-PROD-1 (safeguarding P0), sandbox amendment S0/S3.
