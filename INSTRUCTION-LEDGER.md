@@ -27808,3 +27808,22 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** files committed verbatim; reference doc cross-link added; pre-commit PASS; ledger-build --check OK.
 - **Deviation:** none. Memory only — no activation.
 - **Refs:** ADR-171 (§STEP4/§STEP6/§PROD-CUTOVER), sandbox amendment S5/S7, ADR-119 Rule 8.
+
+---
+
+### IL-1096 - agent-factory-engref01-step8-docs-audit-index @ 2026-07-26T03:03:03Z
+
+- **il_ts:** 2026-07-26T03:03:03Z
+- **session_id:** agent-factory-engref01-step8-docs-audit-index
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step8-docs-audit-index/IL-2026-07-26T03-03-03Z--b09786.md`
+
+### STEP8 — documentation master-index + audit map (navigation only, zero moves)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** map ALL documentation without breaking moves: docs/DOCUMENTATION-MASTER-INDEX.md (3 ADR series explained; 3 canon roots; 28 docs/ subfolders w/ counts; 27 root files classified, 11 move-candidates flagged NOT moved; index-of-indexes) + docs/DOCUMENTATION-AUDIT-2026-07-26.md (findings/risks/R1-R3 PROPOSED recommendations); additive link in docs/adr/INDEX.md.
+- **Proof:** read-only canon diff on origin/main: canon/CANON.md vs .canon/CANON.md DIVERGED (20 lines); modules/CORE.md DIVERGED (37); DECISION/DEV/DOC match; LEGAL.md only in canon/. decisions/ refs = 73 files (freeze paths). Zero .md moved/renamed/deleted; pre-commit PASS; ledger-build --check OK.
+- **Deviation:** task header referenced stale numbers (IL-1095/PR#1146 — consumed by STEP7); actual per Rule 8: this shard mints max+1 on rebased base (post-#1146).
+- **Refs:** ADR-119 Rule 8, ADR-057/059, DOC canon module, sandbox amendment S0; perimeter: MEMORY.md/.claude/.canon/INSTRUCTION-LEDGER.md/runtime_gate §72/#1133/foreign stashes untouched.
