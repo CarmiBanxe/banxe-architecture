@@ -27607,3 +27607,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK; PII-log pre-scan clean (informational).
 - **Deviation:** none.
 - **Refs:** ADR-171 §Ratification (D2 form-b campaign; CS priority ledger/safeguarding first per D1 back-office-first), ADR-119 Rule 8, ADR-057/059, S-PROD-1 (safeguarding P0), sandbox amendment S0/S3.
+
+---
+
+### IL-1086 - agent-factory-engref01-d2-cs3-payments-identity @ 2026-07-26T01:23:26Z
+
+- **il_ts:** 2026-07-26T01:23:26Z
+- **session_id:** agent-factory-engref01-d2-cs3-payments-identity
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs3-payments-identity/IL-2026-07-26T01-23-26Z--3ea978.md`
+
+### D2-CS3 payments+identity rooms migration (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS3 (3/8): migrate F2-payments-room (139 files) + F2-identity-room (66 files) from drift line c02f8d8 onto fresh main (post-CS2 f24ffcc) as serialized PR.
+- **Shagi:** payload commit 652da3e branched post-CS1; rebased onto f24ffcc; shard+mint AFTER rebase per Rule 8 (no IL-sequence gap); sandbox labels in commit trailers.
+- **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
+- **Deviation:** none at shard time; campaign canon: non-required checks (CodeQL/CodeRabbit) not blocking, not repaired.
+- **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, I-27 carve-out (identity), Ruflo/ARL mandatory-middleware canon (payments/kyc — runtime wiring deferred to sandbox activation S4), sandbox amendment S0/S3.
