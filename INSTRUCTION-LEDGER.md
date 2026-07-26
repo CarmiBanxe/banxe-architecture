@@ -27846,3 +27846,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** commit c4dd978 (2 new docs + index link); pre-commit PASS; ledger-build --check OK. Director role explicit in all 8 sprints; Fable5 canon-requests embedded in S1/S3/S4 (+S7 advisory).
 - **Deviation:** STEP9-v2 expansion applied on same branch/PR (operator re-issued expanded order; v1 already at merge-boundary): +§0 parameters (canon-sourced), +§3 FCA-2026 layer (5 canon-hooks), +5 sprints (S-INTENT/S-COST/S-BDSL/S13-00/S-LINEAGE), director identity bound to ceo_orchestration_agent (GAP-078); v2-truncation RESOLVED by v3 delivery (S6/S7/Z confirmed matching); v3 additions: §3 extended to 8 reg items (EU AI Act Art.49 EU-DB Aug-2026, GDPR Art.22, BaFin), BDSL enriched (Regret<=0.05, IPW/causal-forest, PSI>0.25, no-satisficing payment/compliance, no auto-unblock), S-LINEAGE +human_reviewed_by/human_override + ORDER-BY-conflict note vs STEP5 schema, Document 2 BANK-NEXT-GEN-CONCEPT.md created; residual v3 truncation trivial (master-index update — done by pattern). S-TRAIN addendum applied: 13th sprint (BDSL-as-training, human-gated RLHF, BDT 500-case gate, Ph0-Ph3 rollout) + docs/engine/BANKSY-TRAINING-BDSL.md; Fable5 hooks now 15 (+F5-TRAIN-2 curriculum exam minimum). S-TRAIN+ addendum: BEST-DECISION-CURRICULUM.md for ALL fleet agents (A-E; operator order truncated at section E "predictive" — E completed minimally-canonically, OPEN POINT recorded in doc).
 - **Refs:** ADR-171, BANXE-AI-ENGINE-REFERENCE §2 (single registry), ADR-030/§72 (cross-ref only), STEP8 audit R1-R3 (folded into S6), ADR-102/ADR-119; all sprints PROPOSED, per-sprint operator authorization.
+
+---
+
+### IL-1098 - agent-factory-engref01-step10-ceo-unitary-authority @ 2026-07-26T22:06:31Z
+
+- **il_ts:** 2026-07-26T22:06:31Z
+- **session_id:** agent-factory-engref01-step10-ceo-unitary-authority
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step10-ceo-unitary-authority/IL-2026-07-26T22-06-31Z--453a14.md`
+
+### STEP10 — CEO unitary-authority canon + control-plane reconciliation (NORMATIVE-PROPOSED)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** proclaim constitutional principle of CEO unitary authority (audit gap: zero docs proclaimed it); Fable5 banking-canon verdict CONFIRMED w/ corrections C1 (delegation preserves personal SMF accountability to FCA) + C2 (Board reserved matters), confidence 0.92 (>=0.90 auto-verdict, operator ratification required); reconcile DIRECTOR-CONTROL-PLANE (CEO-human = sole decider; ceo_orchestration_agent = instrument, PROPOSES-only; boundaries constrain automation not CEO power).
+- **Shagi:** docs/canon/CEO-UNITARY-AUTHORITY-CANON.md (6 points + C1/C2 + precedence); additive pointers in org-chart-v2 §2 (principle 5), ORG-STRUCTURE §2.1, master index; DIRECTOR-CONTROL-PLANE §1/§3/§7 reconciled — no 'weak director' wording; rebased onto post-STEP9 main 2c0b947.
+- **Proof:** commits a16e1b5/be4ba00 (rebased) + reconciliation commit; pre-commit PASS; ledger-build --check OK; D-2/I-27/I-28/BOUNDARY§7v2 explicitly preserved (canon point 6: fail-closed on conflict).
+- **Deviation:** task header referenced stale numbers (main cc40eb3/IL-1096); actual base 2c0b947/IL-1097 -> this shard mints IL-1098 (Rule 8); mint held until #1148 merge (collision guard) — executed now.
+- **Refs:** I-12/I-27/I-28, ADR-164 D-2, BOUNDARY §7 v2, org-chart-v2 §2/§4/§8, ORG-STRUCTURE §2.1, JOB-DESCRIPTIONS §1.1, sandbox amendment S0.
