@@ -211,3 +211,15 @@ ADR-168 (Langfuse), ADR-169 (LIME/SHAP), CLAUDE.md §10/§11, SANCTIONS-POLICY.m
 3. Any artifact/row with `data_class=TRAINING` is **BLOCKED from prod**.
 4. Standing barriers survive sandbox: ledger via LedgerPort only (ADR-013), config/runtime_gate/ foreign
    (§72), AutoGen excluded / AG2 verify (OP-N1), MEMORY.md untouched.
+
+## STEP 6 — Canonical DDL TTL fix (2026-07-26) — STEP5 OPEN POINT RESOLVED
+
+- **RESOLVED:** `sql/create-banxe-audit-hitl-decisions-2026-05-12.sql` TTL expression fixed:
+  `TTL ts + …` → `TTL toDateTime(ts) + INTERVAL 7 YEAR DELETE` (CH ≥24.x rejects DateTime64 directly in
+  TTL, BAD_TTL_EXPRESSION). Nothing else changed: `ts` stays DateTime64(3,'UTC'); engine/partition/order
+  intact; 7Y retention unchanged. ALTER header comment synced (comment only).
+- **Proof:** fixed CREATE applied to a CLEAN temp DB (`banxe_audit_ttltest`) on the sandbox instance —
+  passed without BAD_TTL_EXPRESSION; 14 columns; `TTL toDateTime(ts) + toIntervalYear(7)` confirmed via
+  system.tables; temp DB dropped; working sandbox `banxe_audit` untouched (22 columns intact).
+- Canonical DDL is now **CH-24.x-compatible / prod-safe**. PROD-CUTOVER CONTRACT above remains fully in
+  force (purge TRAINING; separate PROD Promotion Gate; PROD_READY=false).

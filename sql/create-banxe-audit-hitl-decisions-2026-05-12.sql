@@ -25,4 +25,5 @@ CREATE TABLE IF NOT EXISTS banxe_audit.hitl_decisions
 ENGINE = ReplacingMergeTree(ts)
 PARTITION BY toYYYYMM(ts)
 ORDER BY (decision_id, ts)
-TTL ts + INTERVAL 7 YEAR DELETE;
+-- toDateTime(ts) wrapper required for CH ≥24.x TTL (DateTime64 not allowed directly); 7Y retention unchanged. ENGREF01 STEP6.
+TTL toDateTime(ts) + INTERVAL 7 YEAR DELETE;

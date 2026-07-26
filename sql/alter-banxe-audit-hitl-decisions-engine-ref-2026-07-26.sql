@@ -4,7 +4,7 @@
 --
 -- Design decision (ADR-171 §4): EXTEND the canonical table — NO new table (no second audit trail, ADR-102).
 -- Canonical engine/partitioning/TTL are preserved by ALTER semantics:
---   ENGINE ReplacingMergeTree(ts) | PARTITION BY toYYYYMM(ts) | ORDER BY (decision_id, ts) | TTL ts + 7 YEAR DELETE
+--   ENGINE ReplacingMergeTree(ts) | PARTITION BY toYYYYMM(ts) | ORDER BY (decision_id, ts) | TTL toDateTime(ts) + 7 YEAR DELETE
 --
 -- +8 columns for AI-agent decision lineage (EU AI Act auditability):
 
