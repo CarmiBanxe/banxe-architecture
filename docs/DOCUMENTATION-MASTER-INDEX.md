@@ -70,5 +70,6 @@
 - `docs/roadmap/BANK-ORGANIZATION-ROADMAP.md` — сквозной roadmap организации банка (35 репо, S0–S7+Z, Director-centric, Fable5-canon-on-demand) — PROPOSED
 - `docs/architecture/DIRECTOR-CONTROL-PLANE.md` — спецификация «директора банка» (central control plane) — PROPOSED
 - `docs/architecture/BANK-NEXT-GEN-CONCEPT.md` — концепт банка нового поколения (Intent-First 4-слойка, Best-Decision математика, benchmark, дифференциатор) — PROPOSED
+- `docs/engine/BANKSY-TRAINING-BDSL.md` — методика дообучения движка-директора (BDSL training program, human-gated) — PROPOSED
 
 *STEP8 | ENGREF01 | навигация без перемещений; рекомендации по уборке — в `DOCUMENTATION-AUDIT-2026-07-26.md` (все PROPOSED).*

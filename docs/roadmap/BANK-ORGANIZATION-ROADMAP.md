@@ -167,6 +167,27 @@ action_taken, action_params, **human_reviewed_by, human_override**, halt_trigger
 **Director: lineage = его аудиторская память.** Fable5 F5-REG-2 (SM&CR-связка). Зависимость: S-INTENT (intent_id).
 DoD: расширенная схема в sandbox; каждый intent-путь пишет полный record.
 
+### S-TRAIN — Дообучение движка-директора Banksy (BDSL as training program)
+Цель: непрерывно дообучать директора (`ceo_orchestration_agent` + engine control-plane) принимать
+Best-Decision замкнутым циклом. Методика (полная): `../engine/BANKSY-TRAINING-BDSL.md`.
+Контуры: 1-СБОР (DecisionRecord: decision_space/MAUT wj-uj/chosen/confidence/tier/stopping_rule/bias_flags/
+minimax_regret/hash-chain + OutcomeRecord: ground_truth_utility/utility_error/IPW-causal-forest) →
+2-ОЦЕНКА (MetricsEngine, пороги S-BDSL) → 3-**RLHF human-gated 3 стадии** (Preference→RM offline hold-out→
+Policy Update ТОЛЬКО после human approval, PPO; никакой self-modification) → 4-SELF-LEARNING
+(ImprovementProposal→Human Review Queue SLA 4h/24h→APPROVED versioned update) → 5-DRIFT (PSI>0.25;
+re-test BDT 24h при drift/volume-spike/regulatory-event; Cross-Agent Correlation 3+ = системная причина) →
+6-GATE (BDT: authoring **min 500 cases** blocking + runtime 24h/90d) → 7-BIAS (contrastive probes;
+prospect_bias_rate>0.03→REVIEW) → 8-TIERS (AUTO≥0.90/REVIEW/BLOCK; payment/compliance AUTO≥0.95).
+**NEVER-AUTONOMOUS при обучении:** директор не переобучает себя без human approval; payment/compliance
+всегда human; веса/пороги — только APPROVED proposal + **Compliance Officer sign-off**; RLHF offline+human.
+Регуляторика: AI Act Art.9/14/15/17 + GDPR Art.22 + BaFin; лог 7Y hash-chain WORM.
+Rollout: Ph0 (инфра+калибровка: Brier<0.20, R<0.10, 500 ground-truth) → Ph1 shadow low-risk →
+Ph2 (BDT PASS 3 мес + EU-conformity + EU-DB-reg Aug 2026) → Ph3 (compliance/payment AUTO≥0.95).
+**Director: субъект обучения И потребитель (Decision Quality Registry).**
+**Fable5 F5-TRAIN-1: canon границ обучения (Never-Autonomous, human-gate на policy update).**
+Зависимости: S-BDSL (схемы/гейт), S-LINEAGE (лог). DoD: Ph0 green в sandbox; цикл 1–8 работает на TRAINING;
+0 policy-updates без human approval.
+
 ### S6 — Уборка документации *(перенесено из v1-каркаса)*
 R1 canon-консолидация (operator-review 20+37 diff-строк) + R2 слияние ADR-индексов + R3 перенос 11 корневых
 кандидатов + STEP8-аудит для каждого CORE/PLATFORM репо + cross-repo doc-index + сверка controlled-copy canon
@@ -184,11 +205,11 @@ G0–G6. Fable5: финальный advisory (confidence-scored).
 
 ## §5. Сводка объёма и порядок
 
-**12 спринтов** (S0–S5, S-INTENT, S-COST, S-BDSL, S13-00, S-LINEAGE, S6, S7) + фаза Z · 35 репо ·
-**Fable5-canon-запросы: 5 регуляторных (F5-REG-1…5) + 3 организационных (F5-ORG-1…3) + 1 BDSL + 1 финальный
-advisory (S7) = 10 хуков** · Director-роль явно прописана во всех 12 спринтах.
+**13 спринтов** (S0–S5, S-INTENT, S-COST, S-BDSL, S13-00, S-LINEAGE, **S-TRAIN**, S6, S7) + фаза Z · 35 репо ·
+**Fable5-canon-запросы: 8 регуляторных (F5-REG-1…8) + 3 организационных (F5-ORG-1…3) + 1 BDSL + 1 TRAIN
+(F5-TRAIN-1) + 1 финальный advisory (S7) = 14 хуков** · Director-роль явно прописана во всех 13 спринтах.
 Рекомендуемый порядок волн: S0→S1→S2 (фундамент) ∥ S-COST+S6 (независимые, ранние) → S3→S4 →
-S13-00→S-INTENT→S-LINEAGE→S-BDSL (intent-контур) → S5 → S7. Всё PROPOSED; авторизация по-спринтно.
+S13-00→S-INTENT→S-LINEAGE→S-BDSL→**S-TRAIN** (intent/learning-контур) → S5 → S7. Всё PROPOSED; авторизация по-спринтно.
 
 > **OPEN POINT v2 — ЗАКРЫТ:** хвост доставлен в STEP9-v3 (S6/S7/Z подтверждены — совпали с v1-сохранением;
 > добавлен Документ 2 `../architecture/BANK-NEXT-GEN-CONCEPT.md`). Остаточный обрыв v3 («Обновить
