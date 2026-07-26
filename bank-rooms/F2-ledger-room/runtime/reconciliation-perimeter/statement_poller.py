@@ -129,7 +129,7 @@ def _fetch_camt053(iban: str, recon_date: date) -> Path | None:
         # Step 1: resolve account-id from IBAN
         account_id = _resolve_account_id(iban)
         if not account_id:
-            logger.warning("Could not resolve account-id for IBAN %s", iban)
+            logger.warning("Could not resolve account-id for IBAN ****%s", last4)
             return None
 
         # Step 2: fetch transactions as CAMT.053 XML
@@ -152,18 +152,22 @@ def _fetch_camt053(iban: str, recon_date: date) -> Path | None:
         outpath = STATEMENT_DIR / filename
         outpath.write_bytes(resp.content)
 
-        logger.info("CAMT.053 written: %s (%d bytes)", outpath, len(resp.content))
+        logger.info("CAMT.053 written for %s (%d bytes)", date_str, len(resp.content))
         return outpath
 
     except httpx.HTTPStatusError as exc:
+        # IBAN masked to last4; response body not logged (may carry account data)
         logger.error(
-            "adorsys gateway HTTP %s for IBAN %s: %s",
+            "adorsys gateway HTTP %s for IBAN ****%s",
             exc.response.status_code,
-            iban,
-            exc.response.text[:200],
+            last4,
         )
     except httpx.RequestError as exc:
-        logger.error("adorsys gateway connection error for IBAN %s: %s", iban, exc)
+        logger.error(
+            "adorsys gateway connection error for IBAN ****%s: %s",
+            last4,
+            type(exc).__name__,
+        )
 
     return None
 
