@@ -27647,3 +27647,24 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
 - **Deviation:** none at shard time; campaign canon: CodeQL/CodeRabbit non-blocking, not repaired.
 - **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, HITL thresholds (aml L2 agents — runtime wiring deferred to S4 sandbox activation), sandbox amendment S0/S3.
+
+---
+
+### IL-1088 - agent-factory-engref01-d2-cs5-floor1 @ 2026-07-26T01:34:23Z
+
+- **il_ts:** 2026-07-26T01:34:23Z
+- **session_id:** agent-factory-engref01-d2-cs5-floor1
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs5-floor1/IL-2026-07-26T01-34-23Z--d6d748.md`
+
+### D2-CS5 floor-1 rooms migration: customer-ops/marketing/support/hr-legal (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS5 (5/8): migrate F1-customer-ops-room (42) + F1-marketing-room (25) + F1-support-room (18) + F1-hr-legal-room (15) from drift line c02f8d8 onto fresh main (post-CS4 d738608) as serialized PR.
+- **Shagi:** payload commit f1b8a32 branched post-CS3; rebased onto d738608; shard+mint AFTER rebase per Rule 8; sandbox labels in commit trailers.
+- **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK.
+- **Deviation:** none at shard time; campaign canon: CodeQL/CodeRabbit non-blocking, not repaired.
+- **Perimeter note:** floor-1 = UI/customer-facing surfaces; W-05 guard ("AI cannot initiate payments") artifacts remain GATED — migration as-is under sandbox labels, no activation (activation = S4 sandbox Promotion Gate).
+- **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, W-05 guard (BANXE-SCREEN-INVENTORY delta), sandbox amendment S0/S3.
