@@ -27709,3 +27709,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Perimeter note:** audit-cell independence (3LoD) preserved as migrated; NO changes to live .github/workflows/ — engine-reference workflow stays in docs/engine/proposed-workflows/ until its own Promotion Gate.
 - **Deviation:** none at shard time; campaign canon: CodeQL/CodeRabbit non-blocking.
 - **Refs:** ADR-171 §Ratification (D2 form-b), ADR-119 Rule 8, ADR-057/059, audit-independence canon (c02f8d8 governance), sandbox amendment S0/S3.
+
+---
+
+### IL-1091 - agent-factory-engref01-d2-cs8-docs @ 2026-07-26T02:00:36Z
+
+- **il_ts:** 2026-07-26T02:00:36Z
+- **session_id:** agent-factory-engref01-d2-cs8-docs
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-d2-cs8-docs/IL-2026-07-26T02-00-36Z--88cc5e.md`
+
+### D2-CS8 docs consolidation — FINAL change-set of D2 campaign (sandbox/TRAINING)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** D2 merge campaign form(b) change-set CS8 (8/8, FINAL): migrate remaining drift files — 143 docs (audit/roadmap/governance/sprints/briefs/architecture/runbooks/canon) + CLAUDE.md canon sections + governance/ai-cost-policy/agent-budget-policy.md + bank-rooms/README — from drift line c02f8d8 onto fresh main (post-CS7 af852fd).
+- **Shagi:** payload ea4050c; rebased onto af852fd; ADR ordinal-collision resolved per Rule 8: drift ADR-171-client-intent-record-schema->ADR-172, ADR-172-governed-autonomy-ladder->ADR-173, ADR-173-compliance-source-governance->ADR-174 (merged ADR-171-ai-engine-adoption untouched; cross-refs fixed inside migrated set only, placeholder pass); INSTRUCTION-LEDGER.md NOT carried (CS1 lesson); shard+mint AFTER rebase per Rule 8.
+- **Proof:** PR (this branch); pre-commit auditor PASS; ledger-build --check OK; post-rebase verification: no stray ADR-171 refs, merged ADR-171 present.
+- **Deviation:** CLAUDE.md is a canon file — flagged for operator review in PR (adds drift canon sections: best-decision rule, feature-implementation canon, artifact canon, shell-command canon, apple-design default).
+- **Refs:** ADR-171 §Ratification (D2 form-b complete), ADR-119 Rule 8 (incl. named-ordinal clause), ADR-057/059, sandbox amendment S0/S3; campaign: IL-1084..IL-1091, PRs #1135-#1142.
