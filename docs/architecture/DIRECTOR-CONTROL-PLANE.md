@@ -7,9 +7,13 @@
 
 ## 1. Определение
 
-**Директор банка** = движок BANXE (engine-reference, ACTIVE в sandbox) в роли central control plane.
-Это НЕ новый компонент — это управляющая роль поверх L6-оркестрации (LangGraph real-time / DeerFlow
-long-horizon / Strands MCP-native), замыкающая на себя все «бразды правления» банком.
+**Директор банка** = `ceo_orchestration_agent` (`agents/souls/ceo-orchestration-agent.md`: Level 1 top
+orchestrator; статус **PROPOSED/STUB — GAP-078, service-кода нет**; human double = **CEO Moriel Carmi,
+SMF1**; активация = HITL-L4 гейт), исполняемый на движке BANXE (engine-reference, ACTIVE в sandbox) как
+central control plane. Это НЕ новый компонент — это управляющая роль поверх L6-оркестрации (LangGraph
+real-time / DeerFlow long-horizon / Strands MCP-native), замыкающая на себя все «бразды правления» банком;
+идентичность и подчинение — по `governance/CANONICAL-ORG-CHART-v2.md` (NORMATIVE: L0 Board → L1 CEO-агент →
+L2 heads → L3 leads → L4 workers).
 
 ## 2. Что директор ВИДИТ (observability-периметр)
 
