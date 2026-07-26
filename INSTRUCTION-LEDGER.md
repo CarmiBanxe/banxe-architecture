@@ -27905,3 +27905,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Shagi:** canon file: +frontmatter status:RATIFIED, status-line + footer flipped; referrer status-strings synced ONLY (bodies untouched): org-chart-v2 §2 pointer, ORG-STRUCTURE §2.1 note, DIRECTOR-CONTROL-PLANE §1 ref, master index line. NOT touched per task: BANKSY-TRAINING-BDSL, BEST-DECISION-CURRICULUM (pointers without status), INSTRUCTION-LEDGER.md (generated), IL-SEQUENCE.json (build_ledger).
 - **Proof:** grep confirms zero remaining PROPOSED-mentions for this canon in referrers; C1/C2 intact in canon body; pre-commit PASS; ledger-build --check OK.
 - **Refs:** ratification pattern ADR-040/041/045; CEO-UNITARY canon (STEP10, IL-1098); I-12/I-27/I-28/D-2 unchanged; sandbox amendment S0.
+
+---
+
+### IL-1101 - agent-factory-engref01-step13-credit-gap-resolution @ 2026-07-26T22:54:54Z
+
+- **il_ts:** 2026-07-26T22:54:54Z
+- **session_id:** agent-factory-engref01-step13-credit-gap-resolution
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step13-credit-gap-resolution/IL-2026-07-26T22-54-54Z--daa642.md`
+
+### STEP13 — CREDIT-GAP resolution variant (b): NO-CREDIT-PRODUCTS canon (Annex III §5 out-of-scope)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** operator decision (CEO) variant (b): BANXE EMI provides no credit products -> EU AI Act Annex III §5 not applicable -> CREDIT-GAP blocker RESOLVED by scope-exclusion (not deferral).
+- **Fable5 verdict:** CORRECT for UK EMI, confidence 0.93 (>=0.90 auto-verdict; operator ratification pending). C1: declaration must be operational — scope-flags on BOTH confirmed carriers (finance/apar_agent credit-terms sub-function; channel_c_sepa_orchestrator drawdown routing) + backlog features BNPL/credit-guidance blocked-by-canon. C2: EMD2 Art.6(1)(b) payment-related credit form => canon revision BEFORE launch.
+- **Shagi:** docs/canon/NO-CREDIT-PRODUCTS-CANON.md (5 points + C1/C2, PROPOSED); bdsl-fleet-classification §CREDIT-GAP -> RESOLVED (historical text preserved append-only), #19 apar ENROL without credit-caveat; apar passport scope_limits.credit_sub_function=disabled (declaration only, code untouched) + soul scope-limit note; org-chart pointer 6; master index line.
+- **Proof:** carriers per §CREDIT-GAP table (both flagged/covered); pre-commit PASS; ledger-build --check OK.
+- **Refs:** master-document 01-master-full v3.0 (no credit needed for EMI), EMD2, EU AI Act Annex III §5, bdsl-fleet-classification-2026-07-10 §CREDIT-GAP, CEO-UNITARY canon (RATIFIED — operator decision authority), sandbox amendment S0.
