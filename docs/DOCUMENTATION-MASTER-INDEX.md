@@ -69,6 +69,7 @@
 
 - `docs/canon/CEO-UNITARY-AUTHORITY-CANON.md` — единоначалие CEO (SMF1): sole accountable executive; исключения SMF17/SMF5; человек решает — агент исполняет (D-2/I-27/I-28 сохранены) — NORMATIVE, **RATIFIED 2026-07-27** (CEO Moriel Carmi, SMF1)
 - `docs/canon/NO-CREDIT-PRODUCTS-CANON.md` — BANXE EMI без кредитных продуктов; Annex III §5 out-of-scope, CREDIT-GAP RESOLVED — NORMATIVE, PROPOSED (STEP13)
+- `docs/canon/GITNEXUS-CODE-CONTOUR-DIRECTIVE.md` — постоянный код-контур GitNexus (enrich→impact→act, fail-closed; MCP pre-condition, внедрение = PROD-gate-спринт) — DIRECTIVE ACTIVE / IMPL PENDING (STEP14)
 
 ---
 ## 6. Организационный roadmap (STEP9)

@@ -27925,3 +27925,23 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Shagi:** docs/canon/NO-CREDIT-PRODUCTS-CANON.md (5 points + C1/C2, PROPOSED); bdsl-fleet-classification §CREDIT-GAP -> RESOLVED (historical text preserved append-only), #19 apar ENROL without credit-caveat; apar passport scope_limits.credit_sub_function=disabled (declaration only, code untouched) + soul scope-limit note; org-chart pointer 6; master index line.
 - **Proof:** carriers per §CREDIT-GAP table (both flagged/covered); pre-commit PASS; ledger-build --check OK.
 - **Refs:** master-document 01-master-full v3.0 (no credit needed for EMI), EMD2, EU AI Act Annex III §5, bdsl-fleet-classification-2026-07-10 §CREDIT-GAP, CEO-UNITARY canon (RATIFIED — operator decision authority), sandbox amendment S0.
+
+---
+
+### IL-1102 - agent-factory-engref01-step14-gitnexus-directive @ 2026-07-26T23:18:10Z
+
+- **il_ts:** 2026-07-26T23:18:10Z
+- **session_id:** agent-factory-engref01-step14-gitnexus-directive
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step14-gitnexus-directive/IL-2026-07-26T23-18-10Z--c89119.md`
+
+### STEP14 — GitNexus code-contour directive registered (operator permanent order)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** register operator permanent directive: GitNexus mandatory code-contour for fleet repos; every code edit via enrich(PreToolUse) -> detect_impact(pre-commit, fail-closed on high risk) -> act; reindex(PostToolUse); every factory prompt reminds the contour; scope = code links only (org links await Fable5).
+- **Shagi:** docs/canon/GITNEXUS-CODE-CONTOUR-DIRECTIVE.md (verbatim directive + applicability state table + OPEN POINTS); CLAUDE.md permanent section (canon file — operator review flagged); master index line.
+- **Proof:** ToolSearch verified GitNexus MCP NOT connected in factory session (0 tools) — recorded as BLOCKING pre-condition; hooks/CI-gate = PROD-gate implementation sprint (candidate S-GITNEXUS); pre-commit PASS; ledger-build --check OK.
+- **Deviation:** operator order truncated — referenced sections FABLE5-REQ (org-contour) and VERIFY (language coverage) NOT delivered; registered per delivered part, tails = OPEN POINT.
+- **Refs:** post-#1152 chain, ADR-102 (fail-closed), sandbox amendment S0, PROD-PROMOTION-GATE-PLAN (implementation gate).
