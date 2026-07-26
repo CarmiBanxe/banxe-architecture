@@ -129,7 +129,7 @@ def _fetch_camt053(iban: str, recon_date: date) -> Path | None:
         # Step 1: resolve account-id from IBAN
         account_id = _resolve_account_id(iban)
         if not account_id:
-            logger.warning("Could not resolve account-id for IBAN ****%s", last4)
+            logger.warning("Could not resolve account-id for a configured IBAN (identifier withheld from logs)")
             return None
 
         # Step 2: fetch transactions as CAMT.053 XML
@@ -156,16 +156,16 @@ def _fetch_camt053(iban: str, recon_date: date) -> Path | None:
         return outpath
 
     except httpx.HTTPStatusError as exc:
-        # IBAN masked to last4; response body not logged (may carry account data)
+        # account identifier withheld from logs (CodeQL: IBAN-derived values are tainted);
+        # response body not logged (may carry account data)
         logger.error(
-            "adorsys gateway HTTP %s for IBAN ****%s",
+            "adorsys gateway HTTP %s during CAMT.053 fetch for %s",
             exc.response.status_code,
-            last4,
+            date_str,
         )
     except httpx.RequestError as exc:
         logger.error(
-            "adorsys gateway connection error for IBAN ****%s: %s",
-            last4,
+            "adorsys gateway connection error during CAMT.053 fetch: %s",
             type(exc).__name__,
         )
 
