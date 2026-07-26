@@ -67,7 +67,7 @@
 
 ## STEP10 — конституционный слой
 
-- `docs/canon/CEO-UNITARY-AUTHORITY-CANON.md` — единоначалие CEO (SMF1): sole accountable executive; исключения SMF17/SMF5; человек решает — агент исполняет (D-2/I-27/I-28 сохранены) — NORMATIVE, PROPOSED
+- `docs/canon/CEO-UNITARY-AUTHORITY-CANON.md` — единоначалие CEO (SMF1): sole accountable executive; исключения SMF17/SMF5; человек решает — агент исполняет (D-2/I-27/I-28 сохранены) — NORMATIVE, **RATIFIED 2026-07-27** (CEO Moriel Carmi, SMF1)
 
 ---
 ## 6. Организационный roadmap (STEP9)

@@ -27886,3 +27886,22 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Shagi:** extension E1-E5 (Pontryagin/LQR, Fuzzy, A*, Trees/RF, fairness triad+impossibility) + §M-MAP; curriculum rewritten as training TRAJECTORY with task->method pointer table (no formulas); BDSL doc reduced to unique 8-loop operational cycle + rollout (schemas/thresholds -> canon BEST-DECISION-SELF-LEARNING-LOOP + ADR-046 + emi-stack decision_records); master index lines re-bound to SSOT.
 - **Proof:** grep-verified missing set before add; both engine docs contain ADR-102 pointer-first header + refs ADR-162/164/BOUNDARY§7v2/SOUL-Decision-Method; D-2/I-27/I-28 + CEO-UNITARY consistency stated in both; pre-commit PASS; ledger-build --check OK.
 - **Refs:** ADR-102, I-24 (append-only SSOT), ADR-046, ADR-162/164, canon BEST-DECISION-*, CEO-UNITARY-AUTHORITY-CANON, sandbox amendment S0.
+
+---
+
+### IL-1100 - agent-factory-engref01-step12-ratify-ceo-unitary @ 2026-07-26T22:32:40Z
+
+- **il_ts:** 2026-07-26T22:32:40Z
+- **session_id:** agent-factory-engref01-step12-ratify-ceo-unitary
+- **source:** CEO
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-engref01-step12-ratify-ceo-unitary/IL-2026-07-26T22-32-40Z--782ada.md`
+
+### STEP12 — RATIFICATION ACT: CEO-UNITARY-AUTHORITY-CANON (operator act, HITL-L4)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Act:** operator (CEO Moriel Carmi, SMF1) RATIFIES CEO-UNITARY-AUTHORITY-CANON: NORMATIVE-PROPOSED -> NORMATIVE-RATIFIED, 2026-07-27, HITL-L4. Fable5 verdict 0.92 with corrections C1 (delegation preserves personal SMF accountability to FCA) + C2 (Board reserved matters) — ACCEPTED as part of the ratified formulation (not removed).
+- **Shagi:** canon file: +frontmatter status:RATIFIED, status-line + footer flipped; referrer status-strings synced ONLY (bodies untouched): org-chart-v2 §2 pointer, ORG-STRUCTURE §2.1 note, DIRECTOR-CONTROL-PLANE §1 ref, master index line. NOT touched per task: BANKSY-TRAINING-BDSL, BEST-DECISION-CURRICULUM (pointers without status), INSTRUCTION-LEDGER.md (generated), IL-SEQUENCE.json (build_ledger).
+- **Proof:** grep confirms zero remaining PROPOSED-mentions for this canon in referrers; C1/C2 intact in canon body; pre-commit PASS; ledger-build --check OK.
+- **Refs:** ratification pattern ADR-040/041/045; CEO-UNITARY canon (STEP10, IL-1098); I-12/I-27/I-28/D-2 unchanged; sandbox amendment S0.
