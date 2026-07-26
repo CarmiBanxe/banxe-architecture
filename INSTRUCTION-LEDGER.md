@@ -27789,3 +27789,22 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** CREATE OK on CH 24.8 (no BAD_TTL_EXPRESSION); 14 cols; engine TTL toDateTime(ts)+toIntervalYear(7); working sandbox banxe_audit untouched (22 cols); ADR-171 §STEP6 RESOLVED note.
 - **Deviation:** none.
 - **Refs:** ADR-171 §STEP5-OPEN-POINT/§STEP6/§PROD-CUTOVER, sandbox amendment S6 (no live/prod CH), ADR-119 Rule 8.
+
+---
+
+### IL-1095 - agent-factory-engref01-step7-memory-docs @ 2026-07-26T02:55:26Z
+
+- **il_ts:** 2026-07-26T02:55:26Z
+- **session_id:** agent-factory-engref01-step7-memory-docs
+- **source:** CEO
+- **status:** REVIEW
+- **shard:** `ledger/entries/agent-factory-engref01-step7-memory-docs/IL-2026-07-26T02-55-26Z--e96be2.md`
+
+### STEP7 — session memory docs: ENGREF01 report + PROD Promotion Gate plan (PROPOSED)
+
+> ⚠ TRAINING DATA — SANDBOX — NOT FOR PRODUCTION (BANXE_ENV=sandbox, data_class=TRAINING)
+
+- **Instrukciya:** record two memory documents verbatim per operator: docs/engine/ENGREF01-SESSION-REPORT-2026-07-26.md (STEP 1-6 session record: 12 PR #1134-#1145, IL 1083-1094, decisions D1/D2, barriers, gated remainder) + docs/engine/PROD-PROMOTION-GATE-PLAN.md (G0-G6 checklist, PROPOSED — activation is a separate operator authorization); link both from BANXE-AI-ENGINE-REFERENCE.md.
+- **Proof:** files committed verbatim; reference doc cross-link added; pre-commit PASS; ledger-build --check OK.
+- **Deviation:** none. Memory only — no activation.
+- **Refs:** ADR-171 (§STEP4/§STEP6/§PROD-CUTOVER), sandbox amendment S5/S7, ADR-119 Rule 8.

@@ -5,6 +5,7 @@
 > `~/banxe-dev/emi-banxe-engine.md` (non-repo location, uncommittable) as the canonical engine
 > reference and the **single Agent Registry**. The banxe-dev copy is legacy input — do not evolve it.
 > Companion: `BANXE-ENGINE-MATH.md`, `BANXE-SECURITY-OWASP.md`, `../../roadmap/BANXE-E0-E6.md`, ADR-171.
+> Session memory: `ENGREF01-SESSION-REPORT-2026-07-26.md` (STEP 1–6 record) · Prod gate: `PROD-PROMOTION-GATE-PLAN.md` (G0–G6 checklist, PROPOSED).
 
 ## 1. 7-layer target architecture (top→bottom)
 
