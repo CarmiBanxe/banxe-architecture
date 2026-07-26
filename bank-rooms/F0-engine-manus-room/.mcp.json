@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "banxe": {
+      "command": "python",
+      "args": ["-m", "banxe_mcp.server"],
+      "env": {
+        "BANXE_API_BASE": "${BANXE_API_BASE}",
+        "PYTHONPATH": "${BANXE_EMI_STACK_PATH}"
+      },
+      "_note": "STAGED registration (GL-21 S-B2). Not started, not cut over. Secrets via env only (0 in repo). banxe_mcp.server lives read-only in banxe-emi-stack; import pattern 'python -m banxe_mcp.server'. Midaz/MCP->ledger remains [counsel]."
+    }
+  }
+}

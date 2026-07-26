@@ -1,0 +1,18 @@
+{
+  "card_id": "1db70f56-fbdd-4535-8c1a-544720c79574",
+  "intent_id": "ca214acc-e3de-498f-8ede-ccaf4165a766",
+  "correlation_id": "d2950e74-eb73-43d4-a26e-2f7e21a1d6ce",
+  "summary": "Перевод 500 EUR → Ивану (sandbox, исполняется только после вашего подтверждения)",
+  "amount": "500",
+  "currency": "EUR",
+  "recipient": "Ивану",
+  "fee": "0.00",
+  "max_cost": "3.00",
+  "autonomy_level": "L2",
+  "expires_at": "2026-07-18T23:08:33.844505+00:00",
+  "actions": [
+    "confirm",
+    "change",
+    "revoke"
+  ]
+}
