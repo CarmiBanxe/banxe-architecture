@@ -75,7 +75,7 @@
 - `docs/roadmap/BANK-ORGANIZATION-ROADMAP.md` — сквозной roadmap организации банка (35 репо, S0–S7+Z, Director-centric, Fable5-canon-on-demand) — PROPOSED
 - `docs/architecture/DIRECTOR-CONTROL-PLANE.md` — спецификация «директора банка» (central control plane) — PROPOSED
 - `docs/architecture/BANK-NEXT-GEN-CONCEPT.md` — концепт банка нового поколения (Intent-First 4-слойка, Best-Decision математика, benchmark, дифференциатор) — PROPOSED
-- `docs/engine/BANKSY-TRAINING-BDSL.md` — методика дообучения движка-директора (BDSL training program, human-gated) — PROPOSED
-- `docs/engine/BEST-DECISION-CURRICULUM.md` — обязательный curriculum «лучшее решение» для директора и всех агентов флота — PROPOSED
+- `docs/engine/BANKSY-TRAINING-BDSL.md` — операционный 8-контурный цикл дообучения директора; **pointer-first (ADR-102)** → SSOT: canon/BEST-DECISION-SELF-LEARNING-LOOP + ADR-046 + sources/best-decision-concept-* — PROPOSED
+- `docs/engine/BEST-DECISION-CURRICULUM.md` — обучающая траектория флота; **pointer-first (ADR-102)** → SSOT: sources/best-decision-concept v1+v2+extension-2026-07-27 (единый источник определений) — PROPOSED
 
 *STEP8 | ENGREF01 | навигация без перемещений; рекомендации по уборке — в `DOCUMENTATION-AUDIT-2026-07-26.md` (все PROPOSED).*
