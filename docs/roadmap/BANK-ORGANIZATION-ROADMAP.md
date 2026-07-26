@@ -1,151 +1,184 @@
-# BANK-ORGANIZATION-ROADMAP — Организация банка BANXE (35 репо)
+# BANK-ORGANIZATION-ROADMAP — Организация банка нового поколения BANXE (35 репо)
 
 > **STATUS: PROPOSED — каждый спринт требует отдельной операторской авторизации; ничего не активировано.**
 > ⚠ SANDBOX / TRAINING context (BANXE_ENV=sandbox, data_class=TRAINING, PROD_READY=false).
-> STEP9, ENGREF01, 2026-07-26. Base: origin/main 08dbb44. Companion: `../architecture/DIRECTOR-CONTROL-PLANE.md`.
-> Барьеры действуют на всех спринтах: LedgerPort-only (ADR-013/I-28), `config/runtime_gate/` §72,
-> MEMORY.md, пути `decisions/` заморожены (73+ входящих ссылки), ADR-102 Duplication Audit перед любым переносом.
+> STEP9 v2, ENGREF01, 2026-07-26. СВОДИТ существующий канон (ссылки, не дубли) + закрывает 6 пробелов
+> аналитик Intent-First / BDSL / мировой-опыт. Companion: `../architecture/DIRECTOR-CONTROL-PLANE.md`.
+> Барьеры на всех спринтах: LedgerPort-only (ADR-013/I-28), `config/runtime_gate/` §72, MEMORY.md,
+> `decisions/` заморожены (73+ ссылки), ADR-102 Duplication Audit перед любым переносом.
 
-## ПРИНЦИП УПРАВЛЕНИЯ: DIRECTOR-CENTRIC (bank engine = директор банка)
+## §0. ПАРАМЕТРЫ БАНКА НОВОГО ПОКОЛЕНИЯ (существующий канон + закрытие пробелов)
 
-- Движок BANXE (engine-reference, ACTIVE в sandbox) = **ДИРЕКТОР БАНКА / central control plane**.
-- Директор ЗНАЕТ и УПРАВЛЯЕТ: все департаменты, все отделы, всех агентов-сотрудников, всех начальников (оркестраторов).
-- Все «бразды правления» сходятся к директору: единый cross-repo реестр агентов, оргструктура и оркестрация
-  подчинены director control plane (L6 orchestration: LangGraph / DeerFlow / Strands).
-- Директор — обязательный участник КАЖДОГО спринта: он потребитель ORG-MAP, владелец реестра агентов,
-  узел эскалации HITL, точка активации.
-- Иерархия управления: **Director → Department orchestrators (начальники департаментов) → Room/team leads
-  (начальники отделов) → agents (сотрудники)**. Каждый уровень — с паспортом и подчинением вверх к директору.
-
-## ИСТОЧНИК КАНОНОВ: Fable5 через фабрику
-
-- Банковские каноны (banking canon: организационные, регуляторные, процедурные правила банка) предоставляет
-  КОНСУЛЬТАНТ Fable5 ПО ЗАПРОСУ К ФАБРИКЕ.
-- Механизм: на этапах, где нужен новый banking-canon (оргправила, роли, разграничение полномочий, регуляторные
-  рамки), фабрика делает запрос → Fable5 (read-only advisory, confidence-scored, **<0.90 → HITL к оператору**)
-  → вердикт фиксируется как canon-артефакт (PROPOSED).
-- Fable5 НЕ пишет код и не активирует — только выдаёт каноны/вердикты; оператор ратифицирует.
-- В каждом спринте, где создаётся оргструктура/полномочия, обязателен шаг
-  **"REQUEST banking-canon from Fable5 via factory"** перед фиксацией.
-
-## Классификация 35 репо (5 категорий + архив)
-
-| Категория | Репо |
+Из существующего канона:
+| Параметр | Источник |
 |---|---|
-| **CORE-BANK** | banxe-architecture (штаб/HR/конституция) · banxe-emi-stack (compliance/EMI/back-office) · banxe-ui (фронт) · banxe-payment-core (платежи) · banxe-trading-backend / banxe-trading-frontend (трейдинг) |
-| **PLATFORM/INFRA** | banxe-ai-infrastructure (фабрика агентов) · banxe-platform · banxe-infra · banxe-monitoring · banxe-collaboration |
-| **GOVERNANCE** | factory (CANON/guardians) · banxe-business-processes (ArchiMate) · banxe-repo-template |
-| **ENGINE/RESEARCH** | OpenManus-RL (153MB RL) · MetaClaw (71MB) · MiroFish/banxe-mirofish (swarm) · developer-core · OpenManus |
-| **KNOWLEDGE/LEGAL** | legal-canon · legal-reference-fr · banxe-lexisnexis-distro · banxe-training-data · crypto-ops-monitor |
-| **ARCHIVE (freeze, low-prio)** | banxe-archive-2026-04-18 · collaboration · legi_fr · gpt-archive-toolkit · france.code-civil · obsidian-vault · braslina · guiyon · ss1 |
+| AI-native: сотрудники = AI-агенты + human-double HITL | `docs/master-document/01-master-full.md` v3.0 |
+| Composable open-source (не монолит) | `COMPOSABLE-ARCH.md` (6 независимых оркестрируемых контуров), ADR-013 |
+| Event-driven: Midaz / Kafka / Temporal | master-doc v3.0; `docs/engine/BANXE-AI-ENGINE-REFERENCE.md` L1–L2 |
+| Explainable & compliant-by-design (EU AI Act, GDPR, CASS 15, SM&CR) | ADR-169, ADR-171, `banxe_audit.hitl_decisions` |
+| Confidence-gated autonomy (0.75/0.90 + HITL) | `config/gates/confidence-thresholds.yaml` (sandbox-active); agents.md BUG-007 |
+| Fail-closed-over-best-decide | `docs/canon/BANXE-BEST-DECISION-AND-ENGINE-PRINCIPLES.md` |
+| 3 Lines of Defence + SM&CR owners | `governance/CANONICAL-ORG-CHART-v2.md` (NORMATIVE) |
+| Federated / privacy-preserving | engine-reference L4 (FATE, VaultGemma), analytics #3 |
+| Foundation-model-driven (PRAGMA-style) | `docs/engine/BANXE-ENGINE-MATH.md` §10, roadmap E5 |
+| Текущее покрытие ~30–35% (payment rails 0%, Treasury 0%, CBS ~5% — GAPS) | master-doc v3.0; ROADMAP-STATUS-2026-06-23 S-PROD-3 |
 
-## Наблюдения аудита (входные факты)
+Добавлено из аналитик (закрытие пробелов):
+- **INTENT-FIRST / AGENT-AS-INTERFACE:** chat-first Intent Layer вместо UI-кликов; AI-ассистент = точка входа
+  (Revolut AIR / Starling / bunq Finn 2026); UI = fallback. Якоря: ADR-167 (assistant-ui intent-first),
+  `docs/adr/ADR-172-client-intent-record-schema.md`, `tools/sandbox/intent_slice/` (D2-CS6).
+- **DATA SOVEREIGNTY:** on-premises AI (Legion/evo1/evo2), zero 3rd-party storage — trust premium
+  (vs BBVA/OpenAI cloud). Якоря: VietBank-модель (analytics #3 E11), LiteLLM self-host маршруты.
+- **COMPLIANCE-NATIVE (не bolt-on):** governance встроен в Intent Layer с рождения (vs retrofitted AI
+  Revolut 65%). Якоря: Ruflo/ARL mandatory middleware, ADR-030 Trust Zones.
 
-- Единый каркас: почти все репо имеют AGENTS.md + docs/canon/ (CANON-TOPOLOGY/MODULES/OVERRIDES) —
-  controlled-copy из banxe-repo-template.
-- Штат агентов в 3 местах: architecture (agents/passports+souls — HR-центр) / emi-stack (agents/compliance —
-  живой код) / ai-infrastructure (сборка+деплой). **НЕТ единого cross-repo реестра.**
-- Canon: 3 корня в architecture рассинхронены (STEP8: CANON.md 20 строк, CORE.md 37 строк);
-  + controlled-copies по репо — синхронность не проверена.
+## §1. DIRECTOR-CENTRIC УПРАВЛЕНИЕ
 
----
+- **Директор = `ceo_orchestration_agent`** (существующий: `agents/souls/ceo-orchestration-agent.md`,
+  Level 1 top orchestrator; статус **PROPOSED/STUB — GAP-078, service-кода нет**; human double =
+  **CEO Moriel Carmi, SMF1**; активация = HITL-L4 гейт).
+- К директору сходятся **8 department heads** (`governance/CANONICAL-ORG-CHART-v2.md`, NORMATIVE);
+  independent lines (internal audit, risk oversight, board reporting) — вне департаментов, к Board.
+- Director control plane = engine-reference **L6 orchestration** (ACTIVE sandbox). Директор видит:
+  8 департаментов, весь реестр агентов, статусы; управляет через оркестрацию; **НЕ активирует сам**
+  (I-27/HITL; активация — операторские гейты).
+- Иерархия: **Level 0 Board/люди → L1 Executive AI (CEO-агент) → L2 Department Heads → L3 Team Leads →
+  L4 Workers**; human_double только на L1/L2 и независимых линиях (org-chart-v2 принцип 4).
 
-## СПРИНТЫ (каждый = отдельная будущая программа, PROPOSED)
+## §2. ИСТОЧНИК КАНОНОВ: Fable5 через фабрику
 
-### S0 — Инвентаризация (паспорт 35 репо)
-- **Цель:** зафиксировать паспорт всех 35 репо (готов), классификацию CORE/PLATFORM/GOV/ENGINE/KNOWLEDGE/ARCHIVE.
-- **Входы:** repo-аудит (готов), классификация выше.
-- **Выходы:** REPO-PASSPORT-REGISTER.md (35 строк: репо, категория, объём, статус, владелец-департамент-кандидат).
-- **Director:** утверждает классификацию; реестр репо становится частью control plane.
-- **Fable5:** не требуется (техническая инвентаризация).
-- **Риски:** незамеченные приватные/локальные репо → сверка с `config/fleet/server-inventory.yaml`.
-- **Зависимости:** нет. **DoD:** 35/35 репо в реестре, категория у каждого, Director-утверждение зафиксировано.
+Banking-canon (оргправила, роли, полномочия, FCA/SM&CR-рамки) — запрос фабрики → **Fable5** (read-only
+advisory, confidence-scored, **<0.90 → HITL**) → PROPOSED canon-артефакт → оператор ратифицирует.
+Fable5 не пишет код и не активирует. Хуки — в спринтах §4. Прецедент модели: D1=0.95 auto / D2=0.80 HITL (ADR-171).
+
+## §3. РЕГУЛЯТОРНЫЙ СЛОЙ FCA-2026 (каждый пункт → banking-canon-запрос к Fable5; PROPOSED; привязка к датам)
+
+| Тема | Содержание | Canon-запрос |
+|---|---|---|
+| FCA agentic-AI payments | PSR 2017; SCA для machine-initiated платежей; consent-at-delegation | F5-REG-1 |
+| SM&CR personal liability | связка SMF-holder ↔ Decision Lineage (каждое агентное решение прослеживается к SMF-человеку) | F5-REG-2 |
+| Safeguarding PS25/12 | дедлайн 2026-05-07 (S-PROD-1 OVERDUE) — приоритет back-office волны (D1) | F5-REG-3 |
+| Consumer Duty reversibility | `revocation_method` обязателен в ClientIntentRecord | F5-REG-4 |
+| DORA / PSD3 | continuous reconciliation, операционная устойчивость | F5-REG-5 |
+
+## §4. СПРИНТЫ (все PROPOSED, по-спринтно operator-gated)
+
+Формат каждого: цель · входы (ссылки) · выходы · роль Director · Fable5-хуки · риски · зависимости · DoD.
+
+### S0 — Инвентаризация 35 репо
+Цель: паспорт+классификация. Входы: repo-аудит; `config/fleet/server-inventory.yaml`.
+Классификация: **CORE-BANK** banxe-architecture, banxe-emi-stack, banxe-ui, banxe-payment-core,
+banxe-trading-backend/frontend · **PLATFORM/INFRA** banxe-ai-infrastructure, banxe-platform, banxe-infra,
+banxe-monitoring, banxe-collaboration · **GOVERNANCE** factory, banxe-business-processes, banxe-repo-template ·
+**ENGINE/RESEARCH** OpenManus-RL, MetaClaw, MiroFish/banxe-mirofish, developer-core, OpenManus ·
+**KNOWLEDGE/LEGAL** legal-canon, legal-reference-fr, banxe-lexisnexis-distro, banxe-training-data,
+crypto-ops-monitor · **ARCHIVE(freeze)** banxe-archive-2026-04-18, collaboration, legi_fr,
+gpt-archive-toolkit, france.code-civil, obsidian-vault, braslina, guiyon, ss1.
+Выход: REPO-PASSPORT-REGISTER.md. **Director: утверждает классификацию.** Fable5: не требуется.
+Риск: незамеченные репо. DoD: 35/35 в реестре с категорией.
 
 ### S1 — Технологическая карта (cross-repo ORG-MAP)
-- **Цель:** карта репо→департамент→этаж; свести bank-rooms/F0–F4 + SERVICE-MAP + archimate + banxe-business-processes.
-- **Входы:** S0-реестр; bank-rooms (17 комнат на main после D2); SERVICE-MAP.md; archimate/banxe-model.xml.
-- **Выходы:** ORG-MAP.md (+ диаграмма); маппинг каждого CORE/PLATFORM-репо на департамент/этаж.
-- **Director = владелец ORG-MAP** (карта живёт в control plane, обновляется только через него).
-- **Fable5: REQUEST banking-canon** — канон разбиения банка на департаменты/этажи (соответствие
-  реальной банковской оргмодели: front/middle/back-office, 3LoD).
-- **Риски:** двойная принадлежность репо; расхождение bank-rooms ↔ ArchiMate. **Зависимости:** S0.
-- **DoD:** каждый не-ARCHIVE репо имеет ровно один департамент; Fable5-canon ратифицирован оператором.
+Цель: репо→департамент (из 8, org-chart-v2)→bank-rooms F0–F4→emi-stack services→`SERVICE-MAP.md`→
+`archimate/banxe-model.xml`. Выход: ORG-MAP.md. **Director = владелец ORG-MAP.**
+**Fable5 F5-ORG-1: canon department↔repo mapping.** Риск: двойная принадлежность. Зависимость: S0.
+DoD: каждый не-ARCHIVE репо → ровно один департамент; canon ратифицирован.
 
-### S2 — Перепись штата (единый cross-repo реестр агентов)
-- **Цель:** собрать все souls/passports/swarms из architecture + emi-stack + ai-infrastructure → единый реестр,
-  подчинённый Director; выявить пробелы.
-- **Входы:** agents/passports+souls (architecture), agents/compliance (emi-stack), деплой-манифесты (ai-infrastructure).
-- **Выходы:** AGENT-CENSUS.md + machine-readable реестр (расширение Agent Registry из BANXE-AI-ENGINE-REFERENCE.md —
-  единый, вторых реестров не создавать); список пробелов: агент-без-инструкции / инструкция-без-агента /
-  дубли architecture↔emi-stack↔ai-infrastructure (изв. прецедент: aml_orchestrator 3-паспорта — HELD, operator/MLRO).
-- **Director:** владелец реестра; каждый найденный агент приписывается узлу иерархии.
-- **Fable5:** не обязателен (перепись — факт); спорные дубли → HITL оператору.
-- **Риски:** stub-паспорта со status:active (читать тело, не поле); фантомные агенты. **Зависимости:** S1.
-- **DoD:** 100% найденных агентов в реестре; каждый пробел классифицирован; дубли — списком на операторское решение.
+### S2 — Перепись штата + закрытие org-chart-v2 Sprint-2 TODO
+Цель: единый cross-repo реестр агентов (souls/passports/swarms из architecture+emi-stack+ai-infrastructure;
+расширение реестра `BANXE-AI-ENGINE-REFERENCE.md` §2 — второго не создавать); **СОЗДАТЬ недостающие
+department-head паспорта: ceo / cfo / coo / cro / board_reporting / internal_audit / risk_oversight (PROPOSED)**;
+пробелы: агент-без-инструкции / инструкция-без-агента / дубли (изв. HELD: aml_orchestrator 3-паспорта — operator/MLRO).
+**Director: владелец реестра.** Fable5: не обязателен (спорные дубли → HITL).
+Риск: stub-паспорта со status:active (читать тело). Зависимость: S1. DoD: 100% агентов в реестре; head-паспорта созданы (PROPOSED).
 
-### S3 — Оргструктура (иерархия управления)
-- **Цель:** формализовать Director → department orchestrators → room/team leads → agents; посчитать
-  департаменты/отделы фактом из S2.
-- **Входы:** S1 ORG-MAP, S2 реестр.
-- **Выходы:** ORG-STRUCTURE.md (+ обновление AGENT-ORG-STRUCTURE.md корня — additive); паспорта оркестраторов
-  департаментов (PROPOSED, no activation).
-- **Director:** вершина иерархии; все orchestrators подчинены ему (reports_to цепочка замыкается на Director).
-- **Fable5: REQUEST banking-canon** — канон иерархии полномочий и разграничения ролей
-  (кто может что решать; совместимость с HITL-порогами и Trust Zones ADR-030).
-- **Риски:** конфликт с существующими Trust Zone/HITL канонами → additive, не переопределять. **Зависимости:** S2.
-- **DoD:** каждый агент из S2 имеет путь подчинения к Director; Fable5-canon ратифицирован.
+### S3 — Оргструктура
+Цель: связать Director→8 heads→L3 team-leads→L4 workers по org-chart-v2; human_double только L1/L2 +
+независимые линии. Выход: ORG-STRUCTURE.md (+additive к `AGENT-ORG-STRUCTURE.md`).
+**Director: вершина reports_to-цепочки.** **Fable5 F5-ORG-2: canon иерархии полномочий / 3LoD.**
+Риск: конфликт с Trust Zones/HITL — только additive. Зависимость: S2. DoD: каждый агент имеет путь к Director.
 
-### S4 — Должностные инструкции (паспорта/souls)
-- **Цель:** дописать недостающие passports/souls по agents/_template/SOUL.md; в каждый паспорт — поле
-  **reports_to** (цепочка вверх к Director).
-- **Входы:** S2 список пробелов, S3 иерархия, agents/_template/SOUL.md.
-- **Выходы:** новые/дополненные паспорта (все PROPOSED/no-activation; PASSPORT > SOUL прецедентность сохраняется).
-- **Director:** валидирует полноту штата (ни одного сотрудника без инструкции).
-- **Fable5: REQUEST banking-canon** — канон шаблона должностной инструкции (обязательные поля банковской
-  должностной: полномочия, лимиты, эскалация, reports_to).
-- **Риски:** массовое редактирование паспортов задевает governance-гейты → по-департаментно, отдельными PR.
-- **Зависимости:** S3. **DoD:** 0 агентов без паспорта; 100% паспортов с reports_to; шаблон-canon ратифицирован.
+### S4 — Должностные инструкции
+Цель: дописать souls/passports по `agents/_template/` + `agents/souls/_TEMPLATE.md`; обязательные поля:
+**reports_to** (вверх к директору), **SMF-mapping**, **trust_zone**, **level**. Все PROPOSED (PASSPORT > SOUL).
+**Director: валидатор полноты штата.** **Fable5 F5-ORG-3: canon шаблона должности** (полномочия/лимиты/эскалация).
+Риск: массовые правки паспортов → по-департаментно. Зависимость: S3. DoD: 0 агентов без паспорта, 100% с reports_to.
 
 ### S5 — Разнос кода из подвала
-- **Цель:** бесхозный код → в свой репо/room/agent; зафиксировать владение в ORG-MAP; освободить «коробки».
-- **Входы:** S1 ORG-MAP, S2 реестр, Phase-2 basement→rooms наработки (docs/roadmap/PHASE2-*).
-- **Выходы:** перенос-PRы (каждый с ADR-102 Duplication Audit); обновлённый ORG-MAP (код→владелец).
-- **Director:** реестр владения кодом — каждый модуль имеет агента/room-владельца.
-- **Fable5:** не обязателен; спорное владение → HITL.
-- **Риски:** скрытые консьюмеры (ADR-102 fail-closed); emi-stack scope (только back-office до новых гейтов).
-- **Зависимости:** S1–S3. **DoD:** 0 бесхозных модулей в CORE/PLATFORM-репо; каждый перенос с Duplication Audit.
+Цель: бесхозный код → repo/room/agent; **закрыть GAP-078 (service-код ceo_orchestration_agent)**;
+владение в ORG-MAP. Входы: ORG-MAP, реестр, Phase-2 наработки (docs/roadmap/PHASE2-*).
+**Director: реестр владения кодом.** Fable5: не обязателен. Риск: скрытые консьюмеры (ADR-102 fail-closed);
+emi-stack scope = back-office до новых гейтов. Зависимости: S1–S3. DoD: 0 бесхозных модулей; GAP-078 закрыт (PROPOSED-код).
 
-### S6 — Уборка документации
-- **Цель:** R1 (canon-консолидация, operator-review 20+37 diff-строк) + R2 (слияние ADR-индексов) +
-  R3 (перенос 11 корневых кандидатов) в architecture; STEP8-аудит повторить для каждого CORE/PLATFORM-репо;
-  cross-repo doc-index; сверка controlled-copy canon по всем репо.
-- **Входы:** DOCUMENTATION-AUDIT-2026-07-26.md (R1–R3), DOCUMENTATION-MASTER-INDEX.md, banxe-repo-template.
-- **Выходы:** консолидированный canon; единый ADR-индекс; чистый корень; CROSS-REPO-DOC-INDEX.md; отчёт синхронности controlled-copies.
-- **Director:** потребитель — control plane ссылается только на канонические пути.
-- **Fable5:** не обязателен (техуборка); canon-консолидация контента — operator review.
-- **Риски:** 73 ссылки на decisions/ (заморожено); ссылки при переносах (по одному файлу за change-set).
-- **Зависимости:** независим (можно параллельно S2+). **DoD:** R1–R3 закрыты; controlled-copies синхронны или расхождения ратифицированы.
+### S-INTENT — Intent Layer (Intent-First парадигма)
+Цель: реализовать **ClientIntentRecord** (dataclass: intent_id, client_id, intent_type, natural_language,
+parsed_params, consent_timestamp, consent_method, scope_limits, revocation_method, expires_at,
+linked_agent_id, linked_budget_policy_id) — базис: `docs/adr/ADR-172-client-intent-record-schema.md`,
+`tools/sandbox/intent_slice/` (уже на main, D2-CS6).
+Поток: **Intent Capture → Business Process Repository lookup → Agent Budget check → Execution → Decision Lineage.**
+SCA consent-at-delegation (PSR 2017). **Director: intent-маршрутизация через L6.**
+**Fable5 F5-REG-1: canon FCA agentic-payments.** Риск: W-05 prod-guard (снят только в sandbox). Зависимости: S13-00, S-COST.
+DoD: intent-поток работает в sandbox на TRAINING; каждый intent в lineage.
 
-### S7 — Валидация (полнота штата и управления)
-- **Цель:** доказать: каждый агент = {место + инструкция + код + reports_to→Director}; ноль бесхозных коробок;
-  ноль сотрудников без кабинета; cross-repo canon синхронен; **Director control plane видит 100% штата**.
-- **Входы:** выходы S1–S6.
-- **Выходы:** VALIDATION-REPORT.md с метриками (штат/покрытие/пробелы=0); go/no-go к PROD-gate G-серии.
-- **Director:** субъект валидации — прогон видимости 100% через control plane.
-- **Fable5:** финальный advisory-вердикт полноты оргмодели (confidence-scored; <0.90 → HITL).
-- **Риски:** остаточные HELD-решения (aml_orchestrator и т.п.) — фиксируются как явные исключения, не блокируют.
-- **Зависимости:** S1–S6. **DoD:** все метрики зелёные или исключения ратифицированы оператором.
+### S-COST — AI Cost Governance
+Цель: свести `governance/ai-cost-policy/agent-budget-policy.md` + ADR-037 + LiteLLM BudgetManager:
+max_tokens_per_task, max_cost_per_job, retry_ceiling, **halt_on_exceed**, escalation_path; защита от
+looping-agent (кейс $30K/6ч). Привязка Safeguarding PS25/12 (стоимость не может съесть safeguarding-объёмы).
+Смежность: ADR-030 runtime_gate budgets (**чужой трек §72 — интеграция только joint change-set**).
+**Director: бюджетная видимость per-agent/per-case.** Fable5: не обязателен. Зависимости: нет (ранний).
+DoD: халт-контур в sandbox; 0 путей исполнения мимо budget-check.
 
-### Фаза Z — ARCHIVE-репо
-- Только опись + заморозка (9 репо), без разноса; включение любого архивного репо в работу = отдельное операторское решение.
+### S-BDSL — Best-Decision Self-Learning Loop (спецификация аналитики BDSL — реализовать)
+- DecisionRecord + OutcomeRecord schema (append-only, hash-chain `prev_record_hash`, WORM/Kafka);
+- MAUT-утилиты (U=Σ wj·uj), decision_space, Pareto frontier, stopping_rule (satisficing vs full-search);
+- MetricsEngine: Regret · Brier ≤0.15 · ECE ≤0.08 · Pareto Efficiency ≥0.95 · Escalation Recall ≥0.98 ·
+  Minimax suboptimal ≤5%;
+- **Best-Decision Test Gate (BDT):** authoring blocking + runtime 24h, окно 90d;
+- Confidence tiers: AUTO ≥0.90 / REVIEW 0.70–0.90 / BLOCK <0.70; **compliance/payment AUTO ≥0.95**;
+- **NEVER-AUTONOMOUS LIST** (payments/compliance всегда human; RLHF self-mod human-gated);
+- RLHF Reward Model (human-approved only); bias probes (prospect/anchoring/omission, contrastive);
+- ImprovementProposal → Human Review Queue (SLA: CRITICAL 4h / MAJOR 24h);
+- EU AI Act Art.9/14/15/17 + GDPR Art.22 маппинг.
+**Director: потребитель метрик, узел Review Queue.** **Fable5 F5-BDSL-1: canon Never-Autonomous + tiers.**
+Зависимости: S-LINEAGE (schema), S-COST. DoD: BDT-гейт активен в sandbox; метрики считаются; лист ратифицирован.
+
+### S13-00 — Business Process Repository
+Цель: связать репо `banxe-business-processes`; ArchiMate import; **rule-bound interpreter поверх LLM-intent**
+(детерминизм для FCA/IMF); BP-rules (напр. BP-042 recurring_payment_under_1000).
+**Director: BPR = его свод процессов.** Fable5: canon процессной нотации (при необходимости).
+Зависимость: S1. DoD: BPR-lookup доступен intent-потоку.
+
+### S-LINEAGE — расширение Decision Lineage
+Цель: апгрейд `banxe_audit.hitl_decisions` до **AgentDecisionRecord**: + triggering_event,
+intent_id (→ClientIntentRecord), policies_evaluated (→BPR), reasoning_summary, confidence_score,
+action_taken, action_params, halt_triggered, halt_reason, outcome; согласовать со схемой Intent-First.
+Метод: **DELTA ALTER** (прецедент engine-ref +8; вторая таблица запрещена, ADR-102); sandbox → prod по G1.
+**Director: lineage = его аудиторская память.** Fable5 F5-REG-2 (SM&CR-связка). Зависимость: S-INTENT (intent_id).
+DoD: расширенная схема в sandbox; каждый intent-путь пишет полный record.
+
+### S6 — Уборка документации *(перенесено из v1-каркаса)*
+R1 canon-консолидация (operator-review 20+37 diff-строк) + R2 слияние ADR-индексов + R3 перенос 11 корневых
+кандидатов + STEP8-аудит для каждого CORE/PLATFORM репо + cross-repo doc-index + сверка controlled-copy canon
+(banxe-repo-template). Зависимости: нет. DoD: R1–R3 закрыты; controlled-copies синхронны/ратифицированы.
+
+### S7 — Валидация *(перенесено из v1-каркаса)*
+Каждый агент = {место + инструкция + код + reports_to→Director}; 0 бесхозных коробок; 0 сотрудников без
+кабинета; cross-repo canon синхронен; **Director control plane видит 100% штата**; intent/lineage/BDT-контуры
+зелёные в sandbox. Выход: VALIDATION-REPORT.md → go/no-go к PROD-gate G0–G6. Fable5: финальный advisory (confidence-scored).
+
+### Фаза Z — ARCHIVE (9 репо)
+Только опись + заморозка; включение любого архивного репо = отдельное операторское решение.
+
+## §5. Сводка объёма и порядок
+
+**12 спринтов** (S0–S5, S-INTENT, S-COST, S-BDSL, S13-00, S-LINEAGE, S6, S7) + фаза Z · 35 репо ·
+**Fable5-canon-запросы: 5 регуляторных (F5-REG-1…5) + 3 организационных (F5-ORG-1…3) + 1 BDSL + 1 финальный
+advisory (S7) = 10 хуков** · Director-роль явно прописана во всех 12 спринтах.
+Рекомендуемый порядок волн: S0→S1→S2 (фундамент) ∥ S-COST+S6 (независимые, ранние) → S3→S4 →
+S13-00→S-INTENT→S-LINEAGE→S-BDSL (intent-контур) → S5 → S7. Всё PROPOSED; авторизация по-спринтно.
+
+> **OPEN POINT (обрыв задания):** формулировка STEP9-v2 оборвалась на S-LINEAGE («согласовать со схемой
+> Intent-First») — хвост (возможные доп. спринты/инструкции после S-LINEAGE и спецификация второго документа)
+> не получен. S6/S7/Z сохранены из v1-каркаса как best-decision; при доставке хвоста — дополнить отдельным коммитом.
 
 ---
-
-## Сводка объёма
-
-8 спринтов (S0–S7) + фаза Z · 35 репо (26 рабочих + 9 архивных) · 3 обязательных Fable5-canon-запроса
-(S1 департаменты, S3 полномочия, S4 шаблон инструкции) + 1 финальный advisory (S7) · Director-роль явно
-прописана во всех 8 спринтах. Всё PROPOSED; авторизация — по-спринтно.
-
----
-*STEP9 | ENGREF01 | PROPOSED | sandbox-labeled | Director-centric + Fable5-canon-on-demand.*
+*STEP9 v2 | ENGREF01 | PROPOSED | sandbox-labeled | сведение канона + 6 пробелов аналитик; Director-centric + Fable5-canon-on-demand.*
