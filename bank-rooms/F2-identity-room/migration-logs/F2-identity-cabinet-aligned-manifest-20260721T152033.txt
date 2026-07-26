@@ -1,0 +1,23 @@
+### F2-IDENTITY CABINET-ALIGNED MIGRATION R1
+STAMP: 20260721T152033
+SOURCE: /home/mmber/banxe-emi-stack
+TARGET: /home/mmber/wt/architecture-bank-operating-model-20260718/bank-rooms/F2-identity-room
+
+## COPIED FILES
+COPIED: services/kyc/kyc_provider_port.py -> shared/ports/kyc_provider_port.py
+COPIED: services/kyc/kyc_port.py -> shared/ports/kyc_port.py
+COPIED: services/kyc/factory.py -> shared/ports/factory.py
+COPIED: api/models/kyc.py -> shared/api-models/kyc.py
+COPIED: api/models/customers.py -> shared/api-models/customers.py
+COPIED: api/models/auth.py -> shared/api-models/auth.py
+COPIED: api/routers/kyc.py -> shared/api-routers/kyc.py
+COPIED: api/routers/kyb_onboarding.py -> shared/api-routers/kyb_onboarding.py
+COPIED: api/routers/customers.py -> shared/api-routers/customers.py
+COPIED: api/routers/customer_lifecycle.py -> shared/api-routers/customer_lifecycle.py
+COPIED: api/routers/auth.py -> shared/api-routers/auth.py
+COPIED: api/routers/adverse_media.py -> shared/api-routers/adverse_media.py
+
+## GENERATED ROOM NOTES
+GENERATED: A-IDV/README-MIGRATED-RUNTIME-SCOPE.md
+GENERATED: A-KYC/README-MIGRATED-RUNTIME-SCOPE.md
+GENERATED: A-KYB/README-MIGRATED-RUNTIME-SCOPE.md

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="560" viewBox="0 0 860 560" font-family="sans-serif" font-size="13">
+  <rect x="0" y="0" width="860" height="560" fill="#ffffff"/>
+  <text x="430" y="30" text-anchor="middle" font-size="18" font-weight="bold">F2 / identity-room — overview (IDV / KYC / KYB / consent)</text>
+  <text x="430" y="50" text-anchor="middle" fill="#666">Docs-only cabinet · runtime lives in basement · delegation to licensed providers</text>
+
+  <!-- Basement -->
+  <rect x="30" y="80" width="360" height="200" rx="8" fill="#eef3fb" stroke="#3b6db3"/>
+  <text x="210" y="104" text-anchor="middle" font-weight="bold">BASEMENT — ~/banxe-emi-stack (runtime)</text>
+  <text x="48" y="130">api/routers/{auth,customers,customer_lifecycle,</text>
+  <text x="48" y="148">              kyc,kyb_onboarding,adverse_media}.py</text>
+  <text x="48" y="170">api/models/{auth,customers,kyc}.py</text>
+  <text x="48" y="192">services/kyc/{kyc_provider_port,kyc_port,factory}.py</text>
+  <text x="48" y="214" fill="#b00">gated: mock_kyc_workflow.py · legacy/* · sumsub_http_stub.py</text>
+  <text x="48" y="236" fill="#b00">(excluded — see migration-logs/…gated-exclusions)</text>
+  <text x="48" y="262" fill="#333">NEVER modified from the room</text>
+
+  <!-- Cabinet -->
+  <rect x="470" y="80" width="360" height="200" rx="8" fill="#eefbef" stroke="#3b9b57"/>
+  <text x="650" y="104" text-anchor="middle" font-weight="bold">CABINET — architecture repo (this room)</text>
+  <text x="488" y="130">shared/ports/*  (mirror)</text>
+  <text x="488" y="150">shared/api-routers/*  (mirror)</text>
+  <text x="488" y="170">shared/api-models/*  (mirror)</text>
+  <text x="488" y="192">A-IDV / A-KYC / A-KYB README-MIGRATED-SCOPE</text>
+  <text x="488" y="214">README · agents-identity-room.yaml · hitl-summary</text>
+  <text x="488" y="240" fill="#333">runtime-boundary mirrors, NOT working code</text>
+  <text x="488" y="262" fill="#333">reuse-not-rebuild (ADR-102) · ADR-173</text>
+
+  <!-- copy arrow -->
+  <line x1="390" y1="180" x2="470" y2="180" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+  <text x="430" y="172" text-anchor="middle" fill="#555">copy R1</text>
+
+  <!-- Providers -->
+  <rect x="30" y="320" width="360" height="90" rx="8" fill="#fbf6ee" stroke="#b3843b"/>
+  <text x="210" y="344" text-anchor="middle" font-weight="bold">LICENSED PROVIDERS (delegated)</text>
+  <text x="48" y="368">KYCProviderPort / RegistryProviderPort → SumSub, registry</text>
+  <text x="48" y="390" fill="#333">no in-house OCR/biometrics/registry scraping</text>
+  <line x1="210" y1="280" x2="210" y2="320" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+  <text x="250" y="304" fill="#555">consumes, not reimplements</text>
+
+  <!-- HITL -->
+  <rect x="470" y="320" width="360" height="120" rx="8" fill="#fbeef0" stroke="#b33b57"/>
+  <text x="650" y="344" text-anchor="middle" font-weight="bold">HITL gates (I-27: AI proposes, human decides)</text>
+  <text x="488" y="368">HITL-002 EDD · HITL-006 KYC reject (HIGH/PROHIBITED)</text>
+  <text x="488" y="388">HITL-007 PEP onboarding · HITL-014 AI model update</text>
+  <text x="488" y="410" fill="#b00">consent/DPO = governance gap (register #5, DPO VACANT)</text>
+  <text x="488" y="430" fill="#333">gate IDs mirror HITL-MATRIX.yaml (unchanged)</text>
+
+  <!-- Posture -->
+  <rect x="30" y="450" width="800" height="90" rx="8" fill="#f4f4f4" stroke="#999"/>
+  <text x="48" y="474" font-weight="bold">Posture — internal policy vs legal [counsel]</text>
+  <text x="48" y="496">IDV/KYC: non-Annex-III, high-risk internally by policy (internal stance, not legal advice) [counsel]</text>
+  <text x="48" y="514">KYB: read WITH merchant-acquiring permissions, not in isolation [counsel]</text>
+  <text x="48" y="532">correlation_id = technical fault tracing only; decision traceability needs initiator/input/decision/override [counsel|external]</text>
+
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>
