@@ -1,0 +1,8 @@
+room: F1/customer-ops-room
+sprint_refs: [sprint-3]
+key_agents:
+  - CustomerLifecycleAgent
+  - savings_agent
+  - insurance_agent
+register_refs: ["#4"]
+notes: "savings/insurance dormant until evidence pack + permissions map complete (register #4)."
