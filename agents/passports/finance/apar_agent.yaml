@@ -54,3 +54,8 @@ ports:
     - Expense Anomaly Agent — unusual invoice patterns
 swarm: "agents/swarms/accounting-swarm.yaml"
 fca_basis: "PSR 2017 Reg.71, MLR 2017 record-keeping, HITL-016"
+
+# ── STEP13 scope declaration (NO-CREDIT-PRODUCTS-CANON, 2026-07-27) ──
+scope_limits:
+  credit_sub_function: disabled   # EMI no-credit canon; declaration only — code untouched
+  note: "AP/AR only; NO credit-terms decisioning / creditworthiness assessment (EU AI Act Annex III §5 out-of-scope per docs/canon/NO-CREDIT-PRODUCTS-CANON.md)"

@@ -127,7 +127,8 @@ lineage before this agent emits records. Review: 2026-10-01.
 | 23 | finance/consolidation_agent | `agents/passports/finance/consolidation_agent.yaml` | AMBER | **DEFER** |
 | 24 | finance/beancount_export_agent | `agents/passports/finance/beancount_export_agent.yaml` | GREEN | **EXCLUDE** |
 
-⚠️ #19 `finance/apar_agent` ENROL with CREDIT-GAP caveat: AP/AR decisions are consequential
+#19 `finance/apar_agent` ENROL **without credit-caveat** (STEP13: credit sub-function disabled per
+NO-CREDIT-PRODUCTS-CANON; caveat below is historical): AP/AR decisions are consequential
 financial decisions (ENROL). However, embedded credit-terms sub-function is unaccounted under
 EU AI Act Annex III §5. See §CREDIT-GAP. Enrolment proceeds for AP/AR; credit sub-function
 requires separate operator decision.
@@ -282,7 +283,14 @@ Exceptions to verify before any scope change:
 
 ## CREDIT-GAP — EU AI Act Annex III §5 HIGH-RISK Blocker
 
-### Status: BLOCKER (CREDIT circuit only)
+### Status: RESOLVED (2026-07-27, STEP13) — via `docs/canon/NO-CREDIT-PRODUCTS-CANON.md` (out-of-scope)
+
+> **RESOLVED:** BANXE EMI provides NO credit products (operator decision, CEO; Fable5 0.93 C1/C2) →
+> Annex III §5 does not apply (exclusion from scope, not deferral). apar_agent ENROLs without
+> credit-caveat (credit sub-function disabled by canon); channel_c_sepa_orchestrator drawdown-routing
+> declared out-of-scope. Historical blocker text below preserved append-only for audit.
+
+### Historical status: BLOCKER (CREDIT circuit only)
 
 > This blocker does NOT affect AML / KYC / PAYMENT / COMPLIANCE / REPORTING BDSL activation.
 > It blocks only the CREDIT sub-function within `finance/apar_agent` and any future
