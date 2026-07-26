@@ -102,7 +102,7 @@ department-head паспорта: ceo / cfo / coo / cro / board_reporting / inte
 
 ### S4 — Должностные инструкции
 Цель: дописать souls/passports по `agents/_template/` + `agents/souls/_TEMPLATE.md`; обязательные поля:
-**reports_to** (вверх к директору), **SMF-mapping**, **trust_zone**, **level**. Все PROPOSED (PASSPORT > SOUL).
+**reports_to** (вверх к директору), **SMF-mapping**, **trust_zone**, **level**, **curriculum-статус** (BEST-DECISION-CURRICULUM пройден/нет — допуск к tier AUTO). Все PROPOSED (PASSPORT > SOUL).
 **Director: валидатор полноты штата.** **Fable5 F5-ORG-3: canon шаблона должности** (полномочия/лимиты/эскалация).
 Риск: массовые правки паспортов → по-департаментно. Зависимость: S3. DoD: 0 агентов без паспорта, 100% с reports_to.
 
@@ -169,7 +169,7 @@ DoD: расширенная схема в sandbox; каждый intent-путь 
 
 ### S-TRAIN — Дообучение движка-директора Banksy (BDSL as training program)
 Цель: непрерывно дообучать директора (`ceo_orchestration_agent` + engine control-plane) принимать
-Best-Decision замкнутым циклом. Методика (полная): `../engine/BANKSY-TRAINING-BDSL.md`.
+Best-Decision замкнутым циклом. Методика (полная): `../engine/BANKSY-TRAINING-BDSL.md`. **Curriculum для ВСЕХ агентов (обязателен):** `../engine/BEST-DECISION-CURRICULUM.md` (ядро argmax-U, каталог задача→метод, RL-семейство, Arrow/Bounded-Rationality/NP-hard как обоснование HITL, bias&fairness).
 Контуры: 1-СБОР (DecisionRecord: decision_space/MAUT wj-uj/chosen/confidence/tier/stopping_rule/bias_flags/
 minimax_regret/hash-chain + OutcomeRecord: ground_truth_utility/utility_error/IPW-causal-forest) →
 2-ОЦЕНКА (MetricsEngine, пороги S-BDSL) → 3-**RLHF human-gated 3 стадии** (Preference→RM offline hold-out→
@@ -206,8 +206,8 @@ G0–G6. Fable5: финальный advisory (confidence-scored).
 ## §5. Сводка объёма и порядок
 
 **13 спринтов** (S0–S5, S-INTENT, S-COST, S-BDSL, S13-00, S-LINEAGE, **S-TRAIN**, S6, S7) + фаза Z · 35 репо ·
-**Fable5-canon-запросы: 8 регуляторных (F5-REG-1…8) + 3 организационных (F5-ORG-1…3) + 1 BDSL + 1 TRAIN
-(F5-TRAIN-1) + 1 финальный advisory (S7) = 14 хуков** · Director-роль явно прописана во всех 13 спринтах.
+**Fable5-canon-запросы: 8 регуляторных (F5-REG-1…8) + 3 организационных (F5-ORG-1…3) + 1 BDSL + 2 TRAIN
+(F5-TRAIN-1 границы обучения, F5-TRAIN-2 экзаменационный минимум curriculum) + 1 финальный advisory (S7) = **15 хуков**** · Director-роль явно прописана во всех 13 спринтах.
 Рекомендуемый порядок волн: S0→S1→S2 (фундамент) ∥ S-COST+S6 (независимые, ранние) → S3→S4 →
 S13-00→S-INTENT→S-LINEAGE→S-BDSL→**S-TRAIN** (intent/learning-контур) → S5 → S7. Всё PROPOSED; авторизация по-спринтно.
 
