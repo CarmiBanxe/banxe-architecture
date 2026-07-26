@@ -1,0 +1,39 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# ⚠ SANDBOX / TRAINING — NOT FOR PRODUCTION
+# BANXE sandbox ClickHouse for banxe_audit.hitl_decisions (engine-ref schema).
+# BANXE_ENV=sandbox ; BANXE_DATA_CLASS=TRAINING ; BANXE_PROD_READY=false
+# Isolated: NEW named volume banxe_clickhouse_sandbox_data (never reuses
+# docker_clickhouse_data); binds to 127.0.0.1 only. STEP5, ENGREF01, 2026-07-26.
+# Secrets: ops/sandbox/.ch-sandbox.env (gitignored — NEVER commit).
+# ═══════════════════════════════════════════════════════════════════════════
+services:
+  banxe-clickhouse-sandbox:
+    image: clickhouse/clickhouse-server:24.8-alpine
+    container_name: banxe-clickhouse-sandbox
+    ports:
+      - "127.0.0.1:8123:8123"
+      - "127.0.0.1:9000:9000"
+    env_file:
+      - .ch-sandbox.env
+    environment:
+      CLICKHOUSE_DB: banxe_audit
+      CLICKHOUSE_USER: banxe_sandbox
+    volumes:
+      - banxe_clickhouse_sandbox_data:/var/lib/clickhouse
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8123/ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    labels:
+      banxe.env: sandbox
+      banxe.data_class: training
+    restart: unless-stopped
+
+volumes:
+  banxe_clickhouse_sandbox_data:
+    name: banxe_clickhouse_sandbox_data
