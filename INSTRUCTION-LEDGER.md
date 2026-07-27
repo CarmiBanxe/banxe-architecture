@@ -28050,3 +28050,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** TERMINAL-ROLE-IDENTITY-CANON: Central = brain, works THROUGH Factory; Factory execution replies are inbound input, do not make Central the Factory.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1110 - agent-factory-fable5-two-terminal-sync-request @ 2026-07-27T21:51:41Z
+
+- **il_ts:** 2026-07-27T21:51:41Z
+- **session_id:** agent-factory-fable5-two-terminal-sync-request
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-fable5-two-terminal-sync-request/IL-2026-07-27T21-51-41Z--8e0a8c.md`
+
+### agent-factory-fable5-two-terminal-sync-request
+
+- **Instruction:** Fable-5 request: two-terminal synchronization, aligned to SYNC-CANON/ADR-163/ADR-170 per ADR-102
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
