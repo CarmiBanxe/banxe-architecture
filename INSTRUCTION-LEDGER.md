@@ -28005,3 +28005,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** S1 ORG-MAP canon 0d (operator decisions on Fable5 advisory Q1-Q10): room-based B2 ownership map rebuilt — 18/18 rooms resolved (17 owner_line by BANK-MASTER registry facts + F0 core_exempt), aml dual-line flag, safeguarding oversight edge, Notification service-tag, todo_operator emptied; validated vs org-contour schema (one-owner XOR core_exempt).
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1107 - agent-factory-govdocs01-b-set-quarantine-audits-roadmap @ 2026-07-27T18:48:22Z
+
+- **il_ts:** 2026-07-27T18:48:22Z
+- **session_id:** agent-factory-govdocs01-b-set-quarantine-audits-roadmap
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-govdocs01-b-set-quarantine-audits-roadmap/IL-2026-07-27T18-48-22Z--45bbac.md`
+
+### agent-factory-govdocs01-b-set-quarantine-audits-roadmap
+
+- **Instruction:** GOVDOCS01 B-set consolidation: MIDAZ-EVO1 quarantine docs + 2026-07-20 spec-audits + SPRINT-1/2 roadmap + ADR-ADOPT3-UI-INTENT-FIRST; governance backlog moved from shared audit checkout into factory worktree per ADR-120; verdict shard excluded; PR #1158
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
