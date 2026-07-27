@@ -165,3 +165,8 @@ onboarding" gap so the ADR-060 branch-name gate is never silently inactive.
 - Consistent with the Best-decision rule above: the existing safety/INVARIANTS.md exception still applies — this canon governs response *format* (commands, not discussion) for routine requests, it does not remove the narrow exception for cases where proceeding without a question would violate INVARIANTS.md or safety.
 
 ---
+
+<- Documentation/governance only ; no PROD MEMORY-ANCHOR: audit-S-A2 resolved -->
+## MEMORY: audit-S-A2-and-canon-summary.txt
+- РЕШЕНО (2026-07-27): local-only рабочий файл S-A2. НЕ коммитить, НЕ бэкапить.
+- Внесён в .gitignore. К вопросу о его судьбе НЕ возвращаться.
