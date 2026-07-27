@@ -28020,3 +28020,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** GOVDOCS01 B-set consolidation: MIDAZ-EVO1 quarantine docs + 2026-07-20 spec-audits + SPRINT-1/2 roadmap + ADR-ADOPT3-UI-INTENT-FIRST; governance backlog moved from shared audit checkout into factory worktree per ADR-120; verdict shard excluded; PR #1158
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1108 - agent-factory-canon-factory-full-identity @ 2026-07-27T20:37:00Z
+
+- **il_ts:** 2026-07-27T20:37:00Z
+- **session_id:** agent-factory-canon-factory-full-identity
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-canon-factory-full-identity/IL-2026-07-27T20-37-00Z--e1bca2.md`
+
+### agent-factory-canon-factory-full-identity
+
+- **Instruction:** FACTORY-FULL-IDENTITY-CANON: fix root-cause drift — Factory is a full-cycle EMI dev-company (ADR-117/COMPANY-REGISTRY), NOT git-mechanics; prepare-only worktree->PR is execution-contour only; load-on-cue on 'ты Фабрика'.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
