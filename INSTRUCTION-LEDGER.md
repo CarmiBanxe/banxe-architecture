@@ -27990,3 +27990,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** PHASE3 GitNexus org-contour (sandbox, DESIGNED-FOR-PROD): operator verdict B/B3 — separate org layer + BOTH cross-link edges (B1 OWNED_BY accountability via passports, B2 OWNS_PATH department zones bank-rooms/F*-room); layered schema.json (code graph external-ref, no instantiated edges — NO-MOCK); path-ownership map (7 fact-checked dept->room globs, 3 depts + 9 rooms TODO-operator, 10-vs-8 dept-model reconciliation -> roadmap S1); crosslink note (detect_impact contract unchanged, +impacted_departments/+accountable_agents additive). Unblocks guardian-ledger on PR #1156.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1106 - agent-factory-gitnexus01-step8-org-map-s1 @ 2026-07-27T17:40:37Z
+
+- **il_ts:** 2026-07-27T17:40:37Z
+- **session_id:** agent-factory-gitnexus01-step8-org-map-s1
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gitnexus01-step8-org-map-s1/IL-2026-07-27T17-40-37Z--994002.md`
+
+### agent-factory-gitnexus01-step8-org-map-s1
+
+- **Instruction:** S1 ORG-MAP canon 0d (operator decisions on Fable5 advisory Q1-Q10): room-based B2 ownership map rebuilt — 18/18 rooms resolved (17 owner_line by BANK-MASTER registry facts + F0 core_exempt), aml dual-line flag, safeguarding oversight edge, Notification service-tag, todo_operator emptied; validated vs org-contour schema (one-owner XOR core_exempt).
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
