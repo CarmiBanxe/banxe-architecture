@@ -28035,3 +28035,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** FACTORY-BOUNDARIES-CANON: fix Factory scope — encodes brain's design in worktree→PR→operator-merge; never designs/decides/merges/commits-shared/bypasses. Self-correction of 2026-07-27 boundary breaches.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1109 - agent-factory-canon-terminal-role-identity @ 2026-07-27T20:23:30Z
+
+- **il_ts:** 2026-07-27T20:23:30Z
+- **session_id:** agent-factory-canon-terminal-role-identity
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-canon-terminal-role-identity/IL-2026-07-27T20-23-30Z--53ca9f.md`
+
+### agent-factory-canon-terminal-role-identity
+
+- **Instruction:** TERMINAL-ROLE-IDENTITY-CANON: Central = brain, works THROUGH Factory; Factory execution replies are inbound input, do not make Central the Factory.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
