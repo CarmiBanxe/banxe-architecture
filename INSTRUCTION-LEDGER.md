@@ -28020,3 +28020,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** GOVDOCS01 B-set consolidation: MIDAZ-EVO1 quarantine docs + 2026-07-20 spec-audits + SPRINT-1/2 roadmap + ADR-ADOPT3-UI-INTENT-FIRST; governance backlog moved from shared audit checkout into factory worktree per ADR-120; verdict shard excluded; PR #1158
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1108 - agent-factory-canon-factory-boundaries @ 2026-07-27T20:17:06Z
+
+- **il_ts:** 2026-07-27T20:17:06Z
+- **session_id:** agent-factory-canon-factory-boundaries
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-canon-factory-boundaries/IL-2026-07-27T20-17-06Z--544269.md`
+
+### agent-factory-canon-factory-boundaries
+
+- **Instruction:** FACTORY-BOUNDARIES-CANON: fix Factory scope — encodes brain's design in worktree→PR→operator-merge; never designs/decides/merges/commits-shared/bypasses. Self-correction of 2026-07-27 boundary breaches.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
