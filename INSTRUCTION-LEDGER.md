@@ -27975,3 +27975,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** PHASE2 GitNexus MCP-connect pack (sandbox): mcpServers template (operator-manual merge per directive p.47), operator guide (install->merge->verify 78->0->rollback), read-only verify_mcp.sh (NO-MOCK: honest NOT-CONNECTED/78 at 0 tools), PROD-gate sprint plan (factory-prepares vs operator-connects; license sandbox free / PROD purchase). Unblocks guardian-ledger on PR #1155.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1105 - agent-factory-gitnexus01-phase3-org-contour @ 2026-07-27T15:10:47Z
+
+- **il_ts:** 2026-07-27T15:10:47Z
+- **session_id:** agent-factory-gitnexus01-phase3-org-contour
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gitnexus01-phase3-org-contour/IL-2026-07-27T15-10-47Z--c4f3ba.md`
+
+### agent-factory-gitnexus01-phase3-org-contour
+
+- **Instruction:** PHASE3 GitNexus org-contour (sandbox, DESIGNED-FOR-PROD): operator verdict B/B3 — separate org layer + BOTH cross-link edges (B1 OWNED_BY accountability via passports, B2 OWNS_PATH department zones bank-rooms/F*-room); layered schema.json (code graph external-ref, no instantiated edges — NO-MOCK); path-ownership map (7 fact-checked dept->room globs, 3 depts + 9 rooms TODO-operator, 10-vs-8 dept-model reconciliation -> roadmap S1); crosslink note (detect_impact contract unchanged, +impacted_departments/+accountable_agents additive). Unblocks guardian-ledger on PR #1156.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
