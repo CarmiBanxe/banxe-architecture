@@ -132,3 +132,36 @@ onboarding" gap so the ADR-060 branch-name gate is never silently inactive.
 - Это правило распространяется на все сессии Claude Code в данном репозитории до отдельной отмены через CLAUDE.md / MEMORY.md.
 
 ---
+# Feature implementation canon
+
+- Every feature the operator loads goes through `docs/canon/FEATURE-EVALUATION-AND-PLACEMENT-CANON-2026-07-20.md`: Step 1 (value assessment, factory vs Banksy) → placement decision (FACTORY ONLY / BANKSY ONLY / SHARED / REJECT) → Step 2 (implementation) — in that order, before any code/prompt/workflow change begins.
+- ACCEPT is not an endpoint. An accepted feature MUST be implemented in behavior — factory code/prompts/orchestration for FACTORY ONLY or SHARED Phase A, Banksy/project code for BANKSY ONLY or SHARED Phase B. A document or guide is a specification for that implementation, never a substitute for it.
+- A feature that is ACCEPTED but only documented, with no corresponding behavior change, violates this canon. If a feature cannot be safely implemented, it must be reclassified REJECT (risk/misfit) — never left sitting as an unimplemented "paper guide."
+- When a feature reaches ACCEPT, Claude Code must propose and execute the concrete change matching its placement — not stop at "another document" — unless that document *is* the implementation (e.g., this file, or canon agents actually read/enforce).
+- This rule binds every Claude Code session in this repo going forward, the same way the Best-decision rule above does, until amended here or in `MEMORY.md`.
+
+---
+# Default UI design skill
+
+- For UI generation, interface redesign, frontend polish, visual review, component styling, or dashboard/landing/admin UX work, Claude Code MUST proactively load/apply `/apple-design` as the default design skill — unless the operator explicitly requests a different style/system.
+- `/apple-design` is a **principle-based design-quality reference**, not an effects/motion-decoration pack — it governs typography, layout, restraint, and visual hierarchy quality, applied *in addition to*, not instead of, this repo's own `docs/governance/UI-UX-DESIGN-SYSTEM-CANON.md` governance (design tokens, component lifecycle, accessibility).
+- Local registration: `.claude/skills/apple-design/SKILL.md`.
+- Placement per `docs/canon/FEATURE-EVALUATION-AND-PLACEMENT-CANON-2026-07-20.md`: SHARED — installed in the factory now (Phase A); propagation into a Banksy/product fork (Phase B) awaits a concrete fork target and is not yet done.
+
+---
+# Артефактный канон
+
+- В каждый момент времени допускается только один активный артефакт спринта. Claude Code не ведёт параллельных веток работы, не разбрасывается по нескольким артефактам одновременно.
+- После получения вывода по спринту или прямой команды от оператора следующий артефакт создаётся автоматически по принципу лучшего решения для текущего состояния фабрики и проекта — без дополнительной болтовни и обсуждений вокруг.
+- Прямая команда («сделай <X>») трактуется как указание на следующий артефакт: Claude Code формирует конкретный артефакт (команды shell, промпт, план спринта), а исполняет или применяет его оператор. Никаких уточняющих вопросов и параллельных артефактов.
+- Claude Code обязан читать и соблюдать этот канон в каждой сессии этого репозитория; попытки вести несколько линий артефактов одновременно считаются нарушением фабричного режима работы.
+
+---
+# Shell command canon
+
+- "сделай <X>" means: prepare concrete shell commands for <X>, to be executed by the operator. Claude Code MUST respond with commands only (and minimal labels), not with questions or discussion.
+- Shell audits, greps, ls/find trees, and similar checks should be expressed as shell commands when requested, following this rule.
+- This canon applies to all future Claude Code sessions in this repo until amended in CLAUDE.md or MEMORY.md.
+- Consistent with the Best-decision rule above: the existing safety/INVARIANTS.md exception still applies — this canon governs response *format* (commands, not discussion) for routine requests, it does not remove the narrow exception for cases where proceeding without a question would violate INVARIANTS.md or safety.
+
+---
