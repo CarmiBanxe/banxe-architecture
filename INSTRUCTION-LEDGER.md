@@ -27945,3 +27945,33 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Proof:** ToolSearch verified GitNexus MCP NOT connected in factory session (0 tools) — recorded as BLOCKING pre-condition; hooks/CI-gate = PROD-gate implementation sprint (candidate S-GITNEXUS); pre-commit PASS; ledger-build --check OK.
 - **Deviation:** operator order truncated — referenced sections FABLE5-REQ (org-contour) and VERIFY (language coverage) NOT delivered; registered per delivered part, tails = OPEN POINT.
 - **Refs:** post-#1152 chain, ADR-102 (fail-closed), sandbox amendment S0, PROD-PROMOTION-GATE-PLAN (implementation gate).
+
+---
+
+### IL-1103 - agent-factory-gitnexus01-phase1-code-contour @ 2026-07-27T14:48:20Z
+
+- **il_ts:** 2026-07-27T14:48:20Z
+- **session_id:** agent-factory-gitnexus01-phase1-code-contour
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gitnexus01-phase1-code-contour/IL-2026-07-27T14-48-20Z--012f5c.md`
+
+### agent-factory-gitnexus01-phase1-code-contour
+
+- **Instruction:** PHASE1 GitNexus code-contour scaffolding (sandbox): env guard (fail-closed outside sandbox), chain-ready pre-commit.gitnexus (NOT activated; HIGH-RISK needs GITNEXUS_ACK=1), no-mock detect_impact CLI (UNKNOWN/78 at 0 MCP tools), PHASE1 README (PolyForm-NC: sandbox free / PROD purchase). Unblocks guardian-ledger on PR #1154.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1104 - agent-factory-gitnexus01-phase2-mcp-connect @ 2026-07-27T14:56:28Z
+
+- **il_ts:** 2026-07-27T14:56:28Z
+- **session_id:** agent-factory-gitnexus01-phase2-mcp-connect
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-gitnexus01-phase2-mcp-connect/IL-2026-07-27T14-56-28Z--1aa243.md`
+
+### agent-factory-gitnexus01-phase2-mcp-connect
+
+- **Instruction:** PHASE2 GitNexus MCP-connect pack (sandbox): mcpServers template (operator-manual merge per directive p.47), operator guide (install->merge->verify 78->0->rollback), read-only verify_mcp.sh (NO-MOCK: honest NOT-CONNECTED/78 at 0 tools), PROD-gate sprint plan (factory-prepares vs operator-connects; license sandbox free / PROD purchase). Unblocks guardian-ledger on PR #1155.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
