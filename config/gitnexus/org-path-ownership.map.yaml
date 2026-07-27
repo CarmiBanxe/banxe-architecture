@@ -1,51 +1,106 @@
-# org-path-ownership.map.yaml — B2 OWNS_PATH: Department -> path globs (bank-rooms zones)
+# org-path-ownership.map.yaml — B2 OWNS_PATH (канон 0d, operator decision 2026-07-27)
 # LICENSE DISCLAIMER: GitNexus = PolyForm-Noncommercial-1.0.0. Sandbox use only without
 #   a license; PROD/commercial use requires a purchased GitNexus license.
-# DESIGNED-FOR-PROD · schema ref: config/gitnexus/org-contour.schema.json (edge B2_OWNS_PATH)
-# Sources (real only): docs/DEPARTMENT-MAP.md §1.1-1.10 (10 departments) · ls bank-rooms/ (18 dirs).
-# NO-MOCK rule: only unambiguous name/function matches are mapped; everything else = TODO-operator.
+# DESIGNED-FOR-PROD · schema: config/gitnexus/org-contour.schema.json (edge B2_OWNS_PATH)
+# CANON 0d (Fable5 Q1 advisory, operator-ratified): Room-based (18) = носитель владения путями;
+#   Executive-8 (CANONICAL-ORG-CHART-v2) = accountability roll-up (комната -> ровно одна SMF-линия);
+#   Business-10 (DEPARTMENT-MAP) = process-view, DEPRECATED как владелец;
+#   Passport-37 = normalization debt (org_room+org_line в S4, Q9).
+# SoT рёбер: docs/governance/AGENT-REGISTRY-BANK-MASTER-2026-07-22.md (129 агентов;
+#   MASTER-147 SUPERSEDED). NO-MOCK: линии взяты из фактических human_double/SMF реестра
+#   + операторских решений Q2-Q8; ничего не угадано.
 # BANXE_ENV=sandbox · data_class=TRAINING · PROD_READY=false
 
-departments:
-  "Payment Operations":               # §1.3
-    owns:
-      - "bank-rooms/F2-payments-room/**"
-  "Safeguarding (FCA CASS 7)":        # §1.5
-    owns:
-      - "bank-rooms/F2-safeguarding-room/**"
-  "Core Banking / Ledger":            # §1.4
-    owns:
-      - "bank-rooms/F2-ledger-room/**"
-  "AML/Compliance":                   # §1.2
-    owns:
-      - "bank-rooms/F3-aml-room/**"
-  "Reporting / FCA Regulatory":       # §1.10
-    owns:
-      - "bank-rooms/F3-regrep-room/**"
-  "Security / Authentication":        # §1.9
-    owns:
-      - "bank-rooms/F4-security-room/**"
-  "Customer Onboarding":              # §1.1 (KYC/IDV function ~ identity room)
-    owns:
-      - "bank-rooms/F2-identity-room/**"
+canon: 0d-room-based
+sot_registry: docs/governance/AGENT-REGISTRY-BANK-MASTER-2026-07-22.md
 
-# ── TODO-operator: неоднозначные сопоставления — НЕ угадано (NO-MOCK) ────────
-todo_operator:
-  departments_without_room:
-    - department: "Customer Management"      # §1.6 — кандидат F1-customer-ops-room, но room может принадлежать и §1.1 Onboarding
-      candidates: ["bank-rooms/F1-customer-ops-room/**"]
-    - department: "Agreement / Contract"     # §1.7 — кандидат F1-hr-legal-room (legal), совпадение не однозначно
-      candidates: ["bank-rooms/F1-hr-legal-room/**"]
-    - department: "Notification"             # §1.8 — очевидного room нет
-      candidates: []
-  rooms_without_department:                  # rooms вне 10-департаментной модели DEPARTMENT-MAP;
-    - "bank-rooms/F0-engine-manus-room/**"   #   часть маппится на executive-модель org-chart-v2 (8 деп.) —
-    - "bank-rooms/F1-marketing-room/**"      #   расхождение 10-vs-8 моделей = операторское сведение
-    - "bank-rooms/F1-support-room/**"
-    - "bank-rooms/F3-finbi-room/**"
-    - "bank-rooms/F3-risk-room/**"
-    - "bank-rooms/F3-treasury-room/**"
-    - "bank-rooms/F4-ai-platform-room/**"
-    - "bank-rooms/F4-audit-cell-room/**"
-    - "bank-rooms/F4-devops-room/**"
-  model_note: "DEPARTMENT-MAP (10 business depts) vs CANONICAL-ORG-CHART-v2 (8 executive depts + independent lines) — единое сведение = operator decision (roadmap S1 ORG-MAP)."
+rooms:
+  # ── F0: ядро, вне департаментной модели (Q8) ──────────────────────────────
+  F0-engine-manus-room:
+    path: "bank-rooms/F0-engine-manus-room/**"
+    core_exempt: true                    # BANKSY core — исключён из B2_OWNS_PATH
+    platform_steward: "CTO / Technology, Data, AI (SMF26)"   # отдельное ребро, НЕ ownership
+
+  # ── F1 ─────────────────────────────────────────────────────────────────────
+  F1-customer-ops-room:
+    path: "bank-rooms/F1-customer-ops-room/**"
+    owner_line: "COO / Operations (SMF24)"          # Q6 (HITL по совету Fable); registry: Head of Customer Ops/COO
+    note: "Onboarding §1.1 vs Management §1.6 различаются B1-рёбрами по агентам, НЕ путями; CCO-acquisition без владения путём"
+  F1-hr-legal-room:
+    path: "bank-rooms/F1-hr-legal-room/**"
+    owner_line: "HR, Legal, Corporate Services"     # Q5 (HITL): primary=Legal
+    secondary_annotation: "CCO (consulted, коммерческие условия) — аннотация, не ребро"
+  F1-marketing-room:
+    path: "bank-rooms/F1-marketing-room/**"
+    owner_line: "COO / Operations (SMF24)"          # registry-факт: Head of Marketing/COO SMF24
+  F1-support-room:
+    path: "bank-rooms/F1-support-room/**"
+    owner_line: "COO / Operations (SMF24)"          # registry-факт: Head of Support/COO SMF24
+
+  # ── F2 ─────────────────────────────────────────────────────────────────────
+  F2-identity-room:
+    path: "bank-rooms/F2-identity-room/**"
+    owner_line: "MLRO / Financial Crime (SMF17)"    # registry-факт: Compliance-Officer/MLRO SMF17 (KYC = fin-crime prevention)
+  F2-ledger-room:
+    path: "bank-rooms/F2-ledger-room/**"
+    owner_line: "CFO Office (SMF2)"                 # Q3: контроль книг = CFO
+    service_annotation: "CTO — service-ребро платформы, НЕ ownership"
+  F2-payments-room:
+    path: "bank-rooms/F2-payments-room/**"
+    owner_line: "COO / Operations (SMF24)"          # registry-факт: COO, 29/30 строк
+  F2-safeguarding-room:
+    path: "bank-rooms/F2-safeguarding-room/**"
+    owner_line: "CFO Office (SMF2)"                 # Q4: client money ops = CFO
+    oversight_edge: "Internal Audit (SMF5, независимая линия) — ОБЯЗАТЕЛЬНОЕ non-ownership ребро"
+    note: "registry несёт dual 'COO+CFO' — операторское решение Q4 фиксирует владельца CFO"
+
+  # ── F3 ─────────────────────────────────────────────────────────────────────
+  F3-aml-room:
+    path: "bank-rooms/F3-aml-room/**"
+    owner_line: "MLRO / Financial Crime (SMF17)"    # Q2: primary=MLRO
+    dual_line_flag: true
+    dual_line_note: "SAR/fin-crime-решающие поверхности -> MLRO; monitoring/advisory -> CRO/Compliance; точность саб-глобами/B1 при S4"
+  F3-finbi-room:
+    path: "bank-rooms/F3-finbi-room/**"
+    owner_line: "CFO Office (SMF2)"                 # registry: единственный назначенный сигнал = CFO (1/6, остальные unassigned)
+  F3-regrep-room:
+    path: "bank-rooms/F3-regrep-room/**"
+    owner_line: "CFO Office (SMF2)"                 # registry-факт: CFO 4/4
+  F3-risk-room:
+    path: "bank-rooms/F3-risk-room/**"
+    owner_line: "Independent Functions — Risk (CRO, SMF4)"   # registry-факт: CRO 5/6
+  F3-treasury-room:
+    path: "bank-rooms/F3-treasury-room/**"
+    owner_line: "CFO Office (SMF2)"                 # registry-факт: CFO 4/9 (остальные unassigned)
+
+  # ── F4 ─────────────────────────────────────────────────────────────────────
+  F4-ai-platform-room:
+    path: "bank-rooms/F4-ai-platform-room/**"
+    owner_line: "CTO / Technology, Data, AI (SMF26)"  # registry-факт
+  F4-audit-cell-room:
+    path: "bank-rooms/F4-audit-cell-room/**"
+    owner_line: "Internal Audit (SMF5, независимая линия -> Audit Committee/Board)"  # registry-факт
+  F4-devops-room:
+    path: "bank-rooms/F4-devops-room/**"
+    owner_line: "CTO / Technology, Data, AI (SMF26)"  # registry-факт
+  F4-security-room:
+    path: "bank-rooms/F4-security-room/**"
+    owner_line: "CTO / Technology, Data, AI (SMF26)"  # registry-факт
+
+# ── Cross-cutting сервисы БЕЗ владения путями (Q7) ───────────────────────────
+service_tags:
+  Notification:
+    line: "COO / Operations (SMF24)"
+    note: "cross-cutting; носители живут в customer-ops/payments rooms; B2-ребра НЕТ (ложное эксклюзивное владение запрещено)"
+
+# ── Разрешение прежних todo_operator (закрыты решениями 2026-07-27) ──────────
+resolved_todo:
+  - "Customer Management §1.6 -> B1-рёбра в F1-customer-ops (Q6); отдельного владения путём нет"
+  - "Agreement/Contract §1.7 -> F1-hr-legal primary=Legal, CCO secondary (Q5)"
+  - "Notification §1.8 -> service-tag под COO, без B2 (Q7)"
+  - "9 rooms_without_department -> размечены executive-линиями по BANK-MASTER (см. rooms)"
+  - "10-vs-8 model reconciliation -> канон 0d (room-based + executive roll-up); Business-10 = process-view"
+
+todo_operator: []   # NO-MOCK-остаток: пусто — все прежние пункты разрешены операторскими решениями
+
+model_note: "Business-10 (DEPARTMENT-MAP) = process-view / DEPRECATED-as-owner; Executive-8 = accountability roll-up; SoT рёбер = AGENT-REGISTRY-BANK-MASTER-2026-07-22 (129); MASTER-147 SUPERSEDED. Passport-нормализация (org_room+org_line) = roadmap S4."
