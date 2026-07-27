@@ -1,0 +1,51 @@
+# org-path-ownership.map.yaml — B2 OWNS_PATH: Department -> path globs (bank-rooms zones)
+# LICENSE DISCLAIMER: GitNexus = PolyForm-Noncommercial-1.0.0. Sandbox use only without
+#   a license; PROD/commercial use requires a purchased GitNexus license.
+# DESIGNED-FOR-PROD · schema ref: config/gitnexus/org-contour.schema.json (edge B2_OWNS_PATH)
+# Sources (real only): docs/DEPARTMENT-MAP.md §1.1-1.10 (10 departments) · ls bank-rooms/ (18 dirs).
+# NO-MOCK rule: only unambiguous name/function matches are mapped; everything else = TODO-operator.
+# BANXE_ENV=sandbox · data_class=TRAINING · PROD_READY=false
+
+departments:
+  "Payment Operations":               # §1.3
+    owns:
+      - "bank-rooms/F2-payments-room/**"
+  "Safeguarding (FCA CASS 7)":        # §1.5
+    owns:
+      - "bank-rooms/F2-safeguarding-room/**"
+  "Core Banking / Ledger":            # §1.4
+    owns:
+      - "bank-rooms/F2-ledger-room/**"
+  "AML/Compliance":                   # §1.2
+    owns:
+      - "bank-rooms/F3-aml-room/**"
+  "Reporting / FCA Regulatory":       # §1.10
+    owns:
+      - "bank-rooms/F3-regrep-room/**"
+  "Security / Authentication":        # §1.9
+    owns:
+      - "bank-rooms/F4-security-room/**"
+  "Customer Onboarding":              # §1.1 (KYC/IDV function ~ identity room)
+    owns:
+      - "bank-rooms/F2-identity-room/**"
+
+# ── TODO-operator: неоднозначные сопоставления — НЕ угадано (NO-MOCK) ────────
+todo_operator:
+  departments_without_room:
+    - department: "Customer Management"      # §1.6 — кандидат F1-customer-ops-room, но room может принадлежать и §1.1 Onboarding
+      candidates: ["bank-rooms/F1-customer-ops-room/**"]
+    - department: "Agreement / Contract"     # §1.7 — кандидат F1-hr-legal-room (legal), совпадение не однозначно
+      candidates: ["bank-rooms/F1-hr-legal-room/**"]
+    - department: "Notification"             # §1.8 — очевидного room нет
+      candidates: []
+  rooms_without_department:                  # rooms вне 10-департаментной модели DEPARTMENT-MAP;
+    - "bank-rooms/F0-engine-manus-room/**"   #   часть маппится на executive-модель org-chart-v2 (8 деп.) —
+    - "bank-rooms/F1-marketing-room/**"      #   расхождение 10-vs-8 моделей = операторское сведение
+    - "bank-rooms/F1-support-room/**"
+    - "bank-rooms/F3-finbi-room/**"
+    - "bank-rooms/F3-risk-room/**"
+    - "bank-rooms/F3-treasury-room/**"
+    - "bank-rooms/F4-ai-platform-room/**"
+    - "bank-rooms/F4-audit-cell-room/**"
+    - "bank-rooms/F4-devops-room/**"
+  model_note: "DEPARTMENT-MAP (10 business depts) vs CANONICAL-ORG-CHART-v2 (8 executive depts + independent lines) — единое сведение = operator decision (roadmap S1 ORG-MAP)."
