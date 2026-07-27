@@ -1,0 +1,21 @@
+{
+  "_DISCLAIMER": "GitNexus license: PolyForm-Noncommercial-1.0.0. Sandbox/TRAINING use only without a license; PROD/commercial use requires a purchased GitNexus license.",
+  "_OPERATOR_NOTE": "TEMPLATE ONLY — do NOT merge into ~/.claude.json automatically. Per docs/canon/GITNEXUS-CODE-CONTOUR-DIRECTIVE.md p.47 the MCP connection is performed by the OPERATOR/INFRA manually (first step of the PROD-gate sprint). The factory never edits live MCP config.",
+  "_APPLY_HOW": "Operator: copy the mcpServers.gitnexus block below into ~/.claude.json (merge by hand), replacing <PLACEHOLDERS>. Then verify: bash scripts/gitnexus/verify_mcp.sh (expect CONNECTED).",
+  "_ENV_CONTRACT": "BANXE_ENV=sandbox, data_class=TRAINING, PROD_READY=false. GITNEXUS_ENV must stay 'sandbox' until a commercial license is purchased (gitnexus_guard fail-closes otherwise).",
+  "mcpServers": {
+    "gitnexus": {
+      "command": "<GITNEXUS_LAUNCH_COMMAND e.g. npx>",
+      "args": [
+        "<GITNEXUS_PACKAGE_OR_BIN e.g. gitnexus>",
+        "mcp",
+        "--registry",
+        "<GITNEXUS_REGISTRY_PATH e.g. ~/.gitnexus>"
+      ],
+      "env": {
+        "GITNEXUS_ENV": "sandbox",
+        "GITNEXUS_MCP_ENDPOINT": "<ENDPOINT_SET_BY_OPERATOR e.g. stdio>"
+      }
+    }
+  }
+}
