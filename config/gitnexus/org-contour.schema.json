@@ -1,0 +1,57 @@
+{
+  "_DISCLAIMER": "GitNexus license: PolyForm-Noncommercial-1.0.0. Sandbox/TRAINING use only without a license; PROD/commercial use requires a purchased GitNexus license.",
+  "_STATUS": "schema-only, no live KuzuDB (sandbox)",
+  "_DESIGNED_FOR_PROD": true,
+  "_VERDICT": "B/B3 per docs/canon/GITNEXUS-PHASE3-ORG-CONTOUR-VERDICT.md — org layer SEPARATE from the GitNexus code graph; joined only by cross-link edges below",
+  "_NO_MOCK": "No edges are instantiated here. Instances are built at PHASE-2+ indexing from real passports/dirs; ambiguous mappings stay TODO-operator (see org-path-ownership.map.yaml).",
+
+  "layers": {
+    "code_graph": {
+      "storage": "KuzuDB (GitNexus-owned)",
+      "external_ref": true,
+      "node_ref_format": "<PLACEHOLDER: gitnexus node id, e.g. kuzu://<repo>/<file>#<symbol>>",
+      "covers": ["calls", "imports", "inheritance", "exec-flows"],
+      "note": "Directive p.25-26: code graph carries ONLY code relations; org nodes never live here."
+    },
+    "org_graph": {
+      "storage": "<PLACEHOLDER: org store, operator decision at PHASE-2+ (may be a separate KuzuDB db or flat registry)>",
+      "nodes": {
+        "Department": {
+          "source": "docs/DEPARTMENT-MAP.md §1.1-1.10 (+ governance/CANONICAL-ORG-CHART-v2.md executive layer)",
+          "fields": ["name", "smf_owner_ref", "escalation_links"]
+        },
+        "Role": {
+          "source": "docs/DEPARTMENT-MAP.md (32 roles) / docs/canon/passports/*.yaml",
+          "fields": ["name", "department", "level"]
+        },
+        "Agent": {
+          "source": "agents/passports/**/*.yaml (70 files)",
+          "fields": ["agent_id", "department", "bounded_context", "human_double", "governance.owner", "trust_zone", "status"]
+        }
+      }
+    }
+  },
+
+  "cross_link_edges": {
+    "B1_OWNED_BY": {
+      "from": "code_graph.CodeNode (external_ref)",
+      "to": "org_graph.Agent | org_graph.Role",
+      "via": "passport reference: agents/passports/<...>.yaml (fields department/bounded_context/governance.owner)",
+      "semantics": "accountability: every code node resolves to an accountable agent/role (SM&CR / Decision Lineage)",
+      "instances": "<NOT POPULATED — built from real passports at indexing; NO-MOCK>"
+    },
+    "B2_OWNS_PATH": {
+      "from": "org_graph.Department",
+      "to": "PathGlob",
+      "via": "config/gitnexus/org-path-ownership.map.yaml (bank-rooms/F{0..4}-*-room/** de-facto zones)",
+      "semantics": "department impact: staged paths -> owning departments (compliance blast-radius)",
+      "instances": "<NOT POPULATED — see map.yaml; ambiguous rows are TODO-operator>"
+    }
+  },
+
+  "enrichment_contract": {
+    "consumer": "scripts/gitnexus/detect_impact.py (Phase 1)",
+    "additive_fields": ["impacted_departments (via B2)", "accountable_agents (via B1)"],
+    "invariant": "risk / blast_radius / files contract unchanged — fields are ADDED only (see GITNEXUS-PHASE3-CROSSLINK-INTEGRATION-NOTE.md)"
+  }
+}
