@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+# pre-commit.gitnexus — GitNexus impact gate (PHASE 1, sandbox-scope; NOT ACTIVE)
+# LICENSE DISCLAIMER: GitNexus = PolyForm-Noncommercial-1.0.0. Sandbox use only
+#   without a license; PROD/commercial use requires a purchased GitNexus license.
+# NOT activated by itself: the existing ACTIVE .githooks/pre-commit (LucidShark +
+#   ADR-120 guard) is preserved untouched. Activation = chain-call, see
+#   docs/canon/GITNEXUS-PHASE1-CODE-CONTOUR-README.md §Activation.
+# Contract (directive): MCP available → detect_impact; MCP absent → do NOT block
+#   ordinary edits, but HIGH-RISK paths require GITNEXUS_ACK=1 (fail-closed).
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+# shellcheck source=scripts/gitnexus/gitnexus_env.sh
+. "${REPO_ROOT}/scripts/gitnexus/gitnexus_env.sh"
+
+gitnexus_guard || exit 1
+
+# High-risk paths per directive fleet list (code-contour carriers in THIS repo);
+# emi-stack counterparts (services/, api/) apply when this hook is ported there.
+HIGH_RISK_GLOBS=(
+  "bank-rooms/*/runtime/*"
+  "tools/sandbox/intent_slice/*"
+  "agents/passports/finance/apar_agent.yaml"
+  "schemas/*"
+  "sql/*"
+)
+
+staged_files() { git diff --staged --name-only; }
+
+is_high_risk() {
+  local f="$1" g
+  for g in "${HIGH_RISK_GLOBS[@]}"; do
+    # shellcheck disable=SC2254
+    case "$f" in $g) return 0 ;; esac
+  done
+  return 1
+}
+
+if gitnexus_probe; then
+  # MCP live → real blast-radius/risk before commit (fail-closed inside on high risk)
+  exec python3 "${REPO_ROOT}/scripts/gitnexus/detect_impact.py"
+fi
+
+# MCP absent (probe exited 78 via if-branch): reminder + fail-closed on high-risk only
+risky=()
+while IFS= read -r f; do
+  [ -n "$f" ] && is_high_risk "$f" && risky+=("$f")
+done < <(staged_files)
+
+if [ "${#risky[@]}" -gt 0 ]; then
+  echo "⚠ GitNexus reminder (enrich → impact → act): HIGH-RISK paths staged without graph impact analysis:" >&2
+  printf '   - %s\n' "${risky[@]}" >&2
+  if [ "${GITNEXUS_ACK:-0}" != "1" ]; then
+    echo "FAIL-CLOSED: set GITNEXUS_ACK=1 to acknowledge and proceed (operator confirmation)." >&2
+    exit 1
+  fi
+  echo "GITNEXUS_ACK=1 acknowledged — proceeding." >&2
+fi
+exit 0
