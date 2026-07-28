@@ -58,13 +58,15 @@
 - Verify LiteLLM alias `qwen3-30b` responds via `127.0.0.1:4000`
 - Verify evo1 (`100.68.102.48:11434`) reachable (failover)
 - Verify port `:8000` free
-- Verify local Ollama `qwen2.5-coder:7b-instruct-q4_K_M` present (Tier 1)
+- Verify local Ollama `qwen3:30b-a3b` present (Tier 1 primary — `ollama list` or `ollama pull qwen3:30b-a3b`)
+- Verify local Ollama `qwen2.5-coder:7b-instruct-q4_K_M` present (Tier 1b fast — already confirmed present)
 
 **Included layers:** Model backend pre-check only. No writes.
 
 **Done criteria:**
 - All 5 pre-flight checks GREEN (systemctl, curl evo2, curl :4000 alias, curl evo1, ss :8000)
-- Tier 1 local model confirmed present in Ollama
+- Tier 1 PRIMARY (`qwen3:30b-a3b`) confirmed present in Ollama (`ollama list`)
+- Tier 1b fast (`qwen2.5-coder:7b`) confirmed present in Ollama
 
 **GAPs remaining:**
 - Auth method для :4000 rotation policy — not in scope here
@@ -74,26 +76,32 @@
 
 ### Sprint L-1: Core Engine Install + Model Backend
 
-**Goal:** OpenManus running on Legion, Tier 2 (qwen3-30b) round-trip confirmed.
+**Goal:** OpenManus running on Legion, Tier 1 LOCAL (qwen3:30b-a3b via Ollama :11434) round-trip confirmed.
+Engine is AUTONOMOUS — primary inference runs locally on Legion without evo dependency.
 
 **Source-backed scope:**
+- PRE-FLIGHT (operator): `ollama pull qwen3:30b-a3b` (18.6 GB — confirmed on evo1+evo2 2026-07-11; OI-LOCAL-1 G-1 resolved)
 - RUNBOOK.md Phase 1: `git clone OpenManus → ~/OpenManus`, venv, `pip install`
-- RUNBOOK.md Phase 2: deploy `config.toml` (Tier 2 active, `qwen3-30b` via `127.0.0.1:4000`)
+- RUNBOOK.md Phase 2: deploy `config.toml` (Tier 1 active: `qwen3:30b-a3b` via `127.0.0.1:11434`; evo :4000 fallback commented-out)
 - RUNBOOK.md Phase 3: deploy systemd unit (`banxe-private-engine.service`), `systemctl enable + start`
-- RUNBOOK.md Phase 4 steps 1–3: `is-active`, `/health`, LiteLLM round-trip smoke test
+- RUNBOOK.md Phase 4 steps 1–3: `is-active`, `/health`, local Ollama round-trip smoke test
+- GPU offload verify: `nvidia-smi` — VRAM < 85% (< 6.96 GB of 8188 MiB) during inference
 - DLP verification: `grep -E "postgres|IBAN|password"` на config — expected: no output
 
-**Included layers:** Model backend (Tier 2). No internet tools yet.
+**Included layers:** Model backend (Tier 1 local). No internet tools yet.
 
 **Done criteria:**
+- `ollama run qwen3:30b-a3b "hello, what model are you?"` → responds locally (pre-flight)
 - `systemctl is-active banxe-private-engine` → `active`
 - `GET /health` → `200`
-- `POST /run/agent` с задачей `"echo test"` → ответ через evo2 (qwen3-30b path confirmed)
+- `POST /run/agent` с задачей `"echo test"` → ответ через local Ollama :11434 (Tier 1 path confirmed)
+- `nvidia-smi` VRAM < 85% during agent run
 - DLP grep clean
+- Evo :4000 (Tier 2 fallback): documented as commented-out block in config.toml — NOT active by default
 
 **GAPs remaining:**
 - `api_server.py` endpoint schema (`/run/agent` payload format) — зависит от OpenManus version
-- Tier 1 switchover test (local Ollama) — следующий sprint
+- Ollama `num_gpu` tuning (reference: 20 GPU layers from source; exact optimal value requires measurement after pull)
 
 ---
 
@@ -230,7 +238,7 @@
 
 **Source-backed scope:**
 - End-to-end test: multi-step research task (web search → browser → analysis → structured output)
-- Tier-switching test: Tier 1 (local 7B) → Tier 2 (qwen3-30b) → Tier 3 (reasoning-235b) → Tier 4 (coding)
+- Tier-switching test: Tier 1 (local qwen3:30b-a3b via :11434) → Tier 2 (qwen3-30b via :4000 fallback) → Tier 3 (reasoning-235b) → Tier 4 (coding)
 - DLP full audit: journalctl scan для IBAN/postgres/customer_id/kycId → 0 results
 - Memory isolation verify: Legion Qdrant ≠ banking Qdrant (network unreachable)
 - All 8 Open Items from grossbuch: resolved or formally documented as GAP
@@ -486,7 +494,7 @@
 | Component | Banking Engine | Private Legion Engine |
 |-----------|--------------|----------------------|
 | Orchestrator | LangGraph | OpenManus |
-| Default model alias | `banxe-general` (and related) | `qwen3-30b` |
+| Default model alias | `banxe-general` (and related) | `qwen3:30b-a3b` (local Ollama :11434; `qwen3-30b` via :4000 as fallback) |
 | Memory backend | Qdrant evo1 + Zep + Graphiti + LlamaIndex | Qdrant Legion + Mem0 |
 | DLP outbound | NeMo Guardrails (banking config) | NeMo Guardrails (Legion config) |
 | HITL gates | MLRO/CRO required | Operator-only (no MLRO) |
