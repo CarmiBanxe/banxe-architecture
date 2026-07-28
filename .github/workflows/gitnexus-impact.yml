@@ -1,0 +1,72 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# gitnexus-impact — INFORMATIONAL blast-radius/impact gate (S-SCIP-ARCH, #1167)
+# NON-BLOCKING: always exits 0 in CI. detect_impact.py returns 78 (EX_CONFIG) while
+# GitNexus MCP is not connected in CI — that is expected and NOT a failure here.
+# Promotion to a REQUIRED check is a separate step AFTER GitNexus MCP is live in CI (#1166).
+# LICENSE: GitNexus = PolyForm-Noncommercial-1.0.0 (sandbox use only; PROD = purchased license).
+# Alignment: ADR-102. NO-MOCK: detect_impact never fabricates graph results.
+# ─────────────────────────────────────────────────────────────────────────────
+name: gitnexus-impact
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gitnexus-impact:
+    name: gitnexus-impact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Stage the change-set (base..head) for detect_impact
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+          fi
+          # Reconstruct a staged-equivalent so detect_impact's `git diff --staged` sees the change-set.
+          if git cat-file -e "$BASE" 2>/dev/null && [ "$BASE" != "0000000000000000000000000000000000000000" ]; then
+            git reset -q --soft "$BASE" || true
+            git add -A
+          else
+            git add -A
+          fi
+
+      - name: Run detect_impact (informational — never blocks)
+        run: |
+          set +e
+          python scripts/gitnexus/detect_impact.py
+          RC=$?
+          set -e
+          case "$RC" in
+            0)  VERDICT="risk assessed, gate OK (exit 0)";;
+            1)  VERDICT="HIGH risk flagged (exit 1) — informational only here";;
+            78) VERDICT="MCP not connected (exit 78, EX_CONFIG) — expected until GitNexus MCP live";;
+            *)  VERDICT="unexpected exit $RC";;
+          esac
+          {
+            echo "## gitnexus-impact (INFORMATIONAL)"
+            echo ""
+            echo "- detect_impact exit code: \`$RC\`"
+            echo "- verdict: $VERDICT"
+            echo ""
+            echo "> **INFORMATIONAL — non-blocking until GitNexus MCP activated in CI (#1166).**"
+            echo "> Promotion to required = separate step after MCP is live. License: PolyForm-NC (sandbox)."
+          } >> "$GITHUB_STEP_SUMMARY"
+          # Always succeed — informational gate.
+          exit 0
