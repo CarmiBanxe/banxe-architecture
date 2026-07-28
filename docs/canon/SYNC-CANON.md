@@ -6,7 +6,7 @@
 
 ---
 
-## Five principles
+## Principles
 
 ### P-1 — SYNC-BEFORE-ACT
 

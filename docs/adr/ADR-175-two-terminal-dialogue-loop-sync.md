@@ -3,7 +3,7 @@ Status: ACCEPTED
 Ratified: 2026-07-28 (operator)
 Amends: SYNC-CANON (новый принцип P-6 DIALOGUE-SYNC)
 Refs: ADR-163, ADR-170, ADR-153, ADR-134
-Depends: TERMINAL-ROLE-IDENTITY-CANON (PROPOSED, PR #1160) — критерий self-stale (d)
+Depends: TERMINAL-ROLE-IDENTITY-CANON (ACCEPTED — ratified at merge of PR #1160) — критерий self-stale (d)
 Alignment: ADR-102
 
 > Nota (numbering, ADR-119 Rule 8): изначально запрошен как ADR-174; слот занят
