@@ -2,7 +2,13 @@
 Status: ACCEPTED
 Ratified: 2026-07-28 (operator)
 Amends: SYNC-CANON (новый принцип P-6 DIALOGUE-SYNC)
-Refs: ADR-163, ADR-170, ADR-153, ADR-134
+refs:
+  - docs/canon/sync/TWO-TERMINAL-SYNC-MARKER.md
+  - docs/canon/SYNC-CANON.md (P-6 DIALOGUE-SYNC)
+  - ADR-163
+  - ADR-170
+  - ADR-153
+  - ADR-134
 Depends: TERMINAL-ROLE-IDENTITY-CANON (PROPOSED, PR #1160) — критерий self-stale (d)
 Alignment: ADR-102
 
