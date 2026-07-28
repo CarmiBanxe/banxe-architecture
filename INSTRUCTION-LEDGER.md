@@ -28064,7 +28064,7 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 ### agent-factory-fable5-two-terminal-sync-request
 
 - **Instruction:** Fable-5 request: two-terminal synchronization, aligned to SYNC-CANON/ADR-163/ADR-170 per ADR-102
-- **Refs:** ADR-056, ADR-057, ADR-059, ADR-060, ADR-119, ADR-143, ADR-163, ADR-170, docs/canon/SYNC-CANON.md, ledger/SHARD-WORKFLOW.md
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
 
 ---
 
