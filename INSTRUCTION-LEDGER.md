@@ -28080,3 +28080,63 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** OPERATOR UNBLOCK: GitNexus (PolyForm-NC) unblocked for sandbox/non-commercial use — no purchased license required (we are not in PROD). Request factory to ACTIVATE GitNexus (MCP+hooks+CI-gate) for Wave -1 repo-consolidation + Wave 0 org-structure; keep org-layer out of code-graph. Fork O1/O2/O3 deferred to any future PROD.
 - **Refs:** ADR-102, docs/canon/GITNEXUS-PHASE3-ORG-CONTOUR-VERDICT.md, GITNEXUS-CODE-CONTOUR-DIRECTIVE.md
+
+---
+
+### IL-1112 - agent-factory-adr175-two-terminal-dialogue-sync @ 2026-07-28T20:24:06Z
+
+- **il_ts:** 2026-07-28T20:24:06Z
+- **session_id:** agent-factory-adr175-two-terminal-dialogue-sync
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-adr175-two-terminal-dialogue-sync/IL-2026-07-28T20-24-06Z--068d46.md`
+
+### agent-factory-adr175-two-terminal-dialogue-sync
+
+- **Instruction:** ADR-175 two-terminal dialogue-loop sync-marker & self-stale; SYNC-CANON P-6 amendment (refs ADR-175 PROPOSED, #1168, #1169, dep PR #1160; ADR-102)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1113 - adr175-ratify @ 2026-07-28T20:34:10Z
+
+- **il_ts:** 2026-07-28T20:34:10Z
+- **session_id:** adr175-ratify
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/adr175-ratify/IL-2026-07-28T20-34-10Z--072069.md`
+
+### adr175-ratify
+
+- **Instruction:** Ratify ADR-175 PROPOSED->ACCEPTED; SYNC-CANON P-6 DIALOGUE-SYNC amendment (#1168)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1114 - scip1-impact-gate @ 2026-07-28T21:03:07Z
+
+- **il_ts:** 2026-07-28T21:03:07Z
+- **session_id:** scip1-impact-gate
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/scip1-impact-gate/IL-2026-07-28T21-03-07Z--cf3644.md`
+
+### scip1-impact-gate
+
+- **Instruction:** S-SCIP-ARCH: add informational gitnexus-impact CI gate (detect_impact.py, non-blocking until MCP live) (#1167)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1115 - adr175refs-traceability @ 2026-07-28T21:45:38Z
+
+- **il_ts:** 2026-07-28T21:45:38Z
+- **session_id:** adr175refs-traceability
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/adr175refs-traceability/IL-2026-07-28T21-45-38Z--71b634.md`
+
+### adr175refs-traceability
+
+- **Instruction:** Fill ADR-175 Refs to satisfy guardian-traceability (ADR-132) hard-gate (#1167)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
