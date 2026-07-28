@@ -157,3 +157,42 @@ _As of this DRAFT (2026-07-18), no service has been declared quarantined — rem
 Reused, not duplicated: `docs/runbooks/redis-evo1-setup.md` (Redis install/restart/rebuild — pointed to, not restated), `docs/runbooks/evo1-control-plane-bringup-2026-06-17.md` (control-plane service detail + port claim), `config/traffic-light.env` (probe targets/thresholds), `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` §0/§2 (A6 finding + S-FAC-60/61 DoD, quoted not restated in full), `.claude/rules/infrastructure.md` (evo1 service/port inventory). No existing evo1-triage runbook covers today's SSH+Redis-refused incident specifically (checked `docs/audit/*evo1*`, `docs/runbooks/*evo1*`, `docs/runbooks/legion-do-not-do.md` — none address this) — this is a new, non-duplicate artifact satisfying the S-FAC-60 DoD.
 
 **Refs:** `docs/roadmap/FACTORY-ROADMAP-2026-06-23.md` (S-FAC-60/61), `fabric/legion/README.md` (IL allocator on evo1 Redis), `docs/runbooks/redis-evo1-setup.md`, `docs/runbooks/evo1-control-plane-bringup-2026-06-17.md`, `config/traffic-light.env`, `.claude/rules/infrastructure.md`, ADR-102, ADR-104.
+
+## 8. Root-cause resolved — 2026-07-18
+
+The 2026-07-18 SSH/Redis-refused incident (§1) had a confirmed root cause, distinct from
+the §2 hypotheses list and from the earlier same-day symptomatic fix (stale bind IP
+`192.168.1.96` → `192.168.0.207`, recorded separately): `/home/banxe/redis.conf` hard-bound
+a **mutable LAN IP** in its `bind` directive while the container's restart policy is
+`unless-stopped` — any future LAN-IP change (DHCP/interface change) puts `banxe-redis`
+back into an infinite crash-loop, because the bind address no longer matches any live
+interface at container start. Legion only ever reaches the allocator via the **stable**
+Tailscale IP `100.68.102.48` (`REDIS_HOST`), so the LAN IP in `bind` was unnecessary — it
+was the sole fragility, not a needed access path.
+
+**Fix applied:** reduced `bind` to loopback + the stable Tailscale IP only:
+- Before: `bind 127.0.0.1 192.168.0.207 100.68.102.48`
+- After: `bind 127.0.0.1 100.68.102.48`
+
+No other directive changed (`requirepass`, ports, `appendonly` untouched). Backup kept at
+`/home/banxe/redis.conf.bak-2026-07-18-rootcause` (in addition to the earlier
+`redis.conf.bak-2026-07-18-pre-ipfix`). Container restarted in place
+(`docker restart banxe-redis`, same container/volume, no `rm`/recreate); came up clean
+("Ready to accept connections", `Up`, no restart loop).
+
+**Verification:** `PONG` on evo1 (`docker exec banxe-redis redis-cli -a "$REDIS_PASS" ping`)
+and from Legion (`redis-cli -h 100.68.102.48 -p 6379 -a "$REDIS_PASS" ping`);
+`banxe:il:counter` intact (progressed to `1080` via the two legitimate mints already
+executed in the resume sequence — not reset).
+
+**This makes the allocator resilient to LAN-IP changes**: the new bind set contains no
+address DHCP can revoke — `127.0.0.1` is permanent, `100.68.102.48` is a Tailscale /32
+stable across LAN renumbering. The class of incident that caused this outage cannot recur
+via LAN-IP change alone.
+
+**Hardening recommendation (not applied — needs operator/CTIO sign-off):** add a Docker
+`HEALTHCHECK` (e.g. periodic `redis-cli ping`) to `banxe-redis` so a future crash-loop
+surfaces in `docker ps`/monitoring before it silently blocks the allocator for 12h+; a
+static DHCP reservation for evo1's LAN IP would prevent recurrence of *other* LAN-IP-bound
+services but is out of scope for this fix (no restart-policy or netplan change was made
+here, per task constraint).
