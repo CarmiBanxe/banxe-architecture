@@ -28125,3 +28125,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** S-SCIP-ARCH: add informational gitnexus-impact CI gate (detect_impact.py, non-blocking until MCP live) (#1167)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1115 - adr175refs-traceability @ 2026-07-28T21:45:38Z
+
+- **il_ts:** 2026-07-28T21:45:38Z
+- **session_id:** adr175refs-traceability
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/adr175refs-traceability/IL-2026-07-28T21-45-38Z--71b634.md`
+
+### adr175refs-traceability
+
+- **Instruction:** Fill ADR-175 Refs to satisfy guardian-traceability (ADR-132) hard-gate (#1167)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
