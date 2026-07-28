@@ -57,6 +57,15 @@ Intake persists the source body verbatim BEFORE any extraction / evaluation / wr
 
 ---
 
+### P-6 — DIALOGUE-SYNC (pointer to ADR-175)
+
+- Extends P-1/P-4 from git/ledger state to the **two-terminal dialogue-loop** (conversational/session
+  context), which P-1..P-5 do not cover. Amendment ratified 2026-07-28 (ADR-175, ACCEPTED).
+- Marker (two layers): durable SSOT `docs/canon/sync/TWO-TERMINAL-SYNC-MARKER.md` (append-only, read via
+  `git show origin/main:<path>`) + live anchor `~/.banxe/two-terminal-sync.json` (not merge-gated).
+- Reconcile each turn; `self-stale` (any ⇒ STOP-and-reconcile): (a) git-stale, (b) dialogue-stale,
+  (c) liveness-stale, (d) role-stale (TERMINAL-ROLE-IDENTITY-CANON). Full spec: ADR-175 + marker doc.
+
 ## Actor checklists (short form)
 
 **Every Claude Code session (Step 0 of any technical work item):**

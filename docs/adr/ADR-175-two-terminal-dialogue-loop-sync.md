@@ -1,5 +1,6 @@
 # ADR-175: two-terminal dialogue-loop sync-marker & self-stale
-Status: PROPOSED
+Status: ACCEPTED
+Ratified: 2026-07-28 (operator)
 Amends: SYNC-CANON (новый принцип P-6 DIALOGUE-SYNC)
 Refs: ADR-163, ADR-170, ADR-153, ADR-134
 Depends: TERMINAL-ROLE-IDENTITY-CANON (PROPOSED, PR #1160) — критерий self-stale (d)
