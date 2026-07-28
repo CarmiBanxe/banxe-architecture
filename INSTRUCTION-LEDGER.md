@@ -28065,3 +28065,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Fable-5 request: two-terminal synchronization, aligned to SYNC-CANON/ADR-163/ADR-170 per ADR-102
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1111 - agent-factory-gitnexus01-scope-request @ 2026-07-28T19:37:24Z
+
+- **il_ts:** 2026-07-28T19:37:24Z
+- **session_id:** agent-factory-gitnexus01-scope-request
+- **source:** agent-factory
+- **status:** PROPOSED
+- **shard:** `ledger/entries/agent-factory-gitnexus01-scope-request/IL-2026-07-28T19-37-24Z--gnunblock.md`
+
+### agent-factory-gitnexus01-scope-request
+
+- **Instruction:** OPERATOR UNBLOCK: GitNexus (PolyForm-NC) unblocked for sandbox/non-commercial use — no purchased license required (we are not in PROD). Request factory to ACTIVATE GitNexus (MCP+hooks+CI-gate) for Wave -1 repo-consolidation + Wave 0 org-structure; keep org-layer out of code-graph. Fork O1/O2/O3 deferred to any future PROD.
+- **Refs:** ADR-102, docs/canon/GITNEXUS-PHASE3-ORG-CONTOUR-VERDICT.md, GITNEXUS-CODE-CONTOUR-DIRECTIVE.md
