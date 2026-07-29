@@ -277,7 +277,7 @@ banxe-infra ai-routing rollout. Cross-references ADR-031..ADR-034.
 | **B3** | Watcher hand-off: 41 findings from #1059 not yet emitted as ROADMAP entries | Terminal-B | OPEN | monitor watcher daemon; fallback sprint if idle |
 | **B4** | Factory best-decision engine PR #1070 — resolution (close-as-superseded / rework under sp27 ratification) | Factory + Central | OPEN | Central files resolution on #1070 |
 | **B5** | 17 SOUL-less passports — author governor SOULs (cohort-batched) | Factory + Central | OPEN | Central publishes list → first cohort sprint shard |
-| **B6** | ENGINE SRC MISSING (`~/banxe-dev/emi-banxe-engine.md` absent) — Line B **BLOCKED** on operator input | **Operator** + Central | OPEN — BLOCKED | surface block in `governance/COORDINATION-NOTES.md` |
+| **B6** | ENGINE SRC — drift resolved: source relocated to `docs/sources/emi-banxe-engine-2026-07-06.md` (archived per ADR-161, IL-2026-07-06; sha256 9ef1b03…). Dead path `~/banxe-dev/emi-banxe-engine.md` superseded | Central | **RESOLVED** | closed CLOSED-ACCEPT-DRIFT-RESOLVED in `governance/COORDINATION-NOTES.md`; retarget stale refs |
 | **B7** | Adoption-audit for 88 findings via best-decision-gate (ACCEPT / REJECT-AS-NOT-WORTH / DEFER + rationale) | Central | OPEN | Central files first adoption-audit batch shard |
 | **B8** | Ratify remaining operator directives: `B-EMI-CREDIT-GATE-001` (credit-scope gate) + `B-QUIET-WINDOW-001` (merge quiet-window); plus follow-up ADR for §7 variant-2 per-role HITL envelope + config schema | Central + operator | OPEN | two sequential ratification sprints using sp27 pattern |
 
