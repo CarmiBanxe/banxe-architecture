@@ -28140,3 +28140,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Fill ADR-175 Refs to satisfy guardian-traceability (ADR-132) hard-gate (#1167)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1121 - agent-factory-epicgw01-gateway-herdr-roadmap @ 2026-07-31T00:14:15Z
+
+- **il_ts:** 2026-07-31T00:14:15Z
+- **session_id:** agent-factory-epicgw01-gateway-herdr-roadmap
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/agent-factory-epicgw01-gateway-herdr-roadmap/IL-2026-07-31T00-14-15Z--3dc4c2.md`
+
+### agent-factory-epicgw01-gateway-herdr-roadmap
+
+- **Instruction:** EPIC gateway+herdr roadmap: Sprint6 herdr activation revisit-B, install provenance, pilot notes
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
