@@ -1,8 +1,9 @@
 ---
 id: TERMINAL-ROLE-IDENTITY-CANON
 title: Terminal role identity — Central is the brain; it works THROUGH the Factory
-status: PROPOSED
+status: ACCEPTED
 date: 2026-07-27
+ratified: 2026-07-27 — operator (CEO/SMF1) ratified at merge of PR #1160 (commit 2191112)
 authority: Operator (CEO/SMF1) ratifies
 related:
   - .claude/rules/agents.md (Orchestrating/Right Terminal + Factory-Only Execution)
