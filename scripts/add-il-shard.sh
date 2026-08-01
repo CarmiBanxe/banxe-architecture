@@ -23,6 +23,8 @@ REDIS_HOST_DEFAULT='127.0.0.1'   # align with build_ledger.py post-#990 default 
 REDIS_PORT_DEFAULT='6379'
 REDIS_HOST="${REDIS_HOST:-$REDIS_HOST_DEFAULT}"
 REDIS_PORT="${REDIS_PORT:-$REDIS_PORT_DEFAULT}"
+REDIS_RETRIES="${REDIS_RETRIES:-3}"          # attempts before fail-closed (T1, EVO1-ALLOCATOR-STABILITY-2026-08-02)
+REDIS_BACKOFF="${REDIS_BACKOFF:-5 10 15}"    # seconds between attempts (space-separated; last reused)
 ALLOCATOR_MODE="${BANXE_IL_ALLOCATOR:-redis}"   # matches build_ledger.py default
 
 die() { printf 'add-il-shard: ERROR: %s\n' "$*" >&2; exit 1; }
@@ -51,7 +53,13 @@ Fail-closed Redis precheck (ADR-143 / IL-827 duplicate root cause):
   When BANXE_IL_ALLOCATOR != 'local' (the default 'redis' mode), this script REQUIRES
   the shared allocator to be reachable BEFORE minting. Target:
     REDIS_HOST (default 127.0.0.1)     : REDIS_PORT (default 6379)
-  If TCP connect fails, the script exits non-zero WITHOUT minting — no automatic
+    REDIS_RETRIES (default 3)          — precheck attempts before fail-closed
+    REDIS_BACKOFF (default "5 10 15")  — seconds between attempts (space-separated;
+                                         the last value is reused if fewer values
+                                         than attempts). Retry only widens the
+                                         transient window (evo1 load spikes) —
+                                         fail-closed semantics are UNCHANGED.
+  If TCP connect fails after all attempts, the script exits non-zero WITHOUT minting — no automatic
   fallback to local max+1 (that silent fallback caused the IL-827 duplicate on
   concurrent terminals). To mint offline on a single terminal at your own risk:
     BANXE_IL_ALLOCATOR=local bash scripts/add-il-shard.sh <slug> <desc>
@@ -146,9 +154,40 @@ if [ -e "$SHARD_FILE" ]; then
 fi
 
 # --- FAIL-CLOSED Redis allocator precheck (ADR-143 / IL-827 duplicate root cause) ---
+# T1 (docs/runbooks/EVO1-ALLOCATOR-STABILITY-2026-08-02.md): retry-with-backoff widens
+# the transient window (evo1 load spikes) BEFORE the unchanged fail-closed exit 3.
+# NEVER falls back to local — after all attempts the original Remedies + exit 3 apply.
+redis_reachable() { timeout 3 bash -c ": >/dev/tcp/${REDIS_HOST}/${REDIS_PORT}" 2>/dev/null; }
+
 allocator_lc="$(printf '%s' "$ALLOCATOR_MODE" | tr '[:upper:]' '[:lower:]')"
 if [ "$allocator_lc" != "local" ]; then
-  if ! timeout 3 bash -c ": >/dev/tcp/${REDIS_HOST}/${REDIS_PORT}" 2>/dev/null; then
+  read -r -a backoffs <<< "$REDIS_BACKOFF"
+  reachable=0
+  attempt=1
+  while [ "$attempt" -le "$REDIS_RETRIES" ]; do
+    if redis_reachable; then
+      info "Redis allocator OK (attempt ${attempt}): ${REDIS_HOST}:${REDIS_PORT}"
+      reachable=1
+      break
+    fi
+    if [ "$attempt" -lt "$REDIS_RETRIES" ]; then
+      idx=$((attempt - 1))
+      if [ "${#backoffs[@]}" -eq 0 ]; then
+        delay=5
+      else
+        [ "$idx" -ge "${#backoffs[@]}" ] && idx=$(( ${#backoffs[@]} - 1 ))
+        delay="${backoffs[$idx]}"
+      fi
+      printf 'add-il-shard: allocator unreachable (attempt %s/%s) — retrying in %ss...\n' \
+        "$attempt" "$REDIS_RETRIES" "$delay" >&2
+      sleep "$delay"
+    else
+      printf 'add-il-shard: allocator unreachable (attempt %s/%s)\n' \
+        "$attempt" "$REDIS_RETRIES" >&2
+    fi
+    attempt=$((attempt + 1))
+  done
+  if [ "$reachable" -ne 1 ]; then
     {
       printf 'add-il-shard: FAIL-CLOSED — shared Redis allocator %s:%s unreachable.\n' \
         "$REDIS_HOST" "$REDIS_PORT"
@@ -163,7 +202,6 @@ if [ "$allocator_lc" != "local" ]; then
     } >&2
     exit 3
   fi
-  info "Redis allocator OK: ${REDIS_HOST}:${REDIS_PORT}"
 else
   info "BANXE_IL_ALLOCATOR=local — offline max+1 mint (explicit opt-in, single-terminal only)"
 fi
