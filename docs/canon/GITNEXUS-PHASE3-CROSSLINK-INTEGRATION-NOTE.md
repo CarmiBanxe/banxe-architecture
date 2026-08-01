@@ -49,3 +49,16 @@ B3 только **добавляет** поля: `impacted_departments` (реб�
 
 ---
 *PHASE 3 выдача | ENGREF01 | additive-only контракт | files-only, not committed | 2026-07-27.*
+
+## Builder (implemented)
+
+`scripts/gitnexus/build_org_contour.py` (2026-08-01, sandbox/PolyForm-NC, stdlib-only, read-only) —
+producer B3-оверлея по этому контракту. Вход: staged-файлы (`--staged`) или argv-пути. Выход
+(additive-only): `{impacted_departments, accountable_agents, unresolved_departments, unowned_paths}` —
+Phase-1 поля risk/blast_radius/files НЕ эмитятся и не меняются (остаются в detect_impact.py; этот PR
+detect_impact.py не трогает — скрипт импортируем, интеграция отдельным шагом).
+Резолюция NO-MOCK: B2 — map.yaml (18 room-глобов; F0 core_exempt помечается, не «владеется»;
+todo_operator-строки уходят в unresolved_departments честным пропуском); B1 — room-ростеры
+`bank-rooms/*/agents-roster.md` (registry-generated, 129 агентов; колонка source_path даёт точечный
+матч код-путь→агент) с обогащением из паспортов `agents/passports/` + `config/agents/passports/`;
+не-сматченные пути → unowned_paths (сигнал, не выдумка). Самопроверка: `--self-test`.
