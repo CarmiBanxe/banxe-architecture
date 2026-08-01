@@ -28245,3 +28245,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Wire build_org_contour overlay into detect_impact (additive, exit-preserving, per merged spec + ADR-176)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1128 - gitnexus01-evo1-allocator-stability @ 2026-08-01T22:07:34Z
+
+- **il_ts:** 2026-08-01T22:07:34Z
+- **session_id:** gitnexus01-evo1-allocator-stability
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-evo1-allocator-stability/IL-2026-08-01T22-07-34Z--ad287e.md`
+
+### gitnexus01-evo1-allocator-stability
+
+- **Instruction:** Record evo1 allocator stability tech-debt: canon-correct, load-induced timeouts; recommend fabric retry-with-backoff
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
