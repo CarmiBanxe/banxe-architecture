@@ -1,7 +1,7 @@
 # ADR-176: GitNexus Ownership + Analytical Red Line
 
 **Date:** 2026-08-01
-**Status:** Proposed
+**Status:** Accepted
 **IL:** TBD (assigned by ledger-rebuild after merge)
 **Author:** Moriel Carmi / Claude Code
 
