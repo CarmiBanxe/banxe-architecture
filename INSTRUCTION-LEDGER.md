@@ -28215,3 +28215,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Ratify ADR-176 GitNexus ownership + red line: Status Proposed->Accepted
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1126 - gitnexus01-impact-org-overlay-spec @ 2026-08-01T18:17:59Z
+
+- **il_ts:** 2026-08-01T18:17:59Z
+- **session_id:** gitnexus01-impact-org-overlay-spec
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-impact-org-overlay-spec/IL-2026-08-01T18-17-59Z--2748f2.md`
+
+### gitnexus01-impact-org-overlay-spec
+
+- **Instruction:** Spec: report-time join of org-contour overlay into detect_impact (additive, exit-preserving, ADR-176 red line)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
