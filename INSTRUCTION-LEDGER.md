@@ -28260,3 +28260,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Record evo1 allocator stability tech-debt: canon-correct, load-induced timeouts; recommend fabric retry-with-backoff
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1129 - gitnexus01-allocator-retry-backoff @ 2026-08-01T22:32:57Z
+
+- **il_ts:** 2026-08-01T22:32:57Z
+- **session_id:** gitnexus01-allocator-retry-backoff
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-allocator-retry-backoff/IL-2026-08-01T22-32-57Z--9e62d2.md`
+
+### gitnexus01-allocator-retry-backoff
+
+- **Instruction:** T1: retry-with-backoff for allocator precheck (fail-closed preserved, no local) [ADR-143-A]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
