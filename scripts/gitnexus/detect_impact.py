@@ -60,6 +60,26 @@ def mcp_available() -> bool:
     )
 
 
+def emit_org_overlay(files: list[str], *, note_prefix: str = "") -> None:
+    """Report-time org overlay (ADR-176 red line; spec impact-org-overlay-spec.md).
+
+    ADDITIVE side-effect only: prints a separate "GitNexus org-overlay:" block.
+    NEVER raises and never touches exit codes — any failure degrades to a stderr
+    note. No write-back into .gitnexus (org joins the code graph at report time).
+    """
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        if script_dir not in sys.path:
+            sys.path.insert(0, script_dir)
+        from build_org_contour import build_overlay  # lazy: overlay stays optional
+        overlay = build_overlay(files)
+        print("GitNexus org-overlay: " + json.dumps(overlay, ensure_ascii=False))
+        if note_prefix:
+            print(note_prefix, file=sys.stderr)
+    except Exception as exc:  # defensive by contract: overlay must never block
+        print(f"[org-overlay] degraded: {exc}", file=sys.stderr)
+
+
 def run_real_detect_impact(files: list[str]) -> int:
     """Delegate to the real GitNexus CLI when MCP tooling is live.
 
@@ -93,6 +113,7 @@ def run_real_detect_impact(files: list[str]) -> int:
             file=sys.stderr,
         )
         return EX_FAIL_CLOSED
+    emit_org_overlay(files)
     return EX_OK
 
 
@@ -111,6 +132,13 @@ def main() -> int:
             "MCP not connected — enrich/reindex unavailable; "
             'risk="UNKNOWN"; running in reminder+fail-closed mode.',
             file=sys.stderr,
+        )
+        emit_org_overlay(
+            files,
+            note_prefix=(
+                "org_overlay_note: code graph unavailable (78); "
+                "org overlay from map/rosters only"
+            ),
         )
         return EX_CONFIG
 

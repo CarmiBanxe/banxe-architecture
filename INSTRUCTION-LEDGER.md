@@ -28230,3 +28230,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Spec: report-time join of org-contour overlay into detect_impact (additive, exit-preserving, ADR-176 red line)
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1127 - gitnexus01-impact-org-overlay-impl @ 2026-08-01T18:54:34Z
+
+- **il_ts:** 2026-08-01T18:54:34Z
+- **session_id:** gitnexus01-impact-org-overlay-impl
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-impact-org-overlay-impl/IL-2026-08-01T18-54-34Z--09c521.md`
+
+### gitnexus01-impact-org-overlay-impl
+
+- **Instruction:** Wire build_org_contour overlay into detect_impact (additive, exit-preserving, per merged spec + ADR-176)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
