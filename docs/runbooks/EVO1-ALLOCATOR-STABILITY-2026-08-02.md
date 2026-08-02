@@ -54,3 +54,40 @@ that recovered within ~10–20 s.
 - ADR-105 — three-node fabric context (evo1 role).
 - Incident context: factory STOPs 2026-08-01 (org-contour builder shard step;
   impact-org-overlay-impl Task 3) — both resolved on allocator recovery.
+
+## 6. R-A — allocator-Redis isolation snippet (DOCUMENTED — operator applies)
+
+Layered plan context (Fable-5, operator-approved): R-A/R-B now (evo1) → R-D watchdog +
+R-E retry-ceiling (fabric follow-up PRs) → ADR-143-B relocation primary→evo2 →
+manual block-jump failover (docs/runbooks/allocator-failover.md).
+
+systemd override for the banxe-redis container scope (or equivalent `docker run` flags
+`--cpus/--cpuset-cpus/--blkio-weight`):
+
+```ini
+# systemctl edit docker-<banxe-redis-container-id>.scope   (operator)
+[Scope]
+CPUWeight=900
+AllowedCPUs=15          # one reserved core, keep GPU/ollama off it via their own cpuset
+IOWeight=500
+```
+
+**Honest caveat:** at load 163–233 the starvation is kernel-wide (softirq/network
+stack) — a reserved core MITIGATES the window, it does NOT guarantee reachability.
+That is why R-A is layer one, not the fix: the durable fix is ADR-143-B (allocator
+off the GPU node).
+
+## 7. R-B — ollama caps guidance (operator, evo1)
+
+- Cap concurrent GPU residents: `OLLAMA_MAX_LOADED_MODELS=1` (2 only if VRAM headroom
+  proven) — the 2026-08-01/02 incidents had 3 × ~25 GB residents simultaneously.
+- Shorten keep-alive so idle models unload: `OLLAMA_KEEP_ALIVE=5m` (was effectively
+  pinning models for hours).
+- Stagger heavy batch jobs (clickhouse, training pulls) away from factory mint windows.
+
+## 8. Follow-ups landing as SEPARATE fabric-code PRs (not in the docs PR)
+
+- R-D: allocator watchdog (freshness/reachability probe + operator alert).
+- R-E: retry-ceiling policy on top of T1 (#1182) — bounded total wait, then fail-closed.
+- `BANXE_IL_ALLOCATOR_URL` single config point (replaces scattered REDIS_HOST/PORT
+  defaults; used by the ADR-143-B migration flip).
