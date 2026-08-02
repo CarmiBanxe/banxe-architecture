@@ -11,16 +11,21 @@ check() {  # check <label> <condition-result>
   if [ "$2" -eq 0 ]; then echo "ok   - $1"; else echo "FAIL - $1"; FAILS=$((FAILS+1)); fi
 }
 
-# --- test_fail_closed_after_retries -----------------------------------------
+# --- test_new_defaults_present (R-E ceiling ~170s) --------------------------
+grep -q 'REDIS_RETRIES:-6' "$SCRIPT"; check "default REDIS_RETRIES extended to 6 (R-E)" $?
+grep -q 'REDIS_BACKOFF:-5 10 20 30 45 60' "$SCRIPT"; check "default backoff ladder 5/10/20/30/45/60 present" $?
+
+# --- test_fail_closed_after_retries (knobs overridden for speed) ------------
 tmp_err="$(mktemp)"
 before_shards="$(find "$(dirname "$SCRIPT")/../ledger/entries" -name 'IL-*.md' | wc -l)"
-REDIS_HOST=127.0.0.1 REDIS_PORT=1 REDIS_RETRIES=2 REDIS_BACKOFF="0 0" \
+REDIS_HOST=127.0.0.1 REDIS_PORT=1 REDIS_RETRIES=3 REDIS_BACKOFF="0 0" \
   bash "$SCRIPT" retry-test-fail "should never mint" >/dev/null 2>"$tmp_err"
 rc=$?
 after_shards="$(find "$(dirname "$SCRIPT")/../ledger/entries" -name 'IL-*.md' | wc -l)"
 check "exit code is 3 (fail-closed) after retries"        $([ "$rc" -eq 3 ]; echo $?)
-grep -q 'attempt 1/2' "$tmp_err"; check "stderr shows attempt 1/2" $?
-grep -q 'attempt 2/2' "$tmp_err"; check "stderr shows attempt 2/2" $?
+grep -q 'attempt 1/3' "$tmp_err"; check "stderr shows attempt 1/3" $?
+grep -q 'attempt 2/3' "$tmp_err"; check "stderr shows attempt 2/3" $?
+grep -q 'attempt 3/3' "$tmp_err"; check "stderr shows attempt 3/3" $?
 grep -q 'Remedies (pick ONE):' "$tmp_err"; check "Remedies block printed" $?
 check "no shard written on fail-closed"                   $([ "$before_shards" = "$after_shards" ]; echo $?)
 grep -q 'offline max+1 mint' "$tmp_err"; check "did NOT fall back to local (no offline-mint note)" $([ $? -ne 0 ]; echo $?)
