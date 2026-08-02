@@ -23,8 +23,8 @@ REDIS_HOST_DEFAULT='127.0.0.1'   # align with build_ledger.py post-#990 default 
 REDIS_PORT_DEFAULT='6379'
 REDIS_HOST="${REDIS_HOST:-$REDIS_HOST_DEFAULT}"
 REDIS_PORT="${REDIS_PORT:-$REDIS_PORT_DEFAULT}"
-REDIS_RETRIES="${REDIS_RETRIES:-3}"          # attempts before fail-closed (T1, EVO1-ALLOCATOR-STABILITY-2026-08-02)
-REDIS_BACKOFF="${REDIS_BACKOFF:-5 10 15}"    # seconds between attempts (space-separated; last reused)
+REDIS_RETRIES="${REDIS_RETRIES:-6}"                    # was 3 (T1); R-E extends ceiling for longer evo1 load spikes
+REDIS_BACKOFF="${REDIS_BACKOFF:-5 10 20 30 45 60}"     # was "5 10 15"; total ceiling ~170s (~2.8 min) before loud fail-closed
 ALLOCATOR_MODE="${BANXE_IL_ALLOCATOR:-redis}"   # matches build_ledger.py default
 
 die() { printf 'add-il-shard: ERROR: %s\n' "$*" >&2; exit 1; }
@@ -53,8 +53,11 @@ Fail-closed Redis precheck (ADR-143 / IL-827 duplicate root cause):
   When BANXE_IL_ALLOCATOR != 'local' (the default 'redis' mode), this script REQUIRES
   the shared allocator to be reachable BEFORE minting. Target:
     REDIS_HOST (default 127.0.0.1)     : REDIS_PORT (default 6379)
-    REDIS_RETRIES (default 3)          — precheck attempts before fail-closed
-    REDIS_BACKOFF (default "5 10 15")  — seconds between attempts (space-separated;
+    REDIS_RETRIES (default 6)          — precheck attempts before fail-closed (R-E)
+    REDIS_BACKOFF (default "5 10 20 30 45 60")
+                                       — seconds between attempts; ~170s total ceiling,
+                                         still fail-closed after — never local
+                                         (space-separated;
                                          the last value is reused if fewer values
                                          than attempts). Retry only widens the
                                          transient window (evo1 load spikes) —

@@ -28305,3 +28305,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-143-B allocator relocation to evo2 + failover runbook + R-A/R-B snippets [ADR-143-A][ADR-102]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1132 - gitnexus01-retry-ceiling @ 2026-08-02T00:55:24Z
+
+- **il_ts:** 2026-08-02T00:55:24Z
+- **session_id:** gitnexus01-retry-ceiling
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-retry-ceiling/IL-2026-08-02T00-55-24Z--e32f73.md`
+
+### gitnexus01-retry-ceiling
+
+- **Instruction:** R-E: extend allocator retry ceiling to ~170s (defaults 6x 5/10/20/30/45/60); fail-closed + no-local unchanged [ADR-143-A]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
