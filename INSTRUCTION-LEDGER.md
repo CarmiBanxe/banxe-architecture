@@ -28275,3 +28275,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** T1: retry-with-backoff for allocator precheck (fail-closed preserved, no local) [ADR-143-A]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1130 - gitnexus01-freshness-protocol @ 2026-08-02T00:21:58Z
+
+- **il_ts:** 2026-08-02T00:21:58Z
+- **session_id:** gitnexus01-freshness-protocol
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-freshness-protocol/IL-2026-08-02T00-21-58Z--62a6d2.md`
+
+### gitnexus01-freshness-protocol
+
+- **Instruction:** GitNexus freshness (reindex+stamp, fail-soft) + two-terminal protocol [ADR-176][ADR-102]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
