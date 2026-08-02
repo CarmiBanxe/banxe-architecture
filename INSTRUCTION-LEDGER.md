@@ -28290,3 +28290,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** GitNexus freshness (reindex+stamp, fail-soft) + two-terminal protocol [ADR-176][ADR-102]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1131 - gitnexus01-allocator-resilience @ 2026-08-02T00:38:34Z
+
+- **il_ts:** 2026-08-02T00:38:34Z
+- **session_id:** gitnexus01-allocator-resilience
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/gitnexus01-allocator-resilience/IL-2026-08-02T00-38-34Z--179d18.md`
+
+### gitnexus01-allocator-resilience
+
+- **Instruction:** ADR-143-B allocator relocation to evo2 + failover runbook + R-A/R-B snippets [ADR-143-A][ADR-102]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
