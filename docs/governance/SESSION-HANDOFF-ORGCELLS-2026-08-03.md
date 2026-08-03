@@ -45,13 +45,34 @@ sandbox-only, no secrets/credentials/real data.
   separate operator decision.
 - **MT-11 is PARTIAL (2 of 21 worktrees).** Only this worktree and
   `architecture-bank-operating-model-20260718` carry the remediated hook; 19 remain.
-- **Register sync pending (not this session's fault to leave open).** The bank-worktree
-  register row for this work could not be committed: that worktree is held by a **live
-  foreign session** (`-bash`, sid 1124222) and its lock was correctly refused rather
-  than broken. The register edit is prepared and sitting **uncommitted** in
-  `~/wt/architecture-bank-operating-model-20260718/docs/governance/MASTER-TAILS-REGISTER-2026-07-31.md`
-  (MT-11 → PARTIAL 2/21, sync-log row 10). Commit it from that session, or after it
-  releases.
+- **Register sync — EXPORTED AS PATCH, rolled back (RULING C).** The bank worktree is held
+  by a **live foreign session** (`-bash`, sid 1124222); its lock was refused, not broken,
+  so the register row could not be committed there. Per RULING C the prepared edit was
+  exported and then removed from that worktree, leaving no cross-session residue:
+
+  - **Patch (×2, evidence pattern):**
+    `~/backups/register-sync-MT11-20260803.patch` and
+    `/mnt/d/banxe-backups/register-sync-MT11-20260803.patch`
+    **sha256 `744405fff5f75eb59ce65c95f2fafac73ad37286fb3a4941ceffe8383d7246d6`** — IDENTICAL
+    in both locations; `.sha256` sidecars written alongside each.
+  - **Content:** exactly one file, two edits — MT-11 → **PARTIAL (2 of 21 worktrees)** and
+    **sync-log row 10** (org-cells bootstrap + MT-11 hook + AML/EDD exemplar, PROPOSED,
+    MC-C1 pending, MT-05 FROZEN, NO PUSH).
+  - **Restore verified before rollback:** the patch applies **cleanly to the HEAD version**
+    of the register (tested against a scratch copy), and reverse-applies cleanly to the
+    pre-rollback tree — so it is a faithful, replayable capture.
+  - **Rollback was surgical:** `git checkout --` on that one file only; a before/after
+    `git status` comparison shows exactly one line removed (the register). Foreign state
+    untouched — MT-08 hitl `M`/`.bak`, `?? HTTP`, `?? docs/handoff/session-transfer-…`,
+    `?? tools/litellm_models_audit.py`, stash stack (0), and the live lock sid 1124222 all
+    identical before and after. No commit, no stash, no `BANXE_INCLUDE_PRESTAGED`, no
+    `--no-verify`.
+
+  **NEXT SESSION — how to land it:** claim the bank-worktree lock (after sid 1124222
+  releases, or from that session) → `git apply ~/backups/register-sync-MT11-20260803.patch`
+  → **re-check MT-11 progress against reality at that moment** (the 2-of-21 count may have
+  moved) and correct the row before committing → Rule-2 staged-set (register only) →
+  commit.
 
 ## Session-lock operating note
 
