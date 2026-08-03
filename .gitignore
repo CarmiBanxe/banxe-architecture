@@ -18,5 +18,8 @@ ledger/IL-SEQUENCE.json
 
 # Terminal role anchor — local-only, never commit (ADR-158 G-4)
 .TERMINAL-ROLE
+# Session lock — per-worktree, local-only (ADR-120 EXTENSION session axis)
+.SESSION-LOCK
+.SESSION-LOCK.prestaged
 docs/architecture/*.md.bak.*
 ops/sandbox/.ch-sandbox.env

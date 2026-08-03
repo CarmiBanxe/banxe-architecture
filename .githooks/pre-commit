@@ -15,6 +15,14 @@ case "$(git rev-parse --absolute-git-dir 2>/dev/null || echo /)" in
     exit 1 ;;
 esac
 
+# ── ADR-120 EXTENSION (2026-08-01): session-lock backstop, layer-3 ──
+# Parallel-terminal collision guard: commit only while holding this worktree's
+# exclusive .SESSION-LOCK and while HEAD still matches the holder's observed SHA.
+_lock_hook="$(git rev-parse --show-toplevel)/.githooks/pre-commit-session-lock"
+if [ -x "$_lock_hook" ]; then
+  "$_lock_hook" || exit 1
+fi
+
 # ── ADR-121 RULE 7: no destructive ops against shared/foreign state ──
 # (a) BLOCK staging of git-internal / worktree-admin paths — never a legitimate
 #     commit, so zero false-positives on normal commits.
