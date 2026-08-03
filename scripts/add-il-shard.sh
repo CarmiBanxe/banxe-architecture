@@ -67,11 +67,18 @@ Fail-closed Redis precheck (ADR-143 / IL-827 duplicate root cause):
   concurrent terminals). To mint offline on a single terminal at your own risk:
     BANXE_IL_ALLOCATOR=local bash scripts/add-il-shard.sh <slug> <desc>
 
+  After the TCP gate an AUTH probe runs (fabric/common/redis_auth_probe.py):
+  a real authenticated PING using the vault file ONLY (never argv/env/logged).
+  AUTH/vault failures exit 4/5 immediately (no retry — retry cannot fix a wrong
+  password). See docs/runbooks/allocator-redis-auth.md.
+
 Exit codes:
   0  success
   1  usage / argument / normalisation error
   2  ledger build/check failure
   3  fail-closed: shared Redis allocator unreachable in Redis mode
+  4  fail-closed: allocator rejected AUTH (vault password out of sync with requirepass)
+  5  fail-closed: vault file missing/unreadable/empty (REDIS_PASS_FILE)
 EOF
 }
 
@@ -205,6 +212,49 @@ if [ "$allocator_lc" != "local" ]; then
     } >&2
     exit 3
   fi
+
+  # --- AUTH probe (D2 fix, allocator-redis-auth advisory option B) ---------------
+  # TCP-open is NOT enough: with requirepass on the allocator a NOAUTH/WRONGPASS
+  # connection passes the gate above and the mint fails later with an opaque error.
+  # The probe authenticates for real via fabric/common/redis_auth_probe.py, which
+  # reads the password ONLY from the vault file (never argv, never env, never
+  # logged). AUTH/vault failures are NOT retried — retry cannot fix a wrong
+  # password (docs/runbooks/allocator-redis-auth.md).
+  probe_rc=0
+  REDIS_HOST="$REDIS_HOST" REDIS_PORT="$REDIS_PORT" \
+    python3 "$REPO_ROOT/fabric/common/redis_auth_probe.py" >&2 || probe_rc=$?
+  case "$probe_rc" in
+    0)
+      info "allocator AUTH OK (vault channel)"
+      ;;
+    4)
+      {
+        printf 'add-il-shard: FAIL-CLOSED — allocator %s:%s rejected AUTH (NOAUTH/WRONGPASS).\n' \
+          "$REDIS_HOST" "$REDIS_PORT"
+        printf '  The vault password (~/banxe-fabric/.vault/redis.pass or REDIS_PASS_FILE) is\n'
+        printf '  out of sync with requirepass on the allocator host. Do NOT retry — follow\n'
+        printf '  docs/runbooks/allocator-redis-auth.md (rotation / provisioning procedure).\n'
+      } >&2
+      exit 4
+      ;;
+    5)
+      {
+        printf 'add-il-shard: FAIL-CLOSED — allocator vault file missing/unreadable/empty.\n'
+        printf '  Expected: ~/banxe-fabric/.vault/redis.pass (chmod 600) or REDIS_PASS_FILE.\n'
+        printf '  Provision it per docs/runbooks/allocator-redis-auth.md (vault is the ONLY\n'
+        printf '  secret channel — the env path is forbidden).\n'
+      } >&2
+      exit 5
+      ;;
+    *)
+      {
+        printf 'add-il-shard: FAIL-CLOSED — allocator %s:%s reachable on TCP but auth-PING failed (rc=%s).\n' \
+          "$REDIS_HOST" "$REDIS_PORT" "$probe_rc"
+        printf '  Treating as unreachable (ADR-143 fail-closed, no local fallback).\n'
+      } >&2
+      exit 3
+      ;;
+  esac
 else
   info "BANXE_IL_ALLOCATOR=local — offline max+1 mint (explicit opt-in, single-terminal only)"
 fi
