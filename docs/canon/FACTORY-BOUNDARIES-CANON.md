@@ -12,9 +12,18 @@ related:
   - FACTORY-MEMO.md · FACTORY-CANON.md · DELIVERY-CANON-STDIN-PASTE.md
   - .claude/rules/agents.md (Orchestrating/Right Terminal + Factory-Only Execution)
 concept_only: true
+superseded_in_part_by: ADR-177 (2026-08-04)
 ---
 
 # FACTORY BOUNDARIES CANON
+
+> **⚠️ SUPERSEDED-IN-PART by ADR-177 (2026-08-04, operator directive).**
+> The absolutist clauses "Factory never designs" / "Brain decides WHAT, Factory
+> only HOW" no longer apply: per `docs/canon/FACTORY-FULL-CYCLE-COMPANY.md` the
+> factory is a full-cycle software company that designs AND builds within
+> operator-set intent. What SURVIVES from this document: worktree isolation
+> (ADR-120/121), ADR-060 branch namespace, one-artifact discipline, scope-lock,
+> PR → operator merge, ADR-145 non-delegable authority. See ADR-177 §Decision p.4.
 
 ## Role definition (three contours)
 - **Central Terminal = BRAIN.** Designs the project: intent, architecture,

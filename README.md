@@ -27,6 +27,7 @@
 | `SERVICE-MAP.md` | Все сервисы, порты, статусы |
 | `DEFERRED-PROJECTS.md` | Отложенные проекты (не делать сейчас) |
 | `decisions/` | ADR — Architecture Decision Records |
+| `docs/canon/FACTORY-FULL-CYCLE-COMPANY.md` | **Идентичность фабрики (ADR-177)**: компания-разработчик полного цикла — Team Topologies, Spotify model, AI DLC; фабрика проектирует и пишет код руками |
 | `validators/` | Скрипты проверки соответствия |
 | `docs/project/` | **Project documentation programme** — master index + S12-S25 backlog (start here for project-implementation docs) |
 
