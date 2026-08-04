@@ -1,0 +1,72 @@
+{
+  "_schema": "banxe/il-gap-register/v1",
+  "_status": "PROPOSED — pending operator ratification; append-only",
+  "_invariant": "allocated = committed ⊎ registered gaps. Every number the central allocator (ADR-143) has handed out is either present in ledger/IL-SEQUENCE.json (committed) or recorded here (gap). A number that is in neither is an accounting hole and a finding.",
+  "_authority_note": "Until shard-stored IDs land (tail), ledger/IL-SEQUENCE.json is the authority for committed IDs; this file is the authority for allocated-but-not-committed ones. Neither file allocates: allocation happens only in build_ledger.py against the central counter.",
+  "_rules": [
+    "APPEND-ONLY. Entries are never edited or removed; a correction is a new entry referencing the old one.",
+    "An entry may move from unverified to verified only with cited evidence.",
+    "Diagnostic runs must never allocate — see the diagnostics-hygiene canon. A gap created by diagnostics is a defect that is disclosed, not normalised."
+  ],
+  "_generated": "2026-08-05 by FACTORY under SPRINT0-MINT-SPLIT (policy C: mint ≠ rebuild)",
+  "gaps": [
+    {
+      "il": 1137,
+      "status": "allocated-by-other-terminal",
+      "owner": "unknown",
+      "verification": "unverified",
+      "disclosed": true,
+      "evidence": "Observed indirectly: max committed ID in IL-SEQUENCE.json was 1136 while the central counter had advanced past 1141. Consumer not identified from this terminal.",
+      "action": "verify owner; if abandoned, restate as abandoned with the owning session named"
+    },
+    {
+      "il": 1138,
+      "status": "abandoned",
+      "owner": "Fable-5 diagnostic run 2026-08-04",
+      "verification": "asserted-by-ruling",
+      "disclosed": true,
+      "evidence": "Recorded per the Fable-5 + Codex ruling of 2026-08-04, in which Fable-5 acknowledged that a diagnostic run consumed this number. NOT independently observed from this terminal.",
+      "action": "none — burned, disclosed, harmless under append-only (ADR-059-A)"
+    },
+    {
+      "il": 1139,
+      "status": "abandoned",
+      "owner": "Fable-5 diagnostic run 2026-08-04",
+      "verification": "asserted-by-ruling",
+      "disclosed": true,
+      "evidence": "Same ruling as IL-1138. NOT independently observed from this terminal.",
+      "action": "none — burned, disclosed, harmless under append-only (ADR-059-A)"
+    },
+    {
+      "il": 1140,
+      "status": "allocated-by-other-terminal",
+      "owner": "unknown",
+      "verification": "unverified",
+      "disclosed": true,
+      "evidence": "Same indirect observation as IL-1137.",
+      "action": "verify owner; if abandoned, restate as abandoned with the owning session named"
+    },
+    {
+      "il": 1141,
+      "status": "allocated-by-other-terminal",
+      "owner": "unknown",
+      "verification": "unverified",
+      "disclosed": true,
+      "evidence": "Same indirect observation as IL-1137.",
+      "action": "verify owner; if abandoned, restate as abandoned with the owning session named"
+    }
+  ],
+  "_committed_in_this_change": [
+    {
+      "il": 1142,
+      "session_id": "agent-factory-orgcells-cto-dept",
+      "note": "Allocated during the SPRINT0-1193-LEDGER-FIX diagnostic run on 2026-08-04 and COMMITTED here rather than burned — the shard is real and lands with PR #1193. Directly observed from this terminal."
+    },
+    {
+      "il": 1143,
+      "session_id": "agent-factory-orgcells-dpo",
+      "note": "Same run, same disposition. Directly observed from this terminal."
+    }
+  ],
+  "_reconciliation_note": "This terminal's own diagnostic consumed exactly two numbers, and both are committed above — it burned none. The abandoned entries at 1138/1139 are recorded on the authority of the ruling, not on observation from here; the distinction is kept explicit so the register never presents hearsay as measurement."
+}
