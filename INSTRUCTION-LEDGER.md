@@ -28338,6 +28338,21 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 ---
 
+### IL-1134 - fable5-roadmap-v3-full-cycle @ 2026-08-04T13:51:10Z
+
+- **il_ts:** 2026-08-04T13:51:10Z
+- **session_id:** fable5-roadmap-v3-full-cycle
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-roadmap-v3-full-cycle/IL-2026-08-04T13-51-10Z--483463.md`
+
+### fable5-roadmap-v3-full-cycle
+
+- **Instruction:** Roadmap v3 draft: 23-gap register -> 6 big-batch sprints (full-cycle canon closure); DRAFT awaits operator ratification [ADR-177-pending]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
 ### IL-1135 - fable5-factory-full-cycle-canon @ 2026-08-04T13:51:42Z
 
 - **il_ts:** 2026-08-04T13:51:42Z
