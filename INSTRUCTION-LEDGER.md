@@ -28320,3 +28320,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** R-E: extend allocator retry ceiling to ~170s (defaults 6x 5/10/20/30/45/60); fail-closed + no-local unchanged [ADR-143-A]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1133 - fable5-allocator-redis-auth-preflight @ 2026-08-03T22:42:12Z
+
+- **il_ts:** 2026-08-03T22:42:12Z
+- **session_id:** fable5-allocator-redis-auth-preflight
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-allocator-redis-auth-preflight/IL-2026-08-03T22-42-12Z--e9ae2e.md`
+
+### fable5-allocator-redis-auth-preflight
+
+- **Instruction:** Option B (advisory verdict 2026-08-04): vault-only allocator AUTH preflight — scripts/preflight.sh (auth-PING via fabric/common/redis_auth_probe.py), AUTH gate + exit 4/5 in add-il-shard.sh after TCP check, runbook docs/runbooks/allocator-redis-auth.md (vault SoT, rotation, env-path forbidden). Closes D1/D2/D3; hermetic tests tests/gitnexus/test_redis_auth_probe.sh (14 checks).
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
