@@ -1,0 +1,174 @@
+Reading additional input from stdin...
+OpenAI Codex v0.146.0
+--------
+workdir: /tmp
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: none
+reasoning summaries: none
+session id: 019fcd72-c439-74a1-8c30-3d335b98e044
+--------
+user
+You are an external second-opinion reviewer. Do NOT execute anything. Return prose analysis only.
+
+CONTEXT
+A bank-governance repo consolidation ("Sprint-0") merges 12 donor repositories into one monorepo.
+An AI factory agent prepares each donor: manifest all refs, land must-land branches into the
+donor's main via merge-commit, verify, bundle x2 on separate media, freeze, then subtree-import
+into a local monorepo that has NO remote. Two donors are done to the "prepared" stage. In both,
+the final step - `git push origin main` on the donor - was refused at the permission layer,
+because writing to a shared main is treated as an operator (human) enactment act.
+
+A charter is now proposed that would delegate exactly that one push to the factory, for 10 named
+donors, one iteration only, with 9 guards:
+(a) only donors whose publication delta passed a secret scan with zero findings;
+(b) only merges whose parents are ALREADY published (so the act combines published history, never
+    introduces unpublished work);
+(c) merge commits only - no squash, no rebase, no force, no amend;
+(d) one ledger line per push;
+(e) the governance repo and the monorepo are always human-gated, permanently out of scope;
+(f) post-push ls-remote must equal the local merge SHA; any divergence freezes the WHOLE queue;
+(g) where a merge resolved a conflict, the merge commit is diffed against BOTH parents and that
+    delta is secret-scanned before publication;
+(h) donors published one at a time; first guard failure freezes the queue until a human releases it;
+(i) scope and term bound; anything not listed is excluded by default.
+Term: end of iteration 1. Closure: rotation of the factory credential afterwards.
+Permanent exclusions: the governance repo (protected main, 149 unlanded commits held by another
+session), a repo under quarantine (a self-generated private key exists in two local unpublished
+branches), and the monorepo itself.
+
+Relevant history: one donor's land hit an add/add conflict in two monitoring config files where
+neither side was a superset; a naive "take one side" would have silently dropped either alerting
+coverage or a metrics exporter. The resolution was a union, validated with dockerised
+promtool/amtool against a pre-merge baseline control. Guard (g) exists because of that incident.
+
+QUESTIONS
+1. Is guard (b) - "published parents only" - actually sufficient to bound the blast radius of a
+   delegated push, or can a merge of two published parents still introduce content that exists in
+   neither? If it can, is guard (g) enough to catch it, and what would it miss?
+2. Which single guard, if removed, would most increase risk - and which is closest to theatre?
+3. What failure mode does this charter NOT cover that you would expect to bite within ten pushes?
+4. Is "one at a time with queue-freeze on first failure" the right stop semantics, or does it
+   create a worse failure mode than per-donor human approval (e.g. pressure to release the freeze
+   without diagnosis)?
+5. Credential rotation as the closure condition: sound, or security theatre given the credential
+   is used by the same agent throughout the term?
+Answer directly. Flag anything you consider unsafe to approve as written.
+warning: Codex could not find bubblewrap on PATH. Install bubblewrap with your OS package manager. See the sandbox prerequisites: https://developers.openai.com/codex/concepts/sandboxing#prerequisites. Codex will use the bundled bubblewrap in the meantime.
+codex
+1. No. “Published parents only” bounds ancestry, not the merge commit’s tree. A merge commit can contain arbitrary content present in neither parent—through conflict resolution, generated files, manual edits, merge drivers, or deliberately constructed “evil merge” commits.
+
+Guard (g) catches only secret-scanner-detectable additions in merges known to have resolved conflicts. It misses:
+
+- Extra content inserted into an apparently clean merge.
+- Non-secret harmful changes: disabled alerts, weakened controls, malicious workflows, backdoors, or configuration regressions.
+- Secrets the scanner does not recognize.
+- Dangerous deletions or substitutions.
+- Submodule changes, LFS availability problems, and generated artifacts requiring separate validation.
+- Semantic interactions produced by combining otherwise safe parent trees.
+
+Guard (g) should apply to every merge commit, not just conflict merges. The resulting merge tree should be compared with both parents, scanned, and subjected to repository-specific validation. Ideally, the charter should also require that the exact approved merge SHA and tree SHA remain unchanged between verification and push.
+
+2. Removing (i), the default-deny scope and term boundary, creates the greatest governance risk. Without it, a narrowly delegated operation can quietly become a reusable authority, potentially reaching the governance repo or monorepo. If scope enforcement exists independently, then (f)—post-push verification and global stop—is the most important operational guard.
+
+Guard (d), one ledger line per push, is closest to theatre unless the ledger is immutable, independently stored, and records at least donor, remote URL, previous remote SHA, pushed SHA/tree, scan evidence, actor credential, timestamp, and verification result. A line written by the same agent into mutable local storage provides little control.
+
+Guard (b) is also weaker than its wording suggests: useful as an ancestry constraint, but not a content-integrity control.
+
+3. The likely uncovered failure is a side effect of publishing `main`, especially CI/CD or automation triggered by the push. A merge may introduce or activate workflows, deployments, package publication, infrastructure changes, or automation with access to repository secrets. A secret scan says nothing about those effects.
+
+Other probable gaps include:
+
+- TOCTOU: remote `main`, the local merge, hooks, configuration, or scan inputs change between approval and push.
+- Pushing to the wrong repository because the remote URL is misconfigured or replaced.
+- Remote branch rules allowing an unexpected rewrite or another actor updating `main` immediately after verification.
+- Missing LFS objects or inaccessible submodule commits.
+- Server-side hooks accepting the ref but failing downstream operations.
+- The factory credential having broader repository or administrative rights than this charter intends.
+
+Require an allowlisted, immutable remote URL and repository identity; a pre-push `ls-remote`; an atomic compare-and-swap/force-with-lease-style expectation without permitting rewrites; verification of the local SHA/tree immediately before pushing; and an assessment of push-triggered automation.
+
+4. Serial publication with automatic freeze is appropriate as a containment mechanism, but freeze release must itself be controlled. Otherwise it can create operational pressure to “clear the queue” without resolving the cause.
+
+A sound release should require a human to record:
+
+- The diagnosed cause.
+- Whether any remote state changed.
+- The remediation and new evidence.
+- Whether the failed donor is retried, skipped, or removed.
+- Explicit authorization to resume the remaining queue.
+
+This is stronger than requiring human approval for every donor while retaining most of the automation benefit. Per-donor human approval would reduce delegated risk further, but it also risks becoming routine click-through approval. A mandatory human checkpoint after the first successful donor would be prudent because it validates the charter and mechanics before the other nine pushes.
+
+5. Rotation is sound cleanup, but it is not the primary security boundary. It only terminates future use; it does not constrain what the credential can do during the iteration.
+
+The credential should be:
+
+- Dedicated to this operation.
+- Limited to the ten named repositories and branch-write only.
+- Unable to administer repositories, alter protections, manage secrets, or access excluded repositories.
+- Short-lived where possible.
+- Auditable independently of the factory.
+- Revoked immediately on freeze, compromise, or term expiry—not merely after normal completion.
+
+Unsafe to approve as written: guard (g) applies only to conflict merges; there is no explicit protection against clean “evil merges,” no pre-push remote compare-and-swap requirement, no remote-identity pinning, and no treatment of CI/CD side effects. Credential rotation does not compensate for those omissions.
+tokens used
+4,753
+1. No. “Published parents only” bounds ancestry, not the merge commit’s tree. A merge commit can contain arbitrary content present in neither parent—through conflict resolution, generated files, manual edits, merge drivers, or deliberately constructed “evil merge” commits.
+
+Guard (g) catches only secret-scanner-detectable additions in merges known to have resolved conflicts. It misses:
+
+- Extra content inserted into an apparently clean merge.
+- Non-secret harmful changes: disabled alerts, weakened controls, malicious workflows, backdoors, or configuration regressions.
+- Secrets the scanner does not recognize.
+- Dangerous deletions or substitutions.
+- Submodule changes, LFS availability problems, and generated artifacts requiring separate validation.
+- Semantic interactions produced by combining otherwise safe parent trees.
+
+Guard (g) should apply to every merge commit, not just conflict merges. The resulting merge tree should be compared with both parents, scanned, and subjected to repository-specific validation. Ideally, the charter should also require that the exact approved merge SHA and tree SHA remain unchanged between verification and push.
+
+2. Removing (i), the default-deny scope and term boundary, creates the greatest governance risk. Without it, a narrowly delegated operation can quietly become a reusable authority, potentially reaching the governance repo or monorepo. If scope enforcement exists independently, then (f)—post-push verification and global stop—is the most important operational guard.
+
+Guard (d), one ledger line per push, is closest to theatre unless the ledger is immutable, independently stored, and records at least donor, remote URL, previous remote SHA, pushed SHA/tree, scan evidence, actor credential, timestamp, and verification result. A line written by the same agent into mutable local storage provides little control.
+
+Guard (b) is also weaker than its wording suggests: useful as an ancestry constraint, but not a content-integrity control.
+
+3. The likely uncovered failure is a side effect of publishing `main`, especially CI/CD or automation triggered by the push. A merge may introduce or activate workflows, deployments, package publication, infrastructure changes, or automation with access to repository secrets. A secret scan says nothing about those effects.
+
+Other probable gaps include:
+
+- TOCTOU: remote `main`, the local merge, hooks, configuration, or scan inputs change between approval and push.
+- Pushing to the wrong repository because the remote URL is misconfigured or replaced.
+- Remote branch rules allowing an unexpected rewrite or another actor updating `main` immediately after verification.
+- Missing LFS objects or inaccessible submodule commits.
+- Server-side hooks accepting the ref but failing downstream operations.
+- The factory credential having broader repository or administrative rights than this charter intends.
+
+Require an allowlisted, immutable remote URL and repository identity; a pre-push `ls-remote`; an atomic compare-and-swap/force-with-lease-style expectation without permitting rewrites; verification of the local SHA/tree immediately before pushing; and an assessment of push-triggered automation.
+
+4. Serial publication with automatic freeze is appropriate as a containment mechanism, but freeze release must itself be controlled. Otherwise it can create operational pressure to “clear the queue” without resolving the cause.
+
+A sound release should require a human to record:
+
+- The diagnosed cause.
+- Whether any remote state changed.
+- The remediation and new evidence.
+- Whether the failed donor is retried, skipped, or removed.
+- Explicit authorization to resume the remaining queue.
+
+This is stronger than requiring human approval for every donor while retaining most of the automation benefit. Per-donor human approval would reduce delegated risk further, but it also risks becoming routine click-through approval. A mandatory human checkpoint after the first successful donor would be prudent because it validates the charter and mechanics before the other nine pushes.
+
+5. Rotation is sound cleanup, but it is not the primary security boundary. It only terminates future use; it does not constrain what the credential can do during the iteration.
+
+The credential should be:
+
+- Dedicated to this operation.
+- Limited to the ten named repositories and branch-write only.
+- Unable to administer repositories, alter protections, manage secrets, or access excluded repositories.
+- Short-lived where possible.
+- Auditable independently of the factory.
+- Revoked immediately on freeze, compromise, or term expiry—not merely after normal completion.
+
+Unsafe to approve as written: guard (g) applies only to conflict merges; there is no explicit protection against clean “evil merges,” no pre-push remote compare-and-swap requirement, no remote-identity pinning, and no treatment of CI/CD side effects. Credential rotation does not compensate for those omissions.
