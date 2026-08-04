@@ -28395,3 +28395,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** A1 salvage: mt11 session-lock hooks cherry-picked to fresh branch (CLEAN_SALVAGE per overlap pre-check; Fable-5+Codex 2026-08-04) [ADR-181]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1144 - fable5-d1-bom-freeze-reroll @ 2026-08-04T17:17:28Z
+
+- **il_ts:** 2026-08-04T17:17:28Z
+- **session_id:** fable5-d1-bom-freeze-reroll
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-d1-bom-freeze-reroll/IL-2026-08-04T17-17-28Z--e0e453.md`
+
+### fable5-d1-bom-freeze-reroll
+
+- **Instruction:** B3 reroll: freeze record for live D1 session bank-operating-model/20260718 (review-date 2026-08-11, reconcile §2.6 vs ADR-181); reroll of closed #1195 from post-#1194 main
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
