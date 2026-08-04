@@ -1,0 +1,148 @@
+#!/bin/bash
+# pre-commit-session-lock — ADR-120 EXTENSION, session-axis ENFORCER (2026-08-01).
+# Remediated per Fable-5 ruling 4a9f70fb after the self-deadlock defect (fix #2 of the
+# orchestration work): identity = kernel session id; lock = enforcer, not advisory;
+# plus a staging-leak guard for the Rule-2 cross-session class that produced 48b0e3bc.
+#
+# ONE ENFORCEABLE RULE:
+#   A session may commit in this worktree ONLY while it holds the worktree's exclusive
+#   .SESSION-LOCK, only while HEAD still matches the SHA the holder observed, and only
+#   for paths IT staged after claiming. No lock / foreign session / moved HEAD /
+#   pre-claim staged path => FAIL-CLOSED.
+#
+# IDENTITY (FIX-1): the kernel SESSION ID (`ps -o sess=`). A login shell, the `git`
+# process it spawns, and this hook all share ONE kernel session (git does not setsid),
+# so a legitimate claim→commit passes with no environment plumbing. A different
+# terminal is its own session leader → different SID → blocked.
+# BANXE_SESSION_ID is an OPTIONAL human-readable LABEL only — never identity.
+#
+# Usage:
+#   bash .githooks/pre-commit-session-lock --claim    # at session start (index should be clean)
+#   bash .githooks/pre-commit-session-lock --release
+#   bash .githooks/pre-commit-session-lock --status
+# Escape hatch for a deliberate mixed commit: BANXE_INCLUDE_PRESTAGED=1 git commit …
+set -uo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)" || exit 1
+LOCK="$ROOT/.SESSION-LOCK"
+ROLE_FILE="$ROOT/.TERMINAL-ROLE"
+PRESTAGED="$ROOT/.SESSION-LOCK.prestaged"
+
+_sid() { ps -o sess= -p $$ 2>/dev/null | tr -d ' '; }
+SID="$(_sid)"
+LABEL="${BANXE_SESSION_ID:-}"   # cosmetic only
+
+_head() { git -C "$ROOT" rev-parse HEAD 2>/dev/null || echo "NO-HEAD"; }
+_staged() { git -C "$ROOT" diff --cached --name-only 2>/dev/null; }
+
+_write_lock() {
+    printf 'sid=%s\nlabel=%s\nhead=%s\nrole=%s\nclaimed_at=%s\n' \
+        "$SID" "$LABEL" "$(_head)" \
+        "$( [ -f "$ROLE_FILE" ] && tr -d '\n' < "$ROLE_FILE" || echo UNKNOWN )" \
+        "$(date -Iseconds)" > "$LOCK"
+    # FIX-3: snapshot what was ALREADY staged at claim time — anything in this set is
+    # foreign to this session's work until explicitly adopted.
+    _staged > "$PRESTAGED"
+}
+
+_lock_field() { [ -f "$LOCK" ] && grep "^$1=" "$LOCK" | head -1 | cut -d= -f2- || true; }
+
+# LIVENESS: a lock whose kernel session no longer has ANY live process is STALE —
+# its terminal is gone. Stale locks are re-claimable; a LIVE foreign session is not.
+# This is what makes the guard correct for non-interactive drivers (each invocation is
+# its own kernel session, so yesterday's holder is simply dead), while a genuinely
+# concurrent terminal — whose session IS alive — stays blocked.
+_session_alive() {
+    local sid="$1"
+    [ -n "$sid" ] || return 1
+    ps -o sess= -ax 2>/dev/null | tr -d ' ' | grep -qx "$sid"
+}
+
+case "${1:-}" in
+    --claim)
+        if [ -f "$LOCK" ]; then
+            holder="$(_lock_field sid)"
+            if [ -n "$holder" ] && [ "$holder" != "$SID" ]; then
+                if _session_alive "$holder"; then
+                    echo "❌ SESSION-LOCK held by LIVE kernel session '$holder' (this session: '$SID')."
+                    echo "   Another terminal owns this worktree. Use its own worktree/branch"
+                    echo "   (ADR-120 layer-1) or have the holder run --release."
+                    exit 1
+                fi
+                echo "ℹ️  Reclaiming STALE lock (session '$holder' has no live process)."
+            fi
+        fi
+        _write_lock
+        n_pre=$(wc -l < "$PRESTAGED" 2>/dev/null || echo 0)
+        echo "✅ SESSION-LOCK claimed: sid=$SID label=${LABEL:-none} head=$(_head | cut -c1-7) role=$( [ -f "$ROLE_FILE" ] && tr -d '\n' < "$ROLE_FILE" || echo UNKNOWN)"
+        [ "$n_pre" -gt 0 ] && echo "⚠️  $n_pre path(s) were ALREADY staged at claim time — they will be refused unless BANXE_INCLUDE_PRESTAGED=1."
+        exit 0
+        ;;
+    --release)
+        _rh="$(_lock_field sid)"
+        if [ -f "$LOCK" ] && [ "$_rh" != "$SID" ] && _session_alive "$_rh"; then
+            echo "❌ Refusing to release a LIVE foreign lock (holder sid=$_rh)."
+            exit 1
+        fi
+        rm -f "$LOCK" "$PRESTAGED" && echo "✅ SESSION-LOCK released."
+        exit 0
+        ;;
+    --refresh)
+        if [ -f "$LOCK" ] && [ "$(_lock_field sid)" = "$SID" ]; then
+            _write_lock
+        fi
+        exit 0
+        ;;
+    --status)
+        [ -f "$LOCK" ] && cat "$LOCK" || echo "(no lock)"
+        [ -s "$PRESTAGED" ] && { echo "-- pre-claim staged paths (refused by default):"; cat "$PRESTAGED"; }
+        exit 0
+        ;;
+esac
+
+# ── Enforcement path (invoked from pre-commit) ────────────────────────────────
+if [ ! -f "$LOCK" ]; then
+    echo "❌ SESSION-LOCK missing — commit refused (fail-closed, ADR-120-EXT session axis)."
+    echo "   Claim it first:  bash .githooks/pre-commit-session-lock --claim"
+    exit 1
+fi
+
+holder="$(_lock_field sid)"
+if [ "$holder" != "$SID" ]; then
+    if _session_alive "$holder"; then
+        echo "❌ SESSION-LOCK held by LIVE kernel session '$holder'; this process is in session '$SID' — commit refused."
+        echo "   Parallel-terminal collision guard (one session per worktree)."
+        echo "   Use your own worktree/branch (layer-1), or --release from the holding session."
+    else
+        echo "❌ SESSION-LOCK belongs to a DEAD session '$holder' (this session: '$SID') — commit refused."
+        echo "   Stale lock: re-claim it in THIS session first (claim and commit in one invocation):"
+        echo "     bash .githooks/pre-commit-session-lock --claim && git commit …"
+    fi
+    exit 1
+fi
+
+recorded="$(_lock_field head)"
+current="$(_head)"
+if [ "$recorded" != "$current" ]; then
+    echo "❌ HEAD moved since this session claimed the lock — commit refused (fail-closed)."
+    echo "   observed at claim: ${recorded:0:12}"
+    echo "   HEAD now:          ${current:0:12}"
+    echo "   Another session committed here. Review the incoming commits, then re-claim:"
+    echo "     bash .githooks/pre-commit-session-lock --claim"
+    exit 1
+fi
+
+# ── FIX-3: staging-leak guard (parallel-session-isolation Rule 2) ─────────────
+if [ -s "$PRESTAGED" ] && [ "${BANXE_INCLUDE_PRESTAGED:-0}" != "1" ]; then
+    leaked="$(_staged | grep -Fxf "$PRESTAGED" || true)"
+    if [ -n "$leaked" ]; then
+        echo "❌ Staged set contains path(s) staged BEFORE this session claimed the lock —"
+        echo "   commit refused (cross-session staging leak, Rule 2; the 48b0e3bc class):"
+        printf '     %s\n' $leaked
+        echo "   Either unstage them (git restore --staged <path>), or adopt them deliberately:"
+        echo "     BANXE_INCLUDE_PRESTAGED=1 git commit …"
+        exit 1
+    fi
+fi
+
+exit 0
