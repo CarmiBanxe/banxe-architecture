@@ -28365,3 +28365,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-177 Factory Full-Cycle Mandate (operator directive 2026-08-04): ingest FACTORY-FULL-CYCLE-COMPANY canon verbatim into docs/canon/, session-loaded .claude/rules/factory-identity.md, CLAUDE.md preamble + README wiring, superseded-in-part banner on FACTORY-BOUNDARIES-CANON. Fixes orchestrator-only regression.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1136 - fable5-second-opinion-codex @ 2026-08-04T15:47:07Z
+
+- **il_ts:** 2026-08-04T15:47:07Z
+- **session_id:** fable5-second-opinion-codex
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-second-opinion-codex/IL-2026-08-04T15-47-07Z--011410.md`
+
+### fable5-second-opinion-codex
+
+- **Instruction:** ADR-181 Fable-5 Second Opinion Protocol (operator directive 2026-08-04): every consultation runs a parallel Codex second opinion (codex exec read-only, fail-soft 120s) with mandatory consolidated verdict section; wired into .claude/rules/fable5-second-opinion.md, factory-identity.md, CLAUDE.md, README.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

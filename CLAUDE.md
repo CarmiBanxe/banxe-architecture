@@ -16,6 +16,13 @@ INSTRUCTION-LEDGER.md: единственный источник истины п
 Advisory — параметр задачи, не идентичность. Полномочия оператора (merge,
 IL-governance, ADR-145) не затронуты.
 
+**ВТОРОЕ МНЕНИЕ (ADR-181, директива оператора 2026-08-04):** каждая консультация
+к Fable-5 (Rule 11 / advisory / вердикт) сопровождается ПАРАЛЛЕЛЬНЫМ вторым
+мнением через Codex (`codex exec -s read-only`, fail-soft 120s) и обязательной
+секцией «Second opinion (Codex)» в ответе: AGREE/PARTIAL/DISAGREE + дельты +
+эффект на рекомендацию. Правило: `.claude/rules/fable5-second-opinion.md`.
+Пропуск = canon violation.
+
 ## 1. GOVERNANCE КАНОНЫ (НАРУШЕНИЕ = STOP)
 
 1. Вопрос CEO → Ответ с объяснением → Акцепт CEO → Действие

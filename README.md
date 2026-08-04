@@ -28,6 +28,7 @@
 | `DEFERRED-PROJECTS.md` | Отложенные проекты (не делать сейчас) |
 | `decisions/` | ADR — Architecture Decision Records |
 | `docs/canon/FACTORY-FULL-CYCLE-COMPANY.md` | **Идентичность фабрики (ADR-177)**: компания-разработчик полного цикла — Team Topologies, Spotify model, AI DLC; фабрика проектирует и пишет код руками |
+| `docs/adr/ADR-181-fable5-second-opinion-codex.md` | **Второе мнение (ADR-181)**: каждая консультация Fable-5 — параллельный Codex + согласованное резюме |
 | `validators/` | Скрипты проверки соответствия |
 | `docs/project/` | **Project documentation programme** — master index + S12-S25 backlog (start here for project-implementation docs) |
 
