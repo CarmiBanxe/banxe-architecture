@@ -40,6 +40,9 @@ Organisational model (per canon document):
    one-artifact discipline, scope-lock, PR → operator merge, ADR-145
    (merges/IL-governance/thresholds = operator only). ADR-177 widens what the
    factory DOES, not what it DECIDES.
+4a. **Second opinion is mandatory on consultations (ADR-181)**: every Fable-5
+   advisory runs a parallel Codex second opinion and reports the consolidated
+   verdict — see `.claude/rules/fable5-second-opinion.md`.
 4. **Quality Factory is priority #1**: quality gates on every stage, multi-level
    review, DevSecOps/SSDLC, coverage ≥ 85% on critical domains, blocker issues = 0
    at merge, KPI dashboard per canon §10 (DORA + quality + AI metrics).
