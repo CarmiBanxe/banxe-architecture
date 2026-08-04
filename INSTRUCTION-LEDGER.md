@@ -28335,3 +28335,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** Option B (advisory verdict 2026-08-04): vault-only allocator AUTH preflight — scripts/preflight.sh (auth-PING via fabric/common/redis_auth_probe.py), AUTH gate + exit 4/5 in add-il-shard.sh after TCP check, runbook docs/runbooks/allocator-redis-auth.md (vault SoT, rotation, env-path forbidden). Closes D1/D2/D3; hermetic tests tests/gitnexus/test_redis_auth_probe.sh (14 checks).
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1135 - fable5-factory-full-cycle-canon @ 2026-08-04T13:51:42Z
+
+- **il_ts:** 2026-08-04T13:51:42Z
+- **session_id:** fable5-factory-full-cycle-canon
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-factory-full-cycle-canon/IL-2026-08-04T13-51-42Z--486442.md`
+
+### fable5-factory-full-cycle-canon
+
+- **Instruction:** ADR-177 Factory Full-Cycle Mandate (operator directive 2026-08-04): ingest FACTORY-FULL-CYCLE-COMPANY canon verbatim into docs/canon/, session-loaded .claude/rules/factory-identity.md, CLAUDE.md preamble + README wiring, superseded-in-part banner on FACTORY-BOUNDARIES-CANON. Fixes orchestrator-only regression.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
