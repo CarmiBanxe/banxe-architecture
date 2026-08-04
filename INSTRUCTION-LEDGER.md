@@ -28380,3 +28380,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-181 Fable-5 Second Opinion Protocol (operator directive 2026-08-04): every consultation runs a parallel Codex second opinion (codex exec read-only, fail-soft 120s) with mandatory consolidated verdict section; wired into .claude/rules/fable5-second-opinion.md, factory-identity.md, CLAUDE.md, README.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1137 - fable5-b6-drift-salvage @ 2026-08-04T16:15:50Z
+
+- **il_ts:** 2026-08-04T16:15:50Z
+- **session_id:** fable5-b6-drift-salvage
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-b6-drift-salvage/IL-2026-08-04T16-15-50Z--e8447a.md`
+
+### fable5-b6-drift-salvage
+
+- **Instruction:** Salvage B6 ENGINE-SRC drift resolution from stale branch b6-drift-resolved-20260729 (cherry-pick cdabfd6c): ROADMAP-MATRIX B6 -> RESOLVED, COORDINATION-NOTES closure section. Fable-5 advisory V1 (ADR-181 first application, Codex PARTIAL, V3 fallback not needed). Carrier PR; B6 substance ratification = operator.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
