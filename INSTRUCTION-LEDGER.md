@@ -28410,3 +28410,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** B3 reroll: freeze record for live D1 session bank-operating-model/20260718 (review-date 2026-08-11, reconcile §2.6 vs ADR-181); reroll of closed #1195 from post-#1194 main
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1145 - fable5-session-close-20260804-handover @ 2026-08-04T17:43:01Z
+
+- **il_ts:** 2026-08-04T17:43:01Z
+- **session_id:** fable5-session-close-20260804-handover
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-session-close-20260804-handover/IL-2026-08-04T17-43-01Z--77f1e2.md`
+
+### fable5-session-close-20260804-handover
+
+- **Instruction:** Session close 2026-08-04: left-terminal factory session CLOSED per operator directive; infra scope transferred to right terminal; left-terminal retains coding/features/canon. Boundary rule ratified. Ledger anchors 1-9 held. See docs/session-log/2026-08-04-session-close.md and governance/HANDOVER.md.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
