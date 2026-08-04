@@ -28380,3 +28380,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-181 Fable-5 Second Opinion Protocol (operator directive 2026-08-04): every consultation runs a parallel Codex second opinion (codex exec read-only, fail-soft 120s) with mandatory consolidated verdict section; wired into .claude/rules/fable5-second-opinion.md, factory-identity.md, CLAUDE.md, README.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1141 - fable5-d1-bom-freeze @ 2026-08-04T16:55:56Z
+
+- **il_ts:** 2026-08-04T16:55:56Z
+- **session_id:** fable5-d1-bom-freeze
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-d1-bom-freeze/IL-2026-08-04T16-55-56Z--ed3c98.md`
+
+### fable5-d1-bom-freeze
+
+- **Instruction:** B3: freeze record for live D1 session bank-operating-model/20260718 (owner, review-date 2026-08-11 mandatory per Codex delta, reconcile-obligation §2.6 vs ADR-181)
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
