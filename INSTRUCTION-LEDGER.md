@@ -28395,3 +28395,114 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** A1 salvage: mt11 session-lock hooks cherry-picked to fresh branch (CLEAN_SALVAGE per overlap pre-check; Fable-5+Codex 2026-08-04) [ADR-181]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1142 - agent-factory-orgcells-cto-dept @ 2026-08-04T01:30:00Z
+
+- **il_ts:** 2026-08-04T01:30:00Z
+- **session_id:** agent-factory-orgcells-cto-dept
+- **source:** CEO
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-orgcells-cto-dept/IL-2026-08-04T01-30-00Z--orgcell-cto-dept.md`
+
+### ORG-DEPT-05 — CTO / Technology, Data & AI cell authored (ENGINE_HIERARCHY, PROPOSED)
+
+- **Decision:** authored `docs/orgcells/CELL-CTO-DEPT.md` — Dept-5 of the parent org canon as
+  the second department of the org contour, per the Fable-5 org-cells ruling 2026-08-04.
+  `cell_id: cto-dept`, `kind: DEPARTMENT`, `reporting_line: ENGINE_HIERARCHY`,
+  `vertical.manager_ref: engine-director` (V2 same-line), `department_ref: null`,
+  `status: PROPOSED`. Twelve schema fields complete; SCHEMA §0 rule carried verbatim.
+- **Bank↔factory interface resolved by separating two senses of "engine":** engine-as-Director
+  is the org root that supervises this department (`manager_ref`), while engine-as-platform
+  (models, routing, bus, vector store, deploy path) is a subordinate instrument this
+  department owns and gates. Gate authority (HITL-013 deploy, HITL-014 model update with CRO,
+  HITL-015 security with CEO) is expressed in `authority`, never as a `vertical` edge — the
+  Director cannot pass its own change into production, because passing it is a human SMF26 act.
+- **F2-OP-03 addressed as specification:** function 3 `i27_activation_signoff` assigns
+  ownership of the activation procedure that was previously unowned (agent records in volume,
+  ACTIVE = 7) and supplies six ordered steps (completeness → line-validity V2/V3 → authority →
+  V5 evidence → **human SMF26 sign-off** → recorded transition + audit). I-27 keeps step 3.5
+  human: steps 3.1–3.4 may be prepared mechanically, 3.5 may not.
+- **F2-OP-05 addressed as specification:** function 6 `provider_credentials_process` owns the
+  credential **lifecycle procedure** (request path, approval, rotation cadence, retirement,
+  audit record) for the ED-03 class, while values stay entirely outside this plane —
+  sandbox-only, no secrets recorded anywhere in the governance plane.
+- **[UNKNOWN] declared:** identifiers `F2-OP-03` / `F2-OP-05` do not resolve to any definition
+  inside this repository (grep over `*.md` returns nothing) — they belong to a floor-2 gap
+  register held elsewhere. Both are addressed as described in the authoring task and cited by
+  id only; neither may be marked closed until its authoritative definition is produced and
+  checked against functions 3 and 6. An id match is not a closure proof.
+- **Invariants:** V1 satisfied (non-null manager, no new root); V2 satisfied
+  (`cto-dept` → `engine-director`, both ENGINE_HIERARCHY); V3 not triggered (no
+  compliance-monitoring class — that stays on the MLRO line, reached only via `horizontal`);
+  V4 satisfied (`mlro-root`, `safeguarding-recon`, `dpo` all horizontal); V5 satisfied
+  (PROPOSED, no evidence claimed); V6 satisfied (three source_refs, paths only). MT-05
+  `aml_orchestrator` untouched and still FROZEN.
+- **Perimeter:** prepare-only, mutations confined to `docs/orgcells/` + this shard; no push,
+  no merge (HITL); session-lock held in this worktree (MT-11); sandbox-only, no secrets.
+- **Refs:** `docs/orgcells/CELL-CTO-DEPT.md`; `docs/orgcells/SCHEMA.md` (12 fields, V1–V6);
+  `docs/orgcells/CELL-ENGINE-DIRECTOR.md` (manager); `governance/CANONICAL-ORG-CHART-v2.md`
+  (Dept-5, SMF26); `docs/architecture/BANK-OPERATING-MODEL-FOUR-FLOORS-2026-07-18.md`;
+  `banxe-emi-stack: services/hitl/org_roles.py` (cross-repo, path-only); I-27; MC-C1.
+  IL provisional, NOT hardcoded (ADR-119 Rule 8); append-only (ADR-059-A), il_ts strictly
+  greater than the origin/main maximum at authoring time.
+
+---
+
+### IL-1143 - agent-factory-orgcells-dpo @ 2026-08-04T01:31:00Z
+
+- **il_ts:** 2026-08-04T01:31:00Z
+- **session_id:** agent-factory-orgcells-dpo
+- **source:** CEO
+- **status:** PREPARED
+- **shard:** `ledger/entries/agent-factory-orgcells-dpo/IL-2026-08-04T01-31-00Z--orgcell-dpo.md`
+
+### ORG-CELL DPO authored + schema-extension request MC-C2 (independent line, PROPOSED)
+
+- **Decision:** authored `docs/orgcells/CELL-DPO.md` out of the department queue, because the
+  DPO is a statutory obligation (GDPR Art. 37–39) sitting in a double gap — no human appointed
+  and no agent activated. `cell_id: dpo`, `kind: DEPARTMENT`, `department_ref: null`,
+  `status: PROPOSED`. Twelve schema fields complete; first three control duties specified
+  (DPIA oversight; data-subject rights; personal-data-breach path with the 72-hour clock).
+- **SCHEMA CONFLICT RAISED, NOT HIDDEN — MC-C2.** SCHEMA v1 offers two lines and two
+  null-manager roots (V1). All three placements were evaluated and two are unlawful rather
+  than merely awkward: under `cto-dept`/`engine-director` the controller could instruct the
+  DPO on DPO tasks (Art. 38(3)) and the means-of-processing owner would supervise its own
+  overseer (Art. 38(6)); under `mlro-root` the same two articles fail, because the MLRO line
+  itself processes personal data at scale for financial-crime purposes. The third option — an
+  independent line with no manager — is correct in regulation and INVALID under V1 as written.
+  The record is therefore filed with `reporting_line: INDEPENDENT_LINE` and
+  `manager_ref: null`, **declared schema-INVALID**, as extension request MC-C2. Proposed
+  amendment (not applied): extend field 5 to a third value and restate V1 so that each tree
+  has one root, with an enumerated statutory-independence class (DPO; Internal Audit SMF5).
+- **Why the loud option:** writing the DPO into either existing tree would be silently
+  unlawful; writing it as a third root is loudly invalid. The gap is the finding of this
+  authoring step and must not be closed by attaching the cell to an existing tree.
+- **Independence proof (holds once MC-C2 is granted):** with `L(dpo) = INDEPENDENT_LINE` and
+  `M(dpo) = null`, V2 keeps every ENGINE- and MLRO-line cell off the DPO's vertical chain in
+  both directions, leaving `horizontal[]` — cooperation, explicitly not authority (V4) — as
+  the only expressible relation. That is the GDPR shape: the DPO advises, monitors and
+  objects; it is not instructed and cannot be tasked. Reporting to the highest management
+  level is represented by the absence of any manager, not by an edge to an executive.
+- **Authority bounded deliberately:** the cell issues DPIA opinions and objections, sets
+  data-subject-request fulfilment paths, and decides that the 72-hour notification threshold
+  is met; it does not deploy, does not block releases by its own authority, and holds no
+  SAR/PEP/sanctions powers. Its instrument is a recorded objection plus escalation, and an
+  overrule is possible only at the level it reports to, on the record.
+- **Invariants:** V1 violated by declaration (MC-C2); V2 vacuously satisfied now and
+  load-bearing once granted; V3 checked and not triggered — if counsel reads DPIA oversight as
+  a compliance-monitoring class, that must be resolved inside MC-C2 and never by silent
+  reassignment to the MLRO line; V4, V5, V6 satisfied. MT-05 untouched and still FROZEN.
+- **Wave-3 backlog:** `docs/orgcells/BACKLOG.md` created with exactly one queued item — Board
+  Reporting (queued only, no cell authored) — plus MC-C2 recorded as the schema question
+  blocking placement of statutorily independent functions.
+- **Perimeter:** prepare-only, mutations confined to `docs/orgcells/` + this shard; no push,
+  no merge (HITL); session-lock held in this worktree (MT-11); sandbox-only, no secrets.
+- **Refs:** `docs/orgcells/CELL-DPO.md`; `docs/orgcells/BACKLOG.md`; `docs/orgcells/SCHEMA.md`
+  (field 5, V1, V2, V4); `docs/orgcells/CELL-CTO-DEPT.md` (asymmetric horizontal peer);
+  `governance/CANONICAL-ORG-CHART-v2.md` (independent-line pattern: MLRO to Board, Internal
+  Audit SMF5 outside every executive department);
+  `docs/architecture/BANK-OPERATING-MODEL-FOUR-FLOORS-2026-07-18.md` (OD-5 desync, DPO
+  unappointed); GDPR Art. 37–39. IL provisional, NOT hardcoded (ADR-119 Rule 8); append-only
+  (ADR-059-A). MC-C1 counsel-pending applies to everything above.
