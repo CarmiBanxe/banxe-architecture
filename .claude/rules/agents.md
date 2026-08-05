@@ -183,7 +183,7 @@ P3 (Year 2+): FinGPT, OpenBB, Apache Camel, Mojaloop, Beancount
 | C. Architecture decision | RSB → ACG → CAE → OpenClaw gateway-ctio → ADR draft → review by Ruflo (if compliance-adjacent) | new ADR or revision |
 | D. Deploy (factory side) | implement → STG → review → factory-fast (Legion) for hot edits → factory-coder (evo1) for heavy refactors → DEPLOY phase agents | Legion-side software deliveries |
 | E. Deploy (project side) | RSB → ACG → ARP → STG → **Ruflo** → MLRO approval (HITL) → OpenClaw gateway-moa → smoke test | production EMI BANXE AI BANK changes |
-| F. Reasoning task (heavy) | route via LiteLLM `reasoning-235b` (evo2 qwen3:235b) → analysis → Ruflo regulatory check → mlro_agent decision (if needed) | compliance review, MLRO escalation, fraud explanation |
+| F. Reasoning task (heavy) | route via LiteLLM `reasoning-235b` (фактически deepseek-r1:70b @ evo-x2 — qwen3:235b нигде не поднят; P1 из ruling 2026-08-01, открыт) → analysis → Ruflo regulatory check → mlro_agent decision (if needed) | compliance review, MLRO escalation, fraud explanation |
 
 ### Pipeline canon (regulatory)
 
@@ -343,3 +343,4 @@ Concretises the selection criterion (additive; does not override it):
 - `.claude/rules/safety-rules.md`, CLAUDE.md §1, §11, §12 (stop-barriers, best-decision canon)
 - Does NOT modify ADR-102 / ADR-103 / ADR-059-A / merge canon / security canon — additive only.
 - Factory-Only Execution subpoint: state-change ⇒ factory (`[CLAUDE CODE]`), read-only ⇒ shell (`[SHELL]`); additive to Best Single Artifact.
+- Second opinion MANDATORY at every consultation/escalation: `docs/governance/FABLE5-CONSULTATION-ADDENDUM-R2-SECOND-OPINION.md` — every BRIEF also goes to an independent reviewer (Codex CLI, read-only); RESPONSE carries the verbatim opinion, an INDEPENDENT/NOT-INDEPENDENT label, a Reconciliation section with divergences stated explicitly, and a NO-SECOND-OPINION mark if the reviewer is unreachable (never a block). Additive to §STANDING RULE and ADDENDUM R1.

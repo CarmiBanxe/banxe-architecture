@@ -68,3 +68,13 @@ bash validators/check-compliance.sh ~/developer
 | **Reference (не зависим)** | Jube, Tazama, AMLTRIX | Учимся паттернам, не создаём dependency |
 
 **Принцип:** собственные validators + feedback loop = ядро. Внешние компоненты = заменяемые. Open-source платформы с restrictive licenses = reference только.
+
+---
+
+## Consultation canon
+
+Every governance consultation carries a **mandatory independent second opinion** — see
+`docs/governance/FABLE5-CONSULTATION-ADDENDUM-R2-SECOND-OPINION.md` (ADDENDUM R2, operator
+decision 2026-08-04): the brief goes to Codex in parallel, the response reproduces it verbatim
+with an independence label and an explicit reconciliation of divergences, and an unreachable
+reviewer is marked, never waited on.
