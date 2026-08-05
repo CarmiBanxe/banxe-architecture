@@ -28619,3 +28619,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-136-A DRAFT (concept-only): unified read-only memory-access fabric over Ledger/reasoning_bank/memoir — query gateway, ADR-166 authority ranking, canonical envelope, deny-by-default rego perimeter, immutable retrieval-audit, query-time redaction; MemoHarness = one client; segregation + ADR-137 XOR preserved; GitHub candidates reference-only with license/jurisdiction checklist
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1148 - adr135-a-memoharness-amendment-draft @ 2026-08-05T19:37:41Z
+
+- **il_ts:** 2026-08-05T19:37:41Z
+- **session_id:** adr135-a-memoharness-amendment-draft
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/adr135-a-memoharness-amendment-draft/IL-2026-08-05T19-37-41Z--4561e4.md`
+
+### adr135-a-memoharness-amendment-draft
+
+- **Instruction:** ADR-135-A DRAFT (adr-amendment-draft): MemoHarness harness-loop amendment to ADR-135 — six harness-dimensions under ADR-160 write-gate, retrieval->reflect hook (impl deferred to A2/ADR-136-A), transfer-gate 'evidence != authority'. Refs: ADR-135, ADR-135-A, ADR-181 (Codex AGREE blind), ADR-102 (audit: MERGE), ADR-160. External: arxiv:2607.14159 (DATA-ONLY). Scope A1 only; status draft; awaiting reviewed promotion.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
