@@ -17,7 +17,8 @@
       "verification": "unverified",
       "disclosed": true,
       "evidence": "Observed indirectly: max committed ID in IL-SEQUENCE.json was 1136 while the central counter had advanced past 1141. Consumer not identified from this terminal.",
-      "action": "verify owner; if abandoned, restate as abandoned with the owning session named"
+      "action": "verify owner; if abandoned, restate as abandoned with the owning session named",
+      "superseded_by": "supersessions[0] — 2026-08-05; entry retained append-only, effective status is committed"
     },
     {
       "il": 1138,
@@ -68,5 +69,15 @@
       "note": "Same run, same disposition. Directly observed from this terminal."
     }
   ],
-  "_reconciliation_note": "This terminal's own diagnostic consumed exactly two numbers, and both are committed above — it burned none. The abandoned entries at 1138/1139 are recorded on the authority of the ruling, not on observation from here; the distinction is kept explicit so the register never presents hearsay as measurement."
+  "_reconciliation_note": "This terminal's own diagnostic consumed exactly two numbers, and both are committed above — it burned none. The abandoned entries at 1138/1139 are recorded on the authority of the ruling, not on observation from here; the distinction is kept explicit so the register never presents hearsay as measurement.",
+  "supersessions": [
+    {
+      "ref": "gaps[] entry IL-1137 (status allocated-by-other-terminal, owner unknown, verification unverified)",
+      "transition": "abandoned/unknown → committed",
+      "confirming_commit": "c44a742579b1 (PR #1192 merge) — shard fable5-b6-drift-salvage__c00417769536 = IL-1137 in ledger/IL-SEQUENCE.json on main",
+      "provenance": "observed directly: the shard carried IL-1137 already at refresh time and was preserved, not re-minted; ownership confirmed after #1192 landed",
+      "reason": "the original entry recorded IL-1137 as allocated by an unidentified terminal because no committed shard claimed it at the time; the owner has since landed, so the number belongs on the committed side of allocated = committed ⊎ gaps",
+      "date": "2026-08-05"
+    }
+  ]
 }
