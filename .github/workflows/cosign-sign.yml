@@ -27,7 +27,8 @@ on:
     branches: [main]
   release:
     types: [published]
-
+  merge_group:
+    types: [checks_requested]
 permissions:
   contents: read
   id-token: write      # required for keyless/OIDC signing (Fulcio)
