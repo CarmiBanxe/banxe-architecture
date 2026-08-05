@@ -1,0 +1,108 @@
+# env-indirection-allowlist.toml — PREPARED PATCH, NOT APPLIED.
+#
+# Target: banxe-emi-stack `.gitleaks.toml`. Sprint-0 is consolidation only, so this
+# is delivered as a patch fragment for the donor's owner rather than committed to
+# the donor.
+#
+# PROBLEM. Five ADR-032 rules share one regex shape:
+#     <NAME>\s*=\s*['"]?([A-Za-z0-9_\-=+/.]{8,})['"]?
+# The character class accepts dots, so `os.environ.get(...)` satisfies it. Each rule
+# therefore fires on the very pattern that proves there is NO secret — an environment
+# read. On emi-stack `main` this produces 4 permanent findings on the repository's own
+# source, forever. A detector that is always wrong in the same place is one people
+# learn to scroll past, which is how a real finding gets waved through.
+#
+# WHY NOT A NEGATIVE LOOKAHEAD. gitleaks compiles rules with Go's regexp package
+# (RE2), which has no lookahead or lookbehind. Adding `(?!os\.environ)` does not
+# merely fail to match — gitleaks panics on config load. Verified against
+# gitleaks 8.18.4. The RE2-safe equivalent is a rule-level allowlist.
+#
+# VERIFIED: with these allowlists, env-indirection lines produce 0 findings while a
+# genuine literal (`CLICKHOUSE_PASSWORD = "hunter2-real-secret-value"`) still fires.
+# See tools/gitleaks-fix/regression_test.sh.
+
+# ---------------------------------------------------------------------------
+# Shared allowlist body — apply the same [rules.allowlist] block to each of the
+# five affected rules: banxe-clickhouse-password, banxe-postgres-password,
+# banxe-auth-secret-key, banxe-github-pat, banxe-marble-api-key.
+#
+#   [rules.allowlist]
+#   regexTarget = "line"
+#   regexes = [
+#     '''=\s*os\.environ''',        # os.environ.get("X", "")  /  os.environ["X"]
+#     '''=\s*os\.getenv''',         # os.getenv("X")
+#     '''env_var\(''',              # dbt / jinja: {{ env_var('X') }}
+#     '''=\s*\$\{[A-Z_]+''',        # compose: ${X:-}
+#     '''=\s*["']?\s*$''',          # .env.example: X=   (declared, empty)
+#   ]
+# ---------------------------------------------------------------------------
+
+[[rules]]
+id = "banxe-clickhouse-password"
+description = "ADR-032 matrix — CLICKHOUSE_PASSWORD (365d cadence, CTIO approval)"
+regex = '''CLICKHOUSE_PASSWORD\s*=\s*['"]?([A-Za-z0-9_\-=+/.]{8,})['"]?'''
+  [rules.allowlist]
+  regexTarget = "line"
+  regexes = [
+    '''=\s*os\.environ''',
+    '''=\s*os\.getenv''',
+    '''env_var\(''',
+    '''=\s*\$\{[A-Z_]+''',
+    '''=\s*["']?\s*$''',
+  ]
+
+[[rules]]
+id = "banxe-postgres-password"
+description = "ADR-032 matrix — POSTGRES_PASSWORD (365d cadence, CTIO approval)"
+regex = '''POSTGRES_PASSWORD\s*=\s*['"]?([A-Za-z0-9_\-=+/.]{8,})['"]?'''
+  [rules.allowlist]
+  regexTarget = "line"
+  regexes = [
+    '''=\s*os\.environ''',
+    '''=\s*os\.getenv''',
+    '''env_var\(''',
+    '''=\s*\$\{[A-Z_]+''',
+    '''=\s*["']?\s*$''',
+  ]
+
+[[rules]]
+id = "banxe-auth-secret-key"
+description = "ADR-032 matrix — AUTH_SECRET_KEY"
+regex = '''AUTH_SECRET_KEY\s*=\s*['"]?([A-Za-z0-9_\-=+/.]{8,})['"]?'''
+  [rules.allowlist]
+  regexTarget = "line"
+  regexes = [
+    '''=\s*os\.environ''',
+    '''=\s*os\.getenv''',
+    '''env_var\(''',
+    '''=\s*\$\{[A-Z_]+''',
+    '''=\s*["']?\s*$''',
+  ]
+
+[[rules]]
+id = "banxe-github-pat"
+description = "ADR-032 matrix — GitHub Actions PATs (GITHUB_PAT_*, 30d cadence, CEO approval)"
+regex = '''GITHUB_PAT_[A-Z0-9_]+\s*=\s*['"]?([A-Za-z0-9_\-=+/.]{8,})['"]?'''
+  [rules.allowlist]
+  regexTarget = "line"
+  regexes = [
+    '''=\s*os\.environ''',
+    '''=\s*os\.getenv''',
+    '''env_var\(''',
+    '''=\s*\$\{[A-Z_]+''',
+    '''=\s*["']?\s*$''',
+  ]
+
+[[rules]]
+id = "banxe-marble-api-key"
+description = "ADR-032 matrix — MARBLE_API_KEY (180d cadence, CTIO approval)"
+regex = '''MARBLE_API_KEY\s*=\s*['"]?([A-Za-z0-9_\-=+/.]{8,})['"]?'''
+  [rules.allowlist]
+  regexTarget = "line"
+  regexes = [
+    '''=\s*os\.environ''',
+    '''=\s*os\.getenv''',
+    '''env_var\(''',
+    '''=\s*\$\{[A-Z_]+''',
+    '''=\s*["']?\s*$''',
+  ]
