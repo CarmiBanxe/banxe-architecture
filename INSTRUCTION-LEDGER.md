@@ -28383,6 +28383,21 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 ---
 
+### IL-1137 - fable5-b6-drift-salvage @ 2026-08-04T16:15:50Z
+
+- **il_ts:** 2026-08-04T16:15:50Z
+- **session_id:** fable5-b6-drift-salvage
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-b6-drift-salvage/IL-2026-08-04T16-15-50Z--e8447a.md`
+
+### fable5-b6-drift-salvage
+
+- **Instruction:** Salvage B6 ENGINE-SRC drift resolution from stale branch b6-drift-resolved-20260729 (cherry-pick cdabfd6c): ROADMAP-MATRIX B6 -> RESOLVED, COORDINATION-NOTES closure section. Fable-5 advisory V1 (ADR-181 first application, Codex PARTIAL, V3 fallback not needed). Carrier PR; B6 substance ratification = operator.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
 ### IL-1140 - fable5-mt11-session-lock-salvage @ 2026-08-04T16:54:19Z
 
 - **il_ts:** 2026-08-04T16:54:19Z
