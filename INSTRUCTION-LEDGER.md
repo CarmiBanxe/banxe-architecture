@@ -28604,3 +28604,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 - **Refs:** `docs/governance/FABLE5-CONSULTATION-ADDENDUM-R2-SECOND-OPINION.md`;
   `docs/governance/codex-response-raw-push-charter-2026-08-04.txt`;
   `SPRINT0-CANON-R2-REPORT.md`; `.claude/rules/agents.md`; `README.md`. Operator HITL.
+
+---
+
+### IL-1147 - fable5-adr136a-memory-fabric @ 2026-08-05T20:28:52Z
+
+- **il_ts:** 2026-08-05T20:28:52Z
+- **session_id:** fable5-adr136a-memory-fabric
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-adr136a-memory-fabric/IL-2026-08-05T20-28-52Z--5ba6f8.md`
+
+### fable5-adr136a-memory-fabric
+
+- **Instruction:** ADR-136-A DRAFT (concept-only): unified read-only memory-access fabric over Ledger/reasoning_bank/memoir — query gateway, ADR-166 authority ranking, canonical envelope, deny-by-default rego perimeter, immutable retrieval-audit, query-time redaction; MemoHarness = one client; segregation + ADR-137 XOR preserved; GitHub candidates reference-only with license/jurisdiction checklist
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
