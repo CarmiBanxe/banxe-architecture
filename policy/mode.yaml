@@ -1,0 +1,52 @@
+# Operating mode — single source of truth for process controls.
+# Changing `mode` is the ONLY switch needed to move between phases; every control
+# below is derived from it. Operator directive 2026-08-06; Fable-5 + Codex consensus.
+#
+# Criterion that decides whether a control stays ON in sandbox:
+#   one wrong action either (a) pushes a secret or real data past a controlled
+#   boundary, or (b) destroys the single trustworthy copy of work.
+# Everything else is advisory while we design.
+
+mode: sandbox            # sandbox | preprod | prod
+reviewed_at: 2026-08-06
+owner: operator
+restore_trigger: first production deployment OR first real customer OR real money
+restore_checklist: docs/governance/PREPROD-RESTORE-CHECKLIST.md
+
+# --- KEEP: direct-danger controls (stay ON in every mode) ---------------------
+controls:
+  secret_scanning: required          # pre-push + CI; found key => rotate, not just delete
+  real_data_prohibited: required     # no customer/KYC/AML/payment/operational identifiers
+  protected_default_branch: required # PR + one meaningful review + smoke test
+  no_plain_force_push_on_main: required
+  backup_before_destructive: required # verified restorable copy before delete/rewrite
+  untrusted_code_no_secrets: required # PR/imported code gets no tokens, SSH agent, secrets
+  foreign_worktree_untouched: required
+
+# --- RELAXED in sandbox -------------------------------------------------------
+  force_with_lease_topic_branches: allowed
+  history_rewrite_topic_branches: allowed
+  history_rewrite_shared: emergency_only   # secret/real-data removal, documented
+
+# --- DISABLED in sandbox (re-enabled by mode change) --------------------------
+  external_second_opinion: advisory        # mandatory only for irreversible decisions
+  hitl_act_per_merge: disabled             # normal review is enough
+  serialized_ledger_writer: disabled       # protocol C off; parallel PRs allowed
+  import_ceremony: minimal                 # source+licence, no-secrets scan, pinned hash
+  publication_gate: sandbox                # secret/PII scan + smoke + review only
+  blocking_on_id_allocator: disabled       # design must never freeze on one Redis counter
+  sequential_audit_ids: disabled           # uniqueness required, global ordering is not
+
+# --- Mode profiles ------------------------------------------------------------
+profiles:
+  preprod:
+    external_second_opinion: required
+    hitl_act_per_merge: required_for_risky
+    publication_gate: full
+    preprod_readiness_job: required
+  prod:
+    inherits: preprod
+    money_ledger_invariants: required      # atomicity, idempotency, double-entry, recon
+    key_management: kms_hsm_required
+    segregation_of_duties: required
+    signed_artifacts_and_rollback: required

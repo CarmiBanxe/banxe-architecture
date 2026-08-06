@@ -36,3 +36,16 @@ Effect: <what changed in the final recommendation, or "nothing — reasons addre
 
 Skipping the second opinion on a consultation = canon violation (same class as
 the ADR-177 «orchestrator-only» precedent): log it, correct course.
+
+## SANDBOX-MODE AMENDMENT (operator directive 2026-08-06; Fable-5 + Codex consensus)
+
+While `policy/mode.yaml` has `mode: sandbox`, the second opinion is **ADVISORY**.
+
+It stays **MANDATORY** only for irreversible decisions:
+publishing a secret or real data, deleting the single copy of unreproducible work,
+destructive migration, rewriting shared history, choosing a cryptographic protocol
+or an irreversible data format, and anything that moves real money.
+
+Ordinary architectural forks are recorded with a short ADR and proceed without
+waiting. Skipping the second opinion on a NON-irreversible fork is not a violation.
+`preprod` / `prod` modes restore this rule in full.
