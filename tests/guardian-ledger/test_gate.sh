@@ -70,4 +70,17 @@ echo '# shard' > "$R/ledger/entries/test-topic/IL-2026-01-01T00-00-00Z--test.md"
 G "$R" add -A; G "$R" commit -q -m "canon change with shard"
 check "(e) canonical with shard passes" 0 "$R" "$B" "$(G "$R" rev-parse HEAD)"
 
+
+
+# (f) sandbox mode short-circuits the shard requirement; absent policy stays strict.
+R=$(mk_repo); B=$(G "$R" rev-parse HEAD)
+echo 'amendment' >> "$R/docs/governance/CANON-SAMPLE.md"
+G "$R" add -A; G "$R" commit -q -m "canon change, no shard"
+check "(f-strict) no policy file => still requires shard" 1 "$R" "$B" "$(G "$R" rev-parse HEAD)"
+mkdir -p "$R/policy" && printf 'mode: sandbox\n' > "$R/policy/mode.yaml"
+G "$R" add -A; G "$R" commit -q -m "declare sandbox mode"
+check "(f-sandbox) mode=sandbox => shard not required" 0 "$R" "$B" "$(G "$R" rev-parse HEAD)"
+mkdir -p "$R/policy" && printf 'mode: prod\n' > "$R/policy/mode.yaml"
+G "$R" add -A; G "$R" commit -q -m "switch to prod"
+check "(f-prod) mode=prod => strict again" 1 "$R" "$B" "$(G "$R" rev-parse HEAD)"
 exit $FAIL
