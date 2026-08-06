@@ -28634,3 +28634,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-135-A DRAFT (adr-amendment-draft): MemoHarness harness-loop amendment to ADR-135 — six harness-dimensions under ADR-160 write-gate, retrieval->reflect hook (impl deferred to A2/ADR-136-A), transfer-gate 'evidence != authority'. Refs: ADR-135, ADR-135-A, ADR-181 (Codex AGREE blind), ADR-102 (audit: MERGE), ADR-160. External: arxiv:2607.14159 (DATA-ONLY). Scope A1 only; status draft; awaiting reviewed promotion.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1150 - fable5-safeguard-phrasing-canon @ 2026-08-06T14:58:42Z
+
+- **il_ts:** 2026-08-06T14:58:42Z
+- **session_id:** fable5-safeguard-phrasing-canon
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-safeguard-phrasing-canon/IL-2026-08-06T14-58-42Z--f7f441.md`
+
+### fable5-safeguard-phrasing-canon
+
+- **Instruction:** Defender-voice phrasing canon (operator 2026-08-06): .claude/rules/safeguard-safe-phrasing.md + CLAUDE.md pointer — false-positive hygiene for model-side safeguards; meaning never weakened; no evasion of safety systems; Fable-5 persona role-defined (fallback does not void ADR-181 advisory).
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
