@@ -156,3 +156,13 @@ onboarding" gap so the ADR-060 branch-name gate is never silently inactive.
 - Scope: только код-связи (calls/imports/inheritance/flows); орг-связи — отдельным решением (ждёт Fable5).
 - Полный текст + состояние применимости (MCP pre-condition, PROD-gate-спринт внедрения):
   `docs/canon/GITNEXUS-CODE-CONTOUR-DIRECTIVE.md`.
+
+**SANDBOX MODE (директива оператора 2026-08-06):** режим процессных контролей задаётся
+одним файлом `policy/mode.yaml` (сейчас `sandbox`). Снято: protocol C, обязательное
+второе мнение, HITL на каждый merge, 7-шаговая церемония импорта, publication-gate из
+11 пунктов, блокировка работы из-за недоступности ID-аллокатора. Осталось семь
+контролей прямой опасности (секреты, реальные данные, защита main, force-with-lease
+только на topic, восстановимая копия перед разрушающей операцией, непроверенный код
+без секретов, чужие worktree не трогаем). Возврат — сменой `mode` +
+`docs/governance/PREPROD-RESTORE-CHECKLIST.md`. Репозитории публичны на GitHub —
+пункты про секреты и реальные данные действуют СЕГОДНЯ, не «в проде».
