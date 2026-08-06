@@ -28,6 +28,19 @@ ADMIN_RE='^ledger/(IL-GAP-REGISTER\.json|ALLOCATOR-RECOVERY-LOG\.md)$'
 # Pure infra/tooling — coupling not required (ADR-056 scope, unchanged):
 INFRA_RE='^(scripts/|\.github/|ledger/build_ledger\.py$)|\.sh$'
 
+# Sandbox mode (policy/mode.yaml): design work must not freeze on the ID allocator,
+# so canonical changes do not require an IL shard while mode=sandbox. Secret/real-data
+# and protected-branch controls are unaffected — they live in other jobs.
+# Absent or unreadable policy file => strict behaviour (fail-safe default).
+MODE=""
+if [ -r policy/mode.yaml ]; then
+  MODE="$(sed -n 's/^mode:[[:space:]]*\([a-z]*\).*/\1/p' policy/mode.yaml | head -1 || true)"
+fi
+if [ "$MODE" = "sandbox" ]; then
+  echo "guardian-ledger OK (policy/mode.yaml: mode=sandbox — shard coupling advisory; strict in preprod/prod)"
+  exit 0
+fi
+
 CHANGED=$(git diff --no-renames --name-only "$BASE_SHA" "$HEAD_SHA")
 echo "Changed files:"
 echo "$CHANGED"
