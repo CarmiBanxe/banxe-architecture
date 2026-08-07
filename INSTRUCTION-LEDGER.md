@@ -28634,3 +28634,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-135-A DRAFT (adr-amendment-draft): MemoHarness harness-loop amendment to ADR-135 — six harness-dimensions under ADR-160 write-gate, retrieval->reflect hook (impl deferred to A2/ADR-136-A), transfer-gate 'evidence != authority'. Refs: ADR-135, ADR-135-A, ADR-181 (Codex AGREE blind), ADR-102 (audit: MERGE), ADR-160. External: arxiv:2607.14159 (DATA-ONLY). Scope A1 only; status draft; awaiting reviewed promotion.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1151 - fable5-adr166a-layering-promotion @ 2026-08-06T21:19:24Z
+
+- **il_ts:** 2026-08-06T21:19:24Z
+- **session_id:** fable5-adr166a-layering-promotion
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-adr166a-layering-promotion/IL-2026-08-06T21-19-24Z--3c016f.md`
+
+### fable5-adr166a-layering-promotion
+
+- **Instruction:** ADR-166-A DRAFT (adr-amendment-draft): layer-promotion protocol for ADR-166 — 4-tier pipeline case -> observed pattern -> validated pattern (reviewed promotion + held-out adversarial safety-gate) -> decision-memory record; every transition under ADR-160 write-gate; pointer-first promotion-records; evidence != authority; fail-closed at every tier; XOR PRECOND-04 preserved (no new substrate). Closes A3 of the MemoHarness amendment plan (A1 #1199, A2 #1204 merged). Refs: ADR-166, ADR-135-A, ADR-136-A, ADR-102 (audit: AMENDMENT), ADR-181 (blind AGREE). External: arxiv:2607.14159 DATA-ONLY. Scope T-A3 only; local commit, no push.
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
