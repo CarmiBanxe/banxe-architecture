@@ -57,6 +57,16 @@ shard as an authoritative append. Evidence pointers into factory-memoir require 
 operator-ratified rego-rule allowing project-side read of specific evidence hashes for
 Art.13 explainability — implementation-level, out of scope for this concept ADR.
 
+**Relation to ADR-166 §5 (explicit amendment scope).** ADR-166 §5 states that factory `memoir`
+and project `reasoning_bank` share NO store and that there is no cross-perimeter memory. That
+statement stands UNCHANGED as to SUBSTRATE: this amendment creates no shared, mirrored or
+cross-written store, and PRECOND-04 XOR is untouched. What this amendment decides is a single
+mediated transfer: the reviewer-signed evidence-manifest shard on the Ledger contour, which MUST
+be self-sufficient for Art.13 explainability. An optional project-side read of specific
+factory-memoir evidence hashes is NOT part of this decision — it is a separate operator-ratified
+exception (rego rule per ADR-136-A §4), out of scope here and FORBIDDEN until ratified (G-3).
+Absent that ratification no memory content crosses the perimeter — only the shard does.
+
 (b) **Every transition passes two gates: (i) the ADR-160 orchestration write-gate**
     (branch discipline, ACTION-LEDGER, force-refspec guards — mechanical write control),
     **and (ii) a domain-level semantic promotion-gate** (evidence quality, reviewer
@@ -119,15 +129,18 @@ Art.13 explainability — implementation-level, out of scope for this concept AD
 
 ## Pre-ACCEPTED gaps (fail-mode registry)
 
-> Status per operator gate: APPROVE AS CONCEPT-DRAFT. The gaps below are ACKNOWLEDGED,
-> not resolved. Each carries an explicit **fail-closed default** that holds until its
-> contract is specified in the post-merge design-docs; a gap may be closed only by the
-> design-doc that specifies its contract. Any new gap discovered before ACCEPT is
-> appended here with a fail-closed default — never left implicit.
+> Status per operator gate: APPROVE AS CONCEPT-DRAFT. The gaps below are ACKNOWLEDGED, not
+> resolved. **NONE of the defaults below is implemented today — they are ACTIVATION BLOCKERS,
+> not existing protections.** Until a gap's contract is specified in a post-merge design-doc AND
+> its enforcement is verifiable, the corresponding transition (or the whole pipeline) MUST NOT be
+> implemented or activated, and this table MUST NOT be cited as evidence that a control already
+> exists. A gap may be closed only by the design-doc that specifies its contract together with
+> the check that enforces it. Any new gap discovered before ACCEPT is appended here with a
+> fail-closed default — never left implicit.
 
 | # | Gap (deferred contract) | Fail-closed default until specified |
 |---|---|---|
-| G-1 | Semantic promotion-gate contract (evidence quality, reviewer authority, atomicity, idempotency) — Decision (b)(ii) | No promotion crosses a tier boundary on the orchestration gate alone; every candidate requires explicit reviewer sign-off |
+| G-1 | Semantic promotion-gate contract (evidence quality, reviewer authority, atomicity, idempotency) — Decision (b)(ii) | No promotion crosses a tier boundary on the orchestration gate alone; every candidate requires explicit reviewer sign-off; reviewer sign-off alone does NOT satisfy evidence-quality, atomicity or idempotency — those three remain unimplemented, so no tier boundary may be crossed by any automated path |
 | G-2 | Eligibility-filter mechanics (tagging, audit-retention of `ineligible_for_learning` cases) — Decision (a) | Filter unavailable ⇒ ALL new cases treated as ineligible; no case→observed aggregation until the filter is back |
 | G-3 | Operator-ratified rego-rule for project-side read of specific factory-memoir evidence hashes — Cross-perimeter transfer | No rule ratified ⇒ project side consumes the evidence-manifest shard only; no dereference into factory-memoir |
 | G-4 | `N ≥ threshold` value for observed patterns (Configuration-over-Hardcoding — lives in repo config, not in this ADR) | Threshold unset ⇒ no case→observed aggregation occurs |
