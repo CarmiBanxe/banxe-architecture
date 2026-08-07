@@ -28649,3 +28649,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-166-A DRAFT (adr-amendment-draft): layer-promotion protocol for ADR-166 — 4-tier pipeline case -> observed pattern -> validated pattern (reviewed promotion + held-out adversarial safety-gate) -> decision-memory record; every transition under ADR-160 write-gate; pointer-first promotion-records; evidence != authority; fail-closed at every tier; XOR PRECOND-04 preserved (no new substrate). Closes A3 of the MemoHarness amendment plan (A1 #1199, A2 #1204 merged). Refs: ADR-166, ADR-135-A, ADR-136-A, ADR-102 (audit: AMENDMENT), ADR-181 (blind AGREE). External: arxiv:2607.14159 DATA-ONLY. Scope T-A3 only; local commit, no push.
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1152 - fable5-adr182-memoharness-banksy-binding @ 2026-08-07T22:56:29Z
+
+- **il_ts:** 2026-08-07T22:56:29Z
+- **session_id:** fable5-adr182-memoharness-banksy-binding
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/fable5-adr182-memoharness-banksy-binding/IL-2026-08-07T22-56-29Z--040ce2.md`
+
+### fable5-adr182-memoharness-banksy-binding
+
+- **Instruction:** ADR-182 DRAFT (dual-project binding): MemoHarness (A1+A2+A3) bound to Banksy engine as third-zone deny-by-default read-only client of the A2 fabric via adapter contract — scope fields of ADR-135-A/136-A/166-A UNCHANGED; harvest/memory.py classified local non-authoritative (NOT a 4th store); harness-loop on Banksy side gated GL-*/HITL-L4 I-27; promotion via A3 Ledger shard-flow only; Banksy->Legion->fabric route forbidden; 8 activation blockers fail-closed. Antecedents: IL-1147 (A2), IL-1148 (A1), IL-1151 (A3). Refs: ADR-182, ADR-117, ADR-059, ADR-102 (audit: keep/new-ADR), ADR-181 (Codex blind AGREE).
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
