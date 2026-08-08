@@ -31,5 +31,9 @@
 - Midaz/MCP→ledger and any regulated advisory surface → `[counsel]`.
 - **HEART_STACK = 32 verified files** (count closed; the earlier "21" is superseded — no reconcile outstanding).
 
+## References — MemoHarness Integration
+- `docs/adr/ADR-182-memoharness-banksy-binding.md` — DRAFT concept-only integration ADR (dual-project adapter contract; retro-binding of merged MemoHarness A1/A2/A3 to Banksy engine as second consumer).
+- Antecedents: ADR-135-A / 136-A / 166-A (all merged, factory scope). Banksy consumes MemoHarness as feature via GL-*/HITL-L4/I-27 gating (concept only, no operational integration yet).
+
 ---
 **This does not replace legal advice.**

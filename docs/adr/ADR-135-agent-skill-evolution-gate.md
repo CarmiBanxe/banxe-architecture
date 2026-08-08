@@ -15,6 +15,8 @@ relates:
   - "research artifact Hermes-Agent-Razbor-…-Software-Factory.md (self-improving skills — external reference)"
   - "SkillOpt (MIT, github.com/microsoft/SkillOpt) — external reference pattern (propose-and-test, textual learning rate); referenced, NOT imported"
   - "ADR-102 (no-duplication — Duplication Audit basis)"
+amended_by:
+  - "ADR-135-A (MemoHarness harness-loop amendment, merged #1199, f9e90d42)"
 il_anchor: IL-559
 il_anchor_note: "Provisional per ADR-119 Rule 8 — frozen to max+1 over origin/main at rebase-before-merge."
 scope: BANXE-factory-only
