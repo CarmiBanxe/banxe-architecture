@@ -10,6 +10,15 @@ related:
   - "ADR-056-ledger-coupling.md (ledger-coupling guardian — unchanged)"
   - "ADR-057 (ledger invariants)"
   - "ledger/build_ledger.py (generator modified here)"
+refs:
+  - ledger/build_ledger.py
+  - ledger/IL-SEQUENCE.json
+  - scripts/add-il-shard.sh
+  - .github/workflows/ledger-rebuild.yml
+  - .claude/rules/parallel-session-isolation.md
+  - docs/guardian/guardian-ledger-il-collision-gate.md
+  - docs/adr/ADR-143-redis-central-il-allocator.md
+  - docs/adr/ADR-143-A-shared-evo1-redis-allocator.md
 il_anchor: IL-457
 scope: BANXE-only
 concept_only: false
