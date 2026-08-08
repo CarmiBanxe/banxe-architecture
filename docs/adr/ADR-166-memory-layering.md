@@ -3,6 +3,7 @@
 - **Status:** proposed
 - **Date:** 2026-07-09
 - **Relates:** ADR-136 (agentmemory shared-memory substrate), ADR-137 (memoir versioned-memory pilot), ADR-059 (IL append-serialization / ledger SoT), ADR-130 (SOUL.md persona layer — no authority), ADR-127 (Hermes factory-delegation contract), ADR-117 (factory/project perimeter), ADR-102 (no-restate / pointer-first)
+- **Amended-by:** ADR-166-A (MemoHarness layer-promotion amendment, merged #1212, ed99da5c)
 
 ## Context
 

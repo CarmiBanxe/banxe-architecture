@@ -28664,3 +28664,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-182 DRAFT (dual-project binding): MemoHarness (A1+A2+A3) bound to Banksy engine as third-zone deny-by-default read-only client of the A2 fabric via adapter contract — scope fields of ADR-135-A/136-A/166-A UNCHANGED; harvest/memory.py classified local non-authoritative (NOT a 4th store); harness-loop on Banksy side gated GL-*/HITL-L4 I-27; promotion via A3 Ledger shard-flow only; Banksy->Legion->fabric route forbidden; 8 activation blockers fail-closed. Antecedents: IL-1147 (A2), IL-1148 (A1), IL-1151 (A3). Refs: ADR-182, ADR-117, ADR-059, ADR-102 (audit: keep/new-ADR), ADR-181 (Codex blind AGREE).
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1153 - memoharness-crossrefs-completion @ 2026-08-08T22:40:40Z
+
+- **il_ts:** 2026-08-08T22:40:40Z
+- **session_id:** memoharness-crossrefs-completion
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/memoharness-crossrefs-completion/IL-2026-08-08T22-40-40Z--d1909c.md`
+
+### memoharness-crossrefs-completion
+
+- **Instruction:** amended_by cross-refs in ADR-135/136/166 pointing to their -A amendments (A1 #1199 IL-1148, A2 #1204 IL-1147, A3 #1212 IL-1151); ADR-182 References sections in 3 BANKSY-* docs (INTEGRATION-PLAN, STACK-REGISTRY, BUILD-MANIFEST). No structural changes, no A1/A2/A3/182 body edits, no operational-integration claims. [ADR-102][ADR-181]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

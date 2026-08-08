@@ -16,6 +16,8 @@ relates:
   - "ADR-117 (factory/project perimeter — fork split rides this boundary)"
   - "ADR-102 (no-duplication — Duplication Audit basis)"
   - "rohitg00/agentmemory (github.com/rohitg00/agentmemory) — external reference, NOT imported"
+amended_by:
+  - "ADR-136-A (MemoHarness memory-fabric amendment, merged #1204, 8ce6376c)"
 il_anchor: IL-560
 il_anchor_note: "Provisional per ADR-119 Rule 8 — frozen to max+1 over origin/main at rebase-before-merge."
 scope: BANXE-factory-only
