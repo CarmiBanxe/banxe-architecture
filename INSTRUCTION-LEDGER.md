@@ -28694,3 +28694,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** ADR-119: append 2026-08-08 amendment reconciling wording with the ADR-143/143-A central Redis allocator (max+1 -> INCR banxe:il:counter; 'always at the tail' -> render-by-IL-number, mint order != merge order). Documents two verified consequences: A1 #1199 IL-1148 renders above A2 #1204 IL-1147, and permanent sequence gaps 1116-1120/1138/1139/1141/1149/1150. Notes ADR-143-B (evo2 relocation) is Proposed, not in force. Wording-only, no behaviour change, no legacy IL-anchor backfill, no cross-file sync. [ADR-102]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1155 - g9-hook-parity-ci-advisory @ 2026-08-09T01:19:13Z
+
+- **il_ts:** 2026-08-09T01:19:13Z
+- **session_id:** g9-hook-parity-ci-advisory
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/g9-hook-parity-ci-advisory/IL-2026-08-09T01-19-13Z--2e4420.md`
+
+### g9-hook-parity-ci-advisory
+
+- **Instruction:** T-G9-CI: closes G-9 gap from ADR-166-A. New scripts/verify-hook-parity.sh + advisory job guardian-hook-parity in .github/workflows/guardian.yml. Detects drift between the installed .githooks/pre-push and its SOURCE scripts/pre-push-branch-name.sh (install-hooks.sh copies mirror -> hook, so a direct hook edit is silently reverted). Checks guard-token parity, byte-identity, and installer wiring; always exits 0. Advisory-only: NOT added to branch-protection required_status_checks; promotion to required is a separate operator gate. [ADR-102][ADR-181]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md

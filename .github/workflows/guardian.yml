@@ -175,3 +175,20 @@ jobs:
         env:
           BASE_REF: origin/${{ github.base_ref || 'main' }}
         run: bash scripts/adr-traceability-check.sh
+
+  hook-parity:
+    name: guardian-hook-parity (advisory)
+    runs-on: ubuntu-latest
+    # ADVISORY — closes gap G-9 of ADR-166-A by making ADR-160 hook-enforcement drift
+    # visible in CI. Two independent reasons it cannot block a merge: the script always
+    # exits 0, and this context is deliberately NOT in the branch-protection
+    # required_status_checks list. (continue-on-error alone is NOT sufficient — see the
+    # note in scripts/verify-hook-parity.sh.) Promotion to a required gate is a separate
+    # operator decision.
+    continue-on-error: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify pre-push hook <-> mirror parity (ADR-166-A G-9, advisory)
+        run: bash scripts/verify-hook-parity.sh

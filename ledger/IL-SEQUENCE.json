@@ -713,5 +713,6 @@
   "fable5-adr166a-layering-promotion__6fdf846ffe4a": 1151,
   "fable5-adr182-memoharness-banksy-binding__49aba395d10d": 1152,
   "memoharness-crossrefs-completion__7bf2304d318e": 1153,
-  "adr-119-redis-allocator-sync__ad7e8ebe6612": 1154
+  "adr-119-redis-allocator-sync__ad7e8ebe6612": 1154,
+  "g9-hook-parity-ci-advisory__7eeaaccfb83a": 1155
 }
