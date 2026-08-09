@@ -10,6 +10,15 @@ related:
   - "ADR-056-ledger-coupling.md (ledger-coupling guardian — unchanged)"
   - "ADR-057 (ledger invariants)"
   - "ledger/build_ledger.py (generator modified here)"
+refs:
+  - ledger/build_ledger.py
+  - ledger/IL-SEQUENCE.json
+  - scripts/add-il-shard.sh
+  - .github/workflows/ledger-rebuild.yml
+  - .claude/rules/parallel-session-isolation.md
+  - docs/guardian/guardian-ledger-il-collision-gate.md
+  - docs/adr/ADR-143-redis-central-il-allocator.md
+  - docs/adr/ADR-143-A-shared-evo1-redis-allocator.md
 il_anchor: IL-457
 scope: BANXE-only
 concept_only: false
@@ -111,3 +120,59 @@ Enforced by `strict` branch protection + the `guardian-ledger` pre-merge IL-coll
 (`docs/guardian/guardian-ledger-il-collision-gate.md`) + `.claude/rules/parallel-session-isolation.md`
 **Rule 8**. This amendment changes only *when* the number is considered final; it does **not**
 alter the append-only / coupling guarantees above, and never renumbers a prior entry.
+
+## Amendment 2026-08-08 — central Redis allocator (ADR-143 alignment)
+
+> Wording-only reconciliation. The **rule** is unchanged — *a new shard takes the next unused
+> integer; existing keys and values are never mutated or removed* (§Decision.4, append-only).
+> Only the **mechanism** described below is brought up to date. §Decision.3–4 and the
+> 2026-06-24 amendment above are preserved as written; where they say `max+1` or "always
+> lands at the tail", read this section instead.
+
+**What changed.** Since **ADR-143** (`accepted` 2026-07-09) — as amended by **ADR-143-A**
+(`ACCEPTED` 2026-07-12, which fixed the config so the counter is genuinely shared) — new IL
+numbers are no longer computed locally as `max+1`. They are minted from a single central Redis
+counter, `banxe:il:counter`, implemented in `ledger/build_ledger.py` (`_redis_config` /
+`_redis_allocate`). Local `max+1` was the root cause of the cross-terminal duplicate class
+(IL-159/172, IL-827); an atomic counter removes the race at its source rather than detecting
+it after the fact.
+
+**Mechanism (current).**
+
+1. **Allocation** — atomic `INCR` on `banxe:il:counter`, repeated until the value exceeds the
+   frozen sequence maximum. On first contact the counter floor is seeded to that maximum (set
+   only when the counter sits below it), so a freshly provisioned counter can never hand out a
+   number at or below one already assigned.
+2. **Target host** — default `100.68.102.48:6379` (evo1, over tailscale), password from
+   `REDIS_PASS_FILE` (default `~/banxe-fabric/.vault/redis.pass`); `REDIS_HOST` / `REDIS_PORT`
+   override. Every terminal — evo1, evo2, Legion — must increment the *same* counter; that
+   shared target is the whole anti-collision guarantee.
+3. **Local fallback is disabled.** Redis unreachable ⇒ `build_ledger.py` raises and refuses to
+   proceed. The offline `max+1` path exists only behind an explicit `BANXE_IL_ALLOCATOR=local`
+   escape hatch, which accepts the cross-terminal race and is forbidden in normal operation.
+   Fail-loud replaced the silent degrade that produced the duplicates.
+
+**Two observable consequences that §Decision.4's "always lands at the tail" no longer covers.**
+
+- **Mint order ≠ merge order, so a new entry may render above an older one.** Verified on
+  `main`: `adr135-a-memoharness-amendment-draft` (A1, PR #1199, `f9e90d42`) merged *before*
+  `fable5-adr136a-memory-fabric` (A2, PR #1204, `8ce6376c`), yet A1 holds **IL-1148** and A2
+  holds **IL-1147**. Because the ledger renders in IL-number order, the later-merged shard
+  renders *above* the earlier-merged one. This is correct behaviour, not a defect.
+- **The sequence is monotonic but not contiguous.** `INCR` consumes a number at mint time; if
+  that branch is abandoned or its PR closed, the number is never claimed by a merged shard and
+  the gap is permanent. Present gaps on `main` in the 1100–1153 range: **1116–1120, 1138, 1139,
+  1141, 1149, 1150**. Gaps are expected; they must never be back-filled, since re-using a
+  consumed number would break the frozen-for-life guarantee.
+
+**Unchanged by this amendment.** Rebase-before-merge (2026-06-24 amendment) still applies: the
+mint itself is race-free, but `strict` branch protection still requires an up-to-date base, and
+a shard's number stays provisional until the pre-merge regeneration. Append-only enforcement
+(`build_ledger.py --check` vs git HEAD), the `guardian-ledger` collision gate, and Rule 8 in
+`.claude/rules/parallel-session-isolation.md` are untouched.
+
+**Cross-references.** `docs/adr/ADR-143-redis-central-il-allocator.md` (base, `accepted`),
+`docs/adr/ADR-143-A-shared-evo1-redis-allocator.md` (`ACCEPTED` — shared-evo1 config fix).
+Note `docs/adr/ADR-143-B-allocator-relocation-evo2.md` (relocate the primary counter to evo2)
+is **Proposed, not in force**; should it be accepted, the host named in point 2 above becomes
+stale and must be re-synced here.

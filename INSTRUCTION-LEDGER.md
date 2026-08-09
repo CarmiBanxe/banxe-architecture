@@ -28679,3 +28679,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** amended_by cross-refs in ADR-135/136/166 pointing to their -A amendments (A1 #1199 IL-1148, A2 #1204 IL-1147, A3 #1212 IL-1151); ADR-182 References sections in 3 BANKSY-* docs (INTEGRATION-PLAN, STACK-REGISTRY, BUILD-MANIFEST). No structural changes, no A1/A2/A3/182 body edits, no operational-integration claims. [ADR-102][ADR-181]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1154 - adr-119-redis-allocator-sync @ 2026-08-08T23:36:04Z
+
+- **il_ts:** 2026-08-08T23:36:04Z
+- **session_id:** adr-119-redis-allocator-sync
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/adr-119-redis-allocator-sync/IL-2026-08-08T23-36-04Z--70f995.md`
+
+### adr-119-redis-allocator-sync
+
+- **Instruction:** ADR-119: append 2026-08-08 amendment reconciling wording with the ADR-143/143-A central Redis allocator (max+1 -> INCR banxe:il:counter; 'always at the tail' -> render-by-IL-number, mint order != merge order). Documents two verified consequences: A1 #1199 IL-1148 renders above A2 #1204 IL-1147, and permanent sequence gaps 1116-1120/1138/1139/1141/1149/1150. Notes ADR-143-B (evo2 relocation) is Proposed, not in force. Wording-only, no behaviour change, no legacy IL-anchor backfill, no cross-file sync. [ADR-102]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
