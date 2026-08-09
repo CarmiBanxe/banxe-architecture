@@ -28709,3 +28709,18 @@ ADR-060, ADR-119, ADR-104 §5, I-24.
 
 - **Instruction:** T-G9-CI: closes G-9 gap from ADR-166-A. New scripts/verify-hook-parity.sh + advisory job guardian-hook-parity in .github/workflows/guardian.yml. Detects drift between the installed .githooks/pre-push and its SOURCE scripts/pre-push-branch-name.sh (install-hooks.sh copies mirror -> hook, so a direct hook edit is silently reverted). Checks guard-token parity, byte-identity, and installer wiring; always exits 0. Advisory-only: NOT added to branch-protection required_status_checks; promotion to required is a separate operator gate. [ADR-102][ADR-181]
 - **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
+
+---
+
+### IL-1156 - memoharness-banksy-side-map @ 2026-08-09T18:40:39Z
+
+- **il_ts:** 2026-08-09T18:40:39Z
+- **session_id:** memoharness-banksy-side-map
+- **source:** agent-factory
+- **status:** DONE
+- **shard:** `ledger/entries/memoharness-banksy-side-map/IL-2026-08-09T18-40-39Z--281db8.md`
+
+### memoharness-banksy-side-map
+
+- **Instruction:** T-BX-MAP+GL: Banksy-side reciprocal binding promised by ADR-182. Two new docs-only files: bank-rooms/F0-engine-manus-room/MEMORY-INTEGRATION-MAP.md (maps MemoHarness concepts to verified-present Banksy modules main.py / harvest/memory.py; places them on the EXISTING BANKSY-BUILD-MANIFEST gate order, adds no gate) and docs/audit/GL-POST20-MEMOHARNESS-INTEGRATION-2026-08-09.md (GL-20 line audit entry). Concept-only, no activation, no runtime code, no gate change; ADR-182 stays DRAFT/concept_only. Existing BANKSY manifests, ADAPTATION-MAP and all four merged ADRs untouched. [ADR-102][ADR-181]
+- **Refs:** ADR-056, ADR-057, ADR-059, ADR-119, ADR-143, ledger/SHARD-WORKFLOW.md
