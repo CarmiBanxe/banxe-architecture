@@ -31,3 +31,13 @@
 /governance/NOVELTY-HANDOFF-QUEUE.md      @mmber
 /.github/workflows/novelty-handoff.yml    @mmber
 /scripts/novelty-watcher.sh               @mmber
+
+# Control-infra: security tooling whose config/fixtures govern HOW the repository is
+# checked. Exempt from ledger-shard coupling only via the CLOSED exact-path allowlist in
+# scripts/guardian_ledger_gate.sh (TOOLING_ALLOWLIST_RE) — never by a tools/ prefix.
+# Extending that allowlist is a canon change and is reviewed here, by the operator, in a
+# PR separate from the files it would exempt.
+/tools/                          @mmber
+/scripts/guardian_ledger_gate.sh @mmber
+/tests/guardian-ledger/          @mmber
+
