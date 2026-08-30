@@ -1,0 +1,1 @@
+GITHUB_PAT_CI=ghp_AbCdEfGhIjKlMnOpQrStUvWxYz012345
